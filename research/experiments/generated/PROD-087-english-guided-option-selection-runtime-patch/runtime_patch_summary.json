@@ -1,0 +1,13 @@
+{
+  "checkpoint_id": "PROD-087-english-guided-option-selection-runtime-patch",
+  "source_checkpoint_id": "PROD-086-english-guided-option-selection-narrow-policy-probe",
+  "runtime_file": "runtime/core/realtime_turns.py",
+  "new_sales_difficulty": "guided-option-selection",
+  "requires_plan_feature_matrix": true,
+  "requires_customer_facts_for_steering": true,
+  "requires_no_payment_on_call_default": true,
+  "requires_no_company_domain_in_generic_payment_wording": true,
+  "payment_response": "No payment on this call. I'll send you the link by email, and you can review the plan and register there.",
+  "runtime_patch_applied": true,
+  "review_html_created": false
+}

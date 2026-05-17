@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PROD-060 Review</title>
+  <style>
+    :root {
+      --ink:#15202b;
+      --muted:#5a6672;
+      --paper:#f6f4ef;
+      --panel:#ffffff;
+      --line:#d4cec3;
+      --accent:#245e55;
+      --danger:#914121;
+      --soft:#e9e5dc;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Georgia, 'Times New Roman', serif; color:var(--ink); background:var(--paper); }
+    header { padding:28px clamp(18px,4vw,48px); border-bottom:1px solid var(--line); background:#fffcf5; }
+    main { max-width:1120px; margin:0 auto; padding:24px clamp(16px,3vw,32px) 48px; }
+    h1 { margin:0 0 10px; font-size:clamp(28px,4vw,48px); line-height:1.05; letter-spacing:0; }
+    h2 { margin:8px 0 10px; font-size:24px; letter-spacing:0; }
+    p { line-height:1.55; }
+    .summary, .toolbar, .reviewer { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:16px; margin:18px 0; }
+    .metrics { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:10px; }
+    .metric { background:var(--soft); border:1px solid var(--line); border-radius:6px; padding:12px; }
+    .metric strong { display:block; font-size:20px; overflow-wrap:anywhere; }
+    .toolbar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+    button, .file-label { border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); padding:10px 12px; font:inherit; cursor:pointer; }
+    button.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+    button.warn { background:var(--danger); color:#fff; border-color:var(--danger); }
+    .reviewer-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+    input[type="text"], input[type="date"], textarea { width:100%; margin-top:6px; padding:10px; border:1px solid var(--line); border-radius:6px; font:inherit; background:#fff; }
+    textarea { min-height:72px; resize:vertical; }
+    .example-card { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:18px; margin:16px 0; }
+    .card-top { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .eyebrow { color:var(--muted); font-size:14px; text-transform:uppercase; }
+    .tag { border:1px solid var(--line); border-radius:999px; padding:4px 9px; color:var(--accent); }
+    .example-use { font-weight:700; }
+    dl { display:grid; grid-template-columns:minmax(110px,170px) 1fr; gap:8px 12px; }
+    dd { margin:0; }
+    dt { color:var(--muted); font-size:14px; text-transform:uppercase; }
+    fieldset { border:1px solid var(--line); border-radius:6px; margin:14px 0; padding:10px; }
+    fieldset label { display:inline-block; margin:6px 14px 6px 0; }
+    @media print { .toolbar, .reviewer, fieldset, .notes { display:none; } body { background:white; } .example-card { break-inside:avoid; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PROD-060 Review</h1>
+    <p>Runtime promotion path decision. Selected path: internal_guarded_english_baseline_only. Plain-language scope: local offline synthetic internal regression reference. This is not production promotion.</p>
+  </header>
+  <main>
+    <section class="summary">
+      <div class="metrics">
+        <div class="metric"><span>Source status</span><strong>ready_with_exclusions</strong></div>
+        <div class="metric"><span>Selected path</span><strong>internal_guarded_english_baseline_only</strong></div>
+        <div class="metric"><span>Blocked paths</span><strong>8</strong></div>
+        <div class="metric"><span>Still blocked</span><strong>14</strong></div>
+      </div>
+      <p>Runtime behavior changed: false. Response text behavior changed: false. Production runtime promotion allowed: false.</p>
+    </section>
+    <section class="reviewer">
+      <div class="reviewer-grid">
+        <label>Name or initials<input id="reviewerName" type="text"></label>
+        <label>Date<input id="reviewDate" type="date"></label>
+      </div>
+      <label>Overall notes<textarea id="overallNotes"></textarea></label>
+    </section>
+    <section class="toolbar">
+      <button class="primary" onclick="setAll('accept')">Accept current decision</button>
+      <button class="warn" onclick="setAll('revise')">Request revision</button>
+      <button onclick="saveProgress()">Save in browser</button>
+      <button onclick="loadProgress()">Load saved</button>
+      <button onclick="exportJson()">Export JSON</button>
+      <label class="file-label">Import JSON<input id="jsonImportFile" type="file" accept="application/json" onchange="importJsonFile(event)" hidden></label>
+      <button onclick="clearEntries()">Clear</button>
+    </section>
+    <section>
+      <h2>Review examples</h2>
+
+      <article class="example-card" data-example="selected-internal-baseline" data-category="selected_path">
+        <div class="card-top">
+          <span class="eyebrow">Example 1</span>
+          <span class="tag">selected path</span>
+        </div>
+        <h2>Selected path: internal guarded English baseline only</h2>
+        <p class="example-use">Run local/offline synthetic regression checks against the bounded English deterministic surface and use it as an internal reference for future runtime QA.</p>
+        <dl>
+          <dt>Path</dt><dd>internal_guarded_english_baseline_only</dd>
+          <dt>Status</dt><dd>selected</dd>
+          <dt>Allowed scope</dt><dd>local_offline_synthetic_internal_regression_reference</dd>
+          <dt>Blocked by</dt><dd>none</dd>
+          <dt>Why</dt><dd>PROD-059 makes the bounded English deterministic surface ready_with_exclusions, and this path does not cross any still-blocked legal, provider, voice, retrieval, public-demo, real-customer, payment, contract, German, or production boundary.</dd>
+
+          <dt>Review question</dt><dd>Should this bounded English surface become only an internal, local/offline synthetic regression reference while broader gates stay blocked?</dd>
+          <dt>Decision hint</dt><dd>Accept if this is the only safe path that preserves PROD-059 exclusions.</dd>
+        </dl>
+        <fieldset>
+          <legend>Review decision</legend>
+          <label><input type="radio" name="selected-internal-baseline-decision" value="accept"> Accept current decision</label>
+          <label><input type="radio" name="selected-internal-baseline-decision" value="revise"> Request revision</label>
+          <label><input type="radio" name="selected-internal-baseline-decision" value="defer"> Defer</label>
+        </fieldset>
+        <label class="notes">Notes<textarea data-notes-for="selected-internal-baseline"></textarea></label>
+      </article>
+
+      <article class="example-card" data-example="blocked-public-demo" data-category="blocked_path">
+        <div class="card-top">
+          <span class="eyebrow">Example 2</span>
+          <span class="tag">blocked path</span>
+        </div>
+        <h2>Blocked path: public demo</h2>
+        <p class="example-use">Showing the agent as a public product demo, even with synthetic prompts.</p>
+        <dl>
+          <dt>Path</dt><dd>public_demo_path</dd>
+          <dt>Status</dt><dd>blocked</dd>
+          <dt>Allowed scope</dt><dd>none</dd>
+          <dt>Blocked by</dt><dd>public_demo_use, legal_compliance_review</dd>
+          <dt>Why</dt><dd>Public demo use remains explicitly excluded by PROD-059 and needs its own public-demo, polish, safety, and legal review.</dd>
+
+          <dt>Review question</dt><dd>Is there any evidence that public demo use is ready now? PROD-060 records no such evidence.</dd>
+          <dt>Decision hint</dt><dd>Request revision only if a separate public-demo review already exists. PROD-060 records none.</dd>
+        </dl>
+        <fieldset>
+          <legend>Review decision</legend>
+          <label><input type="radio" name="blocked-public-demo-decision" value="accept"> Accept current decision</label>
+          <label><input type="radio" name="blocked-public-demo-decision" value="revise"> Request revision</label>
+          <label><input type="radio" name="blocked-public-demo-decision" value="defer"> Defer</label>
+        </fieldset>
+        <label class="notes">Notes<textarea data-notes-for="blocked-public-demo"></textarea></label>
+      </article>
+
+      <article class="example-card" data-example="blocked-real-customer-provider" data-category="blocked_path">
+        <div class="card-top">
+          <span class="eyebrow">Example 3</span>
+          <span class="tag">blocked path</span>
+        </div>
+        <h2>Blocked path: real customer or provider run</h2>
+        <p class="example-use">Connecting the runtime to a live call, external TTS/LLM provider, or private customer data.</p>
+        <dl>
+          <dt>Path</dt><dd>real_customer_path</dd>
+          <dt>Status</dt><dd>blocked</dd>
+          <dt>Allowed scope</dt><dd>none</dd>
+          <dt>Blocked by</dt><dd>real_customer_use, legal_compliance_review, provider_or_private_data_use</dd>
+          <dt>Why</dt><dd>Real customer use remains blocked; the current evidence is synthetic and local.</dd>
+
+          <dt>Related path</dt><dd>Provider or private-data path: PROD-059 did not approve provider calls, LLM use, or private-data reads.</dd>
+
+          <dt>Review question</dt><dd>Should real customer calls stay blocked until a separate customer-use gate exists?</dd>
+          <dt>Decision hint</dt><dd>Accept the block unless provider, consent, retention, legal, and customer-use gates are explicitly reviewed.</dd>
+        </dl>
+        <fieldset>
+          <legend>Review decision</legend>
+          <label><input type="radio" name="blocked-real-customer-provider-decision" value="accept"> Accept current decision</label>
+          <label><input type="radio" name="blocked-real-customer-provider-decision" value="revise"> Request revision</label>
+          <label><input type="radio" name="blocked-real-customer-provider-decision" value="defer"> Defer</label>
+        </fieldset>
+        <label class="notes">Notes<textarea data-notes-for="blocked-real-customer-provider"></textarea></label>
+      </article>
+
+      <article class="example-card" data-example="blocked-production-runtime" data-category="blocked_path">
+        <div class="card-top">
+          <span class="eyebrow">Example 4</span>
+          <span class="tag">blocked path</span>
+        </div>
+        <h2>Blocked path: production runtime promotion</h2>
+        <p class="example-use">Treating PROD-059 readiness as permission to ship the runtime for production use.</p>
+        <dl>
+          <dt>Path</dt><dd>production_runtime_path</dd>
+          <dt>Status</dt><dd>blocked</dd>
+          <dt>Allowed scope</dt><dd>none</dd>
+          <dt>Blocked by</dt><dd>production_runtime_promotion, legal_compliance_review, real_customer_use</dd>
+          <dt>Why</dt><dd>Production runtime promotion remains explicitly blocked by PROD-059 exclusions.</dd>
+
+          <dt>Review question</dt><dd>Should PROD-060 reject production promotion until product-policy and deployment gates are resolved?</dd>
+          <dt>Decision hint</dt><dd>Accept the block; PROD-059 explicitly says not production ready.</dd>
+        </dl>
+        <fieldset>
+          <legend>Review decision</legend>
+          <label><input type="radio" name="blocked-production-runtime-decision" value="accept"> Accept current decision</label>
+          <label><input type="radio" name="blocked-production-runtime-decision" value="revise"> Request revision</label>
+          <label><input type="radio" name="blocked-production-runtime-decision" value="defer"> Defer</label>
+        </fieldset>
+        <label class="notes">Notes<textarea data-notes-for="blocked-production-runtime"></textarea></label>
+      </article>
+
+      <article class="example-card" data-example="next-product-policy-gates" data-category="next_checkpoint">
+        <div class="card-top">
+          <span class="eyebrow">Example 5</span>
+          <span class="tag">next checkpoint</span>
+        </div>
+        <h2>Next checkpoint: prioritize English product-policy gates</h2>
+        <p class="example-use">Deciding which English policy gate to unblock first instead of moving to production, provider, voice, retrieval, German, payment, or contract work.</p>
+        <dl>
+          <dt>Path</dt><dd>PROD-061-english-product-policy-gate-prioritization</dd>
+          <dt>Status</dt><dd>next</dd>
+          <dt>Allowed scope</dt><dd>review-only</dd>
+          <dt>Blocked by</dt><dd>customer_move_classification_outside_selected_non_refusal_groups, voicemail_action_only_behavior, coverage_knowledge_policy_behavior, context_sensitive_autonomy_behavior</dd>
+          <dt>Why</dt><dd>The selected path is stable enough as an internal baseline, but broad English runtime promotion is blocked by customer-move classification, voicemail action-only behavior, coverage knowledge-policy behavior, and context-sensitive autonomy behavior.</dd>
+
+          <dt>Review question</dt><dd>Should PROD-061 prioritize those four product-policy gates before any broader runtime promotion?</dd>
+          <dt>Decision hint</dt><dd>Accept if this is the right next bottleneck after the path decision.</dd>
+        </dl>
+        <fieldset>
+          <legend>Review decision</legend>
+          <label><input type="radio" name="next-product-policy-gates-decision" value="accept"> Accept current decision</label>
+          <label><input type="radio" name="next-product-policy-gates-decision" value="revise"> Request revision</label>
+          <label><input type="radio" name="next-product-policy-gates-decision" value="defer"> Defer</label>
+        </fieldset>
+        <label class="notes">Notes<textarea data-notes-for="next-product-policy-gates"></textarea></label>
+      </article>
+
+    </section>
+  </main>
+  <script>
+    const reviewPayload = {"checkpoint_id": "PROD-060-runtime-promotion-path-decision", "decision": {"checkpoint_id": "PROD-060-runtime-promotion-path-decision", "decision": "select_internal_guarded_english_baseline_only", "selected_path": {"path_id": "internal_guarded_english_baseline_only", "allowed_scope": "local_offline_synthetic_internal_regression_reference", "plain_language_scope": "local offline synthetic internal regression reference", "runtime_change": false, "response_text_change": false, "production_promotion": false, "public_demo": false, "real_customer_use": false, "provider_or_private_data_use": false}, "blocked_paths": ["public_demo_path", "real_customer_path", "provider_or_private_data_path", "retrieval_default_path", "voice_playback_path", "german_language_path", "payment_or_contract_path", "production_runtime_path"], "still_blocked": ["customer_move_classification_outside_selected_non_refusal_groups", "voicemail_action_only_behavior", "coverage_knowledge_policy_behavior", "context_sensitive_autonomy_behavior", "native_german_review", "voice_playback_quality", "retrieval_default", "provider_or_private_data_use", "legal_compliance_review", "public_demo_use", "real_customer_use", "payment_collection", "contract_signing", "production_runtime_promotion"], "requires_human_review_before_next_checkpoint": true, "recommended_next_checkpoint": "PROD-061-english-product-policy-gate-prioritization"}, "options": {"checkpoint_id": "PROD-060-runtime-promotion-path-decision", "path_options": [{"path_id": "internal_guarded_english_baseline_only", "label": "Internal guarded English baseline only", "status": "selected", "selected": true, "allowed_scope": "local_offline_synthetic_internal_regression_reference", "why": "PROD-059 makes the bounded English deterministic surface ready_with_exclusions, and this path does not cross any still-blocked legal, provider, voice, retrieval, public-demo, real-customer, payment, contract, German, or production boundary.", "blocked_by": [], "review_question": "Should this bounded English surface become only an internal, local/offline synthetic regression reference while broader gates stay blocked?"}, {"path_id": "public_demo_path", "label": "Public demo path", "status": "blocked", "selected": false, "allowed_scope": "none", "why": "Public demo use remains explicitly excluded by PROD-059 and needs its own public-demo, polish, safety, and legal review.", "blocked_by": ["public_demo_use", "legal_compliance_review"], "review_question": "Is there any evidence that public demo use is ready now? PROD-060 records no such evidence."}, {"path_id": "real_customer_path", "label": "Real customer path", "status": "blocked", "selected": false, "allowed_scope": "none", "why": "Real customer use remains blocked; the current evidence is synthetic and local.", "blocked_by": ["real_customer_use", "legal_compliance_review", "provider_or_private_data_use"], "review_question": "Should real customer calls stay blocked until a separate customer-use gate exists?"}, {"path_id": "provider_or_private_data_path", "label": "Provider or private-data path", "status": "blocked", "selected": false, "allowed_scope": "none", "why": "PROD-059 did not approve provider calls, LLM use, or private-data reads.", "blocked_by": ["provider_or_private_data_use"], "review_question": "Should provider/private-data work remain a separate explicit opt-in gate?"}, {"path_id": "retrieval_default_path", "label": "Retrieval default path", "status": "blocked", "selected": false, "allowed_scope": "none", "why": "Runtime retrieval remains disabled by default and must reopen through RAG gates.", "blocked_by": ["retrieval_default"], "review_question": "Should retrieval stay default-off for this path decision?"}, {"path_id": "voice_playback_path", "label": "Voice playback path", "status": "blocked", "selected": false, "allowed_scope": "none", "why": "Voice playback quality remains a separate listening gate and is not proven by English text readiness.", "blocked_by": ["voice_playback_quality"], "review_question": "Should voice playback stay outside the English runtime path?"}, {"path_id": "german_language_path", "label": "German language path", "status": "blocked", "selected": false, "allowed_scope": "none", "why": "Native German review remains parked until the corrected reviewer export exists.", "blocked_by": ["native_german_review"], "review_question": "Should German exact-phrase promotion remain parked instead of folded into English readiness?"}, {"path_id": "payment_or_contract_path", "label": "Payment or contract path", "status": "blocked", "selected": false, "allowed_scope": "none", "why": "Payment collection and contract signing are legal/deployment actions, not runtime wording readiness.", "blocked_by": ["payment_collection", "contract_signing", "legal_compliance_review"], "review_question": "Should payment and contract activity remain blocked until separate legal/deployment gates?"}, {"path_id": "production_runtime_path", "label": "Production runtime path", "status": "blocked", "selected": false, "allowed_scope": "none", "why": "Production runtime promotion remains explicitly blocked by PROD-059 exclusions.", "blocked_by": ["production_runtime_promotion", "legal_compliance_review", "real_customer_use"], "review_question": "Should PROD-060 reject production promotion until product-policy and deployment gates are resolved?"}], "blocked_path_count": 8, "selected_path_id": "internal_guarded_english_baseline_only"}, "summary": {"path_decision_only": true, "human_review_acceptance_recorded": true, "source_readiness_status": "ready_with_exclusions", "source_validator_passed": true, "selected_path": "internal_guarded_english_baseline_only", "selected_path_allowed": true, "allowed_scope": "local_offline_synthetic_internal_regression_reference", "plain_language_scope": "local offline synthetic internal regression reference", "blocked_path_count": 8, "still_blocked_count": 14, "still_blocked": ["customer_move_classification_outside_selected_non_refusal_groups", "voicemail_action_only_behavior", "coverage_knowledge_policy_behavior", "context_sensitive_autonomy_behavior", "native_german_review", "voice_playback_quality", "retrieval_default", "provider_or_private_data_use", "legal_compliance_review", "public_demo_use", "real_customer_use", "payment_collection", "contract_signing", "production_runtime_promotion"], "review_html_path": "research/experiments/generated/PROD-060-runtime-promotion-path-decision/prod_060_review.html", "requires_human_review_before_next_checkpoint": true, "recommended_next_checkpoint": "PROD-061-english-product-policy-gate-prioritization", "runtime_behavior_changed": false, "response_text_behavior_changed": false, "retrieval_enabled": false, "provider_calls_made": false, "llm_used": false, "llm_judging_used": false, "private_data_read": false, "voice_playback_unblocked": false, "public_demo_polish_unblocked": false, "real_customer_use_unblocked": false, "payment_collection_allowed": false, "contract_signing_allowed": false, "production_runtime_promotion_allowed": false, "german_exact_phrase_promotion_allowed": false, "german_naturalness_claimed": false, "legal_compliance_claimed": false}, "evidence": {"checkpoint_id": "PROD-060-runtime-promotion-path-decision", "source_checkpoint_id": "PROD-059-final-english-only-runtime-readiness-review", "source_readiness_status": "ready_with_exclusions", "source_readiness_decision": "english_only_runtime_ready_with_exclusions", "source_bounded_scope": {"language": "en", "runtime_path": "runtime/core/realtime_turns.py", "surface": "PROD-053E promoted English deterministic runtime surface guarded by PROD-056/PROD-057", "guard_command": "python scripts\\validate_english_multi_turn_regression_guard.py"}, "source_stable_guard_command": "python scripts\\validate_english_multi_turn_regression_guard.py", "source_stable_guard_passed": true, "source_review_html_path": "research/experiments/generated/PROD-059-final-english-only-runtime-readiness-review/prod_059_review.html", "source_resolved_blockers": ["final_english_only_readiness_review_not_run", "english_guard_scope_limited_to_promoted_multi_turn_surface"], "source_excluded_blockers": ["customer_move_classification_outside_selected_non_refusal_groups", "voicemail_action_only_behavior", "coverage_knowledge_policy_behavior", "context_sensitive_autonomy_behavior", "native_german_review", "voice_playback_quality", "retrieval_default", "provider_or_private_data_use", "legal_compliance_review", "public_demo_use", "real_customer_use", "payment_collection", "contract_signing", "production_runtime_promotion"], "source_regression": {"checkpoint_id": "PROD-056-english-post-patch-multi-turn-regression", "promoted_response_count": 26, "runtime_second_turn_case_count": 10, "callback_scheduling_case_count": 1, "terminal_boundary_case_count": 15, "blocking_finding_count": 0}, "source_validator_run": {"command": "python scripts\\validate_prod_059_final_english_only_runtime_readiness_review.py", "returncode": 0, "stdout_tail": ["PROD-059-final-english-only-runtime-readiness-review validation passed"], "stderr_tail": [], "passed": true}}, "examples": [{"example_id": "selected-internal-baseline", "category": "selected_path", "title": "Selected path: internal guarded English baseline only", "path": {"path_id": "internal_guarded_english_baseline_only", "label": "Internal guarded English baseline only", "status": "selected", "selected": true, "allowed_scope": "local_offline_synthetic_internal_regression_reference", "why": "PROD-059 makes the bounded English deterministic surface ready_with_exclusions, and this path does not cross any still-blocked legal, provider, voice, retrieval, public-demo, real-customer, payment, contract, German, or production boundary.", "blocked_by": [], "review_question": "Should this bounded English surface become only an internal, local/offline synthetic regression reference while broader gates stay blocked?"}, "example_use": "Run local/offline synthetic regression checks against the bounded English deterministic surface and use it as an internal reference for future runtime QA.", "decision_hint": "Accept if this is the only safe path that preserves PROD-059 exclusions."}, {"example_id": "blocked-public-demo", "category": "blocked_path", "title": "Blocked path: public demo", "path": {"path_id": "public_demo_path", "label": "Public demo path", "status": "blocked", "selected": false, "allowed_scope": "none", "why": "Public demo use remains explicitly excluded by PROD-059 and needs its own public-demo, polish, safety, and legal review.", "blocked_by": ["public_demo_use", "legal_compliance_review"], "review_question": "Is there any evidence that public demo use is ready now? PROD-060 records no such evidence."}, "example_use": "Showing the agent as a public product demo, even with synthetic prompts.", "decision_hint": "Request revision only if a separate public-demo review already exists. PROD-060 records none."}, {"example_id": "blocked-real-customer-provider", "category": "blocked_path", "title": "Blocked path: real customer or provider run", "path": {"path_id": "real_customer_path", "label": "Real customer path", "status": "blocked", "selected": false, "allowed_scope": "none", "why": "Real customer use remains blocked; the current evidence is synthetic and local.", "blocked_by": ["real_customer_use", "legal_compliance_review", "provider_or_private_data_use"], "review_question": "Should real customer calls stay blocked until a separate customer-use gate exists?"}, "secondary_path": {"path_id": "provider_or_private_data_path", "label": "Provider or private-data path", "status": "blocked", "selected": false, "allowed_scope": "none", "why": "PROD-059 did not approve provider calls, LLM use, or private-data reads.", "blocked_by": ["provider_or_private_data_use"], "review_question": "Should provider/private-data work remain a separate explicit opt-in gate?"}, "example_use": "Connecting the runtime to a live call, external TTS/LLM provider, or private customer data.", "decision_hint": "Accept the block unless provider, consent, retention, legal, and customer-use gates are explicitly reviewed."}, {"example_id": "blocked-production-runtime", "category": "blocked_path", "title": "Blocked path: production runtime promotion", "path": {"path_id": "production_runtime_path", "label": "Production runtime path", "status": "blocked", "selected": false, "allowed_scope": "none", "why": "Production runtime promotion remains explicitly blocked by PROD-059 exclusions.", "blocked_by": ["production_runtime_promotion", "legal_compliance_review", "real_customer_use"], "review_question": "Should PROD-060 reject production promotion until product-policy and deployment gates are resolved?"}, "example_use": "Treating PROD-059 readiness as permission to ship the runtime for production use.", "decision_hint": "Accept the block; PROD-059 explicitly says not production ready."}, {"example_id": "next-product-policy-gates", "category": "next_checkpoint", "title": "Next checkpoint: prioritize English product-policy gates", "path": {"path_id": "PROD-061-english-product-policy-gate-prioritization", "label": "English product-policy gate prioritization", "why": "The selected path is stable enough as an internal baseline, but broad English runtime promotion is blocked by customer-move classification, voicemail action-only behavior, coverage knowledge-policy behavior, and context-sensitive autonomy behavior.", "review_question": "Should PROD-061 prioritize those four product-policy gates before any broader runtime promotion?", "blocked_by": ["customer_move_classification_outside_selected_non_refusal_groups", "voicemail_action_only_behavior", "coverage_knowledge_policy_behavior", "context_sensitive_autonomy_behavior"]}, "example_use": "Deciding which English policy gate to unblock first instead of moving to production, provider, voice, retrieval, German, payment, or contract work.", "decision_hint": "Accept if this is the right next bottleneck after the path decision."}]};
+    const storageKey = 'prod060RuntimePromotionPathReview';
+
+    function decisionValue(exampleId) {
+      const selected = document.querySelector(`input[name="${exampleId}-decision"]:checked`);
+      return selected ? selected.value : '';
+    }
+
+    function collectReview() {
+      const items = reviewPayload.examples.map(example => ({
+        example_id: example.example_id,
+        category: example.category,
+        decision: decisionValue(example.example_id),
+        notes: document.querySelector(`[data-notes-for="${example.example_id}"]`).value
+      }));
+      return {
+        schema_name: 'prod_060_review_export',
+        checkpoint_id: reviewPayload.checkpoint_id,
+        reviewer: {
+          name_or_initials: document.getElementById('reviewerName').value,
+          date: document.getElementById('reviewDate').value,
+          overall_notes: document.getElementById('overallNotes').value
+        },
+        items,
+        summary: {
+          accept_count: items.filter(item => item.decision === 'accept').length,
+          revise_count: items.filter(item => item.decision === 'revise').length,
+          defer_count: items.filter(item => item.decision === 'defer').length,
+          blank_count: items.filter(item => !item.decision).length
+        },
+        source_decision: reviewPayload.decision,
+        source_summary: reviewPayload.summary
+      };
+    }
+
+    function setAll(value) {
+      reviewPayload.examples.forEach(example => {
+        const input = document.querySelector(`input[name="${example.example_id}-decision"][value="${value}"]`);
+        if (input) input.checked = true;
+      });
+      saveProgress();
+    }
+
+    function saveProgress() {
+      localStorage.setItem(storageKey, JSON.stringify(collectReview()));
+    }
+
+    function applyReviewPayload(payload) {
+      if (!payload) return false;
+      const reviewer = payload.reviewer || {};
+      document.getElementById('reviewerName').value = reviewer.name_or_initials || '';
+      document.getElementById('reviewDate').value = reviewer.date || '';
+      document.getElementById('overallNotes').value = reviewer.overall_notes || '';
+      (payload.items || []).forEach(item => {
+        const input = document.querySelector(`input[name="${item.example_id}-decision"][value="${item.decision}"]`);
+        if (input) input.checked = true;
+        const notes = document.querySelector(`[data-notes-for="${item.example_id}"]`);
+        if (notes) notes.value = item.notes || '';
+      });
+      return true;
+    }
+
+    function loadProgress() {
+      applyReviewPayload(JSON.parse(localStorage.getItem(storageKey) || 'null'));
+    }
+
+    function exportJson() {
+      const blob = new Blob([JSON.stringify(collectReview(), null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'prod-060-review-export.json';
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importJsonFile(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const payload = JSON.parse(String(reader.result || '{}'));
+          if (!applyReviewPayload(payload)) throw new Error('empty');
+          localStorage.setItem(storageKey, JSON.stringify(collectReview()));
+        } catch (error) {
+          alert('JSON import failed.');
+        } finally {
+          event.target.value = '';
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function clearEntries() {
+      document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+      document.querySelectorAll('textarea').forEach(input => input.value = '');
+      localStorage.removeItem(storageKey);
+    }
+
+    loadProgress();
+  </script>
+</body>
+</html>

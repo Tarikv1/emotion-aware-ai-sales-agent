@@ -1,0 +1,188 @@
+{
+  "checkpoint_id": "PROD-071-english-coverage-knowledge-runtime-patch",
+  "items": [
+    {
+      "case_id": "prod-071-eligible-reimbursement",
+      "case_type": "patched_boundary_phrase",
+      "customer_turn": "Am I eligible for reimbursement?",
+      "expected_runtime": {
+        "sales_difficulty": "coverage-boundary-route",
+        "selected_strategy": "rapport",
+        "interest_state": "needs-human",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "coverage-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "next_action_matches": true,
+        "call_control_matches": true,
+        "response_language_en": true,
+        "strategy_rapport": true,
+        "interest_state_needs_human": true,
+        "boundary_response_matches": true,
+        "no_coverage_fact_claim": true,
+        "no_payment_or_contract": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-071-plan-covers-this",
+      "case_type": "patched_boundary_phrase",
+      "customer_turn": "Can you tell me if my plan covers this?",
+      "expected_runtime": {
+        "sales_difficulty": "coverage-boundary-route",
+        "selected_strategy": "rapport",
+        "interest_state": "needs-human",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "coverage-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "next_action_matches": true,
+        "call_control_matches": true,
+        "response_language_en": true,
+        "strategy_rapport": true,
+        "interest_state_needs_human": true,
+        "boundary_response_matches": true,
+        "no_coverage_fact_claim": true,
+        "no_payment_or_contract": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-071-policy-reimbursed",
+      "case_type": "patched_boundary_phrase",
+      "customer_turn": "Will this be reimbursed by my policy?",
+      "expected_runtime": {
+        "sales_difficulty": "coverage-boundary-route",
+        "selected_strategy": "rapport",
+        "interest_state": "needs-human",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "coverage-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "next_action_matches": true,
+        "call_control_matches": true,
+        "response_language_en": true,
+        "strategy_rapport": true,
+        "interest_state_needs_human": true,
+        "boundary_response_matches": true,
+        "no_coverage_fact_claim": true,
+        "no_payment_or_contract": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-071-product-detail-control",
+      "case_type": "control",
+      "customer_turn": "Which plan is included?",
+      "expected_runtime": {
+        "sales_difficulty": "product-detail-lookup",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue"
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "product-detail-lookup",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "One moment. I will check the product details before I answer."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "next_action_matches": true,
+        "call_control_matches": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-071-price-control",
+      "case_type": "control",
+      "customer_turn": "What is the price?",
+      "expected_runtime": {
+        "sales_difficulty": "price-first-direct",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue"
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "price-first-direct",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "next_action_matches": true,
+        "call_control_matches": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-071-healthcare-control",
+      "case_type": "control",
+      "customer_turn": "I need a doctor to diagnose this.",
+      "expected_runtime": {
+        "sales_difficulty": "healthcare-boundary-route",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate"
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "healthcare-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I can't give medical advice, but I can send you to someone qualified."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "next_action_matches": true,
+        "call_control_matches": true
+      },
+      "passed": true,
+      "issue_codes": []
+    }
+  ]
+}

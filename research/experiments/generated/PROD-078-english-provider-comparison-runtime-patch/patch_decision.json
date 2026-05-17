@@ -1,0 +1,19 @@
+{
+  "checkpoint_id": "PROD-078-english-provider-comparison-runtime-patch",
+  "decision": "english_provider_comparison_runtime_patch_applied",
+  "runtime_path": "runtime/core/realtime_turns.py",
+  "patched_sales_difficulty": "provider-comparison",
+  "patched_response": "Fair. We can compare fit against what you use now before you decide.",
+  "inserted_before": "existing-provider-gap",
+  "required_signal_groups": [
+    "compare_or_difference_signal",
+    "known_comparison_target_signal"
+  ],
+  "response_text_change": true,
+  "classifier_change": true,
+  "generic_provider_or_terms_comparison_allowed": false,
+  "runtime_patch_case_count": 12,
+  "failed_runtime_patch_case_count": 0,
+  "recommended_next_checkpoint": "PROD-079-english-provider-comparison-post-patch-regression",
+  "production_runtime_promotion_allowed": false
+}

@@ -1,0 +1,9 @@
+{
+  "command": "python scripts/validate_english_multi_turn_regression_guard.py",
+  "returncode": 0,
+  "stdout_tail": [
+    "PROD-056-english-post-patch-multi-turn-regression validation passed"
+  ],
+  "stderr_tail": [],
+  "passed": true
+}

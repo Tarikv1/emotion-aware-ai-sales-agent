@@ -1,0 +1,106 @@
+{
+  "checkpoint_id": "PROD-071-english-coverage-knowledge-runtime-patch",
+  "checkpoint_name": "English Coverage Knowledge Runtime Patch",
+  "source_checkpoint_id": "PROD-070-english-coverage-knowledge-policy-probe",
+  "scope": "english_coverage_knowledge_classifier_reachability_patch_only",
+  "runtime_path": "runtime/core/realtime_turns.py",
+  "patched_sales_difficulty": "coverage-boundary-route",
+  "boundary_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
+  "runtime_change_requested": true,
+  "classifier_change_requested": true,
+  "response_text_change_requested": false,
+  "retrieval_change_requested": false,
+  "coverage_advice_allowed": false,
+  "coverage_fact_claims_allowed": false,
+  "eligibility_claims_allowed": false,
+  "reimbursement_claims_allowed": false,
+  "requires_human_review_before_next_checkpoint": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-072-english-coverage-knowledge-post-patch-regression",
+  "runtime_patch_cases": [
+    {
+      "case_id": "prod-071-eligible-reimbursement",
+      "case_type": "patched_boundary_phrase",
+      "customer_turn": "Am I eligible for reimbursement?",
+      "expected_runtime": {
+        "sales_difficulty": "coverage-boundary-route",
+        "selected_strategy": "rapport",
+        "interest_state": "needs-human",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      }
+    },
+    {
+      "case_id": "prod-071-plan-covers-this",
+      "case_type": "patched_boundary_phrase",
+      "customer_turn": "Can you tell me if my plan covers this?",
+      "expected_runtime": {
+        "sales_difficulty": "coverage-boundary-route",
+        "selected_strategy": "rapport",
+        "interest_state": "needs-human",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      }
+    },
+    {
+      "case_id": "prod-071-policy-reimbursed",
+      "case_type": "patched_boundary_phrase",
+      "customer_turn": "Will this be reimbursed by my policy?",
+      "expected_runtime": {
+        "sales_difficulty": "coverage-boundary-route",
+        "selected_strategy": "rapport",
+        "interest_state": "needs-human",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      }
+    },
+    {
+      "case_id": "prod-071-product-detail-control",
+      "case_type": "control",
+      "customer_turn": "Which plan is included?",
+      "expected_runtime": {
+        "sales_difficulty": "product-detail-lookup",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue"
+      }
+    },
+    {
+      "case_id": "prod-071-price-control",
+      "case_type": "control",
+      "customer_turn": "What is the price?",
+      "expected_runtime": {
+        "sales_difficulty": "price-first-direct",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue"
+      }
+    },
+    {
+      "case_id": "prod-071-healthcare-control",
+      "case_type": "control",
+      "customer_turn": "I need a doctor to diagnose this.",
+      "expected_runtime": {
+        "sales_difficulty": "healthcare-boundary-route",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate"
+      }
+    }
+  ],
+  "future_persuasion_tactic_candidate": {
+    "tactic_id": "guided_option_selection",
+    "track": "future_persuasion_tactics_checkpoint",
+    "description": "After fit and interest are established, present two real paid options with clear tradeoffs and let the customer choose.",
+    "not_in_prod_071_scope": true,
+    "runtime_enabled": false,
+    "unlock_condition": "Open a dedicated persuasion-tactics checkpoint after coverage-boundary and post-patch regression work is stable.",
+    "required_guardrails": [
+      "only after fit or interest is established",
+      "both options must be real and fairly described",
+      "neither, not now, and explain the difference remain valid customer choices",
+      "no fake urgency",
+      "no pretending the customer already agreed"
+    ]
+  }
+}

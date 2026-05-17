@@ -1,0 +1,182 @@
+{
+  "checkpoint_id": "PROD-090-english-guided-option-synonym-coverage-narrow-probe",
+  "source_checkpoint_id": "PROD-089-english-customer-move-remaining-slice-selection-after-guided-option",
+  "positive_cases": [
+    {
+      "case_id": "prod-090-start-small-fuller",
+      "customer_turn": "Should I start small or go with the fuller option?",
+      "expected_contains": [
+        "$29",
+        "$59",
+        "[feature X] and [feature Y]",
+        "[feature A] and [feature B]"
+      ],
+      "candidate_response": "I mean, start with $29 if [feature X] and [feature Y] is enough. If you want [feature A] and [feature B] included, $59 fits better.",
+      "gates": {
+        "has_expected_content": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true,
+        "no_contract_or_signup_claim": true,
+        "not_fake_urgency": true,
+        "not_pretend_agreement": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-090-side-by-side",
+      "customer_turn": "Can you show me both options side by side?",
+      "expected_contains": [
+        "$29",
+        "$59",
+        "[feature X] and [feature Y]",
+        "[feature A] and [feature B]"
+      ],
+      "candidate_response": "$29 covers [feature X] and [feature Y]. $59 includes that plus [feature A] and [feature B].",
+      "gates": {
+        "has_expected_content": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true,
+        "no_contract_or_signup_claim": true,
+        "not_fake_urgency": true,
+        "not_pretend_agreement": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-090-safer-start-small",
+      "customer_turn": "Would it be safer to start small first?",
+      "expected_contains": [
+        "$29",
+        "$59",
+        "[feature X] and [feature Y]",
+        "[feature A] and [feature B]"
+      ],
+      "candidate_response": "I mean, start with $29 if [feature X] and [feature Y] is enough. If you want [feature A] and [feature B] included, $59 fits better.",
+      "gates": {
+        "has_expected_content": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true,
+        "no_contract_or_signup_claim": true,
+        "not_fake_urgency": true,
+        "not_pretend_agreement": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-090-fuller-worth-it",
+      "customer_turn": "Is the fuller option worth it for what I need?",
+      "expected_contains": [
+        "$29",
+        "$59",
+        "[feature A] and [feature B]",
+        "[customer goal]"
+      ],
+      "candidate_response": "$59 is worth considering if [feature A] and [feature B] helps [customer goal]. If not, $29 is enough to start.",
+      "gates": {
+        "has_expected_content": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true,
+        "no_contract_or_signup_claim": true,
+        "not_fake_urgency": true,
+        "not_pretend_agreement": true
+      },
+      "passed": true,
+      "issue_codes": []
+    }
+  ],
+  "control_cases": [
+    {
+      "case_id": "prod-090-advice-roleplay-control",
+      "customer_turn": "What would you do in my position?",
+      "expected_candidate_response": null,
+      "why_control": "Advice-roleplay boundary stays deferred.",
+      "candidate_response": null,
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-090-process-after-yes-control",
+      "customer_turn": "What happens after I say yes?",
+      "expected_candidate_response": null,
+      "why_control": "Post-yes process clarity stays deferred.",
+      "candidate_response": null,
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-090-generic-confusion-control",
+      "customer_turn": "I am listening, but I do not know what I am supposed to decide yet.",
+      "expected_candidate_response": null,
+      "why_control": "Generic confusion stays a clarification fallback.",
+      "candidate_response": null,
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-090-card-payment-control",
+      "customer_turn": "Can I pay now with my card?",
+      "expected_candidate_response": null,
+      "why_control": "Payment/card boundary must stay outside guided option synonyms.",
+      "candidate_response": null,
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-090-payment-details-control",
+      "customer_turn": "Can you take my payment details if I choose one?",
+      "expected_candidate_response": null,
+      "why_control": "Payment-detail collection stays blocked.",
+      "candidate_response": null,
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-090-coverage-control",
+      "customer_turn": "Does the plan cover reimbursement?",
+      "expected_candidate_response": null,
+      "why_control": "Coverage boundary stays outside guided option synonyms.",
+      "candidate_response": null,
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-090-provider-side-by-side-control",
+      "customer_turn": "Can you show our current provider and your offer side by side?",
+      "expected_candidate_response": null,
+      "why_control": "Provider comparison requires a known comparison target and different route.",
+      "candidate_response": null,
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-090-autonomy-control",
+      "customer_turn": "I need time to think. Do not rush.",
+      "expected_candidate_response": null,
+      "why_control": "Autonomy stays outside guided option synonyms.",
+      "candidate_response": null,
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-090-german-control",
+      "customer_turn": "Soll ich klein anfangen oder die vollere Option nehmen?",
+      "expected_candidate_response": null,
+      "why_control": "German exact-phrase promotion remains blocked.",
+      "candidate_response": null,
+      "passed": true,
+      "issue_codes": []
+    }
+  ],
+  "positive_case_count": 4,
+  "control_case_count": 9,
+  "positive_failure_count": 0,
+  "control_failure_count": 0,
+  "failed_policy_case_count": 0
+}

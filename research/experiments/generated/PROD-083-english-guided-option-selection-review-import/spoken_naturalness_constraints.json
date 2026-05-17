@@ -1,0 +1,19 @@
+{
+  "checkpoint_id": "PROD-083-english-guided-option-selection-review-import",
+  "review_item": "spoken_naturalness_discourse_markers",
+  "sparse_contextual_discourse_markers_candidate": true,
+  "random_fillers_allowed": false,
+  "example_markers": [
+    "I mean",
+    "like",
+    "you know"
+  ],
+  "constraints": [
+    "Use sparingly.",
+    "Use only where it improves spoken naturalness.",
+    "Do not add fillers to payment, legal, coverage, healthcare, or safety-boundary statements.",
+    "Do not repeat the same marker mechanically.",
+    "Do not let markers lengthen already wordy answers."
+  ],
+  "runtime_requirement": "Do not add random fillers. Treat discourse markers as a future spoken-naturalness rule that must be sparse, context-aware, and blocked in sensitive boundary statements."
+}

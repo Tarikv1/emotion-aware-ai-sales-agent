@@ -1,0 +1,135 @@
+{
+  "checkpoint_id": "PROD-084-english-guided-option-selection-rewrite-design",
+  "checkpoint_name": "English Guided Option Selection Rewrite Design",
+  "source_checkpoint_id": "PROD-083-english-guided-option-selection-review-import",
+  "review_item": "guided_option_selection_rewritten_examples",
+  "review_options": [
+    "approve_rewrite_for_policy_probe",
+    "needs_rewrite",
+    "keep_deferred"
+  ],
+  "examples_are_review_only": true,
+  "runtime_candidate_promoted": false,
+  "question": "Do these rewritten guided option examples sound like usable live-call wording, including sparse discourse markers, or do they still need rewriting?",
+  "source_rules": [
+    "Leave obvious facts out.",
+    "Do not repeat what the customer already said unless explicitly needed.",
+    "Answer the actual fit or difference question.",
+    "Use approved plan feature facts, not invented differences.",
+    "Steer toward the better option when known customer facts support it.",
+    "Keep wording shorter and more human.",
+    "Preserve autonomy without repeatedly saying neither or not now.",
+    "Use light persuasion when the customer is uncertain but still engaged.",
+    "Separate option selection from payment handling."
+  ],
+  "payment_rule": "For now, option selection must not collect payment on the call. The agent may explain the approved campaign payment path if the campaign profile defines it.",
+  "naturalness_rule": "Do not add random fillers. Treat discourse markers as a future spoken-naturalness rule that must be sparse, context-aware, and blocked in sensitive boundary statements.",
+  "examples": [
+    {
+      "example_id": "rewrite-binary-choice",
+      "title": "Direct choice",
+      "customer_turn": "So do I choose the $29 option or the $59 option?",
+      "proposed_response": "I mean, if you only need [feature X] and [feature Y], start with $29. If [feature A] matters too, $59 fits better.",
+      "uses_discourse_marker": true,
+      "marker": "I mean",
+      "review_focus": "Answer fit directly without repeating that one option is cheaper.",
+      "word_count": 22,
+      "current_runtime_route": "unknown-runtime-signal",
+      "review_target": "guided_option_selection_rewritten_examples"
+    },
+    {
+      "example_id": "rewrite-fit-unclear",
+      "title": "Fit is unclear",
+      "customer_turn": "I can see both paths, I am just not sure which one fits me.",
+      "proposed_response": "Based on what you said, $59 sounds stronger if [feature A] saves you time. If not, $29 is the safer start and you can upgrade later.",
+      "uses_discourse_marker": false,
+      "marker": "",
+      "review_focus": "Steer from customer facts while preserving the upgrade path.",
+      "word_count": 26,
+      "current_runtime_route": "unknown-runtime-signal",
+      "review_target": "guided_option_selection_rewritten_examples"
+    },
+    {
+      "example_id": "rewrite-recommendation",
+      "title": "Recommendation request",
+      "customer_turn": "Which route would you suggest for someone like me?",
+      "proposed_response": "Honestly, like, if your main issue is [customer pain], I would lean $59 because it adds [feature A] and [feature B]. If budget matters more, start $29.",
+      "uses_discourse_marker": true,
+      "marker": "like",
+      "review_focus": "Allow a recommendation without pretending to choose for the customer.",
+      "word_count": 27,
+      "current_runtime_route": "unknown-runtime-signal",
+      "review_target": "guided_option_selection_rewritten_examples"
+    },
+    {
+      "example_id": "rewrite-difference",
+      "title": "Explain the difference",
+      "customer_turn": "What is the real difference between the $29 option and the $59 option?",
+      "proposed_response": "$29 covers [feature X], [feature Y], and [feature Z]. $59 adds [feature A] and [feature B], so it fits better if you need [customer goal].",
+      "uses_discourse_marker": false,
+      "marker": "",
+      "review_focus": "Answer the real difference using approved plan facts.",
+      "word_count": 25,
+      "current_runtime_route": "unknown-runtime-signal",
+      "review_target": "guided_option_selection_rewritten_examples"
+    },
+    {
+      "example_id": "rewrite-decide-later",
+      "title": "Decide later",
+      "customer_turn": "Can I choose later instead of deciding on this call?",
+      "proposed_response": "Yes. I can send the differences in writing and keep both options open for the follow-up.",
+      "uses_discourse_marker": false,
+      "marker": "",
+      "review_focus": "Keep deferral short and avoid saying the same thing twice.",
+      "word_count": 17,
+      "current_runtime_route": "unknown-runtime-signal",
+      "review_target": "guided_option_selection_rewritten_examples"
+    },
+    {
+      "example_id": "rewrite-neither-uncertain",
+      "title": "Neither feels right",
+      "customer_turn": "I'm not sure either is right.",
+      "proposed_response": "I get that, you know, it may just mean we should match the plan to [customer goal] first, then see whether $29 or $59 makes sense.",
+      "uses_discourse_marker": true,
+      "marker": "you know",
+      "review_focus": "Use acknowledgement plus light persuasion instead of ending the opportunity.",
+      "word_count": 26,
+      "current_runtime_route": "unknown-runtime-signal",
+      "review_target": "guided_option_selection_rewritten_examples"
+    },
+    {
+      "example_id": "rewrite-payment-path",
+      "title": "Payment path",
+      "customer_turn": "If I pick one, can I pay now?",
+      "proposed_response": "No payment on this call. I'll send the companyname.com email with the link, and you can review the plan and finish registration there.",
+      "uses_discourse_marker": false,
+      "marker": "",
+      "sensitive_boundary": "payment",
+      "review_focus": "Explain the approved campaign payment path without collecting payment.",
+      "word_count": 23,
+      "current_runtime_route": "unknown-runtime-signal",
+      "review_target": "guided_option_selection_rewritten_examples"
+    },
+    {
+      "example_id": "rewrite-upgrade-path",
+      "title": "Start cheaper, upgrade later",
+      "customer_turn": "Could I start smaller and change later if it works?",
+      "proposed_response": "You can start with $29 if [feature X] covers enough. If you later need [feature A] or [feature B], we can move you to $59.",
+      "uses_discourse_marker": false,
+      "marker": "",
+      "review_focus": "Use the upgrade path as a selling bridge when campaign rules allow it.",
+      "word_count": 25,
+      "current_runtime_route": "unknown-runtime-signal",
+      "review_target": "guided_option_selection_rewritten_examples"
+    }
+  ],
+  "boundaries": {
+    "runtime_patch_allowed": false,
+    "response_text_change_allowed": false,
+    "classifier_change_allowed": false,
+    "retrieval_allowed": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  }
+}

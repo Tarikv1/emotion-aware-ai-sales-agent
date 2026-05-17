@@ -1,0 +1,186 @@
+{
+  "checkpoint_id": "PROD-070-english-coverage-knowledge-policy-probe",
+  "items": [
+    {
+      "case_id": "prod-070-covered-by-insurance",
+      "customer_turn": "Is this covered by insurance?",
+      "expected_runtime": {
+        "sales_difficulty": "coverage-boundary-route",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate"
+      },
+      "observed_runtime": {
+        "sales_difficulty": "coverage-boundary-route",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "next_action_matches": true,
+        "call_control_matches": true,
+        "boundary_response_matches": true
+      },
+      "runtime_gap": false,
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-070-insurance-cover",
+      "customer_turn": "Does my insurance cover this?",
+      "expected_runtime": {
+        "sales_difficulty": "coverage-boundary-route",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate"
+      },
+      "observed_runtime": {
+        "sales_difficulty": "coverage-boundary-route",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "next_action_matches": true,
+        "call_control_matches": true,
+        "boundary_response_matches": true
+      },
+      "runtime_gap": false,
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-070-eligible-reimbursement",
+      "customer_turn": "Am I eligible for reimbursement?",
+      "expected_runtime": {
+        "sales_difficulty": "coverage-boundary-route",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate"
+      },
+      "observed_runtime": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "gates": {
+        "sales_difficulty_matches": false,
+        "next_action_matches": false,
+        "call_control_matches": false,
+        "boundary_response_matches": false
+      },
+      "runtime_gap": true,
+      "passed": false,
+      "issue_codes": [
+        "sales_difficulty_matches",
+        "next_action_matches",
+        "call_control_matches",
+        "boundary_response_matches"
+      ]
+    },
+    {
+      "case_id": "prod-070-plan-covers-this",
+      "customer_turn": "Can you tell me if my plan covers this?",
+      "expected_runtime": {
+        "sales_difficulty": "coverage-boundary-route",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate"
+      },
+      "observed_runtime": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "gates": {
+        "sales_difficulty_matches": false,
+        "next_action_matches": false,
+        "call_control_matches": false,
+        "boundary_response_matches": false
+      },
+      "runtime_gap": true,
+      "passed": false,
+      "issue_codes": [
+        "sales_difficulty_matches",
+        "next_action_matches",
+        "call_control_matches",
+        "boundary_response_matches"
+      ]
+    },
+    {
+      "case_id": "prod-070-policy-reimbursed",
+      "customer_turn": "Will this be reimbursed by my policy?",
+      "expected_runtime": {
+        "sales_difficulty": "coverage-boundary-route",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate"
+      },
+      "observed_runtime": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "gates": {
+        "sales_difficulty_matches": false,
+        "next_action_matches": false,
+        "call_control_matches": false,
+        "boundary_response_matches": false
+      },
+      "runtime_gap": true,
+      "passed": false,
+      "issue_codes": [
+        "sales_difficulty_matches",
+        "next_action_matches",
+        "call_control_matches",
+        "boundary_response_matches"
+      ]
+    },
+    {
+      "case_id": "prod-070-product-detail-control",
+      "customer_turn": "Which plan is included?",
+      "expected_runtime": {
+        "sales_difficulty": "product-detail-lookup",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue"
+      },
+      "observed_runtime": {
+        "sales_difficulty": "product-detail-lookup",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "One moment. I will check the product details before I answer."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "next_action_matches": true,
+        "call_control_matches": true
+      },
+      "runtime_gap": false,
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-070-price-control",
+      "customer_turn": "What is the price?",
+      "expected_runtime": {
+        "sales_difficulty": "price-first-direct",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue"
+      },
+      "observed_runtime": {
+        "sales_difficulty": "price-first-direct",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "next_action_matches": true,
+        "call_control_matches": true
+      },
+      "runtime_gap": false,
+      "passed": true,
+      "issue_codes": []
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "checkpoint_id": "PROD-093-english-customer-move-remaining-slice-selection-after-guided-option-synonyms",
+  "source_checkpoint_id": "PROD-092-english-guided-option-synonym-coverage-post-patch-regression",
+  "decision": "select_next_step_process_clarity_probe_next",
+  "selected_next_slice": "next_step_process_clarity",
+  "selected_remaining_case_id": "prod-081-next-step-01",
+  "selected_customer_turn": "What happens after I say yes?",
+  "why": "This is the smallest concrete remaining customer move. It can be probed as a concise process explanation while keeping payment collection, contract signing, provider comparison, and advice-roleplay boundaries closed.",
+  "selected_requires_human_review_before_probe": false,
+  "advice_roleplay_deferred_for_review": true,
+  "generic_confusion_kept_unknown": true,
+  "protected_boundary_controls_passed": true,
+  "runtime_patch_allowed": false,
+  "response_text_change_allowed": false,
+  "classifier_change_allowed": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-094-english-next-step-process-clarity-narrow-probe",
+  "recommended_next_checkpoint_requires_human_review": false
+}

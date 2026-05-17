@@ -1,0 +1,45 @@
+{
+  "checkpoint_id": "PROD-090-english-guided-option-synonym-coverage-narrow-probe",
+  "source_checkpoint_id": "PROD-089-english-customer-move-remaining-slice-selection-after-guided-option",
+  "items": [
+    {
+      "case_id": "prod-081-guided-option-02",
+      "customer_turn": "Should I start small or go with the fuller option?",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "candidate_response": "I mean, start with $29 if [feature X] and [feature Y] is enough. If you want [feature A] and [feature B] included, $59 fits better.",
+      "runtime_gap": true,
+      "gap_source_checkpoint": "PROD-089-english-customer-move-remaining-slice-selection-after-guided-option"
+    },
+    {
+      "case_id": "prod-081-plan-difference-02",
+      "customer_turn": "Can you show me both options side by side?",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "candidate_response": "$29 covers [feature X] and [feature Y]. $59 includes that plus [feature A] and [feature B].",
+      "runtime_gap": true,
+      "gap_source_checkpoint": "PROD-089-english-customer-move-remaining-slice-selection-after-guided-option"
+    }
+  ],
+  "runtime_gap_count": 2,
+  "runtime_gaps": [
+    {
+      "case_id": "prod-081-guided-option-02",
+      "customer_turn": "Should I start small or go with the fuller option?",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "candidate_response": "I mean, start with $29 if [feature X] and [feature Y] is enough. If you want [feature A] and [feature B] included, $59 fits better.",
+      "runtime_gap": true,
+      "gap_source_checkpoint": "PROD-089-english-customer-move-remaining-slice-selection-after-guided-option"
+    },
+    {
+      "case_id": "prod-081-plan-difference-02",
+      "customer_turn": "Can you show me both options side by side?",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "candidate_response": "$29 covers [feature X] and [feature Y]. $59 includes that plus [feature A] and [feature B].",
+      "runtime_gap": true,
+      "gap_source_checkpoint": "PROD-089-english-customer-move-remaining-slice-selection-after-guided-option"
+    }
+  ]
+}

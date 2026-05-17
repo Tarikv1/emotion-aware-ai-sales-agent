@@ -1,0 +1,12 @@
+{
+  "checkpoint_id": "PROD-094-english-next-step-process-clarity-narrow-probe",
+  "checkpoint_name": "English Next-Step Process Clarity Narrow Probe",
+  "source_checkpoint_id": "PROD-093-english-customer-move-remaining-slice-selection-after-guided-option-synonyms",
+  "scope": "english_next_step_process_clarity_narrow_policy_probe",
+  "policy_probe_only": true,
+  "selected_source_slice": "next_step_process_clarity",
+  "runtime_patch_allowed_inside_checkpoint": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-095-english-next-step-process-clarity-runtime-patch",
+  "recommended_next_checkpoint_requires_human_review": false
+}

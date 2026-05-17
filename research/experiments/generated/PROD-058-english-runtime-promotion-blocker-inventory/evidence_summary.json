@@ -1,0 +1,34 @@
+{
+  "source_guard": {
+    "checkpoint_id": "PROD-057-english-multi-turn-regression-guard-decision",
+    "guard_status": "adopted",
+    "stable_guard_command": "python scripts\\validate_english_multi_turn_regression_guard.py",
+    "readiness_failure_count": 0,
+    "next_checkpoint": "PROD-058-english-runtime-promotion-blocker-inventory"
+  },
+  "source_regression": {
+    "checkpoint_id": "PROD-056-english-post-patch-multi-turn-regression",
+    "promoted_response_count": 26,
+    "runtime_second_turn_case_count": 10,
+    "callback_scheduling_case_count": 1,
+    "terminal_boundary_case_count": 15,
+    "blocking_finding_count": 0,
+    "regression_gate_passed": true
+  },
+  "stable_guard_run": {
+    "command": "python scripts\\validate_english_multi_turn_regression_guard.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-056-english-post-patch-multi-turn-regression validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  },
+  "positive_evidence_chain": [
+    "PROD-053E promoted accepted English wording into deterministic runtime.",
+    "PROD-054 found multi-turn naturalness failures instead of overclaiming single-turn acceptance.",
+    "PROD-055 patched the six blocking English follow-up findings.",
+    "PROD-056 passed the post-patch regression with zero blocking findings.",
+    "PROD-057 adopted the regression as a stable English guard."
+  ]
+}

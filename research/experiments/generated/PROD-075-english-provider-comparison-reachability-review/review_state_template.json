@@ -1,0 +1,33 @@
+{
+  "checkpoint_id": "PROD-075-english-provider-comparison-reachability-review",
+  "review_status": "pending_tarik_review",
+  "review_item": "provider-comparison",
+  "reviewer": "",
+  "review_date": "",
+  "overall_decision": "",
+  "overall_notes": "",
+  "example_decisions": {
+    "provider-comparison-current-provider": {
+      "decision": "",
+      "notes": ""
+    },
+    "provider-comparison-terms": {
+      "decision": "",
+      "notes": ""
+    },
+    "provider-comparison-no-replacement-claim": {
+      "decision": "",
+      "notes": ""
+    },
+    "provider-comparison-protected-boundary": {
+      "decision": "",
+      "notes": ""
+    }
+  },
+  "valid_decisions": [
+    "keep_blocked",
+    "approve_for_narrow_probe_as_written",
+    "needs_rewrite_before_probe"
+  ],
+  "exported_from": "research/experiments/generated/PROD-075-english-provider-comparison-reachability-review/prod_075_review.html"
+}

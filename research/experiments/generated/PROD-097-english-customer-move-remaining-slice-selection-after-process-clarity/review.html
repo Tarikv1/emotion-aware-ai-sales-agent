@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PROD-097 Recommendation Roleplay Review</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #15181d;
+      --muted: #5b6472;
+      --line: #d8dde6;
+      --paper: #ffffff;
+      --band: #f4f6f8;
+      --accent: #1f6feb;
+      --danger: #9f1239;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: var(--band);
+      line-height: 1.45;
+    }
+    header {
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      padding: 24px;
+    }
+    main {
+      width: min(1040px, calc(100% - 32px));
+      margin: 24px auto 56px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 26px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 18px;
+      margin: 0 0 10px;
+    }
+    p { margin: 0 0 12px; }
+    .summary, .example, .actions {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .summary-grid div {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      background: #fbfcfe;
+    }
+    .example-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    code {
+      font-family: Consolas, Monaco, monospace;
+      font-size: 12px;
+      white-space: normal;
+    }
+    label {
+      display: block;
+      font-weight: 700;
+      margin: 12px 0 6px;
+    }
+    .turn {
+      border-left: 3px solid var(--accent);
+      padding-left: 10px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 76px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: inherit;
+      line-height: 1.4;
+    }
+    .choices {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin: 10px 0 4px;
+    }
+    .choices label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 400;
+      margin: 0;
+    }
+    button {
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: white;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button.secondary {
+      background: white;
+      color: var(--accent);
+    }
+    .warning {
+      color: var(--danger);
+      font-weight: 700;
+    }
+    pre {
+      white-space: pre-wrap;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px;
+      background: #f8fafc;
+      max-height: 260px;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PROD-097 Recommendation Roleplay Review</h1>
+    <p>Whether the English agent may answer recommendation-roleplay turns by giving a grounded recommendation while preserving customer agency.</p>
+    <p class="warning">Nothing here changes runtime behavior. This is the review gate before any probe.</p>
+  </header>
+  <main>
+    <section class="summary">
+      <h2>What You Are Reviewing</h2>
+      <p>Approve, reject, or edit each example before any narrow policy probe is opened.</p>
+      <div class="summary-grid">
+        <div><strong>Selected slice</strong><br>recommendation_roleplay_boundary</div>
+        <div><strong>Selected case</strong><br>prod-081-recommendation-02</div>
+        <div><strong>Next checkpoint</strong><br>PROD-098-english-recommendation-roleplay-review-import</div>
+      </div>
+    </section>
+
+      <section class="example" data-example="prod-097-roleplay-position">
+        <div class="example-head">
+          <span>Example 1</span>
+          <code>prod-097-roleplay-position</code>
+        </div>
+        <label>Customer</label>
+        <p class="turn">What would you do in my position?</p>
+        <label>Candidate agent response</label>
+        <textarea data-field="edited_agent_response">I would base it on what you will actually use. If [customer pain] is the issue, $59 fits better because it includes [feature A] and [feature B]. If not, start with $29.</textarea>
+        <label>Why this needs review</label>
+        <p>The customer asks for roleplay advice. The agent should guide without taking the decision away.</p>
+        <label>Review question</label>
+        <p>Is this acceptable, or is using &#x27;I would&#x27; too strong for the agent?</p>
+        <div class="choices">
+          <label><input type="radio" name="prod-097-roleplay-position" value="approve"> Approve</label>
+          <label><input type="radio" name="prod-097-roleplay-position" value="needs_edit"> Needs edit</label>
+          <label><input type="radio" name="prod-097-roleplay-position" value="reject"> Reject</label>
+        </div>
+        <label>Reviewer notes</label>
+        <textarea data-field="notes" placeholder="Write what should change, or why this is acceptable."></textarea>
+      </section>
+
+      <section class="example" data-example="prod-097-roleplay-business">
+        <div class="example-head">
+          <span>Example 2</span>
+          <code>prod-097-roleplay-business</code>
+        </div>
+        <label>Customer</label>
+        <p class="turn">If this were your business, which plan would you take?</p>
+        <label>Candidate agent response</label>
+        <textarea data-field="edited_agent_response">If I were judging only from what you told me, I would lean $59 for [feature A] and [feature B]. If those do not matter yet, $29 is the cleaner start.</textarea>
+        <label>Why this needs review</label>
+        <p>This is more persuasive than a neutral comparison and may need softer wording.</p>
+        <label>Review question</label>
+        <p>Is the roleplay framing okay when the agent ties it to stated needs?</p>
+        <div class="choices">
+          <label><input type="radio" name="prod-097-roleplay-business" value="approve"> Approve</label>
+          <label><input type="radio" name="prod-097-roleplay-business" value="needs_edit"> Needs edit</label>
+          <label><input type="radio" name="prod-097-roleplay-business" value="reject"> Reject</label>
+        </div>
+        <label>Reviewer notes</label>
+        <textarea data-field="notes" placeholder="Write what should change, or why this is acceptable."></textarea>
+      </section>
+
+      <section class="example" data-example="prod-097-direct-recommendation">
+        <div class="example-head">
+          <span>Example 3</span>
+          <code>prod-097-direct-recommendation</code>
+        </div>
+        <label>Customer</label>
+        <p class="turn">Can you just tell me what you recommend?</p>
+        <label>Candidate agent response</label>
+        <textarea data-field="edited_agent_response">Based on [customer pain], I would recommend $59. If budget is the main concern, start with $29 and upgrade later.</textarea>
+        <label>Why this needs review</label>
+        <p>Recommendation is useful, but it can become pushy if not grounded in the customer&#x27;s facts.</p>
+        <label>Review question</label>
+        <p>Should direct recommendation be allowed after customer facts exist?</p>
+        <div class="choices">
+          <label><input type="radio" name="prod-097-direct-recommendation" value="approve"> Approve</label>
+          <label><input type="radio" name="prod-097-direct-recommendation" value="needs_edit"> Needs edit</label>
+          <label><input type="radio" name="prod-097-direct-recommendation" value="reject"> Reject</label>
+        </div>
+        <label>Reviewer notes</label>
+        <textarea data-field="notes" placeholder="Write what should change, or why this is acceptable."></textarea>
+      </section>
+
+      <section class="example" data-example="prod-097-leaning-cheaper">
+        <div class="example-head">
+          <span>Example 4</span>
+          <code>prod-097-leaning-cheaper</code>
+        </div>
+        <label>Customer</label>
+        <p class="turn">I am leaning $29, but is $59 smarter?</p>
+        <label>Candidate agent response</label>
+        <textarea data-field="edited_agent_response">I mean, $59 is smarter only if [feature A] and [feature B] would actually save you time. Otherwise $29 is the cleaner start.</textarea>
+        <label>Why this needs review</label>
+        <p>This uses light natural filler and fit-based steering; reject if it feels too scripted or too casual.</p>
+        <label>Review question</label>
+        <p>Does this steer enough without repeating obvious price facts?</p>
+        <div class="choices">
+          <label><input type="radio" name="prod-097-leaning-cheaper" value="approve"> Approve</label>
+          <label><input type="radio" name="prod-097-leaning-cheaper" value="needs_edit"> Needs edit</label>
+          <label><input type="radio" name="prod-097-leaning-cheaper" value="reject"> Reject</label>
+        </div>
+        <label>Reviewer notes</label>
+        <textarea data-field="notes" placeholder="Write what should change, or why this is acceptable."></textarea>
+      </section>
+
+      <section class="example" data-example="prod-097-decide-for-me-control">
+        <div class="example-head">
+          <span>Example 5</span>
+          <code>prod-097-decide-for-me-control</code>
+        </div>
+        <label>Customer</label>
+        <p class="turn">Can you decide for me?</p>
+        <label>Candidate agent response</label>
+        <textarea data-field="edited_agent_response">I cannot decide for you. I can show what each plan covers and why one may fit your needs better.</textarea>
+        <label>Why this needs review</label>
+        <p>The agent must not take over the customer&#x27;s decision.</p>
+        <label>Review question</label>
+        <p>Is this the right boundary when the customer asks the agent to decide?</p>
+        <div class="choices">
+          <label><input type="radio" name="prod-097-decide-for-me-control" value="approve"> Approve</label>
+          <label><input type="radio" name="prod-097-decide-for-me-control" value="needs_edit"> Needs edit</label>
+          <label><input type="radio" name="prod-097-decide-for-me-control" value="reject"> Reject</label>
+        </div>
+        <label>Reviewer notes</label>
+        <textarea data-field="notes" placeholder="Write what should change, or why this is acceptable."></textarea>
+      </section>
+
+      <section class="example" data-example="prod-097-promise-worth-control">
+        <div class="example-head">
+          <span>Example 6</span>
+          <code>prod-097-promise-worth-control</code>
+        </div>
+        <label>Customer</label>
+        <p class="turn">Can you promise $59 will be worth it?</p>
+        <label>Candidate agent response</label>
+        <textarea data-field="edited_agent_response">I cannot promise that. I can explain what $59 adds and you can decide if that is worth it.</textarea>
+        <label>Why this needs review</label>
+        <p>The agent must not guarantee value or outcome.</p>
+        <label>Review question</label>
+        <p>Is this enough of a claim boundary?</p>
+        <div class="choices">
+          <label><input type="radio" name="prod-097-promise-worth-control" value="approve"> Approve</label>
+          <label><input type="radio" name="prod-097-promise-worth-control" value="needs_edit"> Needs edit</label>
+          <label><input type="radio" name="prod-097-promise-worth-control" value="reject"> Reject</label>
+        </div>
+        <label>Reviewer notes</label>
+        <textarea data-field="notes" placeholder="Write what should change, or why this is acceptable."></textarea>
+      </section>
+
+      <section class="example" data-example="prod-097-no-pressure-honest-take">
+        <div class="example-head">
+          <span>Example 7</span>
+          <code>prod-097-no-pressure-honest-take</code>
+        </div>
+        <label>Customer</label>
+        <p class="turn">I do not want sales pressure; just give me your honest take.</p>
+        <label>Candidate agent response</label>
+        <textarea data-field="edited_agent_response">Fair. My honest take is $59 only makes sense if [feature A] and [feature B] solve the problem you described. If not, start with $29.</textarea>
+        <label>Why this needs review</label>
+        <p>This may feel human, but it can also sound like over-personalized persuasion.</p>
+        <label>Review question</label>
+        <p>Is &#x27;honest take&#x27; acceptable, or should the agent avoid that persona?</p>
+        <div class="choices">
+          <label><input type="radio" name="prod-097-no-pressure-honest-take" value="approve"> Approve</label>
+          <label><input type="radio" name="prod-097-no-pressure-honest-take" value="needs_edit"> Needs edit</label>
+          <label><input type="radio" name="prod-097-no-pressure-honest-take" value="reject"> Reject</label>
+        </div>
+        <label>Reviewer notes</label>
+        <textarea data-field="notes" placeholder="Write what should change, or why this is acceptable."></textarea>
+      </section>
+
+    <section class="actions">
+      <h2>Export Review</h2>
+      <p>Use export after choosing approve, needs edit, or reject for each example. Import Review can reload a saved JSON review.</p>
+      <button type="button" onclick="exportReview()">Export Review</button>
+      <button type="button" class="secondary" onclick="document.getElementById('importBox').focus()">Import Review</button>
+      <textarea id="importBox" placeholder="Paste a review JSON here, then click Apply Import."></textarea>
+      <button type="button" class="secondary" onclick="applyImport()">Apply Import</button>
+      <pre id="output" aria-live="polite"></pre>
+    </section>
+  </main>
+  <script id="initial-state" type="application/json">{&quot;checkpoint_id&quot;: &quot;PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity&quot;, &quot;review_type&quot;: &quot;recommendation_roleplay_boundary&quot;, &quot;items&quot;: [{&quot;example_id&quot;: &quot;prod-097-roleplay-position&quot;, &quot;decision&quot;: &quot;pending&quot;, &quot;notes&quot;: &quot;&quot;, &quot;edited_agent_response&quot;: &quot;I would base it on what you will actually use. If [customer pain] is the issue, $59 fits better because it includes [feature A] and [feature B]. If not, start with $29.&quot;}, {&quot;example_id&quot;: &quot;prod-097-roleplay-business&quot;, &quot;decision&quot;: &quot;pending&quot;, &quot;notes&quot;: &quot;&quot;, &quot;edited_agent_response&quot;: &quot;If I were judging only from what you told me, I would lean $59 for [feature A] and [feature B]. If those do not matter yet, $29 is the cleaner start.&quot;}, {&quot;example_id&quot;: &quot;prod-097-direct-recommendation&quot;, &quot;decision&quot;: &quot;pending&quot;, &quot;notes&quot;: &quot;&quot;, &quot;edited_agent_response&quot;: &quot;Based on [customer pain], I would recommend $59. If budget is the main concern, start with $29 and upgrade later.&quot;}, {&quot;example_id&quot;: &quot;prod-097-leaning-cheaper&quot;, &quot;decision&quot;: &quot;pending&quot;, &quot;notes&quot;: &quot;&quot;, &quot;edited_agent_response&quot;: &quot;I mean, $59 is smarter only if [feature A] and [feature B] would actually save you time. Otherwise $29 is the cleaner start.&quot;}, {&quot;example_id&quot;: &quot;prod-097-decide-for-me-control&quot;, &quot;decision&quot;: &quot;pending&quot;, &quot;notes&quot;: &quot;&quot;, &quot;edited_agent_response&quot;: &quot;I cannot decide for you. I can show what each plan covers and why one may fit your needs better.&quot;}, {&quot;example_id&quot;: &quot;prod-097-promise-worth-control&quot;, &quot;decision&quot;: &quot;pending&quot;, &quot;notes&quot;: &quot;&quot;, &quot;edited_agent_response&quot;: &quot;I cannot promise that. I can explain what $59 adds and you can decide if that is worth it.&quot;}, {&quot;example_id&quot;: &quot;prod-097-no-pressure-honest-take&quot;, &quot;decision&quot;: &quot;pending&quot;, &quot;notes&quot;: &quot;&quot;, &quot;edited_agent_response&quot;: &quot;Fair. My honest take is $59 only makes sense if [feature A] and [feature B] solve the problem you described. If not, start with $29.&quot;}]}</script>
+  <script>
+    const checkpointId = "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity";
+    function collectReview() {
+      const items = [...document.querySelectorAll(".example")].map(card => {
+        const exampleId = card.dataset.example;
+        const checked = card.querySelector("input[type=radio]:checked");
+        return {
+          example_id: exampleId,
+          decision: checked ? checked.value : "pending",
+          edited_agent_response: card.querySelector('[data-field="edited_agent_response"]').value,
+          notes: card.querySelector('[data-field="notes"]').value
+        };
+      });
+      return {
+        checkpoint_id: checkpointId,
+        review_type: "recommendation_roleplay_boundary",
+        reviewed_at_local: new Date().toISOString(),
+        items
+      };
+    }
+    function exportReview() {
+      document.getElementById("output").textContent = JSON.stringify(collectReview(), null, 2);
+    }
+    function applyImport() {
+      const raw = document.getElementById("importBox").value.trim();
+      if (!raw) return;
+      const payload = JSON.parse(raw);
+      for (const item of payload.items || []) {
+        const card = document.querySelector(`[data-example="${item.example_id}"]`);
+        if (!card) continue;
+        const radio = card.querySelector(`input[value="${item.decision}"]`);
+        if (radio) radio.checked = true;
+        card.querySelector('[data-field="edited_agent_response"]').value = item.edited_agent_response || "";
+        card.querySelector('[data-field="notes"]').value = item.notes || "";
+      }
+      exportReview();
+    }
+  </script>
+</body>
+</html>

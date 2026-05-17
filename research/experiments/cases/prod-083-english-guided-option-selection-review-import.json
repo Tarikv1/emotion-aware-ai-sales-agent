@@ -1,0 +1,16 @@
+{
+  "checkpoint_id": "PROD-083-english-guided-option-selection-review-import",
+  "checkpoint_name": "English Guided Option Selection Review Import",
+  "source_checkpoint_id": "PROD-082-english-guided-option-selection-review",
+  "scope": "english_guided_option_selection_review_import_only",
+  "human_review_imported": true,
+  "imported_review_decision": "needs_rewrite_before_probe",
+  "narrow_policy_probe_approved": false,
+  "rewrite_required": true,
+  "review_html_created": false,
+  "runtime_change_requested": false,
+  "response_text_change_requested": false,
+  "classifier_change_requested": false,
+  "retrieval_change_requested": false,
+  "recommended_next_checkpoint": "PROD-084-english-guided-option-selection-rewrite-design"
+}

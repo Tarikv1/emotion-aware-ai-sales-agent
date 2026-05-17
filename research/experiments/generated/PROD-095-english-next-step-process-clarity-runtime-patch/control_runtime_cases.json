@@ -1,0 +1,87 @@
+{
+  "checkpoint_id": "PROD-095-english-next-step-process-clarity-runtime-patch",
+  "case_count": 10,
+  "cases": [
+    {
+      "case_id": "prod-094-card-payment-control",
+      "customer_turn": "Can I pay now with my card?",
+      "expected": "payment-safety-boundary",
+      "sales_difficulty": "payment-safety-boundary",
+      "agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-094-payment-details-control",
+      "customer_turn": "Can you take my payment details if I choose one?",
+      "expected": "payment-safety-boundary",
+      "sales_difficulty": "payment-safety-boundary",
+      "agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-094-signup-control",
+      "customer_turn": "Can you sign me up on this call?",
+      "expected": "not next-step-process-clarity",
+      "sales_difficulty": "unknown-runtime-signal",
+      "agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "passed": true
+    },
+    {
+      "case_id": "prod-094-register-and-pay-control",
+      "customer_turn": "I want to register and pay now.",
+      "expected": "not next-step-process-clarity",
+      "sales_difficulty": "unknown-runtime-signal",
+      "agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "passed": true
+    },
+    {
+      "case_id": "prod-094-advice-roleplay-control",
+      "customer_turn": "What would you do in my position?",
+      "expected": "not next-step-process-clarity",
+      "sales_difficulty": "recommendation-roleplay-boundary",
+      "agent_response": "I would base it on what you will actually use. If [customer pain] is the issue, $59 fits better because it includes [feature A] and [feature B]. If not, start with $29.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-094-generic-confusion-control",
+      "customer_turn": "I am listening, but I do not know what I am supposed to decide yet.",
+      "expected": "not next-step-process-clarity",
+      "sales_difficulty": "unknown-runtime-signal",
+      "agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "passed": true
+    },
+    {
+      "case_id": "prod-094-provider-comparison-control",
+      "customer_turn": "Can you show our current provider and your offer side by side?",
+      "expected": "not next-step-process-clarity",
+      "sales_difficulty": "existing-provider-gap",
+      "agent_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-094-coverage-control",
+      "customer_turn": "Does the plan cover reimbursement?",
+      "expected": "coverage-boundary-route",
+      "sales_difficulty": "coverage-boundary-route",
+      "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-094-guided-option-control",
+      "customer_turn": "Should I start small or go with the fuller option?",
+      "expected": "guided-option-selection",
+      "sales_difficulty": "guided-option-selection",
+      "agent_response": "You can start with $29 if [feature X] and [feature Y] covers enough. If you later need [feature A] and [feature B], we can move you to $59.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-094-german-control",
+      "customer_turn": "Was passiert, nachdem ich ja sage?",
+      "expected": "not next-step-process-clarity",
+      "sales_difficulty": "unknown-runtime-signal",
+      "agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "passed": true
+    }
+  ],
+  "failure_count": 0
+}

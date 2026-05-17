@@ -1,0 +1,57 @@
+{
+  "checkpoint_id": "PROD-091-english-guided-option-synonym-coverage-runtime-patch",
+  "source_checkpoint_id": "PROD-090-english-guided-option-synonym-coverage-narrow-probe",
+  "source_validation": {
+    "passed": true,
+    "policy_probe_passed": true
+  },
+  "source_summary": {
+    "policy_probe_only": true,
+    "source_validator_passed": true,
+    "policy_probe_passed": true,
+    "selected_gap_count": 2,
+    "positive_case_count": 4,
+    "control_case_count": 9,
+    "failed_policy_case_count": 0,
+    "current_runtime_gap_count": 2,
+    "uses_existing_review_guardrails": true,
+    "requires_human_review_before_next_checkpoint": false,
+    "recommended_next_checkpoint_requires_human_review": false,
+    "review_html_created": false,
+    "recommended_next_checkpoint": "PROD-091-english-guided-option-synonym-coverage-runtime-patch",
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "classifier_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  },
+  "source_gap_count_before_patch": 2,
+  "source_validator_run": {
+    "command": "python scripts/validate_prod_090_english_guided_option_synonym_coverage_narrow_probe.py",
+    "returncode": 1,
+    "stdout_tail": [],
+    "stderr_tail": [
+      "    validate_payloads()",
+      "    ~~~~~~~~~~~~~~~~~^^",
+      "  File \"D:\\Codex\\active\\emotion-aware-ai-sales-agent\\scripts\\validate_prod_090_english_guided_option_synonym_coverage_narrow_probe.py\", line 142, in validate_payloads",
+      "    assert_condition(result[\"validation\"][\"passed\"] is True, result)",
+      "    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"D:\\Codex\\active\\emotion-aware-ai-sales-agent\\scripts\\validate_prod_090_english_guided_option_synonym_coverage_narrow_probe.py\", line 70, in assert_condition",
+      "    raise AssertionError(message)",
+      "AssertionError: {'checkpoint_id': 'PROD-090-english-guided-option-synonym-coverage-narrow-probe', 'checkpoint_name': 'English Guided Option Synonym Coverage Narrow Probe', 'source_checkpoint_id': 'PROD-089-english-customer-move-remaining-slice-selection-after-guided-option', 'validation': {'passed': False, 'policy_probe_passed': True}, 'summary': {'policy_probe_only': True, 'source_validator_passed': False, 'policy_probe_passed': True, 'selected_gap_count': 2, 'positive_case_count': 4, 'control_case_count': 9, 'failed_policy_case_count': 0, 'current_runtime_gap_count': 2, 'uses_existing_review_guardrails': True, 'requires_human_review_before_next_checkpoint': False, 'recommended_next_checkpoint_requires_human_review': False, 'review_html_created': False, 'recommended_next_checkpoint': 'PROD-091-english-guided-option-synonym-coverage-runtime-patch', 'runtime_behavior_changed': False, 'response_text_behavior_changed': False, 'classifier_behavior_changed': False, 'retrieval_enabled': False, 'provider_calls_made': False, 'llm_used': False, 'llm_judging_used': False, 'private_data_read': False, 'voice_playback_unblocked': False, 'public_demo_polish_unblocked': False, 'real_customer_use_unblocked': False, 'payment_collection_allowed': False, 'contract_signing_allowed': False, 'production_runtime_promotion_allowed': False, 'german_exact_phrase_promotion_allowed': False, 'german_naturalness_claimed': False, 'legal_compliance_claimed': False}}"
+    ],
+    "passed": false
+  }
+}

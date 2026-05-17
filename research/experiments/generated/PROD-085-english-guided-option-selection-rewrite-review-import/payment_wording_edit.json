@@ -1,0 +1,13 @@
+{
+  "checkpoint_id": "PROD-085-english-guided-option-selection-rewrite-review-import",
+  "source_checkpoint_id": "PROD-084-english-guided-option-selection-rewrite-design",
+  "example_id": "rewrite-payment-path",
+  "review_decision": "approved_after_required_wording_edit",
+  "source_issue": "The source wording was too specific and too long because it included a companyname.com email placeholder and finish-registration phrasing.",
+  "required_direction": "Shorten to an email-link path without naming a company-domain placeholder.",
+  "final_candidate_response": "No payment on this call. I'll send you the link by email, and you can review the plan and register there.",
+  "no_payment_on_call_default": true,
+  "generic_payment_link_wording": true,
+  "company_domain_placeholder_removed": true,
+  "runtime_payment_collection_allowed": false
+}

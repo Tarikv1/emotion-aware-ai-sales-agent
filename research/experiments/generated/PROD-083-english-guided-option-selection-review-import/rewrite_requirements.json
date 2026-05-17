@@ -1,0 +1,26 @@
+{
+  "checkpoint_id": "PROD-083-english-guided-option-selection-review-import",
+  "review_item": "guided_option_selection_candidate",
+  "rewrite_required": true,
+  "narrow_policy_probe_allowed_now": false,
+  "rules": [
+    "Leave obvious facts out.",
+    "Do not repeat what the customer already said unless explicitly needed.",
+    "Answer the actual fit or difference question.",
+    "Use approved plan feature facts, not invented differences.",
+    "Steer toward the better option when known customer facts support it.",
+    "Keep wording shorter and more human.",
+    "Preserve autonomy without repeatedly saying neither or not now.",
+    "Use light persuasion when the customer is uncertain but still engaged.",
+    "Separate option selection from payment handling."
+  ],
+  "candidate_response_direction": [
+    "Explain which plan fits which need.",
+    "Use approved plan facts such as plan feature lists or upgrade paths.",
+    "Steer toward the better fit when customer facts support it.",
+    "Use acknowledgement plus light persuasion for uncertainty instead of dropping the opportunity.",
+    "Keep deferral answers short.",
+    "Leave obvious facts out.",
+    "Do not repeat price math or customer wording unless the customer explicitly asks."
+  ]
+}

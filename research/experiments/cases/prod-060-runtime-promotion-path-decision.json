@@ -1,0 +1,28 @@
+{
+  "checkpoint_id": "PROD-060-runtime-promotion-path-decision",
+  "checkpoint_name": "Runtime Promotion Path Decision",
+  "source_checkpoint_id": "PROD-059-final-english-only-runtime-readiness-review",
+  "scope": "path_decision_only",
+  "human_review_decision": "accepted_to_proceed",
+  "human_review_source": "Tarik accepted the PROD-059 review artifact in the current review thread.",
+  "selected_path": "internal_guarded_english_baseline_only",
+  "not_a_production_promotion": true,
+  "runtime_change_requested": false,
+  "requires_human_review_before_next_checkpoint": true,
+  "non_goals": [
+    "runtime behavior change",
+    "response text change",
+    "public demo approval",
+    "real customer use",
+    "provider call",
+    "LLM call",
+    "private data read",
+    "retrieval default change",
+    "voice playback promotion",
+    "German exact phrase promotion",
+    "legal compliance approval",
+    "payment collection",
+    "contract signing",
+    "production runtime promotion"
+  ]
+}

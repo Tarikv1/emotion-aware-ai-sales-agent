@@ -1,0 +1,41 @@
+{
+  "checkpoint_id": "PROD-075-english-provider-comparison-reachability-review",
+  "checkpoint_name": "English Provider-Comparison Reachability Review",
+  "source_checkpoint_id": "PROD-074-english-customer-move-classification-slice-inventory",
+  "validation": {
+    "passed": true,
+    "review_packet_created": true
+  },
+  "summary": {
+    "review_packet_only": true,
+    "source_validator_passed": true,
+    "selected_review_item": "provider-comparison",
+    "review_example_count": 4,
+    "review_options": [
+      "keep_blocked",
+      "approve_for_narrow_probe_as_written",
+      "needs_rewrite_before_probe"
+    ],
+    "requires_human_review_before_next_checkpoint": true,
+    "review_html_created": true,
+    "review_html_path": "research/experiments/generated/PROD-075-english-provider-comparison-reachability-review/prod_075_review.html",
+    "recommended_next_checkpoint": "PROD-076-english-provider-comparison-review-import",
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "classifier_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  }
+}

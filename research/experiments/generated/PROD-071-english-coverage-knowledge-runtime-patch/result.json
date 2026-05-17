@@ -1,0 +1,53 @@
+{
+  "checkpoint_id": "PROD-071-english-coverage-knowledge-runtime-patch",
+  "checkpoint_name": "English Coverage Knowledge Runtime Patch",
+  "source_checkpoint_id": "PROD-070-english-coverage-knowledge-policy-probe",
+  "validation": {
+    "passed": true,
+    "runtime_patch_passed": true,
+    "controls_preserved": true
+  },
+  "summary": {
+    "runtime_behavior_changed": true,
+    "classifier_behavior_changed": true,
+    "call_control_behavior_changed": true,
+    "next_action_behavior_changed": true,
+    "english_only_runtime_patch": true,
+    "source_validator_passed": true,
+    "patched_sales_difficulty": "coverage-boundary-route",
+    "runtime_patch_case_count": 6,
+    "patched_case_count": 3,
+    "patched_case_ids": [
+      "prod-071-eligible-reimbursement",
+      "prod-071-plan-covers-this",
+      "prod-071-policy-reimbursed"
+    ],
+    "control_case_count": 3,
+    "failed_runtime_patch_case_count": 0,
+    "failed_runtime_patch_case_ids": [],
+    "coverage_advice_allowed": false,
+    "coverage_fact_claims_allowed": false,
+    "eligibility_claims_allowed": false,
+    "reimbursement_claims_allowed": false,
+    "requires_human_review_before_next_checkpoint": false,
+    "review_html_created": false,
+    "future_persuasion_tactic_candidate_recorded": true,
+    "guided_option_selection_recorded": true,
+    "recommended_next_checkpoint": "PROD-072-english-coverage-knowledge-post-patch-regression",
+    "response_text_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  }
+}

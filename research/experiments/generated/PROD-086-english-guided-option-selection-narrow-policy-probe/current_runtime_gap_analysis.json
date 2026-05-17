@@ -1,0 +1,57 @@
+{
+  "checkpoint_id": "PROD-086-english-guided-option-selection-narrow-policy-probe",
+  "source_checkpoint_id": "PROD-085-english-guided-option-selection-rewrite-review-import",
+  "current_runtime_positive_checks": [
+    {
+      "case_id": "prod-086-runtime-rewrite-binary-choice",
+      "customer_turn": "So do I choose the $29 option or the $59 option?",
+      "expected_future_route": "guided-option-selection",
+      "current_sales_difficulty": "unknown-runtime-signal",
+      "current_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_matches_expected_future_route": false
+    },
+    {
+      "case_id": "prod-086-runtime-rewrite-fit-unclear",
+      "customer_turn": "I can see both paths, I am just not sure which one fits me.",
+      "expected_future_route": "guided-option-selection",
+      "current_sales_difficulty": "unknown-runtime-signal",
+      "current_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_matches_expected_future_route": false
+    },
+    {
+      "case_id": "prod-086-runtime-rewrite-recommendation",
+      "customer_turn": "Which route would you suggest for someone like me?",
+      "expected_future_route": "guided-option-selection",
+      "current_sales_difficulty": "unknown-runtime-signal",
+      "current_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_matches_expected_future_route": false
+    },
+    {
+      "case_id": "prod-086-runtime-rewrite-difference",
+      "customer_turn": "What is the real difference between the $29 option and the $59 option?",
+      "expected_future_route": "guided-option-selection",
+      "current_sales_difficulty": "unknown-runtime-signal",
+      "current_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_matches_expected_future_route": false
+    },
+    {
+      "case_id": "prod-086-runtime-rewrite-neither-uncertain",
+      "customer_turn": "I'm not sure either is right.",
+      "expected_future_route": "guided-option-selection",
+      "current_sales_difficulty": "unknown-runtime-signal",
+      "current_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_matches_expected_future_route": false
+    },
+    {
+      "case_id": "prod-086-runtime-rewrite-upgrade-path",
+      "customer_turn": "Could I start smaller and change later if it works?",
+      "expected_future_route": "guided-option-selection",
+      "current_sales_difficulty": "unknown-runtime-signal",
+      "current_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_matches_expected_future_route": false
+    }
+  ],
+  "current_runtime_positive_gap_count": 6,
+  "runtime_patch_required_for_reachability": true,
+  "runtime_patch_allowed_inside_checkpoint": false
+}

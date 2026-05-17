@@ -1,0 +1,73 @@
+{
+  "checkpoint_id": "PROD-067-english-voicemail-action-only-runtime-patch",
+  "items": [
+    {
+      "case_id": "prod-067-human-callback-request-not-voicemail",
+      "input_type": "speech",
+      "transcript": "call me back next week",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "callback-request",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "offer-scheduling",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "callback-request",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "offer-scheduling",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "bridge_response": null,
+        "agent_response": "Of course. Do you have a time in mind?"
+      },
+      "gates": {
+        "not_voicemail": true,
+        "response_not_empty": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-067-human-written-info-not-voicemail",
+      "input_type": "speech",
+      "transcript": "send me the details",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "written-info-request",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue"
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "written-info-request",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "bridge_response": null,
+        "agent_response": "Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you."
+      },
+      "gates": {
+        "not_voicemail": true,
+        "response_not_empty": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true
+      },
+      "passed": true,
+      "issue_codes": []
+    }
+  ]
+}

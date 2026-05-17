@@ -1,0 +1,98 @@
+{
+  "checkpoint_id": "PROD-066-english-voicemail-action-only-policy-probe",
+  "checkpoint_name": "English Voicemail Action-Only Policy Probe",
+  "source_checkpoint_id": "PROD-065-english-remaining-product-policy-gate-selection",
+  "scope": "english_voicemail_action_only_policy_probe_only",
+  "selected_gate_id": "voicemail_action_only_behavior",
+  "owner_feedback": "if we reach a voicemail the agent should log this for another time and try again. The agent doesn't need to say anything to the voicemail",
+  "candidate_action": "Do not speak to voicemail. Log follow-up and try again later according to campaign rules.",
+  "candidate_response": "",
+  "runtime_change_requested": false,
+  "response_text_change_requested": false,
+  "requires_human_review_before_next_checkpoint": false,
+  "recommended_next_checkpoint": "PROD-067-english-voicemail-action-only-runtime-patch",
+  "policy_probe_cases": [
+    {
+      "case_id": "prod-066-machine-detected-voicemail",
+      "input_type": "voicemail-detected",
+      "transcript": "",
+      "stage": "opening",
+      "expected_policy": {
+        "action_only": true,
+        "spoken_response": "",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "log_follow_up": true,
+        "retry_later": true
+      }
+    },
+    {
+      "case_id": "prod-066-voicemail-greeting",
+      "input_type": "voicemail-detected",
+      "transcript": "You have reached the voicemail box.",
+      "stage": "opening",
+      "expected_policy": {
+        "action_only": true,
+        "spoken_response": "",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "log_follow_up": true,
+        "retry_later": true
+      }
+    },
+    {
+      "case_id": "prod-066-beep-only",
+      "input_type": "voicemail-detected",
+      "transcript": "[beep]",
+      "stage": "opening",
+      "expected_policy": {
+        "action_only": true,
+        "spoken_response": "",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "log_follow_up": true,
+        "retry_later": true
+      }
+    },
+    {
+      "case_id": "prod-066-no-sales-message",
+      "input_type": "voicemail-detected",
+      "transcript": "Please leave your message after the tone.",
+      "stage": "opening",
+      "expected_policy": {
+        "action_only": true,
+        "spoken_response": "",
+        "forbidden_spoken_markers": [
+          "price",
+          "payment",
+          "contract",
+          "deal",
+          "offer",
+          "call us back"
+        ],
+        "log_follow_up": true,
+        "retry_later": true
+      }
+    },
+    {
+      "case_id": "prod-066-human-callback-request-not-voicemail",
+      "input_type": "speech",
+      "transcript": "call me back next week",
+      "stage": "objection",
+      "expected_policy": {
+        "action_only": false,
+        "reason": "A human callback request is not a voicemail-detected event."
+      }
+    },
+    {
+      "case_id": "prod-066-human-written-info-not-voicemail",
+      "input_type": "speech",
+      "transcript": "send me the details",
+      "stage": "objection",
+      "expected_policy": {
+        "action_only": false,
+        "reason": "A human request for written details is not a voicemail-detected event."
+      }
+    }
+  ]
+}

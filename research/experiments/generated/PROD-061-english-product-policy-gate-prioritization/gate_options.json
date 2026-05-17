@@ -1,0 +1,56 @@
+{
+  "checkpoint_id": "PROD-061-english-product-policy-gate-prioritization",
+  "ranked_gates": [
+    {
+      "rank": 1,
+      "gate_id": "context_sensitive_autonomy_behavior",
+      "label": "Context-sensitive autonomy behavior",
+      "status": "selected_for_next_probe_still_blocked",
+      "selected_for_next_probe": true,
+      "runtime_patch_allowed": false,
+      "why": "It is the best first English-only policy probe because it can be tested with synthetic multi-turn examples, does not require regulated product facts, and does not alter call-control or broad classifier reachability.",
+      "risk": "Can still become manipulative or over-personalized if autonomy language adapts too aggressively to customer hesitation.",
+      "next_action": "Open a targeted policy probe that defines allowed and forbidden autonomy-preserving follow-up patterns before any runtime patch.",
+      "review_question": "Should context-sensitive autonomy be the first English product-policy gate to probe while still blocked from runtime promotion?"
+    },
+    {
+      "rank": 2,
+      "gate_id": "voicemail_action_only_behavior",
+      "label": "Voicemail action-only behavior",
+      "status": "deferred_still_blocked",
+      "selected_for_next_probe": false,
+      "runtime_patch_allowed": false,
+      "why": "It is important for English call quality, but it is call-control/action behavior rather than phrase quality, so it should follow a smaller policy probe.",
+      "risk": "Could make the runtime take inappropriate same-loop actions after voicemail detection or blur message-taking versus selling behavior.",
+      "next_action": "Keep blocked until a call-control-specific checkpoint defines action-only voicemail behavior.",
+      "review_question": "Should voicemail behavior remain deferred behind the autonomy probe?"
+    },
+    {
+      "rank": 3,
+      "gate_id": "coverage_knowledge_policy_behavior",
+      "label": "Coverage knowledge-policy behavior",
+      "status": "deferred_still_blocked",
+      "selected_for_next_probe": false,
+      "runtime_patch_allowed": false,
+      "why": "Coverage and policy-knowledge responses risk unsupported regulated advice and need product/legal boundaries before runtime use.",
+      "risk": "Could imply insurance coverage, eligibility, or legal/financial advice without a reviewed knowledge policy.",
+      "next_action": "Keep blocked until a separate knowledge-policy checkpoint defines allowed facts, uncertainty handling, and escalation.",
+      "review_question": "Should coverage knowledge-policy stay behind a separate legal/product-knowledge gate?"
+    },
+    {
+      "rank": 4,
+      "gate_id": "customer_move_classification_outside_selected_non_refusal_groups",
+      "label": "Customer-move classification outside selected non-refusal groups",
+      "status": "deferred_still_blocked",
+      "selected_for_next_probe": false,
+      "runtime_patch_allowed": false,
+      "why": "Broadening customer-move classification has the largest blast radius because it changes reachability across many runtime branches.",
+      "risk": "Could route customer turns into newly promoted behavior without enough evidence for each branch.",
+      "next_action": "Keep blocked until smaller policy gates provide clearer acceptance criteria for broader classifier reachability.",
+      "review_question": "Should broad classifier expansion remain last among the current English product-policy gates?"
+    }
+  ],
+  "selected_first_gate_id": "context_sensitive_autonomy_behavior",
+  "product_policy_gate_count": 4,
+  "all_runtime_patch_allowed": false
+}

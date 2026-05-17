@@ -1,0 +1,40 @@
+{
+  "checkpoint_id": "PROD-079-english-provider-comparison-post-patch-regression",
+  "checkpoint_name": "English Provider-Comparison Post-Patch Regression",
+  "source_checkpoint_id": "PROD-078-english-provider-comparison-runtime-patch",
+  "validation": {
+    "passed": true,
+    "post_patch_regression_passed": true,
+    "stable_guard_passed": true
+  },
+  "summary": {
+    "post_patch_regression_only": true,
+    "source_validator_passed": true,
+    "stable_english_guard_passed": true,
+    "provider_comparison_positive_case_count": 5,
+    "existing_provider_control_count": 3,
+    "adjacent_control_count": 5,
+    "regression_case_count": 13,
+    "failed_regression_case_count": 0,
+    "failed_regression_case_ids": [],
+    "review_html_created": false,
+    "recommended_next_checkpoint": "PROD-080-english-customer-move-remaining-slice-selection",
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "classifier_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  }
+}

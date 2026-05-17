@@ -1,0 +1,45 @@
+{
+  "checkpoint_id": "PROD-080-english-customer-move-remaining-slice-selection",
+  "source_checkpoint_id": "PROD-079-english-provider-comparison-post-patch-regression",
+  "decision": "select_unknown_runtime_signal_subtypes_inventory_next",
+  "provider_comparison_slice_closed": true,
+  "unreachable_existing_response_types_remaining": false,
+  "selected_next_slice": "unknown_runtime_signal_subtypes",
+  "why": "After provider-comparison became reachable and post-patch regression passed, the remaining broad customer-move gate should move to inventorying unknown-runtime-signal subtypes rather than broad reachability expansion.",
+  "protected_boundary_controls_required": true,
+  "runtime_patch_allowed": false,
+  "response_text_change_allowed": false,
+  "classifier_change_allowed": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-081-english-unknown-runtime-signal-subtype-inventory",
+  "available_candidate_slices": [
+    {
+      "slice_id": "specific_known_safe_non_refusal_turns",
+      "status": "candidate_for_inventory_only",
+      "why": "Some already-reviewed non-refusal groups have strong evidence, but expanding beyond those groups needs exact branch inventory first.",
+      "risk": "Could duplicate already-promoted safe-call-control behavior or accidentally widen approved branches.",
+      "runtime_patch_allowed": false
+    },
+    {
+      "slice_id": "unreachable_existing_response_types",
+      "status": "candidate_for_inventory_only",
+      "why": "Some localized responses may exist without classifier reachability; inventory can separate dead responses from intentionally blocked routes.",
+      "risk": "Making dormant responses reachable without review can surface unapproved wording.",
+      "runtime_patch_allowed": false
+    },
+    {
+      "slice_id": "unknown_runtime_signal_subtypes",
+      "status": "candidate_for_inventory_only",
+      "why": "Unknown turns are currently safest as clarification. Splitting unknowns requires evidence that a subtype has a safer deterministic route.",
+      "risk": "Over-classification could reduce clarification and force wrong branches.",
+      "runtime_patch_allowed": false
+    },
+    {
+      "slice_id": "protected_boundary_false_positive_checks",
+      "status": "candidate_for_inventory_only",
+      "why": "Any classifier expansion must prove it does not swallow support, do-not-call, payment, healthcare, coverage, voicemail, human-request, or email-only boundaries.",
+      "risk": "False positives in protected boundaries are higher severity than missed sales opportunities.",
+      "runtime_patch_allowed": false
+    }
+  ]
+}

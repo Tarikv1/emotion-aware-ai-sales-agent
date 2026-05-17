@@ -1,0 +1,24 @@
+{
+  "checkpoint_id": "PROD-073-english-customer-move-classification-gate-decision",
+  "checkpoint_name": "English Customer-Move Classification Gate Decision",
+  "source_checkpoint_id": "PROD-072-english-coverage-knowledge-post-patch-regression",
+  "priority_source_checkpoint_id": "PROD-061-english-product-policy-gate-prioritization",
+  "scope": "english_customer_move_classification_gate_decision_only",
+  "remaining_gate_id": "customer_move_classification_outside_selected_non_refusal_groups",
+  "decision_type": "split_before_probe",
+  "broad_classifier_patch_allowed": false,
+  "runtime_change_requested": false,
+  "response_text_change_requested": false,
+  "classifier_change_requested": false,
+  "retrieval_change_requested": false,
+  "requires_human_review_before_next_checkpoint": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-074-english-customer-move-classification-slice-inventory",
+  "split_criteria": [
+    "No broad customer-move classifier patch without a branch inventory.",
+    "Each slice must define expected sales_difficulty, next_action, and call_control before runtime patching.",
+    "Protected-boundary controls must be included for every classifier slice.",
+    "Response text changes must stay out of classifier-reachability checkpoints unless separately reviewed.",
+    "Human review is required only when the checkpoint asks Tarik to approve concrete behavior, wording, or product-policy tradeoffs."
+  ]
+}

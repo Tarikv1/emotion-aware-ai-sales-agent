@@ -1,0 +1,21 @@
+{
+  "checkpoint_id": "PROD-071-english-coverage-knowledge-runtime-patch",
+  "decision": "english_coverage_knowledge_runtime_patch_applied",
+  "runtime_path": "runtime/core/realtime_turns.py",
+  "patched_sales_difficulty": "coverage-boundary-route",
+  "patched_trigger_markers": [
+    "eligible",
+    "reimbursement",
+    "reimbursed",
+    "plan covers"
+  ],
+  "response_text_change": false,
+  "classifier_change": true,
+  "call_control_change_for_patched_phrases": true,
+  "next_action_change_for_patched_phrases": true,
+  "runtime_patch_case_count": 6,
+  "failed_runtime_patch_case_count": 0,
+  "requires_human_review_before_next_checkpoint": false,
+  "recommended_next_checkpoint": "PROD-072-english-coverage-knowledge-post-patch-regression",
+  "production_runtime_promotion_allowed": false
+}

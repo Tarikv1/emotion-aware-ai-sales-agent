@@ -1,0 +1,160 @@
+{
+  "checkpoint_id": "PROD-064-english-autonomy-post-patch-multi-turn-regression",
+  "items": [
+    {
+      "case_id": "prod-064-follow-up-written-info",
+      "transcript": "send me the details",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "written-info-request",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue"
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "written-info-request",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true,
+        "does_not_loop_back_to_autonomy": true,
+        "old_response_absent": true,
+        "follow_up_not_terminal_by_default": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-064-follow-up-product-detail",
+      "transcript": "which plan is included",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "product-detail-lookup",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue"
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "product-detail-lookup",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "One moment. I will check the product details before I answer."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true,
+        "does_not_loop_back_to_autonomy": true,
+        "old_response_absent": true,
+        "follow_up_not_terminal_by_default": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-064-follow-up-callback",
+      "transcript": "call me back next week",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "callback-request",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "offer-scheduling",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "callback-request",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "offer-scheduling",
+        "call_control": "continue-call",
+        "agent_response": "Of course. Do you have a time in mind?"
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true,
+        "does_not_loop_back_to_autonomy": true,
+        "old_response_absent": true,
+        "follow_up_not_terminal_by_default": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-064-follow-up-price",
+      "transcript": "what is the price",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "price-first-direct",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue"
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "price-first-direct",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true,
+        "does_not_loop_back_to_autonomy": true,
+        "old_response_absent": true,
+        "follow_up_not_terminal_by_default": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-064-follow-up-sale-ready",
+      "transcript": "I am ready to move forward",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "sale-ready-missing-criteria",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "sale-ready-missing-criteria",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Before I mark this as ready, I need one more check. No payment or contract signing happens on this call."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true,
+        "does_not_loop_back_to_autonomy": true,
+        "old_response_absent": true,
+        "follow_up_not_terminal_by_default": true
+      },
+      "passed": true,
+      "issue_codes": []
+    }
+  ]
+}

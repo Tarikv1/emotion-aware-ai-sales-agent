@@ -1,0 +1,28 @@
+{
+  "checkpoint_id": "PROD-069-english-remaining-product-policy-gate-selection-after-voicemail",
+  "decision": "select_coverage_knowledge_policy_behavior_next",
+  "selected_gate": {
+    "rank": 1,
+    "gate_id": "coverage_knowledge_policy_behavior",
+    "label": "Coverage knowledge-policy behavior",
+    "status": "selected_for_next_probe_still_blocked",
+    "selected_for_next_probe": true,
+    "runtime_patch_allowed": false,
+    "retrieval_allowed": false,
+    "why": "It is now the smallest remaining English product-policy gate after autonomy and voicemail. A synthetic boundary probe can define allowed uncertainty, escalation, and forbidden coverage advice before any runtime or retrieval change.",
+    "risk": "Could imply insurance coverage, eligibility, or legal/financial advice without a reviewed knowledge policy.",
+    "next_action": "open_synthetic_policy_probe",
+    "review_question": "No review needed for this selection. A later probe may need human review if it asks Tarik to accept product/legal wording or coverage facts.",
+    "recommended_probe_scope": "synthetic English coverage knowledge-policy boundary examples only",
+    "still_blocked_until_probe_passes": true,
+    "knowledge_fact_claims_allowed": false,
+    "coverage_advice_allowed": false,
+    "escalation_required_for_specific_coverage_questions": true
+  },
+  "deferred_gates": [
+    "customer_move_classification_outside_selected_non_refusal_groups"
+  ],
+  "requires_human_review_before_next_checkpoint": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-070-english-coverage-knowledge-policy-probe"
+}

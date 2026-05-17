@@ -1,0 +1,35 @@
+{
+  "checkpoint_id": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity",
+  "checkpoint_name": "English Customer-Move Remaining Slice Selection After Process Clarity",
+  "source_checkpoint_id": "PROD-096-english-next-step-process-clarity-post-patch-regression",
+  "validation": {
+    "passed": false,
+    "review_packet_created": true
+  },
+  "summary": {
+    "selection_only": true,
+    "source_validator_passed": false,
+    "selected_next_slice": "recommendation_roleplay_boundary",
+    "selected_remaining_case_id": "prod-081-recommendation-02",
+    "review_html_created": true,
+    "requires_human_review_before_next_checkpoint": true,
+    "recommended_next_checkpoint": "PROD-098-english-recommendation-roleplay-review-import",
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "classifier_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  }
+}

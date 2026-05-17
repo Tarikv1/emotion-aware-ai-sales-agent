@@ -1,0 +1,37 @@
+{
+  "checkpoint_id": "PROD-082-english-guided-option-selection-review",
+  "source_checkpoint_id": "PROD-081-english-unknown-runtime-signal-subtype-inventory",
+  "source_validation": {
+    "passed": true,
+    "inventory_passed": true
+  },
+  "source_summary": {
+    "selected_next_subtype": "guided_option_selection_candidate",
+    "recommended_next_checkpoint_requires_human_review": true,
+    "recommended_next_checkpoint": "PROD-082-english-guided-option-selection-review"
+  },
+  "source_decision": {
+    "decision": "select_guided_option_selection_review_next",
+    "required_guardrails": [
+      "two real options",
+      "fair presentation",
+      "neither",
+      "not now",
+      "explain the difference",
+      "no fake urgency",
+      "no pretend agreement",
+      "no payment collection",
+      "no contract signing"
+    ],
+    "runtime_patch_allowed": false
+  },
+  "source_validator_run": {
+    "command": "python scripts/validate_prod_081_english_unknown_runtime_signal_subtype_inventory.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-081-english-unknown-runtime-signal-subtype-inventory validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

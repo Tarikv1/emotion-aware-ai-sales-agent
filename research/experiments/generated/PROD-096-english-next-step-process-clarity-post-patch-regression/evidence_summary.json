@@ -1,0 +1,64 @@
+{
+  "checkpoint_id": "PROD-096-english-next-step-process-clarity-post-patch-regression",
+  "source_checkpoint_id": "PROD-095-english-next-step-process-clarity-runtime-patch",
+  "source_validation": {
+    "passed": true,
+    "runtime_patch_verified": true
+  },
+  "source_summary": {
+    "runtime_patch_applied": true,
+    "runtime_behavior_changed": true,
+    "response_text_behavior_changed": true,
+    "classifier_behavior_changed": true,
+    "source_validator_passed": true,
+    "selected_gap_fixed_count": 1,
+    "positive_case_count": 5,
+    "positive_case_failures": 0,
+    "control_case_count": 10,
+    "control_case_failures": 0,
+    "current_runtime_gap_count_before_patch": 1,
+    "no_payment_on_call_default": true,
+    "email_link_register_path_allowed": true,
+    "review_html_created": false,
+    "recommended_next_checkpoint": "PROD-096-english-next-step-process-clarity-post-patch-regression",
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  },
+  "source_validator_run": {
+    "command": "python scripts/validate_prod_095_english_next_step_process_clarity_runtime_patch.py",
+    "returncode": 1,
+    "stdout_tail": [],
+    "stderr_tail": [
+      "    validate_payloads()",
+      "    ~~~~~~~~~~~~~~~~~^^",
+      "  File \"D:\\Codex\\active\\emotion-aware-ai-sales-agent\\scripts\\validate_prod_095_english_next_step_process_clarity_runtime_patch.py\", line 155, in validate_payloads",
+      "    assert_condition(result[\"validation\"][\"passed\"] is True, result)",
+      "    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"D:\\Codex\\active\\emotion-aware-ai-sales-agent\\scripts\\validate_prod_095_english_next_step_process_clarity_runtime_patch.py\", line 69, in assert_condition",
+      "    raise AssertionError(message)",
+      "AssertionError: {'checkpoint_id': 'PROD-095-english-next-step-process-clarity-runtime-patch', 'checkpoint_name': 'English Next-Step Process Clarity Runtime Patch', 'source_checkpoint_id': 'PROD-094-english-next-step-process-clarity-narrow-probe', 'validation': {'passed': False, 'runtime_patch_verified': True}, 'summary': {'runtime_patch_applied': True, 'runtime_behavior_changed': True, 'response_text_behavior_changed': True, 'classifier_behavior_changed': True, 'source_validator_passed': False, 'selected_gap_fixed_count': 1, 'positive_case_count': 5, 'positive_case_failures': 0, 'control_case_count': 10, 'control_case_failures': 0, 'current_runtime_gap_count_before_patch': 1, 'no_payment_on_call_default': True, 'email_link_register_path_allowed': True, 'review_html_created': False, 'recommended_next_checkpoint': 'PROD-096-english-next-step-process-clarity-post-patch-regression', 'retrieval_enabled': False, 'provider_calls_made': False, 'llm_used': False, 'llm_judging_used': False, 'private_data_read': False, 'voice_playback_unblocked': False, 'public_demo_polish_unblocked': False, 'real_customer_use_unblocked': False, 'payment_collection_allowed': False, 'contract_signing_allowed': False, 'production_runtime_promotion_allowed': False, 'german_exact_phrase_promotion_allowed': False, 'german_naturalness_claimed': False, 'legal_compliance_claimed': False}}"
+    ],
+    "passed": false
+  },
+  "stable_english_guard_run": {
+    "command": "python scripts/validate_english_multi_turn_regression_guard.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-056-english-post-patch-multi-turn-regression validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

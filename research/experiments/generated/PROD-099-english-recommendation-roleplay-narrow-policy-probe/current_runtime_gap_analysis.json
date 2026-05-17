@@ -1,0 +1,149 @@
+{
+  "checkpoint_id": "PROD-099-english-recommendation-roleplay-narrow-policy-probe",
+  "source_checkpoint_id": "PROD-098-english-recommendation-roleplay-review-import",
+  "items": [
+    {
+      "case_id": "prod-097-roleplay-position",
+      "customer_turn": "What would you do in my position?",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "target_sales_difficulty": "recommendation-roleplay-boundary",
+      "candidate_response": "I would base it on what you will actually use. If [customer pain] is the issue, $59 fits better because it includes [feature A] and [feature B]. If not, start with $29.",
+      "runtime_gap": true,
+      "snapshot": "pre_PROD_100_runtime_patch"
+    },
+    {
+      "case_id": "prod-097-roleplay-business",
+      "customer_turn": "If this were your business, which plan would you take?",
+      "observed_sales_difficulty": "product-detail-lookup",
+      "observed_agent_response": "One moment. I will check the product details before I answer.",
+      "target_sales_difficulty": "recommendation-roleplay-boundary",
+      "candidate_response": "If I were judging only from what you told me, I would lean $59 for [feature A] and [feature B]. If those do not matter yet, $29 is the cleaner start.",
+      "runtime_gap": true,
+      "snapshot": "pre_PROD_100_runtime_patch"
+    },
+    {
+      "case_id": "prod-097-direct-recommendation",
+      "customer_turn": "Can you just tell me what you recommend?",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "target_sales_difficulty": "recommendation-roleplay-boundary",
+      "candidate_response": "Based on [customer pain], I would recommend $59. If budget is the main concern, start with $29 and upgrade later if you need to.",
+      "runtime_gap": true,
+      "snapshot": "pre_PROD_100_runtime_patch"
+    },
+    {
+      "case_id": "prod-097-leaning-cheaper",
+      "customer_turn": "I am leaning $29, but is $59 smarter?",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "target_sales_difficulty": "recommendation-roleplay-boundary",
+      "candidate_response": "I mean, $59 is smarter only if [feature A] and [feature B] would actually save you time. Otherwise $29 is the cleaner start.",
+      "runtime_gap": true,
+      "snapshot": "pre_PROD_100_runtime_patch"
+    },
+    {
+      "case_id": "prod-097-decide-for-me-control",
+      "customer_turn": "Can you decide for me?",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "target_sales_difficulty": "recommendation-roleplay-boundary",
+      "candidate_response": "I cannot decide for you, but I can show what each plan covers and why one may fit your needs better.",
+      "runtime_gap": true,
+      "snapshot": "pre_PROD_100_runtime_patch"
+    },
+    {
+      "case_id": "prod-097-promise-worth-control",
+      "customer_turn": "Can you promise $59 will be worth it?",
+      "observed_sales_difficulty": "guided-option-selection",
+      "observed_agent_response": "$59 is worth considering if [feature A] and [feature B] helps [customer goal]. If not, $29 is enough to start.",
+      "target_sales_difficulty": "recommendation-roleplay-boundary",
+      "candidate_response": "I cannot promise that. I can explain what $59 adds and you can decide if that is worth it.",
+      "runtime_gap": true,
+      "snapshot": "pre_PROD_100_runtime_patch"
+    },
+    {
+      "case_id": "prod-097-no-pressure-honest-take",
+      "customer_turn": "I do not want sales pressure; just give me your honest take.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "target_sales_difficulty": "recommendation-roleplay-boundary",
+      "candidate_response": "Fair. My honest take is $59 only makes sense if [feature A] and [feature B] solve the problem you described. If not, start with $29.",
+      "runtime_gap": true,
+      "snapshot": "pre_PROD_100_runtime_patch"
+    }
+  ],
+  "runtime_gap_count": 7,
+  "runtime_gaps": [
+    {
+      "case_id": "prod-097-roleplay-position",
+      "customer_turn": "What would you do in my position?",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "target_sales_difficulty": "recommendation-roleplay-boundary",
+      "candidate_response": "I would base it on what you will actually use. If [customer pain] is the issue, $59 fits better because it includes [feature A] and [feature B]. If not, start with $29.",
+      "runtime_gap": true,
+      "snapshot": "pre_PROD_100_runtime_patch"
+    },
+    {
+      "case_id": "prod-097-roleplay-business",
+      "customer_turn": "If this were your business, which plan would you take?",
+      "observed_sales_difficulty": "product-detail-lookup",
+      "observed_agent_response": "One moment. I will check the product details before I answer.",
+      "target_sales_difficulty": "recommendation-roleplay-boundary",
+      "candidate_response": "If I were judging only from what you told me, I would lean $59 for [feature A] and [feature B]. If those do not matter yet, $29 is the cleaner start.",
+      "runtime_gap": true,
+      "snapshot": "pre_PROD_100_runtime_patch"
+    },
+    {
+      "case_id": "prod-097-direct-recommendation",
+      "customer_turn": "Can you just tell me what you recommend?",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "target_sales_difficulty": "recommendation-roleplay-boundary",
+      "candidate_response": "Based on [customer pain], I would recommend $59. If budget is the main concern, start with $29 and upgrade later if you need to.",
+      "runtime_gap": true,
+      "snapshot": "pre_PROD_100_runtime_patch"
+    },
+    {
+      "case_id": "prod-097-leaning-cheaper",
+      "customer_turn": "I am leaning $29, but is $59 smarter?",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "target_sales_difficulty": "recommendation-roleplay-boundary",
+      "candidate_response": "I mean, $59 is smarter only if [feature A] and [feature B] would actually save you time. Otherwise $29 is the cleaner start.",
+      "runtime_gap": true,
+      "snapshot": "pre_PROD_100_runtime_patch"
+    },
+    {
+      "case_id": "prod-097-decide-for-me-control",
+      "customer_turn": "Can you decide for me?",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "target_sales_difficulty": "recommendation-roleplay-boundary",
+      "candidate_response": "I cannot decide for you, but I can show what each plan covers and why one may fit your needs better.",
+      "runtime_gap": true,
+      "snapshot": "pre_PROD_100_runtime_patch"
+    },
+    {
+      "case_id": "prod-097-promise-worth-control",
+      "customer_turn": "Can you promise $59 will be worth it?",
+      "observed_sales_difficulty": "guided-option-selection",
+      "observed_agent_response": "$59 is worth considering if [feature A] and [feature B] helps [customer goal]. If not, $29 is enough to start.",
+      "target_sales_difficulty": "recommendation-roleplay-boundary",
+      "candidate_response": "I cannot promise that. I can explain what $59 adds and you can decide if that is worth it.",
+      "runtime_gap": true,
+      "snapshot": "pre_PROD_100_runtime_patch"
+    },
+    {
+      "case_id": "prod-097-no-pressure-honest-take",
+      "customer_turn": "I do not want sales pressure; just give me your honest take.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "target_sales_difficulty": "recommendation-roleplay-boundary",
+      "candidate_response": "Fair. My honest take is $59 only makes sense if [feature A] and [feature B] solve the problem you described. If not, start with $29.",
+      "runtime_gap": true,
+      "snapshot": "pre_PROD_100_runtime_patch"
+    }
+  ]
+}

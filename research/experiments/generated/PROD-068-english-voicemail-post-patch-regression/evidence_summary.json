@@ -1,0 +1,34 @@
+{
+  "checkpoint_id": "PROD-068-english-voicemail-post-patch-regression",
+  "source_checkpoint_id": "PROD-067-english-voicemail-action-only-runtime-patch",
+  "source_validation": {
+    "passed": true,
+    "runtime_patch_passed": true
+  },
+  "source_summary": {
+    "patched_agent_response": "",
+    "runtime_behavior_changed": true,
+    "response_text_behavior_changed": true,
+    "classifier_behavior_changed": false,
+    "call_control_behavior_changed": false,
+    "next_action_behavior_changed": false
+  },
+  "source_validator_run": {
+    "command": "python scripts/validate_prod_067_english_voicemail_action_only_runtime_patch.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-067-english-voicemail-action-only-runtime-patch validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  },
+  "stable_guard_run": {
+    "command": "python scripts/validate_english_multi_turn_regression_guard.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-056-english-post-patch-multi-turn-regression validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

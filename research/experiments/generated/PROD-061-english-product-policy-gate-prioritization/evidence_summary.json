@@ -1,0 +1,36 @@
+{
+  "checkpoint_id": "PROD-061-english-product-policy-gate-prioritization",
+  "source_checkpoint_id": "PROD-060-runtime-promotion-path-decision",
+  "source_selected_path": "internal_guarded_english_baseline_only",
+  "source_allowed_scope": "local_offline_synthetic_internal_regression_reference",
+  "source_still_blocked": [
+    "customer_move_classification_outside_selected_non_refusal_groups",
+    "voicemail_action_only_behavior",
+    "coverage_knowledge_policy_behavior",
+    "context_sensitive_autonomy_behavior",
+    "native_german_review",
+    "voice_playback_quality",
+    "retrieval_default",
+    "provider_or_private_data_use",
+    "legal_compliance_review",
+    "public_demo_use",
+    "real_customer_use",
+    "payment_collection",
+    "contract_signing",
+    "production_runtime_promotion"
+  ],
+  "source_path_decision": "select_internal_guarded_english_baseline_only",
+  "source_stable_guard_passed": true,
+  "source_review_html_path": "research/experiments/generated/PROD-060-runtime-promotion-path-decision/prod_060_review.html",
+  "english_direction_accepted": true,
+  "english_direction_note": "Tarik wants to move forward with the English version for now, while keeping non-English and deployment paths blocked.",
+  "source_validator_run": {
+    "command": "python scripts\\validate_prod_060_runtime_promotion_path_decision.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-060-runtime-promotion-path-decision validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

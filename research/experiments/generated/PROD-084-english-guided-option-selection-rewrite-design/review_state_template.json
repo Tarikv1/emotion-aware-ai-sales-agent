@@ -1,0 +1,49 @@
+{
+  "checkpoint_id": "PROD-084-english-guided-option-selection-rewrite-design",
+  "review_status": "pending_tarik_review",
+  "review_item": "guided_option_selection_rewritten_examples",
+  "reviewer": "",
+  "review_date": "",
+  "overall_decision": "",
+  "overall_notes": "",
+  "example_decisions": {
+    "rewrite-binary-choice": {
+      "decision": "",
+      "notes": ""
+    },
+    "rewrite-fit-unclear": {
+      "decision": "",
+      "notes": ""
+    },
+    "rewrite-recommendation": {
+      "decision": "",
+      "notes": ""
+    },
+    "rewrite-difference": {
+      "decision": "",
+      "notes": ""
+    },
+    "rewrite-decide-later": {
+      "decision": "",
+      "notes": ""
+    },
+    "rewrite-neither-uncertain": {
+      "decision": "",
+      "notes": ""
+    },
+    "rewrite-payment-path": {
+      "decision": "",
+      "notes": ""
+    },
+    "rewrite-upgrade-path": {
+      "decision": "",
+      "notes": ""
+    }
+  },
+  "valid_decisions": [
+    "approve_rewrite_for_policy_probe",
+    "needs_rewrite",
+    "keep_deferred"
+  ],
+  "exported_from": "research/experiments/generated/PROD-084-english-guided-option-selection-rewrite-design/prod_084_review.html"
+}

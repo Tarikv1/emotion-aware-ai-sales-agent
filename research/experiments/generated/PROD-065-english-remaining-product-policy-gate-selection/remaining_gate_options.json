@@ -1,0 +1,42 @@
+{
+  "checkpoint_id": "PROD-065-english-remaining-product-policy-gate-selection",
+  "ranked_remaining_gates": [
+    {
+      "rank": 1,
+      "gate_id": "voicemail_action_only_behavior",
+      "label": "Voicemail action-only behavior",
+      "status": "selected_for_next_probe_still_blocked",
+      "selected_for_next_probe": true,
+      "runtime_patch_allowed": false,
+      "why": "It is the smallest remaining English product-policy gate after autonomy: one known voicemail case, explicit owner feedback, and no regulated knowledge or broad classifier expansion.",
+      "risk": "Could make the runtime take inappropriate same-loop actions after voicemail detection or blur message-taking versus selling behavior.",
+      "next_action": "Open a synthetic English voicemail action-only policy probe before any runtime patch.",
+      "review_question": "No new review needed unless the probe finds ambiguity in action-only voicemail behavior."
+    },
+    {
+      "rank": 2,
+      "gate_id": "coverage_knowledge_policy_behavior",
+      "label": "Coverage knowledge-policy behavior",
+      "status": "deferred_still_blocked",
+      "selected_for_next_probe": false,
+      "runtime_patch_allowed": false,
+      "why": "It involves regulated coverage or eligibility implications and needs product/legal knowledge boundaries before runtime work.",
+      "risk": "Could imply insurance coverage, eligibility, or legal/financial advice without a reviewed knowledge policy.",
+      "next_action": "Keep blocked until a separate knowledge-policy checkpoint defines allowed facts, uncertainty handling, and escalation.",
+      "review_question": "Should coverage behavior wait behind the lower-blast-radius voicemail gate?"
+    },
+    {
+      "rank": 3,
+      "gate_id": "customer_move_classification_outside_selected_non_refusal_groups",
+      "label": "Customer-move classification outside selected non-refusal groups",
+      "status": "deferred_still_blocked",
+      "selected_for_next_probe": false,
+      "runtime_patch_allowed": false,
+      "why": "It has the highest blast radius because it changes reachability across multiple runtime branches.",
+      "risk": "Could route customer turns into newly promoted behavior without enough evidence for each branch.",
+      "next_action": "Keep blocked until smaller policy gates provide clearer acceptance criteria for broader classifier reachability.",
+      "review_question": "Should broad classifier expansion remain last among the current English product-policy gates?"
+    }
+  ],
+  "selected_next_gate_id": "voicemail_action_only_behavior"
+}

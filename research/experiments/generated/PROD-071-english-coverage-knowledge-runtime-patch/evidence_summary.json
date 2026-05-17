@@ -1,0 +1,35 @@
+{
+  "checkpoint_id": "PROD-071-english-coverage-knowledge-runtime-patch",
+  "source_checkpoint_id": "PROD-070-english-coverage-knowledge-policy-probe",
+  "source_runtime_gap_case_ids": [
+    "prod-070-eligible-reimbursement",
+    "prod-070-plan-covers-this",
+    "prod-070-policy-reimbursed"
+  ],
+  "source_policy_decision": "coverage_policy_probe_passed_recommend_narrow_runtime_patch",
+  "source_runtime_gap_count": 3,
+  "source_validator_run": {
+    "command": "python scripts\\validate_prod_070_english_coverage_knowledge_policy_probe.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-070-english-coverage-knowledge-policy-probe validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  },
+  "future_persuasion_tactic_candidate": {
+    "tactic_id": "guided_option_selection",
+    "track": "future_persuasion_tactics_checkpoint",
+    "description": "After fit and interest are established, present two real paid options with clear tradeoffs and let the customer choose.",
+    "not_in_prod_071_scope": true,
+    "runtime_enabled": false,
+    "unlock_condition": "Open a dedicated persuasion-tactics checkpoint after coverage-boundary and post-patch regression work is stable.",
+    "required_guardrails": [
+      "only after fit or interest is established",
+      "both options must be real and fairly described",
+      "neither, not now, and explain the difference remain valid customer choices",
+      "no fake urgency",
+      "no pretending the customer already agreed"
+    ]
+  }
+}

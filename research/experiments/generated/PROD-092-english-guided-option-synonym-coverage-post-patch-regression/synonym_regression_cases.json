@@ -1,0 +1,223 @@
+{
+  "checkpoint_id": "PROD-092-english-guided-option-synonym-coverage-post-patch-regression",
+  "case_count": 12,
+  "cases": [
+    {
+      "case_id": "prod-090-start-small-fuller",
+      "customer_turn": "Should I start small or go with the fuller option?",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "You can start with $29 if [feature X] and [feature Y] covers enough. If you later need [feature A] and [feature B], we can move you to $59.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-090-side-by-side",
+      "customer_turn": "Can you show me both options side by side?",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "$29 covers [feature X] and [feature Y]. $59 includes that plus [feature A] and [feature B].",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-090-safer-start-small",
+      "customer_turn": "Would it be safer to start small first?",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "You can start with $29 if [feature X] and [feature Y] covers enough. If you later need [feature A] and [feature B], we can move you to $59.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-090-fuller-worth-it",
+      "customer_turn": "Is the fuller option worth it for what I need?",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "$59 is worth considering if [feature A] and [feature B] helps [customer goal]. If not, $29 is enough to start.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-087-rewrite-binary-choice",
+      "customer_turn": "So do I choose the $29 option or the $59 option?",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "I mean, if you only need [feature X] and [feature Y], start with $29. If [feature A] and [feature B] matters too, $59 fits better.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-087-rewrite-fit-unclear",
+      "customer_turn": "I can see both paths, I am just not sure which one fits me.",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "Based on what you said, $59 sounds stronger if [feature A] and [feature B] saves you time. If not, $29 is the safer start and you can upgrade later.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-087-rewrite-recommendation",
+      "customer_turn": "Which route would you suggest for someone like me?",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "Honestly, like, if your main issue is [customer pain], I would lean $59 because it adds [feature A] and [feature B]. If budget matters more, start $29.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-087-rewrite-difference",
+      "customer_turn": "What is the real difference between the $29 option and the $59 option?",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "$29 covers [feature X] and [feature Y]. $59 adds [feature A] and [feature B], so it fits better if you need [customer goal].",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-087-rewrite-decide-later",
+      "customer_turn": "Can I choose later instead of deciding on this call?",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "Yes. I can send the differences in writing and keep both options open for the follow-up.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-087-rewrite-neither-uncertain",
+      "customer_turn": "I'm not sure either is right.",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "I get that, you know, it may just mean we should match the plan to [customer goal] first, then see whether $29 or $59 makes sense.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-087-rewrite-payment-path",
+      "customer_turn": "If I pick one, can I pay now?",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "No payment on this call. I'll send you the link by email, and you can review the plan and register there.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-087-rewrite-upgrade-path",
+      "customer_turn": "Could I start smaller and change later if it works?",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "You can start with $29 if [feature X] and [feature Y] covers enough. If you later need [feature A] and [feature B], we can move you to $59.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true
+      },
+      "passed": true
+    }
+  ],
+  "failure_count": 0
+}

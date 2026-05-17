@@ -1,0 +1,14 @@
+{
+  "checkpoint_id": "PROD-076-english-provider-comparison-review-import",
+  "review_item": "provider-comparison",
+  "source_response": "That is fair. We can compare fit and terms without pressure before you decide whether this is worth reviewing.",
+  "approved_for_narrow_probe": true,
+  "approved_as_exact_response_text": false,
+  "constraints": [
+    "Use only a narrow probe; do not promote broad customer-move classification.",
+    "Do not claim provider or terms comparison unless the comparison target is known from the customer turn or approved campaign data.",
+    "Keep future response wording shorter than the PROD-075 review text.",
+    "Keep no-replacement discipline.",
+    "Keep payment collection, contract signing, and production promotion blocked."
+  ]
+}

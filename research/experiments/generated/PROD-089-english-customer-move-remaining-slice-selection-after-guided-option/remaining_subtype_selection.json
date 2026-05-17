@@ -1,0 +1,47 @@
+{
+  "checkpoint_id": "PROD-089-english-customer-move-remaining-slice-selection-after-guided-option",
+  "source_checkpoint_id": "PROD-088-english-guided-option-selection-post-patch-regression",
+  "decision": "select_guided_option_synonym_coverage_probe_next",
+  "selected_next_slice": "guided_option_synonym_coverage",
+  "why": "The reviewed guided-option route now covers the approved examples, but a re-probe of the old unknown inventory still misses two near-synonyms: start small versus fuller option, and side-by-side option comparison. This is smaller and safer than opening advice roleplay or process/payment flow.",
+  "selected_gap_case_ids": [
+    "prod-081-guided-option-02",
+    "prod-081-plan-difference-02"
+  ],
+  "selected_gap_turns": [
+    "Should I start small or go with the fuller option?",
+    "Can you show me both options side by side?"
+  ],
+  "uses_existing_review_guardrails": true,
+  "existing_guardrails": [
+    "two real options",
+    "plan feature matrix required",
+    "customer facts required for fit-based steering",
+    "no fake urgency",
+    "no pretend agreement",
+    "no payment collection",
+    "no contract signing"
+  ],
+  "deferred_slices": [
+    {
+      "slice": "recommendation_roleplay_boundary",
+      "why_deferred": "`What would you do in my position?` is higher-pressure advice framing and should not be silently folded into the current route."
+    },
+    {
+      "slice": "next_step_process_clarity",
+      "why_deferred": "Process after yes may depend on campaign-specific payment, registration, or human handoff workflow."
+    },
+    {
+      "slice": "generic_decision_confusion",
+      "why_deferred": "Generic confusion is safer as a clarification fallback until a reviewed decision-frame response exists."
+    }
+  ],
+  "protected_boundary_controls_passed": true,
+  "requires_human_review_before_probe": false,
+  "runtime_patch_allowed": false,
+  "response_text_change_allowed": false,
+  "classifier_change_allowed": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-090-english-guided-option-synonym-coverage-narrow-probe",
+  "recommended_next_checkpoint_requires_human_review": false
+}

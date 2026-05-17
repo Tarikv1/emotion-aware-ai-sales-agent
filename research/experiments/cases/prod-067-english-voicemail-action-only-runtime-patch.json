@@ -1,0 +1,71 @@
+{
+  "checkpoint_id": "PROD-067-english-voicemail-action-only-runtime-patch",
+  "checkpoint_name": "English Voicemail Action-Only Runtime Patch",
+  "source_checkpoint_id": "PROD-066-english-voicemail-action-only-policy-probe",
+  "scope": "english_voicemail_action_only_runtime_patch",
+  "candidate_action": "Do not speak to voicemail. Log follow-up and try again later according to campaign rules.",
+  "expected_response": "",
+  "old_response": "I reached voicemail, so I will log this for follow-up according to campaign rules.",
+  "runtime_path": "runtime/core/realtime_turns.py",
+  "runtime_change_requested": true,
+  "response_text_change_requested": true,
+  "classifier_change_requested": false,
+  "call_control_change_requested": false,
+  "next_action_change_requested": false,
+  "english_only_runtime_patch": true,
+  "requires_human_review_before_next_checkpoint": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-068-english-voicemail-post-patch-regression",
+  "runtime_probe_cases": [
+    {
+      "case_id": "prod-067-machine-detected-voicemail",
+      "input_type": "voicemail-detected",
+      "transcript": "",
+      "stage": "opening"
+    },
+    {
+      "case_id": "prod-067-voicemail-greeting",
+      "input_type": "voicemail-detected",
+      "transcript": "You have reached the voicemail box.",
+      "stage": "opening"
+    },
+    {
+      "case_id": "prod-067-beep-only",
+      "input_type": "voicemail-detected",
+      "transcript": "[beep]",
+      "stage": "opening"
+    },
+    {
+      "case_id": "prod-067-no-sales-message",
+      "input_type": "voicemail-detected",
+      "transcript": "Please leave your message after the tone.",
+      "stage": "opening"
+    }
+  ],
+  "non_voicemail_guard_cases": [
+    {
+      "case_id": "prod-067-human-callback-request-not-voicemail",
+      "input_type": "speech",
+      "transcript": "call me back next week",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "callback-request",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "offer-scheduling",
+        "call_control": "continue-call"
+      }
+    },
+    {
+      "case_id": "prod-067-human-written-info-not-voicemail",
+      "input_type": "speech",
+      "transcript": "send me the details",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "written-info-request",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue"
+      }
+    }
+  ]
+}

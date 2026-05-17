@@ -1,0 +1,23 @@
+{
+  "checkpoint_id": "PROD-077-english-provider-comparison-narrow-probe-design",
+  "source_checkpoint_id": "PROD-076-english-provider-comparison-review-import",
+  "source_validation": {
+    "passed": true,
+    "review_imported": true
+  },
+  "source_summary": {
+    "narrow_probe_approved": true,
+    "exact_as_written_approval": false,
+    "comparison_grounding_required": true,
+    "brevity_constraint_required": true
+  },
+  "source_validator_run": {
+    "command": "python scripts\\validate_prod_076_english_provider_comparison_review_import.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-076-english-provider-comparison-review-import validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

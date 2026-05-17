@@ -1,0 +1,13 @@
+{
+  "checkpoint_id": "PROD-079-english-provider-comparison-post-patch-regression",
+  "checkpoint_name": "English Provider-Comparison Post-Patch Regression",
+  "source_checkpoint_id": "PROD-078-english-provider-comparison-runtime-patch",
+  "scope": "english_provider_comparison_post_patch_regression",
+  "runtime_change_requested": false,
+  "response_text_change_requested": false,
+  "classifier_change_requested": false,
+  "retrieval_change_requested": false,
+  "stable_english_guard_required": true,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-080-english-customer-move-remaining-slice-selection"
+}

@@ -1,0 +1,62 @@
+{
+  "checkpoint_id": "PROD-085-english-guided-option-selection-rewrite-review-import",
+  "source_checkpoint_id": "PROD-084-english-guided-option-selection-rewrite-design",
+  "review_status": "completed_from_chat_review",
+  "reviewer": "Tarik",
+  "review_date": "2026-05-16",
+  "review_item": "guided_option_selection_rewritten_examples",
+  "overall_decision": "approve_rewrite_for_policy_probe_with_payment_wording_edit",
+  "narrow_policy_probe_approved_after_required_edit": true,
+  "narrow_policy_probe_approved_as_written": false,
+  "overall_notes": "Reviewer liked the rewritten examples except example seven. The payment-path response should be shorter and should not include a companyname.com email placeholder. Use a shorter email-link wording such as sending the link by email so the customer can review the plan and register there.",
+  "approved_as_written_examples": [
+    "rewrite-binary-choice",
+    "rewrite-fit-unclear",
+    "rewrite-recommendation",
+    "rewrite-difference",
+    "rewrite-decide-later",
+    "rewrite-neither-uncertain",
+    "rewrite-upgrade-path"
+  ],
+  "required_payment_wording_edit": {
+    "example_id": "rewrite-payment-path",
+    "review_decision": "approved_after_required_wording_edit",
+    "source_issue": "The source wording was too specific and too long because it included a companyname.com email placeholder and finish-registration phrasing.",
+    "required_direction": "Shorten to an email-link path without naming a company-domain placeholder.",
+    "final_candidate_response": "No payment on this call. I'll send you the link by email, and you can review the plan and register there."
+  },
+  "example_decisions": {
+    "rewrite-binary-choice": {
+      "decision": "approve_as_written",
+      "notes": "Accepted for the narrow probe candidate."
+    },
+    "rewrite-fit-unclear": {
+      "decision": "approve_as_written",
+      "notes": "Accepted for the narrow probe candidate."
+    },
+    "rewrite-recommendation": {
+      "decision": "approve_as_written",
+      "notes": "Accepted for the narrow probe candidate."
+    },
+    "rewrite-difference": {
+      "decision": "approve_as_written",
+      "notes": "Accepted for the narrow probe candidate."
+    },
+    "rewrite-decide-later": {
+      "decision": "approve_as_written",
+      "notes": "Accepted for the narrow probe candidate."
+    },
+    "rewrite-neither-uncertain": {
+      "decision": "approve_as_written",
+      "notes": "Accepted for the narrow probe candidate."
+    },
+    "rewrite-payment-path": {
+      "decision": "approved_after_required_wording_edit",
+      "notes": "Replace the company-domain placeholder with a shorter email-link path."
+    },
+    "rewrite-upgrade-path": {
+      "decision": "approve_as_written",
+      "notes": "Accepted for the narrow probe candidate."
+    }
+  }
+}

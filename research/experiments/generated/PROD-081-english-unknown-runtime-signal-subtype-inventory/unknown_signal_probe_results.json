@@ -1,0 +1,179 @@
+{
+  "checkpoint_id": "PROD-081-english-unknown-runtime-signal-subtype-inventory",
+  "source_checkpoint_id": "PROD-080-english-customer-move-remaining-slice-selection",
+  "case_count": 10,
+  "unknown_runtime_signal_case_count": 10,
+  "unknown_cases": [
+    {
+      "case_id": "prod-081-guided-option-01",
+      "subtype_id": "guided_option_selection_candidate",
+      "customer_turn": "So do I choose the 29 option or the 59 option?",
+      "why_inventory": "Customer is asking to choose between two real offer options without using a currently routed price or plan-detail phrase.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "stays_unknown_runtime_signal": true
+    },
+    {
+      "case_id": "prod-081-guided-option-02",
+      "subtype_id": "guided_option_selection_candidate",
+      "customer_turn": "Should I start small or go with the fuller option?",
+      "why_inventory": "Customer has a binary choice frame, but the current runtime only has a generic clarification fallback.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "stays_unknown_runtime_signal": true
+    },
+    {
+      "case_id": "prod-081-guided-option-03",
+      "subtype_id": "guided_option_selection_candidate",
+      "customer_turn": "I can see both paths, I am just not sure which one fits me.",
+      "why_inventory": "This is the exact risk area for guided option selection: the agent must preserve customer agency instead of pushing.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "stays_unknown_runtime_signal": true
+    },
+    {
+      "case_id": "prod-081-plan-difference-01",
+      "subtype_id": "plan_option_difference",
+      "customer_turn": "What is the real difference between the 29 option and the 59 option?",
+      "why_inventory": "Customer asks for option difference without a current-provider comparison target.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "stays_unknown_runtime_signal": true
+    },
+    {
+      "case_id": "prod-081-plan-difference-02",
+      "subtype_id": "plan_option_difference",
+      "customer_turn": "Can you show me both options side by side?",
+      "why_inventory": "Option-comparison intent exists, but current provider-comparison guard intentionally does not cover this.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "stays_unknown_runtime_signal": true
+    },
+    {
+      "case_id": "prod-081-recommendation-01",
+      "subtype_id": "recommendation_request",
+      "customer_turn": "Which route would you suggest for someone like me?",
+      "why_inventory": "Recommendation language can create advice pressure and should not be folded into a sale branch without review.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "stays_unknown_runtime_signal": true
+    },
+    {
+      "case_id": "prod-081-recommendation-02",
+      "subtype_id": "recommendation_request",
+      "customer_turn": "What would you do in my position?",
+      "why_inventory": "The current runtime has no reviewed boundary for role-playing a customer's decision.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "stays_unknown_runtime_signal": true
+    },
+    {
+      "case_id": "prod-081-next-step-01",
+      "subtype_id": "next_step_clarity",
+      "customer_turn": "What happens after I say yes?",
+      "why_inventory": "The customer asks about process after agreement, not payment or contract signing.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "stays_unknown_runtime_signal": true
+    },
+    {
+      "case_id": "prod-081-deferral-01",
+      "subtype_id": "deferral_or_choose_later",
+      "customer_turn": "Can I choose later instead of deciding on this call?",
+      "why_inventory": "The customer asks for deferral, but the exact phrase is outside the existing autonomy-check trigger.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "stays_unknown_runtime_signal": true
+    },
+    {
+      "case_id": "prod-081-unclear-interest-01",
+      "subtype_id": "unclear_interest_probe",
+      "customer_turn": "I am listening, but I do not know what I am supposed to decide yet.",
+      "why_inventory": "The runtime should probably clarify the decision frame, but no reviewed subtype exists.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "stays_unknown_runtime_signal": true
+    }
+  ],
+  "non_unknown_cases": []
+}

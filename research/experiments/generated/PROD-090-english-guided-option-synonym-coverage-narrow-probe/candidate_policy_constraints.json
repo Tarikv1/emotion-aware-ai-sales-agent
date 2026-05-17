@@ -1,0 +1,20 @@
+{
+  "checkpoint_id": "PROD-090-english-guided-option-synonym-coverage-narrow-probe",
+  "source_checkpoint_id": "PROD-089-english-customer-move-remaining-slice-selection-after-guided-option",
+  "selected_source_slice": "guided_option_synonym_coverage",
+  "plan_feature_matrix_required": true,
+  "uses_existing_review_guardrails": true,
+  "positive_synonym_targets": [
+    "start small",
+    "fuller option",
+    "side by side"
+  ],
+  "advice_roleplay_boundary_deferred": true,
+  "process_clarity_deferred": true,
+  "generic_confusion_deferred": true,
+  "no_new_payment_path": true,
+  "no_payment_collection": true,
+  "no_contract_signing": true,
+  "runtime_patch_allowed_inside_checkpoint": false,
+  "recommended_next_checkpoint": "PROD-091-english-guided-option-synonym-coverage-runtime-patch"
+}

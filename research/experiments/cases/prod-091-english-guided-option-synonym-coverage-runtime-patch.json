@@ -1,0 +1,10 @@
+{
+  "checkpoint_id": "PROD-091-english-guided-option-synonym-coverage-runtime-patch",
+  "checkpoint_name": "English Guided Option Synonym Coverage Runtime Patch",
+  "source_checkpoint_id": "PROD-090-english-guided-option-synonym-coverage-narrow-probe",
+  "scope": "english_guided_option_synonym_coverage_runtime_patch",
+  "runtime_patch_allowed": true,
+  "selected_source_slice": "guided_option_synonym_coverage",
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-092-english-guided-option-synonym-coverage-post-patch-regression"
+}

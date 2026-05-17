@@ -1,0 +1,48 @@
+{
+  "checkpoint_id": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity",
+  "review_type": "recommendation_roleplay_boundary",
+  "items": [
+    {
+      "example_id": "prod-097-roleplay-position",
+      "decision": "pending",
+      "notes": "",
+      "edited_agent_response": "I would base it on what you will actually use. If [customer pain] is the issue, $59 fits better because it includes [feature A] and [feature B]. If not, start with $29."
+    },
+    {
+      "example_id": "prod-097-roleplay-business",
+      "decision": "pending",
+      "notes": "",
+      "edited_agent_response": "If I were judging only from what you told me, I would lean $59 for [feature A] and [feature B]. If those do not matter yet, $29 is the cleaner start."
+    },
+    {
+      "example_id": "prod-097-direct-recommendation",
+      "decision": "pending",
+      "notes": "",
+      "edited_agent_response": "Based on [customer pain], I would recommend $59. If budget is the main concern, start with $29 and upgrade later."
+    },
+    {
+      "example_id": "prod-097-leaning-cheaper",
+      "decision": "pending",
+      "notes": "",
+      "edited_agent_response": "I mean, $59 is smarter only if [feature A] and [feature B] would actually save you time. Otherwise $29 is the cleaner start."
+    },
+    {
+      "example_id": "prod-097-decide-for-me-control",
+      "decision": "pending",
+      "notes": "",
+      "edited_agent_response": "I cannot decide for you. I can show what each plan covers and why one may fit your needs better."
+    },
+    {
+      "example_id": "prod-097-promise-worth-control",
+      "decision": "pending",
+      "notes": "",
+      "edited_agent_response": "I cannot promise that. I can explain what $59 adds and you can decide if that is worth it."
+    },
+    {
+      "example_id": "prod-097-no-pressure-honest-take",
+      "decision": "pending",
+      "notes": "",
+      "edited_agent_response": "Fair. My honest take is $59 only makes sense if [feature A] and [feature B] solve the problem you described. If not, start with $29."
+    }
+  ]
+}

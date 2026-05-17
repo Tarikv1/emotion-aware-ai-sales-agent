@@ -1,0 +1,56 @@
+{
+  "checkpoint_id": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity",
+  "review_type": "recommendation_roleplay_boundary",
+  "example_count": 7,
+  "examples": [
+    {
+      "example_id": "prod-097-roleplay-position",
+      "customer_turn": "What would you do in my position?",
+      "candidate_agent_response": "I would base it on what you will actually use. If [customer pain] is the issue, $59 fits better because it includes [feature A] and [feature B]. If not, start with $29.",
+      "review_question": "Is this acceptable, or is using 'I would' too strong for the agent?",
+      "risk": "The customer asks for roleplay advice. The agent should guide without taking the decision away."
+    },
+    {
+      "example_id": "prod-097-roleplay-business",
+      "customer_turn": "If this were your business, which plan would you take?",
+      "candidate_agent_response": "If I were judging only from what you told me, I would lean $59 for [feature A] and [feature B]. If those do not matter yet, $29 is the cleaner start.",
+      "review_question": "Is the roleplay framing okay when the agent ties it to stated needs?",
+      "risk": "This is more persuasive than a neutral comparison and may need softer wording."
+    },
+    {
+      "example_id": "prod-097-direct-recommendation",
+      "customer_turn": "Can you just tell me what you recommend?",
+      "candidate_agent_response": "Based on [customer pain], I would recommend $59. If budget is the main concern, start with $29 and upgrade later.",
+      "review_question": "Should direct recommendation be allowed after customer facts exist?",
+      "risk": "Recommendation is useful, but it can become pushy if not grounded in the customer's facts."
+    },
+    {
+      "example_id": "prod-097-leaning-cheaper",
+      "customer_turn": "I am leaning $29, but is $59 smarter?",
+      "candidate_agent_response": "I mean, $59 is smarter only if [feature A] and [feature B] would actually save you time. Otherwise $29 is the cleaner start.",
+      "review_question": "Does this steer enough without repeating obvious price facts?",
+      "risk": "This uses light natural filler and fit-based steering; reject if it feels too scripted or too casual."
+    },
+    {
+      "example_id": "prod-097-decide-for-me-control",
+      "customer_turn": "Can you decide for me?",
+      "candidate_agent_response": "I cannot decide for you. I can show what each plan covers and why one may fit your needs better.",
+      "review_question": "Is this the right boundary when the customer asks the agent to decide?",
+      "risk": "The agent must not take over the customer's decision."
+    },
+    {
+      "example_id": "prod-097-promise-worth-control",
+      "customer_turn": "Can you promise $59 will be worth it?",
+      "candidate_agent_response": "I cannot promise that. I can explain what $59 adds and you can decide if that is worth it.",
+      "review_question": "Is this enough of a claim boundary?",
+      "risk": "The agent must not guarantee value or outcome."
+    },
+    {
+      "example_id": "prod-097-no-pressure-honest-take",
+      "customer_turn": "I do not want sales pressure; just give me your honest take.",
+      "candidate_agent_response": "Fair. My honest take is $59 only makes sense if [feature A] and [feature B] solve the problem you described. If not, start with $29.",
+      "review_question": "Is 'honest take' acceptable, or should the agent avoid that persona?",
+      "risk": "This may feel human, but it can also sound like over-personalized persuasion."
+    }
+  ]
+}

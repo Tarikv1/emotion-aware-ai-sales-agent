@@ -1,0 +1,80 @@
+{
+  "checkpoint_id": "PROD-064-english-autonomy-post-patch-multi-turn-regression",
+  "items": [
+    {
+      "case_id": "prod-064-first-turn-time-to-think",
+      "transcript": "I need time to think. Do not rush.",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "autonomy-check",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Okay, no rush. We can keep this low-pressure and only clarify what you need."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_autonomy": true,
+        "strategy_inquiry": true,
+        "next_action_follow_up": true,
+        "call_control_continue": true,
+        "patched_response_exact": true,
+        "old_response_absent": true,
+        "no_commitment_or_payment_collection": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-064-first-turn-do-not-rush",
+      "transcript": "Please do not rush me.",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "autonomy-check",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Okay, no rush. We can keep this low-pressure and only clarify what you need."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_autonomy": true,
+        "strategy_inquiry": true,
+        "next_action_follow_up": true,
+        "call_control_continue": true,
+        "patched_response_exact": true,
+        "old_response_absent": true,
+        "no_commitment_or_payment_collection": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-064-first-turn-time-before-anything",
+      "transcript": "I need time to think before anything else.",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "autonomy-check",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Okay, no rush. We can keep this low-pressure and only clarify what you need."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_autonomy": true,
+        "strategy_inquiry": true,
+        "next_action_follow_up": true,
+        "call_control_continue": true,
+        "patched_response_exact": true,
+        "old_response_absent": true,
+        "no_commitment_or_payment_collection": true
+      },
+      "passed": true,
+      "issue_codes": []
+    }
+  ]
+}

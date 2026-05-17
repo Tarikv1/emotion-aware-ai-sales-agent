@@ -1,0 +1,21 @@
+{
+  "checkpoint_id": "PROD-070-english-coverage-knowledge-policy-probe",
+  "source_checkpoint_id": "PROD-069-english-remaining-product-policy-gate-selection-after-voicemail",
+  "source_validation": {
+    "passed": true,
+    "gate_selection_passed": true
+  },
+  "source_selected_gate_id": "coverage_knowledge_policy_behavior",
+  "source_selected_gate_status": "selected_for_next_probe_still_blocked",
+  "source_selection_decision": "select_coverage_knowledge_policy_behavior_next",
+  "source_options_selected_next_gate_id": "coverage_knowledge_policy_behavior",
+  "source_validator_run": {
+    "command": "python scripts\\validate_prod_069_english_remaining_product_policy_gate_selection_after_voicemail.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-069-english-remaining-product-policy-gate-selection-after-voicemail validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

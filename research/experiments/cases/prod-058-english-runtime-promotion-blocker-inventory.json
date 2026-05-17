@@ -1,0 +1,29 @@
+{
+  "checkpoint_id": "PROD-058-english-runtime-promotion-blocker-inventory",
+  "checkpoint_name": "English Runtime Promotion Blocker Inventory",
+  "source_checkpoint_id": "PROD-057-english-multi-turn-regression-guard-decision",
+  "source_regression_id": "PROD-056-english-post-patch-multi-turn-regression",
+  "scope": "inventory_only",
+  "stable_guard_command": "python scripts\\validate_english_multi_turn_regression_guard.py",
+  "possible_next_decisions": [
+    "final_english_only_readiness_review",
+    "return_to_native_german_review_import",
+    "reopen_voice_or_retrieval_only_through_separate_gates"
+  ],
+  "requires_human_review_before_next_checkpoint": true,
+  "non_goals": [
+    "runtime behavior change",
+    "response text change",
+    "German exact phrase promotion",
+    "voice playback promotion",
+    "retrieval default change",
+    "provider call",
+    "LLM call",
+    "private data read",
+    "public demo approval",
+    "real customer use",
+    "payment collection",
+    "contract signing",
+    "production runtime promotion"
+  ]
+}

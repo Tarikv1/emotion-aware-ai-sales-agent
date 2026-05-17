@@ -1,0 +1,16 @@
+{
+  "checkpoint_id": "PROD-089-english-customer-move-remaining-slice-selection-after-guided-option",
+  "checkpoint_name": "English Customer-Move Remaining Slice Selection After Guided Option",
+  "source_checkpoint_id": "PROD-088-english-guided-option-selection-post-patch-regression",
+  "scope": "english_customer_move_remaining_slice_selection_after_guided_option",
+  "selection_only": true,
+  "post_guided_option_reinventory": true,
+  "selected_next_slice": "guided_option_synonym_coverage",
+  "runtime_change_requested": false,
+  "response_text_change_requested": false,
+  "classifier_change_requested": false,
+  "retrieval_change_requested": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-090-english-guided-option-synonym-coverage-narrow-probe",
+  "recommended_next_checkpoint_requires_human_review": false
+}

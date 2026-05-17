@@ -1,0 +1,14 @@
+{
+  "checkpoint_id": "PROD-083-english-guided-option-selection-review-import",
+  "review_item": "guided_option_selection_candidate",
+  "no_payment_on_call_default": true,
+  "approved_campaign_payment_path_can_be_explained": true,
+  "example_campaign_payment_paths": [
+    "human callback handles payment",
+    "approved email link from campaign company domain",
+    "approved registration link or form",
+    "contract or membership paperwork handled outside the call"
+  ],
+  "future_agent_payment_handling_deferred": true,
+  "runtime_requirement": "For now, option selection must not collect payment on the call. The agent may explain the approved campaign payment path if the campaign profile defines it."
+}

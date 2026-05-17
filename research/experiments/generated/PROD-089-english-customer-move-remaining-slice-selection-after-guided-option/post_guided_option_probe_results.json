@@ -1,0 +1,186 @@
+{
+  "checkpoint_id": "PROD-089-english-customer-move-remaining-slice-selection-after-guided-option",
+  "source_checkpoint_id": "PROD-088-english-guided-option-selection-post-patch-regression",
+  "case_count": 10,
+  "items": [
+    {
+      "case_id": "prod-081-guided-option-01",
+      "subtype_id": "guided_option_selection_candidate",
+      "customer_turn": "So do I choose the 29 option or the 59 option?",
+      "why_inventory": "Customer is asking to choose between two real offer options without using a currently routed price or plan-detail phrase.",
+      "observed_sales_difficulty": "guided-option-selection",
+      "observed_selected_strategy": "guided-option-selection",
+      "observed_next_action": "answer-and-continue",
+      "observed_agent_response": "I mean, if you only need [feature X] and [feature Y], start with $29. If [feature A] and [feature B] matters too, $59 fits better.",
+      "currently_guided_option": true,
+      "selected_gap": false
+    },
+    {
+      "case_id": "prod-081-guided-option-02",
+      "subtype_id": "guided_option_selection_candidate",
+      "customer_turn": "Should I start small or go with the fuller option?",
+      "why_inventory": "Customer has a binary choice frame, but the current runtime only has a generic clarification fallback.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_selected_strategy": "inquiry",
+      "observed_next_action": "ask-follow-up",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_guided_option": false,
+      "selected_gap": true,
+      "checkpoint_time_gap_evidence": true
+    },
+    {
+      "case_id": "prod-081-guided-option-03",
+      "subtype_id": "guided_option_selection_candidate",
+      "customer_turn": "I can see both paths, I am just not sure which one fits me.",
+      "why_inventory": "This is the exact risk area for guided option selection: the agent must preserve customer agency instead of pushing.",
+      "observed_sales_difficulty": "guided-option-selection",
+      "observed_selected_strategy": "guided-option-selection",
+      "observed_next_action": "answer-and-continue",
+      "observed_agent_response": "Based on what you said, $59 sounds stronger if [feature A] and [feature B] saves you time. If not, $29 is the safer start and you can upgrade later.",
+      "currently_guided_option": true,
+      "selected_gap": false
+    },
+    {
+      "case_id": "prod-081-plan-difference-01",
+      "subtype_id": "plan_option_difference",
+      "customer_turn": "What is the real difference between the 29 option and the 59 option?",
+      "why_inventory": "Customer asks for option difference without a current-provider comparison target.",
+      "observed_sales_difficulty": "guided-option-selection",
+      "observed_selected_strategy": "guided-option-selection",
+      "observed_next_action": "answer-and-continue",
+      "observed_agent_response": "$29 covers [feature X] and [feature Y]. $59 adds [feature A] and [feature B], so it fits better if you need [customer goal].",
+      "currently_guided_option": true,
+      "selected_gap": false
+    },
+    {
+      "case_id": "prod-081-plan-difference-02",
+      "subtype_id": "plan_option_difference",
+      "customer_turn": "Can you show me both options side by side?",
+      "why_inventory": "Option-comparison intent exists, but current provider-comparison guard intentionally does not cover this.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_selected_strategy": "inquiry",
+      "observed_next_action": "ask-follow-up",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_guided_option": false,
+      "selected_gap": true,
+      "checkpoint_time_gap_evidence": true
+    },
+    {
+      "case_id": "prod-081-recommendation-01",
+      "subtype_id": "recommendation_request",
+      "customer_turn": "Which route would you suggest for someone like me?",
+      "why_inventory": "Recommendation language can create advice pressure and should not be folded into a sale branch without review.",
+      "observed_sales_difficulty": "guided-option-selection",
+      "observed_selected_strategy": "guided-option-selection",
+      "observed_next_action": "answer-and-continue",
+      "observed_agent_response": "Honestly, like, if your main issue is [customer pain], I would lean $59 because it adds [feature A] and [feature B]. If budget matters more, start $29.",
+      "currently_guided_option": true,
+      "selected_gap": false
+    },
+    {
+      "case_id": "prod-081-recommendation-02",
+      "subtype_id": "recommendation_request",
+      "customer_turn": "What would you do in my position?",
+      "why_inventory": "The current runtime has no reviewed boundary for role-playing a customer's decision.",
+      "observed_sales_difficulty": "recommendation-roleplay-boundary",
+      "observed_selected_strategy": "guided-recommendation",
+      "observed_next_action": "answer-and-continue",
+      "observed_agent_response": "I would base it on what you will actually use. If [customer pain] is the issue, $59 fits better because it includes [feature A] and [feature B]. If not, start with $29.",
+      "currently_guided_option": false,
+      "selected_gap": false
+    },
+    {
+      "case_id": "prod-081-next-step-01",
+      "subtype_id": "next_step_clarity",
+      "customer_turn": "What happens after I say yes?",
+      "why_inventory": "The customer asks about process after agreement, not payment or contract signing.",
+      "observed_sales_difficulty": "next-step-process-clarity",
+      "observed_selected_strategy": "process-clarity",
+      "observed_next_action": "answer-and-continue",
+      "observed_agent_response": "I'll send the link by email. You can review the plan and register there. No payment on this call.",
+      "currently_guided_option": false,
+      "selected_gap": false
+    },
+    {
+      "case_id": "prod-081-deferral-01",
+      "subtype_id": "deferral_or_choose_later",
+      "customer_turn": "Can I choose later instead of deciding on this call?",
+      "why_inventory": "The customer asks for deferral, but the exact phrase is outside the existing autonomy-check trigger.",
+      "observed_sales_difficulty": "guided-option-selection",
+      "observed_selected_strategy": "guided-option-selection",
+      "observed_next_action": "answer-and-continue",
+      "observed_agent_response": "Yes. I can send the differences in writing and keep both options open for the follow-up.",
+      "currently_guided_option": true,
+      "selected_gap": false
+    },
+    {
+      "case_id": "prod-081-unclear-interest-01",
+      "subtype_id": "unclear_interest_probe",
+      "customer_turn": "I am listening, but I do not know what I am supposed to decide yet.",
+      "why_inventory": "The runtime should probably clarify the decision frame, but no reviewed subtype exists.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_selected_strategy": "inquiry",
+      "observed_next_action": "ask-follow-up",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_guided_option": false,
+      "selected_gap": false
+    }
+  ],
+  "currently_guided_option_count": 5,
+  "currently_guided_option_case_ids": [
+    "prod-081-guided-option-01",
+    "prod-081-guided-option-03",
+    "prod-081-plan-difference-01",
+    "prod-081-recommendation-01",
+    "prod-081-deferral-01"
+  ],
+  "remaining_unknown_count": 3,
+  "remaining_unknown_case_ids": [
+    "prod-081-guided-option-02",
+    "prod-081-plan-difference-02",
+    "prod-081-unclear-interest-01"
+  ],
+  "selected_gap_count": 2,
+  "selected_gaps": [
+    {
+      "case_id": "prod-081-guided-option-02",
+      "subtype_id": "guided_option_selection_candidate",
+      "customer_turn": "Should I start small or go with the fuller option?",
+      "why_inventory": "Customer has a binary choice frame, but the current runtime only has a generic clarification fallback.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_selected_strategy": "inquiry",
+      "observed_next_action": "ask-follow-up",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_guided_option": false,
+      "selected_gap": true,
+      "checkpoint_time_gap_evidence": true
+    },
+    {
+      "case_id": "prod-081-plan-difference-02",
+      "subtype_id": "plan_option_difference",
+      "customer_turn": "Can you show me both options side by side?",
+      "why_inventory": "Option-comparison intent exists, but current provider-comparison guard intentionally does not cover this.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_selected_strategy": "inquiry",
+      "observed_next_action": "ask-follow-up",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_guided_option": false,
+      "selected_gap": true,
+      "checkpoint_time_gap_evidence": true
+    }
+  ],
+  "deferred_unknowns": [
+    {
+      "case_id": "prod-081-unclear-interest-01",
+      "subtype_id": "unclear_interest_probe",
+      "customer_turn": "I am listening, but I do not know what I am supposed to decide yet.",
+      "why_inventory": "The runtime should probably clarify the decision frame, but no reviewed subtype exists.",
+      "observed_sales_difficulty": "unknown-runtime-signal",
+      "observed_selected_strategy": "inquiry",
+      "observed_next_action": "ask-follow-up",
+      "observed_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_guided_option": false,
+      "selected_gap": false
+    }
+  ]
+}

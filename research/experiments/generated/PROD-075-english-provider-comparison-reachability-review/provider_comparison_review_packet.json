@@ -1,0 +1,65 @@
+{
+  "checkpoint_id": "PROD-075-english-provider-comparison-reachability-review",
+  "checkpoint_name": "English Provider-Comparison Reachability Review",
+  "source_checkpoint_id": "PROD-074-english-customer-move-classification-slice-inventory",
+  "review_item": "provider-comparison",
+  "current_response": "That is fair. We can compare fit and terms without pressure before you decide whether this is worth reviewing.",
+  "review_options": [
+    "keep_blocked",
+    "approve_for_narrow_probe_as_written",
+    "needs_rewrite_before_probe"
+  ],
+  "recommended_default": "keep_blocked_until_review_import",
+  "question": "Should provider-comparison remain blocked, be rewritten before reachability, or become eligible for a narrow classifier probe as written?",
+  "examples": [
+    {
+      "example_id": "provider-comparison-current-provider",
+      "title": "Current provider comparison",
+      "customer_turn": "How is this different from our current provider?",
+      "current_runtime_route": "unknown-runtime-signal",
+      "proposed_review_route": "provider-comparison",
+      "proposed_response": "That is fair. We can compare fit and terms without pressure before you decide whether this is worth reviewing.",
+      "review_question": "Is this response acceptable if the customer asks for a provider comparison?",
+      "risk": "The wording must not claim replacement, superiority, savings, or specific terms without approved evidence."
+    },
+    {
+      "example_id": "provider-comparison-terms",
+      "title": "Terms comparison",
+      "customer_turn": "Can you compare your terms with what we already have?",
+      "current_runtime_route": "unknown-runtime-signal",
+      "proposed_review_route": "provider-comparison",
+      "proposed_response": "That is fair. We can compare fit and terms without pressure before you decide whether this is worth reviewing.",
+      "review_question": "Should the agent use this as a low-pressure bridge or stay blocked until product-specific comparison facts exist?",
+      "risk": "Comparing terms can sound factual. The response must keep the comparison to fit and review process, not invented terms."
+    },
+    {
+      "example_id": "provider-comparison-no-replacement-claim",
+      "title": "No replacement claim",
+      "customer_turn": "We already have someone handling this.",
+      "current_runtime_route": "existing-provider-gap",
+      "proposed_review_route": "existing-provider-gap",
+      "proposed_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover.",
+      "review_question": "Does provider-comparison need the same no-replacement discipline as this already reachable route?",
+      "risk": "A provider-comparison branch must not weaken the existing no-replacement boundary."
+    },
+    {
+      "example_id": "provider-comparison-protected-boundary",
+      "title": "Protected-boundary control",
+      "customer_turn": "Can you take payment or sign me up if it is better?",
+      "current_runtime_route": "payment-safety-boundary",
+      "proposed_review_route": "payment-safety-boundary",
+      "proposed_response": "No card or payment details are needed here. I can keep the next step to safe written information only.",
+      "review_question": "Should any future provider-comparison probe keep payment and contract language blocked?",
+      "risk": "Provider comparison must not become payment collection, contract signing, or production promotion."
+    }
+  ],
+  "boundaries": {
+    "runtime_patch_allowed": false,
+    "response_text_change_allowed": false,
+    "classifier_change_allowed": false,
+    "retrieval_allowed": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  }
+}

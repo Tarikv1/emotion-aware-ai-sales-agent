@@ -1,0 +1,12 @@
+{
+  "checkpoint_id": "PROD-090-english-guided-option-synonym-coverage-narrow-probe",
+  "checkpoint_name": "English Guided Option Synonym Coverage Narrow Probe",
+  "source_checkpoint_id": "PROD-089-english-customer-move-remaining-slice-selection-after-guided-option",
+  "scope": "english_guided_option_synonym_coverage_narrow_policy_probe",
+  "policy_probe_only": true,
+  "selected_source_slice": "guided_option_synonym_coverage",
+  "runtime_patch_allowed_inside_checkpoint": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-091-english-guided-option-synonym-coverage-runtime-patch",
+  "recommended_next_checkpoint_requires_human_review": false
+}

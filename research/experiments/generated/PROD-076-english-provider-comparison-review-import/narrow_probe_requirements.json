@@ -1,0 +1,25 @@
+{
+  "checkpoint_id": "PROD-076-english-provider-comparison-review-import",
+  "review_item": "provider-comparison",
+  "requirements": {
+    "comparison_target_required": true,
+    "generic_provider_or_terms_comparison_allowed": false,
+    "narrow_classifier_probe_allowed": true,
+    "broad_customer_move_classifier_patch_allowed": false,
+    "payment_details_request_allowed": false,
+    "contract_signing_allowed": false,
+    "known_current_provider_or_terms_signal_required": true,
+    "unknown_comparison_target_should_not_route_to_provider_comparison": true
+  },
+  "positive_probe_signal_examples": [
+    "How is this different from our current provider?",
+    "Can you compare this with what we already use?",
+    "What would be different versus our current setup?"
+  ],
+  "negative_probe_signal_examples": [
+    "What do you offer?",
+    "Is it better?",
+    "Can you sign me up?",
+    "What does it cost?"
+  ]
+}

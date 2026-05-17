@@ -1,0 +1,133 @@
+{
+  "checkpoint_id": "PROD-064-english-autonomy-post-patch-multi-turn-regression",
+  "checkpoint_name": "English Autonomy Post-Patch Multi-Turn Regression",
+  "source_checkpoint_id": "PROD-063-english-autonomy-check-runtime-wording-patch",
+  "stable_guard_source_checkpoint_id": "PROD-056-english-post-patch-multi-turn-regression",
+  "scope": "english_autonomy_post_patch_regression_only",
+  "expected_patched_response": "Okay, no rush. We can keep this low-pressure and only clarify what you need.",
+  "old_response": "That makes sense. We can keep this low pressure and clarify only what you need before any next step.",
+  "runtime_change_requested": false,
+  "response_text_change_requested": false,
+  "requires_human_review_before_next_checkpoint": false,
+  "recommended_next_checkpoint": "PROD-065-english-remaining-product-policy-gate-selection",
+  "autonomy_first_turn_cases": [
+    {
+      "case_id": "prod-064-first-turn-time-to-think",
+      "transcript": "I need time to think. Do not rush.",
+      "stage": "objection"
+    },
+    {
+      "case_id": "prod-064-first-turn-do-not-rush",
+      "transcript": "Please do not rush me.",
+      "stage": "objection"
+    },
+    {
+      "case_id": "prod-064-first-turn-time-before-anything",
+      "transcript": "I need time to think before anything else.",
+      "stage": "objection"
+    }
+  ],
+  "autonomy_follow_up_cases": [
+    {
+      "case_id": "prod-064-follow-up-written-info",
+      "transcript": "send me the details",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "written-info-request",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue"
+      }
+    },
+    {
+      "case_id": "prod-064-follow-up-product-detail",
+      "transcript": "which plan is included",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "product-detail-lookup",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue"
+      }
+    },
+    {
+      "case_id": "prod-064-follow-up-callback",
+      "transcript": "call me back next week",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "callback-request",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "offer-scheduling",
+        "call_control": "continue-call"
+      }
+    },
+    {
+      "case_id": "prod-064-follow-up-price",
+      "transcript": "what is the price",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "price-first-direct",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue"
+      }
+    },
+    {
+      "case_id": "prod-064-follow-up-sale-ready",
+      "transcript": "I am ready to move forward",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "sale-ready-missing-criteria",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      }
+    }
+  ],
+  "protected_boundary_cases": [
+    {
+      "case_id": "prod-064-protected-do-not-call",
+      "transcript": "please stop calling me",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "do-not-call",
+        "selected_strategy": "rapport",
+        "next_action": "suppress-contact",
+        "call_control": "end-call"
+      }
+    },
+    {
+      "case_id": "prod-064-protected-email-only",
+      "transcript": "just email me",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "email-only-boundary",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call"
+      }
+    },
+    {
+      "case_id": "prod-064-protected-support",
+      "transcript": "I need support with my account",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "support-route",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate"
+      }
+    },
+    {
+      "case_id": "prod-064-protected-payment",
+      "transcript": "I am not giving payment details",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "payment-safety-boundary",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call"
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "checkpoint_id": "PROD-076-english-provider-comparison-review-import",
+  "review_item": "provider-comparison",
+  "source_response": "That is fair. We can compare fit and terms without pressure before you decide whether this is worth reviewing.",
+  "brevity_required": true,
+  "comparison_grounding_required": true,
+  "example_brevity_edit": "No payment details needed.",
+  "allowed_candidate_direction": "Shorten the response and keep it as a fit-check bridge, not a factual provider or terms comparison.",
+  "candidate_response_not_promoted": true,
+  "runtime_response_changed": false
+}

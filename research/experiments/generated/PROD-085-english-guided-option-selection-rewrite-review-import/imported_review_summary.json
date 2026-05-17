@@ -1,0 +1,28 @@
+{
+  "checkpoint_id": "PROD-085-english-guided-option-selection-rewrite-review-import",
+  "source_checkpoint_id": "PROD-084-english-guided-option-selection-rewrite-design",
+  "review_item": "guided_option_selection_rewritten_examples",
+  "review_status": "completed_from_chat_review",
+  "reviewer": "Tarik",
+  "review_date": "2026-05-16",
+  "overall_decision": "approve_rewrite_for_policy_probe_with_payment_wording_edit",
+  "narrow_policy_probe_approved_after_required_edit": true,
+  "narrow_policy_probe_approved_as_written": false,
+  "payment_example_status": "approved_after_required_wording_edit",
+  "other_examples_status": "approved_as_written",
+  "approved_as_written_examples": [
+    "rewrite-binary-choice",
+    "rewrite-fit-unclear",
+    "rewrite-recommendation",
+    "rewrite-difference",
+    "rewrite-decide-later",
+    "rewrite-neither-uncertain",
+    "rewrite-upgrade-path"
+  ],
+  "required_edit_examples": [
+    "rewrite-payment-path"
+  ],
+  "source_example_count": 8,
+  "overall_notes": "Reviewer liked the rewritten examples except example seven. The payment-path response should be shorter and should not include a companyname.com email placeholder. Use a shorter email-link wording such as sending the link by email so the customer can review the plan and register there.",
+  "source_artifact_preserved": true
+}

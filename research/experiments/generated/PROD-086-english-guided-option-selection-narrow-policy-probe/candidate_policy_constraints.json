@@ -1,0 +1,26 @@
+{
+  "checkpoint_id": "PROD-086-english-guided-option-selection-narrow-policy-probe",
+  "source_checkpoint_id": "PROD-085-english-guided-option-selection-rewrite-review-import",
+  "requires_plan_feature_matrix": true,
+  "requires_customer_facts_for_steering": true,
+  "requires_no_payment_on_call_default": true,
+  "requires_no_company_domain_in_generic_payment_wording": true,
+  "requires_sparse_contextual_discourse_markers": true,
+  "random_fillers_allowed": false,
+  "sensitive_boundary_discourse_markers_allowed": false,
+  "approved_payment_response": "No payment on this call. I'll send you the link by email, and you can review the plan and register there.",
+  "forbidden_text": [
+    "there are two fair paths",
+    "neither is fine too",
+    "not now is a valid answer",
+    "$29 is the lower starting point",
+    "$59 includes more.",
+    "companyname.com",
+    "payment details",
+    "pay on this call",
+    "card details",
+    "sign the contract",
+    "today only",
+    "last chance"
+  ]
+}

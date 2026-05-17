@@ -1,0 +1,90 @@
+{
+  "checkpoint_id": "PROD-098-english-recommendation-roleplay-review-import",
+  "checkpoint_name": "English Recommendation Roleplay Review Import",
+  "source_checkpoint_id": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity",
+  "review_item": "recommendation_roleplay_boundary",
+  "narrow_policy_probe_candidate": true,
+  "runtime_candidate_promoted": false,
+  "examples_are_review_only_until_probe_passes": true,
+  "examples": [
+    {
+      "example_id": "prod-097-roleplay-position",
+      "customer_turn": "What would you do in my position?",
+      "final_candidate_response": "I would base it on what you will actually use. If [customer pain] is the issue, $59 fits better because it includes [feature A] and [feature B]. If not, start with $29.",
+      "review_decision": "approved_as_written",
+      "changed_from_source": false,
+      "risk": "The customer asks for roleplay advice. The agent should guide without taking the decision away.",
+      "review_question": "Is this acceptable, or is using 'I would' too strong for the agent?",
+      "word_count": 32
+    },
+    {
+      "example_id": "prod-097-roleplay-business",
+      "customer_turn": "If this were your business, which plan would you take?",
+      "final_candidate_response": "If I were judging only from what you told me, I would lean $59 for [feature A] and [feature B]. If those do not matter yet, $29 is the cleaner start.",
+      "review_decision": "approved_as_written",
+      "changed_from_source": false,
+      "risk": "This is more persuasive than a neutral comparison and may need softer wording.",
+      "review_question": "Is the roleplay framing okay when the agent ties it to stated needs?",
+      "word_count": 31
+    },
+    {
+      "example_id": "prod-097-direct-recommendation",
+      "customer_turn": "Can you just tell me what you recommend?",
+      "final_candidate_response": "Based on [customer pain], I would recommend $59. If budget is the main concern, start with $29 and upgrade later if you need to.",
+      "review_decision": "approved_after_required_wording_edit",
+      "changed_from_source": true,
+      "risk": "Recommendation is useful, but it can become pushy if not grounded in the customer's facts.",
+      "review_question": "Should direct recommendation be allowed after customer facts exist?",
+      "word_count": 24
+    },
+    {
+      "example_id": "prod-097-leaning-cheaper",
+      "customer_turn": "I am leaning $29, but is $59 smarter?",
+      "final_candidate_response": "I mean, $59 is smarter only if [feature A] and [feature B] would actually save you time. Otherwise $29 is the cleaner start.",
+      "review_decision": "approved_as_written",
+      "changed_from_source": false,
+      "risk": "This uses light natural filler and fit-based steering; reject if it feels too scripted or too casual.",
+      "review_question": "Does this steer enough without repeating obvious price facts?",
+      "word_count": 23
+    },
+    {
+      "example_id": "prod-097-decide-for-me-control",
+      "customer_turn": "Can you decide for me?",
+      "final_candidate_response": "I cannot decide for you, but I can show what each plan covers and why one may fit your needs better.",
+      "review_decision": "approved_after_required_wording_edit",
+      "changed_from_source": true,
+      "risk": "The agent must not take over the customer's decision.",
+      "review_question": "Is this the right boundary when the customer asks the agent to decide?",
+      "word_count": 21
+    },
+    {
+      "example_id": "prod-097-promise-worth-control",
+      "customer_turn": "Can you promise $59 will be worth it?",
+      "final_candidate_response": "I cannot promise that. I can explain what $59 adds and you can decide if that is worth it.",
+      "review_decision": "approved_as_written",
+      "changed_from_source": false,
+      "risk": "The agent must not guarantee value or outcome.",
+      "review_question": "Is this enough of a claim boundary?",
+      "word_count": 19
+    },
+    {
+      "example_id": "prod-097-no-pressure-honest-take",
+      "customer_turn": "I do not want sales pressure; just give me your honest take.",
+      "final_candidate_response": "Fair. My honest take is $59 only makes sense if [feature A] and [feature B] solve the problem you described. If not, start with $29.",
+      "review_decision": "approved_as_written",
+      "changed_from_source": false,
+      "risk": "This may feel human, but it can also sound like over-personalized persuasion.",
+      "review_question": "Is 'honest take' acceptable, or should the agent avoid that persona?",
+      "word_count": 25
+    }
+  ],
+  "boundaries": {
+    "runtime_patch_allowed": false,
+    "response_text_change_allowed": false,
+    "classifier_change_allowed": false,
+    "retrieval_allowed": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  }
+}

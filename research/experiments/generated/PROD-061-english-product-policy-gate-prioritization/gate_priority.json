@@ -1,0 +1,36 @@
+{
+  "checkpoint_id": "PROD-061-english-product-policy-gate-prioritization",
+  "decision": "prioritize_context_sensitive_autonomy_first",
+  "selected_first_gate": {
+    "gate_id": "context_sensitive_autonomy_behavior",
+    "label": "Context-sensitive autonomy behavior",
+    "status": "selected_for_next_probe_still_blocked",
+    "next_action": "open_targeted_policy_probe",
+    "runtime_patch_allowed": false,
+    "still_blocked_until_probe_passes": true,
+    "recommended_probe_scope": "synthetic English multi-turn policy examples only"
+  },
+  "deferred_gates": [
+    "voicemail_action_only_behavior",
+    "coverage_knowledge_policy_behavior",
+    "customer_move_classification_outside_selected_non_refusal_groups"
+  ],
+  "still_blocked": [
+    "customer_move_classification_outside_selected_non_refusal_groups",
+    "voicemail_action_only_behavior",
+    "coverage_knowledge_policy_behavior",
+    "context_sensitive_autonomy_behavior",
+    "native_german_review",
+    "voice_playback_quality",
+    "retrieval_default",
+    "provider_or_private_data_use",
+    "legal_compliance_review",
+    "public_demo_use",
+    "real_customer_use",
+    "payment_collection",
+    "contract_signing",
+    "production_runtime_promotion"
+  ],
+  "requires_human_review_before_next_checkpoint": false,
+  "recommended_next_checkpoint": "PROD-062-english-context-sensitive-autonomy-policy-probe"
+}

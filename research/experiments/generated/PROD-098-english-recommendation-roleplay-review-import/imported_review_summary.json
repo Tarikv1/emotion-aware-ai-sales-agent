@@ -1,0 +1,20 @@
+{
+  "checkpoint_id": "PROD-098-english-recommendation-roleplay-review-import",
+  "source_checkpoint_id": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity",
+  "review_item": "recommendation_roleplay_boundary",
+  "review_status": "completed_from_chat_review",
+  "reviewer": "Tarik",
+  "review_date": "2026-05-17",
+  "overall_decision": "approve_for_policy_probe_with_two_wording_edits",
+  "narrow_policy_probe_approved_after_required_edits": true,
+  "narrow_policy_probe_approved_as_written": false,
+  "approved_example_count": 7,
+  "required_edit_example_count": 2,
+  "edited_example_ids": [
+    "prod-097-direct-recommendation",
+    "prod-097-decide-for-me-control"
+  ],
+  "source_example_count": 7,
+  "overall_notes": "All examples are approved except for two small wording edits. Example 3 should add 'if you need to' after upgrade later to make the option feel less pushy. Example 5 should soften the second sentence with a but/though style connector so the agent preserves customer choice while still offering help.",
+  "source_artifact_preserved": true
+}

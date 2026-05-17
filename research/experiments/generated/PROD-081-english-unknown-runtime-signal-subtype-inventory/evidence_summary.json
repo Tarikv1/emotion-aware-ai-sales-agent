@@ -1,0 +1,27 @@
+{
+  "checkpoint_id": "PROD-081-english-unknown-runtime-signal-subtype-inventory",
+  "source_checkpoint_id": "PROD-080-english-customer-move-remaining-slice-selection",
+  "source_validation": {
+    "passed": true,
+    "selection_passed": true
+  },
+  "source_selection": {
+    "selected_next_slice": "unknown_runtime_signal_subtypes",
+    "protected_boundary_controls_required": true,
+    "recommended_next_checkpoint": "PROD-081-english-unknown-runtime-signal-subtype-inventory"
+  },
+  "source_snapshot": {
+    "reachable_sales_difficulty_count": 34,
+    "unreachable_localized_response_types": [],
+    "unknown_runtime_signal_reachable": true
+  },
+  "source_validator_run": {
+    "command": "python scripts/validate_prod_080_english_customer_move_remaining_slice_selection.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-080-english-customer-move-remaining-slice-selection validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

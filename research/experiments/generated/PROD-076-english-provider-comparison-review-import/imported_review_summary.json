@@ -1,0 +1,37 @@
+{
+  "checkpoint_id": "PROD-076-english-provider-comparison-review-import",
+  "source_checkpoint_id": "PROD-075-english-provider-comparison-reachability-review",
+  "review_item": "provider-comparison",
+  "review_status": "completed_from_chat_review",
+  "reviewer": "Tarik",
+  "review_date": "2026-05-16",
+  "overall_decision": "approve_for_narrow_probe_with_brevity_constraint",
+  "decision_interpretation": "Approved for a future narrow classifier probe, but not approved as exact wording. Provider and terms comparison must be grounded in a known comparison target, and future wording should be shorter.",
+  "source_current_response": "That is fair. We can compare fit and terms without pressure before you decide whether this is worth reviewing.",
+  "approved_for_narrow_probe": true,
+  "approved_as_exact_response_text": false,
+  "notes": [
+    "Provider and terms comparison is not clear unless the runtime knows what it is comparing against.",
+    "The answers are good in general but should be a little shorter.",
+    "Example brevity edit: use 'No payment details needed.' instead of 'No card or payment details are needed here.'",
+    "Approved for narrow probe otherwise."
+  ],
+  "example_decisions": {
+    "provider-comparison-current-provider": {
+      "decision": "approve_for_narrow_probe_with_brevity_constraint",
+      "notes": "Provider comparison can be probed narrowly only when the customer gives a current provider or comparable baseline."
+    },
+    "provider-comparison-terms": {
+      "decision": "approve_for_narrow_probe_with_brevity_constraint",
+      "notes": "Terms comparison is unclear unless the relevant terms or comparison target are known."
+    },
+    "provider-comparison-no-replacement-claim": {
+      "decision": "approve_for_narrow_probe_with_brevity_constraint",
+      "notes": "Keep the no-replacement discipline."
+    },
+    "provider-comparison-protected-boundary": {
+      "decision": "approve_for_narrow_probe_with_brevity_constraint",
+      "notes": "Keep payment and contract handling blocked. Prefer shorter wording such as 'No payment details needed.'"
+    }
+  }
+}

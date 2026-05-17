@@ -1,0 +1,64 @@
+{
+  "checkpoint_id": "PROD-083-english-guided-option-selection-review-import",
+  "source_checkpoint_id": "PROD-082-english-guided-option-selection-review",
+  "review_item": "guided_option_selection_candidate",
+  "review_status": "completed_from_chat_review",
+  "reviewer": "Tarik",
+  "review_date": "2026-05-16",
+  "overall_decision": "needs_rewrite_before_probe",
+  "narrow_policy_probe_approved": false,
+  "review_interpretation": {
+    "existing_examples_approved": false,
+    "rewrite_required": true,
+    "why": "The review rejected the defensive opt-out framing and requires fit-based plan explanation, approved feature facts, shorter wording, and campaign-specific payment-path handling before any probe."
+  },
+  "source_review_options": [
+    "keep_deferred",
+    "approve_for_narrow_policy_probe_with_guardrails",
+    "needs_rewrite_before_probe"
+  ],
+  "overall_notes": [
+    "The current examples are too defensive and overuse opt-out language.",
+    "When a customer asks whether to choose the $29 or $59 option, the agent should explain fit and plan contents instead of repeating the two prices.",
+    "The agent may steer toward one option when customer facts and approved plan facts support that recommendation.",
+    "The agent should not repeat obvious facts, such as that $29 is lower than $59.",
+    "The agent should explain actual differences using an approved plan feature matrix, such as $29 has X features and $59 adds Y features.",
+    "If the customer asks for a recommendation, the agent can recommend a better fit without pretending to choose for the customer.",
+    "The agent can suggest starting with the cheaper plan and upgrading later when that is an approved product path.",
+    "If the customer asks to decide later, keep the answer short and do not say the same thing twice.",
+    "If the customer says neither option feels right, treat that as uncertainty and use light persuasion plus acknowledgement instead of ending the opportunity too quickly.",
+    "For payment, no payment on the call by default for now, but the agent may explain the approved campaign payment path if one exists.",
+    "Future payment handling by the agent may be reopened later, but it is not approved now.",
+    "Add a future spoken-naturalness rule for sparse human discourse markers like I mean or like, but do not randomly add fillers every few sentences."
+  ],
+  "example_decisions": {
+    "guided-option-binary-choice": {
+      "decision": "needs_rewrite_before_probe",
+      "notes": "Do not say there are two fair paths or neither is fine too. Explain what each plan includes and steer based on fit."
+    },
+    "guided-option-fit-unclear": {
+      "decision": "needs_rewrite_before_probe",
+      "notes": "Do not default to pause/neither language. Explain which plan is good for which need."
+    },
+    "guided-option-recommendation-request": {
+      "decision": "needs_rewrite_before_probe",
+      "notes": "The agent can recommend or steer toward a better fit based on known customer facts and approved plan facts."
+    },
+    "guided-option-explain-difference": {
+      "decision": "needs_rewrite_before_probe",
+      "notes": "Do not repeat that $29 is lower. Answer the real difference using a feature matrix."
+    },
+    "guided-option-not-now": {
+      "decision": "needs_rewrite_before_probe",
+      "notes": "Shorten. Yes, leave both options open and send the difference in writing is enough."
+    },
+    "guided-option-neither": {
+      "decision": "needs_rewrite_before_probe",
+      "notes": "Use acknowledgement plus light persuasion. Offer written differences or product benefit framing instead of dropping the sale."
+    },
+    "guided-option-payment-boundary": {
+      "decision": "needs_rewrite_before_probe",
+      "notes": "Explain the approved payment path or leave placeholders for campaign-specific payment flow. Keep no payment on the call by default for now."
+    }
+  }
+}

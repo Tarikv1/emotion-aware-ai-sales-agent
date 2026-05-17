@@ -1,0 +1,100 @@
+{
+  "checkpoint_id": "PROD-077-english-provider-comparison-narrow-probe-design",
+  "current_runtime_positive_gap_count": 4,
+  "positive_results": [
+    {
+      "case_id": "prod-077-current-provider-difference",
+      "customer_turn": "How is this different from our current provider?",
+      "expected_sales_difficulty": "provider-comparison",
+      "current_sales_difficulty": "existing-provider-gap",
+      "current_agent_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover.",
+      "currently_matches_expected": false
+    },
+    {
+      "case_id": "prod-077-compare-current-use",
+      "customer_turn": "Can you compare this with what we already use?",
+      "expected_sales_difficulty": "provider-comparison",
+      "current_sales_difficulty": "unknown-runtime-signal",
+      "current_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_matches_expected": false
+    },
+    {
+      "case_id": "prod-077-versus-current-setup",
+      "customer_turn": "What would be different versus our current setup?",
+      "expected_sales_difficulty": "provider-comparison",
+      "current_sales_difficulty": "unknown-runtime-signal",
+      "current_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_matches_expected": false
+    },
+    {
+      "case_id": "prod-077-current-terms-comparison",
+      "customer_turn": "How does this compare with our current terms?",
+      "expected_sales_difficulty": "provider-comparison",
+      "current_sales_difficulty": "unknown-runtime-signal",
+      "current_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_matches_expected": false
+    }
+  ],
+  "negative_results": [
+    {
+      "case_id": "prod-077-existing-provider-no-comparison",
+      "customer_turn": "We already have a provider and I do not want to switch.",
+      "expected_sales_difficulty": "existing-provider-gap",
+      "current_sales_difficulty": "existing-provider-gap",
+      "current_agent_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover.",
+      "currently_matches_expected": true
+    },
+    {
+      "case_id": "prod-077-generic-offer",
+      "customer_turn": "What do you offer?",
+      "expected_sales_difficulty": "unknown-runtime-signal",
+      "current_sales_difficulty": "unknown-runtime-signal",
+      "current_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_matches_expected": true
+    },
+    {
+      "case_id": "prod-077-better-generic",
+      "customer_turn": "Is it better?",
+      "expected_sales_difficulty": "unknown-runtime-signal",
+      "current_sales_difficulty": "unknown-runtime-signal",
+      "current_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_matches_expected": true
+    },
+    {
+      "case_id": "prod-077-price-only",
+      "customer_turn": "What does this cost?",
+      "expected_sales_difficulty": "price-first-direct",
+      "current_sales_difficulty": "price-first-direct",
+      "current_agent_response": "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there.",
+      "currently_matches_expected": true
+    },
+    {
+      "case_id": "prod-077-written-info",
+      "customer_turn": "Just send me the details in writing.",
+      "expected_sales_difficulty": "written-info-request",
+      "current_sales_difficulty": "written-info-request",
+      "current_agent_response": "Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you.",
+      "currently_matches_expected": true
+    }
+  ],
+  "protected_results": [
+    {
+      "case_id": "prod-077-payment-details",
+      "customer_turn": "Can you take payment or card details if it is better?",
+      "expected_sales_difficulty": "payment-safety-boundary",
+      "current_sales_difficulty": "payment-safety-boundary",
+      "current_agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only.",
+      "currently_matches_expected": true
+    },
+    {
+      "case_id": "prod-077-sign-up",
+      "customer_turn": "Can you sign me up if this is better?",
+      "expected_sales_difficulty": "unknown-runtime-signal",
+      "current_sales_difficulty": "unknown-runtime-signal",
+      "current_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "currently_matches_expected": true
+    }
+  ],
+  "runtime_behavior_changed": false,
+  "classifier_behavior_changed": false
+}

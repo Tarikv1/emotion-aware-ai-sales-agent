@@ -1,0 +1,32 @@
+{
+  "source_inventory": {
+    "checkpoint_id": "PROD-058-english-runtime-promotion-blocker-inventory",
+    "blocker_count": 16,
+    "english_evidence_gap_count": 2,
+    "product_policy_gate_count": 4,
+    "separate_gate_count": 10,
+    "recommended_next_checkpoint": "PROD-059-final-english-only-runtime-readiness-review"
+  },
+  "source_guard": {
+    "checkpoint_id": "PROD-057-english-multi-turn-regression-guard-decision",
+    "guard_status": "adopted",
+    "stable_guard_command": "python scripts\\validate_english_multi_turn_regression_guard.py"
+  },
+  "source_regression": {
+    "checkpoint_id": "PROD-056-english-post-patch-multi-turn-regression",
+    "promoted_response_count": 26,
+    "runtime_second_turn_case_count": 10,
+    "callback_scheduling_case_count": 1,
+    "terminal_boundary_case_count": 15,
+    "blocking_finding_count": 0
+  },
+  "stable_guard_run": {
+    "command": "python scripts\\validate_english_multi_turn_regression_guard.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-056-english-post-patch-multi-turn-regression validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

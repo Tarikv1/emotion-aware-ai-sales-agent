@@ -1,0 +1,23 @@
+{
+  "checkpoint_id": "PROD-080-english-customer-move-remaining-slice-selection",
+  "source_checkpoint_id": "PROD-079-english-provider-comparison-post-patch-regression",
+  "source_validation": {
+    "passed": true,
+    "post_patch_regression_passed": true,
+    "stable_guard_passed": true
+  },
+  "source_summary": {
+    "failed_regression_case_count": 0,
+    "stable_english_guard_passed": true,
+    "recommended_next_checkpoint": "PROD-080-english-customer-move-remaining-slice-selection"
+  },
+  "source_validator_run": {
+    "command": "python scripts/validate_prod_079_english_provider_comparison_post_patch_regression.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-079-english-provider-comparison-post-patch-regression validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

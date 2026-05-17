@@ -1,0 +1,32 @@
+{
+  "checkpoint_id": "PROD-063-english-autonomy-check-runtime-wording-patch",
+  "checkpoint_name": "English Autonomy-Check Runtime Wording Patch",
+  "source_checkpoint_id": "PROD-062-english-context-sensitive-autonomy-policy-probe",
+  "scope": "english_autonomy_check_response_text_patch_only",
+  "old_response": "That makes sense. We can keep this low pressure and clarify only what you need before any next step.",
+  "expected_response": "Okay, no rush. We can keep this low-pressure and only clarify what you need.",
+  "runtime_path": "runtime/core/realtime_turns.py",
+  "runtime_change_requested": true,
+  "response_text_change_requested": true,
+  "classifier_change_requested": false,
+  "call_control_change_requested": false,
+  "requires_human_review_before_next_checkpoint": false,
+  "recommended_next_checkpoint": "PROD-064-english-autonomy-post-patch-multi-turn-regression",
+  "runtime_probe_cases": [
+    {
+      "case_id": "prod-063-time-to-think",
+      "transcript": "I need time to think. Do not rush.",
+      "stage": "objection"
+    },
+    {
+      "case_id": "prod-063-do-not-rush",
+      "transcript": "Please do not rush me.",
+      "stage": "objection"
+    },
+    {
+      "case_id": "prod-063-time-before-anything",
+      "transcript": "I need time to think before anything else.",
+      "stage": "objection"
+    }
+  ]
+}

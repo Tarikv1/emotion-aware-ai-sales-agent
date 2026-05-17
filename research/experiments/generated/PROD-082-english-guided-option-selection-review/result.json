@@ -1,0 +1,41 @@
+{
+  "checkpoint_id": "PROD-082-english-guided-option-selection-review",
+  "checkpoint_name": "English Guided Option Selection Review",
+  "source_checkpoint_id": "PROD-081-english-unknown-runtime-signal-subtype-inventory",
+  "validation": {
+    "passed": true,
+    "review_packet_created": true
+  },
+  "summary": {
+    "review_packet_only": true,
+    "source_validator_passed": true,
+    "selected_review_item": "guided_option_selection_candidate",
+    "review_example_count": 7,
+    "review_options": [
+      "keep_deferred",
+      "approve_for_narrow_policy_probe_with_guardrails",
+      "needs_rewrite_before_probe"
+    ],
+    "requires_human_review_before_next_checkpoint": true,
+    "review_html_created": true,
+    "review_html_path": "research/experiments/generated/PROD-082-english-guided-option-selection-review/prod_082_review.html",
+    "recommended_next_checkpoint": "PROD-083-english-guided-option-selection-review-import",
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "classifier_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  }
+}

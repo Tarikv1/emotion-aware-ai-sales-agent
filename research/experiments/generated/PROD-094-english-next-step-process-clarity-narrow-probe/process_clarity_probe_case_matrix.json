@@ -1,0 +1,125 @@
+{
+  "checkpoint_id": "PROD-094-english-next-step-process-clarity-narrow-probe",
+  "source_checkpoint_id": "PROD-093-english-customer-move-remaining-slice-selection-after-guided-option-synonyms",
+  "positive_cases": [
+    {
+      "case_id": "prod-094-after-yes",
+      "customer_turn": "What happens after I say yes?",
+      "expected_contains": [
+        "link",
+        "email",
+        "review",
+        "register",
+        "No payment on this call"
+      ]
+    },
+    {
+      "case_id": "prod-094-next-step-move-forward",
+      "customer_turn": "What is the next step if I want to move forward?",
+      "expected_contains": [
+        "link",
+        "email",
+        "review",
+        "register",
+        "No payment on this call"
+      ]
+    },
+    {
+      "case_id": "prod-094-after-this-call",
+      "customer_turn": "If I choose one, what do I do after this call?",
+      "expected_contains": [
+        "link",
+        "email",
+        "review",
+        "register",
+        "No payment on this call"
+      ]
+    },
+    {
+      "case_id": "prod-094-register-after-review",
+      "customer_turn": "How do I register after I review the plan?",
+      "expected_contains": [
+        "link",
+        "email",
+        "review",
+        "register",
+        "No payment on this call"
+      ]
+    },
+    {
+      "case_id": "prod-094-picked-plan-next",
+      "customer_turn": "So if I pick the $59 plan, what happens next?",
+      "expected_contains": [
+        "link",
+        "email",
+        "review",
+        "register",
+        "No payment on this call"
+      ]
+    }
+  ],
+  "control_cases": [
+    {
+      "case_id": "prod-094-card-payment-control",
+      "customer_turn": "Can I pay now with my card?",
+      "expected_candidate_response": null,
+      "why_control": "Payment/card handling stays outside this process-clarity probe."
+    },
+    {
+      "case_id": "prod-094-payment-details-control",
+      "customer_turn": "Can you take my payment details if I choose one?",
+      "expected_candidate_response": null,
+      "why_control": "Payment detail collection stays blocked."
+    },
+    {
+      "case_id": "prod-094-signup-control",
+      "customer_turn": "Can you sign me up on this call?",
+      "expected_candidate_response": null,
+      "why_control": "Signup or contract execution stays outside this slice."
+    },
+    {
+      "case_id": "prod-094-register-and-pay-control",
+      "customer_turn": "I want to register and pay now.",
+      "expected_candidate_response": null,
+      "why_control": "Register plus pay-now language must not trigger the process response."
+    },
+    {
+      "case_id": "prod-094-advice-roleplay-control",
+      "customer_turn": "What would you do in my position?",
+      "expected_candidate_response": null,
+      "why_control": "Advice roleplay remains deferred for review."
+    },
+    {
+      "case_id": "prod-094-generic-confusion-control",
+      "customer_turn": "I am listening, but I do not know what I am supposed to decide yet.",
+      "expected_candidate_response": null,
+      "why_control": "Generic confusion stays unknown."
+    },
+    {
+      "case_id": "prod-094-provider-comparison-control",
+      "customer_turn": "Can you show our current provider and your offer side by side?",
+      "expected_candidate_response": null,
+      "why_control": "Provider comparison stays in its existing bounded route."
+    },
+    {
+      "case_id": "prod-094-coverage-control",
+      "customer_turn": "Does the plan cover reimbursement?",
+      "expected_candidate_response": null,
+      "why_control": "Coverage knowledge stays outside this slice."
+    },
+    {
+      "case_id": "prod-094-guided-option-control",
+      "customer_turn": "Should I start small or go with the fuller option?",
+      "expected_candidate_response": null,
+      "why_control": "Guided-option selection is already handled by its own route."
+    },
+    {
+      "case_id": "prod-094-german-control",
+      "customer_turn": "Was passiert, nachdem ich ja sage?",
+      "expected_candidate_response": null,
+      "why_control": "German exact-phrase promotion remains blocked."
+    }
+  ],
+  "positive_case_count": 5,
+  "control_case_count": 10
+}

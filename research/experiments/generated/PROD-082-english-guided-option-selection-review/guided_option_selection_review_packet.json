@@ -1,0 +1,106 @@
+{
+  "checkpoint_id": "PROD-082-english-guided-option-selection-review",
+  "checkpoint_name": "English Guided Option Selection Review",
+  "source_checkpoint_id": "PROD-081-english-unknown-runtime-signal-subtype-inventory",
+  "review_item": "guided_option_selection_candidate",
+  "review_options": [
+    "keep_deferred",
+    "approve_for_narrow_policy_probe_with_guardrails",
+    "needs_rewrite_before_probe"
+  ],
+  "guardrails": [
+    "two real options",
+    "fair presentation",
+    "neither",
+    "not now",
+    "explain the difference",
+    "no fake urgency",
+    "no pretend agreement",
+    "no payment collection",
+    "no contract signing"
+  ],
+  "recommended_default": "keep_deferred_until_review_import",
+  "question": "Should guided option selection become eligible for a narrow English policy probe with these guardrails, or stay deferred/rewrite first?",
+  "example_context": "Example product only: a $29 subscription and a $59 subscription. These examples are review candidates, not approved runtime copy.",
+  "examples": [
+    {
+      "example_id": "guided-option-binary-choice",
+      "title": "Two-option choice",
+      "customer_turn": "So do I choose the $29 option or the $59 option?",
+      "current_runtime_route": "unknown-runtime-signal",
+      "review_target": "guided_option_selection_candidate",
+      "proposed_response": "There are two fair paths: $29 for the basics, or $59 for more included. Which feels closer to what you'd actually use? Neither is fine too.",
+      "review_question": "Does this let the customer choose without making one option feel mandatory?",
+      "risk": "The agent could sound like it is steering toward a plan while pretending the customer created the idea."
+    },
+    {
+      "example_id": "guided-option-fit-unclear",
+      "title": "Fit is unclear",
+      "customer_turn": "I can see both paths, I am just not sure which one fits me.",
+      "current_runtime_route": "unknown-runtime-signal",
+      "review_target": "guided_option_selection_candidate",
+      "proposed_response": "Start with use, not pressure: $29 if basics are enough, $59 if you want more included. Which side fits better, or should we pause?",
+      "review_question": "Is this low-pressure enough, or does it still push the customer toward choosing today?",
+      "risk": "A choice frame can collapse uncertainty into a sale attempt too early."
+    },
+    {
+      "example_id": "guided-option-recommendation-request",
+      "title": "Recommendation request",
+      "customer_turn": "Which route would you suggest for someone like me?",
+      "current_runtime_route": "unknown-runtime-signal",
+      "review_target": "guided_option_selection_candidate",
+      "proposed_response": "I shouldn't choose for you. I can make the tradeoff clear: $29 is the lighter start, $59 has more included. Which sounds closer?",
+      "review_question": "Should the agent refuse to choose for the customer before offering the two-option frame?",
+      "risk": "Direct recommendation language can become advice or authority pressure."
+    },
+    {
+      "example_id": "guided-option-explain-difference",
+      "title": "Difference first",
+      "customer_turn": "What is the real difference between the $29 option and the $59 option?",
+      "current_runtime_route": "unknown-runtime-signal",
+      "review_target": "guided_option_selection_candidate",
+      "proposed_response": "I can explain the difference first. $29 is the lower starting point; $59 includes more. No payment details needed.",
+      "review_question": "Is this an acceptable bridge when the customer wants explanation before choosing?",
+      "risk": "The runtime must not invent exact feature differences beyond approved product facts."
+    },
+    {
+      "example_id": "guided-option-not-now",
+      "title": "Not now",
+      "customer_turn": "Can I choose later instead of deciding on this call?",
+      "current_runtime_route": "unknown-runtime-signal",
+      "review_target": "guided_option_selection_candidate",
+      "proposed_response": "Yes. Not now is a valid answer. I can leave both options open and send the $29/$59 difference in writing.",
+      "review_question": "Does this preserve autonomy clearly enough?",
+      "risk": "The agent must not treat deferral as hidden consent to continue selling."
+    },
+    {
+      "example_id": "guided-option-neither",
+      "title": "Neither option",
+      "customer_turn": "I'm not sure either is right.",
+      "current_runtime_route": "unknown-runtime-signal",
+      "review_target": "guided_option_selection_candidate",
+      "proposed_response": "Then neither may be the right answer today. We can pause, or just compare what each option includes.",
+      "review_question": "Should this be the default fallback when neither option feels right?",
+      "risk": "A guided option tactic must keep a real non-sale path available."
+    },
+    {
+      "example_id": "guided-option-payment-boundary",
+      "title": "Payment boundary",
+      "customer_turn": "If I pick one, can I pay now?",
+      "current_runtime_route": "unknown-runtime-signal",
+      "review_target": "payment_boundary_control",
+      "proposed_response": "No payment details needed. This review is only about whether either option is worth considering.",
+      "review_question": "Should payment stay blocked even when a customer chooses an option?",
+      "risk": "Option selection must not become checkout, card collection, or contract signing."
+    }
+  ],
+  "boundaries": {
+    "runtime_patch_allowed": false,
+    "response_text_change_allowed": false,
+    "classifier_change_allowed": false,
+    "retrieval_allowed": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  }
+}

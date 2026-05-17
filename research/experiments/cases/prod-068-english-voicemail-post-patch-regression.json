@@ -1,0 +1,175 @@
+{
+  "checkpoint_id": "PROD-068-english-voicemail-post-patch-regression",
+  "checkpoint_name": "English Voicemail Post-Patch Regression",
+  "source_checkpoint_id": "PROD-067-english-voicemail-action-only-runtime-patch",
+  "stable_guard_source_checkpoint_id": "PROD-056-english-post-patch-multi-turn-regression",
+  "scope": "english_voicemail_post_patch_regression_only",
+  "expected_action": "Do not speak to voicemail. Log follow-up and try again later according to campaign rules.",
+  "expected_response": "",
+  "old_response": "I reached voicemail, so I will log this for follow-up according to campaign rules.",
+  "runtime_change_requested": false,
+  "response_text_change_requested": false,
+  "classifier_change_requested": false,
+  "call_control_change_requested": false,
+  "next_action_change_requested": false,
+  "requires_human_review_before_next_checkpoint": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-069-english-remaining-product-policy-gate-selection-after-voicemail",
+  "voicemail_regression_cases": [
+    {
+      "case_id": "prod-068-machine-detected-voicemail",
+      "input_type": "voicemail-detected",
+      "transcript": "",
+      "stage": "opening"
+    },
+    {
+      "case_id": "prod-068-voicemail-greeting",
+      "input_type": "voicemail-detected",
+      "transcript": "You have reached the voicemail box.",
+      "stage": "opening"
+    },
+    {
+      "case_id": "prod-068-beep-only",
+      "input_type": "voicemail-detected",
+      "transcript": "[beep]",
+      "stage": "opening"
+    },
+    {
+      "case_id": "prod-068-after-tone-message",
+      "input_type": "voicemail-detected",
+      "transcript": "Please leave your message after the tone.",
+      "stage": "opening"
+    },
+    {
+      "case_id": "prod-068-automated-greeting",
+      "input_type": "voicemail-detected",
+      "transcript": "The person you are trying to reach is not available.",
+      "stage": "opening"
+    }
+  ],
+  "non_voicemail_guard_cases": [
+    {
+      "case_id": "prod-068-human-callback-request",
+      "input_type": "speech",
+      "transcript": "call me back next week",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "callback-request",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "offer-scheduling",
+        "call_control": "continue-call"
+      }
+    },
+    {
+      "case_id": "prod-068-human-written-info",
+      "input_type": "speech",
+      "transcript": "send me the details",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "written-info-request",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue"
+      }
+    },
+    {
+      "case_id": "prod-068-human-product-detail",
+      "input_type": "speech",
+      "transcript": "which plan is included",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "product-detail-lookup",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue"
+      }
+    },
+    {
+      "case_id": "prod-068-human-price-question",
+      "input_type": "speech",
+      "transcript": "what is the price",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "price-first-direct",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue"
+      }
+    },
+    {
+      "case_id": "prod-068-repeated-silence",
+      "input_type": "silence-timeout",
+      "transcript": "",
+      "stage": "opening",
+      "silence_count": 2,
+      "expected_runtime": {
+        "sales_difficulty": "repeated-silence",
+        "selected_strategy": "rapport",
+        "next_action": "close-politely",
+        "call_control": "end-call"
+      }
+    }
+  ],
+  "protected_boundary_cases": [
+    {
+      "case_id": "prod-068-protected-do-not-call",
+      "input_type": "speech",
+      "transcript": "please stop calling me",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "do-not-call",
+        "selected_strategy": "rapport",
+        "next_action": "suppress-contact",
+        "call_control": "end-call"
+      }
+    },
+    {
+      "case_id": "prod-068-protected-payment",
+      "input_type": "speech",
+      "transcript": "I am not giving payment details",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "payment-safety-boundary",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call"
+      }
+    },
+    {
+      "case_id": "prod-068-protected-support",
+      "input_type": "speech",
+      "transcript": "I need support with my account",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "support-route",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate"
+      }
+    },
+    {
+      "case_id": "prod-068-protected-email-only",
+      "input_type": "speech",
+      "transcript": "just email me",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "email-only-boundary",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call"
+      }
+    },
+    {
+      "case_id": "prod-068-protected-human-request",
+      "input_type": "speech",
+      "transcript": "I want a human specialist",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "human-request",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate"
+      }
+    }
+  ]
+}

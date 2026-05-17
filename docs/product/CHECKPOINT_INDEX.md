@@ -74,9 +74,52 @@ Runtime-affecting files now live under `runtime/` and are mapped in `runtime/run
 - `PROD_055_ENGLISH_MULTI_TURN_RUNTIME_PATCH.md`
 - `PROD_056_ENGLISH_POST_PATCH_MULTI_TURN_REGRESSION.md`
 - `PROD_057_ENGLISH_MULTI_TURN_REGRESSION_GUARD_DECISION.md`
+- `PROD_058_ENGLISH_RUNTIME_PROMOTION_BLOCKER_INVENTORY.md`
+- `PROD_059_FINAL_ENGLISH_ONLY_RUNTIME_READINESS_REVIEW.md`
+- `PROD_060_RUNTIME_PROMOTION_PATH_DECISION.md`
+- `PROD_061_ENGLISH_PRODUCT_POLICY_GATE_PRIORITIZATION.md`
+- `PROD_062_ENGLISH_CONTEXT_SENSITIVE_AUTONOMY_POLICY_PROBE.md`
+- `PROD_063_ENGLISH_AUTONOMY_CHECK_RUNTIME_WORDING_PATCH.md`
+- `PROD_064_ENGLISH_AUTONOMY_POST_PATCH_MULTI_TURN_REGRESSION.md`
+- `PROD_065_ENGLISH_REMAINING_PRODUCT_POLICY_GATE_SELECTION.md`
+- `PROD_066_ENGLISH_VOICEMAIL_ACTION_ONLY_POLICY_PROBE.md`
+- `PROD_067_ENGLISH_VOICEMAIL_ACTION_ONLY_RUNTIME_PATCH.md`
+- `PROD_068_ENGLISH_VOICEMAIL_POST_PATCH_REGRESSION.md`
+- `PROD_069_ENGLISH_REMAINING_PRODUCT_POLICY_GATE_SELECTION_AFTER_VOICEMAIL.md`
+- `PROD_070_ENGLISH_COVERAGE_KNOWLEDGE_POLICY_PROBE.md`
+- `PROD_071_ENGLISH_COVERAGE_KNOWLEDGE_RUNTIME_PATCH.md`
+- `PROD_072_ENGLISH_COVERAGE_KNOWLEDGE_POST_PATCH_REGRESSION.md`
+- `PROD_073_ENGLISH_CUSTOMER_MOVE_CLASSIFICATION_GATE_DECISION.md`
+- `PROD_074_ENGLISH_CUSTOMER_MOVE_CLASSIFICATION_SLICE_INVENTORY.md`
+- `PROD_075_ENGLISH_PROVIDER_COMPARISON_REACHABILITY_REVIEW.md`
+- `PROD_076_ENGLISH_PROVIDER_COMPARISON_REVIEW_IMPORT.md`
+- `PROD_077_ENGLISH_PROVIDER_COMPARISON_NARROW_PROBE_DESIGN.md`
+- `PROD_078_ENGLISH_PROVIDER_COMPARISON_RUNTIME_PATCH.md`
+- `PROD_079_ENGLISH_PROVIDER_COMPARISON_POST_PATCH_REGRESSION.md`
+- `PROD_080_ENGLISH_CUSTOMER_MOVE_REMAINING_SLICE_SELECTION.md`
+- `PROD_081_ENGLISH_UNKNOWN_RUNTIME_SIGNAL_SUBTYPE_INVENTORY.md`
+- `PROD_082_ENGLISH_GUIDED_OPTION_SELECTION_REVIEW.md`
+- `PROD_083_ENGLISH_GUIDED_OPTION_SELECTION_REVIEW_IMPORT.md`
+- `PROD_084_ENGLISH_GUIDED_OPTION_SELECTION_REWRITE_DESIGN.md`
+- `PROD_085_ENGLISH_GUIDED_OPTION_SELECTION_REWRITE_REVIEW_IMPORT.md`
+- `PROD_086_ENGLISH_GUIDED_OPTION_SELECTION_NARROW_POLICY_PROBE.md`
+- `PROD_087_ENGLISH_GUIDED_OPTION_SELECTION_RUNTIME_PATCH.md`
+- `PROD_088_ENGLISH_GUIDED_OPTION_SELECTION_POST_PATCH_REGRESSION.md`
+- `PROD_089_ENGLISH_CUSTOMER_MOVE_REMAINING_SLICE_SELECTION_AFTER_GUIDED_OPTION.md`
+- `PROD_090_ENGLISH_GUIDED_OPTION_SYNONYM_COVERAGE_NARROW_PROBE.md`
+- `PROD_091_ENGLISH_GUIDED_OPTION_SYNONYM_COVERAGE_RUNTIME_PATCH.md`
+- `PROD_092_ENGLISH_GUIDED_OPTION_SYNONYM_COVERAGE_POST_PATCH_REGRESSION.md`
+- `PROD_093_ENGLISH_CUSTOMER_MOVE_REMAINING_SLICE_SELECTION_AFTER_GUIDED_OPTION_SYNONYMS.md`
+- `PROD_094_ENGLISH_NEXT_STEP_PROCESS_CLARITY_NARROW_PROBE.md`
+- `PROD_095_ENGLISH_NEXT_STEP_PROCESS_CLARITY_RUNTIME_PATCH.md`
+- `PROD_096_ENGLISH_NEXT_STEP_PROCESS_CLARITY_POST_PATCH_REGRESSION.md`
+- `PROD_097_ENGLISH_CUSTOMER_MOVE_REMAINING_SLICE_SELECTION_AFTER_PROCESS_CLARITY.md`
+- `PROD_098_ENGLISH_RECOMMENDATION_ROLEPLAY_REVIEW_IMPORT.md`
+- `PROD_099_ENGLISH_RECOMMENDATION_ROLEPLAY_NARROW_POLICY_PROBE.md`
+- `PROD_100_ENGLISH_RECOMMENDATION_ROLEPLAY_RUNTIME_PATCH.md`
 
 Current PROD-041A scope: interactive conditional customer simulation with `customer_reaction_policy_bank.json`, `interactive_scenario_profiles.json`, and `interaction_traces.json`; it is not a fixed scripted-dialogue generator. It now validates agent reactivity too: each agent turn must address the immediately previous customer intent, avoid repeated answers, avoid looping questions, and avoid false safe closes.
-Current forward layer: `PROD-057-english-multi-turn-regression-guard-decision`, which adopts `PROD-056` as the stable English multi-turn regression guard through `python scripts\validate_english_multi_turn_regression_guard.py` and registers that guard in setup checks. It changes no runtime behavior or response text. `PROD-058` should inventory remaining English runtime promotion blockers and separate evidence gaps from product-policy gates and German/voice/retrieval/legal gates. `PROD-048D-native-german-followup-review-import` remains parked until the corrected native German reviewer export exists. Full native German approval, legal compliance, German exact-phrase acceptance, customer-move classification changes outside the selected non-refusal groups, voicemail action-only behavior, coverage knowledge-policy behavior, context-sensitive autonomy behavior, retrieval defaults, provider calls, LLM calls, private-data reads, voice playback, public demo use, real customer use, payment collection, contract signing, and production runtime promotion remain blocked.
+Current forward layer: `PROD-100-english-recommendation-roleplay-runtime-patch`, which applies the approved English `recommendation-roleplay-boundary` runtime route after `PROD-099` proved seven runtime gaps. It records selected gap fixed count: `7`, positive case failures: `0`, control case failures: `0`, requires customer facts for recommendation: `true`, requires agency preservation: `true`, no agent decides for customer: `true`, no value guarantee: `true`, review HTML created: `false`, changes English runtime behavior, response text behavior, and classifier behavior only for the selected branch, and recommends `PROD-101-english-recommendation-roleplay-post-patch-regression`. `PROD-048D-native-german-followup-review-import` remains parked until the corrected native German reviewer export exists. Full native German approval, legal compliance, German exact-phrase acceptance, broad customer-move classification expansion, retrieval defaults, provider calls, LLM calls, private-data reads, voice playback, public demo use, real customer use, payment collection, contract signing, and production runtime promotion remain blocked.
 
 Older product simulation notes live in `research/experiments/` as `PROD-001` through `PROD-005`, with product strategy docs in this folder.
 

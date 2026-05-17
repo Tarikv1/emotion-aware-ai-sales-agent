@@ -39,6 +39,15 @@ Thesis traceability:
 - Did every website, public dataset, provider doc, sales-practice article, or external repo inspiration land in `THESIS_REFERENCE_REGISTRY.md` or `third-party-inspirations.md`?
 - Are provider claims clearly separated from measured project results and listening reviews?
 
+Human PROD review artifacts:
+
+- Create a browser-openable HTML file only when Tarik needs to review or accept a concrete PROD decision.
+- The HTML should live in that checkpoint's generated output folder.
+- The HTML should show representative examples, the current recommendation or decision, still-blocked boundaries, and review controls.
+- If the review result may be reused later, include browser save/load and JSON export/import.
+- Do not create HTML for routine inventories, prioritization packets, validator evidence, or agent-internal checkpoints where no human review is required.
+- Do not use review HTML to imply production, legal, provider, retrieval, voice, German, payment, contract, public-demo, or real-customer readiness unless that exact gate has separately passed.
+
 QA-only review before edits:
 
 - What is the observed issue?

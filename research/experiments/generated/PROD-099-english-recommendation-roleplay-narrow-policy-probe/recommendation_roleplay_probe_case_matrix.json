@@ -1,0 +1,169 @@
+{
+  "checkpoint_id": "PROD-099-english-recommendation-roleplay-narrow-policy-probe",
+  "source_checkpoint_id": "PROD-098-english-recommendation-roleplay-review-import",
+  "positive_cases": [
+    {
+      "case_id": "prod-097-roleplay-position",
+      "customer_turn": "What would you do in my position?",
+      "expected_candidate_response": "I would base it on what you will actually use. If [customer pain] is the issue, $59 fits better because it includes [feature A] and [feature B]. If not, start with $29.",
+      "campaign": {
+        "language": "en",
+        "guided_option_plan_29_features": "[feature X] and [feature Y]",
+        "guided_option_plan_59_added_features": "[feature A] and [feature B]",
+        "guided_option_customer_goal": "[customer goal]",
+        "guided_option_customer_pain": "[customer pain]",
+        "guided_option_payment_email_link_allowed": true
+      }
+    },
+    {
+      "case_id": "prod-097-roleplay-business",
+      "customer_turn": "If this were your business, which plan would you take?",
+      "expected_candidate_response": "If I were judging only from what you told me, I would lean $59 for [feature A] and [feature B]. If those do not matter yet, $29 is the cleaner start.",
+      "campaign": {
+        "language": "en",
+        "guided_option_plan_29_features": "[feature X] and [feature Y]",
+        "guided_option_plan_59_added_features": "[feature A] and [feature B]",
+        "guided_option_customer_goal": "[customer goal]",
+        "guided_option_customer_pain": "[customer pain]",
+        "guided_option_payment_email_link_allowed": true
+      }
+    },
+    {
+      "case_id": "prod-097-direct-recommendation",
+      "customer_turn": "Can you just tell me what you recommend?",
+      "expected_candidate_response": "Based on [customer pain], I would recommend $59. If budget is the main concern, start with $29 and upgrade later if you need to.",
+      "campaign": {
+        "language": "en",
+        "guided_option_plan_29_features": "[feature X] and [feature Y]",
+        "guided_option_plan_59_added_features": "[feature A] and [feature B]",
+        "guided_option_customer_goal": "[customer goal]",
+        "guided_option_customer_pain": "[customer pain]",
+        "guided_option_payment_email_link_allowed": true
+      }
+    },
+    {
+      "case_id": "prod-097-leaning-cheaper",
+      "customer_turn": "I am leaning $29, but is $59 smarter?",
+      "expected_candidate_response": "I mean, $59 is smarter only if [feature A] and [feature B] would actually save you time. Otherwise $29 is the cleaner start.",
+      "campaign": {
+        "language": "en",
+        "guided_option_plan_29_features": "[feature X] and [feature Y]",
+        "guided_option_plan_59_added_features": "[feature A] and [feature B]",
+        "guided_option_customer_goal": "[customer goal]",
+        "guided_option_customer_pain": "[customer pain]",
+        "guided_option_payment_email_link_allowed": true
+      }
+    },
+    {
+      "case_id": "prod-097-decide-for-me-control",
+      "customer_turn": "Can you decide for me?",
+      "expected_candidate_response": "I cannot decide for you, but I can show what each plan covers and why one may fit your needs better.",
+      "campaign": {
+        "language": "en",
+        "guided_option_plan_29_features": "[feature X] and [feature Y]",
+        "guided_option_plan_59_added_features": "[feature A] and [feature B]",
+        "guided_option_customer_goal": "[customer goal]",
+        "guided_option_customer_pain": "[customer pain]",
+        "guided_option_payment_email_link_allowed": true
+      }
+    },
+    {
+      "case_id": "prod-097-promise-worth-control",
+      "customer_turn": "Can you promise $59 will be worth it?",
+      "expected_candidate_response": "I cannot promise that. I can explain what $59 adds and you can decide if that is worth it.",
+      "campaign": {
+        "language": "en",
+        "guided_option_plan_29_features": "[feature X] and [feature Y]",
+        "guided_option_plan_59_added_features": "[feature A] and [feature B]",
+        "guided_option_customer_goal": "[customer goal]",
+        "guided_option_customer_pain": "[customer pain]",
+        "guided_option_payment_email_link_allowed": true
+      }
+    },
+    {
+      "case_id": "prod-097-no-pressure-honest-take",
+      "customer_turn": "I do not want sales pressure; just give me your honest take.",
+      "expected_candidate_response": "Fair. My honest take is $59 only makes sense if [feature A] and [feature B] solve the problem you described. If not, start with $29.",
+      "campaign": {
+        "language": "en",
+        "guided_option_plan_29_features": "[feature X] and [feature Y]",
+        "guided_option_plan_59_added_features": "[feature A] and [feature B]",
+        "guided_option_customer_goal": "[customer goal]",
+        "guided_option_customer_pain": "[customer pain]",
+        "guided_option_payment_email_link_allowed": true
+      }
+    }
+  ],
+  "control_cases": [
+    {
+      "case_id": "prod-099-no-customer-facts-control",
+      "customer_turn": "Can you just tell me what you recommend?",
+      "campaign": {
+        "language": "en",
+        "guided_option_plan_29_features": "[feature X]",
+        "guided_option_plan_59_added_features": "[feature A]"
+      },
+      "expected_candidate_response": null,
+      "why_control": "Direct recommendation requires customer facts."
+    },
+    {
+      "case_id": "prod-099-card-payment-control",
+      "customer_turn": "Can I pay now with my card?",
+      "expected_candidate_response": null,
+      "why_control": "Payment/card handling stays outside recommendation roleplay."
+    },
+    {
+      "case_id": "prod-099-payment-details-control",
+      "customer_turn": "Can you take my payment details if I choose one?",
+      "expected_candidate_response": null,
+      "why_control": "Payment detail collection stays blocked."
+    },
+    {
+      "case_id": "prod-099-signup-control",
+      "customer_turn": "Can you sign me up on this call?",
+      "expected_candidate_response": null,
+      "why_control": "Signup and contract execution stay outside this slice."
+    },
+    {
+      "case_id": "prod-099-process-control",
+      "customer_turn": "What happens after I say yes?",
+      "expected_candidate_response": null,
+      "why_control": "Process clarity is already handled by its own route."
+    },
+    {
+      "case_id": "prod-099-provider-control",
+      "customer_turn": "Can you show our current provider and your offer side by side?",
+      "expected_candidate_response": null,
+      "why_control": "Provider comparison stays separate."
+    },
+    {
+      "case_id": "prod-099-coverage-control",
+      "customer_turn": "Does the plan cover reimbursement?",
+      "expected_candidate_response": null,
+      "why_control": "Coverage knowledge stays outside this slice."
+    },
+    {
+      "case_id": "prod-099-generic-confusion-control",
+      "customer_turn": "I am listening, but I do not know what I am supposed to decide yet.",
+      "expected_candidate_response": null,
+      "why_control": "Generic decision confusion stays unknown."
+    },
+    {
+      "case_id": "prod-099-guided-option-control",
+      "customer_turn": "Should I start small or go with the fuller option?",
+      "expected_candidate_response": null,
+      "why_control": "Guided-option selection stays in its own route."
+    },
+    {
+      "case_id": "prod-099-german-control",
+      "customer_turn": "Was würdest du an meiner Stelle machen?",
+      "campaign": {
+        "language": "de"
+      },
+      "expected_candidate_response": null,
+      "why_control": "German exact-phrase promotion remains blocked."
+    }
+  ],
+  "positive_case_count": 7,
+  "control_case_count": 10
+}

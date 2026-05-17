@@ -1,0 +1,12 @@
+{
+  "checkpoint_id": "PROD-073-english-customer-move-classification-gate-decision",
+  "source_checkpoint_id": "PROD-072-english-coverage-knowledge-post-patch-regression",
+  "decision": "split_broad_customer_move_gate_before_probe",
+  "remaining_gate_id": "customer_move_classification_outside_selected_non_refusal_groups",
+  "broad_classifier_patch_allowed": false,
+  "reason": "The remaining gate has the highest blast radius because it changes reachability across multiple runtime branches. The safe next step is an inventory of candidate slices, not a patch.",
+  "requires_human_review_before_next_checkpoint": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-074-english-customer-move-classification-slice-inventory",
+  "production_runtime_promotion_allowed": false
+}

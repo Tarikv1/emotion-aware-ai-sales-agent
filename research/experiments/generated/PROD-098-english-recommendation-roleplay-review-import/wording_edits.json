@@ -1,0 +1,21 @@
+{
+  "checkpoint_id": "PROD-098-english-recommendation-roleplay-review-import",
+  "source_checkpoint_id": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity",
+  "edits": {
+    "prod-097-direct-recommendation": {
+      "review_decision": "approved_after_required_wording_edit",
+      "source_issue": "The original ending 'start with $29 and upgrade later' was slightly too directive.",
+      "required_direction": "Add 'if you need to' so the customer keeps the sense of choice.",
+      "final_candidate_response": "Based on [customer pain], I would recommend $59. If budget is the main concern, start with $29 and upgrade later if you need to."
+    },
+    "prod-097-decide-for-me-control": {
+      "review_decision": "approved_after_required_wording_edit",
+      "source_issue": "The original second sentence needed a softer connector.",
+      "required_direction": "Use the cleaner 'but' connector rather than ending the sentence with 'though'.",
+      "final_candidate_response": "I cannot decide for you, but I can show what each plan covers and why one may fit your needs better."
+    }
+  },
+  "edit_count": 2,
+  "example_3_less_pushy_option_language": true,
+  "example_5_uses_but_connector": true
+}

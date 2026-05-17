@@ -1,0 +1,20 @@
+{
+  "checkpoint_id": "PROD-066-english-voicemail-action-only-policy-probe",
+  "expected_action": "Do not speak to voicemail. Log follow-up and try again later according to campaign rules.",
+  "expected_agent_response": "",
+  "current_runtime_decision": {
+    "response_language": "en",
+    "sales_difficulty": "voicemail",
+    "selected_strategy": "rapport",
+    "next_action": "create-follow-up-task",
+    "call_control": "end-call",
+    "background_modules": [
+      "follow-up-task-write"
+    ],
+    "agent_response": "I reached voicemail, so I will log this for follow-up according to campaign rules."
+  },
+  "spoken_response_gap": true,
+  "action_gap": false,
+  "call_control_gap": false,
+  "gap_detected": true
+}

@@ -1,0 +1,71 @@
+{
+  "checkpoint_id": "PROD-087-english-guided-option-selection-runtime-patch",
+  "case_count": 8,
+  "cases": [
+    {
+      "case_id": "prod-087-missing-feature-matrix",
+      "customer_turn": "So do I choose the $29 option or the $59 option?",
+      "expected": "not guided-option-selection",
+      "sales_difficulty": "unknown-runtime-signal",
+      "agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "passed": true
+    },
+    {
+      "case_id": "prod-087-card-payment-boundary",
+      "customer_turn": "Can I pay now with my card?",
+      "expected": "payment-safety-boundary",
+      "sales_difficulty": "payment-safety-boundary",
+      "agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-087-payment-details-boundary",
+      "customer_turn": "Can you take my payment details if I choose one?",
+      "expected": "payment-safety-boundary",
+      "sales_difficulty": "payment-safety-boundary",
+      "agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-087-price-only-control",
+      "customer_turn": "How much does this cost?",
+      "expected": "price-first-direct",
+      "sales_difficulty": "price-first-direct",
+      "agent_response": "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-087-written-info-control",
+      "customer_turn": "Can you send me the details in writing?",
+      "expected": "written-info-request",
+      "sales_difficulty": "written-info-request",
+      "agent_response": "Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-087-coverage-boundary-control",
+      "customer_turn": "Does the plan cover reimbursement?",
+      "expected": "coverage-boundary-route",
+      "sales_difficulty": "coverage-boundary-route",
+      "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-087-contract-signing-control",
+      "customer_turn": "Can you sign me up on this call?",
+      "expected": "not guided-option-selection",
+      "sales_difficulty": "unknown-runtime-signal",
+      "agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "passed": true
+    },
+    {
+      "case_id": "prod-087-german-control",
+      "customer_turn": "Soll ich die 29 Euro oder 59 Euro Option nehmen?",
+      "expected": "not guided-option-selection",
+      "sales_difficulty": "unknown-runtime-signal",
+      "agent_response": "Danke. Darf ich kurz eine klärende Frage stellen?",
+      "passed": true
+    }
+  ],
+  "failure_count": 0
+}

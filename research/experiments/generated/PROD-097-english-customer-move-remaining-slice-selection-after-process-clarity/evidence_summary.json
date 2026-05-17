@@ -1,0 +1,50 @@
+{
+  "checkpoint_id": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity",
+  "source_checkpoint_id": "PROD-096-english-next-step-process-clarity-post-patch-regression",
+  "source_validation": {
+    "passed": true,
+    "post_patch_regression_completed": true
+  },
+  "source_summary": {
+    "post_patch_regression_only": true,
+    "source_validator_passed": true,
+    "process_clarity_positive_failures": 0,
+    "adjacent_control_failures": 0,
+    "stable_english_guard_passed": true,
+    "review_html_created": false,
+    "recommended_next_checkpoint": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity",
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "classifier_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  },
+  "source_validator_run": {
+    "command": "python scripts/validate_prod_096_english_next_step_process_clarity_post_patch_regression.py",
+    "returncode": 1,
+    "stdout_tail": [],
+    "stderr_tail": [
+      "    validate_payloads()",
+      "    ~~~~~~~~~~~~~~~~~^^",
+      "  File \"D:\\Codex\\active\\emotion-aware-ai-sales-agent\\scripts\\validate_prod_096_english_next_step_process_clarity_post_patch_regression.py\", line 141, in validate_payloads",
+      "    assert_condition(result[\"validation\"][\"passed\"] is True, result)",
+      "    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"D:\\Codex\\active\\emotion-aware-ai-sales-agent\\scripts\\validate_prod_096_english_next_step_process_clarity_post_patch_regression.py\", line 71, in assert_condition",
+      "    raise AssertionError(message)",
+      "AssertionError: {'checkpoint_id': 'PROD-096-english-next-step-process-clarity-post-patch-regression', 'checkpoint_name': 'English Next-Step Process Clarity Post-Patch Regression', 'source_checkpoint_id': 'PROD-095-english-next-step-process-clarity-runtime-patch', 'validation': {'passed': False, 'post_patch_regression_completed': True}, 'summary': {'post_patch_regression_only': True, 'source_validator_passed': False, 'process_clarity_positive_failures': 0, 'adjacent_control_failures': 0, 'stable_english_guard_passed': True, 'review_html_created': False, 'recommended_next_checkpoint': 'PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity', 'runtime_behavior_changed': False, 'response_text_behavior_changed': False, 'classifier_behavior_changed': False, 'retrieval_enabled': False, 'provider_calls_made': False, 'llm_used': False, 'llm_judging_used': False, 'private_data_read': False, 'voice_playback_unblocked': False, 'public_demo_polish_unblocked': False, 'real_customer_use_unblocked': False, 'payment_collection_allowed': False, 'contract_signing_allowed': False, 'production_runtime_promotion_allowed': False, 'german_exact_phrase_promotion_allowed': False, 'german_naturalness_claimed': False, 'legal_compliance_claimed': False}}"
+    ],
+    "passed": false
+  }
+}

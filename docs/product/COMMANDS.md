@@ -1443,6 +1443,548 @@ Validate that PROD-057 adopts PROD-056 as the stable English multi-turn regressi
 python scripts\validate_prod_057_english_multi_turn_regression_guard_decision.py
 ```
 
+Run the PROD-058 English runtime promotion blocker inventory:
+
+```powershell
+python scripts\run_prod_058_english_runtime_promotion_blocker_inventory.py
+```
+
+Validate that PROD-058 inventories remaining English runtime promotion blockers, separates English evidence gaps from product-policy gates and separate German/voice/retrieval/provider/private-data/legal/deployment gates, and keeps runtime, response text, provider, LLM, private-data, German, voice, payment, contract, real-customer, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_058_english_runtime_promotion_blocker_inventory.py
+```
+
+Run the PROD-059 final English-only runtime readiness review:
+
+```powershell
+python scripts\run_prod_059_final_english_only_runtime_readiness_review.py
+```
+
+Validate that PROD-059 records human acceptance of the PROD-058 inventory, marks the bounded English deterministic runtime surface `ready_with_exclusions`, explicitly excludes still-blocked policy/separate-track/deployment gates, and keeps runtime, response text, provider, LLM, private-data, German, voice, retrieval, legal, payment, contract, real-customer, public-demo, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_059_final_english_only_runtime_readiness_review.py
+```
+
+Run the PROD-060 runtime promotion path decision:
+
+```powershell
+python scripts\run_prod_060_runtime_promotion_path_decision.py
+```
+
+Validate that PROD-060 records human acceptance of the PROD-059 review, selects `internal_guarded_english_baseline_only` only as a local offline synthetic internal regression reference, rejects public-demo, real-customer, provider/private-data, retrieval, voice, German, payment/contract, and production runtime paths, and keeps runtime, response text, provider, LLM, private-data, German, voice, retrieval, legal, payment, contract, real-customer, public-demo, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_060_runtime_promotion_path_decision.py
+```
+
+Run the PROD-061 English product-policy gate prioritization:
+
+```powershell
+python scripts\run_prod_061_english_product_policy_gate_prioritization.py
+```
+
+Validate that PROD-061 records human acceptance of the PROD-060 path decision, prioritizes `context_sensitive_autonomy_behavior` as the first English product-policy probe while keeping it still blocked, defers voicemail action-only behavior, coverage knowledge-policy behavior, and broad customer-move classification, and keeps runtime, response text, classifier, provider, LLM, private-data, German, voice, retrieval, legal, payment, contract, real-customer, public-demo, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_061_english_product_policy_gate_prioritization.py
+```
+
+Run the PROD-062 English context-sensitive autonomy policy probe:
+
+```powershell
+python scripts\run_prod_062_english_context_sensitive_autonomy_policy_probe.py
+```
+
+Validate that PROD-062 probes the shorter English autonomy wording candidate synthetically only, recommends a separate narrow runtime patch, creates no review HTML, and keeps runtime, response text, classifier, provider, LLM, private-data, German, voice, retrieval, legal, payment, contract, real-customer, public-demo, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_062_english_context_sensitive_autonomy_policy_probe.py
+```
+
+Run the PROD-063 English autonomy-check runtime wording patch:
+
+```powershell
+python scripts\run_prod_063_english_autonomy_check_runtime_wording_patch.py
+```
+
+Validate that PROD-063 applies only the approved English `autonomy-check` response text patch, keeps classifier reachability and call-control behavior unchanged, changes no German text, creates no review HTML, and keeps provider, LLM, private-data, German, voice, retrieval, legal, payment, contract, real-customer, public-demo, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_063_english_autonomy_check_runtime_wording_patch.py
+```
+
+Run the PROD-064 English autonomy post-patch multi-turn regression:
+
+```powershell
+python scripts\run_prod_064_english_autonomy_post_patch_multi_turn_regression.py
+```
+
+Validate that PROD-064 reruns the stable English guard, verifies the patched autonomy first-turn response, checks autonomy follow-up and protected-boundary routing, creates no review HTML, and keeps runtime, response text, classifier, provider, LLM, private-data, German, voice, retrieval, legal, payment, contract, real-customer, public-demo, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_064_english_autonomy_post_patch_multi_turn_regression.py
+```
+
+Run the PROD-065 English remaining product-policy gate selection:
+
+```powershell
+python scripts\run_prod_065_english_remaining_product_policy_gate_selection.py
+```
+
+Validate that PROD-065 selects `voicemail_action_only_behavior` as the next remaining English product-policy gate, keeps coverage and broad customer-move classification deferred, creates no review HTML, and keeps runtime, response text, classifier, provider, LLM, private-data, German, voice, retrieval, legal, payment, contract, real-customer, public-demo, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_065_english_remaining_product_policy_gate_selection.py
+```
+
+Run the PROD-066 English voicemail action-only policy probe:
+
+```powershell
+python scripts\run_prod_066_english_voicemail_action_only_policy_probe.py
+```
+
+Validate that PROD-066 imports existing owner voicemail feedback, probes action-only/no-spoken-response voicemail behavior, records the current runtime spoken-response gap, creates no review HTML, and keeps runtime, response text, classifier, provider, LLM, private-data, German, voice, retrieval, legal, payment, contract, real-customer, public-demo, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_066_english_voicemail_action_only_policy_probe.py
+```
+
+Run the PROD-067 English voicemail action-only runtime patch:
+
+```powershell
+python scripts\run_prod_067_english_voicemail_action_only_runtime_patch.py
+```
+
+Validate that PROD-067 suppresses the English voicemail spoken response, keeps follow-up logging and end-call behavior, does not change classifier reachability, next action, call-control behavior, German text, provider, LLM, private-data, voice, retrieval, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries, and creates no review HTML:
+
+```powershell
+python scripts\validate_prod_067_english_voicemail_action_only_runtime_patch.py
+```
+
+Run the PROD-068 English voicemail post-patch regression:
+
+```powershell
+python scripts\run_prod_068_english_voicemail_post_patch_regression.py
+```
+
+Validate that PROD-068 keeps English voicemail action-only behavior stable, verifies nearby human-speech and protected-boundary cases, reruns the stable English guard, creates no review HTML, changes no runtime behavior, response text, classifier reachability, next action, call-control behavior, provider, LLM, private-data, German, voice, retrieval, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_068_english_voicemail_post_patch_regression.py
+```
+
+Run the PROD-069 English remaining product-policy gate selection after voicemail:
+
+```powershell
+python scripts\run_prod_069_english_remaining_product_policy_gate_selection_after_voicemail.py
+```
+
+Validate that PROD-069 selects `coverage_knowledge_policy_behavior` as the next still-blocked English policy probe, keeps broad customer-move classifier expansion deferred, creates no review HTML, and changes no runtime behavior, response text, classifier reachability, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_069_english_remaining_product_policy_gate_selection_after_voicemail.py
+```
+
+Run the PROD-070 English coverage knowledge-policy probe:
+
+```powershell
+python scripts\run_prod_070_english_coverage_knowledge_policy_probe.py
+```
+
+Validate that PROD-070 probes the selected English coverage knowledge-policy boundary, records that coverage advice, coverage fact claims, eligibility claims, and reimbursement claims remain blocked, detects the current runtime gaps for `eligible`, `reimbursement`, and `plan covers` phrases, creates no review HTML, and changes no runtime behavior, response text, classifier reachability, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_070_english_coverage_knowledge_policy_probe.py
+```
+
+Run the PROD-071 English coverage knowledge runtime patch:
+
+```powershell
+python scripts\run_prod_071_english_coverage_knowledge_runtime_patch.py
+```
+
+Validate that PROD-071 routes the three PROD-070 English coverage boundary gap phrases to `coverage-boundary-route`, preserves product-detail, price, and healthcare controls, records `guided_option_selection` as a future persuasion-tactics checkpoint candidate, creates no review HTML, and changes no response text, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_071_english_coverage_knowledge_runtime_patch.py
+```
+
+Run the PROD-072 English coverage knowledge post-patch regression:
+
+```powershell
+python scripts\run_prod_072_english_coverage_knowledge_post_patch_regression.py
+```
+
+Validate that PROD-072 keeps the PROD-071 coverage boundary patch stable, preserves product-detail, price, healthcare, voicemail, and stable English multi-turn controls, keeps `guided_option_selection` as a future persuasion-tactics checkpoint candidate only, creates no review HTML, and changes no runtime behavior, response text, classifier reachability, next action, call-control behavior, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_072_english_coverage_knowledge_post_patch_regression.py
+```
+
+Run the PROD-073 English customer-move classification gate decision:
+
+```powershell
+python scripts\run_prod_073_english_customer_move_classification_gate_decision.py
+```
+
+Validate that PROD-073 keeps the remaining broad `customer_move_classification_outside_selected_non_refusal_groups` gate decision-only, blocks a broad classifier patch, requires a narrow slice inventory next, creates no review HTML, and changes no runtime behavior, response text, classifier reachability, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_073_english_customer_move_classification_gate_decision.py
+```
+
+Run the PROD-074 English customer-move classification slice inventory:
+
+```powershell
+python scripts\run_prod_074_english_customer_move_classification_slice_inventory.py
+```
+
+Validate that PROD-074 inventories the current deterministic classifier surface, identifies `provider-comparison` as the unreachable localized response type, keeps the checkpoint inventory-only, creates no review HTML, recommends the provider-comparison reachability review next, and changes no runtime behavior, response text, classifier reachability, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_074_english_customer_move_classification_slice_inventory.py
+```
+
+Run the PROD-075 English provider-comparison reachability review packet:
+
+```powershell
+python scripts\run_prod_075_english_provider_comparison_reachability_review.py
+```
+
+Validate that PROD-075 creates only the provider-comparison human review packet, writes the browser review HTML, requires review before the next checkpoint, recommends the review-import checkpoint next, and changes no runtime behavior, response text, classifier reachability, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_075_english_provider_comparison_reachability_review.py
+```
+
+Run the PROD-076 English provider-comparison review import:
+
+```powershell
+python scripts\run_prod_076_english_provider_comparison_review_import.py
+```
+
+Validate that PROD-076 imports Tarik's provider-comparison review as approve for narrow probe with brevity constraint, records that the response is not approved as exact wording, requires a known comparison target, recommends the narrow-probe design checkpoint next, creates no review HTML, and changes no runtime behavior, response text, classifier reachability, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_076_english_provider_comparison_review_import.py
+```
+
+Run the PROD-077 English provider-comparison narrow probe design:
+
+```powershell
+python scripts\run_prod_077_english_provider_comparison_narrow_probe_design.py
+```
+
+Validate that PROD-077 designs the narrow `provider-comparison` probe with `compare_or_difference_signal` plus `known_comparison_target_signal`, selects the shorter candidate response, requires insertion before `existing-provider-gap` if patched later, creates no review HTML, recommends the runtime patch checkpoint next, and changes no runtime behavior, response text, classifier reachability, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_077_english_provider_comparison_narrow_probe_design.py
+```
+
+Run the PROD-078 English provider-comparison runtime patch:
+
+```powershell
+python scripts\run_prod_078_english_provider_comparison_runtime_patch.py
+```
+
+Validate that PROD-078 applies the narrow English `provider-comparison` branch, uses the shorter response, requires a known comparison target, preserves existing-provider, price, generic-product, payment, and sign-up controls, creates no review HTML, recommends post-patch regression next, and keeps retrieval, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_078_english_provider_comparison_runtime_patch.py
+```
+
+Run the PROD-079 English provider-comparison post-patch regression:
+
+```powershell
+python scripts\run_prod_079_english_provider_comparison_post_patch_regression.py
+```
+
+Validate that PROD-079 preserves provider-comparison positives, existing-provider-gap controls, adjacent price/product/written-info/payment/sign-up controls, reruns the stable English guard, creates no review HTML, recommends remaining-slice selection next, and changes no runtime behavior, response text, classifier reachability, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_079_english_provider_comparison_post_patch_regression.py
+```
+
+Run the PROD-080 English customer-move remaining slice selection:
+
+```powershell
+python scripts\run_prod_080_english_customer_move_remaining_slice_selection.py
+```
+
+Validate that PROD-080 closes the unreachable-existing-response-types slice, selects `unknown_runtime_signal_subtypes` as the next inventory-only slice, requires protected boundary controls, creates no review HTML, recommends the unknown-runtime-signal inventory next, and changes no runtime behavior, response text, classifier reachability, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_080_english_customer_move_remaining_slice_selection.py
+```
+
+Run the PROD-081 English unknown runtime signal subtype inventory:
+
+```powershell
+python scripts\run_prod_081_english_unknown_runtime_signal_subtype_inventory.py
+```
+
+Validate that PROD-081 inventories English `unknown-runtime-signal` subtypes, keeps guided option selection as review-gated, requires two real options plus `neither`, `not now`, and `explain the difference` guardrails, verifies protected boundary controls, creates no review HTML, recommends the guided option selection review next, and changes no runtime behavior, response text, classifier reachability, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_081_english_unknown_runtime_signal_subtype_inventory.py
+```
+
+Run the PROD-082 English guided option selection review packet:
+
+```powershell
+python scripts\run_prod_082_english_guided_option_selection_review.py
+```
+
+Validate that PROD-082 creates the browser HTML review packet for `guided_option_selection_candidate`, includes `$29`/`$59` examples, `neither`, `not now`, `explain the difference`, and `no payment details needed` paths, supports JSON export/import, recommends review import next, and changes no runtime behavior, response text, classifier reachability, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_082_english_guided_option_selection_review.py
+```
+
+Run the PROD-083 English guided option selection review import:
+
+```powershell
+python scripts\run_prod_083_english_guided_option_selection_review_import.py
+```
+
+Validate that PROD-083 imports Tarik's review as `needs_rewrite_before_probe`, rejects the current examples, requires leaving obvious facts out, avoiding repetition, using a plan feature matrix, approved campaign payment-path explanation, no payment on the call by default, sparse contextual discourse markers instead of random fillers, creates no review HTML, recommends rewrite design next, and changes no runtime behavior, response text, classifier reachability, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_083_english_guided_option_selection_review_import.py
+```
+
+Run the PROD-084 English guided option selection rewrite review packet:
+
+```powershell
+python scripts\run_prod_084_english_guided_option_selection_rewrite_design.py
+```
+
+Validate that PROD-084 creates the browser HTML review packet for rewritten guided option examples, uses a review-only plan feature matrix, includes sparse contextual discourse markers while blocking random fillers, keeps no payment on the call by default, recommends review import next, and changes no runtime behavior, response text, classifier reachability, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_084_english_guided_option_selection_rewrite_design.py
+```
+
+Run the PROD-085 English guided option selection rewrite review import:
+
+```powershell
+python scripts\run_prod_085_english_guided_option_selection_rewrite_review_import.py
+```
+
+Validate that PROD-085 imports Tarik's review as approve rewrite for policy probe with payment wording edit, preserves the source artifact, replaces example seven with `No payment on this call. I'll send you the link by email, and you can review the plan and register there.`, removes the `companyname.com` placeholder from the approved candidate packet, creates no review HTML, recommends the narrow policy probe next, and changes no runtime behavior, response text, classifier reachability, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_085_english_guided_option_selection_rewrite_review_import.py
+```
+
+Run the PROD-086 English guided option selection narrow policy probe:
+
+```powershell
+python scripts\run_prod_086_english_guided_option_selection_narrow_policy_probe.py
+```
+
+Validate that PROD-086 tests the approved-with-edit candidate packet, records policy probe passed: `true`, requires plan feature matrix, customer facts for steering, no payment on this call, shorter email-link payment wording, no `companyname.com` generic payment placeholder, blocks random fillers, creates no review HTML, recommends the runtime patch next, and changes no runtime behavior, response text, classifier reachability, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_086_english_guided_option_selection_narrow_policy_probe.py
+```
+
+Run the PROD-087 English guided option selection runtime patch verification:
+
+```powershell
+python scripts\run_prod_087_english_guided_option_selection_runtime_patch.py
+```
+
+Validate that PROD-087 applies the narrow English `guided-option-selection` runtime patch, requires plan feature matrix and customer facts for steering, uses `No payment on this call. I'll send you the link by email, and you can review the plan and register there.`, keeps card/payment-detail requests on the protected payment boundary, creates no review HTML, recommends post-patch regression next, changes runtime behavior, response text behavior, and classifier behavior for this branch only, and keeps retrieval, provider, LLM, private-data, German, voice, legal, payment collection, contract, real-customer, public-demo, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_087_english_guided_option_selection_runtime_patch.py
+```
+
+Run the PROD-088 English guided option selection post-patch regression:
+
+```powershell
+python scripts\run_prod_088_english_guided_option_selection_post_patch_regression.py
+```
+
+Validate that PROD-088 verifies the guided-option runtime patch after application, records guided option positive failures: `0`, adjacent control failures: `0`, stable English guard passed: `true`, creates no review HTML, recommends the next remaining-slice selection, and changes no runtime behavior, response text behavior, classifier behavior, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_088_english_guided_option_selection_post_patch_regression.py
+```
+
+Run the PROD-089 English customer-move remaining slice selection after guided option:
+
+```powershell
+python scripts\run_prod_089_english_customer_move_remaining_slice_selection_after_guided_option.py
+```
+
+Validate that PROD-089 re-probes the old unknown-runtime-signal inventory after guided option selection, selects `guided_option_synonym_coverage`, records old unknown cases now guided option: `5`, selected gap count: `2`, requires human review before next checkpoint: `false`, creates no review HTML, recommends `PROD-090-english-guided-option-synonym-coverage-narrow-probe`, and changes no runtime behavior, response text behavior, classifier behavior, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_089_english_customer_move_remaining_slice_selection_after_guided_option.py
+```
+
+Run the PROD-090 English guided option synonym coverage narrow policy probe:
+
+```powershell
+python scripts\run_prod_090_english_guided_option_synonym_coverage_narrow_probe.py
+```
+
+Validate that PROD-090 tests the two selected guided-option near-synonym gaps, records policy probe passed: `true`, current runtime gap count: `2`, selected gap count: `2`, creates no review HTML, recommends `PROD-091-english-guided-option-synonym-coverage-runtime-patch`, and changes no runtime behavior, response text behavior, classifier behavior, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_090_english_guided_option_synonym_coverage_narrow_probe.py
+```
+
+Run the PROD-091 English guided option synonym coverage runtime patch verification:
+
+```powershell
+python scripts\run_prod_091_english_guided_option_synonym_coverage_runtime_patch.py
+```
+
+Validate that PROD-091 applies the smallest guided-option synonym runtime patch, records selected gap fixed count: `2`, positive case failures: `0`, control case failures: `0`, creates no review HTML, recommends `PROD-092-english-guided-option-synonym-coverage-post-patch-regression`, changes runtime behavior, response text behavior, and classifier behavior for this branch only, and keeps retrieval, provider, LLM, private-data, German, voice, legal, payment collection, contract, real-customer, public-demo, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_091_english_guided_option_synonym_coverage_runtime_patch.py
+```
+
+Run the PROD-092 English guided option synonym coverage post-patch regression:
+
+```powershell
+python scripts\run_prod_092_english_guided_option_synonym_coverage_post_patch_regression.py
+```
+
+Validate that PROD-092 verifies the guided-option synonym runtime patch after application, records synonym positive failures: `0`, adjacent control failures: `0`, stable English guard passed: `true`, creates no review HTML, recommends `PROD-093-english-customer-move-remaining-slice-selection-after-guided-option-synonyms`, and changes no runtime behavior, response text behavior, classifier behavior, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_092_english_guided_option_synonym_coverage_post_patch_regression.py
+```
+
+Run the PROD-093 English customer-move remaining slice selection after guided option synonyms:
+
+```powershell
+python scripts\run_prod_093_english_customer_move_remaining_slice_selection_after_guided_option_synonyms.py
+```
+
+Validate that PROD-093 selects `next_step_process_clarity`, records selected remaining case: `prod-081-next-step-01`, advice roleplay deferred for review: `true`, generic confusion kept unknown: `true`, requires human review before next checkpoint: `false`, creates no review HTML, recommends `PROD-094-english-next-step-process-clarity-narrow-probe`, and changes no runtime behavior, response text behavior, classifier behavior, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_093_english_customer_move_remaining_slice_selection_after_guided_option_synonyms.py
+```
+
+Run the PROD-094 English next-step process clarity narrow policy probe:
+
+```powershell
+python scripts\run_prod_094_english_next_step_process_clarity_narrow_probe.py
+```
+
+Validate that PROD-094 probes concise post-yes process wording, records process clarity probe passed: `true`, current runtime gap count: `1`, no payment on this call default: `true`, email link register path allowed: `true`, creates no review HTML, recommends `PROD-095-english-next-step-process-clarity-runtime-patch`, and changes no runtime behavior, response text behavior, classifier behavior, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_094_english_next_step_process_clarity_narrow_probe.py
+```
+
+Run the PROD-095 English next-step process clarity runtime patch verification:
+
+```powershell
+python scripts\run_prod_095_english_next_step_process_clarity_runtime_patch.py
+```
+
+Validate that PROD-095 applies the smallest English process-clarity runtime patch, records selected gap fixed count: `1`, positive case failures: `0`, control case failures: `0`, no payment on this call default: `true`, email link register path allowed: `true`, creates no review HTML, recommends `PROD-096-english-next-step-process-clarity-post-patch-regression`, changes runtime behavior, response text behavior, and classifier behavior for this branch only, and keeps retrieval, provider, LLM, private-data, German, voice, legal, payment collection, contract, real-customer, public-demo, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_095_english_next_step_process_clarity_runtime_patch.py
+```
+
+Run the PROD-096 English next-step process clarity post-patch regression:
+
+```powershell
+python scripts\run_prod_096_english_next_step_process_clarity_post_patch_regression.py
+```
+
+Validate that PROD-096 verifies the process-clarity runtime patch after application, records process clarity positive failures: `0`, adjacent control failures: `0`, stable English guard passed: `true`, creates no review HTML, recommends `PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity`, and changes no runtime behavior, response text behavior, classifier behavior, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_096_english_next_step_process_clarity_post_patch_regression.py
+```
+
+Run the PROD-097 English customer-move remaining slice selection after process clarity:
+
+```powershell
+python scripts\run_prod_097_english_customer_move_remaining_slice_selection_after_process_clarity.py
+```
+
+Validate that PROD-097 selects `recommendation_roleplay_boundary`, records selected remaining case: `prod-081-recommendation-02`, requires human review before next checkpoint: `true`, creates review HTML, recommends `PROD-098-english-recommendation-roleplay-review-import`, and changes no runtime behavior, response text behavior, classifier behavior, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_097_english_customer_move_remaining_slice_selection_after_process_clarity.py
+```
+
+Run the PROD-098 English recommendation roleplay review import:
+
+```powershell
+python scripts\run_prod_098_english_recommendation_roleplay_review_import.py
+```
+
+Validate that PROD-098 imports Tarik's recommendation-roleplay review, records approve for policy probe with two wording edits, preserves `if you need to` and `but I can show`, creates no review HTML, recommends `PROD-099-english-recommendation-roleplay-narrow-policy-probe`, and changes no runtime behavior, response text behavior, classifier behavior, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_098_english_recommendation_roleplay_review_import.py
+```
+
+Run the PROD-099 English recommendation-roleplay narrow policy probe:
+
+```powershell
+python scripts\run_prod_099_english_recommendation_roleplay_narrow_policy_probe.py
+```
+
+Validate that PROD-099 probes `recommendation_roleplay_boundary`, records recommendation roleplay probe passed: `true`, current runtime gap count: `7`, requires customer facts for recommendation: `true`, requires agency preservation: `true`, creates no review HTML, recommends `PROD-100-english-recommendation-roleplay-runtime-patch`, and changes no runtime behavior, response text behavior, classifier behavior, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_099_english_recommendation_roleplay_narrow_policy_probe.py
+```
+
+Run the PROD-100 English recommendation-roleplay runtime patch:
+
+```powershell
+python scripts\run_prod_100_english_recommendation_roleplay_runtime_patch.py
+```
+
+Validate that PROD-100 applies the English recommendation-roleplay runtime patch, records selected gap fixed count: `7`, positive case failures: `0`, control case failures: `0`, requires customer facts for recommendation: `true`, requires agency preservation: `true`, no agent decides for customer: `true`, no value guarantee: `true`, creates no review HTML, recommends `PROD-101-english-recommendation-roleplay-post-patch-regression`, changes English runtime behavior, response text behavior, and classifier behavior for the selected branch, and leaves retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_100_english_recommendation_roleplay_runtime_patch.py
+```
+
+PROD checkpoints that ask Tarik for review should include a browser-openable HTML review file with concrete examples. For PROD-059:
+
+```text
+research\experiments\generated\PROD-059-final-english-only-runtime-readiness-review\prod_059_review.html
+```
+
+For PROD-060:
+
+```text
+research\experiments\generated\PROD-060-runtime-promotion-path-decision\prod_060_review.html
+```
+
+For PROD-075:
+
+```text
+research\experiments\generated\PROD-075-english-provider-comparison-reachability-review\prod_075_review.html
+```
+
+For PROD-084:
+
+```text
+research\experiments\generated\PROD-084-english-guided-option-selection-rewrite-design\prod_084_review.html
+```
+
+PROD checkpoints should not generate HTML for routine inventories, prioritization packets, validator evidence, or agent-internal checkpoints where no human review is required.
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

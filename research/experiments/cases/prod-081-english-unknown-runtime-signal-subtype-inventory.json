@@ -1,0 +1,24 @@
+{
+  "checkpoint_id": "PROD-081-english-unknown-runtime-signal-subtype-inventory",
+  "checkpoint_name": "English Unknown Runtime Signal Subtype Inventory",
+  "source_checkpoint_id": "PROD-080-english-customer-move-remaining-slice-selection",
+  "scope": "english_unknown_runtime_signal_subtype_inventory_only",
+  "inventory_only": true,
+  "selected_source_slice": "unknown_runtime_signal_subtypes",
+  "runtime_change_requested": false,
+  "response_text_change_requested": false,
+  "classifier_change_requested": false,
+  "retrieval_change_requested": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-082-english-guided-option-selection-review",
+  "recommended_next_checkpoint_requires_human_review": true,
+  "inventory_targets": [
+    "current unknown-runtime-signal turns",
+    "guided option selection candidate",
+    "plan option difference candidate",
+    "recommendation request candidate",
+    "next-step clarity candidate",
+    "deferral candidate",
+    "protected boundary controls"
+  ]
+}

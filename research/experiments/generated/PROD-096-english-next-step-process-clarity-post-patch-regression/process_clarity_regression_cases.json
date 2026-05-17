@@ -1,0 +1,92 @@
+{
+  "checkpoint_id": "PROD-096-english-next-step-process-clarity-post-patch-regression",
+  "case_count": 5,
+  "cases": [
+    {
+      "case_id": "prod-094-after-yes",
+      "customer_turn": "What happens after I say yes?",
+      "sales_difficulty": "next-step-process-clarity",
+      "agent_response": "I'll send the link by email. You can review the plan and register there. No payment on this call.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "exact_candidate_response": true,
+        "short_enough": true,
+        "no_payment_details_collection": true,
+        "no_contract_or_signup_claim": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-094-next-step-move-forward",
+      "customer_turn": "What is the next step if I want to move forward?",
+      "sales_difficulty": "next-step-process-clarity",
+      "agent_response": "I'll send the link by email. You can review the plan and register there. No payment on this call.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "exact_candidate_response": true,
+        "short_enough": true,
+        "no_payment_details_collection": true,
+        "no_contract_or_signup_claim": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-094-after-this-call",
+      "customer_turn": "If I choose one, what do I do after this call?",
+      "sales_difficulty": "next-step-process-clarity",
+      "agent_response": "I'll send the link by email. You can review the plan and register there. No payment on this call.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "exact_candidate_response": true,
+        "short_enough": true,
+        "no_payment_details_collection": true,
+        "no_contract_or_signup_claim": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-094-register-after-review",
+      "customer_turn": "How do I register after I review the plan?",
+      "sales_difficulty": "next-step-process-clarity",
+      "agent_response": "I'll send the link by email. You can review the plan and register there. No payment on this call.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "exact_candidate_response": true,
+        "short_enough": true,
+        "no_payment_details_collection": true,
+        "no_contract_or_signup_claim": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-094-picked-plan-next",
+      "customer_turn": "So if I pick the $59 plan, what happens next?",
+      "sales_difficulty": "next-step-process-clarity",
+      "agent_response": "I'll send the link by email. You can review the plan and register there. No payment on this call.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "exact_candidate_response": true,
+        "short_enough": true,
+        "no_payment_details_collection": true,
+        "no_contract_or_signup_claim": true
+      },
+      "passed": true
+    }
+  ],
+  "failure_count": 0
+}

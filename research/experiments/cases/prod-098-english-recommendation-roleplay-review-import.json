@@ -1,0 +1,11 @@
+{
+  "checkpoint_id": "PROD-098-english-recommendation-roleplay-review-import",
+  "checkpoint_name": "English Recommendation Roleplay Review Import",
+  "source_checkpoint_id": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity",
+  "scope": "english_recommendation_roleplay_review_import_only",
+  "human_review_imported": true,
+  "imported_review_decision": "approve_for_policy_probe_with_two_wording_edits",
+  "narrow_policy_probe_approved_after_required_edits": true,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-099-english-recommendation-roleplay-narrow-policy-probe"
+}

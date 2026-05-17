@@ -1,0 +1,35 @@
+{
+  "checkpoint_id": "PROD-095-english-next-step-process-clarity-runtime-patch",
+  "source_checkpoint_id": "PROD-094-english-next-step-process-clarity-narrow-probe",
+  "runtime_file": "runtime/core/realtime_turns.py",
+  "runtime_patch_applied": true,
+  "selected_gap_case_ids": [
+    "prod-081-next-step-01"
+  ],
+  "added_sales_difficulty": "next-step-process-clarity",
+  "added_process_signals": [
+    "what happens after",
+    "next step",
+    "after this call",
+    "move forward",
+    "register after",
+    "what happens next"
+  ],
+  "blocked_boundary_signals": [
+    "payment",
+    "card",
+    "pay now",
+    "sign me up",
+    "sign up",
+    "contract",
+    "provider",
+    "reimbursement",
+    "coverage",
+    "what would you do",
+    "my position",
+    "supposed to decide"
+  ],
+  "email_link_flag_required": true,
+  "candidate_response": "I'll send the link by email. You can review the plan and register there. No payment on this call.",
+  "review_html_created": false
+}

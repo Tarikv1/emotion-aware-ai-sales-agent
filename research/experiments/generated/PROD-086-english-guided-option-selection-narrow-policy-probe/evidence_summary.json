@@ -1,0 +1,54 @@
+{
+  "checkpoint_id": "PROD-086-english-guided-option-selection-narrow-policy-probe",
+  "source_checkpoint_id": "PROD-085-english-guided-option-selection-rewrite-review-import",
+  "source_validation": {
+    "passed": true,
+    "review_imported": true
+  },
+  "source_summary": {
+    "review_import_only": true,
+    "source_validator_passed": true,
+    "human_review_imported": true,
+    "selected_review_item": "guided_option_selection_rewritten_examples",
+    "imported_review_decision": "approve_rewrite_for_policy_probe_with_payment_wording_edit",
+    "approved_as_written_example_count": 7,
+    "required_edit_example_count": 1,
+    "narrow_policy_probe_approved_after_required_edit": true,
+    "narrow_policy_probe_approved_as_written": false,
+    "payment_wording_edit_required": true,
+    "final_payment_response": "No payment on this call. I'll send you the link by email, and you can review the plan and register there.",
+    "approved_rewrite_candidate_count": 8,
+    "review_html_created": false,
+    "runtime_candidate_promoted": false,
+    "recommended_next_checkpoint": "PROD-086-english-guided-option-selection-narrow-policy-probe",
+    "recommended_next_checkpoint_requires_human_review": false,
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "classifier_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  },
+  "source_validator_run": {
+    "command": "python scripts/validate_prod_085_english_guided_option_selection_rewrite_review_import.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-085-english-guided-option-selection-rewrite-review-import validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  },
+  "approved_candidate_count": 8,
+  "narrow_policy_probe_approved_after_required_edit": true
+}

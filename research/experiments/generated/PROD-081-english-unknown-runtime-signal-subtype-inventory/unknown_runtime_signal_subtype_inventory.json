@@ -1,0 +1,88 @@
+{
+  "checkpoint_id": "PROD-081-english-unknown-runtime-signal-subtype-inventory",
+  "source_checkpoint_id": "PROD-080-english-customer-move-remaining-slice-selection",
+  "subtypes": [
+    {
+      "subtype_id": "guided_option_selection_candidate",
+      "unknown_case_count": 3,
+      "example_turns": [
+        "So do I choose the 29 option or the 59 option?",
+        "Should I start small or go with the fuller option?",
+        "I can see both paths, I am just not sure which one fits me."
+      ],
+      "status": "selected_for_human_review_before_probe",
+      "why_selected": "Tarik explicitly raised this persuasion tactic, and it changes choice architecture rather than only wording.",
+      "required_review_guardrails": [
+        "two real options",
+        "fair presentation",
+        "neither",
+        "not now",
+        "explain the difference",
+        "no fake urgency",
+        "no pretend agreement",
+        "no payment collection",
+        "no contract signing"
+      ],
+      "requires_human_review_before_probe": true,
+      "runtime_patch_allowed": false
+    },
+    {
+      "subtype_id": "plan_option_difference",
+      "unknown_case_count": 2,
+      "example_turns": [
+        "What is the real difference between the 29 option and the 59 option?",
+        "Can you show me both options side by side?"
+      ],
+      "status": "candidate_after_guided_option_review",
+      "why_deferred": "Plan differences require product-specific comparison content and should not be invented by the runtime.",
+      "requires_human_review_before_probe": true,
+      "runtime_patch_allowed": false
+    },
+    {
+      "subtype_id": "recommendation_request",
+      "unknown_case_count": 2,
+      "example_turns": [
+        "Which route would you suggest for someone like me?",
+        "What would you do in my position?"
+      ],
+      "status": "defer_until_advice_boundary_defined",
+      "why_deferred": "A direct recommendation can turn into advice or authority pressure if it is not framed as fit clarification.",
+      "requires_human_review_before_probe": true,
+      "runtime_patch_allowed": false
+    },
+    {
+      "subtype_id": "next_step_clarity",
+      "unknown_case_count": 1,
+      "example_turns": [
+        "What happens after I say yes?"
+      ],
+      "status": "candidate_for_later_process_clarity_probe",
+      "why_deferred": "This likely needs a process-clarity response, but it is less urgent than the explicitly requested persuasion-tactic review.",
+      "requires_human_review_before_probe": false,
+      "runtime_patch_allowed": false
+    },
+    {
+      "subtype_id": "deferral_or_choose_later",
+      "unknown_case_count": 1,
+      "example_turns": [
+        "Can I choose later instead of deciding on this call?"
+      ],
+      "status": "candidate_for_autonomy_route_review",
+      "why_deferred": "This overlaps with autonomy-check but does not currently hit the exact trigger; broadening should wait until option-choice guardrails are reviewed.",
+      "requires_human_review_before_probe": false,
+      "runtime_patch_allowed": false
+    },
+    {
+      "subtype_id": "unclear_interest_probe",
+      "unknown_case_count": 1,
+      "example_turns": [
+        "I am listening, but I do not know what I am supposed to decide yet."
+      ],
+      "status": "keep_unknown_for_now",
+      "why_deferred": "Generic confusion is currently safer as a clarification fallback.",
+      "requires_human_review_before_probe": false,
+      "runtime_patch_allowed": false
+    }
+  ],
+  "subtype_count": 6
+}

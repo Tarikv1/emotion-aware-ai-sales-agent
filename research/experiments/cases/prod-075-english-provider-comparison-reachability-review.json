@@ -1,0 +1,15 @@
+{
+  "checkpoint_id": "PROD-075-english-provider-comparison-reachability-review",
+  "checkpoint_name": "English Provider-Comparison Reachability Review",
+  "source_checkpoint_id": "PROD-074-english-customer-move-classification-slice-inventory",
+  "scope": "english_provider_comparison_reachability_review_only",
+  "review_item": "provider-comparison",
+  "runtime_change_requested": false,
+  "response_text_change_requested": false,
+  "classifier_change_requested": false,
+  "retrieval_change_requested": false,
+  "requires_human_review_before_next_checkpoint": true,
+  "review_html_created": true,
+  "review_html_path": "research/experiments/generated/PROD-075-english-provider-comparison-reachability-review/prod_075_review.html",
+  "recommended_next_checkpoint": "PROD-076-english-provider-comparison-review-import"
+}

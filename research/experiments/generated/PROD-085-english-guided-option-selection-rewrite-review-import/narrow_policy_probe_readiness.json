@@ -1,0 +1,14 @@
+{
+  "checkpoint_id": "PROD-085-english-guided-option-selection-rewrite-review-import",
+  "source_checkpoint_id": "PROD-084-english-guided-option-selection-rewrite-design",
+  "narrow_policy_probe_approved_after_required_edit": true,
+  "narrow_policy_probe_approved_as_written": false,
+  "runtime_patch_allowed": false,
+  "requires_plan_feature_matrix": true,
+  "requires_customer_facts_for_steering": true,
+  "requires_no_payment_on_call_default": true,
+  "requires_no_company_domain_in_generic_payment_wording": true,
+  "final_payment_response": "No payment on this call. I'll send you the link by email, and you can review the plan and register there.",
+  "recommended_next_checkpoint": "PROD-086-english-guided-option-selection-narrow-policy-probe",
+  "recommended_next_checkpoint_requires_human_review": false
+}

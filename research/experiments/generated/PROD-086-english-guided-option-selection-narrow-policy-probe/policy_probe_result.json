@@ -1,0 +1,213 @@
+{
+  "checkpoint_id": "PROD-086-english-guided-option-selection-narrow-policy-probe",
+  "source_checkpoint_id": "PROD-085-english-guided-option-selection-rewrite-review-import",
+  "policy_probe_passed": true,
+  "positive_case_results": [
+    {
+      "case_id": "prod-086-rewrite-binary-choice",
+      "source_example_id": "rewrite-binary-choice",
+      "customer_turn": "So do I choose the $29 option or the $59 option?",
+      "candidate_response": "I mean, if you only need [feature X] and [feature Y], start with $29. If [feature A] matters too, $59 fits better.",
+      "gates": {
+        "short_enough": true,
+        "no_forbidden_text": true,
+        "no_company_domain_placeholder": true,
+        "uses_approved_plan_placeholders_when_needed": true,
+        "payment_boundary_clean": true,
+        "random_fillers_not_used": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-086-rewrite-fit-unclear",
+      "source_example_id": "rewrite-fit-unclear",
+      "customer_turn": "I can see both paths, I am just not sure which one fits me.",
+      "candidate_response": "Based on what you said, $59 sounds stronger if [feature A] saves you time. If not, $29 is the safer start and you can upgrade later.",
+      "gates": {
+        "short_enough": true,
+        "no_forbidden_text": true,
+        "no_company_domain_placeholder": true,
+        "uses_approved_plan_placeholders_when_needed": true,
+        "payment_boundary_clean": true,
+        "random_fillers_not_used": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-086-rewrite-recommendation",
+      "source_example_id": "rewrite-recommendation",
+      "customer_turn": "Which route would you suggest for someone like me?",
+      "candidate_response": "Honestly, like, if your main issue is [customer pain], I would lean $59 because it adds [feature A] and [feature B]. If budget matters more, start $29.",
+      "gates": {
+        "short_enough": true,
+        "no_forbidden_text": true,
+        "no_company_domain_placeholder": true,
+        "uses_approved_plan_placeholders_when_needed": true,
+        "payment_boundary_clean": true,
+        "random_fillers_not_used": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-086-rewrite-difference",
+      "source_example_id": "rewrite-difference",
+      "customer_turn": "What is the real difference between the $29 option and the $59 option?",
+      "candidate_response": "$29 covers [feature X], [feature Y], and [feature Z]. $59 adds [feature A] and [feature B], so it fits better if you need [customer goal].",
+      "gates": {
+        "short_enough": true,
+        "no_forbidden_text": true,
+        "no_company_domain_placeholder": true,
+        "uses_approved_plan_placeholders_when_needed": true,
+        "payment_boundary_clean": true,
+        "random_fillers_not_used": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-086-rewrite-decide-later",
+      "source_example_id": "rewrite-decide-later",
+      "customer_turn": "Can I choose later instead of deciding on this call?",
+      "candidate_response": "Yes. I can send the differences in writing and keep both options open for the follow-up.",
+      "gates": {
+        "short_enough": true,
+        "no_forbidden_text": true,
+        "no_company_domain_placeholder": true,
+        "uses_approved_plan_placeholders_when_needed": true,
+        "payment_boundary_clean": true,
+        "random_fillers_not_used": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-086-rewrite-neither-uncertain",
+      "source_example_id": "rewrite-neither-uncertain",
+      "customer_turn": "I'm not sure either is right.",
+      "candidate_response": "I get that, you know, it may just mean we should match the plan to [customer goal] first, then see whether $29 or $59 makes sense.",
+      "gates": {
+        "short_enough": true,
+        "no_forbidden_text": true,
+        "no_company_domain_placeholder": true,
+        "uses_approved_plan_placeholders_when_needed": true,
+        "payment_boundary_clean": true,
+        "random_fillers_not_used": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-086-rewrite-payment-path",
+      "source_example_id": "rewrite-payment-path",
+      "customer_turn": "If I pick one, can I pay now?",
+      "candidate_response": "No payment on this call. I'll send you the link by email, and you can review the plan and register there.",
+      "gates": {
+        "short_enough": true,
+        "no_forbidden_text": true,
+        "no_company_domain_placeholder": true,
+        "uses_approved_plan_placeholders_when_needed": true,
+        "payment_boundary_clean": true,
+        "random_fillers_not_used": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-086-rewrite-upgrade-path",
+      "source_example_id": "rewrite-upgrade-path",
+      "customer_turn": "Could I start smaller and change later if it works?",
+      "candidate_response": "You can start with $29 if [feature X] covers enough. If you later need [feature A] or [feature B], we can move you to $59.",
+      "gates": {
+        "short_enough": true,
+        "no_forbidden_text": true,
+        "no_company_domain_placeholder": true,
+        "uses_approved_plan_placeholders_when_needed": true,
+        "payment_boundary_clean": true,
+        "random_fillers_not_used": true
+      },
+      "passed": true,
+      "issue_codes": []
+    }
+  ],
+  "control_case_results": [
+    {
+      "case_id": "prod-086-missing-plan-feature-matrix",
+      "control_type": "missing_required_fact",
+      "customer_turn": "So should I take $29 or $59?",
+      "expected_policy": "block_guided_option_selection_until_plan_feature_matrix_exists",
+      "gates": {
+        "blocks_without_plan_feature_matrix": true,
+        "does_not_invent_features": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-086-missing-customer-facts",
+      "control_type": "missing_customer_fit_facts",
+      "customer_turn": "Which one is better?",
+      "expected_policy": "explain_plan_differences_without_fit_based_steering",
+      "gates": {
+        "blocks_fit_based_steering_without_customer_facts": true,
+        "allows_difference_explanation_only": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-086-payment-collection",
+      "control_type": "payment_boundary",
+      "customer_turn": "Can I pay now with my card?",
+      "expected_policy": "no_payment_collection_on_call",
+      "gates": {
+        "no_payment_collection_on_call": true,
+        "uses_no_payment_on_call_default": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-086-contract-signing",
+      "control_type": "contract_boundary",
+      "customer_turn": "Can you sign me up on this call?",
+      "expected_policy": "no_contract_or_signup_completion_on_call",
+      "gates": {
+        "no_contract_signing_on_call": true,
+        "no_signup_completion_on_call": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-086-company-domain-placeholder",
+      "control_type": "generic_payment_wording",
+      "customer_turn": "Where do I finish payment?",
+      "expected_policy": "do_not_use_companyname_domain_placeholder_in_generic_wording",
+      "gates": {
+        "companyname_placeholder_forbidden": true,
+        "generic_email_link_wording_allowed": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-086-random-filler-sensitive-boundary",
+      "control_type": "spoken_naturalness_boundary",
+      "customer_turn": "Can I pay now?",
+      "expected_policy": "do_not_put_discourse_markers_in_payment_boundary_response",
+      "gates": {
+        "no_discourse_marker_in_payment_boundary": true,
+        "random_fillers_allowed": false
+      },
+      "passed": true,
+      "issue_codes": []
+    }
+  ],
+  "failed_policy_case_count": 0,
+  "failed_policy_case_ids": [],
+  "runtime_patch_allowed_inside_checkpoint": false,
+  "recommended_next_checkpoint": "PROD-087-english-guided-option-selection-runtime-patch"
+}

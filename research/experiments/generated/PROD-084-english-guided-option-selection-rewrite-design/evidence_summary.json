@@ -1,0 +1,45 @@
+{
+  "checkpoint_id": "PROD-084-english-guided-option-selection-rewrite-design",
+  "source_checkpoint_id": "PROD-083-english-guided-option-selection-review-import",
+  "source_validation": {
+    "passed": true,
+    "review_imported": true
+  },
+  "source_summary": {
+    "imported_review_decision": "needs_rewrite_before_probe",
+    "rewrite_required": true,
+    "recommended_next_checkpoint": "PROD-084-english-guided-option-selection-rewrite-design"
+  },
+  "source_rewrite_rules": [
+    "Leave obvious facts out.",
+    "Do not repeat what the customer already said unless explicitly needed.",
+    "Answer the actual fit or difference question.",
+    "Use approved plan feature facts, not invented differences.",
+    "Steer toward the better option when known customer facts support it.",
+    "Keep wording shorter and more human.",
+    "Preserve autonomy without repeatedly saying neither or not now.",
+    "Use light persuasion when the customer is uncertain but still engaged.",
+    "Separate option selection from payment handling."
+  ],
+  "source_plan_fact_requirement": {
+    "plan_feature_matrix_required": true,
+    "invent_plan_features_allowed": false
+  },
+  "source_payment_requirement": {
+    "no_payment_on_call_default": true,
+    "approved_campaign_payment_path_can_be_explained": true
+  },
+  "source_naturalness_requirement": {
+    "sparse_contextual_discourse_markers_candidate": true,
+    "random_fillers_allowed": false
+  },
+  "source_validator_run": {
+    "command": "python scripts/validate_prod_083_english_guided_option_selection_review_import.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-083-english-guided-option-selection-review-import validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

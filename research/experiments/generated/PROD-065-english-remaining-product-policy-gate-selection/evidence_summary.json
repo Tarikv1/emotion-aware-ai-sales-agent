@@ -1,0 +1,31 @@
+{
+  "checkpoint_id": "PROD-065-english-remaining-product-policy-gate-selection",
+  "source_checkpoint_id": "PROD-064-english-autonomy-post-patch-multi-turn-regression",
+  "source_validation": {
+    "passed": true,
+    "post_patch_regression_passed": true
+  },
+  "source_summary": {
+    "stable_english_guard_passed": true,
+    "failed_case_count": 0,
+    "recommended_next_checkpoint": "PROD-065-english-remaining-product-policy-gate-selection"
+  },
+  "source_validator_run": {
+    "command": "python scripts\\validate_prod_064_english_autonomy_post_patch_multi_turn_regression.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-064-english-autonomy-post-patch-multi-turn-regression validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  },
+  "priority_source_checkpoint_id": "PROD-061-english-product-policy-gate-prioritization",
+  "voicemail_candidate": {
+    "case_id": "prod-053c-voicemail",
+    "candidate_type": "action_only_no_spoken_response",
+    "candidate_response": "",
+    "candidate_action": "Do not speak to voicemail. Log follow-up and try again later according to campaign rules.",
+    "owner_notes": "if we reach a voicemail the agent should log this for another time and try again. The agent doesn't need to say anything to the voicemail",
+    "requires_design_decision": true
+  }
+}

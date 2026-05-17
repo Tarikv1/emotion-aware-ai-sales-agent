@@ -1,0 +1,31 @@
+{
+  "checkpoint_id": "PROD-061-english-product-policy-gate-prioritization",
+  "checkpoint_name": "English Product-Policy Gate Prioritization",
+  "source_checkpoint_id": "PROD-060-runtime-promotion-path-decision",
+  "scope": "english_product_policy_prioritization_only",
+  "human_review_decision": "accepted_to_proceed",
+  "human_review_source": "Tarik accepted the PROD-060 path decision and wants to move forward with the English version for now.",
+  "selected_first_gate": "context_sensitive_autonomy_behavior",
+  "not_a_runtime_patch": true,
+  "runtime_change_requested": false,
+  "requires_human_review_before_next_checkpoint": false,
+  "non_goals": [
+    "runtime behavior change",
+    "response text change",
+    "classifier change",
+    "voicemail action behavior",
+    "coverage knowledge-policy behavior",
+    "provider call",
+    "LLM call",
+    "private data read",
+    "retrieval default change",
+    "voice playback promotion",
+    "German exact phrase promotion",
+    "legal compliance approval",
+    "public demo approval",
+    "real customer use",
+    "payment collection",
+    "contract signing",
+    "production runtime promotion"
+  ]
+}

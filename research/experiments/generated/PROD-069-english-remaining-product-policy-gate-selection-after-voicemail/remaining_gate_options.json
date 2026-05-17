@@ -1,0 +1,34 @@
+{
+  "checkpoint_id": "PROD-069-english-remaining-product-policy-gate-selection-after-voicemail",
+  "ranked_remaining_gates": [
+    {
+      "rank": 1,
+      "gate_id": "coverage_knowledge_policy_behavior",
+      "label": "Coverage knowledge-policy behavior",
+      "status": "selected_for_next_probe_still_blocked",
+      "selected_for_next_probe": true,
+      "runtime_patch_allowed": false,
+      "retrieval_allowed": false,
+      "why": "It is now the smallest remaining English product-policy gate after autonomy and voicemail. A synthetic boundary probe can define allowed uncertainty, escalation, and forbidden coverage advice before any runtime or retrieval change.",
+      "risk": "Could imply insurance coverage, eligibility, or legal/financial advice without a reviewed knowledge policy.",
+      "next_action": "Open a synthetic English coverage knowledge-policy boundary probe before any runtime patch, retrieval enablement, or product fact claim.",
+      "review_question": "No review needed for this selection. A later probe may need human review if it asks Tarik to accept product/legal wording or coverage facts.",
+      "recommended_probe_scope": "synthetic English coverage knowledge-policy boundary examples only"
+    },
+    {
+      "rank": 2,
+      "gate_id": "customer_move_classification_outside_selected_non_refusal_groups",
+      "label": "Customer-move classification outside selected non-refusal groups",
+      "status": "deferred_still_blocked",
+      "selected_for_next_probe": false,
+      "runtime_patch_allowed": false,
+      "retrieval_allowed": false,
+      "why": "It still has the highest blast radius because it changes reachability across multiple runtime branches, so it should remain behind the narrower knowledge-policy boundary gate.",
+      "risk": "Could route customer turns into newly promoted behavior without enough evidence for each branch.",
+      "next_action": "Keep blocked until remaining narrower policy gates define acceptance criteria for broader classifier reachability.",
+      "review_question": "Should broad classifier expansion remain last among the current English product-policy gates?",
+      "recommended_probe_scope": "deferred until after coverage knowledge-policy boundary work"
+    }
+  ],
+  "selected_next_gate_id": "coverage_knowledge_policy_behavior"
+}

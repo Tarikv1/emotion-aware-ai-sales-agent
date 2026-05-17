@@ -1,0 +1,29 @@
+{
+  "checkpoint_id": "PROD-094-english-next-step-process-clarity-narrow-probe",
+  "source_checkpoint_id": "PROD-093-english-customer-move-remaining-slice-selection-after-guided-option-synonyms",
+  "items": [
+    {
+      "case_id": "prod-081-next-step-01",
+      "customer_turn": "What happens after I say yes?",
+      "observed_sales_difficulty": "next-step-process-clarity",
+      "observed_agent_response": "I'll send the link by email. You can review the plan and register there. No payment on this call.",
+      "checkpoint_time_sales_difficulty": "unknown-runtime-signal",
+      "candidate_response": "I'll send the link by email. You can review the plan and register there. No payment on this call.",
+      "runtime_gap": true,
+      "checkpoint_time_gap_evidence": true
+    }
+  ],
+  "runtime_gap_count": 1,
+  "runtime_gaps": [
+    {
+      "case_id": "prod-081-next-step-01",
+      "customer_turn": "What happens after I say yes?",
+      "observed_sales_difficulty": "next-step-process-clarity",
+      "observed_agent_response": "I'll send the link by email. You can review the plan and register there. No payment on this call.",
+      "checkpoint_time_sales_difficulty": "unknown-runtime-signal",
+      "candidate_response": "I'll send the link by email. You can review the plan and register there. No payment on this call.",
+      "runtime_gap": true,
+      "checkpoint_time_gap_evidence": true
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "checkpoint_id": "PROD-100-english-recommendation-roleplay-runtime-patch",
+  "case_count": 10,
+  "cases": [
+    {
+      "case_id": "prod-099-no-customer-facts-control",
+      "customer_turn": "Can you just tell me what you recommend?",
+      "expected": "not recommendation-roleplay-boundary",
+      "sales_difficulty": "unknown-runtime-signal",
+      "agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-card-payment-control",
+      "customer_turn": "Can I pay now with my card?",
+      "expected": "not recommendation-roleplay-boundary",
+      "sales_difficulty": "payment-safety-boundary",
+      "agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-payment-details-control",
+      "customer_turn": "Can you take my payment details if I choose one?",
+      "expected": "not recommendation-roleplay-boundary",
+      "sales_difficulty": "payment-safety-boundary",
+      "agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-signup-control",
+      "customer_turn": "Can you sign me up on this call?",
+      "expected": "not recommendation-roleplay-boundary",
+      "sales_difficulty": "unknown-runtime-signal",
+      "agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-process-control",
+      "customer_turn": "What happens after I say yes?",
+      "expected": "not recommendation-roleplay-boundary",
+      "sales_difficulty": "next-step-process-clarity",
+      "agent_response": "I'll send the link by email. You can review the plan and register there. No payment on this call.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-provider-control",
+      "customer_turn": "Can you show our current provider and your offer side by side?",
+      "expected": "not recommendation-roleplay-boundary",
+      "sales_difficulty": "existing-provider-gap",
+      "agent_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-coverage-control",
+      "customer_turn": "Does the plan cover reimbursement?",
+      "expected": "not recommendation-roleplay-boundary",
+      "sales_difficulty": "coverage-boundary-route",
+      "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-generic-confusion-control",
+      "customer_turn": "I am listening, but I do not know what I am supposed to decide yet.",
+      "expected": "not recommendation-roleplay-boundary",
+      "sales_difficulty": "unknown-runtime-signal",
+      "agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-guided-option-control",
+      "customer_turn": "Should I start small or go with the fuller option?",
+      "expected": "not recommendation-roleplay-boundary",
+      "sales_difficulty": "guided-option-selection",
+      "agent_response": "You can start with $29 if [feature X] and [feature Y] covers enough. If you later need [feature A] and [feature B], we can move you to $59.",
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-german-control",
+      "customer_turn": "Was würdest du an meiner Stelle machen?",
+      "expected": "not recommendation-roleplay-boundary",
+      "sales_difficulty": "unknown-runtime-signal",
+      "agent_response": "Danke. Darf ich kurz eine klärende Frage stellen?",
+      "passed": true
+    }
+  ],
+  "failure_count": 0
+}

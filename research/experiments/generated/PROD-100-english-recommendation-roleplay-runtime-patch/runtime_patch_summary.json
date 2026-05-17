@@ -1,0 +1,33 @@
+{
+  "checkpoint_id": "PROD-100-english-recommendation-roleplay-runtime-patch",
+  "source_checkpoint_id": "PROD-099-english-recommendation-roleplay-narrow-policy-probe",
+  "runtime_file": "runtime/core/realtime_turns.py",
+  "runtime_patch_applied": true,
+  "selected_gap_case_ids": [
+    "prod-097-roleplay-position",
+    "prod-097-roleplay-business",
+    "prod-097-direct-recommendation",
+    "prod-097-leaning-cheaper",
+    "prod-097-decide-for-me-control",
+    "prod-097-promise-worth-control",
+    "prod-097-no-pressure-honest-take"
+  ],
+  "new_sales_difficulty": "recommendation-roleplay-boundary",
+  "selected_strategy": "guided-recommendation",
+  "requires_customer_facts_for_recommendation": true,
+  "requires_agency_preservation": true,
+  "no_agent_decides_for_customer": true,
+  "no_value_guarantee": true,
+  "blocked_boundary_signals": [
+    "payment",
+    "card",
+    "pay now",
+    "sign me up",
+    "contract",
+    "current provider",
+    "reimbursement",
+    "coverage",
+    "next step"
+  ],
+  "review_html_created": false
+}

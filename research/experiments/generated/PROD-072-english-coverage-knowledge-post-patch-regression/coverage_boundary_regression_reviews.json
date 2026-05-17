@@ -1,0 +1,165 @@
+{
+  "checkpoint_id": "PROD-072-english-coverage-knowledge-post-patch-regression",
+  "items": [
+    {
+      "case_id": "prod-072-eligible-reimbursement-regression",
+      "input_type": "speech",
+      "customer_turn": "Am I eligible for reimbursement?",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "coverage-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "bridge_response": null,
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_coverage_boundary": true,
+        "strategy_rapport": true,
+        "interest_state_needs_human": true,
+        "next_action_escalate": true,
+        "call_control_transfer": true,
+        "boundary_response_exact": true,
+        "no_coverage_fact_claim": true,
+        "no_payment_or_contract": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-072-plan-covers-this-regression",
+      "input_type": "speech",
+      "customer_turn": "Can you tell me if my plan covers this?",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "coverage-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "bridge_response": null,
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_coverage_boundary": true,
+        "strategy_rapport": true,
+        "interest_state_needs_human": true,
+        "next_action_escalate": true,
+        "call_control_transfer": true,
+        "boundary_response_exact": true,
+        "no_coverage_fact_claim": true,
+        "no_payment_or_contract": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-072-policy-reimbursed-regression",
+      "input_type": "speech",
+      "customer_turn": "Will this be reimbursed by my policy?",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "coverage-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "bridge_response": null,
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_coverage_boundary": true,
+        "strategy_rapport": true,
+        "interest_state_needs_human": true,
+        "next_action_escalate": true,
+        "call_control_transfer": true,
+        "boundary_response_exact": true,
+        "no_coverage_fact_claim": true,
+        "no_payment_or_contract": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-072-covered-by-insurance-existing-boundary",
+      "input_type": "speech",
+      "customer_turn": "Is this covered by insurance?",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "coverage-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "bridge_response": null,
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_coverage_boundary": true,
+        "strategy_rapport": true,
+        "interest_state_needs_human": true,
+        "next_action_escalate": true,
+        "call_control_transfer": true,
+        "boundary_response_exact": true,
+        "no_coverage_fact_claim": true,
+        "no_payment_or_contract": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-072-insurance-cover-existing-boundary",
+      "input_type": "speech",
+      "customer_turn": "Does my insurance cover this?",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "coverage-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "bridge_response": null,
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_coverage_boundary": true,
+        "strategy_rapport": true,
+        "interest_state_needs_human": true,
+        "next_action_escalate": true,
+        "call_control_transfer": true,
+        "boundary_response_exact": true,
+        "no_coverage_fact_claim": true,
+        "no_payment_or_contract": true
+      },
+      "passed": true,
+      "issue_codes": []
+    }
+  ]
+}

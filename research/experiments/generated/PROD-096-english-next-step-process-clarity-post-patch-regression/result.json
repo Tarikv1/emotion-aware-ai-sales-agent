@@ -1,0 +1,35 @@
+{
+  "checkpoint_id": "PROD-096-english-next-step-process-clarity-post-patch-regression",
+  "checkpoint_name": "English Next-Step Process Clarity Post-Patch Regression",
+  "source_checkpoint_id": "PROD-095-english-next-step-process-clarity-runtime-patch",
+  "validation": {
+    "passed": false,
+    "post_patch_regression_completed": true
+  },
+  "summary": {
+    "post_patch_regression_only": true,
+    "source_validator_passed": false,
+    "process_clarity_positive_failures": 0,
+    "adjacent_control_failures": 0,
+    "stable_english_guard_passed": true,
+    "review_html_created": false,
+    "recommended_next_checkpoint": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity",
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "classifier_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  }
+}

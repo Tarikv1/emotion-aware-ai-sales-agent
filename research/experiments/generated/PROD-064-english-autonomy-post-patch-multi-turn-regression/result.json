@@ -1,0 +1,41 @@
+{
+  "checkpoint_id": "PROD-064-english-autonomy-post-patch-multi-turn-regression",
+  "checkpoint_name": "English Autonomy Post-Patch Multi-Turn Regression",
+  "source_checkpoint_id": "PROD-063-english-autonomy-check-runtime-wording-patch",
+  "validation": {
+    "passed": true,
+    "post_patch_regression_passed": true
+  },
+  "summary": {
+    "source_validator_passed": true,
+    "stable_english_guard_passed": true,
+    "autonomy_first_turn_case_count": 3,
+    "autonomy_follow_up_case_count": 5,
+    "protected_boundary_case_count": 4,
+    "failed_case_count": 0,
+    "failed_case_ids": [],
+    "patched_response": "Okay, no rush. We can keep this low-pressure and only clarify what you need.",
+    "old_response_absent": true,
+    "source_runtime_behavior_changed": true,
+    "source_response_text_behavior_changed": true,
+    "classifier_behavior_changed": false,
+    "requires_human_review_before_next_checkpoint": false,
+    "recommended_next_checkpoint": "PROD-065-english-remaining-product-policy-gate-selection",
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  }
+}

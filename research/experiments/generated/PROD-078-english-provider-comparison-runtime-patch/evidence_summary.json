@@ -1,0 +1,22 @@
+{
+  "checkpoint_id": "PROD-078-english-provider-comparison-runtime-patch",
+  "source_checkpoint_id": "PROD-077-english-provider-comparison-narrow-probe-design",
+  "source_validation": {
+    "passed": true,
+    "probe_design_created": true
+  },
+  "source_design_required_signal_groups": [
+    "compare_or_difference_signal",
+    "known_comparison_target_signal"
+  ],
+  "source_candidate_response": "Fair. We can compare fit against what you use now before you decide.",
+  "source_validator_run": {
+    "command": "source artifact check for PROD-077 generated outputs",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-077 generated source artifacts checked without regenerating pre-patch gap evidence."
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

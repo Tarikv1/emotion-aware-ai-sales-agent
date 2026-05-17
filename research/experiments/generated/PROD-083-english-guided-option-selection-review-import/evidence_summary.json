@@ -1,0 +1,24 @@
+{
+  "checkpoint_id": "PROD-083-english-guided-option-selection-review-import",
+  "source_checkpoint_id": "PROD-082-english-guided-option-selection-review",
+  "source_validation": {
+    "passed": true,
+    "review_packet_created": true
+  },
+  "source_summary": {
+    "review_html_created": true,
+    "requires_human_review_before_next_checkpoint": true,
+    "selected_review_item": "guided_option_selection_candidate"
+  },
+  "source_validator_run": {
+    "command": "python scripts/validate_prod_082_english_guided_option_selection_review.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-082-english-guided-option-selection-review validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  },
+  "review_import_path": "research/experiments/imports/PROD-082-english-guided-option-selection-review/prod_082_guided_option_selection_review_from_chat.json",
+  "review_import_decision": "needs_rewrite_before_probe"
+}

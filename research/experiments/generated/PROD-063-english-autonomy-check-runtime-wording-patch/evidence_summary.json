@@ -1,0 +1,16 @@
+{
+  "checkpoint_id": "PROD-063-english-autonomy-check-runtime-wording-patch",
+  "source_checkpoint_id": "PROD-062-english-context-sensitive-autonomy-policy-probe",
+  "source_candidate_response": "Okay, no rush. We can keep this low-pressure and only clarify what you need.",
+  "source_policy_decision": "autonomy_policy_probe_passed_recommend_narrow_runtime_patch",
+  "source_probe_passed": true,
+  "source_validator_run": {
+    "command": "python scripts\\validate_prod_062_english_context_sensitive_autonomy_policy_probe.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-062-english-context-sensitive-autonomy-policy-probe validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "checkpoint_id": "PROD-099-english-recommendation-roleplay-narrow-policy-probe",
+  "source_checkpoint_id": "PROD-098-english-recommendation-roleplay-review-import",
+  "source_validation": {
+    "passed": true,
+    "review_imported": true
+  },
+  "source_summary": {
+    "review_import_only": true,
+    "source_validator_passed": true,
+    "human_review_imported": true,
+    "selected_review_item": "recommendation_roleplay_boundary",
+    "imported_review_decision": "approve_for_policy_probe_with_two_wording_edits",
+    "approved_example_count": 7,
+    "required_edit_example_count": 2,
+    "narrow_policy_probe_approved_after_required_edits": true,
+    "narrow_policy_probe_approved_as_written": false,
+    "review_html_created": false,
+    "runtime_candidate_promoted": false,
+    "recommended_next_checkpoint": "PROD-099-english-recommendation-roleplay-narrow-policy-probe",
+    "recommended_next_checkpoint_requires_human_review": false,
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "classifier_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  },
+  "source_validator_run": {
+    "command": "source artifact validation using research/experiments/generated/PROD-098-english-recommendation-roleplay-review-import/result.json",
+    "returncode": 0,
+    "stdout_tail": [],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

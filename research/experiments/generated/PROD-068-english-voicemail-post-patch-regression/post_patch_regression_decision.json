@@ -1,0 +1,13 @@
+{
+  "checkpoint_id": "PROD-068-english-voicemail-post-patch-regression",
+  "source_checkpoint_id": "PROD-067-english-voicemail-action-only-runtime-patch",
+  "decision": "voicemail_patch_post_regression_passed",
+  "runtime_patch_from_source_kept": true,
+  "new_runtime_change_in_prod_068": false,
+  "stable_english_guard_passed": true,
+  "failed_case_count": 0,
+  "requires_human_review_before_next_checkpoint": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-069-english-remaining-product-policy-gate-selection-after-voicemail",
+  "production_runtime_promotion_allowed": false
+}

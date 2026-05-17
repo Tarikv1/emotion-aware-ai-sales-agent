@@ -1,0 +1,56 @@
+{
+  "checkpoint_id": "PROD-098-english-recommendation-roleplay-review-import",
+  "source_checkpoint_id": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity",
+  "source_validation": {
+    "passed": true,
+    "review_packet_created": true
+  },
+  "source_summary": {
+    "selection_only": true,
+    "source_validator_passed": true,
+    "selected_next_slice": "recommendation_roleplay_boundary",
+    "selected_remaining_case_id": "prod-081-recommendation-02",
+    "review_html_created": true,
+    "requires_human_review_before_next_checkpoint": true,
+    "recommended_next_checkpoint": "PROD-098-english-recommendation-roleplay-review-import",
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "classifier_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  },
+  "source_review_html_preserved": true,
+  "source_review_type": "recommendation_roleplay_boundary",
+  "source_example_ids": [
+    "prod-097-roleplay-position",
+    "prod-097-roleplay-business",
+    "prod-097-direct-recommendation",
+    "prod-097-leaning-cheaper",
+    "prod-097-decide-for-me-control",
+    "prod-097-promise-worth-control",
+    "prod-097-no-pressure-honest-take"
+  ],
+  "source_validator_run": {
+    "command": "python scripts/validate_prod_097_english_customer_move_remaining_slice_selection_after_process_clarity.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  },
+  "review_import_path": "research/experiments/imports/PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity/prod_097_recommendation_roleplay_review_from_chat.json",
+  "review_import_decision": "approve_for_policy_probe_with_two_wording_edits"
+}

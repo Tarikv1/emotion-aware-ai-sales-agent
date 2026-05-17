@@ -1,0 +1,25 @@
+{
+  "checkpoint_id": "PROD-081-english-unknown-runtime-signal-subtype-inventory",
+  "source_checkpoint_id": "PROD-080-english-customer-move-remaining-slice-selection",
+  "decision": "select_guided_option_selection_review_next",
+  "selected_next_subtype": "guided_option_selection_candidate",
+  "why": "This is the smallest concrete unknown subtype that matches Tarik's explicit future persuasion-tactic request, but it needs owner review before any probe because it shapes the customer's choice frame.",
+  "required_guardrails": [
+    "two real options",
+    "fair presentation",
+    "neither",
+    "not now",
+    "explain the difference",
+    "no fake urgency",
+    "no pretend agreement",
+    "no payment collection",
+    "no contract signing"
+  ],
+  "protected_boundary_controls_passed": true,
+  "runtime_patch_allowed": false,
+  "response_text_change_allowed": false,
+  "classifier_change_allowed": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-082-english-guided-option-selection-review",
+  "recommended_next_checkpoint_requires_human_review": true
+}

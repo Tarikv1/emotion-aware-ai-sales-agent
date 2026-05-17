@@ -1,0 +1,65 @@
+{
+  "checkpoint_id": "PROD-072-english-coverage-knowledge-post-patch-regression",
+  "items": [
+    {
+      "case_id": "prod-072-machine-detected-voicemail-control",
+      "input_type": "voicemail-detected",
+      "customer_turn": "",
+      "stage": "opening",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "voicemail",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "bridge_response": null,
+        "agent_response": ""
+      },
+      "gates": {
+        "sales_difficulty_voicemail": true,
+        "strategy_rapport": true,
+        "next_action_follow_up": true,
+        "call_control_end": true,
+        "background_follow_up_write": true,
+        "agent_response_empty": true,
+        "bridge_response_none": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-072-after-tone-voicemail-control",
+      "input_type": "voicemail-detected",
+      "customer_turn": "Please leave your message after the tone.",
+      "stage": "opening",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "voicemail",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "bridge_response": null,
+        "agent_response": ""
+      },
+      "gates": {
+        "sales_difficulty_voicemail": true,
+        "strategy_rapport": true,
+        "next_action_follow_up": true,
+        "call_control_end": true,
+        "background_follow_up_write": true,
+        "agent_response_empty": true,
+        "bridge_response_none": true
+      },
+      "passed": true,
+      "issue_codes": []
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "checkpoint_id": "PROD-069-english-remaining-product-policy-gate-selection-after-voicemail",
+  "source_checkpoint_id": "PROD-068-english-voicemail-post-patch-regression",
+  "source_validation": {
+    "passed": true,
+    "post_patch_regression_passed": true
+  },
+  "source_summary": {
+    "stable_english_guard_passed": true,
+    "failed_case_count": 0,
+    "recommended_next_checkpoint": "PROD-069-english-remaining-product-policy-gate-selection-after-voicemail"
+  },
+  "source_validator_run": {
+    "command": "python scripts\\validate_prod_068_english_voicemail_post_patch_regression.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-068-english-voicemail-post-patch-regression validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  },
+  "priority_source_checkpoint_id": "PROD-061-english-product-policy-gate-prioritization",
+  "prior_selection_checkpoint_id": "PROD-065-english-remaining-product-policy-gate-selection",
+  "prior_selected_gate_id": "voicemail_action_only_behavior",
+  "remaining_gate_ids": [
+    "coverage_knowledge_policy_behavior",
+    "customer_move_classification_outside_selected_non_refusal_groups"
+  ]
+}

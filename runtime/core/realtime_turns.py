@@ -44,7 +44,7 @@ HUMAN_REQUEST_RUNTIME_PHRASES = [
 ]
 LOCALIZED_RESPONSES = {
     "en": {
-        "voicemail": "I reached voicemail, so I will log this for follow-up according to campaign rules.",
+        "voicemail": "",
         "repeated-silence": "I will end the call for now. Goodbye.",
         "do-not-call": "Understood. I will mark this so you are not called again. Goodbye.",
         "human-request": "Of course. I will pass this to a human specialist.",
@@ -53,9 +53,9 @@ LOCALIZED_RESPONSES = {
         "scheduling-confirmation": "All right. I'll note that time for the specialist callback. Goodbye.",
         "timing-delay": "No problem. I will leave it open for now instead of forcing a time today.",
         "price-objection": "That makes sense. Is the main concern price, or whether it is worth the effort?",
-        "provider-comparison": "That is fair. We can compare fit and terms without pressure before you decide whether this is worth reviewing.",
+        "provider-comparison": "Fair. We can compare fit against what you use now before you decide.",
         "existing-provider-gap": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover.",
-        "autonomy-check": "That makes sense. We can keep this low pressure and clarify only what you need before any next step.",
+        "autonomy-check": "Okay, no rush. We can keep this low-pressure and only clarify what you need.",
         "stakeholder-review": "Of course. I can send it over. No commitment today. Take a look and let me know.",
         "procurement-review": "Sure. I can keep this to written review information. Nothing firm today.",
         "trust-gap": "Fair question. I can send the verification path before we discuss any next step.",
@@ -550,6 +550,205 @@ def classify_english_follow_up_input(transcript: str, stage: str | None, respons
     return None
 
 
+def english_guided_option_plan_feature_matrix(campaign: dict | None) -> dict[str, str] | None:
+    starter_features = campaign_text(campaign, "guided_option_plan_29_features", "plan_29_features")
+    expanded_features = campaign_text(campaign, "guided_option_plan_59_added_features", "plan_59_added_features")
+    if not starter_features or not expanded_features:
+        return None
+    return {
+        "starter_features": starter_features,
+        "expanded_features": expanded_features,
+        "customer_goal": campaign_text(campaign, "guided_option_customer_goal") or "",
+        "customer_pain": campaign_text(campaign, "guided_option_customer_pain") or "",
+    }
+
+
+def is_english_guided_option_selection_turn(transcript: str) -> bool:
+    option_signals = [
+        "$29",
+        "$59",
+        "29 option",
+        "59 option",
+        "29 version",
+        "59 version",
+        "both paths",
+        "both options",
+        "which route",
+        "which one fits",
+        "which one is better",
+        "start small",
+        "start cheaper",
+        "start smaller",
+        "fuller option",
+        "side by side",
+        "pick one",
+        "either is right",
+        "choose later",
+    ]
+    action_signals = [
+        "choose",
+        "which",
+        "suggest",
+        "recommend",
+        "difference",
+        "fits",
+        "start",
+        "show",
+        "side by side",
+        "worth it",
+        "worth",
+        "change later",
+        "upgrade",
+        "pay now",
+        "deciding",
+        "not sure",
+    ]
+    return contains_any(transcript, option_signals) and contains_any(transcript, action_signals)
+
+
+def english_guided_option_selection_response(transcript: str, campaign: dict | None) -> str | None:
+    matrix = english_guided_option_plan_feature_matrix(campaign)
+    if matrix is None or not is_english_guided_option_selection_turn(transcript):
+        return None
+    if contains_any(transcript, ["current provider", "current setup", "what we already use", "what we already have", "existing provider", "current terms"]):
+        return None
+
+    starter_features = matrix["starter_features"]
+    expanded_features = matrix["expanded_features"]
+    customer_goal = matrix["customer_goal"]
+    customer_pain = matrix["customer_pain"]
+
+    if contains_any(transcript, ["pay now", "pay today"]) and campaign_flag(campaign, "guided_option_payment_email_link_allowed"):
+        return "No payment on this call. I'll send you the link by email, and you can review the plan and register there."
+
+    if contains_any(transcript, ["choose later", "deciding on this call", "decide later"]):
+        return "Yes. I can send the differences in writing and keep both options open for the follow-up."
+
+    if contains_any(transcript, ["real difference", "difference between", "what is the difference", "what's the difference"]):
+        goal = customer_goal or "your goal"
+        return f"$29 covers {starter_features}. $59 adds {expanded_features}, so it fits better if you need {goal}."
+
+    if contains_any(transcript, ["which route would you suggest", "would you suggest", "recommend"]):
+        if not customer_pain:
+            return None
+        return f"Honestly, like, if your main issue is {customer_pain}, I would lean $59 because it adds {expanded_features}. If budget matters more, start $29."
+
+    if contains_any(transcript, ["not sure either", "either is right"]):
+        if not customer_goal:
+            return None
+        return f"I get that, you know, it may just mean we should match the plan to {customer_goal} first, then see whether $29 or $59 makes sense."
+
+    if contains_any(transcript, ["worth it"]):
+        if not customer_goal:
+            return None
+        return f"$59 is worth considering if {expanded_features} helps {customer_goal}. If not, $29 is enough to start."
+
+    if contains_any(transcript, ["side by side"]):
+        return f"$29 covers {starter_features}. $59 includes that plus {expanded_features}."
+
+    if contains_any(transcript, ["start smaller", "start cheaper", "start small", "fuller option", "change later", "upgrade later"]):
+        return f"You can start with $29 if {starter_features} covers enough. If you later need {expanded_features}, we can move you to $59."
+
+    if contains_any(transcript, ["both paths", "which one fits", "not sure which one"]):
+        return f"Based on what you said, $59 sounds stronger if {expanded_features} saves you time. If not, $29 is the safer start and you can upgrade later."
+
+    if contains_any(transcript, ["do i choose", "should i take", "which one", "which option"]):
+        return f"I mean, if you only need {starter_features}, start with $29. If {expanded_features} matters too, $59 fits better."
+
+    return None
+
+
+def english_next_step_process_clarity_response(transcript: str, campaign: dict | None) -> str | None:
+    if not campaign_flag(campaign, "guided_option_payment_email_link_allowed"):
+        return None
+    blocked_terms = [
+        "payment",
+        "card",
+        "pay now",
+        "sign me up",
+        "sign up",
+        "contract",
+        "provider",
+        "reimbursement",
+        "coverage",
+        "what would you do",
+        "my position",
+        "supposed to decide",
+    ]
+    if contains_any(transcript, blocked_terms):
+        return None
+    process_signals = [
+        "what happens after",
+        "next step",
+        "after this call",
+        "move forward",
+        "register after",
+        "what happens next",
+    ]
+    if not contains_any(transcript, process_signals):
+        return None
+    return "I'll send the link by email. You can review the plan and register there. No payment on this call."
+
+
+def english_recommendation_roleplay_response(transcript: str, campaign: dict | None) -> str | None:
+    blocked_terms = [
+        "payment",
+        "card",
+        "pay now",
+        "pay today",
+        "sign me up",
+        "sign up",
+        "contract",
+        "current provider",
+        "current setup",
+        "what we already use",
+        "what we already have",
+        "existing provider",
+        "current terms",
+        "reimbursement",
+        "coverage",
+        "what happens after",
+        "next step",
+        "after this call",
+        "supposed to decide",
+    ]
+    if contains_any(transcript, blocked_terms):
+        return None
+
+    matrix = english_guided_option_plan_feature_matrix(campaign)
+    if matrix is None:
+        return None
+    expanded_features = matrix["expanded_features"]
+    customer_pain = matrix["customer_pain"]
+    has_customer_facts = bool(customer_pain and expanded_features)
+
+    if contains_any(transcript, ["decide for me"]):
+        return "I cannot decide for you, but I can show what each plan covers and why one may fit your needs better."
+
+    if contains_any(transcript, ["promise"]) and contains_any(transcript, ["worth it", "$59", "59"]):
+        return "I cannot promise that. I can explain what $59 adds and you can decide if that is worth it."
+
+    if not has_customer_facts:
+        return None
+
+    if contains_any(transcript, ["honest take"]):
+        return f"Fair. My honest take is $59 only makes sense if {expanded_features} solve the problem you described. If not, start with $29."
+
+    if contains_any(transcript, ["leaning $29", "leaning 29", "$59 smarter", "59 smarter"]):
+        return f"I mean, $59 is smarter only if {expanded_features} would actually save you time. Otherwise $29 is the cleaner start."
+
+    if contains_any(transcript, ["just tell me what you recommend", "what do you recommend"]):
+        return f"Based on {customer_pain}, I would recommend $59. If budget is the main concern, start with $29 and upgrade later if you need to."
+
+    if contains_any(transcript, ["if this were your business", "were your business"]):
+        return f"If I were judging only from what you told me, I would lean $59 for {expanded_features}. If those do not matter yet, $29 is the cleaner start."
+
+    if contains_any(transcript, ["what would you do in my position", "what would you do"]):
+        return f"I would base it on what you will actually use. If {customer_pain} is the issue, $59 fits better because it includes {expanded_features}. If not, start with $29."
+
+    return None
+
+
 def latency_bucket(milliseconds: int) -> str:
     if milliseconds <= 1000:
         return "under-1s"
@@ -773,7 +972,7 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
-    if contains_any(transcript, ["card details", "card number", "credit card", "payment details", "pay over the phone", "giving card", "giving payment", "not giving card", "not giving payment"]):
+    if contains_any(transcript, ["card details", "card number", "credit card", "payment details", "pay over the phone", "pay by card", "with my card", "giving card", "giving payment", "not giving card", "not giving payment"]):
         sales_difficulty = "payment-safety-boundary"
         return {
             "response_language": response_language,
@@ -881,7 +1080,7 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
-    if contains_any(transcript, ["coverage", "covered", "insurance cover", "coverage confusion"]):
+    if contains_any(transcript, ["coverage", "covered", "insurance cover", "coverage confusion", "eligible for reimbursement", "eligibility for reimbursement", "reimbursement", "reimbursed", "plan covers"]):
         sales_difficulty = "coverage-boundary-route"
         return {
             "response_language": response_language,
@@ -915,6 +1114,19 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "selected_strategy": "inquiry",
             "next_action": "escalate",
             "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    recommendation_roleplay_response = english_recommendation_roleplay_response(transcript, campaign) if response_language == "en" else None
+    if recommendation_roleplay_response:
+        sales_difficulty = "recommendation-roleplay-boundary"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "guided-recommendation",
+            "next_action": "answer-and-continue",
+            "agent_response": recommendation_roleplay_response,
         }
 
     if contains_any(transcript, ["welcher genaue tarif", "welcher tarif", "welche genauen details", "was ist enthalten", "paket enthalten", "was bekomme ich", "welche leistungen", "datenvolumen", "exact plan", "which plan", "which exact", "service details", "included"]):
@@ -954,6 +1166,44 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "interest_state": "interested",
             "selected_strategy": "direct-ask-or-commitment",
             "next_action": "sale-ready-log" if sales_difficulty == "sale-ready-commitment" else "ask-follow-up",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    next_step_process_response = english_next_step_process_clarity_response(transcript, campaign) if response_language == "en" else None
+    if next_step_process_response:
+        sales_difficulty = "next-step-process-clarity"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "process-clarity",
+            "next_action": "answer-and-continue",
+            "agent_response": next_step_process_response,
+        }
+
+    guided_option_response = english_guided_option_selection_response(transcript, campaign) if response_language == "en" else None
+    if guided_option_response:
+        sales_difficulty = "guided-option-selection"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "guided-option-selection",
+            "next_action": "answer-and-continue",
+            "agent_response": guided_option_response,
+        }
+
+    if response_language == "en" and contains_any(transcript, ["compare", "comparison", "different", "difference", "versus", "vs"]) and contains_any(transcript, ["current provider", "current setup", "what we already use", "what we already have", "current terms", "existing provider"]):
+        sales_difficulty = "provider-comparison"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "inquiry",
+            "next_action": "ask-follow-up",
             "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 

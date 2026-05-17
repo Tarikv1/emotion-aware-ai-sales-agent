@@ -1,0 +1,61 @@
+{
+  "checkpoint_id": "PROD-090-english-guided-option-synonym-coverage-narrow-probe",
+  "source_checkpoint_id": "PROD-089-english-customer-move-remaining-slice-selection-after-guided-option",
+  "source_validation": {
+    "passed": true,
+    "selection_passed": true
+  },
+  "source_summary": {
+    "selection_only": true,
+    "source_validator_passed": true,
+    "post_guided_option_reinventory": true,
+    "guided_option_patch_closed_for_approved_cases": true,
+    "old_unknown_case_count": 10,
+    "old_unknown_cases_now_guided_option_count": 5,
+    "remaining_unknown_case_count": 4,
+    "selected_next_slice": "guided_option_synonym_coverage",
+    "selected_gap_count": 2,
+    "protected_boundary_control_count": 8,
+    "failed_protected_boundary_control_count": 0,
+    "requires_human_review_before_next_checkpoint": false,
+    "recommended_next_checkpoint_requires_human_review": false,
+    "review_html_created": false,
+    "recommended_next_checkpoint": "PROD-090-english-guided-option-synonym-coverage-narrow-probe",
+    "recommendation_roleplay_boundary_deferred": true,
+    "process_clarity_deferred": true,
+    "generic_confusion_kept_unknown": true,
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "classifier_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  },
+  "source_validator_run": {
+    "command": "python scripts/validate_prod_089_english_customer_move_remaining_slice_selection_after_guided_option.py",
+    "returncode": 1,
+    "stdout_tail": [],
+    "stderr_tail": [
+      "    validate_payloads()",
+      "    ~~~~~~~~~~~~~~~~~^^",
+      "  File \"D:\\Codex\\active\\emotion-aware-ai-sales-agent\\scripts\\validate_prod_089_english_customer_move_remaining_slice_selection_after_guided_option.py\", line 153, in validate_payloads",
+      "    assert_condition(summary[\"remaining_unknown_case_count\"] >= 4, summary)",
+      "    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"D:\\Codex\\active\\emotion-aware-ai-sales-agent\\scripts\\validate_prod_089_english_customer_move_remaining_slice_selection_after_guided_option.py\", line 70, in assert_condition",
+      "    raise AssertionError(message)",
+      "AssertionError: {'selection_only': True, 'source_validator_passed': True, 'post_guided_option_reinventory': True, 'guided_option_patch_closed_for_approved_cases': True, 'old_unknown_case_count': 10, 'old_unknown_cases_now_guided_option_count': 5, 'remaining_unknown_case_count': 3, 'selected_next_slice': 'guided_option_synonym_coverage', 'selected_gap_count': 2, 'protected_boundary_control_count': 8, 'failed_protected_boundary_control_count': 0, 'requires_human_review_before_next_checkpoint': False, 'recommended_next_checkpoint_requires_human_review': False, 'review_html_created': False, 'recommended_next_checkpoint': 'PROD-090-english-guided-option-synonym-coverage-narrow-probe', 'recommendation_roleplay_boundary_deferred': True, 'process_clarity_deferred': True, 'generic_confusion_kept_unknown': True, 'runtime_behavior_changed': False, 'response_text_behavior_changed': False, 'classifier_behavior_changed': False, 'retrieval_enabled': False, 'provider_calls_made': False, 'llm_used': False, 'llm_judging_used': False, 'private_data_read': False, 'voice_playback_unblocked': False, 'public_demo_polish_unblocked': False, 'real_customer_use_unblocked': False, 'payment_collection_allowed': False, 'contract_signing_allowed': False, 'production_runtime_promotion_allowed': False, 'german_exact_phrase_promotion_allowed': False, 'german_naturalness_claimed': False, 'legal_compliance_claimed': False}"
+    ],
+    "passed": false
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "checkpoint_id": "PROD-080-english-customer-move-remaining-slice-selection",
+  "checkpoint_name": "English Customer-Move Remaining Slice Selection",
+  "source_checkpoint_id": "PROD-079-english-provider-comparison-post-patch-regression",
+  "scope": "english_customer_move_remaining_slice_selection_only",
+  "selection_only": true,
+  "selected_next_slice": "unknown_runtime_signal_subtypes",
+  "runtime_change_requested": false,
+  "response_text_change_requested": false,
+  "classifier_change_requested": false,
+  "retrieval_change_requested": false,
+  "requires_human_review_before_next_checkpoint": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-081-english-unknown-runtime-signal-subtype-inventory"
+}

@@ -1,0 +1,83 @@
+{
+  "checkpoint_id": "PROD-091-english-guided-option-synonym-coverage-runtime-patch",
+  "case_count": 4,
+  "cases": [
+    {
+      "case_id": "prod-090-start-small-fuller",
+      "customer_turn": "Should I start small or go with the fuller option?",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "You can start with $29 if [feature X] and [feature Y] covers enough. If you later need [feature A] and [feature B], we can move you to $59.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true,
+        "no_contract_claim": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-090-side-by-side",
+      "customer_turn": "Can you show me both options side by side?",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "$29 covers [feature X] and [feature Y]. $59 includes that plus [feature A] and [feature B].",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true,
+        "no_contract_claim": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-090-safer-start-small",
+      "customer_turn": "Would it be safer to start small first?",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "You can start with $29 if [feature X] and [feature Y] covers enough. If you later need [feature A] and [feature B], we can move you to $59.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true,
+        "no_contract_claim": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-090-fuller-worth-it",
+      "customer_turn": "Is the fuller option worth it for what I need?",
+      "sales_difficulty": "guided-option-selection",
+      "selected_strategy": "guided-option-selection",
+      "next_action": "answer-and-continue",
+      "agent_response": "$59 is worth considering if [feature A] and [feature B] helps [customer goal]. If not, $29 is enough to start.",
+      "gates": {
+        "sales_difficulty": true,
+        "selected_strategy": true,
+        "next_action": true,
+        "expected_text": true,
+        "short_enough": true,
+        "no_company_domain_placeholder": true,
+        "no_payment_details_collection": true,
+        "no_contract_claim": true
+      },
+      "passed": true
+    }
+  ],
+  "failure_count": 0
+}

@@ -1,0 +1,12 @@
+{
+  "checkpoint_id": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity",
+  "checkpoint_name": "English Customer-Move Remaining Slice Selection After Process Clarity",
+  "source_checkpoint_id": "PROD-096-english-next-step-process-clarity-post-patch-regression",
+  "scope": "english_customer_move_remaining_slice_selection_after_process_clarity",
+  "selection_only": true,
+  "selected_next_slice": "recommendation_roleplay_boundary",
+  "selected_remaining_case_id": "prod-081-recommendation-02",
+  "review_html_created": true,
+  "requires_human_review_before_next_checkpoint": true,
+  "recommended_next_checkpoint": "PROD-098-english-recommendation-roleplay-review-import"
+}

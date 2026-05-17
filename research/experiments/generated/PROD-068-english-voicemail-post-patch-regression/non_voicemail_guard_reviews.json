@@ -1,0 +1,178 @@
+{
+  "checkpoint_id": "PROD-068-english-voicemail-post-patch-regression",
+  "items": [
+    {
+      "case_id": "prod-068-human-callback-request",
+      "input_type": "speech",
+      "transcript": "call me back next week",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "callback-request",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "offer-scheduling",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "bridge_response": null,
+        "agent_response": "Of course. Do you have a time in mind?"
+      },
+      "gates": {
+        "not_voicemail": true,
+        "response_not_empty": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "callback-request",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "offer-scheduling",
+        "call_control": "continue-call"
+      }
+    },
+    {
+      "case_id": "prod-068-human-written-info",
+      "input_type": "speech",
+      "transcript": "send me the details",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "written-info-request",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "bridge_response": null,
+        "agent_response": "Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you."
+      },
+      "gates": {
+        "not_voicemail": true,
+        "response_not_empty": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "written-info-request",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue"
+      }
+    },
+    {
+      "case_id": "prod-068-human-product-detail",
+      "input_type": "speech",
+      "transcript": "which plan is included",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "response_mode": "bridge-then-background",
+        "sales_difficulty": "product-detail-lookup",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "background_modules": [
+          "campaign-knowledge-lookup"
+        ],
+        "bridge_response": "One moment. I will check the product details before I answer.",
+        "agent_response": "One moment. I will check the product details before I answer."
+      },
+      "gates": {
+        "not_voicemail": true,
+        "response_not_empty": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "product-detail-lookup",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue"
+      }
+    },
+    {
+      "case_id": "prod-068-human-price-question",
+      "input_type": "speech",
+      "transcript": "what is the price",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "price-first-direct",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "bridge_response": null,
+        "agent_response": "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there."
+      },
+      "gates": {
+        "not_voicemail": true,
+        "response_not_empty": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "price-first-direct",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue"
+      }
+    },
+    {
+      "case_id": "prod-068-repeated-silence",
+      "input_type": "silence-timeout",
+      "transcript": "",
+      "stage": "opening",
+      "runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "repeated-silence",
+        "selected_strategy": "rapport",
+        "next_action": "close-politely",
+        "call_control": "end-call",
+        "background_modules": [
+          "no-response-log"
+        ],
+        "bridge_response": null,
+        "agent_response": "I will end the call for now. Goodbye."
+      },
+      "gates": {
+        "not_voicemail": true,
+        "response_not_empty": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "repeated-silence",
+        "selected_strategy": "rapport",
+        "next_action": "close-politely",
+        "call_control": "end-call"
+      }
+    }
+  ]
+}

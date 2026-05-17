@@ -1,0 +1,96 @@
+{
+  "checkpoint_id": "PROD-083-english-guided-option-selection-review-import",
+  "source_checkpoint_id": "PROD-082-english-guided-option-selection-review",
+  "review_status": "completed_from_chat_review",
+  "review_item": "guided_option_selection_candidate",
+  "reviewer": "Tarik",
+  "review_date": "2026-05-16",
+  "overall_decision": "needs_rewrite_before_probe",
+  "narrow_policy_probe_approved": false,
+  "overall_notes": [
+    "The current examples are too defensive and overuse opt-out language.",
+    "When a customer asks whether to choose the $29 or $59 option, the agent should explain fit and plan contents instead of repeating the two prices.",
+    "The agent may steer toward one option when customer facts and approved plan facts support that recommendation.",
+    "The agent should not repeat obvious facts, such as that $29 is lower than $59.",
+    "The agent should explain actual differences using an approved plan feature matrix, such as $29 has X features and $59 adds Y features.",
+    "If the customer asks for a recommendation, the agent can recommend a better fit without pretending to choose for the customer.",
+    "The agent can suggest starting with the cheaper plan and upgrading later when that is an approved product path.",
+    "If the customer asks to decide later, keep the answer short and do not say the same thing twice.",
+    "If the customer says neither option feels right, treat that as uncertainty and use light persuasion plus acknowledgement instead of ending the opportunity too quickly.",
+    "For payment, no payment on the call by default for now, but the agent may explain the approved campaign payment path if one exists.",
+    "Future payment handling by the agent may be reopened later, but it is not approved now.",
+    "Add a future spoken-naturalness rule for sparse human discourse markers like I mean or like, but do not randomly add fillers every few sentences."
+  ],
+  "example_decisions": {
+    "guided-option-binary-choice": {
+      "decision": "needs_rewrite_before_probe",
+      "notes": "Do not say there are two fair paths or neither is fine too. Explain what each plan includes and steer based on fit."
+    },
+    "guided-option-fit-unclear": {
+      "decision": "needs_rewrite_before_probe",
+      "notes": "Do not default to pause/neither language. Explain which plan is good for which need."
+    },
+    "guided-option-recommendation-request": {
+      "decision": "needs_rewrite_before_probe",
+      "notes": "The agent can recommend or steer toward a better fit based on known customer facts and approved plan facts."
+    },
+    "guided-option-explain-difference": {
+      "decision": "needs_rewrite_before_probe",
+      "notes": "Do not repeat that $29 is lower. Answer the real difference using a feature matrix."
+    },
+    "guided-option-not-now": {
+      "decision": "needs_rewrite_before_probe",
+      "notes": "Shorten. Yes, leave both options open and send the difference in writing is enough."
+    },
+    "guided-option-neither": {
+      "decision": "needs_rewrite_before_probe",
+      "notes": "Use acknowledgement plus light persuasion. Offer written differences or product benefit framing instead of dropping the sale."
+    },
+    "guided-option-payment-boundary": {
+      "decision": "needs_rewrite_before_probe",
+      "notes": "Explain the approved payment path or leave placeholders for campaign-specific payment flow. Keep no payment on the call by default for now."
+    }
+  },
+  "required_rewrite_rules": [
+    "Leave obvious facts out.",
+    "Do not repeat what the customer already said unless explicitly needed.",
+    "Answer the actual fit or difference question.",
+    "Use approved plan feature facts, not invented differences.",
+    "Steer toward the better option when known customer facts support it.",
+    "Keep wording shorter and more human.",
+    "Preserve autonomy without repeatedly saying neither or not now.",
+    "Use light persuasion when the customer is uncertain but still engaged.",
+    "Separate option selection from payment handling."
+  ],
+  "plan_fact_requirements": {
+    "plan_feature_matrix_required": true,
+    "invent_plan_features_allowed": false,
+    "example_plan_placeholders": {
+      "29": ["feature_x", "feature_y", "feature_z"],
+      "59": ["feature_x", "feature_y", "feature_z", "feature_a", "feature_b", "feature_c"]
+    }
+  },
+  "payment_workflow_requirements": {
+    "no_payment_on_call_default": true,
+    "approved_campaign_payment_path_can_be_explained": true,
+    "example_campaign_payment_paths": [
+      "human callback handles payment",
+      "approved email link from campaign company domain",
+      "approved registration link or form",
+      "contract or membership paperwork handled outside the call"
+    ],
+    "future_agent_payment_handling_deferred": true
+  },
+  "spoken_naturalness_feedback": {
+    "sparse_contextual_discourse_markers_candidate": true,
+    "random_fillers_allowed": false,
+    "example_markers": ["I mean", "like", "you know"],
+    "constraints": [
+      "Use sparingly.",
+      "Use only where it improves spoken naturalness.",
+      "Do not add fillers to payment, legal, coverage, healthcare, or safety-boundary statements.",
+      "Do not repeat the same marker mechanically.",
+      "Do not let markers lengthen already wordy answers."
+    ]
+  }
+}

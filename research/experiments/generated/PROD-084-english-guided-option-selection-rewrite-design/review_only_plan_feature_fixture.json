@@ -1,0 +1,29 @@
+{
+  "checkpoint_id": "PROD-084-english-guided-option-selection-rewrite-design",
+  "review_only_fixture": true,
+  "invent_plan_features_allowed_in_runtime": false,
+  "plans": {
+    "29": {
+      "label": "$29 starter placeholder",
+      "features": [
+        "[feature X]",
+        "[feature Y]",
+        "[feature Z]"
+      ],
+      "fit_when": "customer only needs the basic feature set"
+    },
+    "59": {
+      "label": "$59 expanded placeholder",
+      "features": [
+        "[feature X]",
+        "[feature Y]",
+        "[feature Z]",
+        "[feature A]",
+        "[feature B]",
+        "[feature C]"
+      ],
+      "fit_when": "customer benefits from the added features or wants fewer gaps later"
+    }
+  },
+  "upgrade_path_placeholder": "$29 can be used as a starter path if the campaign allows later upgrade to $59."
+}

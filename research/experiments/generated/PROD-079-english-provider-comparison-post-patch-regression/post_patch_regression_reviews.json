@@ -1,0 +1,291 @@
+{
+  "checkpoint_id": "PROD-079-english-provider-comparison-post-patch-regression",
+  "items": [
+    {
+      "case_id": "prod-079-01",
+      "case_type": "provider_comparison_positive",
+      "customer_turn": "How is this different from our current provider?",
+      "expected_sales_difficulty": "provider-comparison",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "provider-comparison",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair. We can compare fit against what you use now before you decide."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "provider_response_matches_when_expected": true,
+        "non_provider_controls_stay_out": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-079-02",
+      "case_type": "provider_comparison_positive",
+      "customer_turn": "Can you compare this with what we already use?",
+      "expected_sales_difficulty": "provider-comparison",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "provider-comparison",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair. We can compare fit against what you use now before you decide."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "provider_response_matches_when_expected": true,
+        "non_provider_controls_stay_out": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-079-03",
+      "case_type": "provider_comparison_positive",
+      "customer_turn": "What would be different versus our current setup?",
+      "expected_sales_difficulty": "provider-comparison",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "provider-comparison",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair. We can compare fit against what you use now before you decide."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "provider_response_matches_when_expected": true,
+        "non_provider_controls_stay_out": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-079-04",
+      "case_type": "provider_comparison_positive",
+      "customer_turn": "How does this compare with our current terms?",
+      "expected_sales_difficulty": "provider-comparison",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "provider-comparison",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair. We can compare fit against what you use now before you decide."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "provider_response_matches_when_expected": true,
+        "non_provider_controls_stay_out": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-079-05",
+      "case_type": "provider_comparison_positive",
+      "customer_turn": "Can you compare your terms with what we already have?",
+      "expected_sales_difficulty": "provider-comparison",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "provider-comparison",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair. We can compare fit against what you use now before you decide."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "provider_response_matches_when_expected": true,
+        "non_provider_controls_stay_out": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-079-06",
+      "case_type": "existing_provider_control",
+      "customer_turn": "We already have a provider and I do not want to switch.",
+      "expected_sales_difficulty": "existing-provider-gap",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "existing-provider-gap",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "provider_response_matches_when_expected": true,
+        "non_provider_controls_stay_out": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-079-07",
+      "case_type": "existing_provider_control",
+      "customer_turn": "We have another provider.",
+      "expected_sales_difficulty": "existing-provider-gap",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "existing-provider-gap",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "provider_response_matches_when_expected": true,
+        "non_provider_controls_stay_out": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-079-08",
+      "case_type": "existing_provider_control",
+      "customer_turn": "We already use another provider.",
+      "expected_sales_difficulty": "existing-provider-gap",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "existing-provider-gap",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "provider_response_matches_when_expected": true,
+        "non_provider_controls_stay_out": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-079-09",
+      "case_type": "adjacent_control",
+      "customer_turn": "What does this cost?",
+      "expected_sales_difficulty": "price-first-direct",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "price-first-direct",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "provider_response_matches_when_expected": true,
+        "non_provider_controls_stay_out": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-079-10",
+      "case_type": "adjacent_control",
+      "customer_turn": "What do you offer?",
+      "expected_sales_difficulty": "unknown-runtime-signal",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "provider_response_matches_when_expected": true,
+        "non_provider_controls_stay_out": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-079-11",
+      "case_type": "adjacent_control",
+      "customer_turn": "Just send me the details in writing.",
+      "expected_sales_difficulty": "written-info-request",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "written-info-request",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "provider_response_matches_when_expected": true,
+        "non_provider_controls_stay_out": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-079-12",
+      "case_type": "protected_control",
+      "customer_turn": "Can you take payment or card details if it is better?",
+      "expected_sales_difficulty": "payment-safety-boundary",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "payment-safety-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "provider_response_matches_when_expected": true,
+        "non_provider_controls_stay_out": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-079-13",
+      "case_type": "protected_control",
+      "customer_turn": "Can you sign me up if this is better?",
+      "expected_sales_difficulty": "unknown-runtime-signal",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "provider_response_matches_when_expected": true,
+        "non_provider_controls_stay_out": true
+      },
+      "passed": true,
+      "issue_codes": []
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "checkpoint_id": "PROD-076-english-provider-comparison-review-import",
+  "checkpoint_name": "English Provider-Comparison Review Import",
+  "source_checkpoint_id": "PROD-075-english-provider-comparison-reachability-review",
+  "scope": "english_provider_comparison_review_import_only",
+  "review_item": "provider-comparison",
+  "human_review_imported": true,
+  "narrow_probe_approved": true,
+  "exact_as_written_approval": false,
+  "brevity_constraint_required": true,
+  "comparison_grounding_required": true,
+  "runtime_change_requested": false,
+  "response_text_change_requested": false,
+  "classifier_change_requested": false,
+  "retrieval_change_requested": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-077-english-provider-comparison-narrow-probe-design"
+}

@@ -1,0 +1,13 @@
+{
+  "checkpoint_id": "PROD-087-english-guided-option-selection-runtime-patch",
+  "checkpoint_name": "English Guided Option Selection Runtime Patch",
+  "source_checkpoint_id": "PROD-086-english-guided-option-selection-narrow-policy-probe",
+  "scope": "english_guided_option_selection_runtime_patch",
+  "runtime_patch_applied": true,
+  "requires_plan_feature_matrix": true,
+  "requires_customer_facts_for_steering": true,
+  "requires_no_payment_on_call_default": true,
+  "requires_no_company_domain_in_generic_payment_wording": true,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-088-english-guided-option-selection-post-patch-regression"
+}

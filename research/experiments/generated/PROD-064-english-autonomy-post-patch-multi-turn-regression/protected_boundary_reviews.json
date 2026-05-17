@@ -1,0 +1,129 @@
+{
+  "checkpoint_id": "PROD-064-english-autonomy-post-patch-multi-turn-regression",
+  "items": [
+    {
+      "case_id": "prod-064-protected-do-not-call",
+      "transcript": "please stop calling me",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "do-not-call",
+        "selected_strategy": "rapport",
+        "next_action": "suppress-contact",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "do-not-call",
+        "selected_strategy": "rapport",
+        "next_action": "suppress-contact",
+        "call_control": "end-call",
+        "agent_response": "Understood. I will mark this so you are not called again. Goodbye."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true,
+        "does_not_loop_back_to_autonomy": true,
+        "old_response_absent": true,
+        "protected_call_control_kept": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-064-protected-email-only",
+      "transcript": "just email me",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "email-only-boundary",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "email-only-boundary",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "agent_response": "Understood. I will keep this to email only and will not push for a call."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true,
+        "does_not_loop_back_to_autonomy": true,
+        "old_response_absent": true,
+        "protected_call_control_kept": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-064-protected-support",
+      "transcript": "I need support with my account",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "support-route",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "support-route",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "Of course. I'll send this to support right away. Have a good day."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true,
+        "does_not_loop_back_to_autonomy": true,
+        "old_response_absent": true,
+        "protected_call_control_kept": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-064-protected-payment",
+      "transcript": "I am not giving payment details",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "payment-safety-boundary",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "payment-safety-boundary",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true,
+        "does_not_loop_back_to_autonomy": true,
+        "old_response_absent": true,
+        "protected_call_control_kept": true
+      },
+      "passed": true,
+      "issue_codes": []
+    }
+  ]
+}

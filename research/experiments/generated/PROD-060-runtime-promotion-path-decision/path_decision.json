@@ -1,0 +1,43 @@
+{
+  "checkpoint_id": "PROD-060-runtime-promotion-path-decision",
+  "decision": "select_internal_guarded_english_baseline_only",
+  "selected_path": {
+    "path_id": "internal_guarded_english_baseline_only",
+    "allowed_scope": "local_offline_synthetic_internal_regression_reference",
+    "plain_language_scope": "local offline synthetic internal regression reference",
+    "runtime_change": false,
+    "response_text_change": false,
+    "production_promotion": false,
+    "public_demo": false,
+    "real_customer_use": false,
+    "provider_or_private_data_use": false
+  },
+  "blocked_paths": [
+    "public_demo_path",
+    "real_customer_path",
+    "provider_or_private_data_path",
+    "retrieval_default_path",
+    "voice_playback_path",
+    "german_language_path",
+    "payment_or_contract_path",
+    "production_runtime_path"
+  ],
+  "still_blocked": [
+    "customer_move_classification_outside_selected_non_refusal_groups",
+    "voicemail_action_only_behavior",
+    "coverage_knowledge_policy_behavior",
+    "context_sensitive_autonomy_behavior",
+    "native_german_review",
+    "voice_playback_quality",
+    "retrieval_default",
+    "provider_or_private_data_use",
+    "legal_compliance_review",
+    "public_demo_use",
+    "real_customer_use",
+    "payment_collection",
+    "contract_signing",
+    "production_runtime_promotion"
+  ],
+  "requires_human_review_before_next_checkpoint": true,
+  "recommended_next_checkpoint": "PROD-061-english-product-policy-gate-prioritization"
+}

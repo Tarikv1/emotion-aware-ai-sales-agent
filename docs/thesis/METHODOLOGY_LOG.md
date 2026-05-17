@@ -16,6 +16,206 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-17 - PROD-100 English recommendation roleplay runtime patch
+
+- Objective: apply the narrow English runtime route for the recommendation-roleplay gaps proven by `PROD-099`.
+- Action taken: added a failing `PROD-100` validator first, then added the runtime patch runner, case file, product doc, runtime branch, positive runtime cases, control runtime cases, patch summary, evidence summary, report, and result artifacts.
+- Data used: `PROD-099` policy probe output and the imported `PROD-098` reviewed recommendation-roleplay examples. No provider calls, LLM judging, private data reads, retrieval, voice playback, payment collection, contract signing, German wording promotion, or production promotion were used.
+- Output created: `scripts/prod_100_english_recommendation_roleplay_runtime_patch.py`, `scripts/run_prod_100_english_recommendation_roleplay_runtime_patch.py`, `scripts/validate_prod_100_english_recommendation_roleplay_runtime_patch.py`, `docs/product/PROD_100_ENGLISH_RECOMMENDATION_ROLEPLAY_RUNTIME_PATCH.md`, and generated artifacts under `research/experiments/generated/PROD-100-english-recommendation-roleplay-runtime-patch/`.
+- Result: selected gap fixed count: `7`, positive case failures: `0`, control case failures: `0`, requires customer facts for recommendation: `true`, requires agency preservation: `true`, no agent decides for customer: `true`, no value guarantee: `true`, review HTML created: `false`, runtime behavior changed: `true`, response text behavior changed: `true`, classifier behavior changed: `true`, retrieval enabled: `false`, production runtime promotion allowed: `false`.
+- Why it matters for the thesis: it promotes a persuasion-sensitive behavior only after review import and policy probe evidence, while preserving agency, value-claim, payment, contract, provider, process, generic-confusion, and German boundaries.
+- Open questions: whether `PROD-101` confirms the patch remains stable against adjacent controls and the stable English guard.
+
+### 2026-05-17 - PROD-099 English recommendation roleplay narrow policy probe
+
+- Objective: test whether the approved `recommendation_roleplay_boundary` examples could be bounded before runtime promotion.
+- Action taken: added a failing `PROD-099` validator first, then added the policy probe runner, case file, product doc, candidate policy constraints, probe case matrix, policy probe result, current runtime gap analysis, evidence summary, report, and result artifacts.
+- Data used: `PROD-098` review import output and approved candidate packet. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used.
+- Output created: `scripts/prod_099_english_recommendation_roleplay_narrow_policy_probe.py`, `scripts/run_prod_099_english_recommendation_roleplay_narrow_policy_probe.py`, `scripts/validate_prod_099_english_recommendation_roleplay_narrow_policy_probe.py`, `docs/product/PROD_099_ENGLISH_RECOMMENDATION_ROLEPLAY_NARROW_POLICY_PROBE.md`, and generated artifacts under `research/experiments/generated/PROD-099-english-recommendation-roleplay-narrow-policy-probe/`.
+- Result: recommendation roleplay probe passed: `true`, current runtime gap count: `7`, requires customer facts for recommendation: `true`, requires agency preservation: `true`, no agent decides for customer: `true`, no value guarantee: `true`, review HTML created: `false`, runtime behavior changed: `false`, response text behavior changed: `false`, classifier behavior changed: `false`, retrieval enabled: `false`, production runtime promotion allowed: `false`.
+- Why it matters for the thesis: it turns reviewed natural-language guidance into deterministic promotion constraints before any runtime branch is added.
+- Open questions: whether `PROD-100` can patch the route without absorbing adjacent payment, contract, provider, process-clarity, generic-confusion, or German turns.
+
+### 2026-05-17 - PROD-098 English recommendation roleplay review import
+
+- Objective: import Tarik's `PROD-097` recommendation-roleplay review before any policy probe or runtime patch.
+- Action taken: added a failing `PROD-098` validator first, then added the chat review import JSON, review import runner, case file, product doc, imported review summary, wording edits, approved candidate packet, narrow policy probe readiness, evidence summary, report, and result artifacts.
+- Data used: `PROD-097` review packet and Tarik's chat review. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used.
+- Output created: `scripts/prod_098_english_recommendation_roleplay_review_import.py`, `scripts/run_prod_098_english_recommendation_roleplay_review_import.py`, `scripts/validate_prod_098_english_recommendation_roleplay_review_import.py`, `docs/product/PROD_098_ENGLISH_RECOMMENDATION_ROLEPLAY_REVIEW_IMPORT.md`, `research/experiments/imports/PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity/prod_097_recommendation_roleplay_review_from_chat.json`, and generated artifacts under `research/experiments/generated/PROD-098-english-recommendation-roleplay-review-import/`.
+- What was learned: the recommendation-roleplay packet is approved for a narrow probe after two wording edits: add `if you need to` to the upgrade-later sentence and use `but I can show` for the decide-for-me boundary example.
+- Why it matters for the thesis: it preserves human review as the gate for persuasion-sensitive recommendation behavior while turning subjective feedback into deterministic probe constraints.
+- Open questions: whether `PROD-099` can test the approved recommendation-roleplay behavior without weakening agency, payment, contract, value-guarantee, provider-comparison, process-clarity, generic-confusion, or German controls.
+
+### 2026-05-17 - PROD-097 English customer-move remaining slice selection after process clarity
+
+- Objective: select the next remaining English customer-move subtype after process-clarity regression and create a human review packet if the selected subtype is persuasion-sensitive.
+- Action taken: added a failing `PROD-097` validator first, then added the selection/review runner, case file, product doc, remaining subtype selection, recommendation-roleplay review packet, review examples, review state template, browser review HTML, evidence summary, report, and result artifacts.
+- Data used: `PROD-096` regression output and the remaining `PROD-081` unknown subtype `prod-081-recommendation-02`. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used.
+- Output created: `scripts/prod_097_english_customer_move_remaining_slice_selection_after_process_clarity.py`, `scripts/run_prod_097_english_customer_move_remaining_slice_selection_after_process_clarity.py`, `scripts/validate_prod_097_english_customer_move_remaining_slice_selection_after_process_clarity.py`, `docs/product/PROD_097_ENGLISH_CUSTOMER_MOVE_REMAINING_SLICE_SELECTION_AFTER_PROCESS_CLARITY.md`, and generated artifacts under `research/experiments/generated/PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity/`.
+- What was learned: the next concrete remaining customer-move subtype is recommendation roleplay, but it should not be probed or patched without human approval because the agent may sound like it is deciding for the customer.
+- Why it matters for the thesis: it demonstrates that persuasion-sensitive expansions are stopped at a human review gate instead of moving directly into runtime.
+- Open questions: whether Tarik approves, edits, or rejects the recommendation-roleplay examples before `PROD-098` imports the review.
+
+### 2026-05-17 - PROD-096 English next-step process clarity post-patch regression
+
+- Objective: verify the `PROD-095` English process-clarity runtime patch after application.
+- Action taken: added a failing `PROD-096` validator first, then added the post-patch regression runner, case file, product doc, process clarity regression cases, adjacent control cases, stable English guard summary, evidence summary, report, and result artifacts.
+- Data used: `PROD-095` runtime patch evidence, `PROD-094` process-clarity positives and controls, and the stable English multi-turn regression guard. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used in this checkpoint.
+- Output created: `scripts/prod_096_english_next_step_process_clarity_post_patch_regression.py`, `scripts/run_prod_096_english_next_step_process_clarity_post_patch_regression.py`, `scripts/validate_prod_096_english_next_step_process_clarity_post_patch_regression.py`, `docs/product/PROD_096_ENGLISH_NEXT_STEP_PROCESS_CLARITY_POST_PATCH_REGRESSION.md`, and generated artifacts under `research/experiments/generated/PROD-096-english-next-step-process-clarity-post-patch-regression/`.
+- What was learned: the process-clarity patch preserves its positives, adjacent controls, guided-option boundaries, and the stable English guard after application.
+- Why it matters for the thesis: it closes the process-clarity patch loop with regression evidence before selecting another customer-move subtype.
+- Open questions: whether the next remaining subtype should become a review packet because advice-roleplay remains persuasion-sensitive.
+
+### 2026-05-17 - PROD-095 English next-step process clarity runtime patch
+
+- Objective: apply the smallest English runtime patch for the post-yes process-clarity behavior approved by `PROD-094`.
+- Action taken: added a failing `PROD-095` validator first, patched `runtime/core/realtime_turns.py`, then added the runtime patch runner, case file, product doc, runtime patch summary, positive runtime cases, control runtime cases, evidence summary, report, and result artifacts.
+- Data used: `PROD-094` policy probe result, selected gap analysis, and current deterministic runtime behavior. No provider calls, LLM judging, private data reads, retrieval, voice playback, German wording promotion, payment collection, contract signing, public demo use, real customer use, or production promotion were used.
+- Output created: `scripts/prod_095_english_next_step_process_clarity_runtime_patch.py`, `scripts/run_prod_095_english_next_step_process_clarity_runtime_patch.py`, `scripts/validate_prod_095_english_next_step_process_clarity_runtime_patch.py`, `docs/product/PROD_095_ENGLISH_NEXT_STEP_PROCESS_CLARITY_RUNTIME_PATCH.md`, `runtime/core/realtime_turns.py`, and generated artifacts under `research/experiments/generated/PROD-095-english-next-step-process-clarity-runtime-patch/`.
+- What was learned: the selected process-clarity gap can be patched as an English-only branch gated by the existing email-link flag while preserving payment/card, signup, advice-roleplay, provider-comparison, coverage, guided-option, generic-confusion, and German controls.
+- Why it matters for the thesis: it demonstrates incremental runtime expansion from a reviewed process explanation without crossing into checkout, contract execution, or broad persuasion behavior.
+- Open questions: whether `PROD-096` confirms the patch stays stable under post-patch regression and the broader English guard.
+
+### 2026-05-17 - PROD-094 English next-step process clarity narrow probe
+
+- Objective: test whether the selected `next_step_process_clarity` subtype can use concise post-yes process wording before any runtime patch.
+- Action taken: added a failing `PROD-094` validator first, then added the policy probe runner, case file, product doc, candidate policy constraints, process clarity probe matrix, policy probe result, current runtime gap analysis, evidence summary, report, and result artifacts.
+- Data used: `PROD-093` subtype selection, protected boundary controls, and the approved email-link/register payment-path wording. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used.
+- Output created: `scripts/prod_094_english_next_step_process_clarity_narrow_probe.py`, `scripts/run_prod_094_english_next_step_process_clarity_narrow_probe.py`, `scripts/validate_prod_094_english_next_step_process_clarity_narrow_probe.py`, `docs/product/PROD_094_ENGLISH_NEXT_STEP_PROCESS_CLARITY_NARROW_PROBE.md`, and generated artifacts under `research/experiments/generated/PROD-094-english-next-step-process-clarity-narrow-probe/`.
+- What was learned: the candidate response passes `5` positives and `10` controls while keeping no payment on this call, email-link registration, no payment collection, no contract signing, no advice roleplay, no provider comparison expansion, no German expansion, and no runtime change inside the probe.
+- Why it matters for the thesis: it converts a customer "what happens next" question into a bounded process explanation without turning the call into checkout or contract execution.
+- Open questions: whether `PROD-095` can patch the runtime branch narrowly while preserving the same controls and stable English regression guard.
+
+### 2026-05-17 - PROD-093 English customer-move remaining slice selection after guided option synonyms
+
+- Objective: select the next remaining English customer-move subtype after the guided-option synonym patch passed regression.
+- Action taken: added a failing `PROD-093` validator first, then added the selection runner, case file, product doc, remaining subtype inventory, subtype selection, protected boundary controls, evidence summary, report, and result artifacts.
+- Data used: `PROD-092` synonym regression output, adjacent controls, stable English guard result, and the remaining deferred unknowns from the `PROD-089` inventory. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used.
+- Output created: `scripts/prod_093_english_customer_move_remaining_slice_selection_after_guided_option_synonyms.py`, `scripts/run_prod_093_english_customer_move_remaining_slice_selection_after_guided_option_synonyms.py`, `scripts/validate_prod_093_english_customer_move_remaining_slice_selection_after_guided_option_synonyms.py`, `docs/product/PROD_093_ENGLISH_CUSTOMER_MOVE_REMAINING_SLICE_SELECTION_AFTER_GUIDED_OPTION_SYNONYMS.md`, and generated artifacts under `research/experiments/generated/PROD-093-english-customer-move-remaining-slice-selection-after-guided-option-synonyms/`.
+- What was learned: `next_step_process_clarity` is the smallest concrete remaining subtype; advice roleplay should stay review-gated and generic decision confusion should stay unknown until a separate decision-frame design exists.
+- Why it matters for the thesis: it shows the project can keep moving without turning a customer process question into payment collection, contract signing, or broad persuasion behavior.
+- Open questions: whether `PROD-094` can probe process-clarity wording concisely while preserving payment, contract, provider-comparison, advice-roleplay, German, and generic-confusion controls.
+
+### 2026-05-16 - PROD-092 English guided option synonym coverage post-patch regression
+
+- Objective: verify the `PROD-091` guided-option synonym runtime patch after application.
+- Action taken: added a failing `PROD-092` validator first, then added the post-patch regression runner, case file, product doc, synonym regression cases, adjacent control cases, stable English guard summary, evidence summary, report, and result artifacts.
+- Data used: `PROD-091` runtime patch evidence, `PROD-090` synonym positives, `PROD-087` original guided-option positives and controls, and the stable English multi-turn regression guard. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used in this checkpoint.
+- Output created: `scripts/prod_092_english_guided_option_synonym_coverage_post_patch_regression.py`, `scripts/run_prod_092_english_guided_option_synonym_coverage_post_patch_regression.py`, `scripts/validate_prod_092_english_guided_option_synonym_coverage_post_patch_regression.py`, `docs/product/PROD_092_ENGLISH_GUIDED_OPTION_SYNONYM_COVERAGE_POST_PATCH_REGRESSION.md`, and generated artifacts under `research/experiments/generated/PROD-092-english-guided-option-synonym-coverage-post-patch-regression/`.
+- What was learned: the synonym patch preserves the synonym positives, original guided-option positives, adjacent controls, and the stable English guard after application.
+- Why it matters for the thesis: it closes the synonym patch loop with regression evidence before selecting another customer-move subtype.
+- Open questions: whether the next remaining subtype should be advice roleplay, process clarity after yes, or generic decision confusion, and whether that selection requires human review.
+
+### 2026-05-16 - PROD-091 English guided option synonym coverage runtime patch
+
+- Objective: apply the smallest English runtime patch for the two guided-option synonym gaps approved by `PROD-090`.
+- Action taken: added a failing `PROD-091` validator first, then added the runtime patch harness, case file, product doc, runtime patch summary, positive runtime cases, control runtime cases, evidence summary, report, and result artifacts. Patched `runtime/core/realtime_turns.py` with the narrow synonym triggers and a provider-side-by-side guard. Stabilized `PROD-089` and `PROD-090` pre-patch gap evidence so downstream runtime patches do not corrupt historical generated artifacts when validators are rerun.
+- Data used: `PROD-090` policy probe result, selected gap analysis, and current deterministic runtime behavior. No provider calls, LLM judging, private data reads, retrieval, voice playback, German wording promotion, payment collection, contract signing, public demo use, real customer use, or production promotion were used.
+- Output created: `scripts/prod_091_english_guided_option_synonym_coverage_runtime_patch.py`, `scripts/run_prod_091_english_guided_option_synonym_coverage_runtime_patch.py`, `scripts/validate_prod_091_english_guided_option_synonym_coverage_runtime_patch.py`, `docs/product/PROD_091_ENGLISH_GUIDED_OPTION_SYNONYM_COVERAGE_RUNTIME_PATCH.md`, `runtime/core/realtime_turns.py`, and generated artifacts under `research/experiments/generated/PROD-091-english-guided-option-synonym-coverage-runtime-patch/`.
+- What was learned: the two synonym gaps can be closed without catching advice roleplay, process clarity, provider side-by-side, payment/card, coverage, autonomy, German, or generic-confusion controls.
+- Why it matters for the thesis: it shows how the runtime can expand natural language coverage while preserving product, payment, and autonomy boundaries.
+- Open questions: whether `PROD-092` confirms the synonym patch stays stable under post-patch regression and the broader English guard.
+
+### 2026-05-16 - PROD-090 English guided option synonym coverage narrow probe
+
+- Objective: test whether the two selected guided-option near-synonym gaps can use the existing reviewed guardrails before any runtime trigger expansion.
+- Action taken: added a failing `PROD-090` validator first, then added the policy probe runner, case file, product doc, candidate policy constraints, synonym probe case matrix, policy probe result, current runtime gap analysis, evidence summary, report, and result artifacts. A failed first run exposed branch ordering in the candidate probe; the `worth it` branch had to run before the generic `fuller option` branch so `[customer goal]` stayed present.
+- Data used: `PROD-089` remaining subtype selection and current deterministic runtime decisions with the guided-option campaign fixture. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used.
+- Output created: `scripts/prod_090_english_guided_option_synonym_coverage_narrow_probe.py`, `scripts/run_prod_090_english_guided_option_synonym_coverage_narrow_probe.py`, `scripts/validate_prod_090_english_guided_option_synonym_coverage_narrow_probe.py`, `docs/product/PROD_090_ENGLISH_GUIDED_OPTION_SYNONYM_COVERAGE_NARROW_PROBE.md`, and generated artifacts under `research/experiments/generated/PROD-090-english-guided-option-synonym-coverage-narrow-probe/`.
+- What was learned: the synonym probe passes with `4` positives, `9` controls, and `0` failed policy cases. The current runtime still has `2` selected gaps, which supports a narrow runtime patch next.
+- Why it matters for the thesis: it demonstrates a disciplined path for expanding conversational coverage without expanding persuasion pressure or unsafe payment/process behavior.
+- Open questions: whether `PROD-091` can patch the two trigger gaps without catching advice roleplay, process clarity, provider comparison, autonomy, coverage, payment, German, or generic confusion controls.
+
+### 2026-05-16 - PROD-089 English customer-move remaining slice selection after guided option
+
+- Objective: select the next smallest English customer-move slice after guided option selection passed post-patch regression.
+- Action taken: added a failing `PROD-089` validator first, then added the selection runner, case file, product doc, post-guided option probe results, remaining subtype selection, protected boundary controls, evidence summary, report, and result artifacts.
+- Data used: `PROD-088` regression output, the old `PROD-081` unknown-runtime-signal inventory, and current deterministic runtime decisions with the guided-option campaign fixture. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used.
+- Output created: `scripts/prod_089_english_customer_move_remaining_slice_selection_after_guided_option.py`, `scripts/run_prod_089_english_customer_move_remaining_slice_selection_after_guided_option.py`, `scripts/validate_prod_089_english_customer_move_remaining_slice_selection_after_guided_option.py`, `docs/product/PROD_089_ENGLISH_CUSTOMER_MOVE_REMAINING_SLICE_SELECTION_AFTER_GUIDED_OPTION.md`, and generated artifacts under `research/experiments/generated/PROD-089-english-customer-move-remaining-slice-selection-after-guided-option/`.
+- What was learned: the reviewed guided-option branch now covers `5` old unknown cases, but two near-synonyms still fall through: `Should I start small or go with the fuller option?` and `Can you show me both options side by side?`. These are safer to probe next than advice roleplay, process clarity, or generic confusion.
+- Why it matters for the thesis: it keeps persuasion-tactic expansion incremental and evidence-gated, using reviewed guardrails before any further classifier expansion.
+- Open questions: whether `PROD-090` confirms the synonym-coverage probe can expand triggers without weakening payment, contract, provider-comparison, autonomy, coverage, or unknown-signal controls.
+
+### 2026-05-16 - PROD-088 English guided option selection post-patch regression
+
+- Objective: verify the `PROD-087` guided-option runtime patch after application.
+- Action taken: added a failing `PROD-088` validator first, then added the regression runner, case file, product doc, guided option regression cases, adjacent control cases, stable English guard summary, evidence summary, report, and result artifacts.
+- Data used: `PROD-087` positive and control runtime cases plus the stable English multi-turn regression guard. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used in this checkpoint.
+- Output created: `scripts/prod_088_english_guided_option_selection_post_patch_regression.py`, `scripts/run_prod_088_english_guided_option_selection_post_patch_regression.py`, `scripts/validate_prod_088_english_guided_option_selection_post_patch_regression.py`, `docs/product/PROD_088_ENGLISH_GUIDED_OPTION_SELECTION_POST_PATCH_REGRESSION.md`, and generated artifacts under `research/experiments/generated/PROD-088-english-guided-option-selection-post-patch-regression/`.
+- What was learned: the guided-option patch preserved all approved positives, adjacent controls, and the stable English guard after application.
+- Why it matters for the thesis: it separates runtime patch application from regression evidence, which makes later customer-move slice selection more defensible.
+- Open questions: which remaining English customer-move subtype should be selected after guided option selection is closed.
+
+### 2026-05-16 - PROD-087 English guided option selection runtime patch
+
+- Objective: apply the smallest English runtime patch for the guided option selection behavior accepted through `PROD-085` and policy-probed in `PROD-086`.
+- Action taken: added a failing `PROD-087` validator first, then added the runtime patch harness, case file, product doc, generated runtime patch summary, positive runtime cases, control runtime cases, evidence summary, report, and result artifacts. Patched `runtime/core/realtime_turns.py` with a narrow `guided-option-selection` branch and a small adjacent payment-boundary phrase for `with my card`.
+- Data used: `PROD-086` policy probe result and candidate policy constraints. No provider calls, LLM judging, private data reads, retrieval, voice playback, German wording promotion, payment collection, contract signing, public demo use, real customer use, or production promotion were used.
+- Output created: `scripts/prod_087_english_guided_option_selection_runtime_patch.py`, `scripts/run_prod_087_english_guided_option_selection_runtime_patch.py`, `scripts/validate_prod_087_english_guided_option_selection_runtime_patch.py`, `docs/product/PROD_087_ENGLISH_GUIDED_OPTION_SELECTION_RUNTIME_PATCH.md`, `runtime/core/realtime_turns.py`, and generated artifacts under `research/experiments/generated/PROD-087-english-guided-option-selection-runtime-patch/`.
+- What was learned: the selected route can be added narrowly if the campaign supplies a plan feature matrix and customer facts for steering. The runtime also needed a protected payment-boundary phrase for `with my card`, otherwise a card-payment request fell to `unknown-runtime-signal`.
+- Why it matters for the thesis: this converts reviewed persuasion wording into a guarded deterministic runtime branch while preserving the distinction between ethical option guidance and unsafe payment or contract handling.
+- Open questions: whether `PROD-088` post-patch regression confirms that adjacent price, payment/card, contract/sign-up, coverage, written-info, provider-comparison, autonomy, and unknown-signal behavior stayed stable.
+
+### 2026-05-16 - PROD-086 English guided option selection narrow policy probe
+
+- Objective: test whether the approved-with-edit guided option selection candidate from `PROD-085` is constrained enough for a future runtime patch.
+- Action taken: added a failing `PROD-086` validator first, then added the policy probe runner, case file, product doc, candidate policy constraints, probe case matrix, policy probe result, current runtime gap analysis, evidence summary, report, and result artifacts.
+- Data used: `PROD-085` approved rewrite candidate packet, payment wording edit, and narrow policy probe readiness artifact. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used.
+- Output created: `scripts/prod_086_english_guided_option_selection_narrow_policy_probe.py`, `scripts/run_prod_086_english_guided_option_selection_narrow_policy_probe.py`, `scripts/validate_prod_086_english_guided_option_selection_narrow_policy_probe.py`, `docs/product/PROD_086_ENGLISH_GUIDED_OPTION_SELECTION_NARROW_POLICY_PROBE.md`, and generated artifacts under `research/experiments/generated/PROD-086-english-guided-option-selection-narrow-policy-probe/`.
+- What was learned: the approved candidate passes the narrow policy probe when the route requires a plan feature matrix, customer facts for steering, no payment on this call, shorter email-link payment wording, no generic `companyname.com` placeholder, no random fillers, and no discourse markers in sensitive payment boundaries. Current runtime still has `6` positive reachability gaps.
+- Why it matters for the thesis: it separates persuasive option framing from unsafe runtime promotion, and records the deterministic guardrails before any classifier or response behavior changes.
+- Open questions: whether `PROD-087` can add the smallest runtime route without disturbing price, payment, contract, coverage, written-info, or protected-boundary behavior.
+
+### 2026-05-16 - PROD-085 English guided option selection rewrite review import
+
+- Objective: import Tarik's `PROD-084` rewrite review without overstating it as an as-written approval.
+- Action taken: added a failing `PROD-085` validator first, then added the chat-review import JSON, import runner, case file, product doc, imported review summary, payment wording edit, approved candidate packet, narrow policy probe readiness artifact, evidence summary, report, and result artifacts.
+- Data used: `PROD-084` review packet and Tarik's chat feedback. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used.
+- Output created: `research/experiments/imports/PROD-084-english-guided-option-selection-rewrite-design/prod_084_guided_option_selection_rewrite_review_from_chat.json`, `scripts/prod_085_english_guided_option_selection_rewrite_review_import.py`, `scripts/run_prod_085_english_guided_option_selection_rewrite_review_import.py`, `scripts/validate_prod_085_english_guided_option_selection_rewrite_review_import.py`, `docs/product/PROD_085_ENGLISH_GUIDED_OPTION_SELECTION_REWRITE_REVIEW_IMPORT.md`, and generated artifacts under `research/experiments/generated/PROD-085-english-guided-option-selection-rewrite-review-import/`.
+- What was learned: the rewritten guided-option examples are accepted for a narrow policy probe only after the payment-path example is shortened. The accepted generic payment wording is `No payment on this call. I'll send you the link by email, and you can review the plan and register there.`, not a `companyname.com` placeholder.
+- Why it matters for the thesis: it preserves human review nuance by distinguishing as-written approval from approval after a required wording edit, while keeping runtime promotion blocked.
+- Open questions: whether the `PROD-086` narrow policy probe confirms the approved candidate can be made deterministic without overfitting or weakening payment and autonomy boundaries.
+
+### 2026-05-16 - PROD-084 English guided option selection rewrite design
+
+- Objective: create rewritten guided option selection examples for human review before any policy probe.
+- Action taken: added a failing `PROD-084` validator first, then added the rewrite review runner, case file, product doc, local HTML review page, review state template, review-only plan feature fixture, spoken-naturalness audit, evidence summary, report, and result artifacts.
+- Data used: `PROD-083` imported review requirements, plan fact requirements, payment workflow requirements, and spoken-naturalness constraints. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used.
+- Output created: `scripts/prod_084_english_guided_option_selection_rewrite_design.py`, `scripts/run_prod_084_english_guided_option_selection_rewrite_design.py`, `scripts/validate_prod_084_english_guided_option_selection_rewrite_design.py`, `docs/product/PROD_084_ENGLISH_GUIDED_OPTION_SELECTION_REWRITE_DESIGN.md`, and generated artifacts under `research/experiments/generated/PROD-084-english-guided-option-selection-rewrite-design/`, including `prod_084_review.html`.
+- What was learned: the safer next step is not a runtime patch. The wording needs a human review packet that shows shorter fit-based recommendations, real-difference placeholders from a plan feature matrix, a no-payment-on-this-call payment path, and sparse discourse markers without random filler.
+- Why it matters for the thesis: it turns persuasion-tactic development into a documented review gate rather than silently promoting sales steering into runtime behavior.
+- Open questions: whether Tarik accepts the rewritten examples for a narrow policy probe, wants another rewrite, or keeps guided option selection deferred.
+
+### 2026-05-16 - PROD-083 English guided option selection review import
+
+- Objective: import Tarik's `PROD-082` guided option selection feedback without flattening it into a simple approval.
+- Action taken: added a failing `PROD-083` validator first, then added the chat-review import JSON, import runner, case file, product doc, imported review summary, rewrite requirements, plan fact requirements, payment workflow requirements, spoken naturalness constraints, report, and result artifacts.
+- Data used: `PROD-082` review packet and Tarik's chat feedback. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used.
+- Output created: `research/experiments/imports/PROD-082-english-guided-option-selection-review/prod_082_guided_option_selection_review_from_chat.json`, `scripts/prod_083_english_guided_option_selection_review_import.py`, `scripts/run_prod_083_english_guided_option_selection_review_import.py`, `scripts/validate_prod_083_english_guided_option_selection_review_import.py`, `docs/product/PROD_083_ENGLISH_GUIDED_OPTION_SELECTION_REVIEW_IMPORT.md`, and generated artifacts under `research/experiments/generated/PROD-083-english-guided-option-selection-review-import/`.
+- What was learned: guided option selection should not be framed as defensive neutrality. It needs plan-specific feature explanation, fit-based steering from known customer facts, no repetition of obvious facts, concise deferral handling, and campaign-specific payment-path explanation while keeping no payment on the call by default.
+- Why it matters for the thesis: it records the difference between ethical sales persuasion and over-cautious non-selling. It also adds a future spoken-naturalness constraint: sparse contextual discourse markers may help, but random fillers are blocked.
+- Open questions: whether `PROD-084` should create rewritten review examples or first define the campaign plan-feature schema needed for realistic guided option selection.
+
+### 2026-05-16 - PROD-082 English guided option selection review
+
+- Objective: create a human review packet for the English `guided_option_selection_candidate` before any persuasion-tactic policy probe.
+- Action taken: added a failing `PROD-082` validator first, then added the review packet runner, case file, product doc, local HTML review page, review state template, report, and result artifacts.
+- Data used: `PROD-081` subtype inventory and slice decision, plus synthetic English examples using an example `$29` subscription and `$59` subscription. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used.
+- Output created: `scripts/prod_082_english_guided_option_selection_review.py`, `scripts/run_prod_082_english_guided_option_selection_review.py`, `scripts/validate_prod_082_english_guided_option_selection_review.py`, `docs/product/PROD_082_ENGLISH_GUIDED_OPTION_SELECTION_REVIEW.md`, and generated artifacts under `research/experiments/generated/PROD-082-english-guided-option-selection-review/`, including `prod_082_review.html`.
+- What was learned: the review surface must explicitly show `neither`, `not now`, `explain the difference`, and `no payment details needed` paths. Without those examples, the tactic is too easy to confuse with pushing one of two plans.
+- Why it matters for the thesis: this records a concrete human-in-the-loop gate for persuasion tactics, separating ethical option framing from manipulative choice pressure.
+- Open questions: whether Tarik approves the examples for a narrow policy probe, asks for shorter wording, or keeps the tactic deferred.
+
+### 2026-05-16 - PROD-081 English unknown runtime signal subtype inventory
+
+- Objective: inventory English turns that still route to `unknown-runtime-signal` before any further customer-move classifier patch.
+- Action taken: added a failing `PROD-081` validator first, then added the inventory runner, case file, product doc, generated subtype inventory, protected boundary controls, slice decision, report, and result artifacts.
+- Data used: `PROD-080` remaining-slice selection and current classifier reachability snapshot, plus synthetic English probe turns. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, German wording, payment collection, contract signing, or production promotion were used.
+- Output created: `scripts/prod_081_english_unknown_runtime_signal_subtype_inventory.py`, `scripts/run_prod_081_english_unknown_runtime_signal_subtype_inventory.py`, `scripts/validate_prod_081_english_unknown_runtime_signal_subtype_inventory.py`, `docs/product/PROD_081_ENGLISH_UNKNOWN_RUNTIME_SIGNAL_SUBTYPE_INVENTORY.md`, and generated artifacts under `research/experiments/generated/PROD-081-english-unknown-runtime-signal-subtype-inventory/`.
+- What was learned: the next concrete unknown subtype is `guided_option_selection_candidate`, but it is persuasion-sensitive because it shapes the customer's choice frame. It should require two real options, fair presentation, `neither`, `not now`, and `explain the difference` guardrails before any policy probe.
+- Why it matters for the thesis: this keeps persuasion-tactic development evidence-gated instead of quietly turning a useful sales idea into unreviewed runtime behavior.
+- Open questions: whether Tarik accepts the guided option selection examples in `PROD-082-english-guided-option-selection-review`, and whether the accepted shape should become a narrow policy probe or stay deferred.
+
 ### 2026-05-15 - PROD-053E English runtime wording patch
 
 - Objective: promote Tarik-approved English single-turn wording into the deterministic realtime runtime without bundling unresolved behavior decisions.
@@ -3947,3 +4147,896 @@ Interpretation:
   - it turns a passing regression into repeatable project infrastructure
   - it prevents future runtime changes from bypassing the strongest English multi-turn evidence
   - it keeps positive English evidence separate from still-open German, voice, retrieval, legal, and deployment gates
+
+### 2026-05-16 - PROD-058 English runtime promotion blocker inventory
+
+- Objective: inventory what still blocks English runtime promotion after the stable `PROD-057` English multi-turn guard, without overclaiming production readiness.
+- Action taken:
+  - added `scripts/run_prod_058_english_runtime_promotion_blocker_inventory.py`
+  - added `scripts/validate_prod_058_english_runtime_promotion_blocker_inventory.py`
+  - added `research/experiments/cases/prod-058-english-runtime-promotion-blocker-inventory.json`
+  - documented `PROD_058_ENGLISH_RUNTIME_PROMOTION_BLOCKER_INVENTORY.md`
+  - generated `PROD-058-english-runtime-promotion-blocker-inventory` evidence artifacts
+- Method:
+  - used `PROD-057` as the source guard and `PROD-056` as the source regression evidence
+  - required the stable English guard command to pass before writing the inventory result
+  - separated blockers into English evidence gaps, product-policy gates, separate language/voice/retrieval gates, provider/private-data gates, and legal/deployment gates
+  - required human review before creating the recommended next checkpoint
+- Result:
+  - blocker count: `16`
+  - English evidence gaps: `2`
+  - product-policy gates: `4`
+  - separate gates: `10`
+  - final English-only runtime readiness review justified: `true`
+  - recommended next checkpoint after human acceptance: `PROD-059-final-english-only-runtime-readiness-review`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text behavior change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it distinguishes positive English runtime evidence from product readiness
+  - it prevents German, voice, retrieval, legal, and deployment gates from being hidden inside an English-only checkpoint
+  - it records the point where automated evidence is strong enough to justify a final English-only review, but still needs human acceptance before the next checkpoint
+
+### 2026-05-16 - PROD-059 final English-only runtime readiness review
+
+- Objective: record human acceptance of the `PROD-058` blocker inventory and decide whether the bounded English deterministic runtime surface is ready with explicit exclusions.
+- Action taken:
+  - added `scripts/run_prod_059_final_english_only_runtime_readiness_review.py`
+  - added `scripts/validate_prod_059_final_english_only_runtime_readiness_review.py`
+  - added `research/experiments/cases/prod-059-final-english-only-runtime-readiness-review.json`
+  - documented `PROD_059_FINAL_ENGLISH_ONLY_RUNTIME_READINESS_REVIEW.md`
+  - generated `PROD-059-final-english-only-runtime-readiness-review` evidence artifacts, including `prod_059_review.html` with concrete examples and JSON export/import
+- Method:
+  - treated Tarik's acceptance of the `PROD-058` inventory as the human review decision to proceed
+  - used `PROD-058` as the source inventory, `PROD-057` as the source guard, and `PROD-056` as the source regression evidence
+  - reran the stable English multi-turn guard before writing the readiness result
+  - resolved only the final-review and scope-definition blockers, while excluding all product-policy, German, voice, retrieval, provider/private-data, legal, and deployment blockers
+- Result:
+  - English-only runtime readiness status: `ready_with_exclusions`
+  - bounded English surface ready: `true`
+  - resolved blockers: `2`
+  - excluded blockers still blocked: `14`
+  - review HTML created: `true`
+  - recommended next checkpoint: `PROD-060-runtime-promotion-path-decision`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text behavior change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it shows the difference between bounded English runtime readiness and product readiness
+  - it keeps unresolved policy and deployment gates visible instead of folding them into a positive English result
+  - it creates a clean next decision point where promotion can still be refused, delayed, or scoped narrowly
+
+### 2026-05-16 - PROD-060 runtime promotion path decision
+
+- Objective: decide the runtime-promotion path after Tarik accepted the `PROD-059` review, without turning bounded English readiness into production readiness.
+- Action taken:
+  - added `scripts/run_prod_060_runtime_promotion_path_decision.py`
+  - added `scripts/validate_prod_060_runtime_promotion_path_decision.py`
+  - added `research/experiments/cases/prod-060-runtime-promotion-path-decision.json`
+  - documented `PROD_060_RUNTIME_PROMOTION_PATH_DECISION.md`
+  - generated `PROD-060-runtime-promotion-path-decision` evidence artifacts, including `prod_060_review.html` with concrete path examples and JSON export/import
+- Method:
+  - treated Tarik's acceptance of the `PROD-059` review artifact as the human review decision to proceed
+  - used `PROD-059` as the source readiness decision and reran the `PROD-059` validator before writing the path result
+  - selected only `internal_guarded_english_baseline_only`
+  - explicitly rejected public-demo, real-customer, provider/private-data, retrieval-default, voice-playback, German-language, payment/contract, and production-runtime paths
+- Result:
+  - selected path: `internal_guarded_english_baseline_only`
+  - allowed scope: `local_offline_synthetic_internal_regression_reference`
+  - plain-language scope: local offline synthetic internal regression reference
+  - blocked paths: `8`
+  - still-blocked blockers: `14`
+  - review HTML created: `true`
+  - recommended next checkpoint: `PROD-061-english-product-policy-gate-prioritization`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text behavior change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it prevents a positive English readiness result from becoming an unearned deployment claim
+  - it defines the current runtime evidence as an internal regression baseline, not a customer-facing product permission
+  - it identifies product-policy gates as the next bottleneck before broader English runtime promotion
+
+### 2026-05-16 - PROD-061 English product-policy gate prioritization
+
+- Objective: record Tarik's English-first direction after `PROD-060` and choose the safest first English product-policy gate to probe before any broader runtime promotion.
+- Action taken:
+  - added `scripts/run_prod_061_english_product_policy_gate_prioritization.py`
+  - added `scripts/validate_prod_061_english_product_policy_gate_prioritization.py`
+  - added `research/experiments/cases/prod-061-english-product-policy-gate-prioritization.json`
+  - documented `PROD_061_ENGLISH_PRODUCT_POLICY_GATE_PRIORITIZATION.md`
+  - generated `PROD-061-english-product-policy-gate-prioritization` evidence artifacts without review HTML because no human review is required for this prioritization checkpoint
+- Method:
+  - treated Tarik's acceptance of the `PROD-060` path decision and English-first direction as the human review decision to proceed
+  - used `PROD-060` as the source path decision and reran the `PROD-060` validator before writing the prioritization result
+  - ranked the four still-blocking English product-policy gates by evidence value, risk, and blast radius
+  - selected `context_sensitive_autonomy_behavior` as the first targeted policy probe while keeping it blocked from runtime promotion
+- Result:
+  - selected first gate: `context_sensitive_autonomy_behavior`
+  - selected first gate status: `selected_for_next_probe_still_blocked`
+  - product-policy gate count: `4`
+  - deferred gates: `voicemail_action_only_behavior`, `coverage_knowledge_policy_behavior`, `customer_move_classification_outside_selected_non_refusal_groups`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-062-english-context-sensitive-autonomy-policy-probe`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text behavior change
+  - no classifier reachability change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it turns English-first direction into a bounded sequence rather than an over-broad implementation jump
+  - it separates autonomy-preserving follow-up policy from voicemail action handling, regulated coverage knowledge, and classifier expansion
+  - it keeps the next checkpoint synthetic and reviewable before any runtime patch
+
+### 2026-05-16 - PROD-062 English context-sensitive autonomy policy probe
+
+- Objective: test the shorter English autonomy wording candidate synthetically before changing runtime response text.
+- Action taken:
+  - added `scripts/run_prod_062_english_context_sensitive_autonomy_policy_probe.py`
+  - added `scripts/validate_prod_062_english_context_sensitive_autonomy_policy_probe.py`
+  - added `research/experiments/cases/prod-062-english-context-sensitive-autonomy-policy-probe.json`
+  - documented `PROD_062_ENGLISH_CONTEXT_SENSITIVE_AUTONOMY_POLICY_PROBE.md`
+  - generated `PROD-062-english-context-sensitive-autonomy-policy-probe` evidence artifacts without review HTML because no human review is required
+- Method:
+  - used `PROD-061` as the source prioritization decision
+  - tested the candidate `Okay, no rush. We can keep this low-pressure and only clarify what you need.` against synthetic allowed and forbidden autonomy-policy probes
+  - kept the checkpoint probe-only and required a separate checkpoint before any runtime patch
+- Result:
+  - policy probe count: `5`
+  - failed policy probes: `0`
+  - candidate response: `Okay, no rush. We can keep this low-pressure and only clarify what you need.`
+  - runtime patch allowed in PROD-062: `false`
+  - runtime patch recommended next: `true`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-063-english-autonomy-check-runtime-wording-patch`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text behavior change
+  - no classifier reachability change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it separates a policy/naturalness decision from the runtime patch
+  - it prevents autonomy-sensitive wording from being smuggled into the runtime without targeted evidence
+  - it keeps English-first progress bounded while leaving unrelated policy gates separate
+
+### 2026-05-16 - PROD-063 English autonomy-check runtime wording patch
+
+- Objective: apply the approved English autonomy wording candidate to the deterministic runtime without changing routing, call-control, or German text.
+- Action taken:
+  - changed the English `autonomy-check` response in `runtime/core/realtime_turns.py`
+  - added `scripts/run_prod_063_english_autonomy_check_runtime_wording_patch.py`
+  - added `scripts/validate_prod_063_english_autonomy_check_runtime_wording_patch.py`
+  - added `research/experiments/cases/prod-063-english-autonomy-check-runtime-wording-patch.json`
+  - documented `PROD_063_ENGLISH_AUTONOMY_CHECK_RUNTIME_WORDING_PATCH.md`
+  - generated `PROD-063-english-autonomy-check-runtime-wording-patch` evidence artifacts without review HTML because no human review is required
+- Method:
+  - used `PROD-062` as the source policy-probe decision and reran its validator before writing evidence
+  - tested three runtime probes that must stay on `autonomy-check`, `inquiry`, `ask-follow-up`, and `continue-call`
+  - checked the old English response is absent from the runtime and the German `autonomy-check` response is unchanged
+- Result:
+  - patched response: `Okay, no rush. We can keep this low-pressure and only clarify what you need.`
+  - runtime probe count: `3`
+  - failed runtime probes: `0`
+  - runtime behavior changed: `true`
+  - response text behavior changed: `true`
+  - classifier behavior changed: `false`
+  - call-control behavior changed: `false`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-064-english-autonomy-post-patch-multi-turn-regression`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it demonstrates the checkpoint discipline: policy probe first, then a narrow runtime patch, then post-patch regression
+  - it improves the English autonomy response without expanding classifier reachability or making a broader product-readiness claim
+  - it preserves the remaining English blockers as separate decisions instead of treating one wording patch as promotion readiness
+
+### 2026-05-16 - PROD-064 English autonomy post-patch multi-turn regression
+
+- Objective: verify the `PROD-063` English autonomy wording patch after runtime application before moving to another product-policy gate.
+- Action taken:
+  - added `scripts/run_prod_064_english_autonomy_post_patch_multi_turn_regression.py`
+  - added `scripts/validate_prod_064_english_autonomy_post_patch_multi_turn_regression.py`
+  - added `research/experiments/cases/prod-064-english-autonomy-post-patch-multi-turn-regression.json`
+  - documented `PROD_064_ENGLISH_AUTONOMY_POST_PATCH_MULTI_TURN_REGRESSION.md`
+  - generated `PROD-064-english-autonomy-post-patch-multi-turn-regression` evidence artifacts without review HTML because no human review is required
+- Method:
+  - used `PROD-063` as the source runtime patch and reran its validator
+  - reran the stable English guard command from `PROD-056`
+  - tested `3` autonomy first-turn cases for the exact patched response
+  - tested `5` autonomy follow-up cases so the patch does not loop normal follow-up turns back into autonomy handling
+  - tested `4` protected boundary cases so do-not-call, email-only, support, and payment-safety routing remain protected
+- Result:
+  - stable English guard passed: `true`
+  - autonomy first-turn cases: `3`
+  - autonomy follow-up cases: `5`
+  - protected boundary cases: `4`
+  - failed case count: `0`
+  - runtime behavior changed: `false`
+  - response text behavior changed: `false`
+  - classifier behavior changed: `false`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-065-english-remaining-product-policy-gate-selection`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change in this checkpoint
+  - no response text behavior change in this checkpoint
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it closes the autonomy patch loop with regression evidence instead of treating a single successful patch validator as enough
+  - it preserves the stable English guard as the baseline for every future runtime-affecting English change
+  - it keeps the remaining English product-policy blockers separate and ready for a deliberate next-gate selection
+
+### 2026-05-16 - PROD-065 English remaining product-policy gate selection
+
+- Objective: choose the next remaining English product-policy gate after the autonomy patch regression passed.
+- Action taken:
+  - added `scripts/run_prod_065_english_remaining_product_policy_gate_selection.py`
+  - added `scripts/validate_prod_065_english_remaining_product_policy_gate_selection.py`
+  - added `research/experiments/cases/prod-065-english-remaining-product-policy-gate-selection.json`
+  - documented `PROD_065_ENGLISH_REMAINING_PRODUCT_POLICY_GATE_SELECTION.md`
+  - generated `PROD-065-english-remaining-product-policy-gate-selection` evidence artifacts without review HTML because no human review is required
+- Method:
+  - used `PROD-064` as the source post-patch regression evidence
+  - used `PROD-061` as the original product-policy gate ordering
+  - used `PROD-053D` voicemail owner feedback as source evidence for the next gate
+  - ranked the remaining gates by blast radius, product/legal risk, and whether owner feedback already exists
+- Result:
+  - selected gate: `voicemail_action_only_behavior`
+  - selected gate status: `selected_for_next_probe_still_blocked`
+  - deferred gates: `coverage_knowledge_policy_behavior`, `customer_move_classification_outside_selected_non_refusal_groups`
+  - selection only: `true`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-066-english-voicemail-action-only-policy-probe`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text behavior change
+  - no classifier reachability change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it prevents the project from jumping from one passed patch to broad runtime promotion
+  - it chooses the smallest remaining gate with existing owner evidence before higher-risk coverage or classifier work
+  - it keeps voicemail behavior as a separate action/call-control question rather than a wording patch
+
+### 2026-05-16 - PROD-066 English voicemail action-only policy probe
+
+- Objective: probe the selected voicemail action-only policy before changing runtime behavior.
+- Action taken:
+  - added `scripts/run_prod_066_english_voicemail_action_only_policy_probe.py`
+  - added `scripts/validate_prod_066_english_voicemail_action_only_policy_probe.py`
+  - added `research/experiments/cases/prod-066-english-voicemail-action-only-policy-probe.json`
+  - documented `PROD_066_ENGLISH_VOICEMAIL_ACTION_ONLY_POLICY_PROBE.md`
+  - generated `PROD-066-english-voicemail-action-only-policy-probe` evidence artifacts without review HTML because existing owner feedback is explicit and no runtime patch is applied
+- Method:
+  - used `PROD-065` as the source gate-selection checkpoint
+  - imported `PROD-053D` owner feedback that voicemail should be logged/retried later and the agent does not need to say anything to voicemail
+  - tested `6` synthetic policy cases: machine voicemail, voicemail greeting, beep-only voicemail, no-sales-message voicemail, and two human speech cases that must not be treated as voicemail
+  - recorded the current runtime gap separately instead of applying the patch in the probe checkpoint
+- Result:
+  - selected gate: `voicemail_action_only_behavior`
+  - policy probe count: `6`
+  - failed policy probes: `0`
+  - current runtime gap detected: `true`
+  - current runtime has spoken voicemail response: `true`
+  - runtime patch allowed in PROD-066: `false`
+  - runtime patch recommended next: `true`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-067-english-voicemail-action-only-runtime-patch`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text behavior change
+  - no classifier reachability change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it turns owner feedback into a machine-checkable policy before a runtime patch
+  - it makes the current runtime gap explicit rather than pretending the existing voicemail response already satisfies action-only behavior
+  - it keeps voicemail handling separate from higher-risk coverage and broad classifier work
+
+### 2026-05-16 - PROD-067 English voicemail action-only runtime patch
+
+- Objective: close the English voicemail runtime gap by applying the accepted action-only/no-spoken-response behavior without broadening classifier or call-control behavior.
+- Action taken:
+  - added `scripts/run_prod_067_english_voicemail_action_only_runtime_patch.py`
+  - added `scripts/validate_prod_067_english_voicemail_action_only_runtime_patch.py`
+  - added `research/experiments/cases/prod-067-english-voicemail-action-only-runtime-patch.json`
+  - documented `PROD_067_ENGLISH_VOICEMAIL_ACTION_ONLY_RUNTIME_PATCH.md`
+  - patched `runtime/core/realtime_turns.py` so the English `voicemail` response is an empty string
+- Method:
+  - used `PROD-066` as the source policy-probe evidence
+  - wrote the validator before patching runtime and confirmed it failed on the old spoken English voicemail response
+  - tested `4` voicemail-detected runtime cases and `2` human speech guard cases
+  - kept German voicemail text unchanged because this checkpoint is English-only
+- Result:
+  - patched sales difficulty: `voicemail`
+  - agent response: empty string
+  - runtime behavior changed: `true`
+  - response text behavior changed: `true`
+  - classifier behavior changed: `false`
+  - call-control behavior changed: `false`
+  - next-action behavior changed: `false`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-068-english-voicemail-post-patch-regression`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it shows a reviewed product behavior moving into runtime through a narrow, test-first patch
+  - it separates action-only voicemail handling from persuasive response text generation
+  - it preserves follow-up logging and call termination while removing inappropriate speech to voicemail
+
+### 2026-05-16 - PROD-068 English voicemail post-patch regression
+
+- Objective: verify the English voicemail action-only patch after runtime application without making another runtime change.
+- Action taken:
+  - added `scripts/run_prod_068_english_voicemail_post_patch_regression.py`
+  - added `scripts/validate_prod_068_english_voicemail_post_patch_regression.py`
+  - added `research/experiments/cases/prod-068-english-voicemail-post-patch-regression.json`
+  - documented `PROD_068_ENGLISH_VOICEMAIL_POST_PATCH_REGRESSION.md`
+  - generated `PROD-068-english-voicemail-post-patch-regression` evidence artifacts without review HTML
+- Method:
+  - used `PROD-067` as the source runtime patch checkpoint
+  - reran the stable `PROD-056` English multi-turn regression guard
+  - tested `5` voicemail-detected regression cases, `5` nearby human-speech guard cases, and `5` protected-boundary cases
+  - verified English voicemail stays action-only while human speech and protected routes still produce normal spoken responses
+- Result:
+  - voicemail regression cases: `5`
+  - non-voicemail guard cases: `5`
+  - protected boundary cases: `5`
+  - failed case count: `0`
+  - stable English guard passed: `true`
+  - runtime behavior changed: `false`
+  - response text behavior changed: `false`
+  - classifier behavior changed: `false`
+  - call-control behavior changed: `false`
+  - next-action behavior changed: `false`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-069-english-remaining-product-policy-gate-selection-after-voicemail`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it prevents a narrow runtime patch from becoming implicit production-readiness evidence
+  - it proves action-only voicemail handling did not swallow adjacent human speech or protected routes
+  - it preserves the remaining product-policy questions for a separate gate-selection checkpoint
+
+### 2026-05-16 - PROD-069 English remaining product-policy gate selection after voicemail
+
+- Objective: choose the next remaining English product-policy gate after voicemail post-patch regression without applying another runtime change.
+- Action taken:
+  - added `scripts/run_prod_069_english_remaining_product_policy_gate_selection_after_voicemail.py`
+  - added `scripts/validate_prod_069_english_remaining_product_policy_gate_selection_after_voicemail.py`
+  - added `research/experiments/cases/prod-069-english-remaining-product-policy-gate-selection-after-voicemail.json`
+  - documented `PROD_069_ENGLISH_REMAINING_PRODUCT_POLICY_GATE_SELECTION_AFTER_VOICEMAIL.md`
+  - generated `PROD-069-english-remaining-product-policy-gate-selection-after-voicemail` evidence artifacts without review HTML
+- Method:
+  - used `PROD-068` as the source post-patch regression evidence
+  - used `PROD-061` as the original product-policy gate ordering
+  - used `PROD-065` as the prior remaining-gate selection that deferred coverage and broad classifier expansion while voicemail was pending
+  - ranked the two remaining gates by blast radius and whether they can be probed without runtime reachability changes
+- Result:
+  - selected gate: `coverage_knowledge_policy_behavior`
+  - selected gate status: `selected_for_next_probe_still_blocked`
+  - deferred gate: `customer_move_classification_outside_selected_non_refusal_groups`
+  - selection only: `true`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-070-english-coverage-knowledge-policy-probe`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text behavior change
+  - no classifier reachability change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it avoids jumping from voicemail success into broad classifier expansion
+  - it selects a boundary-probe step for coverage knowledge before any product-fact claim, retrieval default, or runtime patch
+  - it keeps the highest-blast-radius remaining English gate deferred until smaller policy boundaries are explicit
+
+### 2026-05-16 - PROD-070 English coverage knowledge-policy probe
+
+- Objective: define and test the English coverage knowledge-policy boundary before any runtime patch, retrieval default, product-fact claim, or coverage advice.
+- Action taken:
+  - added `scripts/run_prod_070_english_coverage_knowledge_policy_probe.py`
+  - added `scripts/validate_prod_070_english_coverage_knowledge_policy_probe.py`
+  - added `research/experiments/cases/prod-070-english-coverage-knowledge-policy-probe.json`
+  - documented `PROD_070_ENGLISH_COVERAGE_KNOWLEDGE_POLICY_PROBE.md`
+  - generated `PROD-070-english-coverage-knowledge-policy-probe` evidence artifacts without review HTML
+- Method:
+  - used `PROD-069` as the source gate-selection evidence
+  - tested `6` synthetic English coverage knowledge-policy cases against the existing boundary response
+  - tested `7` current runtime reachability cases to separate accepted boundary text from classifier gaps
+  - treated runtime misses as gap evidence for the next checkpoint, not as permission to patch runtime inside `PROD-070`
+- Result:
+  - selected gate: `coverage_knowledge_policy_behavior`
+  - policy probe cases: `6`
+  - passed policy probes: `6`
+  - failed policy probes: `0`
+  - runtime probe cases: `7`
+  - current runtime gap detected: `true`
+  - runtime gap case IDs: `prod-070-eligible-reimbursement`, `prod-070-plan-covers-this`, `prod-070-policy-reimbursed`
+  - coverage advice allowed: `false`
+  - coverage fact claims allowed: `false`
+  - eligibility claims allowed: `false`
+  - reimbursement claims allowed: `false`
+  - runtime patch allowed in `PROD-070`: `false`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-071-english-coverage-knowledge-runtime-patch`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text behavior change
+  - no classifier reachability change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it prevents coverage and eligibility questions from being treated as ordinary product-detail lookup
+  - it records a safe boundary before changing classifier reachability
+  - it keeps a narrow patch path ahead of broad customer-move expansion
+
+### 2026-05-16 - PROD-071 English coverage knowledge runtime patch
+
+- Objective: apply the narrow English coverage knowledge runtime patch selected by `PROD-070` without changing response text, enabling retrieval, approving coverage facts, or broadening customer-move classification.
+- Action taken:
+  - added `scripts/run_prod_071_english_coverage_knowledge_runtime_patch.py`
+  - added `scripts/validate_prod_071_english_coverage_knowledge_runtime_patch.py`
+  - added `research/experiments/cases/prod-071-english-coverage-knowledge-runtime-patch.json`
+  - documented `PROD_071_ENGLISH_COVERAGE_KNOWLEDGE_RUNTIME_PATCH.md`
+  - patched `runtime/core/realtime_turns.py` so the detected English coverage boundary phrases route to `coverage-boundary-route`
+  - updated the `PROD-070` runner so the pre-patch gap probe remains rerunnable as historical evidence after `PROD-071`
+  - recorded `guided_option_selection` as a future persuasion-tactics checkpoint candidate without enabling it in runtime
+- Method:
+  - used `PROD-070` as the source policy and runtime-gap evidence
+  - patched only the English trigger phrase list for coverage boundary routing
+  - tested `3` patched boundary phrases and `3` controls for product-detail, price, and healthcare routing
+  - kept the coverage boundary response text unchanged: `I should not give coverage advice. I can route this to the approved qualified reviewer path.`
+- Result:
+  - runtime behavior changed: `true`
+  - classifier behavior changed: `true`
+  - response text behavior changed: `false`
+  - call-control behavior changed for patched phrases: `true`
+  - next-action behavior changed for patched phrases: `true`
+  - runtime patch cases: `6`
+  - patched phrase cases: `3`
+  - control cases: `3`
+  - failed runtime patch cases: `0`
+  - coverage advice allowed: `false`
+  - coverage fact claims allowed: `false`
+  - eligibility claims allowed: `false`
+  - reimbursement claims allowed: `false`
+  - review HTML created: `false`
+  - future persuasion-tactics checkpoint candidate recorded: `guided_option_selection`
+  - recommended next checkpoint: `PROD-072-english-coverage-knowledge-post-patch-regression`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no response text change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it separates safe regulated-boundary routing from product-detail lookup
+  - it demonstrates a narrow policy-probe-to-runtime-patch path without expanding the entire classifier
+  - it preserves a future persuasion-tactics idea without contaminating a safety-boundary checkpoint
+
+### 2026-05-16 - PROD-072 English coverage knowledge post-patch regression
+
+- Objective: verify the `PROD-071` English coverage boundary runtime patch after application, before deciding whether any broader customer-move classifier work is safe to open.
+- Action taken:
+  - added `scripts/run_prod_072_english_coverage_knowledge_post_patch_regression.py`
+  - added `scripts/validate_prod_072_english_coverage_knowledge_post_patch_regression.py`
+  - added `research/experiments/cases/prod-072-english-coverage-knowledge-post-patch-regression.json`
+  - documented `PROD_072_ENGLISH_COVERAGE_KNOWLEDGE_POST_PATCH_REGRESSION.md`
+  - generated `PROD-072-english-coverage-knowledge-post-patch-regression` evidence artifacts without review HTML
+- Method:
+  - used `PROD-071` as the source runtime-patch evidence
+  - reran the stable English multi-turn guard from `PROD-056`
+  - reran the voicemail post-patch guard from `PROD-068`
+  - tested `5` coverage-boundary regression cases, `6` adjacent product-detail, price, and healthcare controls, and `2` voicemail controls
+  - kept `guided_option_selection` as a future persuasion-tactics checkpoint candidate only
+- Result:
+  - stable English guard passed: `true`
+  - voicemail guard passed: `true`
+  - coverage boundary regression cases: `5`
+  - adjacent control cases: `6`
+  - voicemail control cases: `2`
+  - failed case count: `0`
+  - runtime behavior changed: `false`
+  - classifier behavior changed: `false`
+  - response text behavior changed: `false`
+  - call-control behavior changed: `false`
+  - next-action behavior changed: `false`
+  - coverage advice allowed: `false`
+  - coverage fact claims allowed: `false`
+  - eligibility claims allowed: `false`
+  - reimbursement claims allowed: `false`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-073-english-customer-move-classification-gate-decision`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text change
+  - no classifier reachability change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it proves the coverage boundary patch did not swallow adjacent product-detail, price, healthcare, or voicemail behavior
+  - it keeps the next broad classifier decision evidence-based instead of jumping from one narrow patch to a broad reachability expansion
+  - it preserves the distinction between safety-boundary routing and later persuasion-tactic design
+
+### 2026-05-16 - PROD-073 English customer-move classification gate decision
+
+- Objective: decide how to handle the remaining broad `customer_move_classification_outside_selected_non_refusal_groups` gate after autonomy, voicemail, and coverage-boundary work passed.
+- Action taken:
+  - added `scripts/run_prod_073_english_customer_move_classification_gate_decision.py`
+  - added `scripts/validate_prod_073_english_customer_move_classification_gate_decision.py`
+  - added `research/experiments/cases/prod-073-english-customer-move-classification-gate-decision.json`
+  - documented `PROD_073_ENGLISH_CUSTOMER_MOVE_CLASSIFICATION_GATE_DECISION.md`
+  - generated `PROD-073-english-customer-move-classification-gate-decision` evidence artifacts without review HTML
+- Method:
+  - used `PROD-072` as source evidence that the last narrow policy gate had passed
+  - used `PROD-061` as the original risk ranking for the broad customer-move classifier gate
+  - treated broad classifier reachability as too high-blast-radius for a direct patch
+  - selected a slice-inventory checkpoint before any classifier probe
+- Result:
+  - decision: `split_broad_customer_move_gate_before_probe`
+  - decision only: `true`
+  - broad classifier patch allowed: `false`
+  - narrow slice inventory required next: `true`
+  - candidate slice count: `4`
+  - runtime behavior changed: `false`
+  - classifier behavior changed: `false`
+  - response text behavior changed: `false`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-074-english-customer-move-classification-slice-inventory`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text change
+  - no classifier reachability change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it prevents the project from converting a completed set of narrow policy gates into an over-broad classifier patch
+  - it records blast-radius reasoning as part of the methodology
+  - it creates a lower-risk path toward customer-move classification evidence
+
+### 2026-05-16 - PROD-074 English customer-move classification slice inventory
+
+- Objective: inventory the deterministic classifier surface before selecting any customer-move classifier slice for review or runtime reachability.
+- Action taken:
+  - added `scripts/run_prod_074_english_customer_move_classification_slice_inventory.py`
+  - added `scripts/validate_prod_074_english_customer_move_classification_slice_inventory.py`
+  - added `research/experiments/cases/prod-074-english-customer-move-classification-slice-inventory.json`
+  - documented `PROD_074_ENGLISH_CUSTOMER_MOVE_CLASSIFICATION_SLICE_INVENTORY.md`
+  - generated `PROD-074-english-customer-move-classification-slice-inventory` evidence artifacts without review HTML
+- Method:
+  - used `PROD-073` as the source decision to split the broad customer-move classifier gate
+  - parsed `runtime/core/realtime_turns.py` to compare localized English response types with currently reachable `sales_difficulty` values
+  - inventoried protected-boundary controls from `PROD-051`
+  - kept already-promoted selected non-refusal groups separated from unreviewed reachability
+- Result:
+  - inventory only: `true`
+  - unreachable localized response types: `provider-comparison`
+  - selected next slice: `unreachable_existing_response_types`
+  - selected next review item: `provider-comparison`
+  - recommended next checkpoint requires human review: `true`
+  - runtime behavior changed: `false`
+  - classifier behavior changed: `false`
+  - response text behavior changed: `false`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-075-english-provider-comparison-reachability-review`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text change
+  - no classifier reachability change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it turns the broad customer-move gate into a concrete smallest review item
+  - it shows that `provider-comparison` was not merely forgotten in testing; it is present as response text but unreachable by classifier
+  - it prevents unreviewed dormant wording from becoming reachable without human acceptance
+
+### 2026-05-16 - PROD-075 English provider-comparison reachability review
+
+- Objective: create the human review packet for the unreachable English `provider-comparison` response before any classifier reachability work.
+- Action taken:
+  - added `scripts/run_prod_075_english_provider_comparison_reachability_review.py`
+  - added `scripts/validate_prod_075_english_provider_comparison_reachability_review.py`
+  - added `research/experiments/cases/prod-075-english-provider-comparison-reachability-review.json`
+  - documented `PROD_075_ENGLISH_PROVIDER_COMPARISON_REACHABILITY_REVIEW.md`
+  - generated `PROD-075-english-provider-comparison-reachability-review` review artifacts including `prod_075_review.html`
+- Method:
+  - used `PROD-074` as source evidence that `provider-comparison` is the only unreachable localized English response type
+  - kept the checkpoint review-only and did not make the response reachable
+  - included concrete examples, a protected payment/contract boundary control, browser save, JSON export, and JSON import
+- Result:
+  - review packet only: `true`
+  - selected review item: `provider-comparison`
+  - requires human review before next checkpoint: `true`
+  - review HTML created: `true`
+  - recommended next checkpoint: `PROD-076-english-provider-comparison-review-import`
+  - runtime behavior changed: `false`
+  - classifier behavior changed: `false`
+  - response text behavior changed: `false`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text change
+  - no classifier reachability change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it records a human-review gate before dormant sales wording becomes reachable
+  - it separates product-language acceptance from classifier implementation
+  - it preserves protected boundaries while reviewing a persuasive comparison branch
+
+### 2026-05-16 - PROD-076 English provider-comparison review import
+
+- Objective: import Tarik's `PROD-075` provider-comparison review feedback without treating constrained approval as exact wording approval.
+- Action taken:
+  - added `research/experiments/imports/PROD-075-english-provider-comparison-reachability-review/prod_075_provider_comparison_review_export_from_chat.json`
+  - added `scripts/run_prod_076_english_provider_comparison_review_import.py`
+  - added `scripts/validate_prod_076_english_provider_comparison_review_import.py`
+  - added `research/experiments/cases/prod-076-english-provider-comparison-review-import.json`
+  - documented `PROD_076_ENGLISH_PROVIDER_COMPARISON_REVIEW_IMPORT.md`
+  - generated `PROD-076-english-provider-comparison-review-import` import artifacts without review HTML
+- Method:
+  - interpreted Tarik's review as approve for narrow probe with brevity constraint
+  - recorded that provider and terms comparison require a known comparison target
+  - recorded that the `PROD-075` response is not approved as exact runtime wording
+  - preserved the compact payment wording preference: `No payment details needed.`
+- Result:
+  - review import only: `true`
+  - human review imported: `true`
+  - narrow probe approved: `true`
+  - exact as-written approval: `false`
+  - comparison target required: `true`
+  - brevity constraint required: `true`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-077-english-provider-comparison-narrow-probe-design`
+  - runtime behavior changed: `false`
+  - classifier behavior changed: `false`
+  - response text behavior changed: `false`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text change
+  - no classifier reachability change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it shows review import can preserve nuance instead of flattening feedback into a binary approval
+  - it prevents a vague comparison branch from becoming reachable without a known comparison target
+  - it keeps persuasive comparison behavior bounded by concrete evidence and short spoken wording
+
+### 2026-05-16 - PROD-077 English provider-comparison narrow probe design
+
+- Objective: design the smallest safe deterministic `provider-comparison` probe after Tarik approved a narrow probe with brevity and grounding constraints.
+- Action taken:
+  - added `scripts/run_prod_077_english_provider_comparison_narrow_probe_design.py`
+  - added `scripts/validate_prod_077_english_provider_comparison_narrow_probe_design.py`
+  - added `research/experiments/cases/prod-077-english-provider-comparison-narrow-probe-design.json`
+  - documented `PROD_077_ENGLISH_PROVIDER_COMPARISON_NARROW_PROBE_DESIGN.md`
+  - generated `PROD-077-english-provider-comparison-narrow-probe-design` design artifacts without review HTML
+- Method:
+  - required both `compare_or_difference_signal` and `known_comparison_target_signal`
+  - separated existing-provider objections without comparison request from provider-comparison requests
+  - selected the shorter response candidate: `Fair. We can compare fit against what you use now before you decide.`
+  - inspected current runtime behavior and confirmed positive cases are still gaps before any patch
+- Result:
+  - probe design only: `true`
+  - comparison target required: `true`
+  - generic provider or terms comparison allowed: `false`
+  - candidate response word count is lower than source response word count
+  - positive probe case count: `4`
+  - negative control case count: `5`
+  - protected control case count: `2`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-078-english-provider-comparison-runtime-patch`
+  - runtime behavior changed: `false`
+  - classifier behavior changed: `false`
+  - response text behavior changed: `false`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text change
+  - no classifier reachability change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it converts human review feedback into a deterministic, testable route design
+  - it shows how a persuasion-adjacent branch can be bounded by required evidence instead of broad intent matching
+  - it prevents existing-provider objections, payment language, and generic comparison claims from collapsing into one classifier route
+
+### 2026-05-16 - PROD-078 English provider-comparison runtime patch
+
+- Objective: apply the `PROD-077` narrow English provider-comparison branch and shorter response while preserving adjacent controls.
+- Action taken:
+  - updated `runtime/core/realtime_turns.py`
+  - added `scripts/run_prod_078_english_provider_comparison_runtime_patch.py`
+  - added `scripts/validate_prod_078_english_provider_comparison_runtime_patch.py`
+  - added `research/experiments/cases/prod-078-english-provider-comparison-runtime-patch.json`
+  - documented `PROD_078_ENGLISH_PROVIDER_COMPARISON_RUNTIME_PATCH.md`
+  - generated `PROD-078-english-provider-comparison-runtime-patch` runtime patch evidence without review HTML
+- Method:
+  - changed English `provider-comparison` text to `Fair. We can compare fit against what you use now before you decide.`
+  - added an English-only branch requiring compare/difference language plus a known comparison target
+  - inserted the branch before `existing-provider-gap`
+  - preserved existing-provider objections without comparison request
+- Result:
+  - runtime behavior changed: `true`
+  - response text behavior changed: `true`
+  - classifier behavior changed: `true`
+  - comparison target required: `true`
+  - generic provider or terms comparison allowed: `false`
+  - failed runtime patch case count: `0`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-079-english-provider-comparison-post-patch-regression`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it shows a human-approved persuasion-adjacent branch can be promoted through narrow deterministic reachability instead of broad semantic matching
+  - it keeps the customer's comparison frame explicit and avoids invented provider or terms claims
+  - it preserves protected boundaries while making one dormant response reachable
+
+### 2026-05-16 - PROD-079 English provider-comparison post-patch regression
+
+- Objective: verify the `PROD-078` provider-comparison runtime patch after application.
+- Action taken:
+  - added `scripts/run_prod_079_english_provider_comparison_post_patch_regression.py`
+  - added `scripts/validate_prod_079_english_provider_comparison_post_patch_regression.py`
+  - added `research/experiments/cases/prod-079-english-provider-comparison-post-patch-regression.json`
+  - documented `PROD_079_ENGLISH_PROVIDER_COMPARISON_POST_PATCH_REGRESSION.md`
+  - generated `PROD-079-english-provider-comparison-post-patch-regression` evidence without review HTML
+- Method:
+  - tested provider-comparison positive cases
+  - tested existing-provider-gap controls without comparison requests
+  - tested adjacent price, generic-product, written-info, payment, and sign-up controls
+  - reran the stable English multi-turn guard from `PROD-056`
+- Result:
+  - post-patch regression only: `true`
+  - provider-comparison positive cases: `5`
+  - existing-provider-gap controls: `3`
+  - adjacent/protected controls: `5`
+  - failed regression case count: `0`
+  - stable English guard passed: `true`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-080-english-customer-move-remaining-slice-selection`
+  - runtime behavior changed: `false`
+  - classifier behavior changed: `false`
+  - response text behavior changed: `false`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it proves the narrow provider-comparison patch did not absorb existing-provider, price, generic-product, written-info, payment, or sign-up controls
+  - it keeps the English multi-turn guard stable after the new branch
+  - it closes the provider-comparison reachability slice before selecting another customer-move slice
+
+### 2026-05-16 - PROD-080 English customer-move remaining slice selection
+
+- Objective: select the next remaining English customer-move classifier slice after provider-comparison regression passed.
+- Action taken:
+  - added `scripts/run_prod_080_english_customer_move_remaining_slice_selection.py`
+  - added `scripts/validate_prod_080_english_customer_move_remaining_slice_selection.py`
+  - added `research/experiments/cases/prod-080-english-customer-move-remaining-slice-selection.json`
+  - documented `PROD_080_ENGLISH_CUSTOMER_MOVE_REMAINING_SLICE_SELECTION.md`
+  - generated `PROD-080-english-customer-move-remaining-slice-selection` selection artifacts without review HTML
+- Method:
+  - used `PROD-079` as evidence that provider-comparison post-patch regression passed
+  - checked the current classifier reachability snapshot
+  - closed `unreachable_existing_response_types` because no English localized response type remains unreachable
+  - selected `unknown_runtime_signal_subtypes` as the next inventory-only slice
+- Result:
+  - selection only: `true`
+  - provider-comparison slice closed: `true`
+  - unreachable existing response types remaining: `false`
+  - selected next slice: `unknown_runtime_signal_subtypes`
+  - protected boundary controls required: `true`
+  - review HTML created: `false`
+  - recommended next checkpoint: `PROD-081-english-unknown-runtime-signal-subtype-inventory`
+  - runtime behavior changed: `false`
+  - classifier behavior changed: `false`
+  - response text behavior changed: `false`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text change
+  - no classifier reachability change
+  - no German exact-phrase promotion or German naturalness claim
+  - no voice playback, public demo, real customer use, payment collection, contract signing, legal readiness, or production promotion
+- Why it matters for the thesis:
+  - it prevents the completed provider-comparison slice from turning into broad customer-move expansion
+  - it shifts remaining work to unknown-turn inventory where false-positive risk can be measured
+  - it keeps protected boundaries attached to the next classifier slice before any runtime patch

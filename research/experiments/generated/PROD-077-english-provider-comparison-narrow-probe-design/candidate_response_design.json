@@ -1,0 +1,12 @@
+{
+  "checkpoint_id": "PROD-077-english-provider-comparison-narrow-probe-design",
+  "route_name": "provider-comparison",
+  "source_response": "That is fair. We can compare fit and terms without pressure before you decide whether this is worth reviewing.",
+  "candidate_response": "Fair. We can compare fit against what you use now before you decide.",
+  "source_response_word_count": 19,
+  "candidate_response_word_count": 13,
+  "approved_as_exact_response_text": false,
+  "candidate_selected_for_probe": true,
+  "why_this_candidate": "It removes generic terms comparison, stays grounded in what the customer already uses, and is shorter.",
+  "runtime_response_changed": false
+}

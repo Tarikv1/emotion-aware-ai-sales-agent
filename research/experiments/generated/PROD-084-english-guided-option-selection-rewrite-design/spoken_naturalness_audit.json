@@ -1,0 +1,13 @@
+{
+  "checkpoint_id": "PROD-084-english-guided-option-selection-rewrite-design",
+  "random_fillers_allowed": false,
+  "sparse_discourse_markers_required_for_review": true,
+  "examples_with_discourse_markers": 3,
+  "marker_counts": {
+    "I mean": 1,
+    "like": 1,
+    "you know": 1
+  },
+  "sensitive_boundary_marker_violations": [],
+  "max_word_count": 27
+}

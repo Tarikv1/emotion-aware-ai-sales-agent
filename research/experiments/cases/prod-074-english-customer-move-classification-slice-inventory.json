@@ -1,0 +1,20 @@
+{
+  "checkpoint_id": "PROD-074-english-customer-move-classification-slice-inventory",
+  "checkpoint_name": "English Customer-Move Classification Slice Inventory",
+  "source_checkpoint_id": "PROD-073-english-customer-move-classification-gate-decision",
+  "scope": "english_customer_move_classification_slice_inventory_only",
+  "runtime_change_requested": false,
+  "response_text_change_requested": false,
+  "classifier_change_requested": false,
+  "retrieval_change_requested": false,
+  "requires_human_review_before_next_checkpoint": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-075-english-provider-comparison-reachability-review",
+  "recommended_next_checkpoint_requires_human_review": true,
+  "inventory_targets": [
+    "current deterministic classifier branches",
+    "unreachable localized English response types",
+    "already-approved selected non-refusal groups",
+    "protected-boundary controls"
+  ]
+}

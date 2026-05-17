@@ -1,0 +1,36 @@
+{
+  "checkpoint_id": "PROD-085-english-guided-option-selection-rewrite-review-import",
+  "source_checkpoint_id": "PROD-084-english-guided-option-selection-rewrite-design",
+  "source_validation": {
+    "passed": true,
+    "review_packet_created": true
+  },
+  "source_summary": {
+    "review_html_created": true,
+    "requires_human_review_before_next_checkpoint": true,
+    "selected_review_item": "guided_option_selection_rewritten_examples",
+    "review_example_count": 8
+  },
+  "source_review_html_preserved": true,
+  "source_example_ids": [
+    "rewrite-binary-choice",
+    "rewrite-fit-unclear",
+    "rewrite-recommendation",
+    "rewrite-difference",
+    "rewrite-decide-later",
+    "rewrite-neither-uncertain",
+    "rewrite-payment-path",
+    "rewrite-upgrade-path"
+  ],
+  "source_validator_run": {
+    "command": "python scripts/validate_prod_084_english_guided_option_selection_rewrite_design.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-084-english-guided-option-selection-rewrite-design validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  },
+  "review_import_path": "research/experiments/imports/PROD-084-english-guided-option-selection-rewrite-design/prod_084_guided_option_selection_rewrite_review_from_chat.json",
+  "review_import_decision": "approve_rewrite_for_policy_probe_with_payment_wording_edit"
+}

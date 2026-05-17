@@ -1,0 +1,19 @@
+{
+  "checkpoint_id": "PROD-062-english-context-sensitive-autonomy-policy-probe",
+  "source_checkpoint_id": "PROD-061-english-product-policy-gate-prioritization",
+  "source_selected_gate": "context_sensitive_autonomy_behavior",
+  "source_gate_status": "selected_for_next_probe_still_blocked",
+  "source_priority_decision": "prioritize_context_sensitive_autonomy_first",
+  "source_candidate_case_id": "prod-053c-autonomy-check",
+  "source_candidate_type": "context_sensitive_wording",
+  "source_candidate_context_sensitive": true,
+  "source_validator_run": {
+    "command": "python scripts\\validate_prod_061_english_product_policy_gate_prioritization.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-061-english-product-policy-gate-prioritization validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

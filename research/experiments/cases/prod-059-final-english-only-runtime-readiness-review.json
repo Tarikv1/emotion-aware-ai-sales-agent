@@ -1,0 +1,17 @@
+{
+  "checkpoint_id": "PROD-059-final-english-only-runtime-readiness-review",
+  "checkpoint_name": "Final English-Only Runtime Readiness Review",
+  "source_checkpoint_id": "PROD-058-english-runtime-promotion-blocker-inventory",
+  "source_guard_id": "PROD-057-english-multi-turn-regression-guard-decision",
+  "source_regression_id": "PROD-056-english-post-patch-multi-turn-regression",
+  "scope": "final_english_only_readiness_review",
+  "human_review_decision": "accepted_to_proceed",
+  "human_review_source": "Tarik accepted the PROD-058 blocker inventory in the current review thread.",
+  "stable_guard_command": "python scripts\\validate_english_multi_turn_regression_guard.py",
+  "not_a_production_promotion": true,
+  "runtime_change_requested": false,
+  "allowed_readiness_statuses": [
+    "ready_with_exclusions",
+    "not_ready"
+  ]
+}

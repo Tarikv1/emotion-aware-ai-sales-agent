@@ -1,0 +1,15 @@
+{
+  "checkpoint_id": "PROD-074-english-customer-move-classification-slice-inventory",
+  "decision": "select_provider_comparison_reachability_review_next",
+  "selected_next_slice": "unreachable_existing_response_types",
+  "selected_next_review_item": "provider-comparison",
+  "unreachable_localized_response_types": [
+    "provider-comparison"
+  ],
+  "runtime_patch_allowed": false,
+  "response_text_change_allowed": false,
+  "classifier_change_allowed": false,
+  "recommended_next_checkpoint": "PROD-075-english-provider-comparison-reachability-review",
+  "recommended_next_checkpoint_requires_human_review": true,
+  "production_runtime_promotion_allowed": false
+}

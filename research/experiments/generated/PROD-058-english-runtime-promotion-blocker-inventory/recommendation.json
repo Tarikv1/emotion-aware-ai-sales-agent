@@ -1,0 +1,28 @@
+{
+  "decision": "run_final_english_only_readiness_review_after_human_acceptance",
+  "recommended_next_checkpoint": "PROD-059-final-english-only-runtime-readiness-review",
+  "why": "The English evidence chain is now strong enough for a final English-only readiness review, but not for production promotion.",
+  "english_blockers_to_address_or_explicitly_exclude": [
+    "final_english_only_readiness_review_not_run",
+    "english_guard_scope_limited_to_promoted_multi_turn_surface",
+    "customer_move_classification_outside_selected_non_refusal_groups",
+    "voicemail_action_only_behavior",
+    "coverage_knowledge_policy_behavior",
+    "context_sensitive_autonomy_behavior"
+  ],
+  "separate_gate_blockers_not_in_scope_for_english_only_review": [
+    "native_german_review",
+    "voice_playback_quality",
+    "retrieval_default",
+    "provider_or_private_data_use",
+    "legal_compliance_review",
+    "public_demo_use",
+    "real_customer_use",
+    "payment_collection",
+    "contract_signing",
+    "production_runtime_promotion"
+  ],
+  "not_a_production_promotion": true,
+  "requires_human_review_before_next_checkpoint": true,
+  "human_review_request": "Review the PROD-058 inventory and accept or revise the blocker classification before creating PROD-059."
+}

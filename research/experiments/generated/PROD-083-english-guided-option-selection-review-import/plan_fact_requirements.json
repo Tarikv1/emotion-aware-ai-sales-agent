@@ -1,0 +1,22 @@
+{
+  "checkpoint_id": "PROD-083-english-guided-option-selection-review-import",
+  "review_item": "guided_option_selection_candidate",
+  "plan_feature_matrix_required": true,
+  "invent_plan_features_allowed": false,
+  "example_plan_placeholders": {
+    "29": [
+      "feature_x",
+      "feature_y",
+      "feature_z"
+    ],
+    "59": [
+      "feature_x",
+      "feature_y",
+      "feature_z",
+      "feature_a",
+      "feature_b",
+      "feature_c"
+    ]
+  },
+  "runtime_requirement": "Do not generate guided option selection copy unless approved campaign data provides the plan feature matrix or the response uses explicit placeholders in a review-only artifact."
+}

@@ -1,0 +1,15 @@
+{
+  "checkpoint_id": "PROD-082-english-guided-option-selection-review",
+  "checkpoint_name": "English Guided Option Selection Review",
+  "source_checkpoint_id": "PROD-081-english-unknown-runtime-signal-subtype-inventory",
+  "scope": "english_guided_option_selection_review_only",
+  "review_item": "guided_option_selection_candidate",
+  "requires_human_review_before_next_checkpoint": true,
+  "review_html_created": true,
+  "review_html_path": "research/experiments/generated/PROD-082-english-guided-option-selection-review/prod_082_review.html",
+  "runtime_change_requested": false,
+  "response_text_change_requested": false,
+  "classifier_change_requested": false,
+  "retrieval_change_requested": false,
+  "recommended_next_checkpoint": "PROD-083-english-guided-option-selection-review-import"
+}

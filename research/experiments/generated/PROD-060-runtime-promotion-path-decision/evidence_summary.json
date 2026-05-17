@@ -1,0 +1,52 @@
+{
+  "checkpoint_id": "PROD-060-runtime-promotion-path-decision",
+  "source_checkpoint_id": "PROD-059-final-english-only-runtime-readiness-review",
+  "source_readiness_status": "ready_with_exclusions",
+  "source_readiness_decision": "english_only_runtime_ready_with_exclusions",
+  "source_bounded_scope": {
+    "language": "en",
+    "runtime_path": "runtime/core/realtime_turns.py",
+    "surface": "PROD-053E promoted English deterministic runtime surface guarded by PROD-056/PROD-057",
+    "guard_command": "python scripts\\validate_english_multi_turn_regression_guard.py"
+  },
+  "source_stable_guard_command": "python scripts\\validate_english_multi_turn_regression_guard.py",
+  "source_stable_guard_passed": true,
+  "source_review_html_path": "research/experiments/generated/PROD-059-final-english-only-runtime-readiness-review/prod_059_review.html",
+  "source_resolved_blockers": [
+    "final_english_only_readiness_review_not_run",
+    "english_guard_scope_limited_to_promoted_multi_turn_surface"
+  ],
+  "source_excluded_blockers": [
+    "customer_move_classification_outside_selected_non_refusal_groups",
+    "voicemail_action_only_behavior",
+    "coverage_knowledge_policy_behavior",
+    "context_sensitive_autonomy_behavior",
+    "native_german_review",
+    "voice_playback_quality",
+    "retrieval_default",
+    "provider_or_private_data_use",
+    "legal_compliance_review",
+    "public_demo_use",
+    "real_customer_use",
+    "payment_collection",
+    "contract_signing",
+    "production_runtime_promotion"
+  ],
+  "source_regression": {
+    "checkpoint_id": "PROD-056-english-post-patch-multi-turn-regression",
+    "promoted_response_count": 26,
+    "runtime_second_turn_case_count": 10,
+    "callback_scheduling_case_count": 1,
+    "terminal_boundary_case_count": 15,
+    "blocking_finding_count": 0
+  },
+  "source_validator_run": {
+    "command": "python scripts\\validate_prod_059_final_english_only_runtime_readiness_review.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-059-final-english-only-runtime-readiness-review validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

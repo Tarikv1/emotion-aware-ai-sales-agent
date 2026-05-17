@@ -1,0 +1,28 @@
+{
+  "checkpoint_id": "PROD-079-english-provider-comparison-post-patch-regression",
+  "source_checkpoint_id": "PROD-078-english-provider-comparison-runtime-patch",
+  "source_validation": {
+    "passed": true,
+    "runtime_patch_passed": true,
+    "controls_preserved": true
+  },
+  "source_patch_decision": "english_provider_comparison_runtime_patch_applied",
+  "source_validator_run": {
+    "command": "C:\\Users\\tarik\\AppData\\Local\\Programs\\Python\\Python313\\python.exe D:\\Codex\\active\\emotion-aware-ai-sales-agent\\scripts\\validate_prod_078_english_provider_comparison_runtime_patch.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-078-english-provider-comparison-runtime-patch validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  },
+  "stable_guard_run": {
+    "command": "C:\\Users\\tarik\\AppData\\Local\\Programs\\Python\\Python313\\python.exe D:\\Codex\\active\\emotion-aware-ai-sales-agent\\scripts\\validate_prod_056_english_post_patch_multi_turn_regression.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-056-english-post-patch-multi-turn-regression validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

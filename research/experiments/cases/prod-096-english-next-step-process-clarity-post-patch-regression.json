@@ -1,0 +1,10 @@
+{
+  "checkpoint_id": "PROD-096-english-next-step-process-clarity-post-patch-regression",
+  "checkpoint_name": "English Next-Step Process Clarity Post-Patch Regression",
+  "source_checkpoint_id": "PROD-095-english-next-step-process-clarity-runtime-patch",
+  "scope": "english_next_step_process_clarity_post_patch_regression",
+  "post_patch_regression_only": true,
+  "runtime_patch_allowed_inside_checkpoint": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity"
+}

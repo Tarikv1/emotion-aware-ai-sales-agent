@@ -1,0 +1,55 @@
+{
+  "checkpoint_id": "PROD-092-english-guided-option-synonym-coverage-post-patch-regression",
+  "source_checkpoint_id": "PROD-091-english-guided-option-synonym-coverage-runtime-patch",
+  "source_validation": {
+    "passed": true,
+    "runtime_patch_verified": true
+  },
+  "source_summary": {
+    "runtime_patch_applied": true,
+    "runtime_behavior_changed": true,
+    "response_text_behavior_changed": true,
+    "classifier_behavior_changed": true,
+    "source_validator_passed": true,
+    "selected_gap_fixed_count": 2,
+    "positive_case_count": 4,
+    "positive_case_failures": 0,
+    "control_case_count": 9,
+    "control_case_failures": 0,
+    "current_runtime_gap_count_before_patch": 2,
+    "review_html_created": false,
+    "recommended_next_checkpoint": "PROD-092-english-guided-option-synonym-coverage-post-patch-regression",
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  },
+  "source_validator_run": {
+    "command": "python scripts/validate_prod_091_english_guided_option_synonym_coverage_runtime_patch.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-091-english-guided-option-synonym-coverage-runtime-patch validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  },
+  "stable_english_guard": {
+    "command": "python scripts/validate_english_multi_turn_regression_guard.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-056-english-post-patch-multi-turn-regression validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

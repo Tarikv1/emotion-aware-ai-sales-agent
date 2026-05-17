@@ -1,0 +1,13 @@
+{
+  "checkpoint_id": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity",
+  "source_checkpoint_id": "PROD-096-english-next-step-process-clarity-post-patch-regression",
+  "decision": "select_recommendation_roleplay_review_next",
+  "selected_next_slice": "recommendation_roleplay_boundary",
+  "selected_remaining_case_id": "prod-081-recommendation-02",
+  "selected_customer_turn": "What would you do in my position?",
+  "why": "After guided option and process clarity are closed, the next concrete remaining subtype is recommendation roleplay. It is persuasion-sensitive, so it needs human review before a probe or runtime patch.",
+  "selected_requires_human_review_before_probe": true,
+  "review_html_created": true,
+  "recommended_next_checkpoint": "PROD-098-english-recommendation-roleplay-review-import",
+  "recommended_next_checkpoint_requires_human_review_import": true
+}

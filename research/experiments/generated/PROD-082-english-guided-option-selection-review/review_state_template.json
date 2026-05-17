@@ -1,0 +1,45 @@
+{
+  "checkpoint_id": "PROD-082-english-guided-option-selection-review",
+  "review_status": "pending_tarik_review",
+  "review_item": "guided_option_selection_candidate",
+  "reviewer": "",
+  "review_date": "",
+  "overall_decision": "",
+  "overall_notes": "",
+  "example_decisions": {
+    "guided-option-binary-choice": {
+      "decision": "",
+      "notes": ""
+    },
+    "guided-option-fit-unclear": {
+      "decision": "",
+      "notes": ""
+    },
+    "guided-option-recommendation-request": {
+      "decision": "",
+      "notes": ""
+    },
+    "guided-option-explain-difference": {
+      "decision": "",
+      "notes": ""
+    },
+    "guided-option-not-now": {
+      "decision": "",
+      "notes": ""
+    },
+    "guided-option-neither": {
+      "decision": "",
+      "notes": ""
+    },
+    "guided-option-payment-boundary": {
+      "decision": "",
+      "notes": ""
+    }
+  },
+  "valid_decisions": [
+    "keep_deferred",
+    "approve_for_narrow_policy_probe_with_guardrails",
+    "needs_rewrite_before_probe"
+  ],
+  "exported_from": "research/experiments/generated/PROD-082-english-guided-option-selection-review/prod_082_review.html"
+}

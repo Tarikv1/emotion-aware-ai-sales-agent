@@ -1,0 +1,34 @@
+{
+  "source_checkpoint_id": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity",
+  "review_status": "completed_from_chat_review",
+  "reviewer": "Tarik",
+  "review_date": "2026-05-17",
+  "review_item": "recommendation_roleplay_boundary",
+  "overall_decision": "approve_for_policy_probe_with_two_wording_edits",
+  "narrow_policy_probe_approved_after_required_edits": true,
+  "narrow_policy_probe_approved_as_written": false,
+  "overall_notes": "All examples are approved except for two small wording edits. Example 3 should add 'if you need to' after upgrade later to make the option feel less pushy. Example 5 should soften the second sentence with a but/though style connector so the agent preserves customer choice while still offering help.",
+  "approved_example_ids": [
+    "prod-097-roleplay-position",
+    "prod-097-roleplay-business",
+    "prod-097-direct-recommendation",
+    "prod-097-leaning-cheaper",
+    "prod-097-decide-for-me-control",
+    "prod-097-promise-worth-control",
+    "prod-097-no-pressure-honest-take"
+  ],
+  "required_wording_edits": {
+    "prod-097-direct-recommendation": {
+      "review_decision": "approved_after_required_wording_edit",
+      "source_issue": "The original ending 'start with $29 and upgrade later' was slightly too directive.",
+      "required_direction": "Add 'if you need to' so the customer keeps the sense of choice.",
+      "final_candidate_response": "Based on [customer pain], I would recommend $59. If budget is the main concern, start with $29 and upgrade later if you need to."
+    },
+    "prod-097-decide-for-me-control": {
+      "review_decision": "approved_after_required_wording_edit",
+      "source_issue": "The original second sentence needed a softer connector.",
+      "required_direction": "Use the cleaner 'but' connector rather than ending the sentence with 'though'.",
+      "final_candidate_response": "I cannot decide for you, but I can show what each plan covers and why one may fit your needs better."
+    }
+  }
+}

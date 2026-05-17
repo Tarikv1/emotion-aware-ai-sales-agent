@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PROD-059 Review</title>
+  <style>
+    :root {
+      --ink:#17212b;
+      --muted:#5d6875;
+      --paper:#f7f6f2;
+      --panel:#ffffff;
+      --line:#d7d2c8;
+      --accent:#176c5f;
+      --warn:#9b4b20;
+      --soft:#ebe8df;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Georgia, 'Times New Roman', serif; color:var(--ink); background:var(--paper); }
+    header { padding:28px clamp(18px,4vw,48px); border-bottom:1px solid var(--line); background:#fffcf5; }
+    main { max-width:1120px; margin:0 auto; padding:24px clamp(16px,3vw,32px) 48px; }
+    h1 { margin:0 0 10px; font-size:clamp(28px,4vw,48px); line-height:1.05; letter-spacing:0; }
+    h2 { margin:8px 0 10px; font-size:24px; letter-spacing:0; }
+    p { line-height:1.55; }
+    .summary, .toolbar, .reviewer { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:16px; margin:18px 0; }
+    .metrics { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; }
+    .metric { background:var(--soft); border:1px solid var(--line); border-radius:6px; padding:12px; }
+    .metric strong { display:block; font-size:20px; }
+    .toolbar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+    button, .file-label { border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); padding:10px 12px; font:inherit; cursor:pointer; }
+    button.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+    button.warn { background:var(--warn); color:#fff; border-color:var(--warn); }
+    .reviewer-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+    input[type="text"], input[type="date"], textarea { width:100%; margin-top:6px; padding:10px; border:1px solid var(--line); border-radius:6px; font:inherit; background:#fff; }
+    textarea { min-height:72px; resize:vertical; }
+    .example-card { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:18px; margin:16px 0; }
+    .card-top { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .eyebrow { color:var(--muted); font-size:14px; text-transform:uppercase; }
+    .tag { border:1px solid var(--line); border-radius:999px; padding:4px 9px; color:var(--accent); }
+    .question { font-weight:700; }
+    .turn-row { border-left:4px solid var(--line); padding:8px 12px; margin:10px 0; background:#fbfaf6; }
+    .turn-row.agent { border-left-color:var(--accent); }
+    .turn-row span, dt { color:var(--muted); font-size:14px; text-transform:uppercase; }
+    dl { display:grid; grid-template-columns:minmax(110px,160px) 1fr; gap:8px 12px; }
+    dd { margin:0; }
+    fieldset { border:1px solid var(--line); border-radius:6px; margin:14px 0; padding:10px; }
+    fieldset label { display:inline-block; margin:6px 14px 6px 0; }
+    .hidden { display:none; }
+    @media print { .toolbar, .reviewer, fieldset, .notes { display:none; } body { background:white; } .example-card { break-inside:avoid; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PROD-059 Review</h1>
+    <p>Final English-only runtime readiness review for the bounded deterministic surface. Not production, legal, German, voice, retrieval, provider, private-data, payment, contract, public-demo, or real-customer readiness.</p>
+  </header>
+  <main>
+    <section class="summary">
+      <div class="metrics">
+        <div class="metric"><span>Status</span><strong>ready_with_exclusions</strong></div>
+        <div class="metric"><span>Resolved blockers</span><strong>2</strong></div>
+        <div class="metric"><span>Still blocked</span><strong>14</strong></div>
+        <div class="metric"><span>Stable guard</span><strong>true</strong></div>
+      </div>
+      <p>Runtime behavior changed: false. Response text behavior changed: false. Production runtime promotion allowed: false.</p>
+    </section>
+    <section class="reviewer">
+      <div class="reviewer-grid">
+        <label>Name or initials<input id="reviewerName" type="text"></label>
+        <label>Date<input id="reviewDate" type="date"></label>
+      </div>
+      <label>Overall notes<textarea id="overallNotes"></textarea></label>
+    </section>
+    <section class="toolbar">
+      <button class="primary" onclick="setAll('accept')">Accept current decision</button>
+      <button class="warn" onclick="setAll('revise')">Request revision</button>
+      <button onclick="saveProgress()">Save in browser</button>
+      <button onclick="loadProgress()">Load saved</button>
+      <button onclick="exportJson()">Export JSON</button>
+      <label class="file-label">Import JSON<input id="jsonImportFile" type="file" accept="application/json" onchange="importJsonFile(event)" hidden></label>
+      <button onclick="clearEntries()">Clear</button>
+    </section>
+    <section>
+      <h2>Review examples</h2>
+
+      <article class="example-card" data-example="bounded-manager-followup" data-category="ready_example">
+        <div class="card-top">
+          <span class="eyebrow">Example 1</span>
+          <span class="tag">ready example</span>
+        </div>
+        <h2>Manager follow-up stays inside the guarded English surface</h2>
+        <p class="question">Does this support ready_with_exclusions for the bounded English runtime surface?</p>
+        <div class="turn-row">
+          <span>Customer</span>
+          <p>Send me the details for my manager.</p>
+        </div>
+        <div class="turn-row agent">
+          <span>Agent</span>
+          <p>Of course, I can tailor a short written summary to your main point. Then I can send it over, so it is more useful to you.</p>
+        </div>
+
+        <dl>
+          <dt>Source</dt><dd>prod-056-prod-045-manager</dd>
+          <dt>Evidence</dt><dd>PROD-056 second-turn regression gates passed with no repeated first-turn response.</dd>
+          <dt>Decision hint</dt><dd>Accept if this is enough as bounded English evidence, not as production readiness.</dd>
+        </dl>
+        <fieldset>
+          <legend>Review decision</legend>
+          <label><input type="radio" name="bounded-manager-followup-decision" value="accept"> Accept current decision</label>
+          <label><input type="radio" name="bounded-manager-followup-decision" value="revise"> Request revision</label>
+          <label><input type="radio" name="bounded-manager-followup-decision" value="defer"> Defer</label>
+        </fieldset>
+        <label class="notes">Notes<textarea data-notes-for="bounded-manager-followup"></textarea></label>
+      </article>
+
+      <article class="example-card" data-example="bounded-product-detail" data-category="ready_example">
+        <div class="card-top">
+          <span class="eyebrow">Example 2</span>
+          <span class="tag">ready example</span>
+        </div>
+        <h2>Product detail lookup avoids invented plan details</h2>
+        <p class="question">Does this remain safe enough for the bounded English surface?</p>
+        <div class="turn-row">
+          <span>Customer</span>
+          <p>Yes, which exact plan is included?</p>
+        </div>
+        <div class="turn-row agent">
+          <span>Agent</span>
+          <p>I should not invent exact plan details. I can send the approved plan details in writing before any next step.</p>
+        </div>
+
+        <dl>
+          <dt>Source</dt><dd>prod-056-prod-053c-product-detail-lookup</dd>
+          <dt>Evidence</dt><dd>PROD-056 confirms the response stays in English, does not repeat the bridge phrase, and avoids forbidden coverage/advice markers.</dd>
+          <dt>Decision hint</dt><dd>Accept if the non-invention behavior is sufficient for the final English-only review.</dd>
+        </dl>
+        <fieldset>
+          <legend>Review decision</legend>
+          <label><input type="radio" name="bounded-product-detail-decision" value="accept"> Accept current decision</label>
+          <label><input type="radio" name="bounded-product-detail-decision" value="revise"> Request revision</label>
+          <label><input type="radio" name="bounded-product-detail-decision" value="defer"> Defer</label>
+        </fieldset>
+        <label class="notes">Notes<textarea data-notes-for="bounded-product-detail"></textarea></label>
+      </article>
+
+      <article class="example-card" data-example="callback-scheduling-flow" data-category="ready_example">
+        <div class="card-top">
+          <span class="eyebrow">Example 3</span>
+          <span class="tag">ready example</span>
+        </div>
+        <h2>Callback request remains coherent through scheduling</h2>
+        <p class="question">Does this callback flow support English-only readiness with exclusions?</p>
+        <div class="turn-row">
+          <span>Customer</span>
+          <p>Can you call back later?</p>
+        </div>
+        <div class="turn-row agent">
+          <span>Agent</span>
+          <p>Of course. Do you have a time in mind?</p>
+        </div>
+
+            <div class="turn-row">
+              <span>Customer follow-up</span>
+              <p>Tomorrow at 10 works.</p>
+            </div>
+            <div class="turn-row agent">
+              <span>Agent follow-up</span>
+              <p>All right. I&#x27;ll note that time for the specialist callback. Goodbye.</p>
+            </div>
+
+        <dl>
+          <dt>Source</dt><dd>prod-056-prod-053c-callback-request-scheduling-flow</dd>
+          <dt>Evidence</dt><dd>PROD-056 keeps the first turn open for scheduling and ends only after the supplied callback time.</dd>
+          <dt>Decision hint</dt><dd>Accept if this resolves the callback multi-turn issue inside the guarded English surface.</dd>
+        </dl>
+        <fieldset>
+          <legend>Review decision</legend>
+          <label><input type="radio" name="callback-scheduling-flow-decision" value="accept"> Accept current decision</label>
+          <label><input type="radio" name="callback-scheduling-flow-decision" value="revise"> Request revision</label>
+          <label><input type="radio" name="callback-scheduling-flow-decision" value="defer"> Defer</label>
+        </fieldset>
+        <label class="notes">Notes<textarea data-notes-for="callback-scheduling-flow"></textarea></label>
+      </article>
+
+      <article class="example-card" data-example="do-not-call-boundary" data-category="boundary_example">
+        <div class="card-top">
+          <span class="eyebrow">Example 4</span>
+          <span class="tag">boundary example</span>
+        </div>
+        <h2>Do-not-call remains terminal</h2>
+        <p class="question">Does this terminal boundary stay outside same-loop sales continuation?</p>
+        <div class="turn-row">
+          <span>Customer</span>
+          <p>do-not-call</p>
+        </div>
+        <div class="turn-row agent">
+          <span>Agent</span>
+          <p>Understood. I will mark this so you are not called again. Goodbye.</p>
+        </div>
+
+        <dl>
+          <dt>Source</dt><dd>prod-056-prod-053c-do-not-call</dd>
+          <dt>Evidence</dt><dd>PROD-056 terminal boundary passed: no second automated sales turn expected.</dd>
+          <dt>Decision hint</dt><dd>Accept if the boundary remains blocked from further same-loop selling.</dd>
+        </dl>
+        <fieldset>
+          <legend>Review decision</legend>
+          <label><input type="radio" name="do-not-call-boundary-decision" value="accept"> Accept current decision</label>
+          <label><input type="radio" name="do-not-call-boundary-decision" value="revise"> Request revision</label>
+          <label><input type="radio" name="do-not-call-boundary-decision" value="defer"> Defer</label>
+        </fieldset>
+        <label class="notes">Notes<textarea data-notes-for="do-not-call-boundary"></textarea></label>
+      </article>
+
+      <article class="example-card" data-example="excluded-policy-gates" data-category="exclusion_example">
+        <div class="card-top">
+          <span class="eyebrow">Example 5</span>
+          <span class="tag">exclusion example</span>
+        </div>
+        <h2>Policy gates are explicitly not accepted by PROD-059</h2>
+        <p class="question">Should these remain excluded from English-only readiness?</p>
+        <div class="turn-row">
+          <span>Customer</span>
+          <p>Voicemail, coverage knowledge, and context-sensitive autonomy cases</p>
+        </div>
+        <div class="turn-row agent">
+          <span>Agent</span>
+          <p>No new runtime answer is accepted in PROD-059.</p>
+        </div>
+
+        <dl>
+          <dt>Source</dt><dd>PROD-058 policy blocker group</dd>
+          <dt>Evidence</dt><dd>Voicemail action-only behavior: Keep voicemail behavior excluded from English promotion unless a separate policy checkpoint accepts it.; Coverage knowledge-policy behavior: Review knowledge-policy behavior separately before claiming broad English runtime readiness.; Context-sensitive autonomy behavior: Separate autonomy-policy behavior from phrase naturalness before any promotion claim.</dd>
+          <dt>Decision hint</dt><dd>Request revision if any excluded policy gate should be moved into the ready surface.</dd>
+        </dl>
+        <fieldset>
+          <legend>Review decision</legend>
+          <label><input type="radio" name="excluded-policy-gates-decision" value="accept"> Accept current decision</label>
+          <label><input type="radio" name="excluded-policy-gates-decision" value="revise"> Request revision</label>
+          <label><input type="radio" name="excluded-policy-gates-decision" value="defer"> Defer</label>
+        </fieldset>
+        <label class="notes">Notes<textarea data-notes-for="excluded-policy-gates"></textarea></label>
+      </article>
+
+    </section>
+  </main>
+  <script>
+    const reviewPayload = {"checkpoint_id": "PROD-059-final-english-only-runtime-readiness-review", "decision": {"checkpoint_id": "PROD-059-final-english-only-runtime-readiness-review", "decision": "english_only_runtime_ready_with_exclusions", "bounded_scope": {"language": "en", "runtime_path": "runtime/core/realtime_turns.py", "surface": "PROD-053E promoted English deterministic runtime surface guarded by PROD-056/PROD-057", "guard_command": "python scripts\\validate_english_multi_turn_regression_guard.py"}, "resolved_blockers": ["final_english_only_readiness_review_not_run", "english_guard_scope_limited_to_promoted_multi_turn_surface"], "excluded_blockers": ["customer_move_classification_outside_selected_non_refusal_groups", "voicemail_action_only_behavior", "coverage_knowledge_policy_behavior", "context_sensitive_autonomy_behavior", "native_german_review", "voice_playback_quality", "retrieval_default", "provider_or_private_data_use", "legal_compliance_review", "public_demo_use", "real_customer_use", "payment_collection", "contract_signing", "production_runtime_promotion"], "not_production_ready": true, "requires_human_decision_before_runtime_promotion_path": true, "recommended_next_checkpoint": "PROD-060-runtime-promotion-path-decision"}, "summary": {"human_review_acceptance_recorded": true, "english_only_runtime_readiness_status": "ready_with_exclusions", "bounded_english_surface_ready": true, "stable_guard_command": "python scripts\\validate_english_multi_turn_regression_guard.py", "stable_guard_passed": true, "review_html_path": "research/experiments/generated/PROD-059-final-english-only-runtime-readiness-review/prod_059_review.html", "resolved_blocker_count": 2, "excluded_blocker_count": 14, "resolved_blockers": ["final_english_only_readiness_review_not_run", "english_guard_scope_limited_to_promoted_multi_turn_surface"], "excluded_blockers": ["customer_move_classification_outside_selected_non_refusal_groups", "voicemail_action_only_behavior", "coverage_knowledge_policy_behavior", "context_sensitive_autonomy_behavior", "native_german_review", "voice_playback_quality", "retrieval_default", "provider_or_private_data_use", "legal_compliance_review", "public_demo_use", "real_customer_use", "payment_collection", "contract_signing", "production_runtime_promotion"], "recommended_next_checkpoint": "PROD-060-runtime-promotion-path-decision", "runtime_behavior_changed": false, "response_text_behavior_changed": false, "retrieval_enabled": false, "provider_calls_made": false, "llm_used": false, "llm_judging_used": false, "private_data_read": false, "voice_playback_unblocked": false, "public_demo_polish_unblocked": false, "real_customer_use_unblocked": false, "payment_collection_allowed": false, "contract_signing_allowed": false, "production_runtime_promotion_allowed": false, "german_exact_phrase_promotion_allowed": false, "german_naturalness_claimed": false, "legal_compliance_claimed": false}, "evidence": {"source_inventory": {"checkpoint_id": "PROD-058-english-runtime-promotion-blocker-inventory", "blocker_count": 16, "english_evidence_gap_count": 2, "product_policy_gate_count": 4, "separate_gate_count": 10, "recommended_next_checkpoint": "PROD-059-final-english-only-runtime-readiness-review"}, "source_guard": {"checkpoint_id": "PROD-057-english-multi-turn-regression-guard-decision", "guard_status": "adopted", "stable_guard_command": "python scripts\\validate_english_multi_turn_regression_guard.py"}, "source_regression": {"checkpoint_id": "PROD-056-english-post-patch-multi-turn-regression", "promoted_response_count": 26, "runtime_second_turn_case_count": 10, "callback_scheduling_case_count": 1, "terminal_boundary_case_count": 15, "blocking_finding_count": 0}, "stable_guard_run": {"command": "python scripts\\validate_english_multi_turn_regression_guard.py", "returncode": 0, "stdout_tail": ["PROD-056-english-post-patch-multi-turn-regression validation passed"], "stderr_tail": [], "passed": true}}, "examples": [{"example_id": "bounded-manager-followup", "category": "ready_example", "title": "Manager follow-up stays inside the guarded English surface", "review_question": "Does this support ready_with_exclusions for the bounded English runtime surface?", "source_case_id": "prod-056-prod-045-manager", "customer_turn": "Send me the details for my manager.", "agent_turn": "Of course, I can tailor a short written summary to your main point. Then I can send it over, so it is more useful to you.", "evidence": "PROD-056 second-turn regression gates passed with no repeated first-turn response.", "decision_hint": "Accept if this is enough as bounded English evidence, not as production readiness."}, {"example_id": "bounded-product-detail", "category": "ready_example", "title": "Product detail lookup avoids invented plan details", "review_question": "Does this remain safe enough for the bounded English surface?", "source_case_id": "prod-056-prod-053c-product-detail-lookup", "customer_turn": "Yes, which exact plan is included?", "agent_turn": "I should not invent exact plan details. I can send the approved plan details in writing before any next step.", "evidence": "PROD-056 confirms the response stays in English, does not repeat the bridge phrase, and avoids forbidden coverage/advice markers.", "decision_hint": "Accept if the non-invention behavior is sufficient for the final English-only review."}, {"example_id": "callback-scheduling-flow", "category": "ready_example", "title": "Callback request remains coherent through scheduling", "review_question": "Does this callback flow support English-only readiness with exclusions?", "source_case_id": "prod-056-prod-053c-callback-request-scheduling-flow", "customer_turn": "Can you call back later?", "agent_turn": "Of course. Do you have a time in mind?", "follow_up_customer_turn": "Tomorrow at 10 works.", "follow_up_agent_turn": "All right. I'll note that time for the specialist callback. Goodbye.", "evidence": "PROD-056 keeps the first turn open for scheduling and ends only after the supplied callback time.", "decision_hint": "Accept if this resolves the callback multi-turn issue inside the guarded English surface."}, {"example_id": "do-not-call-boundary", "category": "boundary_example", "title": "Do-not-call remains terminal", "review_question": "Does this terminal boundary stay outside same-loop sales continuation?", "source_case_id": "prod-056-prod-053c-do-not-call", "customer_turn": "do-not-call", "agent_turn": "Understood. I will mark this so you are not called again. Goodbye.", "evidence": "PROD-056 terminal boundary passed: no second automated sales turn expected.", "decision_hint": "Accept if the boundary remains blocked from further same-loop selling."}, {"example_id": "excluded-policy-gates", "category": "exclusion_example", "title": "Policy gates are explicitly not accepted by PROD-059", "review_question": "Should these remain excluded from English-only readiness?", "source_case_id": "PROD-058 policy blocker group", "customer_turn": "Voicemail, coverage knowledge, and context-sensitive autonomy cases", "agent_turn": "No new runtime answer is accepted in PROD-059.", "evidence": "Voicemail action-only behavior: Keep voicemail behavior excluded from English promotion unless a separate policy checkpoint accepts it.; Coverage knowledge-policy behavior: Review knowledge-policy behavior separately before claiming broad English runtime readiness.; Context-sensitive autonomy behavior: Separate autonomy-policy behavior from phrase naturalness before any promotion claim.", "decision_hint": "Request revision if any excluded policy gate should be moved into the ready surface."}], "resolved_blockers": ["final_english_only_readiness_review_not_run", "english_guard_scope_limited_to_promoted_multi_turn_surface"], "excluded_blockers": ["customer_move_classification_outside_selected_non_refusal_groups", "voicemail_action_only_behavior", "coverage_knowledge_policy_behavior", "context_sensitive_autonomy_behavior", "native_german_review", "voice_playback_quality", "retrieval_default", "provider_or_private_data_use", "legal_compliance_review", "public_demo_use", "real_customer_use", "payment_collection", "contract_signing", "production_runtime_promotion"]};
+    const storageKey = 'prod059FinalEnglishOnlyReview';
+
+    function decisionValue(exampleId) {
+      const selected = document.querySelector(`input[name="${exampleId}-decision"]:checked`);
+      return selected ? selected.value : '';
+    }
+
+    function collectReview() {
+      const items = reviewPayload.examples.map(example => ({
+        example_id: example.example_id,
+        category: example.category,
+        decision: decisionValue(example.example_id),
+        notes: document.querySelector(`[data-notes-for="${example.example_id}"]`).value
+      }));
+      return {
+        schema_name: 'prod_059_review_export',
+        checkpoint_id: reviewPayload.checkpoint_id,
+        reviewer: {
+          name_or_initials: document.getElementById('reviewerName').value,
+          date: document.getElementById('reviewDate').value,
+          overall_notes: document.getElementById('overallNotes').value
+        },
+        items,
+        summary: {
+          accept_count: items.filter(item => item.decision === 'accept').length,
+          revise_count: items.filter(item => item.decision === 'revise').length,
+          defer_count: items.filter(item => item.decision === 'defer').length,
+          blank_count: items.filter(item => !item.decision).length
+        },
+        source_decision: reviewPayload.decision,
+        source_summary: reviewPayload.summary
+      };
+    }
+
+    function setAll(value) {
+      reviewPayload.examples.forEach(example => {
+        const input = document.querySelector(`input[name="${example.example_id}-decision"][value="${value}"]`);
+        if (input) input.checked = true;
+      });
+      saveProgress();
+    }
+
+    function saveProgress() {
+      localStorage.setItem(storageKey, JSON.stringify(collectReview()));
+    }
+
+    function applyReviewPayload(payload) {
+      if (!payload) return false;
+      const reviewer = payload.reviewer || {};
+      document.getElementById('reviewerName').value = reviewer.name_or_initials || '';
+      document.getElementById('reviewDate').value = reviewer.date || '';
+      document.getElementById('overallNotes').value = reviewer.overall_notes || '';
+      (payload.items || []).forEach(item => {
+        const input = document.querySelector(`input[name="${item.example_id}-decision"][value="${item.decision}"]`);
+        if (input) input.checked = true;
+        const notes = document.querySelector(`[data-notes-for="${item.example_id}"]`);
+        if (notes) notes.value = item.notes || '';
+      });
+      return true;
+    }
+
+    function loadProgress() {
+      applyReviewPayload(JSON.parse(localStorage.getItem(storageKey) || 'null'));
+    }
+
+    function exportJson() {
+      const blob = new Blob([JSON.stringify(collectReview(), null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'prod-059-review-export.json';
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importJsonFile(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const payload = JSON.parse(String(reader.result || '{}'));
+          if (!applyReviewPayload(payload)) throw new Error('empty');
+          localStorage.setItem(storageKey, JSON.stringify(collectReview()));
+        } catch (error) {
+          alert('JSON import failed.');
+        } finally {
+          event.target.value = '';
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function clearEntries() {
+      document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+      document.querySelectorAll('textarea').forEach(input => input.value = '');
+      localStorage.removeItem(storageKey);
+    }
+
+    loadProgress();
+  </script>
+</body>
+</html>

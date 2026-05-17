@@ -1,0 +1,47 @@
+{
+  "checkpoint_id": "PROD-099-english-recommendation-roleplay-narrow-policy-probe",
+  "source_checkpoint_id": "PROD-098-english-recommendation-roleplay-review-import",
+  "selected_source_slice": "recommendation_roleplay_boundary",
+  "requires_customer_facts_for_recommendation": true,
+  "requires_agency_preservation": true,
+  "no_agent_decides_for_customer": true,
+  "no_value_guarantee": true,
+  "no_payment_collection": true,
+  "no_contract_signing": true,
+  "provider_comparison_boundary_preserved": true,
+  "process_clarity_boundary_preserved": true,
+  "generic_confusion_deferred": true,
+  "german_exact_phrase_promotion_blocked": true,
+  "runtime_patch_allowed_inside_checkpoint": false,
+  "review_html_created": false,
+  "source_readiness": {
+    "checkpoint_id": "PROD-098-english-recommendation-roleplay-review-import",
+    "source_checkpoint_id": "PROD-097-english-customer-move-remaining-slice-selection-after-process-clarity",
+    "narrow_policy_probe_approved_after_required_edits": true,
+    "narrow_policy_probe_approved_as_written": false,
+    "runtime_patch_allowed": false,
+    "requires_customer_facts_for_recommendation": true,
+    "requires_agency_preservation": true,
+    "requires_no_agent_decides_for_customer": true,
+    "requires_no_value_guarantee": true,
+    "requires_no_payment_collection": true,
+    "requires_no_contract_signing": true,
+    "edited_examples": {
+      "prod-097-direct-recommendation": {
+        "review_decision": "approved_after_required_wording_edit",
+        "source_issue": "The original ending 'start with $29 and upgrade later' was slightly too directive.",
+        "required_direction": "Add 'if you need to' so the customer keeps the sense of choice.",
+        "final_candidate_response": "Based on [customer pain], I would recommend $59. If budget is the main concern, start with $29 and upgrade later if you need to."
+      },
+      "prod-097-decide-for-me-control": {
+        "review_decision": "approved_after_required_wording_edit",
+        "source_issue": "The original second sentence needed a softer connector.",
+        "required_direction": "Use the cleaner 'but' connector rather than ending the sentence with 'though'.",
+        "final_candidate_response": "I cannot decide for you, but I can show what each plan covers and why one may fit your needs better."
+      }
+    },
+    "recommended_next_checkpoint": "PROD-099-english-recommendation-roleplay-narrow-policy-probe",
+    "recommended_next_checkpoint_requires_human_review": false
+  },
+  "recommended_next_checkpoint": "PROD-100-english-recommendation-roleplay-runtime-patch"
+}

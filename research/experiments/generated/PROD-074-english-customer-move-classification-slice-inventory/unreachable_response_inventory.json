@@ -1,0 +1,14 @@
+{
+  "checkpoint_id": "PROD-074-english-customer-move-classification-slice-inventory",
+  "items": [
+    {
+      "sales_difficulty": "provider-comparison",
+      "slice_id": "unreachable_existing_response_types",
+      "status": "requires_human_review_before_reachability",
+      "why": "The English response text exists but was excluded from prior exact-phrase review because classifier reachability was not defined.",
+      "requires_human_review_before_reachability": true,
+      "runtime_patch_allowed": false,
+      "review_checkpoint": "PROD-075-english-provider-comparison-reachability-review"
+    }
+  ]
+}

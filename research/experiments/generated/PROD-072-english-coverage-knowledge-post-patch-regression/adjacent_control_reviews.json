@@ -1,0 +1,221 @@
+{
+  "checkpoint_id": "PROD-072-english-coverage-knowledge-post-patch-regression",
+  "items": [
+    {
+      "case_id": "prod-072-product-plan-included-control",
+      "input_type": "speech",
+      "customer_turn": "Which plan is included?",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "product-detail-lookup",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "background_modules": [
+          "campaign-knowledge-lookup"
+        ],
+        "bridge_response": "One moment. I will check the product details before I answer.",
+        "agent_response": "One moment. I will check the product details before I answer."
+      },
+      "gates": {
+        "not_coverage_boundary": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true,
+        "response_exact": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "product-detail-lookup",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "One moment. I will check the product details before I answer."
+      }
+    },
+    {
+      "case_id": "prod-072-product-what-included-control",
+      "input_type": "speech",
+      "customer_turn": "What is included?",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "product-detail-lookup",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "background_modules": [
+          "campaign-knowledge-lookup"
+        ],
+        "bridge_response": "One moment. I will check the product details before I answer.",
+        "agent_response": "One moment. I will check the product details before I answer."
+      },
+      "gates": {
+        "not_coverage_boundary": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true,
+        "response_exact": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "product-detail-lookup",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "One moment. I will check the product details before I answer."
+      }
+    },
+    {
+      "case_id": "prod-072-price-direct-control",
+      "input_type": "speech",
+      "customer_turn": "What is the price?",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "price-first-direct",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "bridge_response": null,
+        "agent_response": "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there."
+      },
+      "gates": {
+        "not_coverage_boundary": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true,
+        "response_exact": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "price-first-direct",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there."
+      }
+    },
+    {
+      "case_id": "prod-072-price-cost-control",
+      "input_type": "speech",
+      "customer_turn": "How much does this cost?",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "price-first-direct",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "bridge_response": null,
+        "agent_response": "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there."
+      },
+      "gates": {
+        "not_coverage_boundary": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true,
+        "response_exact": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "price-first-direct",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there."
+      }
+    },
+    {
+      "case_id": "prod-072-healthcare-diagnose-control",
+      "input_type": "speech",
+      "customer_turn": "I need a doctor to diagnose this.",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "healthcare-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "bridge_response": null,
+        "agent_response": "I can't give medical advice, but I can send you to someone qualified."
+      },
+      "gates": {
+        "not_coverage_boundary": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true,
+        "response_exact": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "healthcare-boundary-route",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I can't give medical advice, but I can send you to someone qualified."
+      }
+    },
+    {
+      "case_id": "prod-072-healthcare-medical-control",
+      "input_type": "speech",
+      "customer_turn": "Is this medical treatment?",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "healthcare-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "bridge_response": null,
+        "agent_response": "I can't give medical advice, but I can send you to someone qualified."
+      },
+      "gates": {
+        "not_coverage_boundary": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true,
+        "response_exact": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "healthcare-boundary-route",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I can't give medical advice, but I can send you to someone qualified."
+      }
+    }
+  ]
+}

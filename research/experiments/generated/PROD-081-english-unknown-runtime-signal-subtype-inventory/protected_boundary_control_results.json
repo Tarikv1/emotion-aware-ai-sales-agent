@@ -1,0 +1,153 @@
+{
+  "checkpoint_id": "PROD-081-english-unknown-runtime-signal-subtype-inventory",
+  "source_checkpoint_id": "PROD-080-english-customer-move-remaining-slice-selection",
+  "items": [
+    {
+      "case_id": "prod-081-control-do-not-call",
+      "customer_turn": "Do not call me again.",
+      "expected_sales_difficulty": "do-not-call",
+      "input_type": "speech",
+      "observed_sales_difficulty": "do-not-call",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "do-not-call",
+        "interest_state": "do-not-call",
+        "selected_strategy": "rapport",
+        "next_action": "suppress-contact",
+        "call_control": "end-call",
+        "agent_response": "Understood. I will mark this so you are not called again. Goodbye."
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-081-control-human-request",
+      "customer_turn": "I want to speak to a human specialist.",
+      "expected_sales_difficulty": "human-request",
+      "input_type": "speech",
+      "observed_sales_difficulty": "human-request",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "human-request",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "Of course. I will pass this to a human specialist."
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-081-control-payment",
+      "customer_turn": "I will not give card details over the phone.",
+      "expected_sales_difficulty": "payment-safety-boundary",
+      "input_type": "speech",
+      "observed_sales_difficulty": "payment-safety-boundary",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "payment-safety-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only."
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-081-control-coverage",
+      "customer_turn": "Is this covered by insurance?",
+      "expected_sales_difficulty": "coverage-boundary-route",
+      "input_type": "speech",
+      "observed_sales_difficulty": "coverage-boundary-route",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "coverage-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-081-control-healthcare",
+      "customer_turn": "Is this medical treatment right for me?",
+      "expected_sales_difficulty": "healthcare-boundary-route",
+      "input_type": "speech",
+      "observed_sales_difficulty": "healthcare-boundary-route",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "healthcare-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I can't give medical advice, but I can send you to someone qualified."
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-081-control-support",
+      "customer_turn": "I need support with my account.",
+      "expected_sales_difficulty": "support-route",
+      "input_type": "speech",
+      "observed_sales_difficulty": "support-route",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "support-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "Of course. I'll send this to support right away. Have a good day."
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-081-control-email-only",
+      "customer_turn": "Just email me.",
+      "expected_sales_difficulty": "email-only-boundary",
+      "input_type": "speech",
+      "observed_sales_difficulty": "email-only-boundary",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "email-only-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "agent_response": "Understood. I will keep this to email only and will not push for a call."
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-081-control-voicemail",
+      "customer_turn": "",
+      "input_type": "voicemail-detected",
+      "expected_sales_difficulty": "voicemail",
+      "observed_sales_difficulty": "voicemail",
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "voicemail",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "agent_response": ""
+      },
+      "passed": true,
+      "issue_codes": []
+    }
+  ],
+  "control_count": 8,
+  "failed_control_count": 0,
+  "failed_control_case_ids": []
+}

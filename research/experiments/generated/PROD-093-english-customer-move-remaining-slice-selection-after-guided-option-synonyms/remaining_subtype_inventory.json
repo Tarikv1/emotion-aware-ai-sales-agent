@@ -1,0 +1,45 @@
+{
+  "checkpoint_id": "PROD-093-english-customer-move-remaining-slice-selection-after-guided-option-synonyms",
+  "source_checkpoint_id": "PROD-092-english-guided-option-synonym-coverage-post-patch-regression",
+  "remaining_subtype_count": 3,
+  "selected_subtype_id": "next_step_process_clarity",
+  "selected_remaining_case_id": "prod-081-next-step-01",
+  "remaining_subtypes": [
+    {
+      "subtype_id": "recommendation_roleplay_boundary",
+      "case_id": "prod-081-recommendation-02",
+      "customer_turn": "What would you do in my position?",
+      "current_observed_sales_difficulty": "unknown-runtime-signal",
+      "latest_source_observed_sales_difficulty": "recommendation-roleplay-boundary",
+      "checkpoint_time_gap_evidence": true,
+      "risk_level": "high",
+      "requires_human_review_before_probe": true,
+      "selection_status": "deferred_for_review",
+      "why": "A customer asking what the agent would do invites advice-roleplay framing. That is persuasion-sensitive enough to review before probing."
+    },
+    {
+      "subtype_id": "next_step_process_clarity",
+      "case_id": "prod-081-next-step-01",
+      "customer_turn": "What happens after I say yes?",
+      "current_observed_sales_difficulty": "unknown-runtime-signal",
+      "latest_source_observed_sales_difficulty": "next-step-process-clarity",
+      "checkpoint_time_gap_evidence": true,
+      "risk_level": "medium",
+      "requires_human_review_before_probe": false,
+      "selection_status": "selected",
+      "why": "The customer is asking for the next step after a yes, not for payment collection or contract signing. A narrow probe can test process clarity while preserving the no-payment-on-call boundary."
+    },
+    {
+      "subtype_id": "generic_decision_confusion",
+      "case_id": "prod-081-unclear-interest-01",
+      "customer_turn": "I am listening, but I do not know what I am supposed to decide yet.",
+      "current_observed_sales_difficulty": "unknown-runtime-signal",
+      "latest_source_observed_sales_difficulty": "unknown-runtime-signal",
+      "checkpoint_time_gap_evidence": true,
+      "risk_level": "medium",
+      "requires_human_review_before_probe": false,
+      "selection_status": "kept_unknown",
+      "why": "The customer has not stated a concrete next-step, option, payment, or comparison question. A generic decision-frame route would be broader and less testable."
+    }
+  ]
+}

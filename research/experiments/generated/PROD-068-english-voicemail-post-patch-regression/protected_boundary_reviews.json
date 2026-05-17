@@ -1,0 +1,180 @@
+{
+  "checkpoint_id": "PROD-068-english-voicemail-post-patch-regression",
+  "items": [
+    {
+      "case_id": "prod-068-protected-do-not-call",
+      "input_type": "speech",
+      "transcript": "please stop calling me",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "do-not-call",
+        "selected_strategy": "rapport",
+        "next_action": "suppress-contact",
+        "call_control": "end-call",
+        "background_modules": [
+          "crm-suppression-update"
+        ],
+        "bridge_response": null,
+        "agent_response": "Understood. I will mark this so you are not called again. Goodbye."
+      },
+      "gates": {
+        "not_voicemail": true,
+        "response_not_empty": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "do-not-call",
+        "selected_strategy": "rapport",
+        "next_action": "suppress-contact",
+        "call_control": "end-call"
+      }
+    },
+    {
+      "case_id": "prod-068-protected-payment",
+      "input_type": "speech",
+      "transcript": "I am not giving payment details",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "payment-safety-boundary",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "bridge_response": null,
+        "agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only."
+      },
+      "gates": {
+        "not_voicemail": true,
+        "response_not_empty": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "payment-safety-boundary",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call"
+      }
+    },
+    {
+      "case_id": "prod-068-protected-support",
+      "input_type": "speech",
+      "transcript": "I need support with my account",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "support-route",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "bridge_response": null,
+        "agent_response": "Of course. I'll send this to support right away. Have a good day."
+      },
+      "gates": {
+        "not_voicemail": true,
+        "response_not_empty": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "support-route",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate"
+      }
+    },
+    {
+      "case_id": "prod-068-protected-email-only",
+      "input_type": "speech",
+      "transcript": "just email me",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "email-only-boundary",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "bridge_response": null,
+        "agent_response": "Understood. I will keep this to email only and will not push for a call."
+      },
+      "gates": {
+        "not_voicemail": true,
+        "response_not_empty": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "email-only-boundary",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call"
+      }
+    },
+    {
+      "case_id": "prod-068-protected-human-request",
+      "input_type": "speech",
+      "transcript": "I want a human specialist",
+      "stage": "objection",
+      "runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "human-request",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "bridge_response": null,
+        "agent_response": "Of course. I will pass this to a human specialist."
+      },
+      "gates": {
+        "not_voicemail": true,
+        "response_not_empty": true,
+        "sales_difficulty_expected": true,
+        "strategy_expected": true,
+        "next_action_expected": true,
+        "call_control_expected": true
+      },
+      "passed": true,
+      "issue_codes": [],
+      "expected_runtime": {
+        "sales_difficulty": "human-request",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate"
+      }
+    }
+  ]
+}

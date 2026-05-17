@@ -1,0 +1,28 @@
+{
+  "checkpoint_id": "PROD-091-english-guided-option-synonym-coverage-runtime-patch",
+  "source_checkpoint_id": "PROD-090-english-guided-option-synonym-coverage-narrow-probe",
+  "runtime_file": "runtime/core/realtime_turns.py",
+  "runtime_patch_applied": true,
+  "selected_gap_case_ids": [
+    "prod-081-guided-option-02",
+    "prod-081-plan-difference-02"
+  ],
+  "added_option_signals": [
+    "start small",
+    "fuller option",
+    "side by side"
+  ],
+  "added_action_signals": [
+    "show",
+    "side by side",
+    "worth it",
+    "worth"
+  ],
+  "added_response_branches": [
+    "worth it",
+    "side by side",
+    "start small/fuller option"
+  ],
+  "provider_side_by_side_guard_added": true,
+  "review_html_created": false
+}

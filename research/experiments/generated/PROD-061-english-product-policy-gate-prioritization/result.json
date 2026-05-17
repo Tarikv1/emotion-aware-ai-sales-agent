@@ -1,0 +1,52 @@
+{
+  "checkpoint_id": "PROD-061-english-product-policy-gate-prioritization",
+  "checkpoint_name": "English Product-Policy Gate Prioritization",
+  "source_checkpoint_id": "PROD-060-runtime-promotion-path-decision",
+  "validation": {
+    "passed": true,
+    "priority_gate_passed": true
+  },
+  "summary": {
+    "prioritization_only": true,
+    "human_review_acceptance_recorded": true,
+    "source_validator_passed": true,
+    "selected_first_gate": "context_sensitive_autonomy_behavior",
+    "selected_first_gate_status": "selected_for_next_probe_still_blocked",
+    "product_policy_gate_count": 4,
+    "still_blocked_count": 14,
+    "still_blocked": [
+      "customer_move_classification_outside_selected_non_refusal_groups",
+      "voicemail_action_only_behavior",
+      "coverage_knowledge_policy_behavior",
+      "context_sensitive_autonomy_behavior",
+      "native_german_review",
+      "voice_playback_quality",
+      "retrieval_default",
+      "provider_or_private_data_use",
+      "legal_compliance_review",
+      "public_demo_use",
+      "real_customer_use",
+      "payment_collection",
+      "contract_signing",
+      "production_runtime_promotion"
+    ],
+    "requires_human_review_before_next_checkpoint": false,
+    "recommended_next_checkpoint": "PROD-062-english-context-sensitive-autonomy-policy-probe",
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  }
+}

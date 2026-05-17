@@ -1,0 +1,27 @@
+{
+  "checkpoint_id": "PROD-069-english-remaining-product-policy-gate-selection-after-voicemail",
+  "checkpoint_name": "English Remaining Product-Policy Gate Selection After Voicemail",
+  "source_checkpoint_id": "PROD-068-english-voicemail-post-patch-regression",
+  "priority_source_checkpoint_id": "PROD-061-english-product-policy-gate-prioritization",
+  "prior_selection_checkpoint_id": "PROD-065-english-remaining-product-policy-gate-selection",
+  "scope": "remaining_english_product_policy_gate_selection_after_voicemail_only",
+  "selected_gate_id": "coverage_knowledge_policy_behavior",
+  "remaining_gate_ids": [
+    "coverage_knowledge_policy_behavior",
+    "customer_move_classification_outside_selected_non_refusal_groups"
+  ],
+  "runtime_change_requested": false,
+  "response_text_change_requested": false,
+  "classifier_change_requested": false,
+  "retrieval_change_requested": false,
+  "requires_human_review_before_next_checkpoint": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-070-english-coverage-knowledge-policy-probe",
+  "selection_basis": [
+    "PROD-068 voicemail post-patch regression passed with zero failed cases.",
+    "PROD-061 ranked coverage knowledge-policy before broad customer-move classification.",
+    "PROD-065 deferred coverage and broad classifier expansion while voicemail was still pending.",
+    "Coverage behavior needs a policy boundary probe before any runtime, retrieval, or product-fact claim.",
+    "Broad customer-move classifier expansion remains the highest-blast-radius remaining English gate."
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "checkpoint_id": "PROD-062-english-context-sensitive-autonomy-policy-probe",
+  "decision": "autonomy_policy_probe_passed_recommend_narrow_runtime_patch",
+  "candidate_response": "Okay, no rush. We can keep this low-pressure and only clarify what you need.",
+  "runtime_patch_allowed_in_prod_062": false,
+  "runtime_patch_recommended_next": true,
+  "requires_human_review_before_next_checkpoint": false,
+  "recommended_next_checkpoint": "PROD-063-english-autonomy-check-runtime-wording-patch"
+}

@@ -1,0 +1,52 @@
+{
+  "checkpoint_id": "PROD-083-english-guided-option-selection-review-import",
+  "checkpoint_name": "English Guided Option Selection Review Import",
+  "source_checkpoint_id": "PROD-082-english-guided-option-selection-review",
+  "validation": {
+    "passed": true,
+    "review_imported": true
+  },
+  "summary": {
+    "review_import_only": true,
+    "source_validator_passed": true,
+    "human_review_imported": true,
+    "selected_review_item": "guided_option_selection_candidate",
+    "imported_review_decision": "needs_rewrite_before_probe",
+    "narrow_policy_probe_approved": false,
+    "rewrite_required": true,
+    "plan_feature_matrix_required": true,
+    "campaign_payment_path_required_before_payment_explanation": true,
+    "sparse_contextual_discourse_markers_candidate": true,
+    "random_fillers_allowed": false,
+    "review_html_created": false,
+    "recommended_next_checkpoint": "PROD-084-english-guided-option-selection-rewrite-design",
+    "recommended_next_checkpoint_requires_human_review": false,
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "classifier_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  },
+  "outputs": {
+    "result": "research/experiments/generated/PROD-083-english-guided-option-selection-review-import/result.json",
+    "report": "research/experiments/generated/PROD-083-english-guided-option-selection-review-import/report.md",
+    "imported_review_summary": "research/experiments/generated/PROD-083-english-guided-option-selection-review-import/imported_review_summary.json",
+    "rewrite_requirements": "research/experiments/generated/PROD-083-english-guided-option-selection-review-import/rewrite_requirements.json",
+    "plan_fact_requirements": "research/experiments/generated/PROD-083-english-guided-option-selection-review-import/plan_fact_requirements.json",
+    "payment_workflow_requirements": "research/experiments/generated/PROD-083-english-guided-option-selection-review-import/payment_workflow_requirements.json",
+    "spoken_naturalness_constraints": "research/experiments/generated/PROD-083-english-guided-option-selection-review-import/spoken_naturalness_constraints.json",
+    "evidence_summary": "research/experiments/generated/PROD-083-english-guided-option-selection-review-import/evidence_summary.json"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "checkpoint_id": "PROD-077-english-provider-comparison-narrow-probe-design",
+  "route_name": "provider-comparison",
+  "design_status": "ready_for_narrow_runtime_patch_checkpoint",
+  "required_signal_groups": [
+    "compare_or_difference_signal",
+    "known_comparison_target_signal"
+  ],
+  "compare_or_difference_signal": [
+    "compare",
+    "comparison",
+    "different",
+    "difference",
+    "versus",
+    "vs"
+  ],
+  "known_comparison_target_signal": [
+    "current provider",
+    "current setup",
+    "what we already use",
+    "current terms",
+    "existing provider"
+  ],
+  "excluded_signal_groups": [
+    "payment_or_card_details",
+    "contract_or_signup",
+    "price_only",
+    "generic_product_question",
+    "provider_exists_without_comparison_request"
+  ],
+  "branch_order": {
+    "insert_before": "existing-provider-gap",
+    "reason": "Current provider phrases are already consumed by existing-provider-gap before provider-comparison can be reached."
+  },
+  "runtime_patch_allowed_inside_checkpoint": false,
+  "broad_customer_move_classifier_patch_allowed": false
+}

@@ -1,0 +1,333 @@
+{
+  "checkpoint_id": "PROD-078-english-provider-comparison-runtime-patch",
+  "items": [
+    {
+      "case_id": "prod-077-current-provider-difference",
+      "case_type": "positive_probe",
+      "customer_turn": "How is this different from our current provider?",
+      "expected_runtime": {
+        "sales_difficulty": "provider-comparison",
+        "response_language": "en",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair. We can compare fit against what you use now before you decide."
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "provider-comparison",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair. We can compare fit against what you use now before you decide."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_matches": true,
+        "strategy_matches": true,
+        "next_action_matches": true,
+        "call_control_matches": true,
+        "response_matches": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-077-compare-current-use",
+      "case_type": "positive_probe",
+      "customer_turn": "Can you compare this with what we already use?",
+      "expected_runtime": {
+        "sales_difficulty": "provider-comparison",
+        "response_language": "en",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair. We can compare fit against what you use now before you decide."
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "provider-comparison",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair. We can compare fit against what you use now before you decide."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_matches": true,
+        "strategy_matches": true,
+        "next_action_matches": true,
+        "call_control_matches": true,
+        "response_matches": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-077-versus-current-setup",
+      "case_type": "positive_probe",
+      "customer_turn": "What would be different versus our current setup?",
+      "expected_runtime": {
+        "sales_difficulty": "provider-comparison",
+        "response_language": "en",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair. We can compare fit against what you use now before you decide."
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "provider-comparison",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair. We can compare fit against what you use now before you decide."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_matches": true,
+        "strategy_matches": true,
+        "next_action_matches": true,
+        "call_control_matches": true,
+        "response_matches": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-077-current-terms-comparison",
+      "case_type": "positive_probe",
+      "customer_turn": "How does this compare with our current terms?",
+      "expected_runtime": {
+        "sales_difficulty": "provider-comparison",
+        "response_language": "en",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair. We can compare fit against what you use now before you decide."
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "provider-comparison",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair. We can compare fit against what you use now before you decide."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_matches": true,
+        "strategy_matches": true,
+        "next_action_matches": true,
+        "call_control_matches": true,
+        "response_matches": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-078-compare-terms-with-what-we-have",
+      "case_type": "positive_probe",
+      "customer_turn": "Can you compare your terms with what we already have?",
+      "expected_runtime": {
+        "sales_difficulty": "provider-comparison",
+        "response_language": "en",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair. We can compare fit against what you use now before you decide."
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "provider-comparison",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair. We can compare fit against what you use now before you decide."
+      },
+      "gates": {
+        "response_language_en": true,
+        "sales_difficulty_matches": true,
+        "strategy_matches": true,
+        "next_action_matches": true,
+        "call_control_matches": true,
+        "response_matches": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-077-existing-provider-no-comparison",
+      "case_type": "negative_control",
+      "customer_turn": "We already have a provider and I do not want to switch.",
+      "expected_runtime": {
+        "sales_difficulty": "existing-provider-gap",
+        "not_sales_difficulty": "provider-comparison"
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "existing-provider-gap",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "not_provider_comparison": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-077-generic-offer",
+      "case_type": "negative_control",
+      "customer_turn": "What do you offer?",
+      "expected_runtime": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "not_sales_difficulty": "provider-comparison"
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "not_provider_comparison": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-077-better-generic",
+      "case_type": "negative_control",
+      "customer_turn": "Is it better?",
+      "expected_runtime": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "not_sales_difficulty": "provider-comparison"
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "not_provider_comparison": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-077-price-only",
+      "case_type": "negative_control",
+      "customer_turn": "What does this cost?",
+      "expected_runtime": {
+        "sales_difficulty": "price-first-direct",
+        "not_sales_difficulty": "provider-comparison"
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "price-first-direct",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "not_provider_comparison": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-077-written-info",
+      "case_type": "negative_control",
+      "customer_turn": "Just send me the details in writing.",
+      "expected_runtime": {
+        "sales_difficulty": "written-info-request",
+        "not_sales_difficulty": "provider-comparison"
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "written-info-request",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "not_provider_comparison": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-077-payment-details",
+      "case_type": "protected_control",
+      "customer_turn": "Can you take payment or card details if it is better?",
+      "expected_runtime": {
+        "sales_difficulty": "payment-safety-boundary",
+        "not_sales_difficulty": "provider-comparison"
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "payment-safety-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only."
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "not_provider_comparison": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-077-sign-up",
+      "case_type": "protected_control",
+      "customer_turn": "Can you sign me up if this is better?",
+      "expected_runtime": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "not_sales_difficulty": "provider-comparison"
+      },
+      "observed_runtime": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "gates": {
+        "sales_difficulty_matches": true,
+        "not_provider_comparison": true
+      },
+      "passed": true,
+      "issue_codes": []
+    }
+  ]
+}

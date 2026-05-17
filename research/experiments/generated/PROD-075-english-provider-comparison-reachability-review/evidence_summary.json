@@ -1,0 +1,24 @@
+{
+  "checkpoint_id": "PROD-075-english-provider-comparison-reachability-review",
+  "source_checkpoint_id": "PROD-074-english-customer-move-classification-slice-inventory",
+  "source_validation": {
+    "passed": true,
+    "slice_inventory_passed": true
+  },
+  "source_summary": {
+    "unreachable_localized_response_types": [
+      "provider-comparison"
+    ],
+    "selected_next_review_item": "provider-comparison",
+    "recommended_next_checkpoint_requires_human_review": true
+  },
+  "source_validator_run": {
+    "command": "python scripts\\validate_prod_074_english_customer_move_classification_slice_inventory.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-074-english-customer-move-classification-slice-inventory validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

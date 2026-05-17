@@ -1,0 +1,145 @@
+{
+  "checkpoint_id": "PROD-072-english-coverage-knowledge-post-patch-regression",
+  "checkpoint_name": "English Coverage Knowledge Post-Patch Regression",
+  "source_checkpoint_id": "PROD-071-english-coverage-knowledge-runtime-patch",
+  "stable_guard_source_checkpoint_id": "PROD-056-english-post-patch-multi-turn-regression",
+  "voicemail_guard_source_checkpoint_id": "PROD-068-english-voicemail-post-patch-regression",
+  "scope": "english_coverage_knowledge_post_patch_regression_only",
+  "runtime_change_requested": false,
+  "classifier_change_requested": false,
+  "response_text_change_requested": false,
+  "retrieval_change_requested": false,
+  "coverage_advice_allowed": false,
+  "coverage_fact_claims_allowed": false,
+  "eligibility_claims_allowed": false,
+  "reimbursement_claims_allowed": false,
+  "requires_human_review_before_next_checkpoint": false,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-073-english-customer-move-classification-gate-decision",
+  "coverage_boundary_regression_cases": [
+    {
+      "case_id": "prod-072-eligible-reimbursement-regression",
+      "input_type": "speech",
+      "customer_turn": "Am I eligible for reimbursement?",
+      "stage": "objection"
+    },
+    {
+      "case_id": "prod-072-plan-covers-this-regression",
+      "input_type": "speech",
+      "customer_turn": "Can you tell me if my plan covers this?",
+      "stage": "objection"
+    },
+    {
+      "case_id": "prod-072-policy-reimbursed-regression",
+      "input_type": "speech",
+      "customer_turn": "Will this be reimbursed by my policy?",
+      "stage": "objection"
+    },
+    {
+      "case_id": "prod-072-covered-by-insurance-existing-boundary",
+      "input_type": "speech",
+      "customer_turn": "Is this covered by insurance?",
+      "stage": "objection"
+    },
+    {
+      "case_id": "prod-072-insurance-cover-existing-boundary",
+      "input_type": "speech",
+      "customer_turn": "Does my insurance cover this?",
+      "stage": "objection"
+    }
+  ],
+  "adjacent_control_cases": [
+    {
+      "case_id": "prod-072-product-plan-included-control",
+      "input_type": "speech",
+      "customer_turn": "Which plan is included?",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "product-detail-lookup",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "One moment. I will check the product details before I answer."
+      }
+    },
+    {
+      "case_id": "prod-072-product-what-included-control",
+      "input_type": "speech",
+      "customer_turn": "What is included?",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "product-detail-lookup",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "One moment. I will check the product details before I answer."
+      }
+    },
+    {
+      "case_id": "prod-072-price-direct-control",
+      "input_type": "speech",
+      "customer_turn": "What is the price?",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "price-first-direct",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there."
+      }
+    },
+    {
+      "case_id": "prod-072-price-cost-control",
+      "input_type": "speech",
+      "customer_turn": "How much does this cost?",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "price-first-direct",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there."
+      }
+    },
+    {
+      "case_id": "prod-072-healthcare-diagnose-control",
+      "input_type": "speech",
+      "customer_turn": "I need a doctor to diagnose this.",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "healthcare-boundary-route",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I can't give medical advice, but I can send you to someone qualified."
+      }
+    },
+    {
+      "case_id": "prod-072-healthcare-medical-control",
+      "input_type": "speech",
+      "customer_turn": "Is this medical treatment?",
+      "stage": "objection",
+      "expected_runtime": {
+        "sales_difficulty": "healthcare-boundary-route",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I can't give medical advice, but I can send you to someone qualified."
+      }
+    }
+  ],
+  "voicemail_control_cases": [
+    {
+      "case_id": "prod-072-machine-detected-voicemail-control",
+      "input_type": "voicemail-detected",
+      "customer_turn": "",
+      "stage": "opening"
+    },
+    {
+      "case_id": "prod-072-after-tone-voicemail-control",
+      "input_type": "voicemail-detected",
+      "customer_turn": "Please leave your message after the tone.",
+      "stage": "opening"
+    }
+  ]
+}

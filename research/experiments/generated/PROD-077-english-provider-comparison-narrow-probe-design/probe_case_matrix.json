@@ -1,0 +1,75 @@
+{
+  "checkpoint_id": "PROD-077-english-provider-comparison-narrow-probe-design",
+  "positive_probe_cases": [
+    {
+      "case_id": "prod-077-current-provider-difference",
+      "customer_turn": "How is this different from our current provider?",
+      "expected_sales_difficulty": "provider-comparison",
+      "why": "Contains a difference signal plus a current-provider comparison target."
+    },
+    {
+      "case_id": "prod-077-compare-current-use",
+      "customer_turn": "Can you compare this with what we already use?",
+      "expected_sales_difficulty": "provider-comparison",
+      "why": "Contains a compare signal plus an existing-use comparison target."
+    },
+    {
+      "case_id": "prod-077-versus-current-setup",
+      "customer_turn": "What would be different versus our current setup?",
+      "expected_sales_difficulty": "provider-comparison",
+      "why": "Contains a difference/versus signal plus current setup target."
+    },
+    {
+      "case_id": "prod-077-current-terms-comparison",
+      "customer_turn": "How does this compare with our current terms?",
+      "expected_sales_difficulty": "provider-comparison",
+      "why": "Contains compare signal plus a current-terms target, without asking for invented terms."
+    }
+  ],
+  "negative_control_cases": [
+    {
+      "case_id": "prod-077-existing-provider-no-comparison",
+      "customer_turn": "We already have a provider and I do not want to switch.",
+      "expected_sales_difficulty": "existing-provider-gap",
+      "why": "Has a provider target but no compare/difference request."
+    },
+    {
+      "case_id": "prod-077-generic-offer",
+      "customer_turn": "What do you offer?",
+      "expected_sales_difficulty": "unknown-runtime-signal",
+      "why": "Generic product question without comparison target."
+    },
+    {
+      "case_id": "prod-077-better-generic",
+      "customer_turn": "Is it better?",
+      "expected_sales_difficulty": "unknown-runtime-signal",
+      "why": "Comparative wording without a known comparison target."
+    },
+    {
+      "case_id": "prod-077-price-only",
+      "customer_turn": "What does this cost?",
+      "expected_sales_difficulty": "price-first-direct",
+      "why": "Price question should stay in the price route."
+    },
+    {
+      "case_id": "prod-077-written-info",
+      "customer_turn": "Just send me the details in writing.",
+      "expected_sales_difficulty": "written-info-request",
+      "why": "Written-info/email request is not a provider comparison."
+    }
+  ],
+  "protected_control_cases": [
+    {
+      "case_id": "prod-077-payment-details",
+      "customer_turn": "Can you take payment or card details if it is better?",
+      "expected_sales_difficulty": "payment-safety-boundary",
+      "why": "Payment safety outranks comparison language."
+    },
+    {
+      "case_id": "prod-077-sign-up",
+      "customer_turn": "Can you sign me up if this is better?",
+      "expected_sales_difficulty": "unknown-runtime-signal",
+      "why": "Sign-up wording must not become provider-comparison or contract handling."
+    }
+  ]
+}

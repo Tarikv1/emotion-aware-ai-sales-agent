@@ -1,0 +1,29 @@
+{
+  "checkpoint_id": "PROD-073-english-customer-move-classification-gate-decision",
+  "source_checkpoint_id": "PROD-072-english-coverage-knowledge-post-patch-regression",
+  "source_validation": {
+    "passed": true,
+    "post_patch_regression_passed": true,
+    "coverage_boundary_regression_passed": true,
+    "adjacent_controls_preserved": true,
+    "voicemail_controls_preserved": true
+  },
+  "source_summary": {
+    "failed_case_count": 0,
+    "stable_english_guard_passed": true,
+    "voicemail_guard_passed": true,
+    "recommended_next_checkpoint": "PROD-073-english-customer-move-classification-gate-decision"
+  },
+  "source_validator_run": {
+    "command": "python scripts\\validate_prod_072_english_coverage_knowledge_post_patch_regression.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-072-english-coverage-knowledge-post-patch-regression validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  },
+  "priority_source_checkpoint_id": "PROD-061-english-product-policy-gate-prioritization",
+  "priority_gate_rank": 4,
+  "priority_gate_risk": "Could route customer turns into newly promoted behavior without enough evidence for each branch."
+}

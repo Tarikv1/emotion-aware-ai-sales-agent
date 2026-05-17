@@ -1,0 +1,24 @@
+{
+  "checkpoint_id": "PROD-076-english-provider-comparison-review-import",
+  "source_checkpoint_id": "PROD-075-english-provider-comparison-reachability-review",
+  "source_validation": {
+    "passed": true,
+    "review_packet_created": true
+  },
+  "source_summary": {
+    "review_html_created": true,
+    "requires_human_review_before_next_checkpoint": true,
+    "selected_review_item": "provider-comparison"
+  },
+  "source_validator_run": {
+    "command": "python scripts\\validate_prod_075_english_provider_comparison_reachability_review.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-075-english-provider-comparison-reachability-review validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  },
+  "review_import_path": "research/experiments/imports/PROD-075-english-provider-comparison-reachability-review/prod_075_provider_comparison_review_export_from_chat.json",
+  "review_import_decision": "approve_for_narrow_probe_with_brevity_constraint"
+}
