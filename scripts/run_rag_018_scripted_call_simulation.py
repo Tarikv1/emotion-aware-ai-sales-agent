@@ -233,7 +233,7 @@ def render_report(payload: dict[str, Any]) -> str:
         f"- Average retrieval latency: `{summary['avg_retrieval_elapsed_ms']} ms`",
         f"- Decision: `{payload['decision']}`",
         "",
-        "Interpretation: keep RAG-018 opt-in and do not make retrieval default. The current narrow influence paths improve the German price-objection, send-me-info, authority, and trust turns while preserving protected contexts.",
+        "Interpretation: keep RAG-018 opt-in and do not make retrieval default. The current narrow influence paths improve German price, English price, send-me-info, and authority turns while preserving protected contexts.",
         "",
         "## Case Table",
         "",

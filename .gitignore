@@ -19,6 +19,7 @@ config/local/*
 runtime/config/local/*
 !runtime/config/local/.gitignore
 !runtime/config/local/voice_ids.example.json
+!runtime/config/local/dialogue_reasoner.env.example
 
 __pycache__/
 *.pyc

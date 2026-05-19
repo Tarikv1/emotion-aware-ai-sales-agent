@@ -1,0 +1,508 @@
+{
+  "experiment_id": "DIALOGUE-REASONER-001",
+  "purpose": "Freeze observed and likely LIVE-DEMO-001 dialogue failures before adding a structured runtime-owned dialogue reasoner.",
+  "source_boundary": {
+    "uses_private_audio": false,
+    "uses_provider_calls": false,
+    "opens_prod_102": false,
+    "case_source": "synthetic live-demo regression prompts derived from local supervised demo feedback"
+  },
+  "default_campaign_id": "campaign-prod-005-b2b-software",
+  "cases": [
+    {
+      "case_id": "agent-open-starts-sales-call",
+      "transcript": "__agent_open__",
+      "prior_turns": [],
+      "expected": {
+        "dialogue_act": "agent_open",
+        "buyer_intent": "start_call",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "greeting-opens-like-sales-call",
+      "transcript": "hey what's up",
+      "prior_turns": [],
+      "expected": {
+        "dialogue_act": "opening_greeting",
+        "buyer_intent": "small_talk_start",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "caller-identity-recall-after-opener",
+      "transcript": "where were you calling from again?",
+      "prior_turns": [
+        {
+          "transcript": "__agent_open__",
+          "final_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute?",
+          "continuity_reason": "agent_opening_started",
+          "dialogue_focus": "qualification"
+        }
+      ],
+      "expected": {
+        "dialogue_act": "caller_identity_question",
+        "buyer_intent": "identify_caller",
+        "resolved_topic": "caller_identity",
+        "sales_stage": "repair",
+        "response_strategy": "answer_identity_then_offer_reason",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "clarify-previous-question-qualification",
+      "transcript": "I didn't understand what you asked before",
+      "prior_turns": [
+        {
+          "transcript": "__agent_open__",
+          "final_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute to check whether missed callbacks or handoffs are costing time?",
+          "continuity_reason": "agent_opening_started",
+          "dialogue_focus": "qualification"
+        }
+      ],
+      "expected": {
+        "dialogue_act": "previous_question_clarification",
+        "buyer_intent": "clarify_prior_question",
+        "resolved_topic": "qualification",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_prior_question",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "clarify-previous-question-price",
+      "transcript": "what do you mean by that?",
+      "prior_turns": [
+        {
+          "transcript": "I want to talk about the price",
+          "final_response": "Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?",
+          "continuity_reason": "initial_price_focus_selected",
+          "dialogue_focus": "price"
+        }
+      ],
+      "expected": {
+        "dialogue_act": "previous_question_clarification",
+        "buyer_intent": "clarify_prior_question",
+        "resolved_topic": "price",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_prior_question",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "bare-no-after-opener",
+      "transcript": "no",
+      "prior_turns": [
+        {
+          "transcript": "__agent_open__",
+          "final_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute to check whether missed callbacks or handoffs are costing time?",
+          "continuity_reason": "agent_opening_started",
+          "dialogue_focus": "qualification"
+        }
+      ],
+      "expected": {
+        "dialogue_act": "ambiguous_negative",
+        "buyer_intent": "reject_or_decline_unclear",
+        "resolved_topic": "qualification",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_rejection_target",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "no-time-needs-callback-time",
+      "transcript": "I don't have time right now",
+      "prior_turns": [
+        {
+          "transcript": "__agent_open__",
+          "final_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute?",
+          "continuity_reason": "agent_opening_started",
+          "dialogue_focus": "qualification"
+        }
+      ],
+      "expected": {
+        "dialogue_act": "callback_request",
+        "buyer_intent": "schedule_callback",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "ask_for_callback_time",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "callback-time-confirms-and-ends",
+      "transcript": "call me 10 a.m. tomorrow",
+      "prior_turns": [
+        {
+          "transcript": "I don't have time right now",
+          "final_response": "No problem. What callback time should I note?",
+          "continuity_reason": "callback_request_time_needed",
+          "dialogue_focus": "timing"
+        }
+      ],
+      "expected": {
+        "dialogue_act": "callback_time",
+        "buyer_intent": "confirm_callback_time",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "confirm_schedule_and_end",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "direct-price-question",
+      "transcript": "I want to talk about the price",
+      "prior_turns": [],
+      "expected": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "low-info-after-price",
+      "transcript": "hmm okay that's interesting",
+      "prior_turns": [
+        {
+          "transcript": "I want to talk about the price",
+          "final_response": "Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?",
+          "continuity_reason": "initial_price_focus_selected",
+          "dialogue_focus": "price"
+        }
+      ],
+      "expected": {
+        "dialogue_act": "low_information_acknowledgement",
+        "buyer_intent": "acknowledge_continue",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "growth-plan-value",
+      "transcript": "what do I get with the $59 Growth plan?",
+      "prior_turns": [],
+      "expected": {
+        "dialogue_act": "plan_question",
+        "buyer_intent": "understand_plan_value",
+        "resolved_topic": "growth_plan",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "starter-plan-fit",
+      "transcript": "is Starter enough for a small team?",
+      "prior_turns": [],
+      "expected": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "starter_plan",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "product-explanation",
+      "transcript": "what does your product actually do?",
+      "prior_turns": [],
+      "expected": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "workflow-scope",
+      "transcript": "what is included in the workflow?",
+      "prior_turns": [],
+      "expected": {
+        "dialogue_act": "workflow_question",
+        "buyer_intent": "understand_workflow",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "manual-tracking-objection",
+      "transcript": "we already track leads manually in a spreadsheet",
+      "prior_turns": [],
+      "expected": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "handoffs-selected-after-price",
+      "transcript": "handoffs are the bigger problem",
+      "prior_turns": [
+        {
+          "transcript": "I want to talk about the price",
+          "final_response": "Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?",
+          "continuity_reason": "initial_price_focus_selected",
+          "dialogue_focus": "price"
+        }
+      ],
+      "expected": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "handoffs",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "callbacks-selected-after-price",
+      "transcript": "missed callbacks happen more often",
+      "prior_turns": [
+        {
+          "transcript": "I want to talk about the price",
+          "final_response": "Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?",
+          "continuity_reason": "initial_price_focus_selected",
+          "dialogue_focus": "price"
+        }
+      ],
+      "expected": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "callbacks",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "fit-question",
+      "transcript": "I am not sure this fits our situation",
+      "prior_turns": [],
+      "expected": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "fit",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "timing-objection",
+      "transcript": "the timing is not good right now",
+      "prior_turns": [],
+      "expected": {
+        "dialogue_act": "timing_objection",
+        "buyer_intent": "defer_timing",
+        "resolved_topic": "timing",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "effort-worth-objection",
+      "transcript": "I am not sure reviewing options is worth my time",
+      "prior_turns": [],
+      "expected": {
+        "dialogue_act": "effort_objection",
+        "buyer_intent": "evaluate_effort",
+        "resolved_topic": "effort",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "salesforce-integration-boundary",
+      "transcript": "does it integrate with Salesforce?",
+      "prior_turns": [],
+      "expected": {
+        "dialogue_act": "integration_question",
+        "buyer_intent": "verify_integration",
+        "resolved_topic": "integration",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "safety_boundary": "integration_claim_boundary"
+      }
+    },
+    {
+      "case_id": "security-boundary",
+      "transcript": "are you SOC 2 certified?",
+      "prior_turns": [],
+      "expected": {
+        "dialogue_act": "security_question",
+        "buyer_intent": "verify_security",
+        "resolved_topic": "security",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "safety_boundary": "security_claim_boundary"
+      }
+    },
+    {
+      "case_id": "specialist-not-needed-for-basics",
+      "transcript": "do I need to talk to a specialist for basic pricing?",
+      "prior_turns": [],
+      "expected": {
+        "dialogue_act": "specialist_request",
+        "buyer_intent": "request_human",
+        "resolved_topic": "handoff_boundary",
+        "sales_stage": "boundary",
+        "response_strategy": "avoid_unnecessary_handoff",
+        "safety_boundary": "human_handoff_boundary"
+      }
+    },
+    {
+      "case_id": "topic-shift-price-to-product",
+      "transcript": "but what does your product actually do?",
+      "prior_turns": [
+        {
+          "transcript": "I want to talk about the price",
+          "final_response": "Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?",
+          "continuity_reason": "initial_price_focus_selected",
+          "dialogue_focus": "price"
+        }
+      ],
+      "expected": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "topic-shift-price-to-workflow",
+      "transcript": "what does the workflow include?",
+      "prior_turns": [
+        {
+          "transcript": "I want to talk about the price",
+          "final_response": "Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?",
+          "continuity_reason": "initial_price_focus_selected",
+          "dialogue_focus": "price"
+        }
+      ],
+      "expected": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "repeat-price-without-loop",
+      "transcript": "can you tell me more about the price?",
+      "prior_turns": [
+        {
+          "transcript": "I want to talk about the price",
+          "final_response": "Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?",
+          "continuity_reason": "initial_price_focus_selected",
+          "dialogue_focus": "price"
+        }
+      ],
+      "expected": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "generic-followup-after-qualification",
+      "transcript": "what else should I know?",
+      "prior_turns": [
+        {
+          "transcript": "__agent_open__",
+          "final_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute to check whether missed callbacks or handoffs are costing time?",
+          "continuity_reason": "agent_opening_started",
+          "dialogue_focus": "qualification"
+        }
+      ],
+      "expected": {
+        "dialogue_act": "low_information_acknowledgement",
+        "buyer_intent": "acknowledge_continue",
+        "resolved_topic": "qualification",
+        "sales_stage": "qualification",
+        "response_strategy": "proactive_guided_selling",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "asr-fragment-repair",
+      "transcript": "it's about the",
+      "prior_turns": [],
+      "expected": {
+        "dialogue_act": "asr_fragment",
+        "buyer_intent": "repair_asr",
+        "resolved_topic": "asr_quality",
+        "sales_stage": "repair",
+        "response_strategy": "repeat_request",
+        "safety_boundary": "asr_quality_boundary"
+      }
+    },
+    {
+      "case_id": "off-topic-unclear-turn",
+      "transcript": "the screen froze for a second",
+      "prior_turns": [
+        {
+          "transcript": "__agent_open__",
+          "final_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute to check whether missed callbacks or handoffs are costing time?",
+          "continuity_reason": "agent_opening_started",
+          "dialogue_focus": "qualification"
+        }
+      ],
+      "expected": {
+        "dialogue_act": "unknown",
+        "buyer_intent": "off_topic_or_unclear",
+        "resolved_topic": "unknown",
+        "sales_stage": "repair",
+        "response_strategy": "refocus_to_sales_call",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "recommendation-request-preserves-agency",
+      "transcript": "what do you recommend I choose?",
+      "prior_turns": [
+        {
+          "transcript": "I want to talk about the price",
+          "final_response": "Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?",
+          "continuity_reason": "initial_price_focus_selected",
+          "dialogue_focus": "price"
+        }
+      ],
+      "expected": {
+        "dialogue_act": "recommendation_request",
+        "buyer_intent": "ask_for_recommendation",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "diagnose_before_recommendation",
+        "safety_boundary": "agency_preservation_boundary"
+      }
+    }
+  ]
+}

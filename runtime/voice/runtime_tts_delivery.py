@@ -21,6 +21,13 @@ from runtime.providers.tts_provider_clients import (
 
 ROOT = Path(__file__).resolve().parents[2]
 RUNTIME_TTS_DELIVERY_ID = "RESP-003-runtime-live-tts"
+LIVE_DEMO_STABLE_ELEVENLABS_VOICE_SETTINGS = {
+    "stability": 0.56,
+    "similarity_boost": 0.75,
+    "style": 0.0,
+    "use_speaker_boost": True,
+    "speed": 1.06,
+}
 
 PROVIDERS = {
     "elevenlabs": {
@@ -155,6 +162,12 @@ def voice_settings_for_provider(provider: dict[str, Any], packet: dict[str, Any]
     return dict(provider.get("base_voice_settings", {}))
 
 
+def stable_voice_settings_for_provider(provider_key: str, voice_consistency_mode: str | None) -> dict[str, Any] | None:
+    if provider_key == "elevenlabs" and voice_consistency_mode == "live-demo-stable":
+        return dict(LIVE_DEMO_STABLE_ELEVENLABS_VOICE_SETTINGS)
+    return None
+
+
 def build_asset_log(
     packet: dict[str, Any],
     provider: dict[str, Any],
@@ -269,6 +282,7 @@ def build_runtime_tts_delivery(
     audio_dir: Path | None = None,
     timeout_seconds: float = 8.0,
     command_name: str = "scripts/generate_runtime_tts_delivery.py",
+    voice_consistency_mode: str | None = None,
 ) -> dict[str, Any]:
     if timeout_seconds <= 0 or timeout_seconds > 10:
         raise ValueError("timeout_seconds must be greater than 0 and no more than 10.")
@@ -285,7 +299,10 @@ def build_runtime_tts_delivery(
     api_key = None if force_key_missing else os.environ.get(provider["api_key_env_var"])
     can_call_live = live and bool(api_key) and bool(voice_id)
     tts_input = select_tts_input(packet)
-    voice_settings = voice_settings_for_provider(provider, packet, provider_key)
+    dynamic_voice_settings = voice_settings_for_provider(provider, packet, provider_key)
+    stable_voice_settings = stable_voice_settings_for_provider(provider_key, voice_consistency_mode)
+    voice_settings = stable_voice_settings or dynamic_voice_settings
+    voice_settings_source = "live_demo_stable_profile" if stable_voice_settings else "runtime_provider_rendering"
     request_preview = redacted_request_preview(
         provider=provider,
         provider_key=provider_key,
@@ -359,6 +376,8 @@ def build_runtime_tts_delivery(
         "tts_input_source": tts_input["tts_input_source"],
         "tts_input_text": tts_input["tts_input_text"],
         "provider_rendering_used": tts_input["provider_rendering_used"],
+        "voice_consistency_mode": voice_consistency_mode or "runtime-dynamic",
+        "voice_settings_source": voice_settings_source,
         "voice_settings": voice_settings,
         "request_preview": request_preview,
         "provider_calls_made": provider_result["api_call_made"],
@@ -403,6 +422,7 @@ def attach_runtime_tts_delivery(
     audio_dir: Path | None = None,
     timeout_seconds: float = 8.0,
     command_name: str = "scripts/generate_runtime_tts_delivery.py",
+    voice_consistency_mode: str | None = None,
 ) -> dict[str, Any]:
     enriched = deepcopy(packet)
     enriched["runtime_tts_delivery_id"] = RUNTIME_TTS_DELIVERY_ID
@@ -414,5 +434,6 @@ def attach_runtime_tts_delivery(
         audio_dir=audio_dir,
         timeout_seconds=timeout_seconds,
         command_name=command_name,
+        voice_consistency_mode=voice_consistency_mode,
     )
     return enriched

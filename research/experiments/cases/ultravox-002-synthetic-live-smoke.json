@@ -1,0 +1,54 @@
+{
+  "evaluation_milestone": "ULTRAVOX-002",
+  "evaluation_scope": "One approved synthetic UltraVox hosted API smoke test. The test creates an agent-first server-WebSocket call, listens for first audio bytes, closes the socket, and deletes the call.",
+  "approved_live_test": {
+    "approved_by_user": true,
+    "approval_date": "2026-05-17",
+    "approval_scope": "one synthetic UltraVox live test",
+    "customer_audio_allowed": false,
+    "voice_cloning_allowed": false,
+    "durable_console_agent_allowed": false,
+    "runtime_behavior_change_allowed": false,
+    "opens_prod_102": false
+  },
+  "provider": {
+    "provider_id": "ultravox-hosted-api",
+    "api_key_env_var": "ULTRAVOX_API_KEY",
+    "env_file": "runtime/config/local/ultravox.env",
+    "create_call_url": "https://api.ultravox.ai/api/calls",
+    "delete_call_url_template": "https://api.ultravox.ai/api/calls/{call_id}",
+    "endpoint_type": "server-websocket",
+    "model": "fixie-ai/ultravox",
+    "voice_env_var": "ULTRAVOX_VOICE_ID_OR_NAME",
+    "voice_selection_rule": "Optional. If the env var is blank, omit voice and let UltraVox use its default voice. If set, the value must be a public included voice ID or unique voice name.",
+    "input_sample_rate": 48000,
+    "output_sample_rate": 48000,
+    "client_buffer_size_ms": 60
+  },
+  "synthetic_case": {
+    "case_id": "ultravox_002_agent_first_guarded_smoke",
+    "language": "en",
+    "campaign_id": "campaign-prod-005-b2c-telecom",
+    "customer_transcript": "Synthetic setup only. No customer audio is sent in this smoke test.",
+    "agent_first_text": "This is a synthetic UltraVox smoke test for the local sales-agent project. No customer audio is being used.",
+    "system_prompt": "You are running a single synthetic provider smoke test for a local guarded sales-agent project. Say only the provided test sentence. Do not ask follow-up questions, do not sell anything, do not collect personal data, do not mention real customers, and end the test after the short sentence.",
+    "max_duration_seconds": 12,
+    "timeout_seconds": 8,
+    "success_criteria": [
+      "create call succeeds with env-only API key",
+      "joinUrl is received but not logged",
+      "server WebSocket opens",
+      "first audio bytes are received or a provider error is captured",
+      "call delete is attempted after the test",
+      "no customer audio is uploaded",
+      "no voice cloning is used",
+      "no runtime behavior changes"
+    ]
+  },
+  "source_ids": [
+    "ultravox-create-call",
+    "ultravox-websockets",
+    "ultravox-faq",
+    "ultravox-pricing"
+  ]
+}

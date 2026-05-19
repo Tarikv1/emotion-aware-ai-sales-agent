@@ -1,0 +1,990 @@
+{
+  "experiment_id": "DIALOGUE-REASONER-001",
+  "created_at": "2026-05-19T16:01:28+00:00",
+  "mode": "baseline",
+  "default_llm_enabled": false,
+  "provider_calls_made": false,
+  "text_sent_to_provider": false,
+  "opens_prod_102": false,
+  "live_demo_response_behavior_changed": false,
+  "baseline_live_demo_001_preserved": "not-run-by-reasoner-runner",
+  "reasoner_schema": {
+    "version": 1,
+    "fields": [
+      "dialogue_act",
+      "buyer_intent",
+      "resolved_topic",
+      "sales_stage",
+      "response_strategy",
+      "must_include",
+      "must_avoid",
+      "safety_boundary",
+      "confidence"
+    ]
+  },
+  "case_source": "research/experiments/cases/dialogue-reasoner-001-live-demo-failures.json",
+  "case_count": 30,
+  "passed_count": 30,
+  "failed_cases": [],
+  "coverage": {
+    "dialogue_acts": [
+      "agent_open",
+      "ambiguous_negative",
+      "asr_fragment",
+      "callback_request",
+      "callback_time",
+      "caller_identity_question",
+      "effort_objection",
+      "fit_question",
+      "integration_question",
+      "low_information_acknowledgement",
+      "manual_tracking_objection",
+      "opening_greeting",
+      "plan_question",
+      "previous_question_clarification",
+      "price_question",
+      "product_question",
+      "recommendation_request",
+      "security_question",
+      "selected_gap",
+      "specialist_request",
+      "timing_objection",
+      "topic_shift",
+      "unknown",
+      "workflow_question"
+    ],
+    "buyer_intents": [
+      "acknowledge_continue",
+      "ask_for_recommendation",
+      "change_topic",
+      "clarify_prior_question",
+      "compare_manual_process",
+      "confirm_callback_time",
+      "defer_timing",
+      "evaluate_effort",
+      "evaluate_fit",
+      "identify_caller",
+      "name_workflow_gap",
+      "off_topic_or_unclear",
+      "reject_or_decline_unclear",
+      "repair_asr",
+      "request_human",
+      "schedule_callback",
+      "small_talk_start",
+      "start_call",
+      "understand_plan_value",
+      "understand_price",
+      "understand_product",
+      "understand_workflow",
+      "verify_integration",
+      "verify_security"
+    ],
+    "sales_stages": [
+      "boundary",
+      "discovery",
+      "objection_handling",
+      "opening",
+      "qualification",
+      "repair",
+      "scheduling",
+      "value_mapping"
+    ],
+    "response_strategies": [
+      "answer_identity_then_offer_reason",
+      "answer_then_diagnose",
+      "ask_for_callback_time",
+      "avoid_unnecessary_handoff",
+      "clarify_prior_question",
+      "clarify_rejection_target",
+      "confirm_schedule_and_end",
+      "diagnose_before_recommendation",
+      "guarded_boundary",
+      "map_gap_to_value",
+      "open_with_permission",
+      "proactive_guided_selling",
+      "refocus_to_sales_call",
+      "repeat_request"
+    ],
+    "safety_boundaries": [
+      "agency_preservation_boundary",
+      "asr_quality_boundary",
+      "human_handoff_boundary",
+      "integration_claim_boundary",
+      "none",
+      "security_claim_boundary"
+    ]
+  },
+  "runtime_modules_added": [
+    "runtime.core.dialogue_reasoner"
+  ],
+  "runtime_dependencies": [
+    "runtime.core.live_voice_session_policy",
+    "scripts.run_live_demo_001_agent_voice_call.load_campaign"
+  ],
+  "case_results": [
+    {
+      "case_id": "agent-open-starts-sales-call",
+      "transcript": "__agent_open__",
+      "prior_turn_count": 0,
+      "reasoning": {
+        "dialogue_act": "agent_open",
+        "buyer_intent": "start_call",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "must_include": [
+          "caller identity",
+          "permission check",
+          "missed callbacks or handoffs"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.99
+      },
+      "expected": {
+        "dialogue_act": "agent_open",
+        "buyer_intent": "start_call",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "greeting-opens-like-sales-call",
+      "transcript": "hey what's up",
+      "prior_turn_count": 0,
+      "reasoning": {
+        "dialogue_act": "opening_greeting",
+        "buyer_intent": "small_talk_start",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "must_include": [
+          "caller identity",
+          "permission check"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.92
+      },
+      "expected": {
+        "dialogue_act": "opening_greeting",
+        "buyer_intent": "small_talk_start",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "caller-identity-recall-after-opener",
+      "transcript": "where were you calling from again?",
+      "prior_turn_count": 1,
+      "reasoning": {
+        "dialogue_act": "caller_identity_question",
+        "buyer_intent": "identify_caller",
+        "resolved_topic": "caller_identity",
+        "sales_stage": "repair",
+        "response_strategy": "answer_identity_then_offer_reason",
+        "must_include": [
+          "Northstar Workflow Labs",
+          "RouteSignal CRM"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.95
+      },
+      "expected": {
+        "dialogue_act": "caller_identity_question",
+        "buyer_intent": "identify_caller",
+        "resolved_topic": "caller_identity",
+        "sales_stage": "repair",
+        "response_strategy": "answer_identity_then_offer_reason",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "clarify-previous-question-qualification",
+      "transcript": "I didn't understand what you asked before",
+      "prior_turn_count": 1,
+      "reasoning": {
+        "dialogue_act": "previous_question_clarification",
+        "buyer_intent": "clarify_prior_question",
+        "resolved_topic": "qualification",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_prior_question",
+        "must_include": [
+          "plain terms"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.93
+      },
+      "expected": {
+        "dialogue_act": "previous_question_clarification",
+        "buyer_intent": "clarify_prior_question",
+        "resolved_topic": "qualification",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_prior_question",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "clarify-previous-question-price",
+      "transcript": "what do you mean by that?",
+      "prior_turn_count": 1,
+      "reasoning": {
+        "dialogue_act": "previous_question_clarification",
+        "buyer_intent": "clarify_prior_question",
+        "resolved_topic": "price",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_prior_question",
+        "must_include": [
+          "plain terms"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.93
+      },
+      "expected": {
+        "dialogue_act": "previous_question_clarification",
+        "buyer_intent": "clarify_prior_question",
+        "resolved_topic": "price",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_prior_question",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "bare-no-after-opener",
+      "transcript": "no",
+      "prior_turn_count": 1,
+      "reasoning": {
+        "dialogue_act": "ambiguous_negative",
+        "buyer_intent": "reject_or_decline_unclear",
+        "resolved_topic": "qualification",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_rejection_target",
+        "must_include": [
+          "not a good time",
+          "not an issue"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.91
+      },
+      "expected": {
+        "dialogue_act": "ambiguous_negative",
+        "buyer_intent": "reject_or_decline_unclear",
+        "resolved_topic": "qualification",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_rejection_target",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "no-time-needs-callback-time",
+      "transcript": "I don't have time right now",
+      "prior_turn_count": 1,
+      "reasoning": {
+        "dialogue_act": "callback_request",
+        "buyer_intent": "schedule_callback",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "ask_for_callback_time",
+        "must_include": [
+          "callback time"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      },
+      "expected": {
+        "dialogue_act": "callback_request",
+        "buyer_intent": "schedule_callback",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "ask_for_callback_time",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "callback-time-confirms-and-ends",
+      "transcript": "call me 10 a.m. tomorrow",
+      "prior_turn_count": 1,
+      "reasoning": {
+        "dialogue_act": "callback_time",
+        "buyer_intent": "confirm_callback_time",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "confirm_schedule_and_end",
+        "must_include": [
+          "callback",
+          "goodbye"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.94
+      },
+      "expected": {
+        "dialogue_act": "callback_time",
+        "buyer_intent": "confirm_callback_time",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "confirm_schedule_and_end",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "direct-price-question",
+      "transcript": "I want to talk about the price",
+      "prior_turn_count": 0,
+      "reasoning": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "Starter",
+          "Growth"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      },
+      "expected": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "low-info-after-price",
+      "transcript": "hmm okay that's interesting",
+      "prior_turn_count": 1,
+      "reasoning": {
+        "dialogue_act": "low_information_acknowledgement",
+        "buyer_intent": "acknowledge_continue",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "must_include": [
+          "next diagnostic question"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      },
+      "expected": {
+        "dialogue_act": "low_information_acknowledgement",
+        "buyer_intent": "acknowledge_continue",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "growth-plan-value",
+      "transcript": "what do I get with the $59 Growth plan?",
+      "prior_turn_count": 0,
+      "reasoning": {
+        "dialogue_act": "plan_question",
+        "buyer_intent": "understand_plan_value",
+        "resolved_topic": "growth_plan",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "priority routing",
+          "reminders",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.88
+      },
+      "expected": {
+        "dialogue_act": "plan_question",
+        "buyer_intent": "understand_plan_value",
+        "resolved_topic": "growth_plan",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "starter-plan-fit",
+      "transcript": "is Starter enough for a small team?",
+      "prior_turn_count": 0,
+      "reasoning": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "starter_plan",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "Starter",
+          "Growth"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.85
+      },
+      "expected": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "starter_plan",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "product-explanation",
+      "transcript": "what does your product actually do?",
+      "prior_turn_count": 0,
+      "reasoning": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead routing",
+          "follow-up",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      },
+      "expected": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "workflow-scope",
+      "transcript": "what is included in the workflow?",
+      "prior_turn_count": 0,
+      "reasoning": {
+        "dialogue_act": "workflow_question",
+        "buyer_intent": "understand_workflow",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead capture",
+          "routing",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      },
+      "expected": {
+        "dialogue_act": "workflow_question",
+        "buyer_intent": "understand_workflow",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "manual-tracking-objection",
+      "transcript": "we already track leads manually in a spreadsheet",
+      "prior_turn_count": 0,
+      "reasoning": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "ownership",
+          "callback",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.88
+      },
+      "expected": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "handoffs-selected-after-price",
+      "transcript": "handoffs are the bigger problem",
+      "prior_turn_count": 1,
+      "reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "handoffs",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "handoffs"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      },
+      "expected": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "handoffs",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "callbacks-selected-after-price",
+      "transcript": "missed callbacks happen more often",
+      "prior_turn_count": 1,
+      "reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "callbacks",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "callbacks"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      },
+      "expected": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "callbacks",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "fit-question",
+      "transcript": "I am not sure this fits our situation",
+      "prior_turn_count": 0,
+      "reasoning": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "fit",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "workflow gap"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      },
+      "expected": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "fit",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "timing-objection",
+      "transcript": "the timing is not good right now",
+      "prior_turn_count": 0,
+      "reasoning": {
+        "dialogue_act": "timing_objection",
+        "buyer_intent": "defer_timing",
+        "resolved_topic": "timing",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "callback",
+          "no pressure"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      },
+      "expected": {
+        "dialogue_act": "timing_objection",
+        "buyer_intent": "defer_timing",
+        "resolved_topic": "timing",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "effort-worth-objection",
+      "transcript": "I am not sure reviewing options is worth my time",
+      "prior_turn_count": 0,
+      "reasoning": {
+        "dialogue_act": "effort_objection",
+        "buyer_intent": "evaluate_effort",
+        "resolved_topic": "effort",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "missed follow-up",
+          "time"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      },
+      "expected": {
+        "dialogue_act": "effort_objection",
+        "buyer_intent": "evaluate_effort",
+        "resolved_topic": "effort",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "salesforce-integration-boundary",
+      "transcript": "does it integrate with Salesforce?",
+      "prior_turn_count": 0,
+      "reasoning": {
+        "dialogue_act": "integration_question",
+        "buyer_intent": "verify_integration",
+        "resolved_topic": "integration",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "must_include": [],
+        "must_avoid": [
+          "exact compatibility claim",
+          "permissions claim"
+        ],
+        "safety_boundary": "integration_claim_boundary",
+        "confidence": 0.9
+      },
+      "expected": {
+        "dialogue_act": "integration_question",
+        "buyer_intent": "verify_integration",
+        "resolved_topic": "integration",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "safety_boundary": "integration_claim_boundary"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "security-boundary",
+      "transcript": "are you SOC 2 certified?",
+      "prior_turn_count": 0,
+      "reasoning": {
+        "dialogue_act": "security_question",
+        "buyer_intent": "verify_security",
+        "resolved_topic": "security",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "must_include": [],
+        "must_avoid": [
+          "SOC 2 certified",
+          "guaranteed compliance"
+        ],
+        "safety_boundary": "security_claim_boundary",
+        "confidence": 0.94
+      },
+      "expected": {
+        "dialogue_act": "security_question",
+        "buyer_intent": "verify_security",
+        "resolved_topic": "security",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "safety_boundary": "security_claim_boundary"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "specialist-not-needed-for-basics",
+      "transcript": "do I need to talk to a specialist for basic pricing?",
+      "prior_turn_count": 0,
+      "reasoning": {
+        "dialogue_act": "specialist_request",
+        "buyer_intent": "request_human",
+        "resolved_topic": "handoff_boundary",
+        "sales_stage": "boundary",
+        "response_strategy": "avoid_unnecessary_handoff",
+        "must_include": [
+          "cover basics"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "human_handoff_boundary",
+        "confidence": 0.88
+      },
+      "expected": {
+        "dialogue_act": "specialist_request",
+        "buyer_intent": "request_human",
+        "resolved_topic": "handoff_boundary",
+        "sales_stage": "boundary",
+        "response_strategy": "avoid_unnecessary_handoff",
+        "safety_boundary": "human_handoff_boundary"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "topic-shift-price-to-product",
+      "transcript": "but what does your product actually do?",
+      "prior_turn_count": 1,
+      "reasoning": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead routing",
+          "follow-up",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      },
+      "expected": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "topic-shift-price-to-workflow",
+      "transcript": "what does the workflow include?",
+      "prior_turn_count": 1,
+      "reasoning": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead capture",
+          "routing",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      },
+      "expected": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "repeat-price-without-loop",
+      "transcript": "can you tell me more about the price?",
+      "prior_turn_count": 1,
+      "reasoning": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "must_include": [
+          "Starter",
+          "Growth"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      },
+      "expected": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "generic-followup-after-qualification",
+      "transcript": "what else should I know?",
+      "prior_turn_count": 1,
+      "reasoning": {
+        "dialogue_act": "low_information_acknowledgement",
+        "buyer_intent": "acknowledge_continue",
+        "resolved_topic": "qualification",
+        "sales_stage": "qualification",
+        "response_strategy": "proactive_guided_selling",
+        "must_include": [
+          "next diagnostic question"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      },
+      "expected": {
+        "dialogue_act": "low_information_acknowledgement",
+        "buyer_intent": "acknowledge_continue",
+        "resolved_topic": "qualification",
+        "sales_stage": "qualification",
+        "response_strategy": "proactive_guided_selling",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "asr-fragment-repair",
+      "transcript": "it's about the",
+      "prior_turn_count": 0,
+      "reasoning": {
+        "dialogue_act": "asr_fragment",
+        "buyer_intent": "repair_asr",
+        "resolved_topic": "asr_quality",
+        "sales_stage": "repair",
+        "response_strategy": "repeat_request",
+        "must_include": [],
+        "must_avoid": [
+          "guessing buyer intent from a fragment"
+        ],
+        "safety_boundary": "asr_quality_boundary",
+        "confidence": 0.94
+      },
+      "expected": {
+        "dialogue_act": "asr_fragment",
+        "buyer_intent": "repair_asr",
+        "resolved_topic": "asr_quality",
+        "sales_stage": "repair",
+        "response_strategy": "repeat_request",
+        "safety_boundary": "asr_quality_boundary"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "off-topic-unclear-turn",
+      "transcript": "the screen froze for a second",
+      "prior_turn_count": 1,
+      "reasoning": {
+        "dialogue_act": "unknown",
+        "buyer_intent": "off_topic_or_unclear",
+        "resolved_topic": "unknown",
+        "sales_stage": "repair",
+        "response_strategy": "refocus_to_sales_call",
+        "must_include": [],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.48
+      },
+      "expected": {
+        "dialogue_act": "unknown",
+        "buyer_intent": "off_topic_or_unclear",
+        "resolved_topic": "unknown",
+        "sales_stage": "repair",
+        "response_strategy": "refocus_to_sales_call",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "recommendation-request-preserves-agency",
+      "transcript": "what do you recommend I choose?",
+      "prior_turn_count": 1,
+      "reasoning": {
+        "dialogue_act": "recommendation_request",
+        "buyer_intent": "ask_for_recommendation",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "diagnose_before_recommendation",
+        "must_include": [],
+        "must_avoid": [
+          "decide for the buyer",
+          "guaranteed ROI"
+        ],
+        "safety_boundary": "agency_preservation_boundary",
+        "confidence": 0.87
+      },
+      "expected": {
+        "dialogue_act": "recommendation_request",
+        "buyer_intent": "ask_for_recommendation",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "diagnose_before_recommendation",
+        "safety_boundary": "agency_preservation_boundary"
+      },
+      "pass": true,
+      "mismatches": {}
+    }
+  ]
+}

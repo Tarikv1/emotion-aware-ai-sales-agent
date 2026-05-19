@@ -118,6 +118,61 @@ For the `RESP-004` VOICE-044 listening check:
 - no quality claim is allowed until Tarik records the listening review
 - generated audio, if any, stays under `research/experiments/generated/RESP-004-voice-044-listening-check/`
 
+## LIVE-DEMO-001 Boundary
+
+For the `LIVE-DEMO-001` supervised agent voice-call demo:
+
+- the conversation brain must stay in this repository
+- the default demo campaign should be the English B2B software campaign unless Tarik deliberately selects a German campaign
+- ElevenLabs may be used only as TTS output, not as a hosted conversational agent
+- browser speech recognition may create the transcript, but raw microphone audio must not be uploaded to the Python server
+- the browser UI must require local microphone consent before recognition starts
+- live ElevenLabs TTS requires `--live-tts`, `--consent-confirmed`, `ELEVENLABS_API_KEY`, a voice ID source, and a bounded timeout
+- API key values and raw voice IDs must not be written to JSON, Markdown, logs, screenshots, or Git
+- no real customer audio, voice cloning, durable provider agent, provider-owned sales logic, runtime behavior change, or `PROD-102` opening is allowed
+- real Tarik demo turns and generated audio must stay under ignored `data/private/live-demo-001/`
+
+## ULTRAVOX-001 Boundary
+
+For the `ULTRAVOX-001` bounded realtime voice evaluation:
+
+- default mode is dry-run
+- no UltraVox API calls are made
+- no audio is uploaded
+- no API key is required
+- no durable provider-side console agent is created
+- no sales policy, protected text, campaign logic, or acceptance evidence moves out of this repository
+- `PROD-102` remains closed
+- hosted UltraVox API is evaluated only as a swappable realtime voice provider adapter
+- the open-source UltraVox lane remains research-only until local serving, streaming, voice output, latency, and observability are separately proven
+- any future live UltraVox test requires explicit approval, `ULTRAVOX_API_KEY` from the environment only, synthetic audio only, retention/deletion review, timeout guardrails, and generated JSON/Markdown evidence
+
+## ULTRAVOX-002 Boundary
+
+For the `ULTRAVOX-002` synthetic live smoke:
+
+- exactly one synthetic live test is approved for this checkpoint
+- the API key may be read only from `ULTRAVOX_API_KEY` in the process environment or ignored `runtime/config/local/ultravox.env`
+- API key values, join URLs, and raw provider tokens must not be written to JSON, Markdown, logs, screenshots, or Git
+- the test is agent-first and uploads no customer audio
+- no voice cloning, durable UltraVox console agent, provider-owned sales logic, runtime behavior change, or `PROD-102` opening is allowed
+- the script must close the WebSocket and attempt to delete the UltraVox call after the smoke test
+- generated provider audio, if any, stays under ignored `research/experiments/generated/ULTRAVOX-002/audio/`
+- this smoke proves only key/call/WebSocket/first-agent-audio plumbing; it is not a full speech-to-speech latency result
+
+## ULTRAVOX-003 Boundary
+
+For the `ULTRAVOX-003` synthetic customer-audio turn:
+
+- exactly one synthetic customer-audio live test is approved for this checkpoint
+- the API key may be read only from `ULTRAVOX_API_KEY` in the process environment or ignored `runtime/config/local/ultravox.env`
+- API key values, raw voice values, full call IDs, join URLs, and provider tokens must not be written to JSON, Markdown, logs, screenshots, or Git
+- customer input must be synthetic audio, either locally generated or the prior ignored `ULTRAVOX-002` synthetic fixture; it must not be real customer audio or private Tarik speech samples
+- no voice cloning, durable UltraVox console agent, provider-owned sales logic, runtime behavior change, or `PROD-102` opening is allowed
+- the script must stream signed 16-bit mono PCM through a server WebSocket, close the WebSocket, and attempt to delete the UltraVox call after the turn
+- generated input/output audio, if any, stays under ignored `research/experiments/generated/ULTRAVOX-003/audio/`
+- this test can measure one synthetic speech-to-speech turn, but it is not production evidence for latency, interruption handling, retention, cost, or quality
+
 ## Review Gate
 
 Before a new provider integration becomes part of the active runtime path, the project must have:

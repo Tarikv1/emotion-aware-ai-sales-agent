@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "manifest_id": "runtime-boundary-001",
-  "updated_on": "2026-05-15",
+  "updated_on": "2026-05-19",
   "purpose": "Make runtime-affecting project files visible separately from research, generated evidence, checkpoint runners, and temporary files.",
   "status": "runtime-sources-and-docs-moved-with-legacy-wrappers",
   "runtime_home_policy": {
@@ -25,6 +25,54 @@
         "sales difficulty routing"
       ],
       "legacy_path": "scripts/run_realtime_turn_simulation.py"
+    },
+    {
+      "path": "runtime/core/live_voice_session_policy.py",
+      "path_type": "file",
+      "tier": "core-runtime-behavior",
+      "runtime_role": "Runtime-owned live voice session continuity, anti-loop behavior, and fictional campaign product-answer routing extracted from the accepted LIVE-DEMO-001 demo behavior.",
+      "behavior_surface": [
+        "session continuity",
+        "anti-loop behavior",
+        "product-answer routing"
+      ]
+    },
+    {
+      "path": "runtime/core/dialogue_reasoner.py",
+      "path_type": "file",
+      "tier": "core-runtime-behavior",
+      "runtime_role": "Structured dialogue-act, buyer-intent, topic, sales-stage, response-strategy, and safety-boundary reasoning for live-demo and future LLM-backed runtime turns.",
+      "behavior_surface": [
+        "dialogue act classification",
+        "buyer intent routing",
+        "response strategy selection",
+        "LLM reasoner boundary"
+      ]
+    },
+    {
+      "path": "runtime/core/dialogue_reasoner_hybrid.py",
+      "path_type": "file",
+      "tier": "core-runtime-behavior",
+      "runtime_role": "Hybrid deterministic-routing plus LLM-reasoning boundary: protected route labels remain runtime-owned while provider reasoning can enrich allowed turns in bounded evaluations.",
+      "behavior_surface": [
+        "LLM reasoning invocation gate",
+        "runtime route override block",
+        "reasoning enrichment schema",
+        "provider reasoning quality scoring"
+      ]
+    },
+    {
+      "path": "runtime/core/dialogue_reasoner_async_enrichment.py",
+      "path_type": "file",
+      "tier": "core-runtime-behavior",
+      "runtime_role": "Optional async/background dialogue-reasoning enrichment boundary: deterministic customer responses remain available before provider results, and provider output cannot mutate route labels, final response text, call control, or voice delivery.",
+      "behavior_surface": [
+        "async reasoning enrichment packet",
+        "nonblocking provider boundary",
+        "response fingerprint snapshot",
+        "runtime route override block",
+        "final response mutation block"
+      ]
     },
     {
       "path": "runtime/entrypoints/realtime_turn_cli.py",
@@ -61,6 +109,17 @@
         "runtime output schema"
       ],
       "legacy_path": "scripts/product_agent_output_contract.py"
+    },
+    {
+      "path": "runtime/contracts/voice_turn_state_contract.py",
+      "path_type": "file",
+      "tier": "voice-runtime-contract",
+      "runtime_role": "Shared voice turn-state contract for browser, telephony, WebRTC, and provider-realtime adapters.",
+      "behavior_surface": [
+        "voice turn state",
+        "transport adapter contract",
+        "listening/speaking guard"
+      ]
     },
     {
       "path": "runtime/policy/core_sales_delivery_playbook.py",
@@ -217,6 +276,18 @@
       "legacy_path": "scripts/tts_provider_clients.py"
     },
     {
+      "path": "runtime/providers/dialogue_reasoner_llm_client.py",
+      "path_type": "file",
+      "tier": "core-runtime-provider-boundary",
+      "runtime_role": "OpenAI-compatible structured dialogue-reasoner provider client for bounded evaluation runs; live calls are explicit and default-off.",
+      "behavior_surface": [
+        "LLM provider request shape",
+        "strict JSON reasoner provider boundary",
+        "API key redaction",
+        "provider latency measurement"
+      ]
+    },
+    {
       "path": "runtime/config/local_voice_config.py",
       "path_type": "file",
       "tier": "voice-runtime-config",
@@ -244,6 +315,17 @@
         "spoken text"
       ],
       "legacy_path": "scripts/spoken_text_normalization.py"
+    },
+    {
+      "path": "runtime/speech/asr_quality_gate.py",
+      "path_type": "file",
+      "tier": "speech-runtime-contract",
+      "runtime_role": "Shared ASR quality gate and repair response policy for live voice input before sales response selection.",
+      "behavior_surface": [
+        "ASR quality",
+        "transcript acceptance",
+        "low-confidence repair"
+      ]
     },
     {
       "path": "runtime/speech/prosody_naturalness.py",

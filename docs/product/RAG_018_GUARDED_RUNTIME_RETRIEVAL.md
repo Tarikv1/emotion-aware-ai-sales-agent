@@ -100,9 +100,9 @@ Voice/prosody rules are advisory-only. They may guide delivery hints, but they c
 - objection-resolution improvements: `4`
 - next-step quality improvements: `4`
 - protected contexts preserved: `4/4`
-- quality gap case IDs: `none`
+- quality gap case IDs: `RAG-018-SIM-C05, RAG-018-SIM-C06`
 - max retrieval latency: `3 ms`
-- average retrieval latency: `1.7 ms`
+- average retrieval latency: `1.5 ms`
 - decision: `keep_rag_018_opt_in_and_do_not_make_default`
 
 `scripts\run_rag_018_retrieval_vs_core_call_simulation.py` runs the RAG-018 retrieval-vs-core call simulation across fixed synthetic multi-turn calls to compare the older retrieval-disabled core path against opt-in retrieval.

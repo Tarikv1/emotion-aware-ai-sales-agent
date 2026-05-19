@@ -4,6 +4,8 @@ This index groups checkpoint docs by work track. Runners, validators, cases, and
 
 Runtime-affecting files now live under `runtime/` and are mapped in `runtime/runtime_manifest.json`; use it before editing spoken-text, call-control, campaign-contract, retrieval, or provider-delivery behavior. Legacy `scripts/*` runtime files are compatibility wrappers.
 
+Current non-PROD runtime reasoner layer: `DIALOGUE-REASONER-001`, documented in `docs/product/DIALOGUE_REASONER_001_STRUCTURED_RUNTIME_REASONER.md`, freezes 30 live-demo dialogue-act cases and adds `runtime/core/dialogue_reasoner.py` while keeping LLM/provider calls default-off and `PROD-102` closed. `DIALOGUE-REASONER-002`, documented in `docs/product/DIALOGUE_REASONER_002_LLM_PROVIDER_EVALUATION.md`, adds the default-off OpenAI-compatible provider evaluation harness for those same cases. `DIALOGUE-REASONER-003`, documented in `docs/product/DIALOGUE_REASONER_003_HYBRID_GATE_EVALUATION.md`, adds the hybrid gate evaluation where deterministic runtime labels stay protected and provider reasoning can only enrich allowed turns. `DIALOGUE-REASONER-004`, documented in `docs/product/DIALOGUE_REASONER_004_ASYNC_ENRICHMENT.md`, wires that enrichment as an optional async/background packet and attaches it to `LIVE-DEMO-001` private evidence only: deterministic customer response availability is proven before provider results, route override and final-response mutation stay blocked, provider calls remain default-off, and `PROD-102` remains closed.
+
 ## Brain
 
 - `docs/brain/BRAIN_001_PROJECT_BRAIN_ARCHITECTURE.md`
@@ -156,6 +158,9 @@ Default rule: dry-run/offline unless a command explicitly uses `--live` and prov
 ## Core Product Docs
 
 - `PRODUCT_BRIEF.md`
+- `GO_LIVE_MVP_DEFINITION_AND_ROADMAP.md`
+- `LIVE_DEMO_001_AGENT_VOICE_CALL.md`
+- `LIVE_DEMO_002_RUNTIME_EXTRACTION_BASELINE.md`
 - `FULL_SALE_MVP_STRATEGY.md`
 - `CLIENT_MVP_WORKFLOW.md`
 - `runtime/architecture/REALTIME_AGENT_ARCHITECTURE.md`

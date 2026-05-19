@@ -1,0 +1,2206 @@
+{
+  "experiment_id": "DIALOGUE-REASONER-003",
+  "hybrid_reasoner_id": "DIALOGUE-REASONER-003",
+  "created_at": "2026-05-19T16:01:28+00:00",
+  "case_source": "research/experiments/cases/dialogue-reasoner-003-hybrid-gate.json",
+  "guard_case_source": "research/experiments/cases/dialogue-reasoner-001-live-demo-failures.json",
+  "case_count": 100,
+  "full_case_count": 100,
+  "max_reasoning_cases": null,
+  "default_live_enabled": false,
+  "live_demo_response_behavior_changed": false,
+  "runtime_route_override_allowed": false,
+  "opens_prod_102": false,
+  "api_key_env": "DIALOGUE_REASONER_API_KEY",
+  "api_key_value_logged": false,
+  "env_file": {
+    "path": "runtime/config/local/dialogue_reasoner.env",
+    "exists": true,
+    "loaded_keys": [
+      "DIALOGUE_REASONER_API_KEY",
+      "DIALOGUE_REASONER_BASE_URL",
+      "DIALOGUE_REASONER_MODEL"
+    ],
+    "values_logged": false
+  },
+  "provider_config": {
+    "base_url_configured": true,
+    "model_configured": true,
+    "api_key_configured": true,
+    "api_key_value_logged": false,
+    "timeout_seconds": 12.0,
+    "temperature": 0.0,
+    "use_json_response_format": true
+  },
+  "baseline_reference": {
+    "experiment_id": "DIALOGUE-REASONER-001",
+    "available": true,
+    "passed_count": 30,
+    "case_count": 30,
+    "provider_calls_made": false,
+    "opens_prod_102": false
+  },
+  "guard_results": [
+    {
+      "case_id": "agent-open-starts-sales-call",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "agent_open",
+        "buyer_intent": "start_call",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "must_include": [
+          "caller identity",
+          "permission check",
+          "missed callbacks or handoffs"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.99
+      }
+    },
+    {
+      "case_id": "greeting-opens-like-sales-call",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "opening_greeting",
+        "buyer_intent": "small_talk_start",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "must_include": [
+          "caller identity",
+          "permission check"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.92
+      }
+    },
+    {
+      "case_id": "caller-identity-recall-after-opener",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "caller_identity_question",
+        "buyer_intent": "identify_caller",
+        "resolved_topic": "caller_identity",
+        "sales_stage": "repair",
+        "response_strategy": "answer_identity_then_offer_reason",
+        "must_include": [
+          "Northstar Workflow Labs",
+          "RouteSignal CRM"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.95
+      }
+    },
+    {
+      "case_id": "clarify-previous-question-qualification",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "previous_question_clarification",
+        "buyer_intent": "clarify_prior_question",
+        "resolved_topic": "qualification",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_prior_question",
+        "must_include": [
+          "plain terms"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.93
+      }
+    },
+    {
+      "case_id": "clarify-previous-question-price",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "previous_question_clarification",
+        "buyer_intent": "clarify_prior_question",
+        "resolved_topic": "price",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_prior_question",
+        "must_include": [
+          "plain terms"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.93
+      }
+    },
+    {
+      "case_id": "bare-no-after-opener",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "ambiguous_negative",
+        "buyer_intent": "reject_or_decline_unclear",
+        "resolved_topic": "qualification",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_rejection_target",
+        "must_include": [
+          "not a good time",
+          "not an issue"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.91
+      }
+    },
+    {
+      "case_id": "no-time-needs-callback-time",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "callback_request",
+        "buyer_intent": "schedule_callback",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "ask_for_callback_time",
+        "must_include": [
+          "callback time"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      }
+    },
+    {
+      "case_id": "callback-time-confirms-and-ends",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "callback_time",
+        "buyer_intent": "confirm_callback_time",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "confirm_schedule_and_end",
+        "must_include": [
+          "callback",
+          "goodbye"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.94
+      }
+    },
+    {
+      "case_id": "direct-price-question",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "Starter",
+          "Growth"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "low-info-after-price",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "low_information_acknowledgement",
+        "buyer_intent": "acknowledge_continue",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "must_include": [
+          "next diagnostic question"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      }
+    },
+    {
+      "case_id": "growth-plan-value",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "plan_question",
+        "buyer_intent": "understand_plan_value",
+        "resolved_topic": "growth_plan",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "priority routing",
+          "reminders",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.88
+      }
+    },
+    {
+      "case_id": "starter-plan-fit",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "starter_plan",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "Starter",
+          "Growth"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.85
+      }
+    },
+    {
+      "case_id": "product-explanation",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead routing",
+          "follow-up",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "workflow-scope",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "workflow_question",
+        "buyer_intent": "understand_workflow",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead capture",
+          "routing",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "manual-tracking-objection",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "ownership",
+          "callback",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.88
+      }
+    },
+    {
+      "case_id": "handoffs-selected-after-price",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "handoffs",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "handoffs"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      }
+    },
+    {
+      "case_id": "callbacks-selected-after-price",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "callbacks",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "callbacks"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      }
+    },
+    {
+      "case_id": "fit-question",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "fit",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "workflow gap"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      }
+    },
+    {
+      "case_id": "timing-objection",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "timing_objection",
+        "buyer_intent": "defer_timing",
+        "resolved_topic": "timing",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "callback",
+          "no pressure"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      }
+    },
+    {
+      "case_id": "effort-worth-objection",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "effort_objection",
+        "buyer_intent": "evaluate_effort",
+        "resolved_topic": "effort",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "missed follow-up",
+          "time"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      }
+    },
+    {
+      "case_id": "salesforce-integration-boundary",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "integration_question",
+        "buyer_intent": "verify_integration",
+        "resolved_topic": "integration",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "must_include": [],
+        "must_avoid": [
+          "exact compatibility claim",
+          "permissions claim"
+        ],
+        "safety_boundary": "integration_claim_boundary",
+        "confidence": 0.9
+      }
+    },
+    {
+      "case_id": "security-boundary",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "security_question",
+        "buyer_intent": "verify_security",
+        "resolved_topic": "security",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "must_include": [],
+        "must_avoid": [
+          "SOC 2 certified",
+          "guaranteed compliance"
+        ],
+        "safety_boundary": "security_claim_boundary",
+        "confidence": 0.94
+      }
+    },
+    {
+      "case_id": "specialist-not-needed-for-basics",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "specialist_request",
+        "buyer_intent": "request_human",
+        "resolved_topic": "handoff_boundary",
+        "sales_stage": "boundary",
+        "response_strategy": "avoid_unnecessary_handoff",
+        "must_include": [
+          "cover basics"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "human_handoff_boundary",
+        "confidence": 0.88
+      }
+    },
+    {
+      "case_id": "topic-shift-price-to-product",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead routing",
+          "follow-up",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "topic-shift-price-to-workflow",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead capture",
+          "routing",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "repeat-price-without-loop",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "must_include": [
+          "Starter",
+          "Growth"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "generic-followup-after-qualification",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "low_information_acknowledgement",
+        "buyer_intent": "acknowledge_continue",
+        "resolved_topic": "qualification",
+        "sales_stage": "qualification",
+        "response_strategy": "proactive_guided_selling",
+        "must_include": [
+          "next diagnostic question"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      }
+    },
+    {
+      "case_id": "asr-fragment-repair",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "asr_fragment",
+        "buyer_intent": "repair_asr",
+        "resolved_topic": "asr_quality",
+        "sales_stage": "repair",
+        "response_strategy": "repeat_request",
+        "must_include": [],
+        "must_avoid": [
+          "guessing buyer intent from a fragment"
+        ],
+        "safety_boundary": "asr_quality_boundary",
+        "confidence": 0.94
+      }
+    },
+    {
+      "case_id": "off-topic-unclear-turn",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "unknown",
+        "buyer_intent": "off_topic_or_unclear",
+        "resolved_topic": "unknown",
+        "sales_stage": "repair",
+        "response_strategy": "refocus_to_sales_call",
+        "must_include": [],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.48
+      }
+    },
+    {
+      "case_id": "recommendation-request-preserves-agency",
+      "pass": true,
+      "mismatches": {},
+      "provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "recommendation_request",
+        "buyer_intent": "ask_for_recommendation",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "diagnose_before_recommendation",
+        "must_include": [],
+        "must_avoid": [
+          "decide for the buyer",
+          "guaranteed ROI"
+        ],
+        "safety_boundary": "agency_preservation_boundary",
+        "confidence": 0.87
+      }
+    }
+  ],
+  "guard_summary": {
+    "case_count": 30,
+    "passed_count": 30,
+    "failed_cases": []
+  },
+  "invocation_gate_results": [
+    {
+      "case_id": "gate-block-agent-open",
+      "expected_provider_call_allowed": false,
+      "actual_provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "agent_open",
+        "buyer_intent": "start_call",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "must_include": [
+          "caller identity",
+          "permission check",
+          "missed callbacks or handoffs"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.99
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-block-opening-greeting",
+      "expected_provider_call_allowed": false,
+      "actual_provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "opening_greeting",
+        "buyer_intent": "small_talk_start",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "must_include": [
+          "caller identity",
+          "permission check"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.92
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-block-caller-identity",
+      "expected_provider_call_allowed": false,
+      "actual_provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "caller_identity_question",
+        "buyer_intent": "identify_caller",
+        "resolved_topic": "caller_identity",
+        "sales_stage": "repair",
+        "response_strategy": "answer_identity_then_offer_reason",
+        "must_include": [
+          "Northstar Workflow Labs",
+          "RouteSignal CRM"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.95
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-block-clarify-prior-question",
+      "expected_provider_call_allowed": false,
+      "actual_provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "previous_question_clarification",
+        "buyer_intent": "clarify_prior_question",
+        "resolved_topic": "qualification",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_prior_question",
+        "must_include": [
+          "plain terms"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.93
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-block-bare-no",
+      "expected_provider_call_allowed": false,
+      "actual_provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "ambiguous_negative",
+        "buyer_intent": "reject_or_decline_unclear",
+        "resolved_topic": "qualification",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_rejection_target",
+        "must_include": [
+          "not a good time",
+          "not an issue"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.91
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-block-no-time",
+      "expected_provider_call_allowed": false,
+      "actual_provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "callback_request",
+        "buyer_intent": "schedule_callback",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "ask_for_callback_time",
+        "must_include": [
+          "callback time"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-block-callback-time",
+      "expected_provider_call_allowed": false,
+      "actual_provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "callback_time",
+        "buyer_intent": "confirm_callback_time",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "confirm_schedule_and_end",
+        "must_include": [
+          "callback",
+          "goodbye"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.94
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-block-direct-price",
+      "expected_provider_call_allowed": false,
+      "actual_provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "Starter",
+          "Growth"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-block-growth-plan",
+      "expected_provider_call_allowed": false,
+      "actual_provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "plan_question",
+        "buyer_intent": "understand_plan_value",
+        "resolved_topic": "growth_plan",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "priority routing",
+          "reminders",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.88
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-block-security",
+      "expected_provider_call_allowed": false,
+      "actual_provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "security_question",
+        "buyer_intent": "verify_security",
+        "resolved_topic": "security",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "must_include": [],
+        "must_avoid": [
+          "SOC 2 certified",
+          "guaranteed compliance"
+        ],
+        "safety_boundary": "security_claim_boundary",
+        "confidence": 0.94
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-block-integration",
+      "expected_provider_call_allowed": false,
+      "actual_provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "integration_question",
+        "buyer_intent": "verify_integration",
+        "resolved_topic": "integration",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "must_include": [],
+        "must_avoid": [
+          "exact compatibility claim",
+          "permissions claim"
+        ],
+        "safety_boundary": "integration_claim_boundary",
+        "confidence": 0.9
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-block-specialist",
+      "expected_provider_call_allowed": false,
+      "actual_provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "specialist_request",
+        "buyer_intent": "request_human",
+        "resolved_topic": "handoff_boundary",
+        "sales_stage": "boundary",
+        "response_strategy": "avoid_unnecessary_handoff",
+        "must_include": [
+          "cover basics"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "human_handoff_boundary",
+        "confidence": 0.88
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-block-generic-followup",
+      "expected_provider_call_allowed": false,
+      "actual_provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "low_information_acknowledgement",
+        "buyer_intent": "acknowledge_continue",
+        "resolved_topic": "qualification",
+        "sales_stage": "qualification",
+        "response_strategy": "proactive_guided_selling",
+        "must_include": [
+          "next diagnostic question"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-block-asr-fragment",
+      "expected_provider_call_allowed": false,
+      "actual_provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "asr_fragment",
+        "buyer_intent": "repair_asr",
+        "resolved_topic": "asr_quality",
+        "sales_stage": "repair",
+        "response_strategy": "repeat_request",
+        "must_include": [],
+        "must_avoid": [
+          "guessing buyer intent from a fragment"
+        ],
+        "safety_boundary": "asr_quality_boundary",
+        "confidence": 0.94
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-block-recommendation",
+      "expected_provider_call_allowed": false,
+      "actual_provider_call_allowed": false,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "recommendation_request",
+        "buyer_intent": "ask_for_recommendation",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "diagnose_before_recommendation",
+        "must_include": [],
+        "must_avoid": [
+          "decide for the buyer",
+          "guaranteed ROI"
+        ],
+        "safety_boundary": "agency_preservation_boundary",
+        "confidence": 0.87
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-allow-product-actual-do",
+      "expected_provider_call_allowed": true,
+      "actual_provider_call_allowed": true,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead routing",
+          "follow-up",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-allow-product-what-do-you-do",
+      "expected_provider_call_allowed": true,
+      "actual_provider_call_allowed": true,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead routing",
+          "follow-up",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-allow-product-what-does-it-do",
+      "expected_provider_call_allowed": true,
+      "actual_provider_call_allowed": true,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead routing",
+          "follow-up",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-allow-workflow-included",
+      "expected_provider_call_allowed": true,
+      "actual_provider_call_allowed": true,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "workflow_question",
+        "buyer_intent": "understand_workflow",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead capture",
+          "routing",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-allow-workflow-include",
+      "expected_provider_call_allowed": true,
+      "actual_provider_call_allowed": true,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "workflow_question",
+        "buyer_intent": "understand_workflow",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead capture",
+          "routing",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-allow-manual-spreadsheet",
+      "expected_provider_call_allowed": true,
+      "actual_provider_call_allowed": true,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "ownership",
+          "callback",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.88
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-allow-manual-spreadsheets",
+      "expected_provider_call_allowed": true,
+      "actual_provider_call_allowed": true,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "ownership",
+          "callback",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.88
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-allow-handoffs-after-price",
+      "expected_provider_call_allowed": true,
+      "actual_provider_call_allowed": true,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "handoffs",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "handoffs"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-allow-callbacks-after-price",
+      "expected_provider_call_allowed": true,
+      "actual_provider_call_allowed": true,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "callbacks",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "callbacks"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-allow-fit-situation",
+      "expected_provider_call_allowed": true,
+      "actual_provider_call_allowed": true,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "fit",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "workflow gap"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-allow-fit-relevant",
+      "expected_provider_call_allowed": true,
+      "actual_provider_call_allowed": true,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "fit",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "workflow gap"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-allow-effort-time",
+      "expected_provider_call_allowed": true,
+      "actual_provider_call_allowed": true,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "effort_objection",
+        "buyer_intent": "evaluate_effort",
+        "resolved_topic": "effort",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "missed follow-up",
+          "time"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-allow-effort-reviewing",
+      "expected_provider_call_allowed": true,
+      "actual_provider_call_allowed": true,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "effort_objection",
+        "buyer_intent": "evaluate_effort",
+        "resolved_topic": "effort",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "missed follow-up",
+          "time"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-allow-topic-shift-product",
+      "expected_provider_call_allowed": true,
+      "actual_provider_call_allowed": true,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead routing",
+          "follow-up",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "gate-allow-topic-shift-workflow",
+      "expected_provider_call_allowed": true,
+      "actual_provider_call_allowed": true,
+      "provider_call_made": false,
+      "reasoning": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead capture",
+          "routing",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      },
+      "pass": true,
+      "mismatches": {}
+    }
+  ],
+  "invocation_gate_summary": {
+    "case_count": 30,
+    "passed_count": 30,
+    "failed_cases": []
+  },
+  "planned_reasoning_cases": [
+    {
+      "case_id": "reason-product-route-signal-summary",
+      "transcript_length": 35,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2566,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead routing",
+          "follow-up",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "reason-product-what-do-you-do",
+      "transcript_length": 23,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2529,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead routing",
+          "follow-up",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "reason-product-what-does-it-do",
+      "transcript_length": 16,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2501,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead routing",
+          "follow-up",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "reason-product-inbound-demo",
+      "transcript_length": 42,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2528,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "reminders",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "reminders"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      }
+    },
+    {
+      "case_id": "reason-product-manager-visibility",
+      "transcript_length": 58,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2640,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead routing",
+          "follow-up",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "reason-product-ownership",
+      "transcript_length": 54,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2614,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead routing",
+          "follow-up",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "reason-workflow-included",
+      "transcript_length": 33,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2555,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "workflow_question",
+        "buyer_intent": "understand_workflow",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead capture",
+          "routing",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "reason-workflow-steps",
+      "transcript_length": 31,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2559,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "workflow_question",
+        "buyer_intent": "understand_workflow",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead capture",
+          "routing",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "reason-workflow-after-price",
+      "transcript_length": 31,
+      "prior_turn_count": 1,
+      "prompt_char_count": 2750,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead capture",
+          "routing",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "reason-workflow-shared-inbox",
+      "transcript_length": 52,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2619,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "workflow_question",
+        "buyer_intent": "understand_workflow",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead capture",
+          "routing",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "reason-workflow-slack",
+      "transcript_length": 49,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2632,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "workflow_question",
+        "buyer_intent": "understand_workflow",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead capture",
+          "routing",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "reason-workflow-handoff-review",
+      "transcript_length": 41,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2529,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "handoffs",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "handoffs"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      }
+    },
+    {
+      "case_id": "reason-manual-spreadsheet",
+      "transcript_length": 48,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2627,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "ownership",
+          "callback",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.88
+      }
+    },
+    {
+      "case_id": "reason-manual-current-process",
+      "transcript_length": 37,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2584,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "ownership",
+          "callback",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.88
+      }
+    },
+    {
+      "case_id": "reason-manual-not-broken",
+      "transcript_length": 36,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2570,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "ownership",
+          "callback",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.88
+      }
+    },
+    {
+      "case_id": "reason-manual-small-volume",
+      "transcript_length": 58,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2655,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "ownership",
+          "callback",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.88
+      }
+    },
+    {
+      "case_id": "reason-manual-owner-routing",
+      "transcript_length": 30,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2574,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "ownership",
+          "callback",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.88
+      }
+    },
+    {
+      "case_id": "reason-manual-enough",
+      "transcript_length": 38,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2603,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "ownership",
+          "callback",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.88
+      }
+    },
+    {
+      "case_id": "reason-selected-handoffs-price",
+      "transcript_length": 31,
+      "prior_turn_count": 1,
+      "prompt_char_count": 2685,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "handoffs",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "handoffs"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      }
+    },
+    {
+      "case_id": "reason-selected-callbacks-price",
+      "transcript_length": 34,
+      "prior_turn_count": 1,
+      "prompt_char_count": 2706,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "callbacks",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "callbacks"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      }
+    },
+    {
+      "case_id": "reason-selected-routing-price",
+      "transcript_length": 38,
+      "prior_turn_count": 1,
+      "prompt_char_count": 2695,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "routing",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "routing"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      }
+    },
+    {
+      "case_id": "reason-selected-handoff-delay",
+      "transcript_length": 30,
+      "prior_turn_count": 1,
+      "prompt_char_count": 2674,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "handoffs",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "handoffs"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      }
+    },
+    {
+      "case_id": "reason-selected-callback-urgency",
+      "transcript_length": 34,
+      "prior_turn_count": 1,
+      "prompt_char_count": 2701,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "callbacks",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "callbacks"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      }
+    },
+    {
+      "case_id": "reason-selected-owner-confusion",
+      "transcript_length": 36,
+      "prior_turn_count": 1,
+      "prompt_char_count": 2691,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "handoffs",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "handoffs"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      }
+    },
+    {
+      "case_id": "reason-selected-manager-misses",
+      "transcript_length": 45,
+      "prior_turn_count": 1,
+      "prompt_char_count": 2727,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "visibility",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "visibility"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      }
+    },
+    {
+      "case_id": "reason-selected-reminders",
+      "transcript_length": 40,
+      "prior_turn_count": 1,
+      "prompt_char_count": 2702,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "reminders",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "reminders"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.9
+      }
+    },
+    {
+      "case_id": "reason-fit-situation",
+      "transcript_length": 37,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2504,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "fit",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "workflow gap"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      }
+    },
+    {
+      "case_id": "reason-fit-relevant",
+      "transcript_length": 35,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2486,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "fit",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "workflow gap"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      }
+    },
+    {
+      "case_id": "reason-fit-small-team",
+      "transcript_length": 26,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2507,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "starter_plan",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "Starter",
+          "Growth"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.85
+      }
+    },
+    {
+      "case_id": "reason-fit-low-volume",
+      "transcript_length": 61,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2582,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "fit",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "workflow gap"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      }
+    },
+    {
+      "case_id": "reason-fit-current-crm",
+      "transcript_length": 60,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2599,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "fit",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "workflow gap"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      }
+    },
+    {
+      "case_id": "reason-fit-team-process",
+      "transcript_length": 40,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2515,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "fit",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "workflow gap"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      }
+    },
+    {
+      "case_id": "reason-effort-worth-time",
+      "transcript_length": 48,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2583,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "effort_objection",
+        "buyer_intent": "evaluate_effort",
+        "resolved_topic": "effort",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "missed follow-up",
+          "time"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      }
+    },
+    {
+      "case_id": "reason-effort-too-much",
+      "transcript_length": 50,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2593,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "effort_objection",
+        "buyer_intent": "evaluate_effort",
+        "resolved_topic": "effort",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "missed follow-up",
+          "time"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      }
+    },
+    {
+      "case_id": "reason-effort-busy",
+      "transcript_length": 61,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2617,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "effort_objection",
+        "buyer_intent": "evaluate_effort",
+        "resolved_topic": "effort",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "missed follow-up",
+          "time"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      }
+    },
+    {
+      "case_id": "reason-effort-switching",
+      "transcript_length": 43,
+      "prior_turn_count": 0,
+      "prompt_char_count": 2572,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "effort_objection",
+        "buyer_intent": "evaluate_effort",
+        "resolved_topic": "effort",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "missed follow-up",
+          "time"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      }
+    },
+    {
+      "case_id": "reason-topic-shift-product",
+      "transcript_length": 39,
+      "prior_turn_count": 1,
+      "prompt_char_count": 2742,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead routing",
+          "follow-up",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "reason-topic-shift-workflow",
+      "transcript_length": 31,
+      "prior_turn_count": 1,
+      "prompt_char_count": 2729,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "lead capture",
+          "routing",
+          "handoff review"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.86
+      }
+    },
+    {
+      "case_id": "reason-topic-shift-manual",
+      "transcript_length": 32,
+      "prior_turn_count": 1,
+      "prompt_char_count": 2754,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "ownership",
+          "callback",
+          "handoff"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.88
+      }
+    },
+    {
+      "case_id": "reason-topic-shift-fit",
+      "transcript_length": 28,
+      "prior_turn_count": 1,
+      "prompt_char_count": 2658,
+      "provider_call_allowed": true,
+      "deterministic_reasoning": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "fit",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "workflow gap"
+        ],
+        "must_avoid": [],
+        "safety_boundary": "none",
+        "confidence": 0.82
+      }
+    }
+  ],
+  "mode": "dry-run",
+  "blocked_reason": "dry-run-mode",
+  "provider_calls_made": false,
+  "text_sent_to_provider": false,
+  "missing_config": [],
+  "reasoning_quality_results": [],
+  "reasoning_quality_summary": {
+    "planned_case_count": 40,
+    "provider_case_count": 0,
+    "passed_count": null,
+    "failed_cases": [],
+    "acceptance_threshold": 36,
+    "latency_ms": {
+      "min": null,
+      "median": null,
+      "max": null
+    }
+  }
+}

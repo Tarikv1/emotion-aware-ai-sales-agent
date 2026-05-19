@@ -1,3 +1,4 @@
 *
 !.gitignore
 !voice_ids.example.json
+!dialogue_reasoner.env.example

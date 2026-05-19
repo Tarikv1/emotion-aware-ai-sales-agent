@@ -1,0 +1,62 @@
+{
+  "evaluation_milestone": "ULTRAVOX-003",
+  "evaluation_scope": "One approved synthetic customer-audio UltraVox hosted API turn test. The test creates a server-WebSocket call, streams locally generated synthetic customer speech as s16le PCM, listens for transcript and agent audio, closes the socket, and deletes the call.",
+  "approved_live_test": {
+    "approved_by_user": true,
+    "approval_date": "2026-05-17",
+    "approval_scope": "one synthetic customer-audio UltraVox live test",
+    "real_customer_audio_allowed": false,
+    "synthetic_customer_audio_allowed": true,
+    "voice_cloning_allowed": false,
+    "durable_console_agent_allowed": false,
+    "runtime_behavior_change_allowed": false,
+    "opens_prod_102": false
+  },
+  "provider": {
+    "provider_id": "ultravox-hosted-api",
+    "api_key_env_var": "ULTRAVOX_API_KEY",
+    "env_file": "runtime/config/local/ultravox.env",
+    "voice_env_var": "ULTRAVOX_VOICE_ID_OR_NAME",
+    "voice_selection_rule": "Optional. If the env var is blank, omit voice and let UltraVox use its default voice. If set, the value must be a public included voice ID or unique voice name.",
+    "create_call_url": "https://api.ultravox.ai/api/calls",
+    "delete_call_url_template": "https://api.ultravox.ai/api/calls/{call_id}",
+    "endpoint_type": "server-websocket",
+    "model": "fixie-ai/ultravox",
+    "input_sample_rate": 48000,
+    "output_sample_rate": 48000,
+    "client_buffer_size_ms": 60
+  },
+  "synthetic_case": {
+    "case_id": "ultravox_003_customer_audio_turn",
+    "language": "en",
+    "campaign_id": "campaign-prod-005-b2c-telecom",
+    "customer_text": "Can you quickly explain what this offer is about?",
+    "fallback_input_audio_fixture": "research/experiments/generated/ULTRAVOX-002/audio/ULTRAVOX-002-agent-first-audio.wav",
+    "fallback_input_audio_note": "Use only if local Windows speech synthesis is unavailable. The fixture is synthetic provider-generated audio from ULTRAVOX-002, not real customer audio, not private speech, and not a new TTS provider call.",
+    "system_prompt": "You are running one synthetic provider latency test for a local guarded sales-agent project. The user audio is synthetic. Answer in one short sentence only. Say that this is a quick synthetic test and no customer data is being used. Do not sell, do not collect personal data, do not ask follow-up questions.",
+    "max_duration_seconds": 18,
+    "join_timeout_seconds": 8,
+    "timeout_seconds": 10,
+    "audio_chunk_ms": 20,
+    "trailing_silence_ms": 1200,
+    "success_criteria": [
+      "create call succeeds with env-only API key",
+      "joinUrl is received but not logged",
+      "server WebSocket opens",
+      "synthetic customer WAV is generated locally or copied from the prior synthetic ULTRAVOX-002 fixture if local speech synthesis is unavailable",
+      "synthetic customer PCM is sent to UltraVox",
+      "a transcript event or agent audio is received",
+      "first agent audio timing is recorded when available",
+      "call delete succeeds or is retried after call settlement",
+      "no real customer audio is uploaded",
+      "no voice cloning is used",
+      "no runtime behavior changes"
+    ]
+  },
+  "source_ids": [
+    "ultravox-create-call",
+    "ultravox-websockets",
+    "ultravox-faq",
+    "ultravox-pricing"
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "profile_id": "LIVE-DEMO-001-fictional-b2b-sales-campaign",
+  "applies_to_campaign_id": "campaign-prod-005-b2b-software",
+  "source_policy": {
+    "fictional_company": true,
+    "fictional_product": true,
+    "reuse_label": "inspiration only",
+    "directly_copied_material": "none",
+    "checked_date": "2026-05-17"
+  },
+  "fictional_company": {
+    "client_name": "Northstar Workflow Labs",
+    "product_name": "RouteSignal CRM",
+    "product_category": "software-b2b-crm",
+    "one_sentence_positioning": "RouteSignal CRM helps inbound sales teams capture, route, follow up, and review ownership of demo and contact-sales requests."
+  },
+  "caller_identity": {
+    "representative_name": "Maya",
+    "seller_company": "Northstar Workflow Labs",
+    "product_relationship": "the team behind RouteSignal CRM"
+  },
+  "target_account_context": {
+    "buyer_role": "the person handling inbound demo follow-up",
+    "buyer_team_label": "your team",
+    "buyer_company_known": false
+  },
+  "ideal_customer_profile": {
+    "best_for": "B2B teams with 3 to 250 sales or customer-operations users that receive inbound demo or contact-sales requests.",
+    "weak_fit": "Teams with almost no inbound demand, regulated emergency support, payment processing, legal advice, or medical advice workflows.",
+    "common_pains": [
+      "new requests wait in a shared inbox or spreadsheet",
+      "leads reach the wrong owner",
+      "callbacks and reminders are manual",
+      "handoff status is hard for managers to verify",
+      "teams cannot tell whether routing delays are costing time"
+    ]
+  },
+  "product_knowledge": {
+    "short_product_explanation": "RouteSignal CRM routes leads, captures follow-up tasks, and shows handoff status so inbound requests do not sit in a spreadsheet.",
+    "workflow_scope": [
+      "lead capture",
+      "basic qualification",
+      "routing by region, source, priority, or owner",
+      "callback reminders",
+      "handoff review",
+      "team reporting"
+    ],
+    "plans": [
+      {
+        "plan_id": "starter",
+        "name": "Starter",
+        "price_summary": "$29/month",
+        "best_for": "small teams moving from spreadsheets to a shared lead workflow",
+        "included": [
+          "lead capture",
+          "basic routing",
+          "callback tasks",
+          "standard reports",
+          "CSV import"
+        ]
+      },
+      {
+        "plan_id": "growth",
+        "name": "Growth",
+        "price_summary": "$59/month",
+        "best_for": "teams that need routing automation and manager visibility",
+        "included": [
+          "priority routing",
+          "follow-up reminders",
+          "duplicate checks",
+          "Slack alerts",
+          "handoff review"
+        ]
+      }
+    ],
+    "safe_selling_points": [
+      "keeps lead ownership visible after the first handoff",
+      "reduces manual routing and reminder work when inbound volume is real",
+      "helps managers see whether follow-up happened",
+      "lets small teams start with basic routing before paying for heavier automation"
+    ],
+    "integration_boundary": {
+      "safe_summary": "The fictional profile supports common CRM ownership-field workflows, including Salesforce-style and HubSpot-style routing concepts.",
+      "exact_setup_boundary": "Exact Salesforce, HubSpot, permissions, object mapping, and security details must be verified before making a compatibility claim."
+    },
+    "security_boundary": {
+      "safe_summary": "Security questions should use verified security material before a serious rollout discussion.",
+      "unsupported_claims": [
+        "SOC 2 certified",
+        "guaranteed compliance",
+        "security review already passed"
+      ]
+    }
+  },
+  "response_policy": {
+    "basic_questions_do_not_handoff": [
+      "product explanation",
+      "pricing",
+      "plan differences",
+      "manual tracking objection",
+      "small-team fit",
+      "workflow scope"
+    ],
+    "handoff_only_for": [
+      "exact Salesforce setup",
+      "exact HubSpot setup",
+      "security documentation",
+      "legal or procurement terms",
+      "custom migration estimate",
+      "explicit human request"
+    ],
+    "forbidden_response_terms": [
+      "approved pricing facts",
+      "candidate_response",
+      "decision log",
+      "guardrail",
+      "price-and-scope",
+      "runtime"
+    ],
+    "forbidden_claims": [
+      "guaranteed conversion lift",
+      "guaranteed revenue increase",
+      "guaranteed ROI",
+      "replaces every CRM",
+      "SOC 2 certified"
+    ]
+  },
+  "sales_delivery_guidance": {
+    "emphasis_priority": [
+      "missed callbacks and messy handoffs",
+      "inbound demo follow-up",
+      "clear owner",
+      "owner",
+      "callback",
+      "callback reminders",
+      "handoff status",
+      "handoff",
+      "handoff review",
+      "routing",
+      "reminders",
+      "visibility",
+      "manager visibility",
+      "short workflow review",
+      "routing delay"
+    ],
+    "qualification_talk_tracks": [
+      "inbound demo requests need a clear owner, a callback task, and manager visibility",
+      "RouteSignal helps when leads sit in spreadsheets or shared inboxes after the first form fill",
+      "the useful check is where momentum is lost: routing, reminders, handoff review, or visibility",
+      "Growth is only worth discussing when missed callbacks, messy handoffs, or routing delay happen often",
+      "a short workflow review should inspect one gap first, not turn into a long software demo"
+    ]
+  },
+  "source_inspiration": [
+    {
+      "source_id": "live-demo-001-source-chili-piper-lead-routing",
+      "name": "Chili Piper lead routing software public page",
+      "url": "https://info.chilipiper.com/lead-routing-software",
+      "checked_date": "2026-05-17",
+      "observed_pattern": "lead routing products position around qualifying inbound demand, matching buyers to the right owner, scheduling next steps, and tracking routing performance.",
+      "reuse_label": "inspiration only",
+      "directly_copied_material": "none"
+    },
+    {
+      "source_id": "live-demo-001-source-calendly-routing",
+      "name": "Calendly routing public page",
+      "url": "https://calendly.com/features/routing",
+      "checked_date": "2026-05-17",
+      "observed_pattern": "routing workflows commonly combine form answers, CRM ownership lookup, scheduling, booking confirmation, and performance analytics.",
+      "reuse_label": "inspiration only",
+      "directly_copied_material": "none"
+    },
+    {
+      "source_id": "live-demo-001-source-hubspot-lead-scoring",
+      "name": "HubSpot lead scoring public page",
+      "url": "https://www.hubspot.com/products/lead-scoring",
+      "checked_date": "2026-05-17",
+      "observed_pattern": "sales tools often prioritize leads using fit and engagement signals before follow-up work is assigned.",
+      "reuse_label": "inspiration only",
+      "directly_copied_material": "none"
+    },
+    {
+      "source_id": "live-demo-001-source-leandata-speed-to-lead",
+      "name": "LeanData speed-to-lead public page",
+      "url": "https://www.leandata.com/platform/speed-to-lead/",
+      "checked_date": "2026-05-17",
+      "observed_pattern": "lead-management systems emphasize reducing routing delay, avoiding duplicate records, acting on buyer signals, and using automation without claiming guaranteed outcomes.",
+      "reuse_label": "inspiration only",
+      "directly_copied_material": "none"
+    }
+  ]
+}

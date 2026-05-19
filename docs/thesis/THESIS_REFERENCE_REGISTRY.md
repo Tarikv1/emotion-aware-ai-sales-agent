@@ -98,6 +98,18 @@ Use the source categories carefully:
 - Project use: inspiration only for `PROD-028` synthetic campaign knowledge grounding, including realistic SaaS/CRM patterns such as per-seat tiers, annual billing, trials, onboarding and migration fees, integrations, support/security tiers, cancellation boundaries, specialist quote handling, and add-on/package thinking.
 - Current project status: encoded into `research/experiments/generated/PROD-028-synthetic-campaign-knowledge-grounding/synthetic_campaign.json` as fictional project-owned campaign facts for `Northstar Workflow Labs` and `RouteSignal CRM`.
 - Reuse status: no copied real-company wording, plan names, brand identity, customer claims, or sales copy. Reuse label is `inspiration only`.
+
+### LIVE-DEMO-001 lead-routing campaign inspiration sources
+
+- Type: product inspiration and public lead-routing workflow source pack
+- Sources:
+  - Chili Piper lead routing software public page: https://info.chilipiper.com/lead-routing-software
+  - Calendly Routing public page: https://calendly.com/features/routing
+  - HubSpot lead scoring public page: https://www.hubspot.com/products/lead-scoring
+  - LeanData Speed to Lead public page: https://www.leandata.com/platform/speed-to-lead/
+- Project use: inspiration only for the `LIVE-DEMO-001` fictional `Northstar Workflow Labs` / `RouteSignal CRM` campaign profile, including realistic lead capture, qualification, account-owner routing, scheduling, duplicate-check, reminder, handoff-review, reporting, and security/integration-boundary patterns.
+- Current project status: encoded into `research/experiments/cases/live-demo-001-fictional-b2b-sales-campaign.json` and used only by the supervised local live-demo wrapper.
+- Reuse status: no copied real-company wording, plan names, brand identity, customer claims, or sales copy. Reuse label is `inspiration only`.
 - Thesis caution: these are product-grounding references, not evidence that the sales agent improves real-world sales outcomes. Public pages can change, so later thesis writing should re-check dates and avoid citing synthetic prices as real market facts.
 
 ### RAG-019 public sales communication source expansion
@@ -450,6 +462,48 @@ Project use:
 Thesis caution:
 
 - provider docs justify engineering choices, not objective quality claims. Audio quality claims require measured runs and listening review.
+
+### ULTRAVOX-001 realtime voice evaluation
+
+Detailed source index:
+
+- `research/experiments/generated/ULTRAVOX-001/ULTRAVOX-001-bounded-realtime-voice-evaluation-report.md`
+- `research/experiments/generated/ULTRAVOX-002/ULTRAVOX-002-synthetic-live-smoke-report.md`
+- `research/experiments/generated/ULTRAVOX-003/ULTRAVOX-003-synthetic-audio-turn-report.md`
+
+Provider and open-source sources used:
+
+- UltraVox overview: https://docs.ultravox.ai/overview
+- UltraVox how it works: https://docs.ultravox.ai/gettingstarted/how-ultravox-works
+- UltraVox Create Call API: https://docs.ultravox.ai/api-reference/calls/calls-post
+- UltraVox calls API endpoint: https://api.ultravox.ai/api/calls
+- UltraVox call delete endpoint template: https://api.ultravox.ai/api/calls/
+- UltraVox WebSocket integration: https://docs.ultravox.ai/apps/websockets
+- UltraVox custom tools: https://docs.ultravox.ai/tools/custom/overview
+- UltraVox FAQ: https://docs.ultravox.ai/gettingstarted/faq
+- UltraVox pricing: https://www.ultravox.ai/pricing
+- fixie-ai/ultravox GitHub repository: https://github.com/fixie-ai/ultravox
+- UltraVox v0.7 GLM 4.6 model card: https://huggingface.co/fixie-ai/ultravox-v0_7-glm-4_6
+- UltraVox v0.6 Llama 3.1 8B model card: https://huggingface.co/fixie-ai/ultravox-v0_6-llama-3_1-8b
+
+Project use:
+
+- bounded realtime voice architecture evaluation
+- synthetic hosted API smoke testing
+- hosted API versus hosted console versus open-source self-hosting decision support
+- provider boundary, retention, lock-in, and guarded-runtime control analysis
+
+Current project status:
+
+- `ULTRAVOX-001` is dry-run only
+- `ULTRAVOX-002` is approved for one synthetic hosted API smoke test with env-only key handling
+- `ULTRAVOX-003` ran one synthetic customer-audio hosted API turn with env-only key handling and fixture fallback; the result is transport-positive but latency/quality-inconclusive because no transcript or agent audio was received
+- customer audio, voice cloning, durable provider agents, provider-owned business logic, and runtime integration remain blocked
+- `PROD-102` remains closed
+
+Thesis caution:
+
+- UltraVox provider docs and model cards justify system-design hypotheses, not latency or quality claims. A future synthetic live run must measure latency and preserve protected-response exactness before any thesis or product claim.
 
 ### ElevenLabs voice design and remixing
 

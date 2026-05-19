@@ -26,7 +26,7 @@
     },
     {
       "case_id": "RAG-018-SIM-C02",
-      "case_title": "English price objection stays safe without new influence",
+      "case_title": "English price objection gets concise diagnostic RAG wording",
       "campaign_id": "campaign-prod-005-b2b-software",
       "stage": "relevance-check",
       "input_type": "speech-final",
@@ -36,7 +36,7 @@
       "quality_scored": true,
       "expected_retrieval_influence": true,
       "objection_resolution_markers": ["price", "contract terms", "worth your time"],
-      "next_step_quality_markers": ["?", "bigger concern"]
+      "next_step_quality_markers": ["?", "real blocker"]
     },
     {
       "case_id": "RAG-018-SIM-C03",
@@ -48,7 +48,7 @@
       "expected_sales_difficulty": "unknown-runtime-signal",
       "protected_context": false,
       "quality_scored": true,
-      "expected_retrieval_influence": false,
+      "expected_retrieval_influence": true,
       "objection_resolution_markers": ["send", "information"],
       "next_step_quality_markers": ["relevant", "?"]
     },
@@ -76,7 +76,7 @@
       "expected_sales_difficulty": "unknown-runtime-signal",
       "protected_context": false,
       "quality_scored": true,
-      "expected_retrieval_influence": true,
+      "expected_retrieval_influence": false,
       "objection_resolution_markers": ["trust"],
       "next_step_quality_markers": ["?", "company context"]
     },

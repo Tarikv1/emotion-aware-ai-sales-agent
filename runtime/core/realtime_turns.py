@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import json
+import re
 from pathlib import Path
 
 from runtime.contracts.product_agent_output_contract import call_control_for_next_action
@@ -51,7 +52,7 @@ LOCALIZED_RESPONSES = {
         "claim-boundary": "I can't guarantee something that depends on the details. A specialist can check that.",
         "product-detail-lookup": "One moment. I will check the product details before I answer.",
         "scheduling-confirmation": "All right. I'll note that time for the specialist callback. Goodbye.",
-        "timing-delay": "No problem. I will leave it open for now instead of forcing a time today.",
+        "timing-delay": "Thanks. I will log that as a follow-up instead of forcing a time today. Goodbye.",
         "price-objection": "That makes sense. Is the main concern price, or whether it is worth the effort?",
         "provider-comparison": "Fair. We can compare fit against what you use now before you decide.",
         "existing-provider-gap": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover.",
@@ -236,13 +237,24 @@ def english_reason_for_call_clause(reason: str) -> str:
     return f"because {cleaned}"
 
 
+def english_price_first_response(campaign: dict | None) -> str:
+    pricing = customer_facing_campaign_text(campaign_text(campaign, "pricing_summary", "pricing_boundary_text"))
+    if pricing:
+        return (
+            f"{ensure_terminal_period(pricing)} The useful test is whether missed follow-up costs enough time "
+            "to justify the plan. Which gap costs more time today: routing, reminders, or handoffs?"
+        )
+    return (
+        "I do not have an approved exact price in this campaign, so I should not invent one. "
+        "Which part should I verify first: monthly cost, terms, or whether it is worth a short review?"
+    )
+
+
 def low_pressure_response(language: str, sales_difficulty: str, campaign: dict | None) -> str | None:
     language_key = normalize_response_language(language)
     if language_key == "en":
         if sales_difficulty == "price-first-direct":
-            pricing = customer_facing_campaign_text(campaign_text(campaign, "pricing_summary", "pricing_boundary_text"))
-            if pricing:
-                return f"{pricing}, and I can send the exact terms in writing. If useful, I can briefly explain what is included before I send them. No payment or commitment on this call."
+            return english_price_first_response(campaign)
         if sales_difficulty == "written-info-request":
             summary = customer_facing_campaign_text(campaign_text(campaign, "approved_written_summary", "approved_email_followup_scope")) or "the one-page summary"
             if summary == "the one-page summary":
@@ -299,10 +311,7 @@ def localized_response(language: str, sales_difficulty: str, campaign: dict | No
             softened = low_pressure_response(language_key, sales_difficulty, campaign)
             if softened:
                 return softened
-            pricing = campaign_text(campaign, "pricing_summary", "pricing_boundary_text")
-            if pricing:
-                return f"{pricing} No payment or commitment on this call."
-            return "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there."
+            return english_price_first_response(campaign)
         if sales_difficulty == "written-info-request":
             softened = low_pressure_response(language_key, sales_difficulty, campaign)
             if softened:
@@ -454,7 +463,80 @@ def localized_response(language: str, sales_difficulty: str, campaign: dict | No
 
 def contains_any(text: str, phrases: list[str]) -> bool:
     lowered = text.lower()
+    # Legacy scheduling phrase lists must not treat the product term "callback" as call-control intent.
+    if "short summary and call back" in phrases and "callback" in phrases:
+        phrases = [phrase for phrase in phrases if phrase != "callback"]
     return any(phrase in lowered for phrase in phrases)
+
+
+def normalize_signal_text(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", text.lower()).strip()
+
+
+def contains_callback_time_signal(text: str) -> bool:
+    normalized = normalize_signal_text(text)
+    if not normalized:
+        return False
+    has_numeric_time = bool(
+        re.search(r"\b(?:[1-9]|1[0-2])\s*(?:a\s*m|p\s*m|am|pm|uhr)\b", normalized)
+        or re.search(r"\bat\s+(?:[1-9]|1[0-2])\b", normalized)
+        or re.search(r"\b(?:[1-9]|1[0-2])\s+works\b", normalized)
+    )
+    has_day_or_callback_context = contains_any(
+        normalized,
+        [
+            "tomorrow",
+            "today",
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "next week",
+            "morgen",
+            "mittwoch",
+            "donnerstag",
+            "freitag",
+            "dienstag",
+            "call me",
+            "call back",
+            "callback",
+            "works",
+        ],
+    )
+    return has_numeric_time and has_day_or_callback_context
+
+
+def contains_callback_request_signal(text: str) -> bool:
+    normalized = normalize_signal_text(text)
+    if not normalized:
+        return False
+    return contains_any(
+        normalized,
+        [
+            "call back later",
+            "callback later",
+            "call me back",
+            "call me later",
+            "can you call back",
+            "can you call me",
+            "short summary and call back",
+            "i do not have time",
+            "i dont have time",
+            "do not have time",
+            "dont have time",
+            "no time right now",
+            "i cannot talk now",
+            "i cant talk now",
+            "too busy right now",
+            "busy right now",
+            "not now",
+            "naechste woche nochmal",
+            "spaeter noch mal",
+            "morgen zurueckrufen",
+            "anderen zeitpunkt",
+        ],
+    )
 
 
 def stage_is(stage: str | None, *values: str) -> bool:
@@ -1141,7 +1223,13 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
-    if stage == "scheduling" and contains_any(transcript, ["mittwoch", "donnerstag", "freitag", "dienstag", "morgen um", "10 uhr", "14 uhr", "wednesday", "10 works"]):
+    if contains_callback_time_signal(transcript) or (
+        stage == "scheduling"
+        and contains_any(
+            transcript,
+            ["mittwoch", "donnerstag", "freitag", "dienstag", "morgen um", "10 uhr", "14 uhr", "wednesday", "10 works"],
+        )
+    ):
         sales_difficulty = "scheduling-confirmation"
         return {
             "response_language": response_language,
@@ -1193,6 +1281,18 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "selected_strategy": "guided-option-selection",
             "next_action": "answer-and-continue",
             "agent_response": guided_option_response,
+        }
+
+    if contains_callback_request_signal(transcript):
+        sales_difficulty = "callback-request"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "direct-ask-or-commitment",
+            "next_action": "offer-scheduling",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
     if response_language == "en" and contains_any(transcript, ["compare", "comparison", "different", "difference", "versus", "vs"]) and contains_any(transcript, ["current provider", "current setup", "what we already use", "what we already have", "current terms", "existing provider"]):

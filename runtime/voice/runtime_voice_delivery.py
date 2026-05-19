@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import re
 from copy import deepcopy
 from typing import Any
 
@@ -108,18 +109,52 @@ def segment_type_for_packet(packet: dict[str, Any]) -> tuple[str, str, bool]:
     return "freeform_explanation", "runtime_guarded_response", True
 
 
+def normalize_phrase(text: str) -> str:
+    return re.sub(r"\s+", " ", str(text or "").strip().lower())
+
+
+def sales_emphasis_targets(campaign: dict[str, Any]) -> list[str]:
+    targets = campaign.get("sales_emphasis_priority") or []
+    if not isinstance(targets, list):
+        return []
+    return [str(target).strip() for target in targets if str(target).strip()]
+
+
+def first_matching_sales_target(text: str, targets: list[str]) -> str | None:
+    normalized_text = normalize_phrase(text)
+    for target in targets:
+        normalized_target = normalize_phrase(target)
+        if normalized_target and normalized_target in normalized_text:
+            return target
+    return None
+
+
+def is_agent_opening_packet(packet: dict[str, Any]) -> bool:
+    return (
+        str(packet.get("input_type") or "").strip().lower() == "agent-open"
+        or str(packet.get("transcript") or "").strip() == "__agent_open__"
+    )
+
+
 def build_delivery_segments(packet: dict[str, Any], campaign: dict[str, Any]) -> list[dict[str, Any]]:
     segment_type, source, allow_prosody = segment_type_for_packet(packet)
     final_response = packet["final_response"]
+    emphasis_targets = sales_emphasis_targets(campaign)
+    primary_sales_target = first_matching_sales_target(final_response, emphasis_targets)
+    agent_opening = is_agent_opening_packet(packet)
     return [
         {
             "segment_id": "resp-002-final-response",
             "segment_type": segment_type,
             "source": source,
             "text": final_response,
+            "emphasis_targets": emphasis_targets,
+            "pause_after": primary_sales_target,
+            "pitch_target": primary_sales_target,
             "allow_fillers": allow_prosody,
+            "allow_speech_realism": allow_prosody and not agent_opening,
             "allow_interaction_prosody": allow_prosody,
-            "allow_speech_imperfections": allow_prosody,
+            "allow_speech_imperfections": allow_prosody and not agent_opening,
             "allow_prosody": allow_prosody,
             "eligible_for_prosody": allow_prosody,
             "decision_source": {

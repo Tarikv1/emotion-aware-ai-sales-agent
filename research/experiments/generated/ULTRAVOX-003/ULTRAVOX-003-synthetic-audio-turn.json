@@ -1,0 +1,156 @@
+{
+  "evaluation_milestone": "ULTRAVOX-003",
+  "mode": "live",
+  "provider": {
+    "provider_id": "ultravox-hosted-api",
+    "endpoint_type": "server-websocket",
+    "model": "fixie-ai/ultravox",
+    "voice_env_var": "ULTRAVOX_VOICE_ID_OR_NAME",
+    "voice_value_logged": false,
+    "voice_configured": false,
+    "voice_selection": "ultravox-default",
+    "api_key_env_var": "ULTRAVOX_API_KEY",
+    "env_file": "runtime/config/local/ultravox.env",
+    "api_key_value_logged": false,
+    "join_url_value_logged": false,
+    "input_sample_rate": 48000,
+    "output_sample_rate": 48000
+  },
+  "case": {
+    "case_id": "ultravox_003_customer_audio_turn",
+    "language": "en",
+    "campaign_id": "campaign-prod-005-b2c-telecom",
+    "customer_text": "Can you quickly explain what this offer is about?",
+    "success_criteria": [
+      "create call succeeds with env-only API key",
+      "joinUrl is received but not logged",
+      "server WebSocket opens",
+      "synthetic customer WAV is generated locally or copied from the prior synthetic ULTRAVOX-002 fixture if local speech synthesis is unavailable",
+      "synthetic customer PCM is sent to UltraVox",
+      "a transcript event or agent audio is received",
+      "first agent audio timing is recorded when available",
+      "call delete succeeds or is retried after call settlement",
+      "no real customer audio is uploaded",
+      "no voice cloning is used",
+      "no runtime behavior changes"
+    ]
+  },
+  "summary": {
+    "live_call_requested": true,
+    "approved_live_test": true,
+    "create_call_api_calls_made": 1,
+    "delete_call_api_calls_made": 1,
+    "websocket_connections_attempted": 1,
+    "real_customer_audio_uploaded": false,
+    "synthetic_customer_audio_uploaded": true,
+    "synthetic_prompt_only": true,
+    "voice_cloning_used": false,
+    "provider_owned_business_logic": false,
+    "durable_provider_agent_created": false,
+    "runtime_behavior_changed": false,
+    "opens_prod_102": false,
+    "agent_audio_file_created": false,
+    "fallback_used": true,
+    "fallback_reason": "websocket-error",
+    "timeout_seconds": 10.0
+  },
+  "request_preview": {
+    "method": "POST",
+    "url": "https://api.ultravox.ai/api/calls",
+    "headers": {
+      "X-API-Key": "<redacted>",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "model": "fixie-ai/ultravox",
+      "recordingEnabled": false,
+      "firstSpeaker": "FIRST_SPEAKER_USER",
+      "transcriptOptional": false,
+      "initialOutputMedium": "MESSAGE_MEDIUM_VOICE",
+      "languageHint": "en",
+      "joinTimeout": "8s",
+      "maxDuration": "18s",
+      "systemPrompt": "You are running one synthetic provider latency test for a local guarded sales-agent project. The user audio is synthetic. Answer in one short sentence only. Say that this is a quick synthetic test and no customer data is being used. Do not sell, do not collect personal data, do not ask follow-up questions.",
+      "medium": {
+        "serverWebSocket": {
+          "inputSampleRate": 48000,
+          "outputSampleRate": 48000,
+          "clientBufferSizeMs": 60,
+          "dataMessages": {
+            "callStarted": true,
+            "transcript": true,
+            "callEvent": true,
+            "debug": false,
+            "userStartedSpeaking": true,
+            "userStoppedSpeaking": true
+          }
+        }
+      },
+      "metadata": {
+        "project": "emotion-aware-ai-sales-agent",
+        "milestone": "ULTRAVOX-003",
+        "syntheticCustomerAudio": "true",
+        "realCustomerAudio": "false"
+      }
+    }
+  },
+  "synthetic_input_audio": {
+    "synthesis_attempted": true,
+    "synthesis_succeeded": true,
+    "synthesis_latency_ms": 891.017,
+    "synthesis_backend": "ultravox-002-synthetic-audio-fixture-fallback",
+    "primary_synthesis_error": "Windows SAPI synthesis did not create a playable WAV in this environment: Exception calling \"Speak\" with \"1\" argument(s): \"No voice installed on the system or none available with the current ",
+    "fallback_synthesis_error": "Windows SAPI COM fallback did not create a playable WAV in this environment: Exception from HRESULT: 0x80045040",
+    "fixture_source_path": "research/experiments/generated/ULTRAVOX-002/audio/ULTRAVOX-002-agent-first-audio.wav",
+    "fixture_used": true,
+    "input_text_matches_case": false,
+    "wav_path": "research/experiments/generated/ULTRAVOX-003/audio/ULTRAVOX-003-synthetic-customer-input.wav",
+    "wav_byte_size": 48044,
+    "synthesis_error": null,
+    "pcm_sample_rate": 48000,
+    "pcm_byte_size": 48000
+  },
+  "create_call": {
+    "attempted": true,
+    "api_call_made": true,
+    "http_status": 201,
+    "latency_ms": 529.111,
+    "call_id_suffix": "3aae887b",
+    "join_url_received": true,
+    "join_url_host": "voice.ultravox.ai",
+    "provider_error": null
+  },
+  "websocket": {
+    "websocket_connection_attempted": true,
+    "websocket_connected": true,
+    "websocket_error": "Connection timed out",
+    "customer_audio_bytes_sent": 163200,
+    "time_to_first_transcript_ms": null,
+    "first_transcript_text": null,
+    "time_to_first_agent_audio_byte_ms": null,
+    "total_turn_latency_ms": 3146.017,
+    "agent_audio_bytes_received": 0,
+    "agent_audio_file_created": false,
+    "agent_audio_output_path": null,
+    "binary_message_count": 0,
+    "text_message_count": 4,
+    "text_event_types": [
+      "call_started",
+      "state",
+      "user_started_speaking",
+      "user_stopped_speaking"
+    ]
+  },
+  "delete_call": {
+    "delete_attempted": true,
+    "delete_api_call_made": true,
+    "delete_attempt_count": 2,
+    "delete_http_status": 204,
+    "delete_latency_ms": 361.571,
+    "deleted": true,
+    "delete_error": null
+  },
+  "loaded_env_vars": [
+    "ULTRAVOX_API_KEY"
+  ]
+}

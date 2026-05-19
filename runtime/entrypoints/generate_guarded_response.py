@@ -290,14 +290,20 @@ def compose_candidate_response(
         )
 
     if difficulty == "price-objection":
+        pricing_summary = str(campaign.get("pricing_summary") or "").strip()
+        if pricing_summary and hint_mentions(advisory_hints, "freedom", "pause", "compare", "objection", "diagnose"):
+            return (
+                f"{pricing_summary} The useful test is whether missed follow-up costs enough time "
+                "to justify Growth; if not, Starter is enough."
+            )
+        if pricing_summary:
+            return f"{pricing_summary} Judge it against real missed follow-up time, not pressure."
         if hint_mentions(advisory_hints, "freedom", "pause", "compare", "objection"):
             return (
-                "That makes sense. Is your bigger concern the monthly price, the contract terms, "
-                "or whether reviewing options is worth your time?"
+                "Price, contract terms, or whether this is worth your time: which is the real blocker?"
             )
         return (
-            "That makes sense. Is your bigger concern the monthly price, the contract terms, "
-            "or whether reviewing options is worth your time?"
+            "Let's diagnose price directly: monthly cost, terms, or whether the effort is worth a short review."
         )
 
     if difficulty == "product-detail-lookup":
@@ -316,13 +322,15 @@ def compose_candidate_response(
         return "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now."
 
     if difficulty == "autonomy-check":
-        return "That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?"
+        return "No pressure. A callback is fine, or I can answer the one point you need clarified before we stop."
 
     if difficulty == "provider-comparison":
         return "That is fair. Should we compare price, terms, or fit first without pressure?"
 
     if difficulty == "stakeholder-review":
-        return "That makes sense. Should I send a short summary you can share, or is there one concern I should address first?"
+        if hint_mentions(advisory_hints, "objection", "decision", "constraint", "commitment", "summary", "autonomy", "timing"):
+            return "Should I send a short summary for your boss, or answer the one concern they will care about first?"
+        return "I can send a short summary for the stakeholder, or answer the one concern they will care about first."
 
     if difficulty == "procurement-review":
         return "Understood. What written information would help procurement review this without asking you for anything firm today?"
@@ -359,6 +367,15 @@ def compose_candidate_response(
                 "security details, or a specialist review path first?"
             )
         return compose_unknown_follow_up(transcript)
+
+    if difficulty == "written-info-request" and hint_mentions(
+        advisory_hints,
+        "send",
+        "information",
+        "qualify",
+        "relevant",
+    ):
+        return "I can send information. To keep it relevant, should it cover fit, pricing, or the review path?"
 
     return decision["agent_response"]
 
@@ -661,11 +678,13 @@ def finalize_retrieval_packet(
     candidate_response: str,
     policy_response: str,
     baseline_candidate_response: str,
+    candidate_response_override_used: bool = False,
 ) -> dict:
     finalized = dict(retrieval)
     used = (
         finalized.get("enabled") is True
         and finalized.get("status") == "retrieved"
+        and not candidate_response_override_used
         and validation["fallback_used"] is False
         and bool(finalized.get("advisory_hints"))
         and candidate_response != baseline_candidate_response
@@ -673,7 +692,11 @@ def finalize_retrieval_packet(
     finalized["retrieval_used_in_runtime"] = used
     finalized["influenced_response"] = used
     finalized["used_hint_count"] = len(finalized.get("advisory_hints", [])) if used else 0
-    finalized["influence_basis"] = "candidate_diff_from_no_retrieval_baseline"
+    finalized["influence_basis"] = (
+        "candidate_response_override_preserved"
+        if candidate_response_override_used
+        else "candidate_diff_from_no_retrieval_baseline"
+    )
     if used:
         finalized["status"] = "influenced"
     elif finalized.get("status") == "retrieved":
@@ -804,6 +827,7 @@ def apply_guarded_response_to_decision(
         candidate_response,
         policy_response,
         baseline_candidate_response,
+        candidate_response_override_used=bool(candidate_response_override),
     )
     generation_latency_ms = int((time.perf_counter() - generation_start) * 1000)
 

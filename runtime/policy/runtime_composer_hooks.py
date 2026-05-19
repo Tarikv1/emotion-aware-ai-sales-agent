@@ -99,6 +99,9 @@ def _is_generic_candidate(candidate_response: str) -> bool:
         text,
         [
             "price, fit, timing, or exact product details",
+            "bigger concern the monthly price",
+            "bigger concern the price",
+            "would a brief callback later help",
             "concrete reason for reaching out",
         ],
     )
@@ -143,12 +146,12 @@ def choose_runtime_composer_hook(
         if "timeline" in transcript_text or "timing" in transcript_text:
             return (
                 "price_objection_clarifier",
-                "That makes sense. Is the bigger concern the cost, the value you would get back, or the timing for reviewing it?",
+                "Keep it concrete: compare the cost, the time you lose today, and whether timing makes a review useful now.",
                 _hook_basis(True, True),
             )
         return (
             "price_objection_clarifier",
-            "That makes sense. Is the bigger concern the price, the terms, or whether the value is worth reviewing now?",
+            "Keep it concrete: compare the monthly cost, the terms, and whether missed follow-up costs enough time to review it.",
             _hook_basis(True, True),
         )
 
@@ -160,7 +163,7 @@ def choose_runtime_composer_hook(
     if callback_signal and callback_hint:
         return (
             "callback_request_low_commitment",
-            "That makes sense. Would a brief callback later help, or should we first clarify fit, timing, or anything you need verified before reviewing it?",
+            "No pressure. Give me a callback window, or I can answer the one thing you need verified before we stop.",
             _hook_basis(True, True),
         )
 
@@ -172,7 +175,7 @@ def choose_runtime_composer_hook(
     if commitment_signal and commitment_hint:
         return (
             "sale_eligible_fit_check",
-            "That makes sense. Before any commitment, should we confirm fit, timing, or eligibility for your situation?",
+            "Before any commitment, check fit first: whether the problem is real, whether timing works, and whether the next step stays reversible.",
             _hook_basis(True, True),
         )
 
@@ -181,7 +184,7 @@ def choose_runtime_composer_hook(
     if trust_signal and trust_hint:
         return (
             "trust_repair_verification",
-            "Fair. I can keep this low-pressure: should I share what can be verified about the company, or would you prefer a specialist follow-up?",
+            "Fair. Keep this low-pressure: no payment or sensitive details here; I can send the approved verification path first.",
             _hook_basis(True, True),
         )
 

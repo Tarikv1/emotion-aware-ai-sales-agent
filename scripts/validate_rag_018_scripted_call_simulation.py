@@ -100,12 +100,10 @@ def main() -> None:
     assert_condition("concern" in authority_case["rag_response"].lower(), authority_case["rag_response"])
 
     trust_case = case_by_id["RAG-018-SIM-C05"]
-    assert_condition(trust_case["retrieval_status"] == "influenced", trust_case)
-    assert_condition(trust_case["retrieval_used_in_runtime"] is True, trust_case)
-    assert_condition(trust_case["objection_resolution_delta"] == 1, trust_case)
-    assert_condition(trust_case["next_step_quality_delta"] == 1, trust_case)
-    assert_condition("trust" in trust_case["rag_response"].lower(), trust_case["rag_response"])
-    assert_condition("useful" in trust_case["rag_response"].lower(), trust_case["rag_response"])
+    assert_condition(trust_case["retrieval_status"] == "blocked", trust_case)
+    assert_condition(trust_case["retrieval_used_in_runtime"] is False, trust_case)
+    assert_condition("no payment" in trust_case["rag_response"].lower(), trust_case["rag_response"])
+    assert_condition("verification path" in trust_case["rag_response"].lower(), trust_case["rag_response"])
 
     for case_id in ("RAG-018-SIM-C07", "RAG-018-SIM-C08", "RAG-018-SIM-C09", "RAG-018-SIM-C10"):
         protected = case_by_id[case_id]

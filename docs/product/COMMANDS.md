@@ -2896,6 +2896,176 @@ python scripts\start_guarded_local_server.py `
   -- python scripts\run_browser_speech_demo.py
 ```
 
+## LIVE-DEMO-001 Agent Voice Call
+
+Validate the browser mic -> repo agent -> ElevenLabs voice demo without provider calls:
+
+```powershell
+python scripts\validate_live_demo_001_agent_voice_call.py
+```
+
+Start the supervised local demo in dry-run mode:
+
+```powershell
+python scripts\run_live_demo_001_agent_voice_call.py
+```
+
+By default, `LIVE-DEMO-001` starts with the English B2B software campaign (`campaign-prod-005-b2b-software`). The browser UI also includes a campaign selector, automatic `Start Conversation` speech loop, and a manual `Send To Agent` fallback.
+
+The go-live and MVP boundary is defined in `docs\product\GO_LIVE_MVP_DEFINITION_AND_ROADMAP.md`. That document treats `LIVE-DEMO-001` as the active supervised local-live acceptance front end, not as the product architecture itself. The next recommended work is `LIVE-DEMO-002`: record the current passing `LIVE-DEMO-001` baseline, then extract reusable session continuity, ASR quality, `voice_turn_state`, and campaign product-answer behavior from demo-local code into runtime-owned modules while preserving the fixed demo behavior. Use compact regression coverage for already-fixed behavior instead of a broad failure registry.
+
+Record the `LIVE-DEMO-002` runtime extraction baseline without provider calls:
+
+```powershell
+python scripts\run_live_demo_002_runtime_extraction_baseline.py
+```
+
+Validate that `LIVE-DEMO-002` preserves the `LIVE-DEMO-001` baseline while using runtime-owned ASR quality, voice turn-state, session continuity, anti-loop, and product-answer modules:
+
+```powershell
+python scripts\validate_live_demo_002_runtime_extraction_baseline.py
+```
+
+Run the `DIALOGUE-REASONER-001` structured runtime reasoner baseline over 30 frozen live-demo dialogue-act cases without provider calls:
+
+```powershell
+python scripts\run_dialogue_reasoner_001_baseline.py
+```
+
+Validate that `DIALOGUE-REASONER-001` keeps LLM reasoning default-off, sends no transcript text to a provider, preserves live-demo response behavior, maps every frozen case to strict intent/strategy JSON, records generated evidence, and keeps `PROD-102` closed:
+
+```powershell
+python scripts\validate_dialogue_reasoner_001.py
+```
+
+Run the `DIALOGUE-REASONER-002` LLM provider evaluation dry-run without network calls:
+
+```powershell
+python scripts\run_dialogue_reasoner_002_provider_evaluation.py
+```
+
+Validate that `DIALOGUE-REASONER-002` keeps provider calls default-off, blocks live mode without explicit config, does not log API key values, records planned 30-case provider evaluation evidence, and keeps `PROD-102` closed:
+
+```powershell
+python scripts\validate_dialogue_reasoner_002_provider_evaluation.py
+```
+
+Create/fill the ignored local dialogue-reasoner env file at `runtime\config\local\dialogue_reasoner.env`, using `runtime\config\local\dialogue_reasoner.env.example` as the shape.
+
+Run a live OpenAI-compatible dialogue-reasoner provider evaluation only after filling `DIALOGUE_REASONER_API_KEY`, `DIALOGUE_REASONER_BASE_URL`, and `DIALOGUE_REASONER_MODEL` in that local env file or in the same shell:
+
+```powershell
+python scripts\run_dialogue_reasoner_002_provider_evaluation.py --live --consent-confirmed
+```
+
+Run the `DIALOGUE-REASONER-003` hybrid gate dry-run without provider calls. This preserves the 30 guard cases, checks 30 provider-invocation gate cases, plans 40 reasoning-only provider cases, blocks runtime-route override, and keeps `PROD-102` closed:
+
+```powershell
+python scripts\run_dialogue_reasoner_003_hybrid_gate.py
+```
+
+Validate that `DIALOGUE-REASONER-003` keeps deterministic routing in control, blocks provider calls by default and with missing config, validates the 30 guard / 30 invocation / 40 reasoning case shape, does not log API key values, and keeps `PROD-102` closed:
+
+```powershell
+python scripts\validate_dialogue_reasoner_003_hybrid_gate.py
+```
+
+Run the live hybrid reasoning-provider evaluation only after filling the ignored dialogue-reasoner env file and confirming synthetic transcript upload. Some OpenAI-compatible model families require `--temperature 1`:
+
+```powershell
+python scripts\run_dialogue_reasoner_003_hybrid_gate.py --live --consent-confirmed --temperature 1
+```
+
+Run the `DIALOGUE-REASONER-004` async enrichment dry-run without provider calls. This proves deterministic customer responses are available before provider enrichment, queues 40 allowed enrichment packets, blocks route/final-response mutation, and keeps `PROD-102` closed:
+
+```powershell
+python scripts\run_dialogue_reasoner_004_async_enrichment.py
+```
+
+Validate that `DIALOGUE-REASONER-004` keeps async enrichment nonblocking, blocks provider calls by default and with missing config, records response fingerprints without customer-facing response text, and keeps `PROD-102` closed:
+
+```powershell
+python scripts\validate_dialogue_reasoner_004_async_enrichment.py
+```
+
+Run a one-case live async enrichment smoke only after filling the ignored dialogue-reasoner env file and confirming synthetic transcript upload. Some OpenAI-compatible model families require `--temperature 1`:
+
+```powershell
+python scripts\run_dialogue_reasoner_004_async_enrichment.py --live --consent-confirmed --temperature 1 --max-reasoning-cases 1
+```
+
+Start it with ElevenLabs TTS after setting `ELEVENLABS_API_KEY` and an English ElevenLabs voice ID:
+
+```powershell
+python scripts\run_live_demo_001_agent_voice_call.py `
+  --live-tts `
+  --consent-confirmed `
+  --timeout-seconds 8
+```
+
+This demo keeps the agent brain inside the repo. `Start Conversation` first routes a runtime-owned `agent-open` turn so the agent speaks before browser ASR starts; the opener uses `caller_identity` and `target_account_context` to say `Maya` is `calling from Northstar Workflow Labs, the team behind RouteSignal CRM`, checks time, says it is looking for the person handling inbound demo follow-up, states the missed-callback/handoff problem, and asks a qualification question. Browser speech recognition then creates later transcripts, the local guarded runtime chooses the answer, and ElevenLabs is used only as TTS output. Browser playback volume is locally calibrated to `0.68` for both ElevenLabs audio playback and the browser fallback voice; this does not alter provider audio files or provider request shape. Session continuity handles short follow-up answers such as `price`, longer observed phrases such as `start with the price`, first-turn explicit topics such as `I want to talk about the price`, noisy ASR variants such as `price star`, ASR variants around `reviewing/viewing options is worth my time`, buyer clarification requests such as `I did not understand what you asked before` through `previous_question_clarified`, caller identity recall such as `where were you calling from again` through `caller_identity_recalled`, and bare negative replies such as `no` through `ambiguous_negative_clarified`. Greeting turns now open like a sales call with a permission/time check instead of a topic menu. Resolved focus slots persist across later turns, weak acknowledgements after the opener or after price advance into proactive guided selling instead of replaying the price sentence, generic follow-ups such as `can you tell me more` and `what else should I know` progress price, fit, timing, and feature/detail topics without replaying or reopening focus menus, and demo focus responses block `That makes sense`, focus-restatement loops, long sentence shapes, canned prior-question advancement, bare-negative obliviousness, anti-loop repair leaks, and internal guardrail/process wording. The English B2B software demo now loads the fictional `Northstar Workflow Labs` / `RouteSignal CRM` campaign profile from `research\experiments\cases\live-demo-001-fictional-b2b-sales-campaign.json`, using public lead-routing pages only as inspiration. It answers product, pricing, plan-difference, manual-tracking, small-team-fit, unnecessary-handoff, integration, and security questions from synthetic campaign facts while blocking copied real-company text, unsupported ROI/conversion/security claims, unnecessary specialist handoff for basics, and `PROD-102` opening. The demo uses a transport-neutral voice turn-state contract (`idle`, `listening`, `agent_thinking`, `agent_speaking`, `paused`) so the current browser page and later telephony/WebRTC adapters can share `voice_turn_state` semantics. Recognition stops before agent response generation, listening is blocked while the agent is thinking or speaking, and listening restarts only after voice output ends. Low-confidence browser ASR below `0.45` asks for a repeat instead of entering sales logic. Private demo turns and generated audio stay under ignored `data/private/live-demo-001/`; no provider agent, voice cloning, runtime behavior change, or live provider default is allowed.
+
+The `LIVE-DEMO-002` guard now covers `sales_context_variety`, `sales_emphasis_priority`, `sales_context_variety_and_emphasis`, `previous_question_clarification`, `ambiguous_negative_clarification`, `caller_identity_recall`, and `internal_repair_speech_blocked`. Low-information qualification follow-ups must produce distinct seller-led responses with broader campaign context such as inbound demo ownership, routing, callbacks, handoff review, reminders, visibility, spreadsheet/shared-inbox leakage, or Slack alerts. Buyer requests to clarify the previous question must explain the prior sales question in plain terms and ask a clearer version instead of advancing canned qualification copy. Caller identity questions must answer where the agent is calling from instead of becoming fit/price/topic-menu turns. Bare negative replies must ask whether the buyer rejects timing or the problem itself instead of falling through to menus or another qualification line. Internal anti-loop repair phrases such as `avoid repeating the same question` are blocked from customer-facing speech. Voice prosody cues must emphasize problem/value targets, not greeting text or small talk. The first opener keeps pacing/emphasis cues but does not insert filler words between `calling from Northstar Workflow Labs, the team behind RouteSignal CRM` and the permission check.
+
+The callback scheduling boundary is runtime-owned: if the buyer says `I do not have time`, the agent asks for a callback time through `callback_request_time_needed`; if the buyer then says `call me 10 a.m. tomorrow`, the agent confirms through `callback_time_confirmed`, `scheduling-confirmation`, and `schedule-and-end` instead of reopening product-topic menus.
+
+Call-context recovery is runtime-owned: if the buyer says variants of `what do you want exactly`, `you called me`, `what is the next step`, `you are wasting time`, or `I don't know what you're talking about`, the agent answers that dialogue act with one concrete RouteSignal workflow question instead of reopening `price, fit, timing, or exact product details` or leaking anti-loop repair wording.
+
+The audible runtime-upgrade path is also covered by the `LIVE-DEMO-001` validator. Browser fallback speech now uses markup-free RESP-003 shaped TTS input, so bounded fillers and voice naturalization are heard even without an ElevenLabs audio file. The demo enables local guarded retrieval only when the `RAG-017` registry exists; campaign facts override RAG, protected contexts block retrieval influence, and an eligible price-worth turn must prove real retrieval influence without opening `PROD-102`.
+
+## UltraVox Bounded Evaluation
+
+Generate the ULTRAVOX-001 bounded realtime voice evaluation without provider calls:
+
+```powershell
+python scripts\evaluate_ultravox_001_bounded_realtime_voice.py `
+  --cases research\experiments\cases\ultravox-001-bounded-realtime-voice-evaluation.json `
+  --out research\experiments\generated\ULTRAVOX-001\ULTRAVOX-001-bounded-realtime-voice-evaluation.json `
+  --report-out research\experiments\generated\ULTRAVOX-001\ULTRAVOX-001-bounded-realtime-voice-evaluation-report.md
+```
+
+Validate that ULTRAVOX-001 keeps UltraVox as a bounded provider evaluation, recommends the hosted API provider-adapter as the first empirical test, keeps self-hosting as a research lane, keeps the hosted console agent out of the product runtime, preserves RESP-003 as the baseline, makes no API calls, uploads no audio, requires no secrets, creates no durable provider agent, and does not open `PROD-102`:
+
+```powershell
+python scripts\validate_ultravox_001_bounded_realtime_voice.py
+```
+
+Validate the ULTRAVOX-002 synthetic live smoke harness without provider calls:
+
+```powershell
+python scripts\validate_ultravox_002_synthetic_live_smoke.py
+```
+
+Run the approved one-call UltraVox synthetic live smoke after adding `ULTRAVOX_API_KEY` to ignored `runtime/config/local/ultravox.env`:
+
+```powershell
+python scripts\run_ultravox_002_synthetic_live_smoke.py `
+  --live `
+  --timeout-seconds 8
+```
+
+If provider cleanup reports that the call is still ongoing or unbilled, wait briefly and delete the recent call by the redacted suffix from the smoke output:
+
+```powershell
+python scripts\cleanup_ultravox_call_by_suffix.py --suffix <last-eight-call-id-chars>
+```
+
+Validate the ULTRAVOX-003 synthetic customer-audio turn harness without provider calls:
+
+```powershell
+python scripts\validate_ultravox_003_synthetic_audio_turn.py
+```
+
+Run the approved one-turn UltraVox synthetic customer-audio test after adding `ULTRAVOX_API_KEY` to ignored `runtime/config/local/ultravox.env`:
+
+```powershell
+python scripts\run_ultravox_003_synthetic_audio_turn.py `
+  --live `
+  --timeout-seconds 10
+```
+
+ULTRAVOX-003 generates synthetic customer audio locally when possible, or reuses the prior ignored `ULTRAVOX-002` synthetic audio fixture if local speech synthesis is unavailable. It streams synthetic PCM to UltraVox over server WebSocket, listens for transcript and agent audio, closes the socket, and attempts to delete the call. It must not use real customer audio, voice cloning, durable provider agents, runtime behavior changes, or open `PROD-102`.
+
 ## Explicit Opt-In Provider Commands
 
 These commands can contact external providers. Do not run them as default setup checks.

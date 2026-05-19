@@ -1,0 +1,695 @@
+{
+  "evaluation_milestone": "ULTRAVOX-001",
+  "evaluation_scope": "Bounded UltraVox realtime voice evaluation for this sales-agent architecture. No API calls, no secrets, no customer audio, and no runtime integration.",
+  "retrieved_on": "2026-05-17",
+  "score_scale": "1=weak fit, 5=strong fit",
+  "research_gate": {
+    "integration_allowed": false,
+    "live_provider_calls_allowed": false,
+    "api_key_storage_rule": "environment-only-not-repo",
+    "synthetic_inputs_only": true,
+    "customer_audio_upload_allowed": false,
+    "voice_cloning_allowed": false,
+    "durable_provider_agent_allowed": false,
+    "provider_owned_business_logic_allowed": false,
+    "opens_prod_102": false,
+    "required_architecture_contract": "The sales-agent core remains source of truth for policy, protected text, campaign logic, and next action. UltraVox can be evaluated only as a realtime voice session/provider layer unless a later review proves a safer contract.",
+    "live_next_gate": "A live UltraVox run requires explicit approval, ULTRAVOX_API_KEY in the environment only, one synthetic call, timeout guardrails, provider retention review, and generated asset/evidence logging."
+  },
+  "scoring_weights": {
+    "latency_experiment_fit": 1.5,
+    "guarded_runtime_fit": 1.6,
+    "lock_in_control": 1.2,
+    "implementation_effort_inverse": 1.0,
+    "privacy_retention_fit": 1.2,
+    "evidence_value": 1.0,
+    "production_readiness": 0.8,
+    "self_host_feasibility": 0.8
+  },
+  "summary": {
+    "candidate_count": 4,
+    "source_count": 10,
+    "official_source_count": 10,
+    "case_count": 5,
+    "api_calls_made": false,
+    "audio_uploaded": false,
+    "secrets_required": false,
+    "integration_allowed": false,
+    "live_provider_calls_allowed": false,
+    "customer_audio_upload_allowed": false,
+    "voice_cloning_allowed": false,
+    "provider_owned_business_logic_allowed": false,
+    "durable_provider_agent_allowed": false,
+    "opens_prod_102": false,
+    "recommended_first_bounded_evaluation": "ultravox-hosted-api-provider-adapter",
+    "self_host_lane": "ultravox-open-source-self-host-lane",
+    "baseline_control": "current-resp003-tts-bridge-baseline"
+  },
+  "recommendations": {
+    "first_bounded_evaluation": {
+      "candidate_id": "ultravox-hosted-api-provider-adapter",
+      "candidate_name": "UltraVox hosted API as swappable realtime voice provider",
+      "candidate_class": "hosted-api-provider-adapter",
+      "recommended_role": "recommended-first-bounded-evaluation",
+      "weighted_score": 32.9,
+      "api_key_required": true,
+      "network_call_required_for_live": true,
+      "customer_audio_upload_if_live": true,
+      "provider_owned_business_logic": false,
+      "durable_provider_agent_required": false,
+      "blocked_until": [
+        "explicit-live-approval",
+        "ULTRAVOX_API_KEY-env-only",
+        "provider-retention-review",
+        "synthetic-call-only"
+      ]
+    },
+    "self_host_research_lane": {
+      "candidate_id": "ultravox-open-source-self-host-lane",
+      "candidate_name": "UltraVox open-source self-hosted research lane",
+      "candidate_class": "self-hosted-model-research",
+      "recommended_role": "self-host-research-lane",
+      "weighted_score": 29.0,
+      "api_key_required": false,
+      "network_call_required_for_live": false,
+      "customer_audio_upload_if_live": false,
+      "provider_owned_business_logic": false,
+      "durable_provider_agent_required": false,
+      "blocked_until": [
+        "local-hardware-fit-review",
+        "serving-plan",
+        "tts-or-speech-output-plan",
+        "latency-benchmark-harness"
+      ]
+    },
+    "do_not_productize_first": {
+      "candidate_id": "ultravox-hosted-console-agent",
+      "candidate_name": "UltraVox hosted console agent owns prompt and dialogue",
+      "candidate_class": "hosted-console-agent",
+      "recommended_role": "do-not-productize-first",
+      "weighted_score": 22.9,
+      "api_key_required": true,
+      "network_call_required_for_live": true,
+      "customer_audio_upload_if_live": true,
+      "provider_owned_business_logic": true,
+      "durable_provider_agent_required": true,
+      "blocked_until": [
+        "separate-architecture-review",
+        "exportable-config-contract",
+        "guardrail-equivalence-proof"
+      ]
+    },
+    "baseline_control": {
+      "candidate_id": "current-resp003-tts-bridge-baseline",
+      "candidate_name": "Current RESP-003 guarded runtime plus TTS bridge",
+      "candidate_class": "current-baseline",
+      "recommended_role": "baseline-control",
+      "weighted_score": 34.0,
+      "api_key_required": false,
+      "network_call_required_for_live": false,
+      "customer_audio_upload_if_live": false,
+      "provider_owned_business_logic": false,
+      "durable_provider_agent_required": false,
+      "blocked_until": []
+    }
+  },
+  "evaluation_cases": [
+    {
+      "case_id": "latency_claim_check",
+      "question": "Does UltraVox plausibly reduce the voice latency stack without pretending latency becomes zero?",
+      "required_result": "Treat direct speech-to-speech/realtime voice as a latency-reduction hypothesis, not a proven zero-latency claim."
+    },
+    {
+      "case_id": "guarded_runtime_contract",
+      "question": "Can UltraVox be evaluated without bypassing policy, protected text, campaign logic, and call-control decisions?",
+      "required_result": "Only the provider-adapter path is eligible for first evaluation; provider-owned sales logic is blocked."
+    },
+    {
+      "case_id": "vendor_lock_in_boundary",
+      "question": "Does the integration keep business logic, prompts, scenarios, and acceptance evidence in this repository?",
+      "required_result": "Durable UltraVox console agents, uploaded corpora, or provider-owned business logic are blocked."
+    },
+    {
+      "case_id": "self_host_feasibility",
+      "question": "Does the open-source lane currently reduce risk enough to justify building infrastructure first?",
+      "required_result": "Open-source/self-host remains a research lane unless a separate local runtime proves full voice-session feasibility."
+    },
+    {
+      "case_id": "provider_boundary",
+      "question": "Can the first evaluation be run without customer audio, voice cloning, stored secrets, or cost-bearing provider calls?",
+      "required_result": "Dry-run now; live synthetic call only after explicit approval and env-only key setup."
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "ultravox-overview",
+      "title": "UltraVox Documentation Overview",
+      "url": "https://docs.ultravox.ai/overview",
+      "retrieved_on": "2026-05-17",
+      "source_type": "official-docs",
+      "used_for": [
+        "realtime-agent-positioning",
+        "platform-scope"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "ultravox-how-it-works",
+      "title": "How UltraVox Works",
+      "url": "https://docs.ultravox.ai/gettingstarted/how-ultravox-works",
+      "retrieved_on": "2026-05-17",
+      "source_type": "official-docs",
+      "used_for": [
+        "direct-speech-model",
+        "pricing-note",
+        "api-first-positioning"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "ultravox-create-call",
+      "title": "UltraVox Create Call API",
+      "url": "https://docs.ultravox.ai/api-reference/calls/calls-post",
+      "retrieved_on": "2026-05-17",
+      "source_type": "official-api-reference",
+      "used_for": [
+        "system-prompt",
+        "selected-tools",
+        "mediums",
+        "recording-retention"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "ultravox-websockets",
+      "title": "UltraVox WebSocket Integration",
+      "url": "https://docs.ultravox.ai/apps/websockets",
+      "retrieved_on": "2026-05-17",
+      "source_type": "official-docs",
+      "used_for": [
+        "server-websocket",
+        "audio-transport",
+        "integration-shape"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "ultravox-custom-tools",
+      "title": "UltraVox Custom Tools",
+      "url": "https://docs.ultravox.ai/tools/custom/overview",
+      "retrieved_on": "2026-05-17",
+      "source_type": "official-docs",
+      "used_for": [
+        "tool-calling",
+        "guarded-runtime-handoff"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "ultravox-faq",
+      "title": "UltraVox FAQ",
+      "url": "https://docs.ultravox.ai/gettingstarted/faq",
+      "retrieved_on": "2026-05-17",
+      "source_type": "official-docs",
+      "used_for": [
+        "retention",
+        "deletion",
+        "production-privacy-gate"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "ultravox-pricing",
+      "title": "UltraVox Pricing",
+      "url": "https://www.ultravox.ai/pricing",
+      "retrieved_on": "2026-05-17",
+      "source_type": "official-pricing",
+      "used_for": [
+        "cost",
+        "concurrency",
+        "plan-risk"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "ultravox-github",
+      "title": "fixie-ai/ultravox",
+      "url": "https://github.com/fixie-ai/ultravox",
+      "retrieved_on": "2026-05-17",
+      "source_type": "official-repository",
+      "used_for": [
+        "license",
+        "open-source-scope",
+        "self-host-lane"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "ultravox-hf-v0-7",
+      "title": "UltraVox v0.7 GLM 4.6 Model Card",
+      "url": "https://huggingface.co/fixie-ai/ultravox-v0_7-glm-4_6",
+      "retrieved_on": "2026-05-17",
+      "source_type": "official-model-card",
+      "used_for": [
+        "model-capability",
+        "license",
+        "self-host-risk"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "ultravox-hf-v0-6-8b",
+      "title": "UltraVox v0.6 Llama 3.1 8B Model Card",
+      "url": "https://huggingface.co/fixie-ai/ultravox-v0_6-llama-3_1-8b",
+      "retrieved_on": "2026-05-17",
+      "source_type": "official-model-card",
+      "used_for": [
+        "audio-text-output-boundary",
+        "future-audio-token-note"
+      ],
+      "official_primary": true
+    }
+  ],
+  "ranked_candidates": [
+    {
+      "candidate_id": "current-resp003-tts-bridge-baseline",
+      "candidate_name": "Current RESP-003 guarded runtime plus TTS bridge",
+      "candidate_class": "current-baseline",
+      "recommended_role": "baseline-control",
+      "source_ids": [],
+      "latency_experiment_fit": 2,
+      "guarded_runtime_fit": 5,
+      "lock_in_control": 4,
+      "implementation_effort_inverse": 5,
+      "privacy_retention_fit": 5,
+      "evidence_value": 4,
+      "production_readiness": 2,
+      "self_host_feasibility": 2,
+      "api_key_required": false,
+      "network_call_required_for_live": false,
+      "customer_audio_upload_if_live": false,
+      "provider_owned_business_logic": false,
+      "durable_provider_agent_required": false,
+      "live_allowed_now": false,
+      "direct_copy_status": "none",
+      "decision_notes": [
+        "Must remain the baseline until UltraVox proves latency and quality gains against the same protected-response contract.",
+        "Lower latency ceiling than direct realtime speech, but safer and already validated locally."
+      ],
+      "blocked_until": [],
+      "weighted_score": 34.0,
+      "score_breakdown": {
+        "latency_experiment_fit": {
+          "value": 2,
+          "weight": 1.5,
+          "weighted_score": 3.0
+        },
+        "guarded_runtime_fit": {
+          "value": 5,
+          "weight": 1.6,
+          "weighted_score": 8.0
+        },
+        "lock_in_control": {
+          "value": 4,
+          "weight": 1.2,
+          "weighted_score": 4.8
+        },
+        "implementation_effort_inverse": {
+          "value": 5,
+          "weight": 1.0,
+          "weighted_score": 5.0
+        },
+        "privacy_retention_fit": {
+          "value": 5,
+          "weight": 1.2,
+          "weighted_score": 6.0
+        },
+        "evidence_value": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "production_readiness": {
+          "value": 2,
+          "weight": 0.8,
+          "weighted_score": 1.6
+        },
+        "self_host_feasibility": {
+          "value": 2,
+          "weight": 0.8,
+          "weighted_score": 1.6
+        }
+      },
+      "source_links": []
+    },
+    {
+      "candidate_id": "ultravox-hosted-api-provider-adapter",
+      "candidate_name": "UltraVox hosted API as swappable realtime voice provider",
+      "candidate_class": "hosted-api-provider-adapter",
+      "recommended_role": "recommended-first-bounded-evaluation",
+      "source_ids": [
+        "ultravox-overview",
+        "ultravox-how-it-works",
+        "ultravox-create-call",
+        "ultravox-websockets",
+        "ultravox-custom-tools",
+        "ultravox-faq",
+        "ultravox-pricing"
+      ],
+      "latency_experiment_fit": 5,
+      "guarded_runtime_fit": 4,
+      "lock_in_control": 3,
+      "implementation_effort_inverse": 4,
+      "privacy_retention_fit": 2,
+      "evidence_value": 5,
+      "production_readiness": 4,
+      "self_host_feasibility": 1,
+      "api_key_required": true,
+      "network_call_required_for_live": true,
+      "customer_audio_upload_if_live": true,
+      "provider_owned_business_logic": false,
+      "durable_provider_agent_required": false,
+      "live_allowed_now": false,
+      "direct_copy_status": "none",
+      "decision_notes": [
+        "Best first empirical test because it can exercise the hosted realtime stack while our repository remains source of truth.",
+        "Still privacy and retention sensitive because live evaluation sends synthetic audio/text to UltraVox."
+      ],
+      "blocked_until": [
+        "explicit-live-approval",
+        "ULTRAVOX_API_KEY-env-only",
+        "provider-retention-review",
+        "synthetic-call-only"
+      ],
+      "weighted_score": 32.9,
+      "score_breakdown": {
+        "latency_experiment_fit": {
+          "value": 5,
+          "weight": 1.5,
+          "weighted_score": 7.5
+        },
+        "guarded_runtime_fit": {
+          "value": 4,
+          "weight": 1.6,
+          "weighted_score": 6.4
+        },
+        "lock_in_control": {
+          "value": 3,
+          "weight": 1.2,
+          "weighted_score": 3.6
+        },
+        "implementation_effort_inverse": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "privacy_retention_fit": {
+          "value": 2,
+          "weight": 1.2,
+          "weighted_score": 2.4
+        },
+        "evidence_value": {
+          "value": 5,
+          "weight": 1.0,
+          "weighted_score": 5.0
+        },
+        "production_readiness": {
+          "value": 4,
+          "weight": 0.8,
+          "weighted_score": 3.2
+        },
+        "self_host_feasibility": {
+          "value": 1,
+          "weight": 0.8,
+          "weighted_score": 0.8
+        }
+      },
+      "source_links": [
+        {
+          "source_id": "ultravox-overview",
+          "title": "UltraVox Documentation Overview",
+          "url": "https://docs.ultravox.ai/overview",
+          "retrieved_on": "2026-05-17"
+        },
+        {
+          "source_id": "ultravox-how-it-works",
+          "title": "How UltraVox Works",
+          "url": "https://docs.ultravox.ai/gettingstarted/how-ultravox-works",
+          "retrieved_on": "2026-05-17"
+        },
+        {
+          "source_id": "ultravox-create-call",
+          "title": "UltraVox Create Call API",
+          "url": "https://docs.ultravox.ai/api-reference/calls/calls-post",
+          "retrieved_on": "2026-05-17"
+        },
+        {
+          "source_id": "ultravox-websockets",
+          "title": "UltraVox WebSocket Integration",
+          "url": "https://docs.ultravox.ai/apps/websockets",
+          "retrieved_on": "2026-05-17"
+        },
+        {
+          "source_id": "ultravox-custom-tools",
+          "title": "UltraVox Custom Tools",
+          "url": "https://docs.ultravox.ai/tools/custom/overview",
+          "retrieved_on": "2026-05-17"
+        },
+        {
+          "source_id": "ultravox-faq",
+          "title": "UltraVox FAQ",
+          "url": "https://docs.ultravox.ai/gettingstarted/faq",
+          "retrieved_on": "2026-05-17"
+        },
+        {
+          "source_id": "ultravox-pricing",
+          "title": "UltraVox Pricing",
+          "url": "https://www.ultravox.ai/pricing",
+          "retrieved_on": "2026-05-17"
+        }
+      ]
+    },
+    {
+      "candidate_id": "ultravox-open-source-self-host-lane",
+      "candidate_name": "UltraVox open-source self-hosted research lane",
+      "candidate_class": "self-hosted-model-research",
+      "recommended_role": "self-host-research-lane",
+      "source_ids": [
+        "ultravox-github",
+        "ultravox-hf-v0-7",
+        "ultravox-hf-v0-6-8b"
+      ],
+      "latency_experiment_fit": 2,
+      "guarded_runtime_fit": 5,
+      "lock_in_control": 5,
+      "implementation_effort_inverse": 1,
+      "privacy_retention_fit": 4,
+      "evidence_value": 3,
+      "production_readiness": 1,
+      "self_host_feasibility": 3,
+      "api_key_required": false,
+      "network_call_required_for_live": false,
+      "customer_audio_upload_if_live": false,
+      "provider_owned_business_logic": false,
+      "durable_provider_agent_required": false,
+      "live_allowed_now": false,
+      "direct_copy_status": "none",
+      "decision_notes": [
+        "Best long-term control path if local voice-session infrastructure becomes feasible.",
+        "Not the fastest first evaluation because open-source model/runtime does not remove the need for local streaming, voice output, serving, and observability."
+      ],
+      "blocked_until": [
+        "local-hardware-fit-review",
+        "serving-plan",
+        "tts-or-speech-output-plan",
+        "latency-benchmark-harness"
+      ],
+      "weighted_score": 29.0,
+      "score_breakdown": {
+        "latency_experiment_fit": {
+          "value": 2,
+          "weight": 1.5,
+          "weighted_score": 3.0
+        },
+        "guarded_runtime_fit": {
+          "value": 5,
+          "weight": 1.6,
+          "weighted_score": 8.0
+        },
+        "lock_in_control": {
+          "value": 5,
+          "weight": 1.2,
+          "weighted_score": 6.0
+        },
+        "implementation_effort_inverse": {
+          "value": 1,
+          "weight": 1.0,
+          "weighted_score": 1.0
+        },
+        "privacy_retention_fit": {
+          "value": 4,
+          "weight": 1.2,
+          "weighted_score": 4.8
+        },
+        "evidence_value": {
+          "value": 3,
+          "weight": 1.0,
+          "weighted_score": 3.0
+        },
+        "production_readiness": {
+          "value": 1,
+          "weight": 0.8,
+          "weighted_score": 0.8
+        },
+        "self_host_feasibility": {
+          "value": 3,
+          "weight": 0.8,
+          "weighted_score": 2.4
+        }
+      },
+      "source_links": [
+        {
+          "source_id": "ultravox-github",
+          "title": "fixie-ai/ultravox",
+          "url": "https://github.com/fixie-ai/ultravox",
+          "retrieved_on": "2026-05-17"
+        },
+        {
+          "source_id": "ultravox-hf-v0-7",
+          "title": "UltraVox v0.7 GLM 4.6 Model Card",
+          "url": "https://huggingface.co/fixie-ai/ultravox-v0_7-glm-4_6",
+          "retrieved_on": "2026-05-17"
+        },
+        {
+          "source_id": "ultravox-hf-v0-6-8b",
+          "title": "UltraVox v0.6 Llama 3.1 8B Model Card",
+          "url": "https://huggingface.co/fixie-ai/ultravox-v0_6-llama-3_1-8b",
+          "retrieved_on": "2026-05-17"
+        }
+      ]
+    },
+    {
+      "candidate_id": "ultravox-hosted-console-agent",
+      "candidate_name": "UltraVox hosted console agent owns prompt and dialogue",
+      "candidate_class": "hosted-console-agent",
+      "recommended_role": "do-not-productize-first",
+      "source_ids": [
+        "ultravox-overview",
+        "ultravox-create-call",
+        "ultravox-custom-tools",
+        "ultravox-faq",
+        "ultravox-pricing"
+      ],
+      "latency_experiment_fit": 5,
+      "guarded_runtime_fit": 1,
+      "lock_in_control": 1,
+      "implementation_effort_inverse": 5,
+      "privacy_retention_fit": 2,
+      "evidence_value": 2,
+      "production_readiness": 3,
+      "self_host_feasibility": 1,
+      "api_key_required": true,
+      "network_call_required_for_live": true,
+      "customer_audio_upload_if_live": true,
+      "provider_owned_business_logic": true,
+      "durable_provider_agent_required": true,
+      "live_allowed_now": false,
+      "direct_copy_status": "none",
+      "decision_notes": [
+        "Fastest demo shape, but it moves sales behavior and guardrail control into the provider surface.",
+        "Weak fit for checkpoint-driven protected text and deterministic policy evidence."
+      ],
+      "blocked_until": [
+        "separate-architecture-review",
+        "exportable-config-contract",
+        "guardrail-equivalence-proof"
+      ],
+      "weighted_score": 22.9,
+      "score_breakdown": {
+        "latency_experiment_fit": {
+          "value": 5,
+          "weight": 1.5,
+          "weighted_score": 7.5
+        },
+        "guarded_runtime_fit": {
+          "value": 1,
+          "weight": 1.6,
+          "weighted_score": 1.6
+        },
+        "lock_in_control": {
+          "value": 1,
+          "weight": 1.2,
+          "weighted_score": 1.2
+        },
+        "implementation_effort_inverse": {
+          "value": 5,
+          "weight": 1.0,
+          "weighted_score": 5.0
+        },
+        "privacy_retention_fit": {
+          "value": 2,
+          "weight": 1.2,
+          "weighted_score": 2.4
+        },
+        "evidence_value": {
+          "value": 2,
+          "weight": 1.0,
+          "weighted_score": 2.0
+        },
+        "production_readiness": {
+          "value": 3,
+          "weight": 0.8,
+          "weighted_score": 2.4
+        },
+        "self_host_feasibility": {
+          "value": 1,
+          "weight": 0.8,
+          "weighted_score": 0.8
+        }
+      },
+      "source_links": [
+        {
+          "source_id": "ultravox-overview",
+          "title": "UltraVox Documentation Overview",
+          "url": "https://docs.ultravox.ai/overview",
+          "retrieved_on": "2026-05-17"
+        },
+        {
+          "source_id": "ultravox-create-call",
+          "title": "UltraVox Create Call API",
+          "url": "https://docs.ultravox.ai/api-reference/calls/calls-post",
+          "retrieved_on": "2026-05-17"
+        },
+        {
+          "source_id": "ultravox-custom-tools",
+          "title": "UltraVox Custom Tools",
+          "url": "https://docs.ultravox.ai/tools/custom/overview",
+          "retrieved_on": "2026-05-17"
+        },
+        {
+          "source_id": "ultravox-faq",
+          "title": "UltraVox FAQ",
+          "url": "https://docs.ultravox.ai/gettingstarted/faq",
+          "retrieved_on": "2026-05-17"
+        },
+        {
+          "source_id": "ultravox-pricing",
+          "title": "UltraVox Pricing",
+          "url": "https://www.ultravox.ai/pricing",
+          "retrieved_on": "2026-05-17"
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "status": "bounded-evaluation-prepared",
+    "recommended_next_action": "Run one hosted UltraVox API synthetic live test only after explicit live-provider approval and env-only key setup.",
+    "do_not_do": [
+      "Do not open PROD-102 from this evaluation.",
+      "Do not create a durable UltraVox console agent as the product runtime.",
+      "Do not upload customer audio.",
+      "Do not clone voices.",
+      "Do not move sales policy, protected text, or campaign logic out of this repository."
+    ]
+  }
+}

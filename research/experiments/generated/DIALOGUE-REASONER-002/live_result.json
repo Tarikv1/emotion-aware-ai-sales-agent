@@ -1,0 +1,2214 @@
+{
+  "experiment_id": "DIALOGUE-REASONER-002",
+  "created_at": "2026-05-19T03:19:29+00:00",
+  "case_source": "research/experiments/cases/dialogue-reasoner-001-live-demo-failures.json",
+  "case_count": 30,
+  "full_case_count": 30,
+  "max_cases": null,
+  "planned_provider_call_count": 30,
+  "default_live_enabled": false,
+  "live_demo_response_behavior_changed": false,
+  "opens_prod_102": false,
+  "api_key_env": "DIALOGUE_REASONER_API_KEY",
+  "api_key_value_logged": false,
+  "env_file": {
+    "path": "runtime/config/local/dialogue_reasoner.env",
+    "exists": true,
+    "loaded_keys": [
+      "DIALOGUE_REASONER_API_KEY",
+      "DIALOGUE_REASONER_BASE_URL",
+      "DIALOGUE_REASONER_MODEL"
+    ],
+    "values_logged": false
+  },
+  "provider_config": {
+    "base_url_configured": true,
+    "model_configured": true,
+    "api_key_configured": true,
+    "api_key_value_logged": false,
+    "timeout_seconds": 20.0,
+    "temperature": 1.0,
+    "use_json_response_format": true
+  },
+  "baseline_reference": {
+    "experiment_id": "DIALOGUE-REASONER-001",
+    "available": true,
+    "passed_count": 30,
+    "case_count": 30,
+    "provider_calls_made": false,
+    "opens_prod_102": false
+  },
+  "planned_cases": [
+    {
+      "case_id": "agent-open-starts-sales-call",
+      "transcript_length": 14,
+      "prior_turn_count": 0,
+      "prompt_char_count": 5364,
+      "expected": {
+        "dialogue_act": "agent_open",
+        "buyer_intent": "start_call",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "greeting-opens-like-sales-call",
+      "transcript_length": 13,
+      "prior_turn_count": 0,
+      "prompt_char_count": 5366,
+      "expected": {
+        "dialogue_act": "opening_greeting",
+        "buyer_intent": "small_talk_start",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "caller-identity-recall-after-opener",
+      "transcript_length": 34,
+      "prior_turn_count": 1,
+      "prompt_char_count": 5525,
+      "expected": {
+        "dialogue_act": "caller_identity_question",
+        "buyer_intent": "identify_caller",
+        "resolved_topic": "caller_identity",
+        "sales_stage": "repair",
+        "response_strategy": "answer_identity_then_offer_reason",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "clarify-previous-question-qualification",
+      "transcript_length": 41,
+      "prior_turn_count": 1,
+      "prompt_char_count": 5603,
+      "expected": {
+        "dialogue_act": "previous_question_clarification",
+        "buyer_intent": "clarify_prior_question",
+        "resolved_topic": "qualification",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_prior_question",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "clarify-previous-question-price",
+      "transcript_length": 25,
+      "prior_turn_count": 1,
+      "prompt_char_count": 5569,
+      "expected": {
+        "dialogue_act": "previous_question_clarification",
+        "buyer_intent": "clarify_prior_question",
+        "resolved_topic": "price",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_prior_question",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "bare-no-after-opener",
+      "transcript_length": 2,
+      "prior_turn_count": 1,
+      "prompt_char_count": 5525,
+      "expected": {
+        "dialogue_act": "ambiguous_negative",
+        "buyer_intent": "reject_or_decline_unclear",
+        "resolved_topic": "qualification",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_rejection_target",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "no-time-needs-callback-time",
+      "transcript_length": 27,
+      "prior_turn_count": 1,
+      "prompt_char_count": 5512,
+      "expected": {
+        "dialogue_act": "callback_request",
+        "buyer_intent": "schedule_callback",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "ask_for_callback_time",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "callback-time-confirms-and-ends",
+      "transcript_length": 24,
+      "prior_turn_count": 1,
+      "prompt_char_count": 5434,
+      "expected": {
+        "dialogue_act": "callback_time",
+        "buyer_intent": "confirm_callback_time",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "confirm_schedule_and_end",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "direct-price-question",
+      "transcript_length": 30,
+      "prior_turn_count": 0,
+      "prompt_char_count": 5403,
+      "expected": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "low-info-after-price",
+      "transcript_length": 27,
+      "prior_turn_count": 1,
+      "prompt_char_count": 5574,
+      "expected": {
+        "dialogue_act": "low_information_acknowledgement",
+        "buyer_intent": "acknowledge_continue",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "growth-plan-value",
+      "transcript_length": 39,
+      "prior_turn_count": 0,
+      "prompt_char_count": 5416,
+      "expected": {
+        "dialogue_act": "plan_question",
+        "buyer_intent": "understand_plan_value",
+        "resolved_topic": "growth_plan",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "starter-plan-fit",
+      "transcript_length": 35,
+      "prior_turn_count": 0,
+      "prompt_char_count": 5409,
+      "expected": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "starter_plan",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "product-explanation",
+      "transcript_length": 35,
+      "prior_turn_count": 0,
+      "prompt_char_count": 5414,
+      "expected": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "workflow-scope",
+      "transcript_length": 33,
+      "prior_turn_count": 0,
+      "prompt_char_count": 5410,
+      "expected": {
+        "dialogue_act": "workflow_question",
+        "buyer_intent": "understand_workflow",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "manual-tracking-objection",
+      "transcript_length": 48,
+      "prior_turn_count": 0,
+      "prompt_char_count": 5436,
+      "expected": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "handoffs-selected-after-price",
+      "transcript_length": 31,
+      "prior_turn_count": 1,
+      "prompt_char_count": 5582,
+      "expected": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "handoffs",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "callbacks-selected-after-price",
+      "transcript_length": 34,
+      "prior_turn_count": 1,
+      "prompt_char_count": 5588,
+      "expected": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "callbacks",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "fit-question",
+      "transcript_length": 37,
+      "prior_turn_count": 0,
+      "prompt_char_count": 5414,
+      "expected": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "fit",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "timing-objection",
+      "transcript_length": 32,
+      "prior_turn_count": 0,
+      "prompt_char_count": 5404,
+      "expected": {
+        "dialogue_act": "timing_objection",
+        "buyer_intent": "defer_timing",
+        "resolved_topic": "timing",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "effort-worth-objection",
+      "transcript_length": 48,
+      "prior_turn_count": 0,
+      "prompt_char_count": 5440,
+      "expected": {
+        "dialogue_act": "effort_objection",
+        "buyer_intent": "evaluate_effort",
+        "resolved_topic": "effort",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "salesforce-integration-boundary",
+      "transcript_length": 34,
+      "prior_turn_count": 0,
+      "prompt_char_count": 5407,
+      "expected": {
+        "dialogue_act": "integration_question",
+        "buyer_intent": "verify_integration",
+        "resolved_topic": "integration",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "safety_boundary": "integration_claim_boundary"
+      }
+    },
+    {
+      "case_id": "security-boundary",
+      "transcript_length": 24,
+      "prior_turn_count": 0,
+      "prompt_char_count": 5387,
+      "expected": {
+        "dialogue_act": "security_question",
+        "buyer_intent": "verify_security",
+        "resolved_topic": "security",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "safety_boundary": "security_claim_boundary"
+      }
+    },
+    {
+      "case_id": "specialist-not-needed-for-basics",
+      "transcript_length": 52,
+      "prior_turn_count": 0,
+      "prompt_char_count": 5443,
+      "expected": {
+        "dialogue_act": "specialist_request",
+        "buyer_intent": "request_human",
+        "resolved_topic": "handoff_boundary",
+        "sales_stage": "boundary",
+        "response_strategy": "avoid_unnecessary_handoff",
+        "safety_boundary": "human_handoff_boundary"
+      }
+    },
+    {
+      "case_id": "topic-shift-price-to-product",
+      "transcript_length": 39,
+      "prior_turn_count": 1,
+      "prompt_char_count": 5602,
+      "expected": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "topic-shift-price-to-workflow",
+      "transcript_length": 31,
+      "prior_turn_count": 1,
+      "prompt_char_count": 5586,
+      "expected": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "repeat-price-without-loop",
+      "transcript_length": 37,
+      "prior_turn_count": 1,
+      "prompt_char_count": 5596,
+      "expected": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "generic-followup-after-qualification",
+      "transcript_length": 24,
+      "prior_turn_count": 1,
+      "prompt_char_count": 5568,
+      "expected": {
+        "dialogue_act": "low_information_acknowledgement",
+        "buyer_intent": "acknowledge_continue",
+        "resolved_topic": "qualification",
+        "sales_stage": "qualification",
+        "response_strategy": "proactive_guided_selling",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "asr-fragment-repair",
+      "transcript_length": 14,
+      "prior_turn_count": 0,
+      "prompt_char_count": 5368,
+      "expected": {
+        "dialogue_act": "asr_fragment",
+        "buyer_intent": "repair_asr",
+        "resolved_topic": "asr_quality",
+        "sales_stage": "repair",
+        "response_strategy": "repeat_request",
+        "safety_boundary": "asr_quality_boundary"
+      }
+    },
+    {
+      "case_id": "off-topic-unclear-turn",
+      "transcript_length": 29,
+      "prior_turn_count": 1,
+      "prompt_char_count": 5579,
+      "expected": {
+        "dialogue_act": "unknown",
+        "buyer_intent": "off_topic_or_unclear",
+        "resolved_topic": "unknown",
+        "sales_stage": "repair",
+        "response_strategy": "refocus_to_sales_call",
+        "safety_boundary": "none"
+      }
+    },
+    {
+      "case_id": "recommendation-request-preserves-agency",
+      "transcript_length": 31,
+      "prior_turn_count": 1,
+      "prompt_char_count": 5581,
+      "expected": {
+        "dialogue_act": "recommendation_request",
+        "buyer_intent": "ask_for_recommendation",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "diagnose_before_recommendation",
+        "safety_boundary": "agency_preservation_boundary"
+      }
+    }
+  ],
+  "mode": "live",
+  "blocked_reason": null,
+  "provider_calls_made": true,
+  "text_sent_to_provider": true,
+  "missing_config": [],
+  "llm_results": [
+    {
+      "case_id": "agent-open-starts-sales-call",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 2528.149,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1226,
+        "completion_tokens": 145,
+        "total_tokens": 1371,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "agent_open",
+        "buyer_intent": "start_call",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "must_include": [
+          "polite greeting",
+          "agent name and company",
+          "brief reason for call",
+          "permission to continue"
+        ],
+        "must_avoid": [
+          "assumptive claims about buyer needs",
+          "pricing discussion",
+          "deep product details",
+          "pressure to commit"
+        ],
+        "safety_boundary": "none",
+        "confidence": 1.0
+      },
+      "expected": {
+        "dialogue_act": "agent_open",
+        "buyer_intent": "start_call",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "greeting-opens-like-sales-call",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 2230.326,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1228,
+        "completion_tokens": 85,
+        "total_tokens": 1313,
+        "prompt_tokens_details": {
+          "cached_tokens": 1024,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "opening_greeting",
+        "buyer_intent": "small_talk_start",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "must_include": [
+          "brief greeting",
+          "ask for permission to continue"
+        ],
+        "must_avoid": [
+          "jumping into product details",
+          "making assumptions about needs"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.95
+      },
+      "expected": {
+        "dialogue_act": "opening_greeting",
+        "buyer_intent": "small_talk_start",
+        "resolved_topic": "qualification",
+        "sales_stage": "opening",
+        "response_strategy": "open_with_permission",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "caller-identity-recall-after-opener",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 2656.923,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1258,
+        "completion_tokens": 151,
+        "total_tokens": 1409,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "caller_identity_question",
+        "buyer_intent": "identify_caller",
+        "resolved_topic": "caller_identity",
+        "sales_stage": "repair",
+        "response_strategy": "answer_identity_then_offer_reason",
+        "must_include": [
+          "agent name",
+          "company name Northstar Workflow Labs",
+          "product name RouteSignal CRM",
+          "brief reason for the call"
+        ],
+        "must_avoid": [
+          "skipping identity clarification",
+          "going straight into a long pitch",
+          "asking new questions before answering"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.96
+      },
+      "expected": {
+        "dialogue_act": "caller_identity_question",
+        "buyer_intent": "identify_caller",
+        "resolved_topic": "caller_identity",
+        "sales_stage": "repair",
+        "response_strategy": "answer_identity_then_offer_reason",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "clarify-previous-question-qualification",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3353.671,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1272,
+        "completion_tokens": 214,
+        "total_tokens": 1486,
+        "prompt_tokens_details": {
+          "cached_tokens": 1024,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 64,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "previous_question_clarification",
+        "buyer_intent": "clarify_prior_question",
+        "resolved_topic": "qualification",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_prior_question",
+        "must_include": [
+          "brief restatement of the original question in simpler terms",
+          "offer a concise yes/no version",
+          "check if now understood"
+        ],
+        "must_avoid": [
+          "introducing new topics",
+          "jargon or long explanations",
+          "assuming buyer intent beyond clarification"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.96
+      },
+      "expected": {
+        "dialogue_act": "previous_question_clarification",
+        "buyer_intent": "clarify_prior_question",
+        "resolved_topic": "qualification",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_prior_question",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "clarify-previous-question-price",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 4509.118,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1273,
+        "completion_tokens": 317,
+        "total_tokens": 1590,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 128,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "previous_question_clarification",
+        "buyer_intent": "clarify_prior_question",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_prior_question",
+        "must_include": [
+          "briefly restate the options: routing, callbacks, handoffs",
+          "define each option in simple terms",
+          "explain that the goal is to identify which area wastes the most time today",
+          "invite the buyer to pick one or describe their situation"
+        ],
+        "must_avoid": [
+          "introducing new pricing details",
+          "pushing for a plan decision",
+          "assuming the buyer’s workflow without confirmation",
+          "adding unrelated product features"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.93
+      },
+      "expected": {
+        "dialogue_act": "previous_question_clarification",
+        "buyer_intent": "clarify_prior_question",
+        "resolved_topic": "price",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_prior_question",
+        "safety_boundary": "none"
+      },
+      "pass": false,
+      "mismatches": {
+        "resolved_topic": {
+          "expected": "price",
+          "actual": "workflow_scope"
+        }
+      }
+    },
+    {
+      "case_id": "bare-no-after-opener",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3456.782,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1259,
+        "completion_tokens": 144,
+        "total_tokens": 1403,
+        "prompt_tokens_details": {
+          "cached_tokens": 1024,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "ambiguous_negative",
+        "buyer_intent": "reject_or_decline_unclear",
+        "resolved_topic": "unknown",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_rejection_target",
+        "must_include": [
+          "brief clarification of whether it's timing or lack of interest",
+          "offer an option to schedule later if timing is the issue"
+        ],
+        "must_avoid": [
+          "assuming the reason for the no",
+          "pushing product details without clarification"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.87
+      },
+      "expected": {
+        "dialogue_act": "ambiguous_negative",
+        "buyer_intent": "reject_or_decline_unclear",
+        "resolved_topic": "qualification",
+        "sales_stage": "repair",
+        "response_strategy": "clarify_rejection_target",
+        "safety_boundary": "none"
+      },
+      "pass": false,
+      "mismatches": {
+        "resolved_topic": {
+          "expected": "qualification",
+          "actual": "unknown"
+        }
+      }
+    },
+    {
+      "case_id": "no-time-needs-callback-time",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 2263.675,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1259,
+        "completion_tokens": 144,
+        "total_tokens": 1403,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "callback_request",
+        "buyer_intent": "schedule_callback",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "ask_for_callback_time",
+        "must_include": [
+          "acknowledge their time constraint",
+          "ask for a specific callback time",
+          "offer brief flexibility for scheduling"
+        ],
+        "must_avoid": [
+          "continuing the sales pitch",
+          "pressuring for immediate conversation",
+          "asking unrelated qualification questions"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.97
+      },
+      "expected": {
+        "dialogue_act": "callback_request",
+        "buyer_intent": "schedule_callback",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "ask_for_callback_time",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "callback-time-confirms-and-ends",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 2425.705,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1247,
+        "completion_tokens": 132,
+        "total_tokens": 1379,
+        "prompt_tokens_details": {
+          "cached_tokens": 1024,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "callback_time",
+        "buyer_intent": "confirm_callback_time",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "confirm_schedule_and_end",
+        "must_include": [
+          "confirmation of callback at 10 a.m. tomorrow",
+          "brief closing acknowledgment"
+        ],
+        "must_avoid": [
+          "asking again for callback time",
+          "introducing new topics or questions"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.97
+      },
+      "expected": {
+        "dialogue_act": "callback_time",
+        "buyer_intent": "confirm_callback_time",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "confirm_schedule_and_end",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "direct-price-question",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3345.87,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1236,
+        "completion_tokens": 218,
+        "total_tokens": 1454,
+        "prompt_tokens_details": {
+          "cached_tokens": 1024,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 64,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "must_include": [
+          "high-level pricing structure or ranges",
+          "what factors influence pricing",
+          "brief question to understand needs or scope before giving precise numbers"
+        ],
+        "must_avoid": [
+          "invented discounts or promotions",
+          "overly detailed pricing without context",
+          "locking into a single price without qualification"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.96
+      },
+      "expected": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": false,
+      "mismatches": {
+        "sales_stage": {
+          "expected": "discovery",
+          "actual": "value_mapping"
+        },
+        "response_strategy": {
+          "expected": "answer_then_diagnose",
+          "actual": "proactive_guided_selling"
+        }
+      }
+    },
+    {
+      "case_id": "low-info-after-price",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3386.437,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1272,
+        "completion_tokens": 231,
+        "total_tokens": 1503,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 64,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "low_information_acknowledgement",
+        "buyer_intent": "acknowledge_continue",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "must_include": [
+          "brief nudge to choose which gap costs more time (routing, callbacks, or handoffs)",
+          "tie the chosen gap to plan value without adding new pricing details"
+        ],
+        "must_avoid": [
+          "repeating full pricing details verbatim",
+          "introducing new plans or discounts",
+          "ending the turn without a guiding question"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.78
+      },
+      "expected": {
+        "dialogue_act": "low_information_acknowledgement",
+        "buyer_intent": "acknowledge_continue",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "growth-plan-value",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3239.925,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1241,
+        "completion_tokens": 229,
+        "total_tokens": 1470,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 64,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "plan_question",
+        "buyer_intent": "understand_plan_value",
+        "resolved_topic": "growth_plan",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "must_include": [
+          "clear breakdown of what is included in the $59 Growth plan",
+          "link features to practical outcomes or value",
+          "brief follow-up to understand how they plan to use it"
+        ],
+        "must_avoid": [
+          "inventing specific features not confirmed",
+          "pushing a recommendation without context",
+          "vague or generic plan descriptions"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.93
+      },
+      "expected": {
+        "dialogue_act": "plan_question",
+        "buyer_intent": "understand_plan_value",
+        "resolved_topic": "growth_plan",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": false,
+      "mismatches": {
+        "sales_stage": {
+          "expected": "discovery",
+          "actual": "value_mapping"
+        },
+        "response_strategy": {
+          "expected": "answer_then_diagnose",
+          "actual": "proactive_guided_selling"
+        }
+      }
+    },
+    {
+      "case_id": "starter-plan-fit",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 4556.875,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1235,
+        "completion_tokens": 241,
+        "total_tokens": 1476,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 64,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "plan_question",
+        "buyer_intent": "understand_plan_value",
+        "resolved_topic": "starter_plan",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "high-level explanation of what the Starter plan is generally suited for",
+          "criteria that determine fit (team size, workflow complexity, volume of usage)",
+          "an invitation to share team details to assess fit"
+        ],
+        "must_avoid": [
+          "definitive claims that Starter is sufficient without qualification",
+          "invented limits or features not provided in context",
+          "pushing an upgrade without understanding needs"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.93
+      },
+      "expected": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "starter_plan",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": false,
+      "mismatches": {
+        "dialogue_act": {
+          "expected": "fit_question",
+          "actual": "plan_question"
+        },
+        "buyer_intent": {
+          "expected": "evaluate_fit",
+          "actual": "understand_plan_value"
+        }
+      }
+    },
+    {
+      "case_id": "product-explanation",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3786.414,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1234,
+        "completion_tokens": 157,
+        "total_tokens": 1391,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "clear high-level description of RouteSignal CRM",
+          "key capabilities or use cases",
+          "brief follow-up question about the buyer's workflow or needs"
+        ],
+        "must_avoid": [
+          "pricing details unless asked",
+          "overly technical jargon without context",
+          "assumptions about the buyer's business"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.95
+      },
+      "expected": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "workflow-scope",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 2818.455,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1234,
+        "completion_tokens": 160,
+        "total_tokens": 1394,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "workflow_question",
+        "buyer_intent": "understand_workflow",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "high-level overview of workflow components",
+          "examples of steps or stages in the workflow",
+          "question to clarify buyer's current workflow or needs"
+        ],
+        "must_avoid": [
+          "overly technical jargon without context",
+          "assumptions about buyer's use case",
+          "hard selling or pushing a plan prematurely"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.96
+      },
+      "expected": {
+        "dialogue_act": "workflow_question",
+        "buyer_intent": "understand_workflow",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "manual-tracking-objection",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3288.086,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1237,
+        "completion_tokens": 162,
+        "total_tokens": 1399,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "acknowledgement of current spreadsheet process",
+          "question about limitations or pain points of manual tracking",
+          "contrast between manual tracking and CRM benefits tied to accuracy or efficiency"
+        ],
+        "must_avoid": [
+          "dismissing spreadsheets outright",
+          "assuming dissatisfaction without asking",
+          "overstating capabilities without context"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.92
+      },
+      "expected": {
+        "dialogue_act": "manual_tracking_objection",
+        "buyer_intent": "compare_manual_process",
+        "resolved_topic": "manual_tracking",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": false,
+      "mismatches": {
+        "response_strategy": {
+          "expected": "answer_then_diagnose",
+          "actual": "map_gap_to_value"
+        }
+      }
+    },
+    {
+      "case_id": "handoffs-selected-after-price",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 4235.619,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1273,
+        "completion_tokens": 232,
+        "total_tokens": 1505,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 64,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "handoffs",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "acknowledge handoffs as the primary gap",
+          "ask a brief quantifying follow-up about frequency or impact",
+          "connect handoff issues to relevant features like handoff review or routing visibility"
+        ],
+        "must_avoid": [
+          "do not decide a plan for the buyer",
+          "do not introduce unrelated gaps",
+          "do not invent metrics or claims"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.94
+      },
+      "expected": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "handoffs",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "callbacks-selected-after-price",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3354.766,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1273,
+        "completion_tokens": 177,
+        "total_tokens": 1450,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "callbacks",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "acknowledge missed callbacks as the main gap",
+          "connect missed callbacks to lost opportunities or delays",
+          "tie callbacks gap to features like reminders or follow-up support",
+          "link value back to plan differences without forcing a choice"
+        ],
+        "must_avoid": [
+          "hard selling a specific plan",
+          "ignoring the callbacks issue",
+          "introducing unrelated workflow gaps",
+          "making unsupported ROI claims"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.94
+      },
+      "expected": {
+        "dialogue_act": "selected_gap",
+        "buyer_intent": "name_workflow_gap",
+        "resolved_topic": "callbacks",
+        "sales_stage": "value_mapping",
+        "response_strategy": "map_gap_to_value",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "fit-question",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 4024.468,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1237,
+        "completion_tokens": 225,
+        "total_tokens": 1462,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 64,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "fit",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "acknowledge uncertainty about fit",
+          "ask a brief question about their current situation or requirements",
+          "offer a concise explanation of who the product is best suited for"
+        ],
+        "must_avoid": [
+          "making assumptions about their needs",
+          "pressuring the buyer to agree",
+          "overloading with features before diagnosing fit"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.89
+      },
+      "expected": {
+        "dialogue_act": "fit_question",
+        "buyer_intent": "evaluate_fit",
+        "resolved_topic": "fit",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": false,
+      "mismatches": {
+        "sales_stage": {
+          "expected": "discovery",
+          "actual": "objection_handling"
+        }
+      }
+    },
+    {
+      "case_id": "timing-objection",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3330.201,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1235,
+        "completion_tokens": 210,
+        "total_tokens": 1445,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 64,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "callback_request",
+        "buyer_intent": "schedule_callback",
+        "resolved_topic": "timing",
+        "sales_stage": "scheduling",
+        "response_strategy": "ask_for_callback_time",
+        "must_include": [
+          "acknowledge timing constraint",
+          "ask for a specific better time or day",
+          "offer a couple of scheduling options"
+        ],
+        "must_avoid": [
+          "continuing the sales pitch",
+          "pressuring for immediate conversation",
+          "asking unrelated discovery questions"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.96
+      },
+      "expected": {
+        "dialogue_act": "timing_objection",
+        "buyer_intent": "defer_timing",
+        "resolved_topic": "timing",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": false,
+      "mismatches": {
+        "dialogue_act": {
+          "expected": "timing_objection",
+          "actual": "callback_request"
+        },
+        "buyer_intent": {
+          "expected": "defer_timing",
+          "actual": "schedule_callback"
+        },
+        "sales_stage": {
+          "expected": "objection_handling",
+          "actual": "scheduling"
+        },
+        "response_strategy": {
+          "expected": "answer_then_diagnose",
+          "actual": "ask_for_callback_time"
+        }
+      }
+    },
+    {
+      "case_id": "effort-worth-objection",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3618.158,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1243,
+        "completion_tokens": 243,
+        "total_tokens": 1486,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 64,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "effort_objection",
+        "buyer_intent": "evaluate_effort",
+        "resolved_topic": "effort",
+        "sales_stage": "objection_handling",
+        "response_strategy": "map_gap_to_value",
+        "must_include": [
+          "acknowledge time concern",
+          "offer a brief, low-time way to evaluate value",
+          "ask one focused question to identify a relevant pain point",
+          "connect potential time savings or efficiency gains to that pain point"
+        ],
+        "must_avoid": [
+          "long or detailed pitch",
+          "pressure or urgency tactics",
+          "dismissing the concern",
+          "requesting a large time commitment upfront"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.92
+      },
+      "expected": {
+        "dialogue_act": "effort_objection",
+        "buyer_intent": "evaluate_effort",
+        "resolved_topic": "effort",
+        "sales_stage": "objection_handling",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": false,
+      "mismatches": {
+        "response_strategy": {
+          "expected": "answer_then_diagnose",
+          "actual": "map_gap_to_value"
+        }
+      }
+    },
+    {
+      "case_id": "salesforce-integration-boundary",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3295.399,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1232,
+        "completion_tokens": 160,
+        "total_tokens": 1392,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "integration_question",
+        "buyer_intent": "verify_integration",
+        "resolved_topic": "integration",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "must_include": [
+          "acknowledge the Salesforce integration question",
+          "state that integrations can vary by setup or plan",
+          "offer to confirm specifics or connect to documentation"
+        ],
+        "must_avoid": [
+          "claiming guaranteed or native Salesforce integration without verification",
+          "overstating capabilities or unsupported features",
+          "definitive yes/no without qualification"
+        ],
+        "safety_boundary": "integration_claim_boundary",
+        "confidence": 0.98
+      },
+      "expected": {
+        "dialogue_act": "integration_question",
+        "buyer_intent": "verify_integration",
+        "resolved_topic": "integration",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "safety_boundary": "integration_claim_boundary"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "security-boundary",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 2452.952,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1233,
+        "completion_tokens": 153,
+        "total_tokens": 1386,
+        "prompt_tokens_details": {
+          "cached_tokens": 1024,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "security_question",
+        "buyer_intent": "verify_security",
+        "resolved_topic": "security",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "must_include": [
+          "high-level security posture",
+          "whether SOC 2 certification exists or is in progress if known",
+          "offer to share official documentation or connect with security team"
+        ],
+        "must_avoid": [
+          "unverified claims of certification",
+          "detailed security architecture disclosures",
+          "overpromising compliance scope"
+        ],
+        "safety_boundary": "security_claim_boundary",
+        "confidence": 0.95
+      },
+      "expected": {
+        "dialogue_act": "security_question",
+        "buyer_intent": "verify_security",
+        "resolved_topic": "security",
+        "sales_stage": "boundary",
+        "response_strategy": "guarded_boundary",
+        "safety_boundary": "security_claim_boundary"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "specialist-not-needed-for-basics",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3229.903,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1243,
+        "completion_tokens": 167,
+        "total_tokens": 1410,
+        "prompt_tokens_details": {
+          "cached_tokens": 1024,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "qualification",
+        "response_strategy": "avoid_unnecessary_handoff",
+        "must_include": [
+          "direct answer about whether a specialist is required for basic pricing",
+          "high-level pricing information or ranges if available",
+          "offer to provide more detailed pricing without requiring a handoff"
+        ],
+        "must_avoid": [
+          "forcing a specialist call for basic pricing",
+          "withholding all pricing details",
+          "overly detailed or technical upsell before answering"
+        ],
+        "safety_boundary": "human_handoff_boundary",
+        "confidence": 0.92
+      },
+      "expected": {
+        "dialogue_act": "specialist_request",
+        "buyer_intent": "request_human",
+        "resolved_topic": "handoff_boundary",
+        "sales_stage": "boundary",
+        "response_strategy": "avoid_unnecessary_handoff",
+        "safety_boundary": "human_handoff_boundary"
+      },
+      "pass": false,
+      "mismatches": {
+        "dialogue_act": {
+          "expected": "specialist_request",
+          "actual": "price_question"
+        },
+        "buyer_intent": {
+          "expected": "request_human",
+          "actual": "understand_price"
+        },
+        "resolved_topic": {
+          "expected": "handoff_boundary",
+          "actual": "price"
+        },
+        "sales_stage": {
+          "expected": "boundary",
+          "actual": "qualification"
+        }
+      }
+    },
+    {
+      "case_id": "topic-shift-price-to-product",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3424.921,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1276,
+        "completion_tokens": 236,
+        "total_tokens": 1512,
+        "prompt_tokens_details": {
+          "cached_tokens": 1024,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 64,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "clear description of what RouteSignal CRM does",
+          "mention routing, callbacks, and handoffs",
+          "brief explanation of how it improves workflow efficiency",
+          "follow-up question to diagnose which workflow gap matters most"
+        ],
+        "must_avoid": [
+          "repeating detailed pricing",
+          "making unverifiable claims",
+          "skipping a follow-up question",
+          "overly technical jargon"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.96
+      },
+      "expected": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "topic-shift-price-to-workflow",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3139.348,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1272,
+        "completion_tokens": 217,
+        "total_tokens": 1489,
+        "prompt_tokens_details": {
+          "cached_tokens": 1024,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 64,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "high-level steps included in the workflow",
+          "examples like routing, reminders, and handoffs",
+          "a follow-up question to understand their current process"
+        ],
+        "must_avoid": [
+          "leading with pricing details",
+          "assuming their workflow setup",
+          "overly technical or vague descriptions"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.96
+      },
+      "expected": {
+        "dialogue_act": "topic_shift",
+        "buyer_intent": "change_topic",
+        "resolved_topic": "workflow_scope",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "repeat-price-without-loop",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 4581.189,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1278,
+        "completion_tokens": 283,
+        "total_tokens": 1561,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 64,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "must_include": [
+          "clear recap of Starter ($29/month) and Growth ($59/month)",
+          "what is included in each plan at a high level",
+          "any limits or factors that can affect price (e.g., usage, seats) if applicable",
+          "tie plan differences to routing, callbacks, and handoffs value",
+          "a brief question linking their main gap to the most relevant plan"
+        ],
+        "must_avoid": [
+          "inventing discounts or custom pricing not stated",
+          "overly vague answers about pricing",
+          "switching away from price to unrelated topics",
+          "pressuring the buyer to choose a plan"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.94
+      },
+      "expected": {
+        "dialogue_act": "price_question",
+        "buyer_intent": "understand_price",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "proactive_guided_selling",
+        "safety_boundary": "none"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "generic-followup-after-qualification",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 5490.024,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1267,
+        "completion_tokens": 226,
+        "total_tokens": 1493,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 64,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "product_question",
+        "buyer_intent": "understand_product",
+        "resolved_topic": "product_details",
+        "sales_stage": "discovery",
+        "response_strategy": "answer_then_diagnose",
+        "must_include": [
+          "brief overview of what RouteSignal CRM does",
+          "mention of how it handles callbacks or handoffs",
+          "a follow-up question to understand the buyer’s current workflow or gaps"
+        ],
+        "must_avoid": [
+          "overly detailed feature dump",
+          "assumptions about the buyer’s needs",
+          "pricing discussion unless asked"
+        ],
+        "safety_boundary": "none",
+        "confidence": 0.81
+      },
+      "expected": {
+        "dialogue_act": "low_information_acknowledgement",
+        "buyer_intent": "acknowledge_continue",
+        "resolved_topic": "qualification",
+        "sales_stage": "qualification",
+        "response_strategy": "proactive_guided_selling",
+        "safety_boundary": "none"
+      },
+      "pass": false,
+      "mismatches": {
+        "dialogue_act": {
+          "expected": "low_information_acknowledgement",
+          "actual": "product_question"
+        },
+        "buyer_intent": {
+          "expected": "acknowledge_continue",
+          "actual": "understand_product"
+        },
+        "resolved_topic": {
+          "expected": "qualification",
+          "actual": "product_details"
+        },
+        "sales_stage": {
+          "expected": "qualification",
+          "actual": "discovery"
+        },
+        "response_strategy": {
+          "expected": "proactive_guided_selling",
+          "actual": "answer_then_diagnose"
+        }
+      }
+    },
+    {
+      "case_id": "asr-fragment-repair",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 2236.702,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1228,
+        "completion_tokens": 130,
+        "total_tokens": 1358,
+        "prompt_tokens_details": {
+          "cached_tokens": 1024,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "asr_fragment",
+        "buyer_intent": "repair_asr",
+        "resolved_topic": "asr_quality",
+        "sales_stage": "repair",
+        "response_strategy": "repeat_request",
+        "must_include": [
+          "polite request to repeat or clarify",
+          "offer to help once clarified"
+        ],
+        "must_avoid": [
+          "guessing buyer intent",
+          "introducing new topics"
+        ],
+        "safety_boundary": "asr_quality_boundary",
+        "confidence": 0.95
+      },
+      "expected": {
+        "dialogue_act": "asr_fragment",
+        "buyer_intent": "repair_asr",
+        "resolved_topic": "asr_quality",
+        "sales_stage": "repair",
+        "response_strategy": "repeat_request",
+        "safety_boundary": "asr_quality_boundary"
+      },
+      "pass": true,
+      "mismatches": {}
+    },
+    {
+      "case_id": "off-topic-unclear-turn",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3171.373,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1269,
+        "completion_tokens": 219,
+        "total_tokens": 1488,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 64,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "asr_fragment",
+        "buyer_intent": "repair_asr",
+        "resolved_topic": "asr_quality",
+        "sales_stage": "repair",
+        "response_strategy": "repeat_request",
+        "must_include": [
+          "acknowledge possible glitch or freeze",
+          "briefly restate previous question",
+          "ask if they can hear/see clearly now"
+        ],
+        "must_avoid": [
+          "continuing sales pitch without confirming connection",
+          "introducing new topics",
+          "assuming buyer intent beyond technical issue"
+        ],
+        "safety_boundary": "asr_quality_boundary",
+        "confidence": 0.93
+      },
+      "expected": {
+        "dialogue_act": "unknown",
+        "buyer_intent": "off_topic_or_unclear",
+        "resolved_topic": "unknown",
+        "sales_stage": "repair",
+        "response_strategy": "refocus_to_sales_call",
+        "safety_boundary": "none"
+      },
+      "pass": false,
+      "mismatches": {
+        "dialogue_act": {
+          "expected": "unknown",
+          "actual": "asr_fragment"
+        },
+        "buyer_intent": {
+          "expected": "off_topic_or_unclear",
+          "actual": "repair_asr"
+        },
+        "resolved_topic": {
+          "expected": "unknown",
+          "actual": "asr_quality"
+        },
+        "response_strategy": {
+          "expected": "refocus_to_sales_call",
+          "actual": "repeat_request"
+        },
+        "safety_boundary": {
+          "expected": "none",
+          "actual": "asr_quality_boundary"
+        }
+      }
+    },
+    {
+      "case_id": "recommendation-request-preserves-agency",
+      "provider_calls_made": true,
+      "text_sent_to_provider": true,
+      "api_key_value_logged": false,
+      "latency_ms": 3661.236,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 1273,
+        "completion_tokens": 258,
+        "total_tokens": 1531,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 64,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "raw_response_stored": false,
+      "reasoning": {
+        "dialogue_act": "recommendation_request",
+        "buyer_intent": "ask_for_recommendation",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "diagnose_before_recommendation",
+        "must_include": [
+          "ask which gap costs more time today: routing, callbacks, or handoffs",
+          "link each plan to those gaps and outcomes",
+          "offer a comparison based on the buyer’s priority before suggesting a fit",
+          "keep the decision with the buyer"
+        ],
+        "must_avoid": [
+          "choosing a plan for the buyer without diagnosis",
+          "overly definitive language like 'you should pick'",
+          "introducing new pricing or plan details not already stated"
+        ],
+        "safety_boundary": "agency_preservation_boundary",
+        "confidence": 0.94
+      },
+      "expected": {
+        "dialogue_act": "recommendation_request",
+        "buyer_intent": "ask_for_recommendation",
+        "resolved_topic": "price",
+        "sales_stage": "value_mapping",
+        "response_strategy": "diagnose_before_recommendation",
+        "safety_boundary": "agency_preservation_boundary"
+      },
+      "pass": true,
+      "mismatches": {}
+    }
+  ],
+  "passed_count": 18,
+  "failed_cases": [
+    "clarify-previous-question-price",
+    "bare-no-after-opener",
+    "direct-price-question",
+    "growth-plan-value",
+    "starter-plan-fit",
+    "manual-tracking-objection",
+    "fit-question",
+    "timing-objection",
+    "effort-worth-objection",
+    "specialist-not-needed-for-basics",
+    "generic-followup-after-qualification",
+    "off-topic-unclear-turn"
+  ],
+  "latency_ms": {
+    "min": 2230.326,
+    "median": 3338.0355,
+    "max": 5490.024
+  }
+}
