@@ -25,6 +25,107 @@ def live_demo_price_answer(language: str) -> str:
     return "Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?"
 
 
+def is_direct_price_question(normalized: str) -> bool:
+    if not normalized:
+        return False
+    if normalized_contains_any(
+        normalized,
+        {
+            "price later",
+            "talk about the price later",
+            "talk about price later",
+        },
+    ):
+        return False
+    return normalized_contains_any(
+        normalized,
+        {
+            "what is the price",
+            "what s the price",
+            "how much",
+            "pricing",
+            "monthly price",
+            "what does it cost",
+            "what does this cost",
+            "what does routesignal cost",
+            "cost per month",
+            "price per month",
+        },
+    )
+
+
+def is_starter_growth_plan_boundary_question(normalized: str) -> bool:
+    if not normalized or "starter" not in normalized:
+        return False
+    mentions_growth_only_feature = normalized_contains_any(
+        normalized,
+        {
+            "reminder",
+            "reminders",
+            "follow up reminder",
+            "follow-up reminder",
+            "handoff review",
+            "handoff",
+            "priority routing",
+            "slack alert",
+            "slack alerts",
+            "duplicate check",
+            "duplicate checks",
+        },
+    )
+    asks_boundary = normalized_contains_any(
+        normalized,
+        {
+            "does not cover",
+            "doesnt cover",
+            "doesn t cover",
+            "do not cover",
+            "dont cover",
+            "not cover",
+            "not include",
+            "does not include",
+            "doesnt include",
+            "doesn t include",
+            "is not included",
+            "isn t included",
+            "isnt included",
+            "only growth",
+            "growth only",
+            "in growth",
+            "included in starter",
+            "starter include",
+            "starter cover",
+        },
+    )
+    return mentions_growth_only_feature and asks_boundary
+
+
+def answered_topic_in_turns(turns: list[dict], topic: str) -> bool:
+    for turn in turns:
+        memory = turn.get("conversation_memory") or {}
+        continuity = turn.get("continuity") or {}
+        if isinstance(memory, dict) and topic in set(memory.get("answered_topics") or []):
+            return True
+        if str(continuity.get("reason") or "") == topic:
+            return True
+    return False
+
+
+def starter_growth_plan_boundary_response(language: str, turns: list[dict] | None = None) -> str:
+    if language.startswith("de"):
+        return "Nein. Starter deckt Basis-Routing ab; Erinnerungen und Uebergabepruefung gehoeren zu Growth."
+    turns = list(turns or [])
+    if answered_topic_in_turns(turns, "plan_boundary"):
+        return (
+            "Same plan boundary: Starter handles lead capture, basic routing, callback tasks, reports, and CSV import. "
+            "Growth is where reminders, priority routing, and handoff review live. Is that Growth workflow the part worth checking?"
+        )
+    return (
+        "No. Starter covers lead capture, basic routing, callback tasks, reports, and CSV import. "
+        "Reminders and handoff review are Growth features. Are those the parts you actually need?"
+    )
+
+
 def is_live_demo_price_answer(response: str) -> bool:
     return "$29/month" in response and "$59/month" in response
 
@@ -252,12 +353,7 @@ def has_callback_time_confirmation_signal(normalized: str, session_state: dict |
         {
             "call me",
             "call back",
-            "callback later",
-            "tomorrow",
-            "today",
-            "next week",
-            "works",
-            "at",
+            "callback",
             "uhr",
         },
     ):
@@ -442,10 +538,36 @@ def is_time_waste_friction(normalized: str) -> bool:
     )
 
 
+def is_buyer_stop_request(normalized: str) -> bool:
+    return normalized_contains_any(
+        normalized,
+        {
+            "stop here",
+            "stop the call",
+            "end the call",
+            "i do not want to talk",
+            "i dont want to talk",
+            "i don t want to talk",
+            "i do not want to talk anymore",
+            "i dont want to talk anymore",
+            "i don t want to talk anymore",
+            "do not call us again",
+            "dont call us again",
+            "don t call us again",
+            "do not call me again",
+            "dont call me again",
+            "don t call me again",
+        },
+    )
+
+
 def is_topic_confusion(normalized: str) -> bool:
     return normalized_contains_any(
         normalized,
         {
+            "i do not know what",
+            "i dont know what",
+            "i don t know what",
             "i do not know what you re talking about",
             "i dont know what you re talking about",
             "i don t know what you re talking about",
@@ -462,6 +584,79 @@ def is_uncertain_gap(normalized: str) -> bool:
 
 def is_frustrated_confusion(normalized: str) -> bool:
     return normalized_contains_any(normalized, {"the fuck", "what the fuck", "what the hell", "bullshit"})
+
+
+def is_new_trial_request_clarification(normalized: str) -> bool:
+    return normalized_contains_any(
+        normalized,
+        {
+            "what do you mean by new trial request",
+            "what do you mean by new trial requests",
+            "what is a new trial request",
+            "what are new trial requests",
+            "new trial request",
+            "new trial requests",
+        },
+    )
+
+
+def is_buyer_no_question_repair(normalized: str) -> bool:
+    return normalized_contains_any(
+        normalized,
+        {
+            "i did not ask a question",
+            "i didnt ask a question",
+            "i didn t ask a question",
+            "i do not have a question",
+            "i dont have a question",
+            "i don t have a question",
+        },
+    )
+
+
+def is_value_relevance_question(normalized: str) -> bool:
+    return normalized_contains_any(
+        normalized,
+        {
+            "why does that matter",
+            "why would that matter",
+            "why this matters",
+            "why does this matter",
+            "why does it matter",
+            "why it matters",
+            "what this means for us",
+            "what this mean for us",
+            "what does this mean for us",
+            "what does it mean for us",
+            "what does that mean for us",
+            "why is this useful",
+            "why would this help",
+        },
+    )
+
+
+def buyer_stop_response(language: str) -> str:
+    if language.startswith("de"):
+        return "Verstanden. Ich stoppe hier und notiere, dass Sie dazu nicht weiter angerufen werden moechten. Auf Wiederhoeren."
+    return "Understood. I will stop here and mark that you do not want another call about this. Goodbye."
+
+
+def new_trial_request_clarification_response(language: str) -> str:
+    if language.startswith("de"):
+        return "Mit neuen Testanfragen meine ich eingehende Demo- oder Testanfragen, die einen Besitzer und eine Nachfassung brauchen. Passiert dort etwas wie ein verpasster Rueckruf?"
+    return "I meant inbound demo or trial inquiries that need an owner and a follow-up step. Does that handoff ever get missed?"
+
+
+def buyer_no_question_response(language: str) -> str:
+    if language.startswith("de"):
+        return "Stimmt, Sie haben keine Frage gestellt. Ich rufe wegen einer Sache an: gehen Demo-Nachfassaktionen bei Besitzer, Rueckruf oder Uebergabe verloren?"
+    return "Fair, you did not ask a question. I called to check one thing: do inbound demo follow-ups lose the owner, callback reminder, or handoff status?"
+
+
+def value_relevance_response(language: str) -> str:
+    if language.startswith("de"):
+        return "Es zaehlt nur, wenn diese Luecke heute Zeit kostet: verpasste Rueckrufe, unklare Besitzer oder verlorene Uebergaben. Was kostet heute wirklich Zeit?"
+    return "In plain terms, it matters only if that gap costs time today: missed callbacks, unclear owners, or lost handoffs. Which one costs time today?"
 
 
 def time_constrained_agenda_response(language: str) -> str:
@@ -769,7 +964,20 @@ def focus_followup_text(language: str, focus: str, normalized: str) -> str:
     german = language.startswith("de")
     asks_for_explanation = normalized_contains_any(
         normalized,
-        {"explain", "tell me", "what does", "what is", "what's", "what would", "how does", "include", "includes"},
+        {
+            "explain",
+            "tell me",
+            "what does",
+            "what is",
+            "what's",
+            "what would",
+            "how does",
+            "include",
+            "includes",
+            "why does",
+            "why would",
+            "why is",
+        },
     )
     asks_for_recommendation = normalized_contains_any(
         normalized,
@@ -822,6 +1030,15 @@ def focus_followup_text(language: str, focus: str, normalized: str) -> str:
     if focus == "timing":
         if asks_for_explanation or agrees_to_continue:
             return continuity_text(language, "timing", persisted=True)
+    if focus == "qualification":
+        if is_value_relevance_question(normalized):
+            return value_relevance_response(language)
+        if asks_for_explanation:
+            if german:
+                return "Einfach gesagt: RouteSignal ist nur relevant, wenn Demo-Nachfassung rutscht: verpasste Rueckrufe, unklare Besitzer oder Uebergabestatus. Was davon passiert wirklich?"
+            return "In plain terms, RouteSignal is only relevant if demo follow-up is slipping: missed callbacks, unclear owners, or handoff status. Which of those actually happens?"
+        if agrees_to_continue:
+            return modular_qualification_guidance_text(language, 1)
     return continuity_text(language, focus, persisted=True)
 
 
@@ -1081,6 +1298,7 @@ def is_low_information_acknowledgement(normalized: str) -> bool:
         "it",
         "sounds",
         "good",
+        "guess",
     }
     words = normalized.split()
     return len(words) <= 7 and all(word in acknowledgement_words for word in words)
@@ -1653,11 +1871,12 @@ def last_selected_gap_from_turns(turns: list[dict]) -> str | None:
     for turn in reversed(turns):
         continuity = turn.get("continuity") or {}
         memory = turn.get("conversation_memory") or {}
+        turn_transcript = normalize_text(str(turn.get("transcript") or ""))
         for value in [
             memory.get("selected_gap") if isinstance(memory, dict) else None,
             continuity.get("selected_gap"),
             continuity.get("dialogue_focus") if str(continuity.get("dialogue_focus") or "") in {"callbacks", "handoffs", "routing", "reminders", "duplicates", "visibility"} else None,
-            selected_sales_gap_from_transcript(normalize_text(str(turn.get("transcript") or ""))),
+            None if is_starter_growth_plan_boundary_question(turn_transcript) else selected_sales_gap_from_transcript(turn_transcript),
         ]:
             if value:
                 return str(value)
@@ -1722,13 +1941,18 @@ def answered_topics_from_turns(turns: list[dict], normalized: str, active_topic:
                 text = str(value)
                 if text in {"price", "fit", "details", "timing", "effort", "terms", "qualification"}:
                     topics.add(text)
-        gap = selected_sales_gap_from_transcript(normalize_text(str(turn.get("transcript") or "")))
+        turn_transcript = normalize_text(str(turn.get("transcript") or ""))
+        gap = None if is_starter_growth_plan_boundary_question(turn_transcript) else selected_sales_gap_from_transcript(turn_transcript)
         if gap:
             topics.add(gap)
-    current_gap = selected_sales_gap_from_transcript(normalized)
+        if is_starter_growth_plan_boundary_question(turn_transcript) or str(continuity.get("reason") or "") == "plan_boundary":
+            topics.add("plan_boundary")
+    current_gap = None if is_starter_growth_plan_boundary_question(normalized) else selected_sales_gap_from_transcript(normalized)
     for value in [active_topic, selected_gap, current_gap]:
         if value:
             topics.add(str(value))
+    if is_starter_growth_plan_boundary_question(normalized):
+        topics.add("plan_boundary")
     return sorted(topics)
 
 
@@ -1741,6 +1965,8 @@ def rejected_topics_from_transcript(normalized: str, active_topic: str | None, s
 def last_customer_intent_from_transcript(normalized: str, callback_semantic: str | None, active_topic: str | None) -> str:
     if callback_semantic:
         return callback_semantic
+    if is_starter_growth_plan_boundary_question(normalized):
+        return "plan_boundary_question"
     if is_low_information_acknowledgement(normalized):
         return "low_information_acknowledgement"
     if is_previous_question_clarification_request(normalized):
@@ -1788,13 +2014,16 @@ def build_conversation_memory(
         or dialogue_focus_from_turns(turns)
         or "qualification"
     )
-    selected_gap = selected_sales_gap_from_transcript(normalized) or last_selected_gap_from_turns(turns)
+    if is_starter_growth_plan_boundary_question(normalized):
+        selected_gap = last_selected_gap_from_turns(turns)
+    else:
+        selected_gap = selected_sales_gap_from_transcript(normalized) or last_selected_gap_from_turns(turns)
     callback_semantic = callback_semantic_from_transcript(normalized, session_state)
     if callback_semantic == CALLBACK_WORKFLOW_GAP and selected_gap in {None, "reminders"}:
         selected_gap = "callbacks"
     prior_question = previous_agent_question(turns)
     current_question_type = question_type_from_response(candidate_response or "")
-    last_question_type = current_question_type if current_question_type != "none" else question_type_from_response(prior_question or "")
+    last_active_question_type = current_question_type if current_question_type != "none" else question_type_from_response(prior_question or "")
     prior_hashes = [response_hash(response) for response in previous_responses(turns)]
     if candidate_response:
         prior_hashes.append(response_hash(candidate_response))
@@ -1804,7 +2033,8 @@ def build_conversation_memory(
         "active_topic": active_topic,
         "selected_gap": selected_gap,
         "callback_semantic": callback_semantic,
-        "last_agent_question_type": last_question_type,
+        "last_agent_question_type": current_question_type,
+        "last_active_agent_question_type": last_active_question_type,
         "last_agent_question_hash": response_hash(prior_question or ""),
         "asked_question_type_counts": response_question_counts(turns, candidate_response),
         "answered_topics": answered_topics_from_turns(turns, normalized, active_topic, selected_gap),
@@ -2020,6 +2250,13 @@ def continuity_response(transcript: str, session_state: dict | None, campaign: d
             "dialogue_focus": resolved_focus,
             "candidate_response": asr_fragment_response(language),
         }
+    if is_buyer_stop_request(normalized):
+        return {
+            "applied": True,
+            "reason": "buyer_requested_stop",
+            "dialogue_focus": resolved_focus or "qualification",
+            "candidate_response": buyer_stop_response(language),
+        }
     if is_opening_greeting(normalized) and (
         not turns
         or not resolved_focus
@@ -2030,6 +2267,20 @@ def continuity_response(transcript: str, session_state: dict | None, campaign: d
             "reason": "opening_greeting_answered",
             "dialogue_focus": "qualification",
             "candidate_response": opening_greeting_response(language, campaign),
+        }
+    if is_starter_growth_plan_boundary_question(normalized):
+        return {
+            "applied": True,
+            "reason": "plan_boundary",
+            "dialogue_focus": "price",
+            "candidate_response": starter_growth_plan_boundary_response(language, turns),
+        }
+    if is_direct_price_question(normalized):
+        return {
+            "applied": True,
+            "reason": "explicit_price_question_answered",
+            "dialogue_focus": "price",
+            "candidate_response": live_demo_price_answer(language),
         }
     if callback_semantic == CALLBACK_TIME_CONFIRMATION:
         return {
@@ -2046,6 +2297,27 @@ def continuity_response(transcript: str, session_state: dict | None, campaign: d
             "selected_gap": "callbacks",
             "callback_semantic": CALLBACK_WORKFLOW_GAP,
             "candidate_response": callback_workflow_clarification_response(language),
+        }
+    if is_new_trial_request_clarification(normalized):
+        return {
+            "applied": True,
+            "reason": "new_trial_request_clarified",
+            "dialogue_focus": resolved_focus or "qualification",
+            "candidate_response": new_trial_request_clarification_response(language),
+        }
+    if is_value_relevance_question(normalized):
+        return {
+            "applied": True,
+            "reason": "value_relevance_explained",
+            "dialogue_focus": resolved_focus or "qualification",
+            "candidate_response": value_relevance_response(language),
+        }
+    if is_buyer_no_question_repair(normalized):
+        return {
+            "applied": True,
+            "reason": "buyer_no_question_recovered",
+            "dialogue_focus": resolved_focus or "qualification",
+            "candidate_response": buyer_no_question_response(language),
         }
     if callback_semantic == CALLBACK_WORKFLOW_GAP:
         gap_focus = resolved_focus or "qualification"

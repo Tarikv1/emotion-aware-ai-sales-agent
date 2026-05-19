@@ -1,0 +1,83 @@
+{
+  "checkpoint_id": "LIVE-DEMO-004-realtime-turn-taking-asr-vad",
+  "passed": true,
+  "failure_count": 0,
+  "failures": [],
+  "provider_calls_made": false,
+  "evidence": {
+    "policy": {
+      "checkpoint_id": "LIVE-DEMO-004-realtime-turn-taking-asr-vad",
+      "policy_version": 1,
+      "browser_asr_is_true_vad": false,
+      "browser_asr_role": "browser_transcription_only",
+      "raw_audio_uploaded_to_python_server": false,
+      "customer_audio_uploaded_to_provider_by_python": false,
+      "requires_final_result_for_auto_submit": true,
+      "submit_on_interim_results": false,
+      "cancel_pending_submit_on_interim_change": true,
+      "final_transcript_submit_delay_ms": 2200,
+      "min_listening_window_before_submit_ms": 1600,
+      "interim_result_stability_ms": 900,
+      "reject_while_agent_speaks": true,
+      "reject_while_turn_in_flight": true,
+      "low_confidence_threshold": 0.45,
+      "manual_send_allowed": true,
+      "known_limitations": [
+        "browser SpeechRecognition final events are not true VAD",
+        "thinking pauses can still end browser recognition",
+        "provider or local streaming ASR/VAD is a future checkpoint"
+      ]
+    },
+    "policy_cases": {
+      "interim_not_submitted": {
+        "accepted": false,
+        "reason": "wait_for_final_result"
+      },
+      "final_waits_for_min_window": {
+        "accepted": false,
+        "reason": "minimum_listening_window",
+        "retry_after_ms": 1100
+      },
+      "final_after_pause_accepted": {
+        "accepted": true,
+        "reason": "accepted"
+      },
+      "agent_speaking_rejected": {
+        "accepted": false,
+        "reason": "agent_not_listening"
+      },
+      "low_confidence_rejected": {
+        "accepted": false,
+        "reason": "low_confidence"
+      },
+      "fragment_rejected": {
+        "accepted": false,
+        "reason": "fragment"
+      }
+    },
+    "metadata_policy": {
+      "checkpoint_id": "LIVE-DEMO-004-realtime-turn-taking-asr-vad",
+      "policy_version": 1,
+      "browser_asr_is_true_vad": false,
+      "browser_asr_role": "browser_transcription_only",
+      "raw_audio_uploaded_to_python_server": false,
+      "customer_audio_uploaded_to_provider_by_python": false,
+      "requires_final_result_for_auto_submit": true,
+      "submit_on_interim_results": false,
+      "cancel_pending_submit_on_interim_change": true,
+      "final_transcript_submit_delay_ms": 2200,
+      "min_listening_window_before_submit_ms": 1600,
+      "interim_result_stability_ms": 900,
+      "reject_while_agent_speaks": true,
+      "reject_while_turn_in_flight": true,
+      "low_confidence_threshold": 0.45,
+      "manual_send_allowed": true,
+      "known_limitations": [
+        "browser SpeechRecognition final events are not true VAD",
+        "thinking pauses can still end browser recognition",
+        "provider or local streaming ASR/VAD is a future checkpoint"
+      ]
+    },
+    "manifest_runtime_entry_count": 53
+  }
+}

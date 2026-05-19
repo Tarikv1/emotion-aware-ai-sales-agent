@@ -1,0 +1,97 @@
+{
+  "checkpoint_id": "LIVE-DEMO-003-supervised-live-voice-acceptance",
+  "passed": true,
+  "failure_count": 0,
+  "failures": [],
+  "provider_calls_made": false,
+  "default_acceptance_status": "pending_manual_review",
+  "review_outcomes": {
+    "passing": {
+      "status": "accepted_for_next_iteration",
+      "accepted": true,
+      "hard_gate_failures": [],
+      "human_gate_failures": [],
+      "averages": {
+        "turn_taking_felt_natural": 4,
+        "response_latency_felt_acceptable": 4,
+        "voice_consistency": 4,
+        "response_naturalness": 3,
+        "sales_steering": 4
+      },
+      "recommendation": "Proceed to the next narrow live-voice iteration checkpoint."
+    },
+    "failing": {
+      "status": "not_accepted",
+      "accepted": false,
+      "hard_gate_failures": [],
+      "human_gate_failures": [
+        "turn_taking_average_below_4",
+        "latency_acceptability_average_below_4",
+        "voice_consistency_average_below_4",
+        "response_naturalness_average_below_3",
+        "sales_steering_average_below_4",
+        "buyer_agency_not_preserved",
+        "manual_not_accepted_for_next_iteration",
+        "agent_talked_over_user",
+        "manual_repetition_seen",
+        "manual_echo_seen",
+        "manual_callback_confusion_seen"
+      ],
+      "averages": {
+        "turn_taking_felt_natural": 2,
+        "response_latency_felt_acceptable": 2,
+        "voice_consistency": 2,
+        "response_naturalness": 2,
+        "sales_steering": 2
+      },
+      "recommendation": "Create a narrow follow-up checkpoint from the failed gates; do not rewrite the runtime broadly."
+    },
+    "passing_cli": {
+      "status": "accepted_for_next_iteration",
+      "accepted": true,
+      "hard_gate_failures": [],
+      "human_gate_failures": [],
+      "averages": {
+        "turn_taking_felt_natural": 4,
+        "response_latency_felt_acceptable": 4,
+        "voice_consistency": 4,
+        "response_naturalness": 3,
+        "sales_steering": 4
+      },
+      "recommendation": "Proceed to the next narrow live-voice iteration checkpoint."
+    },
+    "failing_cli": {
+      "status": "not_accepted",
+      "accepted": false,
+      "hard_gate_failures": [],
+      "human_gate_failures": [
+        "turn_taking_average_below_4",
+        "latency_acceptability_average_below_4",
+        "voice_consistency_average_below_4",
+        "response_naturalness_average_below_3",
+        "sales_steering_average_below_4",
+        "buyer_agency_not_preserved",
+        "manual_not_accepted_for_next_iteration",
+        "agent_talked_over_user",
+        "manual_repetition_seen",
+        "manual_echo_seen",
+        "manual_callback_confusion_seen"
+      ],
+      "averages": {
+        "turn_taking_felt_natural": 2,
+        "response_latency_felt_acceptable": 2,
+        "voice_consistency": 2,
+        "response_naturalness": 2,
+        "sales_steering": 2
+      },
+      "recommendation": "Create a narrow follow-up checkpoint from the failed gates; do not rewrite the runtime broadly."
+    }
+  },
+  "evidence": {
+    "sample_packet_path": ".tmp\\LIVE-DEMO-003\\acceptance_packet.json",
+    "sample_report_path": ".tmp\\LIVE-DEMO-003\\acceptance_report.md",
+    "sample_review_form_path": ".tmp\\LIVE-DEMO-003\\manual_review_form.md",
+    "sample_review_csv_path": ".tmp\\LIVE-DEMO-003\\manual_review.csv",
+    "turn_count": 13
+  }
+}

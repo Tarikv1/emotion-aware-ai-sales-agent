@@ -13,19 +13,28 @@ CARTESIA_TAG_CUES = {"pause", "rate", "emphasis", "stretch"}
 ELEVENLABS_MAPPED_CUES = {"pause", "rate", "stretch"}
 
 
-def replace_first(text: str, target: str, replacement: str) -> tuple[str, bool]:
+def target_pattern(target: str) -> re.Pattern[str] | None:
     if not target:
+        return None
+    escaped = re.escape(target)
+    prefix = r"(?<![A-Za-z0-9])" if target[0].isalnum() else ""
+    suffix = r"(?![A-Za-z0-9])" if target[-1].isalnum() else ""
+    return re.compile(f"{prefix}{escaped}{suffix}", re.IGNORECASE)
+
+
+def replace_first(text: str, target: str, replacement: str) -> tuple[str, bool]:
+    pattern = target_pattern(target)
+    if pattern is None:
         return text, False
-    pattern = re.compile(re.escape(target), re.IGNORECASE)
     if pattern.search(text) is None:
         return text, False
     return pattern.sub(replacement, text, count=1), True
 
 
 def insert_after(text: str, target: str, insertion: str) -> tuple[str, bool]:
-    if not target:
+    pattern = target_pattern(target)
+    if pattern is None:
         return text, False
-    pattern = re.compile(re.escape(target), re.IGNORECASE)
     match = pattern.search(text)
     if match is None:
         return text, False

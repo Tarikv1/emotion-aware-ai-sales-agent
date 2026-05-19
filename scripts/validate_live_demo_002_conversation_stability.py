@@ -309,6 +309,35 @@ def validate_callback_scheduling(failures: list[str], evidence: dict[str, Any]) 
     evidence["callback_scheduling_controls"] = records
 
 
+def validate_callback_time_requires_scheduling_context(failures: list[str], evidence: dict[str, Any]) -> None:
+    state = {"turns": []}
+    transcript = "tomorrow at 3 works"
+    packet = build_demo_turn(transcript, state, session_id="callback-time-no-context")
+    response = packet["summary"]["final_response"]
+    semantic = session_policy.callback_semantic_from_transcript(session_policy.normalize_text(transcript), state)
+    evidence["callback_time_no_context_negative_control"] = {
+        "transcript": transcript,
+        "semantic": semantic,
+        "response": response,
+        "summary": packet["summary"],
+    }
+    assert_condition(
+        failures,
+        semantic != "callback_time_confirmation",
+        f"Standalone callback time should not confirm scheduling without scheduling context: {semantic!r}",
+    )
+    assert_condition(
+        failures,
+        packet["summary"].get("call_control") != "schedule-and-end",
+        f"Standalone callback time should not schedule-and-end without context: {packet['summary']}",
+    )
+    assert_condition(
+        failures,
+        "confirmed" not in response.lower() and "record that callback time" not in response.lower(),
+        f"Standalone callback time should clarify context, not confirm scheduling: {response}",
+    )
+
+
 def validate_repetition_and_echo(failures: list[str], evidence: dict[str, Any]) -> None:
     transcripts = [
         "__agent_open__",
@@ -655,6 +684,7 @@ def main() -> None:
     validate_no_hard_turn_cap(failures, evidence)
     validate_callback_workflow_gap(failures, evidence)
     validate_callback_scheduling(failures, evidence)
+    validate_callback_time_requires_scheduling_context(failures, evidence)
     validate_repetition_and_echo(failures, evidence)
     validate_long_stress(failures, evidence)
     validate_echo_examples(failures, evidence)

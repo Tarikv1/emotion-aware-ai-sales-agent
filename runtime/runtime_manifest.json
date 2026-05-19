@@ -328,6 +328,18 @@
       ]
     },
     {
+      "path": "runtime/speech/realtime_turn_taking_policy.py",
+      "path_type": "file",
+      "tier": "speech-runtime-contract",
+      "runtime_role": "Runtime-owned browser ASR turn-taking policy for LIVE-DEMO-004, including final-result-only auto-submit, pause-window timing, no raw audio upload, and explicit non-VAD limitations.",
+      "behavior_surface": [
+        "browser ASR turn-taking",
+        "auto-submit timing",
+        "interim-result handling",
+        "VAD boundary"
+      ]
+    },
+    {
       "path": "runtime/speech/prosody_naturalness.py",
       "path_type": "file",
       "tier": "spoken-runtime-behavior",

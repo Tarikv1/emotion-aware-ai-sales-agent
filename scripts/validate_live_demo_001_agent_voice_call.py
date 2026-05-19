@@ -23,6 +23,9 @@ HTML_OUT = TMP_DIR / "LIVE-DEMO-001.html"
 METADATA_OUT = TMP_DIR / "LIVE-DEMO-001-metadata.json"
 DRY_OUT = TMP_DIR / "LIVE-DEMO-001-dry-turn.json"
 FORCED_OUT = TMP_DIR / "LIVE-DEMO-001-forced-missing-key-turn.json"
+ENV_METADATA_OUT = TMP_DIR / "LIVE-DEMO-001-env-metadata.json"
+LIVE_TTS_ENV_FILE = TMP_DIR / "elevenlabs.env"
+MISSING_LIVE_TTS_ENV_FILE = TMP_DIR / "missing-default-elevenlabs.env"
 TRANSCRIPT = "I am not sure this makes sense for my apartment right now."
 REQUIRED_SOURCE_URLS = {
     "https://info.chilipiper.com/lead-routing-software",
@@ -55,6 +58,17 @@ def run_demo(*args: str) -> subprocess.CompletedProcess[str]:
     )
 
 
+def run_demo_raw(*args: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        [sys.executable, str(SCRIPT_PATH), *args],
+        cwd=ROOT,
+        env=safe_env(),
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+
 def assert_condition(condition: bool, message: str) -> None:
     if not condition:
         raise AssertionError(message)
@@ -64,6 +78,16 @@ def assert_no_secret_patterns(text: str) -> None:
     match = SECRET_PATTERN.search(text)
     if match is not None:
         raise AssertionError(f"Potential secret-like token found: {match.group(0)!r}")
+
+
+def assert_no_tts_word_split_breaks(text: str, context: str) -> None:
+    pattern = re.compile(
+        r"\b(owner|callback|handoff|lead|reminder)\s*<break\s+time=\"[^\"]+\"\s*/?>\s*s\b",
+        re.IGNORECASE,
+    )
+    match = pattern.search(text)
+    if match is not None:
+        raise AssertionError(f"{context} split a plural word with a TTS break tag: {match.group(0)!r}")
 
 
 def response_reopens_focus_menu(response: str) -> bool:
@@ -448,6 +472,7 @@ def validate_turn(packet: dict, *, live_tts: bool, fallback_reason: str) -> None
     assert_condition(tts["api_key_value_logged"] is False, "API key value must not be logged.")
     assert_condition(tts["voice_id_value_logged"] is False, "Voice ID value must not be logged.")
     assert_condition(tts["validation"]["passed"] is True, "TTS boundary validation should pass.")
+    assert_no_tts_word_split_breaks(tts["tts_input_text"], "TTS provider text")
     assert_condition(voice["validation"]["passed"] is True, "Runtime voice delivery validation should pass.")
     assert_condition(voice["final_response_unchanged"] is True, "Final response must stay unchanged.")
     assert_condition(summary["final_response"] == packet["packet"]["final_response"], "Summary response mismatch.")
@@ -486,7 +511,14 @@ def main() -> None:
         assert_condition(source["reuse_label"] == "inspiration only", source)
         assert_condition(source["directly_copied_material"] == "none", source)
 
-    exported = run_demo("--export-html", str(HTML_OUT), "--export-metadata", str(METADATA_OUT))
+    exported = run_demo(
+        "--export-html",
+        str(HTML_OUT),
+        "--export-metadata",
+        str(METADATA_OUT),
+        "--elevenlabs-env-file",
+        str(MISSING_LIVE_TTS_ENV_FILE),
+    )
     metadata = json.loads(exported.stdout)
     html = HTML_OUT.read_text(encoding="utf-8")
     metadata_file = json.loads(METADATA_OUT.read_text(encoding="utf-8"))
@@ -507,6 +539,14 @@ def main() -> None:
     assert_condition("function setVoiceTurnState" in html, "Voice turn-state setter missing.")
     assert_condition("function stopRecognitionForAgentTurn" in html, "Recognition stop before agent turn missing.")
     assert_condition("function shouldAcceptAutoTranscript" in html, "ASR acceptance gate missing.")
+    assert_condition("const FINAL_TRANSCRIPT_SUBMIT_DELAY_MS" in html, "Final transcript debounce setting missing.")
+    assert_condition("const TURN_TAKING_POLICY = metadata.browser_asr.turn_taking_policy;" in html, "Runtime ASR turn-taking policy metadata missing.")
+    assert_condition("const REQUIRE_FINAL_RESULT_FOR_AUTO_SUBMIT" in html, "Auto-submit should require final ASR results.")
+    assert_condition("let lastResultHadFinal = false;" in html, "ASR final-result tracking missing.")
+    assert_condition("function clearFinalSubmitTimer" in html, "ASR pending-submit clear helper missing.")
+    assert_condition("function scheduleAutoSubmit" in html, "Final transcript debounce helper missing.")
+    assert_condition("recognition.continuous = true" in html, "ASR should stay open across short thinking pauses.")
+    assert_condition("Listening... waiting for a pause." in html, "ASR should wait for a pause before auto-submitting.")
     assert_condition("const acceptedVoiceTurnState = voiceTurnState" in html, "Accepted voice turn state should be captured before agent thinking state.")
     assert_condition("voice_turn_state: acceptedVoiceTurnState" in html, "Voice turn state should be sent with turn packets.")
     assert_condition("agent_speaking" in html, "Agent-speaking state missing.")
@@ -546,17 +586,60 @@ def main() -> None:
     assert_condition(metadata["repo_owned_agent"]["guarded_retrieval"]["campaign_facts_override_rag"] is True, "Campaign facts must override RAG in the demo.")
     assert_condition(metadata["repo_owned_agent"]["composer_hooks"]["enabled_when_retrieval_enabled"] is True, "Composer hooks should be wired behind guarded retrieval.")
     assert_condition(metadata["tts"]["provider"] == "elevenlabs", "Expected ElevenLabs TTS.")
+    assert_condition(metadata["tts"]["api_key_env_var"] == "ELEVENLABS_API_KEY", "ElevenLabs API key env var should be explicit.")
+    assert_condition(metadata["tts"]["elevenlabs_env_file"]["path"].endswith("missing-default-elevenlabs.env"), "ElevenLabs env file metadata missing.")
+    assert_condition(metadata["tts"]["elevenlabs_env_file"]["present"] is False, "Validation should not require a local ElevenLabs env file.")
+    assert_condition("config/local/voice_ids.json" in metadata["tts"]["voice_id_sources"], "Legacy local voice ID path should be documented.")
     assert_condition(metadata["playback"]["agent_audio_volume"] == 0.68, "Agent audio volume should be toned down for live demo playback.")
     assert_condition(metadata["playback"]["browser_fallback_voice_volume"] == 0.68, "Browser fallback voice volume should match live demo playback volume.")
     assert_condition(metadata["playback"]["provider_audio_file_unchanged"] is True, "Volume calibration must not alter provider audio files.")
     assert_condition(metadata["browser_asr"]["audio_sent_to_python_server"] is False, "Audio upload boundary mismatch.")
     assert_condition(metadata["browser_asr"]["acceptance_policy"]["low_confidence_threshold"] == 0.45, "ASR low-confidence threshold missing.")
+    assert_condition(metadata["browser_asr"]["acceptance_policy"]["final_transcript_submit_delay_ms"] >= 1800, "ASR final-submit debounce should allow thinking pauses.")
+    assert_condition(metadata["browser_asr"]["turn_taking_policy"]["checkpoint_id"] == "LIVE-DEMO-004-realtime-turn-taking-asr-vad", "LIVE-DEMO-004 ASR turn-taking policy missing.")
+    assert_condition(metadata["browser_asr"]["turn_taking_policy"]["requires_final_result_for_auto_submit"] is True, "ASR must require a final result before auto-submit.")
+    assert_condition(metadata["browser_asr"]["turn_taking_policy"]["submit_on_interim_results"] is False, "ASR must not auto-submit interim results.")
     assert_condition(metadata["turn_taking"]["controller"] == "voice-turn-state-machine", "Turn-taking controller should not be browser-named.")
     assert_condition(metadata["turn_taking"]["listen_while_agent_speaks"] is False, "Demo must not listen while agent speaks.")
     assert_condition(metadata["turn_taking"]["restart_after_agent_output_ms"] >= 650, "Restart delay should leave a gap after agent speech.")
     assert_condition(metadata["boundaries"]["runtime_behavior_changed"] is False, "Runtime boundary mismatch.")
     assert_condition(metadata["boundaries"]["opens_prod_102"] is False, "PROD-102 boundary mismatch.")
     assert_condition(metadata["boundaries"]["stores_turns_under_ignored_private_data"] is True, "Private output boundary missing.")
+
+    LIVE_TTS_ENV_FILE.write_text(
+        "ELEVENLABS_API_KEY" + "=test-live-tts-api-key\nUNRELATED_PROVIDER_KEY=ignored\n",
+        encoding="utf-8",
+    )
+    env_exported = run_demo(
+        "--export-metadata",
+        str(ENV_METADATA_OUT),
+        "--elevenlabs-env-file",
+        str(LIVE_TTS_ENV_FILE),
+    )
+    env_metadata = json.loads(env_exported.stdout)
+    assert_condition(
+        env_metadata["tts"]["elevenlabs_env_file"]["loaded_keys"] == ["ELEVENLABS_API_KEY"],
+        "ElevenLabs env loader should load only allowed live TTS keys.",
+    )
+    assert_condition(
+        env_metadata["tts"]["elevenlabs_env_file"]["ignored_keys"] == ["UNRELATED_PROVIDER_KEY"],
+        "ElevenLabs env loader should report ignored non-allowlisted keys without using them.",
+    )
+    assert_condition(env_metadata["tts"]["api_key_present_at_start"] is True, "Loaded env file should satisfy API-key preflight.")
+    assert_no_secret_patterns(env_exported.stdout)
+    assert_no_secret_patterns(ENV_METADATA_OUT.read_text(encoding="utf-8"))
+
+    live_missing = run_demo_raw(
+        "--decision-transcript",
+        TRANSCRIPT,
+        "--live-tts",
+        "--consent-confirmed",
+        "--elevenlabs-env-file",
+        str(TMP_DIR / "missing-elevenlabs.env"),
+    )
+    assert_condition(live_missing.returncode != 0, "Live TTS should fail fast when provider config is missing.")
+    assert_condition("Missing: ELEVENLABS_API_KEY" in live_missing.stderr, live_missing.stderr)
+    assert_no_secret_patterns(live_missing.stderr)
 
     agent_open_probe = build_turn_packet(
         transcript="__agent_open__",
@@ -934,6 +1017,118 @@ def main() -> None:
     assert_sales_context_depth(callback_clarification["summary"]["final_response"], "callback workflow clarification")
     assert_live_demo_response_style(callback_clarification["summary"]["final_response"], "callback workflow clarification")
 
+    live_failure_state = {
+        "turns": [
+            {
+                "transcript": agent_open_probe["transcript"],
+                "summary": agent_open_probe["summary"],
+                "continuity": agent_open_probe["demo_session_continuity"],
+            },
+            {
+                "transcript": qualification_ack["transcript"],
+                "summary": qualification_ack["summary"],
+                "continuity": qualification_ack["demo_session_continuity"],
+            },
+            {
+                "transcript": callback_clarification["transcript"],
+                "summary": callback_clarification["summary"],
+                "continuity": callback_clarification["demo_session_continuity"],
+            },
+        ]
+    }
+    live_failure_cases = [
+        (
+            "new trial request clarification",
+            "what do you mean by new trial request",
+            "new_trial_request_clarified",
+            {"inbound demo", "trial inquiries", "owner"},
+        ),
+        (
+            "value relevance clarification",
+            "no I don't understand what this means for us I'm asking you",
+            "value_relevance_explained",
+            {"matters only if", "missed callbacks", "unclear owners"},
+        ),
+        (
+            "buyer did not ask question",
+            "I didn't ask a question",
+            "buyer_no_question_recovered",
+            {"you did not ask", "I called to check", "inbound demo"},
+        ),
+        (
+            "short topic confusion fragment",
+            "I don't know what",
+            "topic_confusion_repaired",
+            {"lost the thread", "demo follow-up", "should I stop"},
+        ),
+    ]
+    seen_failure_responses = {turn["summary"]["final_response"] for turn in live_failure_state["turns"]}
+    for context, transcript_text, expected_reason, expected_fragments in live_failure_cases:
+        packet = build_turn_packet(
+            transcript=transcript_text,
+            campaign_id="campaign-prod-005-b2b-software",
+            stage="relevance-check",
+            input_type="speech-final",
+            silence_count=0,
+            cases_path=DEFAULT_CASES_PATH,
+            private_out=TMP_DIR,
+            live_tts=False,
+            force_key_missing=False,
+            timeout_seconds=8.0,
+            session_id="live-demo-003-failure-regression-session",
+            session_state=live_failure_state,
+            voice_turn_state="listening",
+        )
+        validate_turn(packet, live_tts=False, fallback_reason="dry-run-mode")
+        assert_condition(
+            packet["demo_session_continuity"]["reason"] == expected_reason,
+            f"{context} should route to the specific live failure repair: {packet['demo_session_continuity']}",
+        )
+        assert_condition(
+            packet["summary"]["final_response"] not in seen_failure_responses,
+            f"{context} repeated a prior response: {packet['summary']['final_response']}",
+        )
+        assert_contains_any(packet["summary"]["final_response"], expected_fragments, context)
+        assert_no_generic_focus_menu(packet["summary"]["final_response"], context)
+        assert_live_demo_response_style(packet["summary"]["final_response"], context)
+        seen_failure_responses.add(packet["summary"]["final_response"])
+        live_failure_state["turns"].append(
+            {
+                "transcript": packet["transcript"],
+                "summary": packet["summary"],
+                "continuity": packet["demo_session_continuity"],
+            }
+        )
+
+    buyer_stop_packet = build_turn_packet(
+        transcript="yeah let's just stop here I don't want to talk about this one more",
+        campaign_id="campaign-prod-005-b2b-software",
+        stage="relevance-check",
+        input_type="speech-final",
+        silence_count=0,
+        cases_path=DEFAULT_CASES_PATH,
+        private_out=TMP_DIR,
+        live_tts=False,
+        force_key_missing=False,
+        timeout_seconds=8.0,
+        session_id="live-demo-003-failure-regression-session",
+        session_state=live_failure_state,
+        voice_turn_state="listening",
+    )
+    validate_turn(buyer_stop_packet, live_tts=False, fallback_reason="dry-run-mode")
+    assert_condition(
+        buyer_stop_packet["demo_session_continuity"]["reason"] == "buyer_requested_stop",
+        f"Buyer stop request should be respected before sales progression: {buyer_stop_packet['demo_session_continuity']}",
+    )
+    assert_condition(
+        buyer_stop_packet["summary"]["call_control"] == "end-call",
+        f"Buyer stop request should end the call: {buyer_stop_packet['summary']}",
+    )
+    assert_condition(
+        "written summary" not in buyer_stop_packet["summary"]["final_response"].lower(),
+        f"Buyer stop request should not keep selling: {buyer_stop_packet['summary']['final_response']}",
+    )
+
     call_context_state = {
         "turns": [
             {
@@ -945,7 +1140,7 @@ def main() -> None:
     }
     call_context_transcripts = [
         ("time constrained agenda", "I don't have a lot of time right now what do you want exactly", "time_constrained_agenda_answered"),
-        ("buyer expects agent lead", "I don't have a question you called me so you should ask whatever you want to ask", "seller_agenda_recovered"),
+        ("buyer expects agent lead", "I don't have a question you called me so you should ask whatever you want to ask", "buyer_no_question_recovered"),
         ("next step scope", "what is the next step", "workflow_review_next_step_explained"),
         ("workflow review scope", "how short is this workflow review that you're talking about", "workflow_review_scope_explained"),
         ("time waste friction", "seems to me like you are wasting time right now", "time_waste_repair_offered"),
@@ -1857,6 +2052,7 @@ def main() -> None:
                     "duplicate_response_prevented_with_details_progression",
                     "campaign_depth_product_explanation_answered",
                     "campaign_depth_workflow_scope_answered",
+                    "asr_fragment_repair",
                 )
             )
             for reason in actual_followup_reasons

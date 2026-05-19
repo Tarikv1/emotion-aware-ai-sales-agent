@@ -5,6 +5,7 @@ import argparse
 import html
 import json
 import mimetypes
+import os
 import re
 import sys
 import time
@@ -39,7 +40,12 @@ from runtime.speech.asr_quality_gate import (  # noqa: E402
     evaluate_asr_quality,
     repair_response_for_quality_gate,
 )
-from runtime.voice.runtime_tts_delivery import attach_runtime_tts_delivery  # noqa: E402
+from runtime.speech.realtime_turn_taking_policy import (  # noqa: E402
+    browser_asr_acceptance_policy,
+    realtime_turn_taking_policy,
+)
+from runtime.providers.tts_provider_clients import resolve_voice_id  # noqa: E402
+from runtime.voice.runtime_tts_delivery import attach_runtime_tts_delivery, provider_for_key  # noqa: E402
 from runtime.voice.runtime_voice_delivery import attach_runtime_voice_delivery  # noqa: E402
 
 
@@ -50,10 +56,17 @@ DEFAULT_STAGE = "relevance-check"
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8781
 DEFAULT_PRIVATE_OUT = ROOT / "data" / "private" / "live-demo-001"
+DEFAULT_ELEVENLABS_ENV_FILE = ROOT / "runtime" / "config" / "local" / "elevenlabs.env"
 LIVE_DEMO_ID = "LIVE-DEMO-001"
 SECRET_PATTERN = re.compile(
     r"(sk-[A-Za-z0-9_-]{20,}|sk_[A-Za-z0-9_-]{20,}|ELEVENLABS_API_KEY\s*=\s*[^\s]+|xi-api-key\s*[:=]\s*[A-Za-z0-9]|Authorization:\s*Bearer\s+[A-Za-z0-9])"
 )
+LIVE_TTS_ENV_KEYS = {
+    "ELEVENLABS_API_KEY",
+    "ELEVENLABS_VOICE_ID",
+    "ELEVENLABS_VOICE_ID_EN",
+    "ELEVENLABS_VOICE_ID_DE",
+}
 LIVE_DEMO_B2B_FACT_OVERLAY = {
     "pricing_summary": "Starter is $29/month. Growth is $59/month.",
     "guided_option_plan_29_features": "lead capture and basic routing",
@@ -92,6 +105,71 @@ def write_text(path: Path, text: str) -> None:
     if SECRET_PATTERN.search(text):
         raise SystemExit("Refusing to write LIVE-DEMO-001 text because a secret-like token appeared.")
     path.write_text(text, encoding="utf-8")
+
+
+def load_live_tts_env_file(path: Path | None) -> dict:
+    if path is None or not path.exists():
+        return {
+            "path": project_relative_string(path),
+            "present": False,
+            "loaded_keys": [],
+            "ignored_keys": [],
+        }
+    loaded_keys: list[str] = []
+    ignored_keys: list[str] = []
+    for line in path.read_text(encoding="utf-8-sig").splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#") or "=" not in stripped:
+            continue
+        key, value = stripped.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key not in LIVE_TTS_ENV_KEYS:
+            ignored_keys.append(key)
+            continue
+        if value and not os.environ.get(key):
+            os.environ[key] = value
+            loaded_keys.append(key)
+    return {
+        "path": project_relative_string(path),
+        "present": True,
+        "loaded_keys": sorted(loaded_keys),
+        "ignored_keys": sorted(ignored_keys),
+    }
+
+
+def live_tts_preflight(campaign_id: str, cases_path: Path, force_key_missing: bool) -> dict:
+    provider = provider_for_key("elevenlabs")
+    campaign = load_campaign(campaign_id, cases_path)
+    language = str(campaign.get("language") or "en")
+    api_key_present = False if force_key_missing else bool(os.environ.get(provider["api_key_env_var"]))
+    voice_id, voice_source = resolve_voice_id(provider, language, force_key_missing)
+    return {
+        "provider": "elevenlabs",
+        "language": language,
+        "api_key_env_var": provider["api_key_env_var"],
+        "api_key_present": api_key_present,
+        "voice_id_present": bool(voice_id),
+        "voice_id_source": voice_source,
+    }
+
+
+def require_live_tts_ready(preflight: dict, env_file_status: dict) -> None:
+    missing = []
+    if not preflight["api_key_present"]:
+        missing.append(preflight["api_key_env_var"])
+    if not preflight["voice_id_present"]:
+        missing.append("ElevenLabs voice ID")
+    if not missing:
+        return
+    env_path = env_file_status.get("path") or project_relative_string(DEFAULT_ELEVENLABS_ENV_FILE)
+    raise SystemExit(
+        "LIVE-DEMO-001 was started with --live-tts, but ElevenLabs is not ready. "
+        f"Missing: {', '.join(missing)}. "
+        f"Set ELEVENLABS_API_KEY in the current shell or in {env_path}; "
+        "keep the voice ID in ELEVENLABS_VOICE_ID_EN, ELEVENLABS_VOICE_ID, "
+        "runtime/config/local/voice_ids.json, or config/local/voice_ids.json."
+    )
 
 
 def load_live_demo_profile(path: Path = DEFAULT_LIVE_DEMO_PROFILE_PATH) -> dict:
@@ -220,12 +298,8 @@ def build_metadata(args: argparse.Namespace, cases_path: Path, private_out: Path
             "browser_vendor_may_process_audio": True,
             "consent_required_in_ui": True,
             "supported_languages": ["en-US", "de-DE", "tr-TR"],
-            "acceptance_policy": {
-                "low_confidence_threshold": ASR_LOW_CONFIDENCE_THRESHOLD,
-                "reject_empty_transcript": True,
-                "reject_obvious_fragments": True,
-                "reject_while_agent_speaks": True,
-            },
+            "acceptance_policy": browser_asr_acceptance_policy(),
+            "turn_taking_policy": realtime_turn_taking_policy(),
         },
         "turn_taking": voice_turn_state_metadata(),
         "repo_owned_agent": {
@@ -250,7 +324,16 @@ def build_metadata(args: argparse.Namespace, cases_path: Path, private_out: Path
             "live_tts_enabled": args.live_tts,
             "force_key_missing": args.force_key_missing,
             "api_key_env_var": "ELEVENLABS_API_KEY",
-            "voice_id_sources": ["ELEVENLABS_VOICE_ID_EN", "ELEVENLABS_VOICE_ID", "runtime/config/local/voice_ids.json"],
+            "api_key_present_at_start": bool(getattr(args, "live_tts_preflight", {}).get("api_key_present", False)),
+            "elevenlabs_env_file": getattr(args, "live_tts_env_file_status", {}),
+            "voice_id_sources": [
+                "ELEVENLABS_VOICE_ID_EN",
+                "ELEVENLABS_VOICE_ID",
+                "runtime/config/local/voice_ids.json",
+                "config/local/voice_ids.json",
+            ],
+            "voice_id_present_at_start": bool(getattr(args, "live_tts_preflight", {}).get("voice_id_present", False)),
+            "selected_voice_id_source_at_start": getattr(args, "live_tts_preflight", {}).get("voice_id_source"),
             "customer_audio_uploaded_to_tts_provider": False,
             "text_sent_to_tts_provider_when_live": True,
             "voice_cloning_used": False,
@@ -259,6 +342,11 @@ def build_metadata(args: argparse.Namespace, cases_path: Path, private_out: Path
         "playback": {
             "agent_audio_volume": 0.68,
             "browser_fallback_voice_volume": 0.68,
+            "browser_fallback_voice_rate": 1.01,
+            "manual_interrupt_enabled": True,
+            "manual_interrupt_shortcut": "Escape",
+            "spoken_barge_in_enabled": False,
+            "spoken_barge_in_blocked_reason": "Browser SpeechRecognition cannot safely separate the buyer from the agent audio in this demo.",
             "volume_applied_in_browser_only": True,
             "provider_audio_file_unchanged": True,
         },
@@ -300,6 +388,38 @@ def decision_summary(packet: dict) -> dict:
         "time_to_first_audio_ms": tts["time_to_first_audio_ms"],
         "total_provider_latency_ms": tts["total_provider_latency_ms"],
     }
+
+
+def apply_live_session_decision_overrides(packet: dict, continuity: dict) -> dict:
+    if continuity.get("reason") == "buyer_requested_stop":
+        decision = packet.get("decision_snapshot", {})
+        decision.update(
+            {
+                "sales_difficulty": "do-not-call",
+                "detected_emotion": "skeptical-or-negative",
+                "interest_state": "do-not-call",
+                "selected_strategy": "rapport",
+                "next_action": "suppress-contact",
+                "call_control": "end-call",
+            }
+        )
+        packet["decision_snapshot"] = decision
+        return packet
+    if continuity.get("reason") != "callback_time_confirmed":
+        return packet
+    decision = packet.get("decision_snapshot", {})
+    decision.update(
+        {
+            "sales_difficulty": "scheduling-confirmation",
+            "detected_emotion": "positive",
+            "interest_state": "interested",
+            "selected_strategy": "direct-ask-or-commitment",
+            "next_action": "confirm-scheduling",
+            "call_control": "schedule-and-end",
+        }
+    )
+    packet["decision_snapshot"] = decision
+    return packet
 
 
 def audio_url_for_packet(packet: dict) -> str | None:
@@ -1279,6 +1399,7 @@ def build_turn_packet(
             str(guarded.get("final_response") or ""),
             continuity,
         )
+    guarded = apply_live_session_decision_overrides(guarded, continuity)
     voice_packet = attach_runtime_voice_delivery(guarded, campaign, provider_key="elevenlabs")
     tts_packet = attach_runtime_tts_delivery(
         voice_packet,
@@ -1332,7 +1453,10 @@ def build_turn_packet(
             "confidence": asr_confidence,
             "quality_gate": quality_gate,
         },
-        "turn_taking": turn_taking_packet(voice_turn_state),
+        "turn_taking": {
+            **turn_taking_packet(voice_turn_state),
+            "browser_asr_policy": realtime_turn_taking_policy(),
+        },
         "provider_agent_used": False,
         "durable_provider_agent_created": False,
         "voice_cloning_used": False,
@@ -1464,6 +1588,7 @@ def render_html(metadata: dict) -> str:
         <pre id="response">Waiting for a turn.</pre>
         <audio id="audio" controls></audio>
         <div class="controls">
+          <button id="interruptAgent" class="warn" type="button">Interrupt Agent</button>
           <button id="browserSpeak" class="secondary" type="button">Browser Fallback Voice</button>
         </div>
       </section>
@@ -1502,6 +1627,7 @@ def render_html(metadata: dict) -> str:
     const packet = document.querySelector("#packet");
     const status = document.querySelector("#status");
     const audio = document.querySelector("#audio");
+    const interruptAgent = document.querySelector("#interruptAgent");
     const browserSpeak = document.querySelector("#browserSpeak");
     const VOICE_TURN_STATES = Object.freeze({{
       IDLE: "idle",
@@ -1512,8 +1638,14 @@ def render_html(metadata: dict) -> str:
     }});
     const TERMINAL_CALL_CONTROLS = new Set(["end-call", "hang-up", "schedule-and-end", "close-and-log-sale-ready", "transfer-or-escalate"]);
     const RESTART_AFTER_AGENT_OUTPUT_MS = metadata.turn_taking.restart_after_agent_output_ms;
+    const TURN_TAKING_POLICY = metadata.browser_asr.turn_taking_policy;
+    const FINAL_TRANSCRIPT_SUBMIT_DELAY_MS = metadata.browser_asr.acceptance_policy.final_transcript_submit_delay_ms;
+    const REQUIRE_FINAL_RESULT_FOR_AUTO_SUBMIT = TURN_TAKING_POLICY.requires_final_result_for_auto_submit;
+    const SUBMIT_ON_INTERIM_RESULTS = TURN_TAKING_POLICY.submit_on_interim_results;
+    const MIN_LISTENING_WINDOW_BEFORE_SUBMIT_MS = TURN_TAKING_POLICY.min_listening_window_before_submit_ms;
     const AGENT_PLAYBACK_VOLUME = metadata.playback.agent_audio_volume;
     const BROWSER_FALLBACK_VOICE_VOLUME = metadata.playback.browser_fallback_voice_volume;
+    const BROWSER_FALLBACK_VOICE_RATE = metadata.playback.browser_fallback_voice_rate;
     let recognition = null;
     let latestResponse = "";
     let latestSpeechText = "";
@@ -1523,8 +1655,12 @@ def render_html(metadata: dict) -> str:
     let voiceTurnState = VOICE_TURN_STATES.IDLE;
     let sessionStarted = false;
     let restartTimer = null;
+    let finalSubmitTimer = null;
     let lastSubmittedTranscript = "";
     let lastTranscriptConfidence = null;
+    let lastResultHadFinal = false;
+    let listeningStartedAt = 0;
+    let stoppingRecognitionForAgentTurn = false;
     let callEnded = false;
     let fallbackVoice = null;
     const sessionId = (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : String(Date.now());
@@ -1545,13 +1681,21 @@ def render_html(metadata: dict) -> str:
       if (!normalized) return true;
       const words = normalized.split(/\\s+/).filter(Boolean);
       const weakEndings = new Set(["a", "an", "the", "about", "of", "to", "for", "with", "and", "or", "but"]);
-      return words.length <= 5 && weakEndings.has(words[words.length - 1]);
+      return words.length <= 8 && weakEndings.has(words[words.length - 1]);
     }}
 
-    function shouldAcceptAutoTranscript(text, confidence) {{
+    function shouldAcceptAutoTranscript(text, confidence, hasFinalResult=lastResultHadFinal) {{
       if (!text.trim()) return {{ accepted: false, reason: "empty_transcript" }};
       if (voiceTurnState === VOICE_TURN_STATES.AGENT_SPEAKING || voiceTurnState === VOICE_TURN_STATES.AGENT_THINKING) {{
         return {{ accepted: false, reason: "agent_not_listening" }};
+      }}
+      if (turnInFlight) return {{ accepted: false, reason: "turn_in_flight" }};
+      if (!hasFinalResult && REQUIRE_FINAL_RESULT_FOR_AUTO_SUBMIT) {{
+        return {{ accepted: false, reason: "wait_for_final_result" }};
+      }}
+      const listeningElapsedMs = listeningStartedAt ? Date.now() - listeningStartedAt : 0;
+      if (listeningElapsedMs < MIN_LISTENING_WINDOW_BEFORE_SUBMIT_MS) {{
+        return {{ accepted: false, reason: "minimum_listening_window", retry_after_ms: MIN_LISTENING_WINDOW_BEFORE_SUBMIT_MS - listeningElapsedMs }};
       }}
       if (isWeakAutoTranscript(text)) return {{ accepted: false, reason: "fragment" }};
       if (typeof confidence === "number" && confidence < metadata.browser_asr.acceptance_policy.low_confidence_threshold) {{
@@ -1560,14 +1704,43 @@ def render_html(metadata: dict) -> str:
       return {{ accepted: true, reason: "accepted" }};
     }}
 
+    function clearFinalSubmitTimer() {{
+      if (finalSubmitTimer) {{
+        window.clearTimeout(finalSubmitTimer);
+        finalSubmitTimer = null;
+      }}
+    }}
+
     function stopRecognitionForAgentTurn() {{
       if (restartTimer) {{
         window.clearTimeout(restartTimer);
         restartTimer = null;
       }}
+      clearFinalSubmitTimer();
       if (recognition && recognitionActive) {{
+        stoppingRecognitionForAgentTurn = true;
         try {{ recognition.stop(); }} catch (error) {{ /* browser may already be stopping */ }}
       }}
+    }}
+
+    function scheduleAutoSubmit() {{
+      clearFinalSubmitTimer();
+      const listeningElapsedMs = listeningStartedAt ? Date.now() - listeningStartedAt : 0;
+      const minimumWindowDelayMs = Math.max(0, MIN_LISTENING_WINDOW_BEFORE_SUBMIT_MS - listeningElapsedMs);
+      const submitDelayMs = Math.max(FINAL_TRANSCRIPT_SUBMIT_DELAY_MS, minimumWindowDelayMs);
+      finalSubmitTimer = window.setTimeout(() => {{
+        finalSubmitTimer = null;
+        if (!autoConversation || turnInFlight || callEnded) return;
+        const text = transcript.value.trim();
+        const acceptance = shouldAcceptAutoTranscript(text, lastTranscriptConfidence, lastResultHadFinal);
+        if (text && acceptance.accepted && text !== lastSubmittedTranscript) {{
+          submitTurn(true);
+          return;
+        }}
+        if (autoConversation && !recognitionActive) {{
+          restartTimer = window.setTimeout(startRecognition, 250);
+        }}
+      }}, submitDelayMs);
     }}
 
     function campaignLanguage(campaignId) {{
@@ -1615,25 +1788,40 @@ def render_html(metadata: dict) -> str:
       recognition = new SpeechRecognition();
       recognition.lang = language.value;
       recognition.interimResults = true;
-      recognition.continuous = false;
+      recognition.continuous = true;
       recognition.onstart = () => {{
         recognitionActive = true;
+        stoppingRecognitionForAgentTurn = false;
+        listeningStartedAt = Date.now();
+        lastResultHadFinal = false;
+        clearFinalSubmitTimer();
         setVoiceTurnState(VOICE_TURN_STATES.LISTENING, "Listening...");
       }};
       recognition.onerror = event => setStatus(`ASR error: ${{event.error}}`);
       recognition.onend = () => {{
         recognitionActive = false;
+        if (stoppingRecognitionForAgentTurn) {{
+          stoppingRecognitionForAgentTurn = false;
+          return;
+        }}
         const text = transcript.value.trim();
-        const acceptance = shouldAcceptAutoTranscript(text, lastTranscriptConfidence);
+        const acceptance = shouldAcceptAutoTranscript(text, lastTranscriptConfidence, lastResultHadFinal);
+        if (autoConversation && text && acceptance.reason === "minimum_listening_window" && lastResultHadFinal) {{
+          setVoiceTurnState(VOICE_TURN_STATES.LISTENING, "Heard a final phrase. Waiting for the pause window.");
+          scheduleAutoSubmit();
+          return;
+        }}
         if (autoConversation && text && !acceptance.accepted) {{
           setVoiceTurnState(VOICE_TURN_STATES.LISTENING, `Transcript rejected (${{acceptance.reason}}). Please repeat the question.`);
           transcript.value = "";
           lastSubmittedTranscript = "";
+          lastResultHadFinal = false;
           restartTimer = window.setTimeout(startRecognition, 500);
           return;
         }}
         if (autoConversation && text && text !== lastSubmittedTranscript) {{
-          submitTurn(true);
+          setVoiceTurnState(VOICE_TURN_STATES.LISTENING, "Heard a final phrase. Waiting briefly before agent response...");
+          scheduleAutoSubmit();
         }} else if (autoConversation) {{
           setVoiceTurnState(VOICE_TURN_STATES.LISTENING, "Listening ended without a new transcript. Starting again...");
           restartTimer = window.setTimeout(startRecognition, 500);
@@ -1644,15 +1832,40 @@ def render_html(metadata: dict) -> str:
       recognition.onresult = event => {{
         let text = "";
         let confidence = null;
+        let sawFinalResult = false;
         for (let i = 0; i < event.results.length; i += 1) {{
           const result = event.results[i];
           text += result[0].transcript;
           if (result.isFinal && typeof result[0].confidence === "number") {{
             confidence = confidence === null ? result[0].confidence : Math.max(confidence, result[0].confidence);
           }}
+          if (result.isFinal) {{
+            sawFinalResult = true;
+          }}
         }}
         lastTranscriptConfidence = confidence;
+        lastResultHadFinal = sawFinalResult;
         transcript.value = text.trim();
+        if (autoConversation && text.trim()) {{
+          if (!sawFinalResult && REQUIRE_FINAL_RESULT_FOR_AUTO_SUBMIT) {{
+            clearFinalSubmitTimer();
+            setVoiceTurnState(VOICE_TURN_STATES.LISTENING, "Listening... waiting for you to finish.");
+            return;
+          }}
+          if (!sawFinalResult && !SUBMIT_ON_INTERIM_RESULTS) {{
+            clearFinalSubmitTimer();
+            setVoiceTurnState(VOICE_TURN_STATES.LISTENING, "Listening... still hearing your sentence.");
+            return;
+          }}
+          const acceptance = shouldAcceptAutoTranscript(text, lastTranscriptConfidence, sawFinalResult || SUBMIT_ON_INTERIM_RESULTS);
+          if (acceptance.accepted && text.trim() !== lastSubmittedTranscript) {{
+            setVoiceTurnState(VOICE_TURN_STATES.LISTENING, "Listening... waiting for a pause.");
+            scheduleAutoSubmit();
+          }} else if (acceptance.reason === "minimum_listening_window") {{
+            setVoiceTurnState(VOICE_TURN_STATES.LISTENING, "Listening... waiting for the pause window.");
+            scheduleAutoSubmit();
+          }}
+        }}
       }};
       recognition.start();
     }}
@@ -1681,6 +1894,41 @@ def render_html(metadata: dict) -> str:
       if (!audio.paused) audio.pause();
       window.speechSynthesis.cancel();
       setVoiceTurnState(VOICE_TURN_STATES.PAUSED, "Conversation stopped.");
+    }});
+
+    function interruptAgentPlayback() {{
+      if (callEnded) {{
+        setVoiceTurnState(VOICE_TURN_STATES.PAUSED, "Conversation ended. Listening will not restart.");
+        return;
+      }}
+      if (!consent.checked) {{
+        setStatus("Consent is required before microphone use.");
+        return;
+      }}
+      if (restartTimer) {{
+        window.clearTimeout(restartTimer);
+        restartTimer = null;
+      }}
+      clearFinalSubmitTimer();
+      autoConversation = true;
+      if (!audio.paused) {{
+        audio.pause();
+        try {{ audio.currentTime = 0; }} catch (error) {{ /* some browsers block seek on unloaded audio */ }}
+      }}
+      window.speechSynthesis.cancel();
+      transcript.value = "";
+      lastResultHadFinal = false;
+      lastSubmittedTranscript = "";
+      setVoiceTurnState(VOICE_TURN_STATES.LISTENING, "Agent interrupted. Listening...");
+      window.setTimeout(startRecognition, 50);
+    }}
+
+    interruptAgent.addEventListener("click", interruptAgentPlayback);
+    document.addEventListener("keydown", event => {{
+      if (event.key !== "Escape" || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+      if (voiceTurnState !== VOICE_TURN_STATES.AGENT_SPEAKING) return;
+      event.preventDefault();
+      interruptAgentPlayback();
     }});
 
     function startAgentOpening() {{
@@ -1810,7 +2058,7 @@ def render_html(metadata: dict) -> str:
       utterance.lang = language.value;
       fallbackVoice = selectFallbackVoice();
       if (fallbackVoice) utterance.voice = fallbackVoice;
-      utterance.rate = 0.96;
+      utterance.rate = BROWSER_FALLBACK_VOICE_RATE;
       utterance.volume = BROWSER_FALLBACK_VOICE_VOLUME;
       utterance.onstart = () => setVoiceTurnState(VOICE_TURN_STATES.AGENT_SPEAKING, "Browser fallback voice speaking...");
       utterance.onend = restartListenAfterAgentOutput;
@@ -2004,6 +2252,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--live-tts", action="store_true", help="Allow ElevenLabs TTS provider calls.")
     parser.add_argument("--force-key-missing", action="store_true", help="Validate missing-key fallback without reading provider env vars.")
     parser.add_argument("--consent-confirmed", action="store_true", help="Confirm Tarik-approved local live demo boundary.")
+    parser.add_argument(
+        "--elevenlabs-env-file",
+        default=str(DEFAULT_ELEVENLABS_ENV_FILE),
+        help="Ignored local env file for ElevenLabs live TTS. Defaults to runtime/config/local/elevenlabs.env.",
+    )
     parser.add_argument("--export-html")
     parser.add_argument("--export-metadata")
     parser.add_argument("--decision-transcript")
@@ -2022,6 +2275,11 @@ def main() -> None:
     private_out = resolve_project_path(args.private_out)
     if cases_path is None or private_out is None:
         raise SystemExit("Cases and private output paths are required.")
+    env_file = resolve_project_path(args.elevenlabs_env_file)
+    args.live_tts_env_file_status = load_live_tts_env_file(env_file)
+    args.live_tts_preflight = live_tts_preflight(args.campaign, cases_path, args.force_key_missing)
+    if args.live_tts and not args.force_key_missing:
+        require_live_tts_ready(args.live_tts_preflight, args.live_tts_env_file_status)
     metadata = build_metadata(args, cases_path, private_out)
 
     if args.decision_transcript:

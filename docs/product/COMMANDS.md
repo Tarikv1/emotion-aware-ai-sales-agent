@@ -2912,7 +2912,7 @@ python scripts\run_live_demo_001_agent_voice_call.py
 
 By default, `LIVE-DEMO-001` starts with the English B2B software campaign (`campaign-prod-005-b2b-software`). The browser UI also includes a campaign selector, automatic `Start Conversation` speech loop, and a manual `Send To Agent` fallback.
 
-The go-live and MVP boundary is defined in `docs\product\GO_LIVE_MVP_DEFINITION_AND_ROADMAP.md`. That document treats `LIVE-DEMO-001` as the active supervised local-live acceptance front end, not as the product architecture itself. The next recommended work is `LIVE-DEMO-002`: record the current passing `LIVE-DEMO-001` baseline, then extract reusable session continuity, ASR quality, `voice_turn_state`, and campaign product-answer behavior from demo-local code into runtime-owned modules while preserving the fixed demo behavior. Use compact regression coverage for already-fixed behavior instead of a broad failure registry.
+The go-live and MVP boundary is defined in `docs\product\GO_LIVE_MVP_DEFINITION_AND_ROADMAP.md`. That document treats `LIVE-DEMO-001` as the active supervised local-live acceptance front end, not as the product architecture itself. `LIVE-DEMO-002` preserves the corrected text/runtime behavior; `LIVE-DEMO-003` records supervised listening acceptance; `LIVE-DEMO-004` is the narrow browser ASR turn-taking follow-up for premature auto-submit and talk-over risk; `LIVE-DEMO-005-interrupt-pace-plan-precision` follows Tarik's next listening feedback with manual interrupt, slightly faster speech, direct plan-boundary answers, and compact plan-boundary memory.
 
 Record the `LIVE-DEMO-002` runtime extraction baseline without provider calls:
 
@@ -2937,6 +2937,48 @@ Run the optional local/API async-enrichment benchmark scaffold in provider-off m
 ```powershell
 python scripts\run_live_demo_002_llm_enrichment_benchmark.py
 ```
+
+Generate the `LIVE-DEMO-003` supervised live voice acceptance packet from synthetic dry-run turns without provider calls:
+
+```powershell
+python scripts\generate_live_demo_003_acceptance_packet.py
+```
+
+This generates `acceptance_packet.json`, `acceptance_report.md`, `manual_review_form.md`, and `manual_review.csv`. The JSON is the machine artifact; use the Markdown form as the guide and the CSV as the fillable review surface.
+
+Validate the `LIVE-DEMO-003` acceptance tooling without running browser ASR, live TTS, or provider LLM calls:
+
+```powershell
+python scripts\validate_live_demo_003_supervised_live_voice_acceptance.py
+```
+
+After Tarik runs the live demo, convert the ignored private turn JSON files into a private manual-review packet, review form, and CSV:
+
+```powershell
+python scripts\generate_live_demo_003_acceptance_packet.py --from-private-turns data\private\live-demo-003\raw-turns --out data\private\live-demo-003\acceptance_packet.json --report-out data\private\live-demo-003\acceptance_report.md --review-form-out data\private\live-demo-003\manual_review_form.md --review-csv-out data\private\live-demo-003\manual_review.csv
+```
+
+Fill `data\private\live-demo-003\manual_review.csv`, using `manual_review_form.md` as the plain-language guide. Then evaluate acceptance:
+
+```powershell
+python scripts\generate_live_demo_003_acceptance_packet.py --input data\private\live-demo-003\acceptance_packet.json --manual-review-csv data\private\live-demo-003\manual_review.csv --out data\private\live-demo-003\acceptance_packet.reviewed.json --report-out data\private\live-demo-003\acceptance_report.reviewed.md --review-form-out data\private\live-demo-003\manual_review_form.reviewed.md --review-csv-out data\private\live-demo-003\manual_review.reviewed.csv
+```
+
+Validate the `LIVE-DEMO-004-realtime-turn-taking-asr-vad` browser ASR turn-taking policy without live microphone, provider ASR, provider TTS, or provider LLM calls:
+
+```powershell
+python scripts\validate_live_demo_004_realtime_turn_taking_asr_vad.py
+```
+
+`LIVE-DEMO-004` keeps `PROD-102` closed. It does not add production VAD, provider ASR, payment, provider-hosted durable agents, voice cloning, or LLM-written final speech. The live demo still uses browser SpeechRecognition as browser-vendor ASR, but auto-submit now requires a final ASR result, waits through a longer pause window, and cancels pending submit if interim speech continues.
+
+Validate the `LIVE-DEMO-005-interrupt-pace-plan-precision` manual-interrupt, pace, and product-plan answer precision gate without live microphone, provider ASR, provider TTS, or provider LLM calls:
+
+```powershell
+python scripts\validate_live_demo_005_interrupt_pace_plan_precision.py
+```
+
+`LIVE-DEMO-005` keeps `PROD-102` closed. It does not add true spoken barge-in, provider ASR, payment, provider-hosted durable agents, voice cloning, or LLM-written final speech. The browser demo now provides an `Interrupt Agent` button and `Escape` shortcut that stop current spoken output and return to listening after local microphone consent; true voice barge-in remains a future streaming ASR/VAD checkpoint.
 
 Run the `DIALOGUE-REASONER-001` structured runtime reasoner baseline over 30 frozen live-demo dialogue-act cases without provider calls:
 
@@ -3006,7 +3048,7 @@ Run a one-case live async enrichment smoke only after filling the ignored dialog
 python scripts\run_dialogue_reasoner_004_async_enrichment.py --live --consent-confirmed --temperature 1 --max-reasoning-cases 1
 ```
 
-Start it with ElevenLabs TTS after setting `ELEVENLABS_API_KEY` and an English ElevenLabs voice ID:
+Start it with ElevenLabs TTS after setting `ELEVENLABS_API_KEY` and an English ElevenLabs voice ID. The live demo also loads ignored `runtime\config\local\elevenlabs.env` automatically, so the API key can live there instead of being pasted into every PowerShell command. Voice IDs can stay in ignored `config\local\voice_ids.json`, `runtime\config\local\voice_ids.json`, or shell env vars.
 
 ```powershell
 python scripts\run_live_demo_001_agent_voice_call.py `

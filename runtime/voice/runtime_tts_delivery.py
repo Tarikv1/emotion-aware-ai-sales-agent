@@ -26,7 +26,7 @@ LIVE_DEMO_STABLE_ELEVENLABS_VOICE_SETTINGS = {
     "similarity_boost": 0.75,
     "style": 0.0,
     "use_speaker_boost": True,
-    "speed": 1.06,
+    "speed": 1.11,
 }
 
 PROVIDERS = {

@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-19 - LIVE-DEMO-003 supervised live voice acceptance
+
+- Objective: separate passing text/runtime validation from human-heard live voice acceptance after `LIVE-DEMO-002`.
+- Action taken: added a supervised acceptance packet/report generator, a provider-off validator, a recommended spoken test path, hard and human review gates, generated evidence, and a narrow callback-time negative control so standalone `tomorrow at 3 works` does not confirm scheduling without prior scheduling context.
+- Data used: synthetic dry-run live-demo turns for the fictional `Northstar Workflow Labs` / `RouteSignal CRM` campaign and generated/manual-review schema checks. No live browser ASR, provider TTS, provider LLM call, private audio upload, voice cloning, production promotion, payment collection, or `PROD-102` work was used in validation.
+- Output created: `scripts/generate_live_demo_003_acceptance_packet.py`, `scripts/validate_live_demo_003_supervised_live_voice_acceptance.py`, `docs/product/LIVE_DEMO_003_SUPERVISED_LIVE_VOICE_ACCEPTANCE.md`, updated live-demo docs/commands, a narrow call-control override for contextual callback-time confirmation in `scripts/run_live_demo_001_agent_voice_call.py`, and generated evidence under `research/experiments/generated/LIVE-DEMO-003-supervised-live-voice-acceptance/`.
+- What was learned: a text/runtime pass is not enough evidence for a spoken sales worker; live acceptance needs human ratings for turn-taking, latency, voice consistency, naturalness, sales steering, buyer agency, and observed callback confusion.
+- Why it matters for the thesis: it creates an explicit methodology boundary between deterministic runtime correctness and perceived live voice usability, reducing the risk of overstating prototype readiness.
+- Open questions: whether the supervised run will fail first on ASR capture, browser turn-taking, voice consistency, provider TTS latency, or sales-naturalness quality.
+
 ### 2026-05-19 - LIVE-DEMO-002 conversation stability callback disambiguation
 
 - Objective: make the supervised live demo stable over longer conversations by fixing callback workflow-vs-scheduling ambiguity, preserving useful session memory, reducing repetition/customer echo, and keeping LLM enrichment outside the live speech path.
@@ -5191,3 +5201,35 @@ Interpretation:
   - it prevents the completed provider-comparison slice from turning into broad customer-move expansion
   - it shifts remaining work to unknown-turn inventory where false-positive risk can be measured
   - it keeps protected boundaries attached to the next classifier slice before any runtime patch
+
+### 2026-05-19 - LIVE-DEMO-004 realtime turn-taking ASR/VAD boundary
+
+- Objective: narrow the failed LIVE-DEMO-003 supervised listening feedback to browser ASR turn-taking instead of broad runtime or LLM rewrites.
+- Action taken:
+  - added `runtime/speech/realtime_turn_taking_policy.py`
+  - added `scripts/validate_live_demo_004_realtime_turn_taking_asr_vad.py`
+  - wired the live demo metadata and browser loop to require final ASR results before auto-submit
+  - documented `LIVE_DEMO_004_REALTIME_TURN_TAKING_ASR_VAD.md`
+- Method:
+  - treated browser SpeechRecognition as transcription only, not true VAD
+  - blocked auto-submit from interim recognition results
+  - required a final ASR result plus a longer pause window before the local agent can answer
+  - kept raw microphone audio out of the Python server and kept provider calls default-off
+- Result:
+  - runtime behavior changed: `true`
+  - sales policy changed: `false`
+  - provider ASR introduced: `false`
+  - raw audio uploaded to Python server: `false`
+  - LLM final response mutation: `false`
+  - recommended next checkpoint depends on live listening: accept if talk-over is reduced, otherwise evaluate a real streaming ASR/VAD layer
+- Boundary:
+  - no `PROD-102`
+  - no provider-hosted durable agent
+  - no voice cloning
+  - no payment collection
+  - no provider ASR
+  - no LLM-written final spoken response
+- Why it matters for the thesis:
+  - it separates deterministic sales-agent quality from transport timing failures
+  - it records that browser ASR final events are not enough evidence for production-grade turn-taking
+  - it keeps the next provider/streaming decision evidence-based instead of reacting to voice quality alone

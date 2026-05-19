@@ -72,6 +72,8 @@ Exact integration and security questions stay bounded. The demo can say that the
 
 Browser STT is still browser-dependent. The page now tracks browser ASR confidence when available, sends it in the private turn packet, and avoids auto-submitting obvious transcript fragments such as `it's about the`; those get a short repeat request instead of entering the sales logic.
 
+`LIVE-DEMO-004` makes the browser ASR turn-taking policy explicit. Browser SpeechRecognition is treated as browser-vendor ASR, not true production VAD. Interim results do not auto-submit; the demo waits for a final ASR result, cancels a pending submit when interim speech continues, and waits through a longer pause window before sending the turn to the local agent. This reduces mid-sentence talk-over risk without adding provider ASR or uploading raw microphone audio to the Python server.
+
 The demo now uses a voice turn-state controller for speech flow: `idle`, `listening`, `agent_thinking`, `agent_speaking`, and `paused`. The current browser page is only the first producer of this state; future telephony or WebRTC adapters should emit the same `voice_turn_state` contract instead of introducing transport-specific state names. Recognition is stopped before a turn is sent to the agent, listening is blocked while the agent is thinking or speaking, and listening restarts only after ElevenLabs audio or browser fallback speech ends. The restart delay is `750 ms` so the browser is less likely to capture the tail of the agent's own voice as user speech.
 
 The server also records a local ASR quality gate in each turn packet. Empty transcripts and low-confidence browser ASR below `0.45` are answered with a repeat request instead of being treated as buyer intent. Clear-confidence transcripts still enter the campaign and continuity logic normally. Raw microphone audio still does not upload to the Python server.
@@ -94,7 +96,9 @@ Tracked source inspiration:
 ## Boundary
 
 - browser ASR may be processed by the browser vendor
+- browser ASR is not treated as production VAD
 - raw microphone audio is not uploaded to the Python server
+- interim ASR results do not auto-submit to the local agent
 - browser listening is blocked while the agent is thinking or speaking
 - low-confidence ASR is rejected before demo response selection
 - local guarded retrieval is demo-wired only when the `RAG-017` registry is present; core runtime retrieval remains default-off outside explicit enablement

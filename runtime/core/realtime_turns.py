@@ -18,6 +18,15 @@ STOP_OR_REFUSAL_RUNTIME_PHRASES = [
     "don't call",
     "dont call",
     "stop calling",
+    "stop here",
+    "stop the call",
+    "end the call",
+    "do not want to talk",
+    "dont want to talk",
+    "don't want to talk",
+    "do not want to talk anymore",
+    "dont want to talk anymore",
+    "don't want to talk anymore",
     "not interested",
     "no thanks",
     "no thank you",
@@ -479,29 +488,15 @@ def contains_callback_time_signal(text: str) -> bool:
         or re.search(r"\bat\s+(?:[1-9]|1[0-2])\b", normalized)
         or re.search(r"\b(?:[1-9]|1[0-2])\s+works\b", normalized)
     )
-    has_day_or_callback_context = contains_any(
+    has_explicit_callback_context = contains_any(
         normalized,
         [
-            "tomorrow",
-            "today",
-            "monday",
-            "tuesday",
-            "wednesday",
-            "thursday",
-            "friday",
-            "next week",
-            "morgen",
-            "mittwoch",
-            "donnerstag",
-            "freitag",
-            "dienstag",
             "call me",
             "call back",
             "callback",
-            "works",
         ],
     )
-    return has_numeric_time and has_day_or_callback_context
+    return has_numeric_time and has_explicit_callback_context
 
 
 def contains_callback_request_signal(text: str) -> bool:

@@ -28,7 +28,7 @@ def looks_like_asr_fragment(normalized: str, selected_focus: str | None) -> bool
     if not words:
         return True
     fragment_endings = {"a", "an", "the", "about", "of", "to", "for", "with", "and", "or", "but"}
-    return len(words) <= 5 and words[-1] in fragment_endings
+    return len(words) <= 8 and words[-1] in fragment_endings
 
 
 def evaluate_asr_quality(transcript: str, asr_confidence: float | None) -> dict:

@@ -480,9 +480,13 @@
           "tts_input_text": "Confirmed. I will record that callback time for the specialist. Goodbye.",
           "browser_fallback_speech_text": "Confirmed. I will record that callback time for the specialist. Goodbye.",
           "tts_provider_rendering_used": false,
-          "retrieval_status": "blocked",
+          "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
-          "retrieved_item_ids": [],
+          "retrieved_item_ids": [
+            "rag016a-response-autonomy-reminder",
+            "rag019-objection-diagnose-before-answering",
+            "rag010-response-impact-bridge"
+          ],
           "composer_hooks_status": "blocked",
           "composer_hooks_applied": false,
           "tts_provider_calls_made": false,
@@ -499,6 +503,38 @@
         }
       }
     ],
+    "callback_time_no_context_negative_control": {
+      "transcript": "tomorrow at 3 works",
+      "semantic": null,
+      "response": "Inbound demo requests need owner, callback, and handoff status. Which part slips first for your team?",
+      "summary": {
+        "sales_difficulty": "general-product-question",
+        "detected_emotion": "neutral",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "final_response": "Inbound demo requests need owner, callback, and handoff status. Which part slips first for your team?",
+        "tts_input_source": "provider_rendered_text",
+        "tts_input_text": "Inbound demo requests need owner <break time=\"0.216s\" />, callback, and handoff status, so, which part slips first for your team?",
+        "browser_fallback_speech_text": "Inbound demo requests need owner, callback, and handoff status, so, which part slips first for your team?",
+        "tts_provider_rendering_used": true,
+        "retrieval_status": "retrieved_not_used",
+        "retrieval_used_in_runtime": false,
+        "retrieved_item_ids": [
+          "rag016a-response-autonomy-reminder",
+          "rag019-objection-diagnose-before-answering",
+          "rag010-response-impact-bridge"
+        ],
+        "composer_hooks_status": "blocked",
+        "composer_hooks_applied": false,
+        "tts_provider_calls_made": false,
+        "tts_audio_file_created": false,
+        "tts_fallback_reason": "dry-run-mode",
+        "time_to_first_audio_ms": null,
+        "total_provider_latency_ms": 0
+      }
+    },
     "stability_12_turn": [
       {
         "turn": 1,
@@ -517,6 +553,7 @@
           "selected_gap": null,
           "callback_semantic": null,
           "last_agent_question_type": "permission_check",
+          "last_active_agent_question_type": "permission_check",
           "last_agent_question_hash": "",
           "asked_question_type_counts": {
             "permission_check": 1
@@ -558,6 +595,7 @@
           "selected_gap": null,
           "callback_semantic": null,
           "last_agent_question_type": "qualification_gap_diagnostic",
+          "last_active_agent_question_type": "qualification_gap_diagnostic",
           "last_agent_question_hash": "0c981feee2e0afe5",
           "asked_question_type_counts": {
             "permission_check": 1,
@@ -601,6 +639,7 @@
           "selected_gap": null,
           "callback_semantic": null,
           "last_agent_question_type": "qualification_gap_diagnostic",
+          "last_active_agent_question_type": "qualification_gap_diagnostic",
           "last_agent_question_hash": "d22acff11ad1d340",
           "asked_question_type_counts": {
             "permission_check": 1,
@@ -611,8 +650,8 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
             "d22acff11ad1d340",
+            "0c981feee2e0afe5",
             "5b450c99b4c3cb58"
           ],
           "last_customer_intent": "clarify_previous_question",
@@ -647,6 +686,7 @@
           "selected_gap": "callbacks",
           "callback_semantic": "callback_workflow_gap",
           "last_agent_question_type": "gap_scope_check",
+          "last_active_agent_question_type": "gap_scope_check",
           "last_agent_question_hash": "5b450c99b4c3cb58",
           "asked_question_type_counts": {
             "permission_check": 1,
@@ -659,9 +699,9 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
             "d22acff11ad1d340",
             "5b450c99b4c3cb58",
+            "0c981feee2e0afe5",
             "672bf540072df029"
           ],
           "last_customer_intent": "callback_workflow_gap",
@@ -696,6 +736,7 @@
           "selected_gap": "callbacks",
           "callback_semantic": "callback_workflow_gap",
           "last_agent_question_type": "sales_progression_question",
+          "last_active_agent_question_type": "sales_progression_question",
           "last_agent_question_hash": "672bf540072df029",
           "asked_question_type_counts": {
             "permission_check": 1,
@@ -709,10 +750,10 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
-            "672bf540072df029",
             "d22acff11ad1d340",
+            "672bf540072df029",
             "5b450c99b4c3cb58",
+            "0c981feee2e0afe5",
             "72ffeba092c00af5"
           ],
           "last_customer_intent": "callback_workflow_gap",
@@ -745,6 +786,7 @@
           "selected_gap": "callbacks",
           "callback_semantic": null,
           "last_agent_question_type": "focus_scope_question",
+          "last_active_agent_question_type": "focus_scope_question",
           "last_agent_question_hash": "72ffeba092c00af5",
           "asked_question_type_counts": {
             "permission_check": 1,
@@ -759,10 +801,10 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "672bf540072df029",
             "72ffeba092c00af5",
-            "0c981feee2e0afe5",
             "d22acff11ad1d340",
+            "0c981feee2e0afe5",
+            "672bf540072df029",
             "5b450c99b4c3cb58",
             "7b513645495f9db4"
           ],
@@ -782,12 +824,12 @@
       {
         "turn": 7,
         "transcript": "why does that matter",
-        "response": "Manager review need routing, reminders, and handoff visibility. Are missed callbacks frequent enough to justify a workflow review?",
+        "response": "In plain terms, it matters only if that gap costs time today: missed callbacks, unclear owners, or lost handoffs. Which one costs time today?",
         "continuity": {
           "applied": true,
-          "reason": "resolved_qualification_focus_progressed",
+          "reason": "value_relevance_explained",
           "dialogue_focus": "qualification",
-          "candidate_response": "Manager review need routing, reminders, and handoff visibility. Are missed callbacks frequent enough to justify a workflow review?"
+          "candidate_response": "In plain terms, it matters only if that gap costs time today: missed callbacks, unclear owners, or lost handoffs. Which one costs time today?"
         },
         "memory": {
           "schema_version": 1,
@@ -795,7 +837,8 @@
           "active_topic": "qualification",
           "selected_gap": "callbacks",
           "callback_semantic": null,
-          "last_agent_question_type": "workflow_review_next_step",
+          "last_agent_question_type": "gap_diagnostic",
+          "last_active_agent_question_type": "gap_diagnostic",
           "last_agent_question_hash": "7b513645495f9db4",
           "asked_question_type_counts": {
             "permission_check": 1,
@@ -803,7 +846,7 @@
             "gap_scope_check": 1,
             "sales_progression_question": 1,
             "focus_scope_question": 1,
-            "workflow_review_next_step": 1
+            "gap_diagnostic": 1
           },
           "answered_topics": [
             "callbacks",
@@ -811,13 +854,13 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "672bf540072df029",
             "72ffeba092c00af5",
-            "0c981feee2e0afe5",
             "d22acff11ad1d340",
-            "5b450c99b4c3cb58",
+            "0c981feee2e0afe5",
             "7b513645495f9db4",
-            "3aa70468abd9aa39"
+            "672bf540072df029",
+            "5b450c99b4c3cb58",
+            "9b6bd2979c4cf2fd"
           ],
           "last_customer_intent": "topic:qualification",
           "last_sales_progression_step": "value_mapping",
@@ -835,44 +878,48 @@
       {
         "turn": 8,
         "transcript": "how much does it cost",
-        "response": "Starter is $29/month. Growth is $59/month. The useful test is whether missed follow-up costs enough time to justify the plan. Which gap costs more time today: routing, reminders, or handoffs?",
+        "response": "Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?",
         "continuity": {
-          "applied": false,
-          "reason": "no_session_continuity_match"
+          "applied": true,
+          "reason": "explicit_price_question_answered",
+          "dialogue_focus": "price",
+          "candidate_response": "Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?"
         },
         "memory": {
           "schema_version": 1,
           "active_stage": "value_mapping",
-          "active_topic": "qualification",
+          "active_topic": "price",
           "selected_gap": "callbacks",
           "callback_semantic": null,
           "last_agent_question_type": "comparative_gap_diagnostic",
-          "last_agent_question_hash": "3aa70468abd9aa39",
+          "last_active_agent_question_type": "comparative_gap_diagnostic",
+          "last_agent_question_hash": "9b6bd2979c4cf2fd",
           "asked_question_type_counts": {
             "permission_check": 1,
             "qualification_gap_diagnostic": 2,
             "gap_scope_check": 1,
             "sales_progression_question": 1,
             "focus_scope_question": 1,
-            "workflow_review_next_step": 1,
+            "gap_diagnostic": 1,
             "comparative_gap_diagnostic": 1
           },
           "answered_topics": [
             "callbacks",
+            "price",
             "qualification"
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "672bf540072df029",
             "72ffeba092c00af5",
-            "0c981feee2e0afe5",
-            "3aa70468abd9aa39",
             "d22acff11ad1d340",
-            "5b450c99b4c3cb58",
+            "9b6bd2979c4cf2fd",
+            "0c981feee2e0afe5",
             "7b513645495f9db4",
-            "0b8eabe8dacfd833"
+            "672bf540072df029",
+            "5b450c99b4c3cb58",
+            "43f3958ff9e71da5"
           ],
-          "last_customer_intent": "topic:qualification",
+          "last_customer_intent": "topic:price",
           "last_sales_progression_step": "value_mapping",
           "stored_audio_data": false,
           "stores_secrets": false
@@ -881,55 +928,57 @@
           "applied": false,
           "reason": "conversation_stability_passed",
           "violations": [],
-          "dialogue_focus": "qualification",
+          "dialogue_focus": "price",
           "selected_gap": "callbacks"
         }
       },
       {
         "turn": 9,
         "transcript": "I am not sure it fits us",
-        "response": "I can answer that directly if you name the point: workflow, price, security, or callback timing.",
+        "response": "Starter covers basic lead capture and routing. Growth adds priority routing, reminders, and handoff review.",
         "continuity": {
           "applied": true,
-          "reason": "resolved_qualification_focus_followup",
-          "dialogue_focus": "qualification",
-          "candidate_response": "I can answer that directly if you name the point: workflow, price, security, or callback timing."
+          "reason": "duplicate_response_prevented_with_price_progression",
+          "dialogue_focus": "price",
+          "candidate_response": "Starter covers basic lead capture and routing. Growth adds priority routing, reminders, and handoff review."
         },
         "memory": {
           "schema_version": 1,
           "active_stage": "value_mapping",
-          "active_topic": "qualification",
+          "active_topic": "price",
           "selected_gap": "callbacks",
           "callback_semantic": null,
-          "last_agent_question_type": "comparative_gap_diagnostic",
-          "last_agent_question_hash": "0b8eabe8dacfd833",
+          "last_agent_question_type": "none",
+          "last_active_agent_question_type": "comparative_gap_diagnostic",
+          "last_agent_question_hash": "43f3958ff9e71da5",
           "asked_question_type_counts": {
             "permission_check": 1,
             "qualification_gap_diagnostic": 2,
             "gap_scope_check": 1,
             "sales_progression_question": 1,
             "focus_scope_question": 1,
-            "workflow_review_next_step": 1,
+            "gap_diagnostic": 1,
             "comparative_gap_diagnostic": 1,
             "none": 1
           },
           "answered_topics": [
             "callbacks",
+            "price",
             "qualification"
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "672bf540072df029",
             "72ffeba092c00af5",
-            "0c981feee2e0afe5",
-            "3aa70468abd9aa39",
-            "0b8eabe8dacfd833",
             "d22acff11ad1d340",
-            "5b450c99b4c3cb58",
+            "9b6bd2979c4cf2fd",
+            "0c981feee2e0afe5",
+            "43f3958ff9e71da5",
             "7b513645495f9db4",
-            "e587a0e1c3fcd02c"
+            "672bf540072df029",
+            "5b450c99b4c3cb58",
+            "4c3d428cafb127b2"
           ],
-          "last_customer_intent": "topic:qualification",
+          "last_customer_intent": "topic:price",
           "last_sales_progression_step": "value_mapping",
           "stored_audio_data": false,
           "stores_secrets": false
@@ -938,7 +987,7 @@
           "applied": false,
           "reason": "conversation_stability_passed",
           "violations": [],
-          "dialogue_focus": "qualification",
+          "dialogue_focus": "price",
           "selected_gap": "callbacks"
         }
       },
@@ -949,46 +998,48 @@
         "continuity": {
           "applied": true,
           "reason": "ambiguous_negative_clarified",
-          "dialogue_focus": "qualification",
+          "dialogue_focus": "price",
           "candidate_response": "No problem. Do you mean now is not a good time, or that missed callbacks and handoffs are not an issue?"
         },
         "memory": {
           "schema_version": 1,
           "active_stage": "value_mapping",
-          "active_topic": "qualification",
+          "active_topic": "price",
           "selected_gap": "callbacks",
           "callback_semantic": null,
           "last_agent_question_type": "clarification",
-          "last_agent_question_hash": "0b8eabe8dacfd833",
+          "last_active_agent_question_type": "clarification",
+          "last_agent_question_hash": "43f3958ff9e71da5",
           "asked_question_type_counts": {
             "permission_check": 1,
             "qualification_gap_diagnostic": 2,
             "gap_scope_check": 1,
             "sales_progression_question": 1,
             "focus_scope_question": 1,
-            "workflow_review_next_step": 1,
+            "gap_diagnostic": 1,
             "comparative_gap_diagnostic": 1,
             "none": 1,
             "clarification": 1
           },
           "answered_topics": [
             "callbacks",
+            "price",
             "qualification"
           ],
           "rejected_topics": [
             "callbacks",
-            "qualification"
+            "price"
           ],
           "last_response_hashes": [
-            "672bf540072df029",
             "72ffeba092c00af5",
-            "0c981feee2e0afe5",
-            "3aa70468abd9aa39",
-            "0b8eabe8dacfd833",
             "d22acff11ad1d340",
-            "5b450c99b4c3cb58",
+            "9b6bd2979c4cf2fd",
+            "0c981feee2e0afe5",
+            "4c3d428cafb127b2",
+            "43f3958ff9e71da5",
             "7b513645495f9db4",
-            "e587a0e1c3fcd02c",
+            "672bf540072df029",
+            "5b450c99b4c3cb58",
             "d4f86ed58fd06eb8"
           ],
           "last_customer_intent": "ambiguous_negative",
@@ -1000,7 +1051,7 @@
           "applied": false,
           "reason": "conversation_stability_passed",
           "violations": [],
-          "dialogue_focus": "qualification",
+          "dialogue_focus": "price",
           "selected_gap": "callbacks"
         }
       },
@@ -1011,17 +1062,18 @@
         "continuity": {
           "applied": true,
           "reason": "selected_callbacks_next_step_explained",
-          "dialogue_focus": "qualification",
+          "dialogue_focus": "price",
           "selected_gap": "callbacks",
           "candidate_response": "The useful next step is a short summary of owner, next callback, and handoff status. Would a short written summary help you judge fit?"
         },
         "memory": {
           "schema_version": 1,
           "active_stage": "value_mapping",
-          "active_topic": "qualification",
+          "active_topic": "price",
           "selected_gap": "callbacks",
           "callback_semantic": null,
           "last_agent_question_type": "summary_next_step",
+          "last_active_agent_question_type": "summary_next_step",
           "last_agent_question_hash": "d4f86ed58fd06eb8",
           "asked_question_type_counts": {
             "permission_check": 1,
@@ -1029,7 +1081,7 @@
             "gap_scope_check": 1,
             "sales_progression_question": 1,
             "focus_scope_question": 1,
-            "workflow_review_next_step": 1,
+            "gap_diagnostic": 1,
             "comparative_gap_diagnostic": 1,
             "none": 1,
             "clarification": 1,
@@ -1037,23 +1089,24 @@
           },
           "answered_topics": [
             "callbacks",
+            "price",
             "qualification"
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "672bf540072df029",
             "72ffeba092c00af5",
-            "0c981feee2e0afe5",
-            "d4f86ed58fd06eb8",
-            "3aa70468abd9aa39",
-            "0b8eabe8dacfd833",
             "d22acff11ad1d340",
-            "5b450c99b4c3cb58",
+            "d4f86ed58fd06eb8",
+            "9b6bd2979c4cf2fd",
+            "0c981feee2e0afe5",
+            "4c3d428cafb127b2",
+            "43f3958ff9e71da5",
             "7b513645495f9db4",
-            "e587a0e1c3fcd02c",
+            "672bf540072df029",
+            "5b450c99b4c3cb58",
             "6c50dbeb699eadb3"
           ],
-          "last_customer_intent": "topic:qualification",
+          "last_customer_intent": "topic:price",
           "last_sales_progression_step": "value_mapping",
           "stored_audio_data": false,
           "stores_secrets": false
@@ -1062,7 +1115,7 @@
           "applied": false,
           "reason": "conversation_stability_passed",
           "violations": [],
-          "dialogue_focus": "qualification",
+          "dialogue_focus": "price",
           "selected_gap": "callbacks"
         }
       },
@@ -1073,16 +1126,17 @@
         "continuity": {
           "applied": true,
           "reason": "written_summary_next_step_offered",
-          "dialogue_focus": "qualification",
+          "dialogue_focus": "price",
           "candidate_response": "I can send a short workflow summary: owner routing, callback reminders, and handoff status. Should it focus on the callback gap you mentioned?"
         },
         "memory": {
           "schema_version": 1,
           "active_stage": "value_mapping",
-          "active_topic": "qualification",
+          "active_topic": "price",
           "selected_gap": "callbacks",
           "callback_semantic": null,
           "last_agent_question_type": "workflow_review_next_step",
+          "last_active_agent_question_type": "workflow_review_next_step",
           "last_agent_question_hash": "6c50dbeb699eadb3",
           "asked_question_type_counts": {
             "permission_check": 1,
@@ -1090,32 +1144,34 @@
             "gap_scope_check": 1,
             "sales_progression_question": 1,
             "focus_scope_question": 1,
-            "workflow_review_next_step": 2,
+            "gap_diagnostic": 1,
             "comparative_gap_diagnostic": 1,
             "none": 1,
             "clarification": 1,
-            "summary_next_step": 1
+            "summary_next_step": 1,
+            "workflow_review_next_step": 1
           },
           "answered_topics": [
             "callbacks",
+            "price",
             "qualification"
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "672bf540072df029",
             "72ffeba092c00af5",
-            "0c981feee2e0afe5",
-            "d4f86ed58fd06eb8",
             "6c50dbeb699eadb3",
-            "3aa70468abd9aa39",
-            "0b8eabe8dacfd833",
             "d22acff11ad1d340",
-            "5b450c99b4c3cb58",
+            "d4f86ed58fd06eb8",
+            "9b6bd2979c4cf2fd",
+            "0c981feee2e0afe5",
+            "4c3d428cafb127b2",
+            "43f3958ff9e71da5",
             "7b513645495f9db4",
-            "e587a0e1c3fcd02c",
+            "672bf540072df029",
+            "5b450c99b4c3cb58",
             "3533996838dfa9ee"
           ],
-          "last_customer_intent": "topic:qualification",
+          "last_customer_intent": "topic:price",
           "last_sales_progression_step": "value_mapping",
           "stored_audio_data": false,
           "stores_secrets": false
@@ -1124,7 +1180,7 @@
           "applied": false,
           "reason": "conversation_stability_passed",
           "violations": [],
-          "dialogue_focus": "qualification",
+          "dialogue_focus": "price",
           "selected_gap": "callbacks"
         }
       }
@@ -1165,14 +1221,15 @@
       "qualification_gap_diagnostic": 1,
       "gap_scope_check": 1,
       "comparative_gap_diagnostic": 2,
-      "workflow_review_next_step": 3,
+      "gap_diagnostic": 4,
       "workflow_breakpoint_question": 1,
-      "sales_progression_question": 5,
-      "gap_diagnostic": 8,
+      "sales_progression_question": 3,
+      "none": 9,
       "focus_scope_question": 1,
       "clarification": 1,
       "summary_next_step": 1,
-      "callback_time": 2
+      "workflow_review_next_step": 1,
+      "callback_time": 1
     },
     "echo_examples": [
       {
@@ -1295,8 +1352,8 @@
           "call_control": "continue-call",
           "final_response": "Fair. I called to check one workflow: do inbound demo follow-ups lose owners, callback reminders, or handoff status?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "Fair. Um, I called to check one workflow: do inbound demo follow-up <break time=\"0.186s\" />s lose owners, callback reminders, or handoff status?",
-          "browser_fallback_speech_text": "Fair. Um, I called to check one workflow: do inbound demo follow-up s lose owners, callback reminders, or handoff status?",
+          "tts_input_text": "Fair. Um, I called to check one workflow: do inbound demo follow-ups lose owners, callback reminders, or handoff status?",
+          "browser_fallback_speech_text": "Fair. Um, I called to check one workflow: do inbound demo follow-ups lose owners, callback reminders, or handoff status?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
@@ -1316,7 +1373,7 @@
       },
       {
         "transcript": "I don't have a question",
-        "response": "Fair. I called to check one workflow: do inbound demo follow-ups lose owners, callback reminders, or handoff status?",
+        "response": "Fair, you did not ask a question. I called to check one thing: do inbound demo follow-ups lose the owner, callback reminder, or handoff status?",
         "summary": {
           "sales_difficulty": "general-product-question",
           "detected_emotion": "neutral",
@@ -1324,10 +1381,10 @@
           "selected_strategy": "evidence-or-benefit",
           "next_action": "ask-follow-up",
           "call_control": "continue-call",
-          "final_response": "Fair. I called to check one workflow: do inbound demo follow-ups lose owners, callback reminders, or handoff status?",
+          "final_response": "Fair, you did not ask a question. I called to check one thing: do inbound demo follow-ups lose the owner, callback reminder, or handoff status?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "Fair. Um, I called to check one workflow: do inbound demo follow-up <break time=\"0.212s\" />s lose owners, callback reminders, or handoff status?",
-          "browser_fallback_speech_text": "Fair. Um, I called to check one workflow: do inbound demo follow-up s lose owners, callback reminders, or handoff status?",
+          "tts_input_text": "Fair, you did not ask a question, so, I called to check one thing: do inbound demo follow-ups lose the owner, callback reminder, or handoff status?",
+          "browser_fallback_speech_text": "Fair, you did not ask a question, so, I called to check one thing: do inbound demo follow-ups lose the owner, callback reminder, or handoff status?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
@@ -1604,17 +1661,17 @@
           "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
           "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?",
           "Slack alerts and CRM notes need owner lookup, follow-up status, and handoff review. Would a short workflow review test one gap?",
-          "New trial requests need priority routing, duplicate checks, and callback visibility. Which gap should I keep this focused on?",
-          "Starter is $29/month. Growth is $59/month. The useful test is whether missed follow-up costs enough time to justify the plan. Which gap costs more time today: routing, reminders, or handoffs?",
-          "I can answer that directly if you name the point: workflow, price, security, or callback timing.",
+          "In plain terms, it matters only if that gap costs time today: missed callbacks, unclear owners, or lost handoffs. Which one costs time today?",
+          "Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?",
+          "Starter covers basic lead capture and routing. Growth adds priority routing, reminders, and handoff review.",
           "If callback reminders are clean today, stop here. If they slip, Growth is worth reviewing. Which gap should the next step test first?"
         ]
       },
       "metrics": {
-        "median_latency_ms": 11.014,
-        "p95_latency_ms": 13.669,
+        "median_latency_ms": 13.942,
+        "p95_latency_ms": 15.976,
         "schema_failure_rate": 0.0,
-        "callback_semantic_accuracy": 1.0,
+        "callback_semantic_accuracy": 0.8333333333333334,
         "repetition_rate": 0.0,
         "echo_violation_count": 0,
         "route_override_violations": 0,
