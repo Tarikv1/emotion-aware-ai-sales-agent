@@ -125,6 +125,29 @@ def find_target(text: str, candidates: list[str]) -> str | None:
     return None
 
 
+def target_regex(target: str) -> re.Pattern[str] | None:
+    if not target:
+        return None
+    escaped = re.escape(target)
+    prefix = r"(?<![A-Za-z0-9])" if target[0].isalnum() else ""
+    suffix = r"(?![A-Za-z0-9])" if target[-1].isalnum() else ""
+    return re.compile(f"{prefix}{escaped}{suffix}", re.IGNORECASE)
+
+
+def safe_explicit_pause_target(text: str, target: str) -> str | None:
+    pattern = target_regex(target)
+    if pattern is None:
+        return None
+    for match in pattern.finditer(text):
+        suffix = text[match.end() :]
+        if not suffix.strip():
+            return text[match.start() : match.end()]
+        punctuation = re.match(r"\s*([,.;:!?])", suffix)
+        if punctuation:
+            return text[match.start() : match.end() + punctuation.end()]
+    return None
+
+
 def first_phrase(text: str, max_words: int = 5) -> str:
     stripped = text.strip()
     if not stripped:
@@ -150,8 +173,10 @@ def add_stretch_debug(text: str, target: str, variant: str) -> str:
 
 def pause_after_target(text: str, segment: dict[str, Any]) -> str | None:
     explicit = segment.get("pause_after")
-    if explicit and find_target(text, [explicit]):
-        return find_target(text, [explicit])
+    if explicit:
+        safe_target = safe_explicit_pause_target(text, str(explicit))
+        if safe_target:
+            return safe_target
 
     sentence_match = re.search(r"^(.{12,90}?[.!?])\s+", text)
     if sentence_match:
@@ -159,7 +184,7 @@ def pause_after_target(text: str, segment: dict[str, Any]) -> str | None:
 
     comma_match = re.search(r"^(.{12,90}?,)\s+", text)
     if comma_match:
-        return comma_match.group(1).rstrip(",")
+        return comma_match.group(1)
 
     return None
 

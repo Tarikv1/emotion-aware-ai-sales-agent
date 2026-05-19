@@ -1,0 +1,86 @@
+{
+  "checkpoint_id": "LIVE-DEMO-008-prosody-review-scope-clarity",
+  "passed": true,
+  "failure_count": 0,
+  "failures": [],
+  "provider_calls_made": false,
+  "evidence": {
+    "feedback_sequence": [
+      {
+        "turn": 8,
+        "transcript": "yeah I guess",
+        "response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
+        "tts_input_text": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step, so, I'd keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
+        "provider_calls_made": false
+      },
+      {
+        "turn": 9,
+        "transcript": "I don't know would it",
+        "response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
+        "tts_input_text": "For callbacks, <break time=\"0.185s\" /> the business case is speed to lead: each demo request has an owner and a reminder before it waits. Um, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
+        "provider_calls_made": false
+      }
+    ],
+    "prosody_phrase_flow": [
+      {
+        "turn": 1,
+        "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute? I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Is that worth a quick check?",
+        "tts_input_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute? I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Is that worth a quick check?",
+        "bad_break": false
+      },
+      {
+        "turn": 2,
+        "response": "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied. Which part is harder today: seeing it, assigning the reply, or remembering the callback?",
+        "tts_input_text": "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied, well, which part is harder today: seeing it, assigning the reply, or remembering the callback? <break time=\"0.233s\" />",
+        "bad_break": false
+      },
+      {
+        "turn": 3,
+        "response": "If callback reminders for demo follow-up live in a spreadsheet, they can slip. Which part is more familiar: manual tracking or missed callbacks?",
+        "tts_input_text": "If callback reminders for demo follow-up live in a spreadsheet, they can slip, so, which part is more familiar: manual tracking or missed callbacks?",
+        "bad_break": false
+      },
+      {
+        "turn": 4,
+        "response": "That breaks when ownership changes. RouteSignal keeps the lead, callback, reminder, and handoff status in one workflow. Where does it break first today?",
+        "tts_input_text": "That breaks when ownership changes. <break time=\"0.234s\" /> Um, RouteSignal keeps the lead, callback, reminder, and handoff status in one workflow. Where does it break first today?",
+        "bad_break": false
+      },
+      {
+        "turn": 5,
+        "response": "The practical fit check is whether inbound leads, callbacks, or handoffs get missed today.",
+        "tts_input_text": "The practical fit check is whether inbound leads, <break time=\"0.24s\" /> callbacks, or handoffs get missed today.",
+        "bad_break": false
+      },
+      {
+        "turn": 6,
+        "response": "If callback reminders are clean today, stop here. If they slip, Growth is worth reviewing. I would keep the next step focused on missed reminders. Would a short workflow review be useful for that gap?",
+        "tts_input_text": "If callback reminders are clean today, stop here, so, if they slip, Growth is worth reviewing. I'd keep the next step focused on missed reminders. Would a short workflow review be useful for that gap?",
+        "bad_break": false
+      },
+      {
+        "turn": 7,
+        "response": "The useful next step is a short summary of owner, next callback, and handoff status. Would a short written summary help you judge fit?",
+        "tts_input_text": "The useful next step is a short summary of owner, <break time=\"0.185s\" /> next callback, and handoff status, so, would a short written summary help you judge fit?",
+        "bad_break": false
+      },
+      {
+        "turn": 8,
+        "response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
+        "tts_input_text": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step, so, I'd keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
+        "bad_break": false
+      },
+      {
+        "turn": 9,
+        "response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
+        "tts_input_text": "For callbacks, <break time=\"0.185s\" /> the business case is speed to lead: each demo request has an owner and a reminder before it waits. Um, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
+        "bad_break": false
+      }
+    ],
+    "private_transcript_folder": {
+      "path": "data\\private\\live-demo-003\\raw-turns\\browser-transcript",
+      "exists": true,
+      "committed_by_validator": false
+    }
+  }
+}

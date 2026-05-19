@@ -123,7 +123,8 @@ def validate_english_emphasis_guard() -> None:
     assert_condition(calibration["emphasis_guard"]["blocked_emphasis_count"] >= 1, calibration)
     assert_condition("practical" not in emphasis_targets, prosody_plan)
     assert_condition(provider["unsupported_cue_counts"].get("emphasis", 0) == 0, provider["unsupported_cue_counts"])
-    assert_condition("i'll keep this simple, well, you're right to ask, and it's" in rendered, provider["rendered_text"])
+    assert_condition("i'll keep this simple" in rendered, provider["rendered_text"])
+    assert_condition("you're right to ask, and it's" in rendered, provider["rendered_text"])
     assert_condition(1.07 <= float(provider["voice_settings"]["speed"]) <= 1.15, provider["voice_settings"])
 
 

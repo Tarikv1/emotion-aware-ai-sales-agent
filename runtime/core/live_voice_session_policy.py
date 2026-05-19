@@ -1376,7 +1376,7 @@ def seller_guided_next_step_text(language: str, gap: str) -> str:
     }
     claim = gap_claims.get(gap, "that workflow gap is the value point")
     return (
-        f"Then {claim}. Would a short workflow review focus only on that gap?"
+        f"Then {claim}. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?"
     )
 
 
@@ -1405,22 +1405,22 @@ def gap_progression_text(language: str, gap: str, step: int, seen: set[str] | No
     variants = {
         "callbacks": [
             seller_guided_next_step_text(language, "callbacks"),
-            "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
-            "If callback reminders are clean today, stop here. If they slip, Growth is worth reviewing. Which gap should the next step test first?",
+            "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
+            "If callback reminders are clean today, stop here. If they slip, Growth is worth reviewing. I would keep the next step focused on missed reminders. Would a short workflow review be useful for that gap?",
             "The useful next step is a short summary of owner, next callback, and handoff status. Would a short written summary help you judge fit?",
         ],
         "handoffs": [
             seller_guided_next_step_text(language, "handoffs"),
-            "For handoffs, the value is handoff review: owner, next callback, and manager visibility stay together. Should I keep the short workflow review to handoff misses only?",
+            "For handoffs, the value is handoff review: owner, next callback, and manager visibility stay together. I would keep the short workflow review to handoff misses. Would a short workflow review be useful for that gap?",
             "If handoffs are clean today, stop here. If owner, next callback, or manager visibility slips, a short workflow review has a reason. Which part breaks most often?",
         ],
         "routing": [
             seller_guided_next_step_text(language, "routing"),
-            "For routing, the value is clear ownership before follow-up waits. Should I keep the review to owner assignment only?",
+            "For routing, the value is clear ownership before follow-up waits. I would keep the review to owner assignment. Would a short workflow review be useful for that gap?",
         ],
         "reminders": [
             seller_guided_next_step_text(language, "reminders"),
-            "For reminders, the value is fewer manual chases after inbound demos. Should I keep the review to missed reminder count only?",
+            "For reminders, the value is fewer manual chases after inbound demos. I would keep the review to missed reminder count. Would a short workflow review be useful for that gap?",
         ],
     }
     options = variants.get(gap) or [seller_guided_next_step_text(language, gap), workflow_review_next_step_response(language)]

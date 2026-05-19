@@ -2912,7 +2912,7 @@ python scripts\run_live_demo_001_agent_voice_call.py
 
 By default, `LIVE-DEMO-001` starts with the English B2B software campaign (`campaign-prod-005-b2b-software`). The browser UI also includes a campaign selector, automatic `Start Conversation` speech loop, a manual `Send To Agent` fallback, and a local full-session transcript panel with JSON/TXT export.
 
-The go-live and MVP boundary is defined in `docs\product\GO_LIVE_MVP_DEFINITION_AND_ROADMAP.md`. That document treats `LIVE-DEMO-001` as the active supervised local-live acceptance front end, not as the product architecture itself. `LIVE-DEMO-002` preserves the corrected text/runtime behavior; `LIVE-DEMO-003` records supervised listening acceptance; `LIVE-DEMO-004` is the narrow browser ASR turn-taking follow-up for premature auto-submit and talk-over risk; `LIVE-DEMO-005-interrupt-pace-plan-precision` follows Tarik's next listening feedback with manual interrupt, slightly faster speech, direct plan-boundary answers, and compact plan-boundary memory; `LIVE-DEMO-006-memory-transcript-visibility` adds local transcript review/export plus compact response subject/signature memory for repetition diagnosis; `LIVE-DEMO-007-human-readable-transcript-and-plain-qualification` makes the transcript human-readable by default and keeps early qualification in plain sales language.
+The go-live and MVP boundary is defined in `docs\product\GO_LIVE_MVP_DEFINITION_AND_ROADMAP.md`. That document treats `LIVE-DEMO-001` as the active supervised local-live acceptance front end, not as the product architecture itself. `LIVE-DEMO-002` preserves the corrected text/runtime behavior; `LIVE-DEMO-003` records supervised listening acceptance; `LIVE-DEMO-004` is the narrow browser ASR turn-taking follow-up for premature auto-submit and talk-over risk; `LIVE-DEMO-005-interrupt-pace-plan-precision` follows Tarik's next listening feedback with manual interrupt, slightly faster speech, direct plan-boundary answers, and compact plan-boundary memory; `LIVE-DEMO-006-memory-transcript-visibility` adds local transcript review/export plus compact response subject/signature memory for repetition diagnosis; `LIVE-DEMO-007-human-readable-transcript-and-plain-qualification` makes the transcript human-readable by default and keeps early qualification in plain sales language; `LIVE-DEMO-008-prosody-review-scope-clarity` keeps tight product phrases together in provider-rendered TTS and stops asking buyers to decide internal workflow-review scope.
 
 Record the `LIVE-DEMO-002` runtime extraction baseline without provider calls:
 
@@ -2995,6 +2995,14 @@ python scripts\validate_live_demo_007_human_transcript_plain_qualification.py
 ```
 
 `LIVE-DEMO-007` keeps `PROD-102` closed. It does not add spoken backchannels, true spoken barge-in, provider ASR, payment, provider-hosted durable agents, voice cloning, or LLM-written final speech. The visible browser transcript now appears before the raw turn packet and defaults to buyer/agent/call-control lines, while diagnostics remain in a collapsible section and JSON export. For live debugging, place browser transcript JSON files under `data\private\live-demo-003\raw-turns\browser-transcript`; do not commit files from that private folder.
+
+Validate the `LIVE-DEMO-008-prosody-review-scope-clarity` provider-rendered phrase-flow and review-scope wording gate without live microphone, provider ASR, provider TTS, or provider LLM calls:
+
+```powershell
+python scripts\validate_live_demo_008_prosody_review_scope_clarity.py
+```
+
+`LIVE-DEMO-008` keeps `PROD-102` closed. It does not add spoken backchannels, true spoken barge-in, provider ASR, payment, provider-hosted durable agents, voice cloning, or LLM-written final speech. It ensures provider-rendered TTS does not insert breaks inside `callback reminders` or `owner and reminder`, and it changes callback-gap follow-up text so the agent states what the workflow review would focus on before asking whether that buyer gap is worth checking. Continue placing browser transcript JSON files under `data\private\live-demo-003\raw-turns\browser-transcript`; do not commit private transcript files.
 
 Run the `DIALOGUE-REASONER-001` structured runtime reasoner baseline over 30 frozen live-demo dialogue-act cases without provider calls:
 

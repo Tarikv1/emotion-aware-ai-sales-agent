@@ -15,7 +15,7 @@
     "callback_workflow_gap": [
       {
         "transcript": "callbacks are the problem",
-        "response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+        "response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
         "semantic": "callback_workflow_gap",
         "summary": {
           "sales_difficulty": "general-product-question",
@@ -24,10 +24,10 @@
           "selected_strategy": "evidence-or-benefit",
           "next_action": "ask-follow-up",
           "call_control": "continue-call",
-          "final_response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+          "final_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "For callbacks, the business case is speed to lead: owner <break time=\"0.147s\" /> and reminder are visible before a demo request waits, well, should I keep the review to missed reminders only?",
-          "browser_fallback_speech_text": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits, well, should I keep the review to missed reminders only?",
+          "tts_input_text": "For callbacks, <break time=\"0.221s\" /> the business case is speed to lead: each demo request has an owner and a reminder before it waits, so, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
+          "browser_fallback_speech_text": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits, so, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
@@ -50,13 +50,13 @@
           "dialogue_focus": "qualification",
           "selected_gap": "callbacks",
           "callback_semantic": "callback_workflow_gap",
-          "candidate_response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?"
+          "candidate_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?"
         },
         "realtime_sales_difficulty": "unknown-runtime-signal"
       },
       {
         "transcript": "it is probably the callbacks",
-        "response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+        "response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
         "semantic": "callback_workflow_gap",
         "summary": {
           "sales_difficulty": "general-product-question",
@@ -65,10 +65,10 @@
           "selected_strategy": "evidence-or-benefit",
           "next_action": "ask-follow-up",
           "call_control": "continue-call",
-          "final_response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+          "final_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "For callbacks, the business case is speed to lead: owner <break time=\"0.24s\" /> and reminder are visible before a demo request waits, so, should I keep the review to missed reminders only?",
-          "browser_fallback_speech_text": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits, so, should I keep the review to missed reminders only?",
+          "tts_input_text": "For callbacks, <break time=\"0.189s\" /> the business case is speed to lead: each demo request has an owner and a reminder before it waits, so, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
+          "browser_fallback_speech_text": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits, so, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
@@ -91,13 +91,13 @@
           "dialogue_focus": "qualification",
           "selected_gap": "callbacks",
           "callback_semantic": "callback_workflow_gap",
-          "candidate_response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?"
+          "candidate_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?"
         },
         "realtime_sales_difficulty": "unknown-runtime-signal"
       },
       {
         "transcript": "missed callbacks happen more often than handoffs",
-        "response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+        "response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
         "semantic": "callback_workflow_gap",
         "summary": {
           "sales_difficulty": "general-product-question",
@@ -106,10 +106,10 @@
           "selected_strategy": "evidence-or-benefit",
           "next_action": "ask-follow-up",
           "call_control": "continue-call",
-          "final_response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+          "final_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "For callbacks, the business case is speed to lead: owner <break time=\"0.168s\" /> and reminder are visible before a demo request waits. Um, should I keep the review to missed reminders only?",
-          "browser_fallback_speech_text": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Um, should I keep the review to missed reminders only?",
+          "tts_input_text": "For callbacks, <break time=\"0.214s\" /> the business case is speed to lead: each demo request has an owner and a reminder before it waits. Um, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
+          "browser_fallback_speech_text": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. Um, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
@@ -132,7 +132,7 @@
           "dialogue_focus": "qualification",
           "selected_gap": "callbacks",
           "callback_semantic": "callback_workflow_gap",
-          "candidate_response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?"
+          "candidate_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?"
         },
         "realtime_sales_difficulty": "unknown-runtime-signal"
       },
@@ -149,7 +149,7 @@
           "call_control": "continue-call",
           "final_response": "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. Um, RouteSignal keeps owner <break time=\"0.214s\" /> and next step visible. Are missed follow-ups happening often enough to check?",
+          "tts_input_text": "Callbacks here mean follow-up reminders after an inbound demo request, <break time=\"0.221s\" /> not scheduling this call. Um, RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?",
           "browser_fallback_speech_text": "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. Um, RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
@@ -179,7 +179,7 @@
       },
       {
         "transcript": "are callbacks appointments or reminders",
-        "response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+        "response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
         "semantic": "callback_workflow_gap",
         "summary": {
           "sales_difficulty": "general-product-question",
@@ -188,10 +188,10 @@
           "selected_strategy": "evidence-or-benefit",
           "next_action": "ask-follow-up",
           "call_control": "continue-call",
-          "final_response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+          "final_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "For callbacks, the business case is speed to lead: owner <break time=\"0.24s\" /> and reminder are visible before a demo request waits, so, should I keep the review to missed reminders only?",
-          "browser_fallback_speech_text": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits, so, should I keep the review to missed reminders only?",
+          "tts_input_text": "For callbacks, <break time=\"0.24s\" /> the business case is speed to lead: each demo request has an owner and a reminder before it waits. Um, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
+          "browser_fallback_speech_text": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. Um, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
@@ -214,13 +214,13 @@
           "dialogue_focus": "qualification",
           "selected_gap": "callbacks",
           "callback_semantic": "callback_workflow_gap",
-          "candidate_response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?"
+          "candidate_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?"
         },
         "realtime_sales_difficulty": "unknown-runtime-signal"
       },
       {
         "transcript": "callback reminders are where we struggle",
-        "response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+        "response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
         "semantic": "callback_workflow_gap",
         "summary": {
           "sales_difficulty": "general-product-question",
@@ -229,10 +229,10 @@
           "selected_strategy": "evidence-or-benefit",
           "next_action": "ask-follow-up",
           "call_control": "continue-call",
-          "final_response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+          "final_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "For callbacks, the business case is speed to lead: owner <break time=\"0.191s\" /> and reminder are visible before a demo request waits, so, should I keep the review to missed reminders only?",
-          "browser_fallback_speech_text": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits, so, should I keep the review to missed reminders only?",
+          "tts_input_text": "For callbacks, <break time=\"0.192s\" /> the business case is speed to lead: each demo request has an owner and a reminder before it waits, well, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
+          "browser_fallback_speech_text": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits, well, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
@@ -255,13 +255,13 @@
           "dialogue_focus": "qualification",
           "selected_gap": "callbacks",
           "callback_semantic": "callback_workflow_gap",
-          "candidate_response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?"
+          "candidate_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?"
         },
         "realtime_sales_difficulty": "unknown-runtime-signal"
       },
       {
         "transcript": "demo callbacks keep slipping",
-        "response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+        "response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
         "semantic": "callback_workflow_gap",
         "summary": {
           "sales_difficulty": "general-product-question",
@@ -270,10 +270,10 @@
           "selected_strategy": "evidence-or-benefit",
           "next_action": "ask-follow-up",
           "call_control": "continue-call",
-          "final_response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+          "final_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "For callbacks, the business case is speed to lead: owner <break time=\"0.204s\" /> and reminder are visible before a demo request waits, so, should I keep the review to missed reminders only?",
-          "browser_fallback_speech_text": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits, so, should I keep the review to missed reminders only?",
+          "tts_input_text": "For callbacks, <break time=\"0.227s\" /> the business case is speed to lead: each demo request has an owner and a reminder before it waits, so, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
+          "browser_fallback_speech_text": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits, so, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
@@ -296,13 +296,13 @@
           "dialogue_focus": "qualification",
           "selected_gap": "callbacks",
           "callback_semantic": "callback_workflow_gap",
-          "candidate_response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?"
+          "candidate_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?"
         },
         "realtime_sales_difficulty": "unknown-runtime-signal"
       },
       {
         "transcript": "our team misses follow-ups",
-        "response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+        "response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
         "semantic": "callback_workflow_gap",
         "summary": {
           "sales_difficulty": "general-product-question",
@@ -311,10 +311,10 @@
           "selected_strategy": "evidence-or-benefit",
           "next_action": "ask-follow-up",
           "call_control": "continue-call",
-          "final_response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+          "final_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "For callbacks, the business case is speed to lead: owner <break time=\"0.178s\" /> and reminder are visible before a demo request waits, so, should I keep the review to missed reminders only?",
-          "browser_fallback_speech_text": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits, so, should I keep the review to missed reminders only?",
+          "tts_input_text": "For callbacks, <break time=\"0.216s\" /> the business case is speed to lead: each demo request has an owner and a reminder before it waits, well, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
+          "browser_fallback_speech_text": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits, well, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
@@ -337,7 +337,7 @@
           "dialogue_focus": "qualification",
           "selected_gap": "callbacks",
           "callback_semantic": "callback_workflow_gap",
-          "candidate_response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?"
+          "candidate_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?"
         },
         "realtime_sales_difficulty": "unknown-runtime-signal"
       }
@@ -357,7 +357,7 @@
           "call_control": "continue-call",
           "final_response": "No problem. What time should I note for the callback?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "No problem. What time should I note for the callback <break time=\"0.213s\" />?",
+          "tts_input_text": "No problem. What time should I note for the callback? <break time=\"0.204s\" />",
           "browser_fallback_speech_text": "No problem. What time should I note for the callback?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
@@ -397,7 +397,7 @@
           "call_control": "continue-call",
           "final_response": "That can work. What time should I note for the callback?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "That can work. What time should I note for the callback <break time=\"0.201s\" />?",
+          "tts_input_text": "That can work. What time should I note for the callback? <break time=\"0.193s\" />",
           "browser_fallback_speech_text": "That can work. What time should I note for the callback?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
@@ -437,7 +437,7 @@
           "call_control": "continue-call",
           "final_response": "Sure. What time should I note for the callback?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "Sure. What time should I note for the callback <break time=\"0.24s\" />?",
+          "tts_input_text": "Sure. What time should I note for the callback? <break time=\"0.24s\" />",
           "browser_fallback_speech_text": "Sure. What time should I note for the callback?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
@@ -516,7 +516,7 @@
         "call_control": "continue-call",
         "final_response": "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
         "tts_input_source": "provider_rendered_text",
-        "tts_input_text": "This is about inbound demo follow-up <break time=\"0.238s\" />: one person should be responsible for the next reply, well, that prevents missed follow-up. Which part is least clear today?",
+        "tts_input_text": "This is about inbound demo follow-up: <break time=\"0.142s\" /> one person should be responsible for the next reply, well, that prevents missed follow-up. Which part is least clear today?",
         "browser_fallback_speech_text": "This is about inbound demo follow-up: one person should be responsible for the next reply, well, that prevents missed follow-up. Which part is least clear today?",
         "tts_provider_rendering_used": true,
         "retrieval_status": "retrieved_not_used",
@@ -701,14 +701,14 @@
       {
         "turn": 4,
         "transcript": "callbacks are the problem",
-        "response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+        "response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
         "continuity": {
           "applied": true,
           "reason": "seller_gap_selected_for_qualification",
           "dialogue_focus": "qualification",
           "selected_gap": "callbacks",
           "callback_semantic": "callback_workflow_gap",
-          "candidate_response": "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?"
+          "candidate_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?"
         },
         "memory": {
           "schema_version": 1,
@@ -716,14 +716,14 @@
           "active_topic": "qualification",
           "selected_gap": "callbacks",
           "callback_semantic": "callback_workflow_gap",
-          "last_agent_question_type": "focus_scope_question",
-          "last_active_agent_question_type": "focus_scope_question",
+          "last_agent_question_type": "workflow_review_next_step",
+          "last_active_agent_question_type": "workflow_review_next_step",
           "last_agent_question_hash": "e708ba871374b953",
           "asked_question_type_counts": {
             "permission_check": 1,
             "gap_diagnostic": 1,
             "sales_progression_question": 1,
-            "focus_scope_question": 1
+            "workflow_review_next_step": 1
           },
           "answered_topics": [
             "callbacks",
@@ -734,22 +734,22 @@
             "0c981feee2e0afe5",
             "66fc7ee12930ef13",
             "e708ba871374b953",
-            "de1d20a524981eb9"
+            "72eb46797e26ac1a"
           ],
           "last_response_signatures": [
             "opening_permission:0c981feee2e0afe5",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
-            "general:08258a071b87984d:de1d20a524981eb9"
+            "general:7c9191fe493c5356:72eb46797e26ac1a"
           ],
           "recent_response_subjects": [
             "opening_permission",
             "diagnostic_question",
             "general:ace201fe95ce9e10",
-            "general:08258a071b87984d"
+            "general:7c9191fe493c5356"
           ],
-          "candidate_response_subject": "general:08258a071b87984d",
-          "candidate_response_signature": "general:08258a071b87984d:de1d20a524981eb9",
+          "candidate_response_subject": "general:7c9191fe493c5356",
+          "candidate_response_signature": "general:7c9191fe493c5356:72eb46797e26ac1a",
           "last_customer_intent": "callback_workflow_gap",
           "last_sales_progression_step": "value_mapping",
           "stored_audio_data": false,
@@ -783,12 +783,12 @@
           "callback_semantic": "callback_workflow_gap",
           "last_agent_question_type": "sales_progression_question",
           "last_active_agent_question_type": "sales_progression_question",
-          "last_agent_question_hash": "de1d20a524981eb9",
+          "last_agent_question_hash": "72eb46797e26ac1a",
           "asked_question_type_counts": {
             "permission_check": 1,
             "gap_diagnostic": 1,
             "sales_progression_question": 2,
-            "focus_scope_question": 1
+            "workflow_review_next_step": 1
           },
           "answered_topics": [
             "callbacks",
@@ -799,21 +799,21 @@
             "0c981feee2e0afe5",
             "66fc7ee12930ef13",
             "e708ba871374b953",
-            "de1d20a524981eb9",
+            "72eb46797e26ac1a",
             "72ffeba092c00af5"
           ],
           "last_response_signatures": [
             "opening_permission:0c981feee2e0afe5",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
-            "general:08258a071b87984d:de1d20a524981eb9",
+            "general:7c9191fe493c5356:72eb46797e26ac1a",
             "general:32a423e7a13ed9dc:72ffeba092c00af5"
           ],
           "recent_response_subjects": [
             "opening_permission",
             "diagnostic_question",
             "general:ace201fe95ce9e10",
-            "general:08258a071b87984d",
+            "general:7c9191fe493c5356",
             "general:32a423e7a13ed9dc"
           ],
           "candidate_response_subject": "general:32a423e7a13ed9dc",
@@ -854,7 +854,7 @@
             "permission_check": 1,
             "gap_diagnostic": 1,
             "sales_progression_question": 3,
-            "focus_scope_question": 1
+            "workflow_review_next_step": 1
           },
           "answered_topics": [
             "callbacks",
@@ -865,7 +865,7 @@
             "0c981feee2e0afe5",
             "66fc7ee12930ef13",
             "e708ba871374b953",
-            "de1d20a524981eb9",
+            "72eb46797e26ac1a",
             "72ffeba092c00af5",
             "84a88d4078508b17"
           ],
@@ -873,7 +873,7 @@
             "opening_permission:0c981feee2e0afe5",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
-            "general:08258a071b87984d:de1d20a524981eb9",
+            "general:7c9191fe493c5356:72eb46797e26ac1a",
             "general:32a423e7a13ed9dc:72ffeba092c00af5",
             "general:76bfd8942b81f9dc:84a88d4078508b17"
           ],
@@ -881,7 +881,7 @@
             "opening_permission",
             "diagnostic_question",
             "general:ace201fe95ce9e10",
-            "general:08258a071b87984d",
+            "general:7c9191fe493c5356",
             "general:32a423e7a13ed9dc",
             "general:76bfd8942b81f9dc"
           ],
@@ -923,7 +923,7 @@
             "permission_check": 1,
             "gap_diagnostic": 2,
             "sales_progression_question": 3,
-            "focus_scope_question": 1
+            "workflow_review_next_step": 1
           },
           "answered_topics": [
             "callbacks",
@@ -934,7 +934,7 @@
             "0c981feee2e0afe5",
             "66fc7ee12930ef13",
             "e708ba871374b953",
-            "de1d20a524981eb9",
+            "72eb46797e26ac1a",
             "72ffeba092c00af5",
             "84a88d4078508b17",
             "9b6bd2979c4cf2fd"
@@ -943,7 +943,7 @@
             "opening_permission:0c981feee2e0afe5",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
-            "general:08258a071b87984d:de1d20a524981eb9",
+            "general:7c9191fe493c5356:72eb46797e26ac1a",
             "general:32a423e7a13ed9dc:72ffeba092c00af5",
             "general:76bfd8942b81f9dc:84a88d4078508b17",
             "callback_workflow:9b6bd2979c4cf2fd"
@@ -952,7 +952,7 @@
             "opening_permission",
             "diagnostic_question",
             "general:ace201fe95ce9e10",
-            "general:08258a071b87984d",
+            "general:7c9191fe493c5356",
             "general:32a423e7a13ed9dc",
             "general:76bfd8942b81f9dc",
             "callback_workflow"
@@ -995,7 +995,7 @@
             "permission_check": 1,
             "gap_diagnostic": 2,
             "sales_progression_question": 3,
-            "focus_scope_question": 1,
+            "workflow_review_next_step": 1,
             "comparative_gap_diagnostic": 1
           },
           "answered_topics": [
@@ -1008,7 +1008,7 @@
             "0c981feee2e0afe5",
             "66fc7ee12930ef13",
             "e708ba871374b953",
-            "de1d20a524981eb9",
+            "72eb46797e26ac1a",
             "72ffeba092c00af5",
             "84a88d4078508b17",
             "9b6bd2979c4cf2fd",
@@ -1018,7 +1018,7 @@
             "opening_permission:0c981feee2e0afe5",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
-            "general:08258a071b87984d:de1d20a524981eb9",
+            "general:7c9191fe493c5356:72eb46797e26ac1a",
             "general:32a423e7a13ed9dc:72ffeba092c00af5",
             "general:76bfd8942b81f9dc:84a88d4078508b17",
             "callback_workflow:9b6bd2979c4cf2fd",
@@ -1028,7 +1028,7 @@
             "opening_permission",
             "diagnostic_question",
             "general:ace201fe95ce9e10",
-            "general:08258a071b87984d",
+            "general:7c9191fe493c5356",
             "general:32a423e7a13ed9dc",
             "general:76bfd8942b81f9dc",
             "callback_workflow",
@@ -1072,7 +1072,7 @@
             "permission_check": 1,
             "gap_diagnostic": 2,
             "sales_progression_question": 3,
-            "focus_scope_question": 1,
+            "workflow_review_next_step": 1,
             "comparative_gap_diagnostic": 1,
             "none": 1
           },
@@ -1086,7 +1086,7 @@
             "0c981feee2e0afe5",
             "66fc7ee12930ef13",
             "e708ba871374b953",
-            "de1d20a524981eb9",
+            "72eb46797e26ac1a",
             "72ffeba092c00af5",
             "84a88d4078508b17",
             "9b6bd2979c4cf2fd",
@@ -1097,7 +1097,7 @@
             "opening_permission:0c981feee2e0afe5",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
-            "general:08258a071b87984d:de1d20a524981eb9",
+            "general:7c9191fe493c5356:72eb46797e26ac1a",
             "general:32a423e7a13ed9dc:72ffeba092c00af5",
             "general:76bfd8942b81f9dc:84a88d4078508b17",
             "callback_workflow:9b6bd2979c4cf2fd",
@@ -1108,7 +1108,7 @@
             "opening_permission",
             "diagnostic_question",
             "general:ace201fe95ce9e10",
-            "general:08258a071b87984d",
+            "general:7c9191fe493c5356",
             "general:32a423e7a13ed9dc",
             "general:76bfd8942b81f9dc",
             "callback_workflow",
@@ -1153,7 +1153,7 @@
             "permission_check": 1,
             "gap_diagnostic": 2,
             "sales_progression_question": 3,
-            "focus_scope_question": 1,
+            "workflow_review_next_step": 1,
             "comparative_gap_diagnostic": 1,
             "none": 1,
             "clarification": 1
@@ -1171,7 +1171,7 @@
             "0c981feee2e0afe5",
             "66fc7ee12930ef13",
             "e708ba871374b953",
-            "de1d20a524981eb9",
+            "72eb46797e26ac1a",
             "72ffeba092c00af5",
             "84a88d4078508b17",
             "9b6bd2979c4cf2fd",
@@ -1183,7 +1183,7 @@
             "opening_permission:0c981feee2e0afe5",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
-            "general:08258a071b87984d:de1d20a524981eb9",
+            "general:7c9191fe493c5356:72eb46797e26ac1a",
             "general:32a423e7a13ed9dc:72ffeba092c00af5",
             "general:76bfd8942b81f9dc:84a88d4078508b17",
             "callback_workflow:9b6bd2979c4cf2fd",
@@ -1195,7 +1195,7 @@
             "opening_permission",
             "diagnostic_question",
             "general:ace201fe95ce9e10",
-            "general:08258a071b87984d",
+            "general:7c9191fe493c5356",
             "general:32a423e7a13ed9dc",
             "general:76bfd8942b81f9dc",
             "callback_workflow",
@@ -1221,13 +1221,13 @@
       {
         "turn": 11,
         "transcript": "what next",
-        "response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+        "response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
         "continuity": {
           "applied": true,
           "reason": "selected_callbacks_next_step_explained",
           "dialogue_focus": "price",
           "selected_gap": "callbacks",
-          "candidate_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?"
+          "candidate_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?"
         },
         "memory": {
           "schema_version": 1,
@@ -1235,18 +1235,17 @@
           "active_topic": "price",
           "selected_gap": "callbacks",
           "callback_semantic": null,
-          "last_agent_question_type": "gap_scope_check",
-          "last_active_agent_question_type": "gap_scope_check",
+          "last_agent_question_type": "workflow_review_next_step",
+          "last_active_agent_question_type": "workflow_review_next_step",
           "last_agent_question_hash": "d4f86ed58fd06eb8",
           "asked_question_type_counts": {
             "permission_check": 1,
             "gap_diagnostic": 2,
             "sales_progression_question": 3,
-            "focus_scope_question": 1,
+            "workflow_review_next_step": 2,
             "comparative_gap_diagnostic": 1,
             "none": 1,
-            "clarification": 1,
-            "gap_scope_check": 1
+            "clarification": 1
           },
           "answered_topics": [
             "callbacks",
@@ -1258,33 +1257,33 @@
             "0c981feee2e0afe5",
             "66fc7ee12930ef13",
             "e708ba871374b953",
-            "de1d20a524981eb9",
+            "72eb46797e26ac1a",
             "72ffeba092c00af5",
             "84a88d4078508b17",
             "9b6bd2979c4cf2fd",
             "43f3958ff9e71da5",
             "4c3d428cafb127b2",
             "d4f86ed58fd06eb8",
-            "672bf540072df029"
+            "47d67cc0adebca25"
           ],
           "last_response_signatures": [
             "opening_permission:0c981feee2e0afe5",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
-            "general:08258a071b87984d:de1d20a524981eb9",
+            "general:7c9191fe493c5356:72eb46797e26ac1a",
             "general:32a423e7a13ed9dc:72ffeba092c00af5",
             "general:76bfd8942b81f9dc:84a88d4078508b17",
             "callback_workflow:9b6bd2979c4cf2fd",
             "price_plan_summary:43f3958ff9e71da5",
             "plan_boundary:4c3d428cafb127b2",
             "callback_workflow:d4f86ed58fd06eb8",
-            "callback_workflow:672bf540072df029"
+            "callback_workflow:47d67cc0adebca25"
           ],
           "recent_response_subjects": [
             "opening_permission",
             "diagnostic_question",
             "general:ace201fe95ce9e10",
-            "general:08258a071b87984d",
+            "general:7c9191fe493c5356",
             "general:32a423e7a13ed9dc",
             "general:76bfd8942b81f9dc",
             "callback_workflow",
@@ -1294,7 +1293,7 @@
             "callback_workflow"
           ],
           "candidate_response_subject": "callback_workflow",
-          "candidate_response_signature": "callback_workflow:672bf540072df029",
+          "candidate_response_signature": "callback_workflow:47d67cc0adebca25",
           "last_customer_intent": "topic:price",
           "last_sales_progression_step": "value_mapping",
           "stored_audio_data": false,
@@ -1326,17 +1325,15 @@
           "callback_semantic": null,
           "last_agent_question_type": "workflow_review_next_step",
           "last_active_agent_question_type": "workflow_review_next_step",
-          "last_agent_question_hash": "672bf540072df029",
+          "last_agent_question_hash": "47d67cc0adebca25",
           "asked_question_type_counts": {
             "permission_check": 1,
             "gap_diagnostic": 2,
             "sales_progression_question": 3,
-            "focus_scope_question": 1,
+            "workflow_review_next_step": 3,
             "comparative_gap_diagnostic": 1,
             "none": 1,
-            "clarification": 1,
-            "gap_scope_check": 1,
-            "workflow_review_next_step": 1
+            "clarification": 1
           },
           "answered_topics": [
             "callbacks",
@@ -1348,35 +1345,35 @@
             "0c981feee2e0afe5",
             "66fc7ee12930ef13",
             "e708ba871374b953",
-            "de1d20a524981eb9",
+            "72eb46797e26ac1a",
             "72ffeba092c00af5",
             "84a88d4078508b17",
             "9b6bd2979c4cf2fd",
             "43f3958ff9e71da5",
             "4c3d428cafb127b2",
             "d4f86ed58fd06eb8",
-            "672bf540072df029",
+            "47d67cc0adebca25",
             "3533996838dfa9ee"
           ],
           "last_response_signatures": [
             "opening_permission:0c981feee2e0afe5",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
-            "general:08258a071b87984d:de1d20a524981eb9",
+            "general:7c9191fe493c5356:72eb46797e26ac1a",
             "general:32a423e7a13ed9dc:72ffeba092c00af5",
             "general:76bfd8942b81f9dc:84a88d4078508b17",
             "callback_workflow:9b6bd2979c4cf2fd",
             "price_plan_summary:43f3958ff9e71da5",
             "plan_boundary:4c3d428cafb127b2",
             "callback_workflow:d4f86ed58fd06eb8",
-            "callback_workflow:672bf540072df029",
+            "callback_workflow:47d67cc0adebca25",
             "callback_workflow:3533996838dfa9ee"
           ],
           "recent_response_subjects": [
             "opening_permission",
             "diagnostic_question",
             "general:ace201fe95ce9e10",
-            "general:08258a071b87984d",
+            "general:7c9191fe493c5356",
             "general:32a423e7a13ed9dc",
             "general:76bfd8942b81f9dc",
             "callback_workflow",
@@ -1435,21 +1432,20 @@
     "stress_duplicate_response_count": 0,
     "stress_question_type_counts": {
       "permission_check": 1,
-      "gap_diagnostic": 7,
-      "focus_scope_question": 1,
+      "gap_diagnostic": 6,
+      "workflow_review_next_step": 3,
       "workflow_breakpoint_question": 1,
       "sales_progression_question": 3,
       "comparative_gap_diagnostic": 1,
       "none": 9,
+      "permission_to_stop": 1,
       "clarification": 1,
-      "gap_scope_check": 1,
-      "workflow_review_next_step": 1,
       "callback_time": 1
     },
     "echo_examples": [
       {
         "transcript": "callbacks are the problem",
-        "response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+        "response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
         "guard": {
           "applied": false,
           "reason": "conversation_stability_passed",
@@ -1505,7 +1501,7 @@
           "call_control": "continue-call",
           "final_response": "I am Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I was calling about missed callbacks and handoffs in inbound demo follow-up. Should I restate the quick reason?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "I'm Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM, so, I was calling about missed callbacks and handoffs in inbound demo follow-up <break time=\"0.185s\" />. Should I restate the quick reason?",
+          "tts_input_text": "I'm Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM, so, I was calling about missed callbacks and handoffs in inbound demo follow-up. <break time=\"0.24s\" /> Should I restate the quick reason?",
           "browser_fallback_speech_text": "I'm Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM, so, I was calling about missed callbacks and handoffs in inbound demo follow-up. Should I restate the quick reason?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
@@ -1536,7 +1532,7 @@
           "call_control": "continue-call",
           "final_response": "I am calling about inbound demo follow-up: owners, callback reminders, and handoff status. Which of those creates the most missed follow-up?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "I'm calling about inbound demo follow-up <break time=\"0.24s\" />: owners, callback reminders, and handoff status. Um, which of those creates the most missed follow-up?",
+          "tts_input_text": "I'm calling about inbound demo follow-up: <break time=\"0.21s\" /> owners, callback reminders, and handoff status. Um, which of those creates the most missed follow-up?",
           "browser_fallback_speech_text": "I'm calling about inbound demo follow-up: owners, callback reminders, and handoff status. Um, which of those creates the most missed follow-up?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
@@ -1567,7 +1563,7 @@
           "call_control": "continue-call",
           "final_response": "Fair. I called to check one workflow: do inbound demo follow-ups lose owners, callback reminders, or handoff status?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "Fair. Um, I called to check one workflow: do inbound demo follow-ups lose owners, callback reminders, or handoff status?",
+          "tts_input_text": "Fair. Um, I called to check one workflow: do inbound demo follow-ups lose owners, <break time=\"0.24s\" /> callback reminders, or handoff status?",
           "browser_fallback_speech_text": "Fair. Um, I called to check one workflow: do inbound demo follow-ups lose owners, callback reminders, or handoff status?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
@@ -1629,7 +1625,7 @@
           "call_control": "continue-call",
           "final_response": "No problem. The quick check is simpler: do demo follow-ups ever miss an owner, callback reminder, or handoff?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "No problem. Um, the quick check is simpler: do demo follow-ups ever miss an owner <break time=\"0.234s\" />, callback reminder, or handoff?",
+          "tts_input_text": "No problem. Um, the quick check is simpler: do demo follow-ups ever miss an owner, <break time=\"0.24s\" /> callback reminder, or handoff?",
           "browser_fallback_speech_text": "No problem. Um, the quick check is simpler: do demo follow-ups ever miss an owner, callback reminder, or handoff?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
@@ -1873,7 +1869,7 @@
         "responses": [
           "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute? I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Is that worth a quick check?",
           "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
-          "For callbacks, the business case is speed to lead: owner and reminder are visible before a demo request waits. Should I keep the review to missed reminders only?",
+          "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
           "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?",
           "For inbound demo follow-up, a short check asks who replies next, when they reply, and how it is tracked. Which part is least clear today?",
           "In plain terms, it matters only if that gap costs time today: missed callbacks, unclear owners, or lost handoffs. Which one costs time today?",
@@ -1883,8 +1879,8 @@
         ]
       },
       "metrics": {
-        "median_latency_ms": 12.045,
-        "p95_latency_ms": 15.357,
+        "median_latency_ms": 13.119,
+        "p95_latency_ms": 16.854,
         "schema_failure_rate": 0.0,
         "callback_semantic_accuracy": 0.8333333333333334,
         "repetition_rate": 0.0,
