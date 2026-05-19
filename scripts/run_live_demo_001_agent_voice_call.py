@@ -1608,17 +1608,21 @@ def render_html(metadata: dict) -> str:
       </section>
 
       <section class="full">
-        <h2>Turn Packet</h2>
-        <pre id="packet">No packet yet.</pre>
-      </section>
-
-      <section class="full">
         <h2>Conversation Transcript</h2>
         <div class="controls">
           <button id="downloadTranscriptJson" class="secondary" type="button">Download JSON</button>
           <button id="downloadTranscriptText" class="secondary" type="button">Download TXT</button>
         </div>
         <pre id="conversationTranscript">No turns yet.</pre>
+        <details>
+          <summary>Diagnostics</summary>
+          <pre id="conversationDiagnostics">No diagnostics yet.</pre>
+        </details>
+      </section>
+
+      <section class="full">
+        <h2>Turn Packet</h2>
+        <pre id="packet">No packet yet.</pre>
       </section>
     </div>
   </main>
@@ -1639,6 +1643,7 @@ def render_html(metadata: dict) -> str:
     const boundary = document.querySelector("#boundary");
     const packet = document.querySelector("#packet");
     const conversationTranscriptBox = document.querySelector("#conversationTranscript");
+    const conversationDiagnosticsBox = document.querySelector("#conversationDiagnostics");
     const downloadTranscriptJson = document.querySelector("#downloadTranscriptJson");
     const downloadTranscriptText = document.querySelector("#downloadTranscriptText");
     const status = document.querySelector("#status");
@@ -1991,18 +1996,29 @@ def render_html(metadata: dict) -> str:
           `#${{turn.turn_index}} ${{turn.input_type}}`,
           `Buyer: ${{turn.customer_transcript}}`,
           `Agent: ${{turn.agent_response}}`,
-          `Call control: ${{turn.call_control}}`,
-          `Memory: ${{JSON.stringify(turn.demo_conversation_memory)}}`,
-          `Stability guard: ${{JSON.stringify(turn.demo_conversation_stability_guard)}}`,
-          `Provider boundary: ${{JSON.stringify(turn.provider_boundary)}}`,
-          `Latency: ${{JSON.stringify(turn.latency)}}`
+          `Call control: ${{turn.call_control}}`
         ];
         return lines.join("\\n");
       }}).join("\\n\\n");
     }}
 
+    function renderConversationDiagnosticsText() {{
+      if (!conversationTranscript.length) return "No diagnostics yet.";
+      return conversationTranscript.map(turn => {{
+        const diagnostics = {{
+          turn_index: turn.turn_index,
+          memory: turn.demo_conversation_memory,
+          stability_guard: turn.demo_conversation_stability_guard,
+          provider_boundary: turn.provider_boundary,
+          latency: turn.latency
+        }};
+        return JSON.stringify(diagnostics, null, 2);
+      }}).join("\\n\\n");
+    }}
+
     function renderConversationTranscript() {{
       conversationTranscriptBox.textContent = renderConversationTranscriptText();
+      conversationDiagnosticsBox.textContent = renderConversationDiagnosticsText();
     }}
 
     function transcriptDownloadPayload() {{

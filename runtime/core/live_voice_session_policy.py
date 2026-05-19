@@ -1097,16 +1097,15 @@ def modular_qualification_guidance_text(language: str, step: int) -> str:
             "Der Verkaufsgrund ist einfach: weniger verpasste Rueckrufe und klarere Besitzer. Waere eine kurze Workflow-Pruefung sinnvoll?",
         ]
         return options[step % len(options)]
-    contexts = [
-        ("Inbound demo requests", ("owner", "callback", "handoff status"), "Which part slips first for your team?"),
-        ("Shared inbox leads", ("owner routing", "callback reminders", "manager visibility"), "Where does that break today?"),
-        ("Spreadsheet follow-up", ("routing delay", "handoff review", "missed callbacks"), "Which one creates the most delay?"),
-        ("Slack alerts and CRM notes", ("owner lookup", "follow-up status", "handoff review"), "Would a short workflow review test one gap?"),
-        ("New trial requests", ("priority routing", "duplicate checks", "callback visibility"), "Which gap should I keep this focused on?"),
-        ("Manager review", ("routing", "reminders", "handoff visibility"), "Are missed callbacks frequent enough to justify a workflow review?"),
+    options = [
+        "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
+        "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied. Which part is harder today: seeing it, assigning the reply, or remembering the callback?",
+        "If callback reminders for demo follow-up live in a spreadsheet, they can slip. Which part is more familiar: manual tracking or missed callbacks?",
+        "For inbound demo follow-up, a short check asks who replies next, when they reply, and how it is tracked. Which part is least clear today?",
+        "For inbound demo or trial requests, quick routing means the next reply is assigned fast. Are missed follow-ups frequent enough to check?",
+        "For managers, a short workflow review shows whether inbound demo follow-up is waiting too long. Would a short workflow review be worth checking?",
     ]
-    subject, signals, question = contexts[step % len(contexts)]
-    return f"{subject} need {signals[0]}, {signals[1]}, and {signals[2]}. {question}"
+    return options[step % len(options)]
 
 
 def progressive_focus_text(language: str, focus: str, normalized: str, step: int) -> str:
@@ -1611,6 +1610,82 @@ def is_previous_question_clarification_request(normalized: str) -> bool:
     )
 
 
+def is_tentative_permission_reply(normalized: str) -> bool:
+    return normalized in {
+        "maybe",
+        "maybe yes",
+        "maybe sure",
+        "i guess",
+        "i guess so",
+        "possibly",
+        "perhaps",
+        "not sure",
+        "i am not sure",
+        "i m not sure",
+        "im not sure",
+    }
+
+
+def is_uncertain_qualification_reply(normalized: str) -> bool:
+    return normalized in {
+        "i do not know",
+        "i don t know",
+        "i dont know",
+        "i don t really know",
+        "i dont really know",
+        "i do not really know",
+        "no idea",
+        "i have no idea",
+        "not sure",
+        "i am not sure",
+        "i m not sure",
+        "im not sure",
+    }
+
+
+def plain_qualification_term_clarification_text(language: str, normalized: str) -> str | None:
+    if language.startswith("de"):
+        return None
+    if not (
+        is_previous_question_clarification_request(normalized)
+        or normalized_contains_any(normalized, {"what is", "what are", "meaning of", "mean by", "means by"})
+    ):
+        return None
+    if normalized_contains_any(normalized, {"shared inbox", "shared inbox lead", "shared inbox leads"}):
+        return (
+            "A shared inbox means one place where several people see the same lead emails or demo requests. "
+            "The risk is simple: two people assume someone else will reply. Is that close to how your team handles new requests?"
+        )
+    if normalized_contains_any(normalized, {"owner", "ownership", "own the next", "owns the next"}):
+        return (
+            "By that, I mean the person responsible for the next reply. "
+            "The check is whether a new demo request always has one clear person following up."
+        )
+    if normalized_contains_any(normalized, {"handoff", "handoffs"}):
+        return (
+            "A handoff is when a request moves from one person or team to another. "
+            "The problem is when the next reply gets lost during that move."
+        )
+    if normalized_contains_any(normalized, {"callback", "callbacks"}):
+        return callback_workflow_clarification_response(language)
+    return None
+
+
+def tentative_qualification_response(language: str) -> str:
+    if language.startswith("de"):
+        return "Kein Problem. Ich erklaere es kurz: Es geht darum, ob eine Demo-Anfrage schnell eine zustaendige Person und eine naechste Antwort bekommt."
+    return (
+        "No problem. I mean inbound leads where someone asks for a demo or more information. "
+        "The simple check is whether one person is clearly responsible for the next reply. Does that ever get fuzzy?"
+    )
+
+
+def uncertain_qualification_response(language: str) -> str:
+    if language.startswith("de"):
+        return "Kein Problem. Starten wir einfacher: Wenn jemand eine Demo anfragt, wer stellt sicher, dass die naechste Antwort passiert?"
+    return "No problem. Start with one simple case: when someone asks for a demo, who makes sure they get the next reply?"
+
+
 def previous_agent_question(turns: list[dict]) -> str | None:
     for turn in reversed(turns):
         response = str((turn.get("summary") or {}).get("final_response") or "").strip()
@@ -1635,7 +1710,7 @@ def clarify_previous_question_text(language: str, focus: str, previous_question:
         return "I meant timing only matters if follow-up gaps are already costing time. In plain terms, should I keep this to a callback later?"
     if focus == "effort":
         return "I meant effort is worth it only if missed follow-up costs time. In plain terms, which gap wastes time: callbacks, routing, or handoffs?"
-    return "I was asking whether missed callbacks, messy handoffs, or unclear owners happen in your inbound demo flow. In plain terms, which part needs a clearer owner or callback?"
+    return "I meant: an inbound demo request needs one clear person for the next reply. Can those requests sit waiting?"
 
 
 def is_ambiguous_negative_reply(normalized: str) -> bool:
@@ -1671,6 +1746,29 @@ def current_focus_followup_response(
         return None
     turns = list(turns or [])
     prior_question = previous_agent_question(turns)
+    if resolved_focus == "qualification":
+        term_clarification = plain_qualification_term_clarification_text(language, normalized)
+        if term_clarification:
+            return {
+                "applied": True,
+                "reason": "plain_qualification_term_clarified",
+                "dialogue_focus": "qualification",
+                "candidate_response": term_clarification,
+            }
+        if is_tentative_permission_reply(normalized):
+            return {
+                "applied": True,
+                "reason": "plain_qualification_context_after_tentative_reply",
+                "dialogue_focus": "qualification",
+                "candidate_response": tentative_qualification_response(language),
+            }
+        if is_uncertain_qualification_reply(normalized):
+            return {
+                "applied": True,
+                "reason": "plain_qualification_recovered_after_uncertainty",
+                "dialogue_focus": "qualification",
+                "candidate_response": uncertain_qualification_response(language),
+            }
     if prior_question and is_previous_question_clarification_request(normalized):
         return {
             "applied": True,
@@ -2259,7 +2357,7 @@ def pre_speech_conversation_stability_guard(
 
     if is_previous_question_clarification_request(normalized) and not normalized_contains_any(
         normalize_text(response),
-        {"i meant", "i was asking", "in plain terms", "callbacks here mean", "route signal is for"},
+        {"i meant", "i was asking", "in plain terms", "callbacks here mean", "route signal is for", "shared inbox means", "by that i mean", "a handoff is"},
     ):
         violations.append("failed_to_explain_previous_question")
         repaired_response = clarify_previous_question_text(language, str(memory.get("active_topic") or "qualification"), previous_agent_question(turns))

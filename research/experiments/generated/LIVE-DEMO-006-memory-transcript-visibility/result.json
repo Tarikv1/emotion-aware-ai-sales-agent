@@ -80,19 +80,19 @@
         },
         {
           "transcript": "okay",
-          "response": "Inbound demo requests need owner, callback, and handoff status. Which part slips first for your team?",
+          "response": "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
           "memory": {
             "schema_version": 1,
             "active_stage": "qualification",
             "active_topic": "qualification",
             "selected_gap": null,
             "callback_semantic": null,
-            "last_agent_question_type": "qualification_gap_diagnostic",
-            "last_active_agent_question_type": "qualification_gap_diagnostic",
+            "last_agent_question_type": "gap_diagnostic",
+            "last_active_agent_question_type": "gap_diagnostic",
             "last_agent_question_hash": "0c981feee2e0afe5",
             "asked_question_type_counts": {
               "permission_check": 1,
-              "qualification_gap_diagnostic": 1
+              "gap_diagnostic": 1
             },
             "answered_topics": [
               "qualification"
@@ -100,18 +100,18 @@
             "rejected_topics": [],
             "last_response_hashes": [
               "0c981feee2e0afe5",
-              "d22acff11ad1d340"
+              "66fc7ee12930ef13"
             ],
             "last_response_signatures": [
               "opening_permission:0c981feee2e0afe5",
-              "handoff_workflow:d22acff11ad1d340"
+              "diagnostic_question:66fc7ee12930ef13"
             ],
             "recent_response_subjects": [
               "opening_permission",
-              "handoff_workflow"
+              "diagnostic_question"
             ],
-            "candidate_response_subject": "handoff_workflow",
-            "candidate_response_signature": "handoff_workflow:d22acff11ad1d340",
+            "candidate_response_subject": "diagnostic_question",
+            "candidate_response_signature": "diagnostic_question:66fc7ee12930ef13",
             "last_customer_intent": "low_information_acknowledgement",
             "last_sales_progression_step": "qualification",
             "stored_audio_data": false,
@@ -136,10 +136,10 @@
             "callback_semantic": null,
             "last_agent_question_type": "comparative_gap_diagnostic",
             "last_active_agent_question_type": "comparative_gap_diagnostic",
-            "last_agent_question_hash": "d22acff11ad1d340",
+            "last_agent_question_hash": "66fc7ee12930ef13",
             "asked_question_type_counts": {
               "permission_check": 1,
-              "qualification_gap_diagnostic": 1,
+              "gap_diagnostic": 1,
               "comparative_gap_diagnostic": 1
             },
             "answered_topics": [
@@ -149,17 +149,17 @@
             "rejected_topics": [],
             "last_response_hashes": [
               "0c981feee2e0afe5",
-              "d22acff11ad1d340",
+              "66fc7ee12930ef13",
               "43f3958ff9e71da5"
             ],
             "last_response_signatures": [
               "opening_permission:0c981feee2e0afe5",
-              "handoff_workflow:d22acff11ad1d340",
+              "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5"
             ],
             "recent_response_subjects": [
               "opening_permission",
-              "handoff_workflow",
+              "diagnostic_question",
               "price_plan_summary"
             ],
             "candidate_response_subject": "price_plan_summary",
@@ -191,9 +191,8 @@
             "last_agent_question_hash": "43f3958ff9e71da5",
             "asked_question_type_counts": {
               "permission_check": 1,
-              "qualification_gap_diagnostic": 1,
-              "comparative_gap_diagnostic": 1,
-              "gap_diagnostic": 1
+              "gap_diagnostic": 2,
+              "comparative_gap_diagnostic": 1
             },
             "answered_topics": [
               "price",
@@ -202,19 +201,19 @@
             "rejected_topics": [],
             "last_response_hashes": [
               "0c981feee2e0afe5",
-              "d22acff11ad1d340",
+              "66fc7ee12930ef13",
               "43f3958ff9e71da5",
               "a2765b021e43fd2c"
             ],
             "last_response_signatures": [
               "opening_permission:0c981feee2e0afe5",
-              "handoff_workflow:d22acff11ad1d340",
+              "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5",
               "callback_workflow:a2765b021e43fd2c"
             ],
             "recent_response_subjects": [
               "opening_permission",
-              "handoff_workflow",
+              "diagnostic_question",
               "price_plan_summary",
               "callback_workflow"
             ],
@@ -247,9 +246,9 @@
             "last_agent_question_hash": "a2765b021e43fd2c",
             "asked_question_type_counts": {
               "permission_check": 1,
-              "qualification_gap_diagnostic": 2,
+              "gap_diagnostic": 2,
               "comparative_gap_diagnostic": 1,
-              "gap_diagnostic": 1
+              "qualification_gap_diagnostic": 1
             },
             "answered_topics": [
               "price",
@@ -258,21 +257,21 @@
             "rejected_topics": [],
             "last_response_hashes": [
               "0c981feee2e0afe5",
-              "d22acff11ad1d340",
+              "66fc7ee12930ef13",
               "43f3958ff9e71da5",
               "a2765b021e43fd2c",
               "a3f7003e7c3d65a2"
             ],
             "last_response_signatures": [
               "opening_permission:0c981feee2e0afe5",
-              "handoff_workflow:d22acff11ad1d340",
+              "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5",
               "callback_workflow:a2765b021e43fd2c",
               "plan_boundary:a3f7003e7c3d65a2"
             ],
             "recent_response_subjects": [
               "opening_permission",
-              "handoff_workflow",
+              "diagnostic_question",
               "price_plan_summary",
               "callback_workflow",
               "plan_boundary"
@@ -306,9 +305,9 @@
             "last_agent_question_hash": "a3f7003e7c3d65a2",
             "asked_question_type_counts": {
               "permission_check": 1,
-              "qualification_gap_diagnostic": 2,
+              "gap_diagnostic": 2,
               "comparative_gap_diagnostic": 2,
-              "gap_diagnostic": 1
+              "qualification_gap_diagnostic": 1
             },
             "answered_topics": [
               "price",
@@ -317,7 +316,7 @@
             "rejected_topics": [],
             "last_response_hashes": [
               "0c981feee2e0afe5",
-              "d22acff11ad1d340",
+              "66fc7ee12930ef13",
               "43f3958ff9e71da5",
               "a2765b021e43fd2c",
               "a3f7003e7c3d65a2",
@@ -325,7 +324,7 @@
             ],
             "last_response_signatures": [
               "opening_permission:0c981feee2e0afe5",
-              "handoff_workflow:d22acff11ad1d340",
+              "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5",
               "callback_workflow:a2765b021e43fd2c",
               "plan_boundary:a3f7003e7c3d65a2",
@@ -333,7 +332,7 @@
             ],
             "recent_response_subjects": [
               "opening_permission",
-              "handoff_workflow",
+              "diagnostic_question",
               "price_plan_summary",
               "callback_workflow",
               "plan_boundary",
@@ -368,9 +367,9 @@
             "last_agent_question_hash": "08155e645f8f4593",
             "asked_question_type_counts": {
               "permission_check": 1,
-              "qualification_gap_diagnostic": 2,
+              "gap_diagnostic": 2,
               "comparative_gap_diagnostic": 2,
-              "gap_diagnostic": 1,
+              "qualification_gap_diagnostic": 1,
               "none": 1
             },
             "answered_topics": [
@@ -380,7 +379,7 @@
             "rejected_topics": [],
             "last_response_hashes": [
               "0c981feee2e0afe5",
-              "d22acff11ad1d340",
+              "66fc7ee12930ef13",
               "43f3958ff9e71da5",
               "a2765b021e43fd2c",
               "a3f7003e7c3d65a2",
@@ -389,7 +388,7 @@
             ],
             "last_response_signatures": [
               "opening_permission:0c981feee2e0afe5",
-              "handoff_workflow:d22acff11ad1d340",
+              "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5",
               "callback_workflow:a2765b021e43fd2c",
               "plan_boundary:a3f7003e7c3d65a2",
@@ -398,7 +397,7 @@
             ],
             "recent_response_subjects": [
               "opening_permission",
-              "handoff_workflow",
+              "diagnostic_question",
               "price_plan_summary",
               "callback_workflow",
               "plan_boundary",
@@ -434,9 +433,9 @@
             "last_agent_question_hash": "08155e645f8f4593",
             "asked_question_type_counts": {
               "permission_check": 1,
-              "qualification_gap_diagnostic": 2,
+              "gap_diagnostic": 2,
               "comparative_gap_diagnostic": 2,
-              "gap_diagnostic": 1,
+              "qualification_gap_diagnostic": 1,
               "none": 2
             },
             "answered_topics": [
@@ -446,7 +445,7 @@
             "rejected_topics": [],
             "last_response_hashes": [
               "0c981feee2e0afe5",
-              "d22acff11ad1d340",
+              "66fc7ee12930ef13",
               "43f3958ff9e71da5",
               "a2765b021e43fd2c",
               "a3f7003e7c3d65a2",
@@ -456,7 +455,7 @@
             ],
             "last_response_signatures": [
               "opening_permission:0c981feee2e0afe5",
-              "handoff_workflow:d22acff11ad1d340",
+              "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5",
               "callback_workflow:a2765b021e43fd2c",
               "plan_boundary:a3f7003e7c3d65a2",
@@ -466,7 +465,7 @@
             ],
             "recent_response_subjects": [
               "opening_permission",
-              "handoff_workflow",
+              "diagnostic_question",
               "price_plan_summary",
               "callback_workflow",
               "plan_boundary",
@@ -503,9 +502,9 @@
             "last_agent_question_hash": "08155e645f8f4593",
             "asked_question_type_counts": {
               "permission_check": 1,
-              "qualification_gap_diagnostic": 2,
+              "gap_diagnostic": 2,
               "comparative_gap_diagnostic": 2,
-              "gap_diagnostic": 1,
+              "qualification_gap_diagnostic": 1,
               "none": 2,
               "sales_progression_question": 1
             },
@@ -516,7 +515,7 @@
             "rejected_topics": [],
             "last_response_hashes": [
               "0c981feee2e0afe5",
-              "d22acff11ad1d340",
+              "66fc7ee12930ef13",
               "43f3958ff9e71da5",
               "a2765b021e43fd2c",
               "a3f7003e7c3d65a2",
@@ -527,7 +526,7 @@
             ],
             "last_response_signatures": [
               "opening_permission:0c981feee2e0afe5",
-              "handoff_workflow:d22acff11ad1d340",
+              "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5",
               "callback_workflow:a2765b021e43fd2c",
               "plan_boundary:a3f7003e7c3d65a2",
@@ -538,7 +537,7 @@
             ],
             "recent_response_subjects": [
               "opening_permission",
-              "handoff_workflow",
+              "diagnostic_question",
               "price_plan_summary",
               "callback_workflow",
               "plan_boundary",
@@ -576,9 +575,9 @@
             "last_agent_question_hash": "51d3d322019379b2",
             "asked_question_type_counts": {
               "permission_check": 1,
-              "qualification_gap_diagnostic": 2,
+              "gap_diagnostic": 2,
               "comparative_gap_diagnostic": 2,
-              "gap_diagnostic": 1,
+              "qualification_gap_diagnostic": 1,
               "none": 2,
               "sales_progression_question": 2
             },
@@ -589,7 +588,7 @@
             "rejected_topics": [],
             "last_response_hashes": [
               "0c981feee2e0afe5",
-              "d22acff11ad1d340",
+              "66fc7ee12930ef13",
               "43f3958ff9e71da5",
               "a2765b021e43fd2c",
               "a3f7003e7c3d65a2",
@@ -601,7 +600,7 @@
             ],
             "last_response_signatures": [
               "opening_permission:0c981feee2e0afe5",
-              "handoff_workflow:d22acff11ad1d340",
+              "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5",
               "callback_workflow:a2765b021e43fd2c",
               "plan_boundary:a3f7003e7c3d65a2",
@@ -613,7 +612,7 @@
             ],
             "recent_response_subjects": [
               "opening_permission",
-              "handoff_workflow",
+              "diagnostic_question",
               "price_plan_summary",
               "callback_workflow",
               "plan_boundary",
@@ -652,9 +651,9 @@
         "last_agent_question_hash": "51d3d322019379b2",
         "asked_question_type_counts": {
           "permission_check": 1,
-          "qualification_gap_diagnostic": 2,
+          "gap_diagnostic": 2,
           "comparative_gap_diagnostic": 2,
-          "gap_diagnostic": 1,
+          "qualification_gap_diagnostic": 1,
           "none": 2,
           "sales_progression_question": 2
         },
@@ -665,7 +664,7 @@
         "rejected_topics": [],
         "last_response_hashes": [
           "0c981feee2e0afe5",
-          "d22acff11ad1d340",
+          "66fc7ee12930ef13",
           "43f3958ff9e71da5",
           "a2765b021e43fd2c",
           "a3f7003e7c3d65a2",
@@ -677,7 +676,7 @@
         ],
         "last_response_signatures": [
           "opening_permission:0c981feee2e0afe5",
-          "handoff_workflow:d22acff11ad1d340",
+          "diagnostic_question:66fc7ee12930ef13",
           "price_plan_summary:43f3958ff9e71da5",
           "callback_workflow:a2765b021e43fd2c",
           "plan_boundary:a3f7003e7c3d65a2",
@@ -689,7 +688,7 @@
         ],
         "recent_response_subjects": [
           "opening_permission",
-          "handoff_workflow",
+          "diagnostic_question",
           "price_plan_summary",
           "callback_workflow",
           "plan_boundary",

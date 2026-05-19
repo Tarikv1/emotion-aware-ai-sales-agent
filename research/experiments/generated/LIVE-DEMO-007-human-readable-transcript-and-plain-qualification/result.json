@@ -1,0 +1,90 @@
+{
+  "checkpoint_id": "LIVE-DEMO-007-human-readable-transcript-and-plain-qualification",
+  "passed": true,
+  "failure_count": 0,
+  "failures": [],
+  "provider_calls_made": false,
+  "evidence": {
+    "transcript_ui": {
+      "playback_metadata": {
+        "agent_audio_volume": 0.68,
+        "browser_fallback_voice_volume": 0.68,
+        "browser_fallback_voice_rate": 1.01,
+        "manual_interrupt_enabled": true,
+        "manual_interrupt_shortcut": "Escape",
+        "spoken_barge_in_enabled": false,
+        "spoken_barge_in_blocked_reason": "Browser SpeechRecognition cannot safely separate the buyer from the agent audio in this demo.",
+        "transcript_panel_enabled": true,
+        "transcript_download_enabled": true,
+        "transcript_stores_audio_data": false,
+        "transcript_scope": "browser session text only; private turn packets remain under ignored local output",
+        "volume_applied_in_browser_only": true,
+        "provider_audio_file_unchanged": true
+      },
+      "transcript_index": 4739,
+      "packet_index": 5024,
+      "has_diagnostics_panel": true,
+      "human_text_renderer_mentions_memory": false
+    },
+    "plain_qualification": [
+      {
+        "transcript": "__agent_open__",
+        "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute? I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Is that worth a quick check?",
+        "continuity": {
+          "applied": true,
+          "reason": "agent_opening_started",
+          "dialogue_focus": "qualification",
+          "candidate_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute? I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Is that worth a quick check?"
+        }
+      },
+      {
+        "transcript": "maybe",
+        "response": "No problem. I mean inbound leads where someone asks for a demo or more information. The simple check is whether one person is clearly responsible for the next reply. Does that ever get fuzzy?",
+        "continuity": {
+          "applied": true,
+          "reason": "plain_qualification_context_after_tentative_reply",
+          "dialogue_focus": "qualification",
+          "candidate_response": "No problem. I mean inbound leads where someone asks for a demo or more information. The simple check is whether one person is clearly responsible for the next reply. Does that ever get fuzzy?"
+        }
+      },
+      {
+        "transcript": "what do you mean by shared inbox lead",
+        "response": "A shared inbox means one place where several people see the same lead emails or demo requests. The risk is simple: two people assume someone else will reply. Is that close to how your team handles new requests?",
+        "continuity": {
+          "applied": true,
+          "reason": "plain_qualification_term_clarified",
+          "dialogue_focus": "qualification",
+          "candidate_response": "A shared inbox means one place where several people see the same lead emails or demo requests. The risk is simple: two people assume someone else will reply. Is that close to how your team handles new requests?"
+        }
+      },
+      {
+        "transcript": "I don't really know",
+        "response": "No problem. Start with one simple case: when someone asks for a demo, who makes sure they get the next reply?",
+        "continuity": {
+          "applied": true,
+          "reason": "plain_qualification_recovered_after_uncertainty",
+          "dialogue_focus": "qualification",
+          "candidate_response": "No problem. Start with one simple case: when someone asks for a demo, who makes sure they get the next reply?"
+        }
+      }
+    ],
+    "docs": {
+      "docs\\thesis\\ROADMAP.md": {
+        "exists": true,
+        "mentions_checkpoint": true
+      },
+      "docs\\product\\CHECKPOINT_INDEX.md": {
+        "exists": true,
+        "mentions_checkpoint": true
+      },
+      "docs\\product\\COMMANDS.md": {
+        "exists": true,
+        "mentions_checkpoint": true
+      },
+      "docs\\product\\LIVE_DEMO_007_HUMAN_TRANSCRIPT_PLAIN_QUALIFICATION.md": {
+        "exists": true,
+        "mentions_checkpoint": true
+      }
+    }
+  }
+}
