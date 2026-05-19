@@ -347,6 +347,10 @@ def build_metadata(args: argparse.Namespace, cases_path: Path, private_out: Path
             "manual_interrupt_shortcut": "Escape",
             "spoken_barge_in_enabled": False,
             "spoken_barge_in_blocked_reason": "Browser SpeechRecognition cannot safely separate the buyer from the agent audio in this demo.",
+            "transcript_panel_enabled": True,
+            "transcript_download_enabled": True,
+            "transcript_stores_audio_data": False,
+            "transcript_scope": "browser session text only; private turn packets remain under ignored local output",
             "volume_applied_in_browser_only": True,
             "provider_audio_file_unchanged": True,
         },
@@ -1607,6 +1611,15 @@ def render_html(metadata: dict) -> str:
         <h2>Turn Packet</h2>
         <pre id="packet">No packet yet.</pre>
       </section>
+
+      <section class="full">
+        <h2>Conversation Transcript</h2>
+        <div class="controls">
+          <button id="downloadTranscriptJson" class="secondary" type="button">Download JSON</button>
+          <button id="downloadTranscriptText" class="secondary" type="button">Download TXT</button>
+        </div>
+        <pre id="conversationTranscript">No turns yet.</pre>
+      </section>
     </div>
   </main>
 
@@ -1625,6 +1638,9 @@ def render_html(metadata: dict) -> str:
     const decision = document.querySelector("#decision");
     const boundary = document.querySelector("#boundary");
     const packet = document.querySelector("#packet");
+    const conversationTranscriptBox = document.querySelector("#conversationTranscript");
+    const downloadTranscriptJson = document.querySelector("#downloadTranscriptJson");
+    const downloadTranscriptText = document.querySelector("#downloadTranscriptText");
     const status = document.querySelector("#status");
     const audio = document.querySelector("#audio");
     const interruptAgent = document.querySelector("#interruptAgent");
@@ -1663,6 +1679,7 @@ def render_html(metadata: dict) -> str:
     let stoppingRecognitionForAgentTurn = false;
     let callEnded = false;
     let fallbackVoice = null;
+    const conversationTranscript = [];
     const sessionId = (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : String(Date.now());
 
     function setStatus(text) {{ status.textContent = text; }}
@@ -1938,6 +1955,83 @@ def render_html(metadata: dict) -> str:
       submitTurn(true, AGENT_OPEN_TRANSCRIPT, "agent-open");
     }}
 
+    function providerBoundaryForTranscript(payload) {{
+      return {{
+        provider_agent_used: payload.provider_agent_used,
+        durable_provider_agent_created: payload.durable_provider_agent_created,
+        elevenlabs_call_made: payload.summary.tts_provider_calls_made,
+        audio_file_created: payload.summary.tts_audio_file_created,
+        fallback_reason: payload.summary.tts_fallback_reason,
+        voice_cloning_used: payload.voice_cloning_used,
+        opens_prod_102: payload.opens_prod_102
+      }};
+    }}
+
+    function appendConversationTranscriptTurn(inputText, inputType, payload) {{
+      const visibleTranscript = inputText === AGENT_OPEN_TRANSCRIPT ? "(agent opening)" : inputText;
+      conversationTranscript.push({{
+        turn_index: payload.session_turn_index,
+        input_type: inputType,
+        customer_transcript: visibleTranscript,
+        agent_response: payload.summary.final_response,
+        call_control: payload.summary.call_control,
+        demo_conversation_memory: payload.demo_conversation_memory || {{}},
+        demo_conversation_stability_guard: payload.demo_conversation_stability_guard || {{}},
+        async_enrichment_boundary: payload.dialogue_reasoner_async_enrichment || {{}},
+        provider_boundary: providerBoundaryForTranscript(payload),
+        latency: payload.latency || {{}}
+      }});
+      renderConversationTranscript();
+    }}
+
+    function renderConversationTranscriptText() {{
+      if (!conversationTranscript.length) return "No turns yet.";
+      return conversationTranscript.map(turn => {{
+        const lines = [
+          `#${{turn.turn_index}} ${{turn.input_type}}`,
+          `Buyer: ${{turn.customer_transcript}}`,
+          `Agent: ${{turn.agent_response}}`,
+          `Call control: ${{turn.call_control}}`,
+          `Memory: ${{JSON.stringify(turn.demo_conversation_memory)}}`,
+          `Stability guard: ${{JSON.stringify(turn.demo_conversation_stability_guard)}}`,
+          `Provider boundary: ${{JSON.stringify(turn.provider_boundary)}}`,
+          `Latency: ${{JSON.stringify(turn.latency)}}`
+        ];
+        return lines.join("\\n");
+      }}).join("\\n\\n");
+    }}
+
+    function renderConversationTranscript() {{
+      conversationTranscriptBox.textContent = renderConversationTranscriptText();
+    }}
+
+    function transcriptDownloadPayload() {{
+      return {{
+        live_demo_id: metadata.live_demo_id,
+        session_id: sessionId,
+        campaign_id: campaign.value || metadata.default_campaign_id,
+        generated_at: new Date().toISOString(),
+        audio_stored: false,
+        customer_audio_uploaded_to_python_server: false,
+        turns: conversationTranscript
+      }};
+    }}
+
+    function downloadTranscript(format) {{
+      const isJson = format === "json";
+      const body = isJson
+        ? JSON.stringify(transcriptDownloadPayload(), null, 2)
+        : renderConversationTranscriptText();
+      const blob = new Blob([body], {{ type: isJson ? "application/json" : "text/plain" }});
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${{metadata.live_demo_id || "live-demo"}}-${{sessionId}}-transcript.${{isJson ? "json" : "txt"}}`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+    }}
+
     async function submitTurn(fromAutoConversation=false, transcriptOverride=null, inputTypeOverride="speech-final") {{
       if (callEnded) {{
         setVoiceTurnState(VOICE_TURN_STATES.PAUSED, "Conversation ended. Listening will not restart.");
@@ -1997,6 +2091,7 @@ def render_html(metadata: dict) -> str:
           opens_prod_102: payload.opens_prod_102
         }}, null, 2);
         packet.textContent = JSON.stringify(payload, null, 2);
+        appendConversationTranscriptTurn(text, inputTypeOverride, payload);
         transcript.value = "";
         if (payload.audio_url) {{
           audio.src = payload.audio_url;
@@ -2070,6 +2165,8 @@ def render_html(metadata: dict) -> str:
       autoConversation = false;
       playBrowserFallback();
     }});
+    downloadTranscriptJson.addEventListener("click", () => downloadTranscript("json"));
+    downloadTranscriptText.addEventListener("click", () => downloadTranscript("txt"));
   </script>
 </body>
 </html>

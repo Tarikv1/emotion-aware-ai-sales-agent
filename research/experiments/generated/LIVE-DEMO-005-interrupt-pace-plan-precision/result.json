@@ -14,6 +14,10 @@
         "manual_interrupt_shortcut": "Escape",
         "spoken_barge_in_enabled": false,
         "spoken_barge_in_blocked_reason": "Browser SpeechRecognition cannot safely separate the buyer from the agent audio in this demo.",
+        "transcript_panel_enabled": true,
+        "transcript_download_enabled": true,
+        "transcript_stores_audio_data": false,
+        "transcript_scope": "browser session text only; private turn packets remain under ignored local output",
         "volume_applied_in_browser_only": true,
         "provider_audio_file_unchanged": true
       },
@@ -50,6 +54,14 @@
           "last_response_hashes": [
             "0c981feee2e0afe5"
           ],
+          "last_response_signatures": [
+            "opening_permission:0c981feee2e0afe5"
+          ],
+          "recent_response_subjects": [
+            "opening_permission"
+          ],
+          "candidate_response_subject": "opening_permission",
+          "candidate_response_signature": "opening_permission:0c981feee2e0afe5",
           "last_customer_intent": "topic:qualification",
           "last_sales_progression_step": "opening",
           "stored_audio_data": false,
@@ -93,6 +105,16 @@
             "0c981feee2e0afe5",
             "d22acff11ad1d340"
           ],
+          "last_response_signatures": [
+            "opening_permission:0c981feee2e0afe5",
+            "handoff_workflow:d22acff11ad1d340"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "handoff_workflow"
+          ],
+          "candidate_response_subject": "handoff_workflow",
+          "candidate_response_signature": "handoff_workflow:d22acff11ad1d340",
           "last_customer_intent": "low_information_acknowledgement",
           "last_sales_progression_step": "qualification",
           "stored_audio_data": false,
@@ -139,6 +161,18 @@
             "d22acff11ad1d340",
             "43f3958ff9e71da5"
           ],
+          "last_response_signatures": [
+            "opening_permission:0c981feee2e0afe5",
+            "handoff_workflow:d22acff11ad1d340",
+            "price_plan_summary:43f3958ff9e71da5"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "handoff_workflow",
+            "price_plan_summary"
+          ],
+          "candidate_response_subject": "price_plan_summary",
+          "candidate_response_signature": "price_plan_summary:43f3958ff9e71da5",
           "last_customer_intent": "topic:price",
           "last_sales_progression_step": "objection_or_answer",
           "stored_audio_data": false,
@@ -188,6 +222,20 @@
             "43f3958ff9e71da5",
             "af9047b0e95e6587"
           ],
+          "last_response_signatures": [
+            "opening_permission:0c981feee2e0afe5",
+            "handoff_workflow:d22acff11ad1d340",
+            "price_plan_summary:43f3958ff9e71da5",
+            "plan_boundary:af9047b0e95e6587"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "handoff_workflow",
+            "price_plan_summary",
+            "plan_boundary"
+          ],
+          "candidate_response_subject": "plan_boundary",
+          "candidate_response_signature": "plan_boundary:af9047b0e95e6587",
           "last_customer_intent": "plan_boundary_question",
           "last_sales_progression_step": "objection_or_answer",
           "stored_audio_data": false,
@@ -232,12 +280,28 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "af9047b0e95e6587",
             "0c981feee2e0afe5",
             "d22acff11ad1d340",
             "43f3958ff9e71da5",
+            "af9047b0e95e6587",
             "303b61cc2626efe4"
           ],
+          "last_response_signatures": [
+            "opening_permission:0c981feee2e0afe5",
+            "handoff_workflow:d22acff11ad1d340",
+            "price_plan_summary:43f3958ff9e71da5",
+            "plan_boundary:af9047b0e95e6587",
+            "plan_boundary:303b61cc2626efe4"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "handoff_workflow",
+            "price_plan_summary",
+            "plan_boundary",
+            "plan_boundary"
+          ],
+          "candidate_response_subject": "plan_boundary",
+          "candidate_response_signature": "plan_boundary:303b61cc2626efe4",
           "last_customer_intent": "plan_boundary_question",
           "last_sales_progression_step": "objection_or_answer",
           "stored_audio_data": false,

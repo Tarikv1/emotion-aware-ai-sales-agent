@@ -857,12 +857,17 @@ def focus_menu_count(turns: list[dict]) -> int:
     )
 
 
+def previous_response_list(turns: list[dict]) -> list[str]:
+    responses: list[str] = []
+    for turn in turns:
+        response = str((turn.get("summary") or {}).get("final_response") or "").strip()
+        if response:
+            responses.append(response)
+    return responses
+
+
 def previous_responses(turns: list[dict]) -> set[str]:
-    return {
-        str((turn.get("summary") or {}).get("final_response") or "").strip()
-        for turn in turns
-        if str((turn.get("summary") or {}).get("final_response") or "").strip()
-    }
+    return set(previous_response_list(turns))
 
 
 def focus_turn_count(turns: list[dict], focus: str) -> int:
@@ -1221,19 +1226,58 @@ def progressive_focus_text(language: str, focus: str, normalized: str, step: int
     return options[min(step, len(options) - 1)]
 
 
+def exhausted_progression_options(language: str, focus: str) -> list[str]:
+    if language.startswith("de"):
+        return [
+            "Dann ist der naechste sinnvolle Schritt eine kurze Zusammenfassung statt weiterer Wiederholung. Soll ich die offene Workflow-Luecke schriftlich festhalten?",
+            "Um weiterzukommen, brauche ich eine konkrete Luecke: Routing, Rueckruf-Erinnerung oder Uebergabe. Welche soll ich notieren?",
+        ]
+    if focus == "price":
+        return [
+            "The price part is covered. The useful move now is choosing the gap to test: reminders, routing, or handoff review.",
+            "At this point, Growth only makes sense if reminders or handoffs are a real problem. Should I keep the next step to that comparison?",
+            "A short written comparison is the clean next step: Starter for basic routing, Growth for reminders and handoff review. Should I keep it that narrow?",
+        ]
+    if focus == "qualification":
+        return [
+            uncertain_gap_response(language),
+            workflow_review_next_step_response(language),
+            time_waste_repair_response(language),
+        ]
+    if focus == "fit":
+        return [
+            "The fit check is covered at a high level. The next useful move is one fact: do callbacks, routing, or handoffs actually slip today?",
+            "If no workflow gap is happening, there is no fit. If one is happening, a short written review is enough to test it.",
+        ]
+    if focus == "details":
+        return [
+            "The safe detail is scope: routing, reminders, and handoff review. Anything beyond that needs verified review.",
+            "For more detail, I should keep it narrow: which exact workflow part do you want checked in writing?",
+        ]
+    if focus == "timing":
+        return [
+            "Timing is already the blocker. The safe next step is either a later callback you choose or a short written summary.",
+            "No decision now. If you want to continue later, give me a callback time; otherwise I can stop here.",
+        ]
+    if focus == "effort":
+        return [
+            "The effort question is covered. The next useful test is whether missed follow-up costs enough time to justify even a short review.",
+            "If the time loss is unclear, stop here. If it is clear, a short workflow review is the next step.",
+        ]
+    return [
+        "The high-level answer is covered. The useful next step is one concrete workflow gap to check.",
+        workflow_review_next_step_response(language),
+    ]
+
+
 def unique_progressive_focus_text(language: str, focus: str, normalized: str, step: int, seen: set[str]) -> str:
     for offset in range(8):
         candidate = progressive_focus_text(language, focus, normalized, step + offset)
         if candidate not in seen:
             return candidate
-    if focus == "qualification":
-        for candidate in [
-            uncertain_gap_response(language),
-            workflow_review_next_step_response(language),
-            time_waste_repair_response(language),
-        ]:
-            if candidate not in seen:
-                return candidate
+    for candidate in exhausted_progression_options(language, focus):
+        if candidate not in seen:
+            return candidate
     fallback = progressive_focus_text(language, focus, normalized, step)
     suffix = (
         " The next concrete question is whether that is worth verified review."
@@ -1867,6 +1911,52 @@ def response_hash(text: str) -> str:
     return hashlib.sha256(text.strip().encode("utf-8")).hexdigest()[:16]
 
 
+def response_subject(text: str) -> str:
+    normalized = normalize_text(text)
+    if not normalized:
+        return "empty"
+    if normalized_contains_any(normalized, {"do you have a minute", "worth a quick check"}):
+        return "opening_permission"
+    if normalized_contains_any(normalized, {"starter", "growth"}):
+        if normalized_contains_any(normalized, {"29 month", "59 month", "$29", "$59"}):
+            return "price_plan_summary"
+        if normalized_contains_any(normalized, {"reminders", "handoff review", "basic routing"}):
+            return "plan_boundary"
+    if normalized_contains_any(normalized, {"callback reminders", "missed callbacks", "callback gap", "callback visibility"}):
+        return "callback_workflow"
+    if normalized_contains_any(normalized, {"handoff review", "handoff status", "handoffs"}):
+        return "handoff_workflow"
+    if normalized_contains_any(normalized, {"owner routing", "owner assignment", "priority routing", "basic routing"}):
+        return "routing_workflow"
+    if normalized_contains_any(normalized, {"workflow review", "written summary", "short summary", "verified review"}):
+        return "safe_next_step"
+    if normalized_contains_any(normalized, {"which gap", "which part", "where does", "which one", "what time"}):
+        return "diagnostic_question"
+    if normalized_contains_any(normalized, {"fit depends", "practical fit", "real workflow gap"}):
+        return "fit_boundary"
+    if normalized_contains_any(normalized, {"security", "soc 2", "integration", "specialist"}):
+        return "verified_review_boundary"
+    return f"general:{response_hash(normalized)}"
+
+
+def response_signature(text: str) -> str:
+    return f"{response_subject(text)}:{response_hash(text)}"
+
+
+def previous_response_signatures(turns: list[dict], candidate_response: str | None = None) -> list[str]:
+    signatures = [response_signature(response) for response in previous_response_list(turns)]
+    if candidate_response:
+        signatures.append(response_signature(candidate_response))
+    return [signature for signature in signatures if signature]
+
+
+def previous_response_subjects(turns: list[dict], candidate_response: str | None = None) -> list[str]:
+    subjects = [response_subject(response) for response in previous_response_list(turns)]
+    if candidate_response:
+        subjects.append(response_subject(candidate_response))
+    return [subject for subject in subjects if subject and subject != "empty"]
+
+
 def last_selected_gap_from_turns(turns: list[dict]) -> str | None:
     for turn in reversed(turns):
         continuity = turn.get("continuity") or {}
@@ -2024,9 +2114,11 @@ def build_conversation_memory(
     prior_question = previous_agent_question(turns)
     current_question_type = question_type_from_response(candidate_response or "")
     last_active_question_type = current_question_type if current_question_type != "none" else question_type_from_response(prior_question or "")
-    prior_hashes = [response_hash(response) for response in previous_responses(turns)]
+    prior_hashes = [response_hash(response) for response in previous_response_list(turns)]
     if candidate_response:
         prior_hashes.append(response_hash(candidate_response))
+    response_signatures = previous_response_signatures(turns, candidate_response)
+    response_subjects = previous_response_subjects(turns, candidate_response)
     return {
         "schema_version": 1,
         "active_stage": sales_progression_step(active_topic, selected_gap, continuity),
@@ -2040,6 +2132,10 @@ def build_conversation_memory(
         "answered_topics": answered_topics_from_turns(turns, normalized, active_topic, selected_gap),
         "rejected_topics": rejected_topics_from_transcript(normalized, active_topic, selected_gap),
         "last_response_hashes": prior_hashes[-12:],
+        "last_response_signatures": response_signatures[-12:],
+        "recent_response_subjects": response_subjects[-12:],
+        "candidate_response_subject": response_subject(candidate_response or ""),
+        "candidate_response_signature": response_signature(candidate_response or ""),
         "last_customer_intent": last_customer_intent_from_transcript(normalized, callback_semantic, active_topic),
         "last_sales_progression_step": sales_progression_step(active_topic, selected_gap, continuity),
         "stored_audio_data": False,

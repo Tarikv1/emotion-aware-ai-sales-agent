@@ -1,0 +1,729 @@
+{
+  "checkpoint_id": "LIVE-DEMO-006-memory-transcript-visibility",
+  "passed": true,
+  "failure_count": 0,
+  "failures": [],
+  "provider_calls_made": false,
+  "evidence": {
+    "transcript_visibility": {
+      "playback_metadata": {
+        "agent_audio_volume": 0.68,
+        "browser_fallback_voice_volume": 0.68,
+        "browser_fallback_voice_rate": 1.01,
+        "manual_interrupt_enabled": true,
+        "manual_interrupt_shortcut": "Escape",
+        "spoken_barge_in_enabled": false,
+        "spoken_barge_in_blocked_reason": "Browser SpeechRecognition cannot safely separate the buyer from the agent audio in this demo.",
+        "transcript_panel_enabled": true,
+        "transcript_download_enabled": true,
+        "transcript_stores_audio_data": false,
+        "transcript_scope": "browser session text only; private turn packets remain under ignored local output",
+        "volume_applied_in_browser_only": true,
+        "provider_audio_file_unchanged": true
+      },
+      "required_fragments": {
+        "id=\"conversationTranscript\"": true,
+        "id=\"downloadTranscriptJson\"": true,
+        "id=\"downloadTranscriptText\"": true,
+        "const conversationTranscript = [];": true,
+        "function appendConversationTranscriptTurn(": true,
+        "function renderConversationTranscript()": true,
+        "function downloadTranscript(": true,
+        "demo_conversation_memory": true,
+        "demo_conversation_stability_guard": true
+      }
+    },
+    "memory_repetition_controls": {
+      "records": [
+        {
+          "transcript": "__agent_open__",
+          "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute? I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Is that worth a quick check?",
+          "memory": {
+            "schema_version": 1,
+            "active_stage": "opening",
+            "active_topic": "qualification",
+            "selected_gap": null,
+            "callback_semantic": null,
+            "last_agent_question_type": "permission_check",
+            "last_active_agent_question_type": "permission_check",
+            "last_agent_question_hash": "",
+            "asked_question_type_counts": {
+              "permission_check": 1
+            },
+            "answered_topics": [
+              "qualification"
+            ],
+            "rejected_topics": [],
+            "last_response_hashes": [
+              "0c981feee2e0afe5"
+            ],
+            "last_response_signatures": [
+              "opening_permission:0c981feee2e0afe5"
+            ],
+            "recent_response_subjects": [
+              "opening_permission"
+            ],
+            "candidate_response_subject": "opening_permission",
+            "candidate_response_signature": "opening_permission:0c981feee2e0afe5",
+            "last_customer_intent": "topic:qualification",
+            "last_sales_progression_step": "opening",
+            "stored_audio_data": false,
+            "stores_secrets": false
+          },
+          "guard": {
+            "applied": false,
+            "reason": "conversation_stability_passed",
+            "violations": [],
+            "dialogue_focus": "qualification",
+            "selected_gap": null
+          }
+        },
+        {
+          "transcript": "okay",
+          "response": "Inbound demo requests need owner, callback, and handoff status. Which part slips first for your team?",
+          "memory": {
+            "schema_version": 1,
+            "active_stage": "qualification",
+            "active_topic": "qualification",
+            "selected_gap": null,
+            "callback_semantic": null,
+            "last_agent_question_type": "qualification_gap_diagnostic",
+            "last_active_agent_question_type": "qualification_gap_diagnostic",
+            "last_agent_question_hash": "0c981feee2e0afe5",
+            "asked_question_type_counts": {
+              "permission_check": 1,
+              "qualification_gap_diagnostic": 1
+            },
+            "answered_topics": [
+              "qualification"
+            ],
+            "rejected_topics": [],
+            "last_response_hashes": [
+              "0c981feee2e0afe5",
+              "d22acff11ad1d340"
+            ],
+            "last_response_signatures": [
+              "opening_permission:0c981feee2e0afe5",
+              "handoff_workflow:d22acff11ad1d340"
+            ],
+            "recent_response_subjects": [
+              "opening_permission",
+              "handoff_workflow"
+            ],
+            "candidate_response_subject": "handoff_workflow",
+            "candidate_response_signature": "handoff_workflow:d22acff11ad1d340",
+            "last_customer_intent": "low_information_acknowledgement",
+            "last_sales_progression_step": "qualification",
+            "stored_audio_data": false,
+            "stores_secrets": false
+          },
+          "guard": {
+            "applied": false,
+            "reason": "conversation_stability_passed",
+            "violations": [],
+            "dialogue_focus": "qualification",
+            "selected_gap": null
+          }
+        },
+        {
+          "transcript": "what is the price",
+          "response": "Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?",
+          "memory": {
+            "schema_version": 1,
+            "active_stage": "objection_or_answer",
+            "active_topic": "price",
+            "selected_gap": null,
+            "callback_semantic": null,
+            "last_agent_question_type": "comparative_gap_diagnostic",
+            "last_active_agent_question_type": "comparative_gap_diagnostic",
+            "last_agent_question_hash": "d22acff11ad1d340",
+            "asked_question_type_counts": {
+              "permission_check": 1,
+              "qualification_gap_diagnostic": 1,
+              "comparative_gap_diagnostic": 1
+            },
+            "answered_topics": [
+              "price",
+              "qualification"
+            ],
+            "rejected_topics": [],
+            "last_response_hashes": [
+              "0c981feee2e0afe5",
+              "d22acff11ad1d340",
+              "43f3958ff9e71da5"
+            ],
+            "last_response_signatures": [
+              "opening_permission:0c981feee2e0afe5",
+              "handoff_workflow:d22acff11ad1d340",
+              "price_plan_summary:43f3958ff9e71da5"
+            ],
+            "recent_response_subjects": [
+              "opening_permission",
+              "handoff_workflow",
+              "price_plan_summary"
+            ],
+            "candidate_response_subject": "price_plan_summary",
+            "candidate_response_signature": "price_plan_summary:43f3958ff9e71da5",
+            "last_customer_intent": "topic:price",
+            "last_sales_progression_step": "objection_or_answer",
+            "stored_audio_data": false,
+            "stores_secrets": false
+          },
+          "guard": {
+            "applied": false,
+            "reason": "conversation_stability_passed",
+            "violations": [],
+            "dialogue_focus": "price",
+            "selected_gap": null
+          }
+        },
+        {
+          "transcript": "tell me more",
+          "response": "Value matters only if missed callbacks cost time. Which gap is costing you more today: routing, reminders, or handoffs?",
+          "memory": {
+            "schema_version": 1,
+            "active_stage": "objection_or_answer",
+            "active_topic": "price",
+            "selected_gap": null,
+            "callback_semantic": null,
+            "last_agent_question_type": "gap_diagnostic",
+            "last_active_agent_question_type": "gap_diagnostic",
+            "last_agent_question_hash": "43f3958ff9e71da5",
+            "asked_question_type_counts": {
+              "permission_check": 1,
+              "qualification_gap_diagnostic": 1,
+              "comparative_gap_diagnostic": 1,
+              "gap_diagnostic": 1
+            },
+            "answered_topics": [
+              "price",
+              "qualification"
+            ],
+            "rejected_topics": [],
+            "last_response_hashes": [
+              "0c981feee2e0afe5",
+              "d22acff11ad1d340",
+              "43f3958ff9e71da5",
+              "a2765b021e43fd2c"
+            ],
+            "last_response_signatures": [
+              "opening_permission:0c981feee2e0afe5",
+              "handoff_workflow:d22acff11ad1d340",
+              "price_plan_summary:43f3958ff9e71da5",
+              "callback_workflow:a2765b021e43fd2c"
+            ],
+            "recent_response_subjects": [
+              "opening_permission",
+              "handoff_workflow",
+              "price_plan_summary",
+              "callback_workflow"
+            ],
+            "candidate_response_subject": "callback_workflow",
+            "candidate_response_signature": "callback_workflow:a2765b021e43fd2c",
+            "last_customer_intent": "topic:price",
+            "last_sales_progression_step": "objection_or_answer",
+            "stored_audio_data": false,
+            "stores_secrets": false
+          },
+          "guard": {
+            "applied": false,
+            "reason": "conversation_stability_passed",
+            "violations": [],
+            "dialogue_focus": "price",
+            "selected_gap": null
+          }
+        },
+        {
+          "transcript": "tell me more",
+          "response": "Starter is enough for basic routing. Which part needs more control today: reminders, duplicate checks, or handoff review?",
+          "memory": {
+            "schema_version": 1,
+            "active_stage": "objection_or_answer",
+            "active_topic": "price",
+            "selected_gap": null,
+            "callback_semantic": null,
+            "last_agent_question_type": "qualification_gap_diagnostic",
+            "last_active_agent_question_type": "qualification_gap_diagnostic",
+            "last_agent_question_hash": "a2765b021e43fd2c",
+            "asked_question_type_counts": {
+              "permission_check": 1,
+              "qualification_gap_diagnostic": 2,
+              "comparative_gap_diagnostic": 1,
+              "gap_diagnostic": 1
+            },
+            "answered_topics": [
+              "price",
+              "qualification"
+            ],
+            "rejected_topics": [],
+            "last_response_hashes": [
+              "0c981feee2e0afe5",
+              "d22acff11ad1d340",
+              "43f3958ff9e71da5",
+              "a2765b021e43fd2c",
+              "a3f7003e7c3d65a2"
+            ],
+            "last_response_signatures": [
+              "opening_permission:0c981feee2e0afe5",
+              "handoff_workflow:d22acff11ad1d340",
+              "price_plan_summary:43f3958ff9e71da5",
+              "callback_workflow:a2765b021e43fd2c",
+              "plan_boundary:a3f7003e7c3d65a2"
+            ],
+            "recent_response_subjects": [
+              "opening_permission",
+              "handoff_workflow",
+              "price_plan_summary",
+              "callback_workflow",
+              "plan_boundary"
+            ],
+            "candidate_response_subject": "plan_boundary",
+            "candidate_response_signature": "plan_boundary:a3f7003e7c3d65a2",
+            "last_customer_intent": "topic:price",
+            "last_sales_progression_step": "objection_or_answer",
+            "stored_audio_data": false,
+            "stores_secrets": false
+          },
+          "guard": {
+            "applied": false,
+            "reason": "conversation_stability_passed",
+            "violations": [],
+            "dialogue_focus": "price",
+            "selected_gap": null
+          }
+        },
+        {
+          "transcript": "tell me more",
+          "response": "If callbacks or handoffs are slipping, Growth has a workflow reason. Which one happens more often?",
+          "memory": {
+            "schema_version": 1,
+            "active_stage": "objection_or_answer",
+            "active_topic": "price",
+            "selected_gap": null,
+            "callback_semantic": null,
+            "last_agent_question_type": "comparative_gap_diagnostic",
+            "last_active_agent_question_type": "comparative_gap_diagnostic",
+            "last_agent_question_hash": "a3f7003e7c3d65a2",
+            "asked_question_type_counts": {
+              "permission_check": 1,
+              "qualification_gap_diagnostic": 2,
+              "comparative_gap_diagnostic": 2,
+              "gap_diagnostic": 1
+            },
+            "answered_topics": [
+              "price",
+              "qualification"
+            ],
+            "rejected_topics": [],
+            "last_response_hashes": [
+              "0c981feee2e0afe5",
+              "d22acff11ad1d340",
+              "43f3958ff9e71da5",
+              "a2765b021e43fd2c",
+              "a3f7003e7c3d65a2",
+              "08155e645f8f4593"
+            ],
+            "last_response_signatures": [
+              "opening_permission:0c981feee2e0afe5",
+              "handoff_workflow:d22acff11ad1d340",
+              "price_plan_summary:43f3958ff9e71da5",
+              "callback_workflow:a2765b021e43fd2c",
+              "plan_boundary:a3f7003e7c3d65a2",
+              "handoff_workflow:08155e645f8f4593"
+            ],
+            "recent_response_subjects": [
+              "opening_permission",
+              "handoff_workflow",
+              "price_plan_summary",
+              "callback_workflow",
+              "plan_boundary",
+              "handoff_workflow"
+            ],
+            "candidate_response_subject": "handoff_workflow",
+            "candidate_response_signature": "handoff_workflow:08155e645f8f4593",
+            "last_customer_intent": "topic:price",
+            "last_sales_progression_step": "objection_or_answer",
+            "stored_audio_data": false,
+            "stores_secrets": false
+          },
+          "guard": {
+            "applied": false,
+            "reason": "conversation_stability_passed",
+            "violations": [],
+            "dialogue_focus": "price",
+            "selected_gap": null
+          }
+        },
+        {
+          "transcript": "tell me more",
+          "response": "Use Starter for basic routing. Use Growth only when missed callbacks or slow handoffs cost time.",
+          "memory": {
+            "schema_version": 1,
+            "active_stage": "objection_or_answer",
+            "active_topic": "price",
+            "selected_gap": null,
+            "callback_semantic": null,
+            "last_agent_question_type": "none",
+            "last_active_agent_question_type": "comparative_gap_diagnostic",
+            "last_agent_question_hash": "08155e645f8f4593",
+            "asked_question_type_counts": {
+              "permission_check": 1,
+              "qualification_gap_diagnostic": 2,
+              "comparative_gap_diagnostic": 2,
+              "gap_diagnostic": 1,
+              "none": 1
+            },
+            "answered_topics": [
+              "price",
+              "qualification"
+            ],
+            "rejected_topics": [],
+            "last_response_hashes": [
+              "0c981feee2e0afe5",
+              "d22acff11ad1d340",
+              "43f3958ff9e71da5",
+              "a2765b021e43fd2c",
+              "a3f7003e7c3d65a2",
+              "08155e645f8f4593",
+              "a2c60ea00ec8a9f4"
+            ],
+            "last_response_signatures": [
+              "opening_permission:0c981feee2e0afe5",
+              "handoff_workflow:d22acff11ad1d340",
+              "price_plan_summary:43f3958ff9e71da5",
+              "callback_workflow:a2765b021e43fd2c",
+              "plan_boundary:a3f7003e7c3d65a2",
+              "handoff_workflow:08155e645f8f4593",
+              "plan_boundary:a2c60ea00ec8a9f4"
+            ],
+            "recent_response_subjects": [
+              "opening_permission",
+              "handoff_workflow",
+              "price_plan_summary",
+              "callback_workflow",
+              "plan_boundary",
+              "handoff_workflow",
+              "plan_boundary"
+            ],
+            "candidate_response_subject": "plan_boundary",
+            "candidate_response_signature": "plan_boundary:a2c60ea00ec8a9f4",
+            "last_customer_intent": "topic:price",
+            "last_sales_progression_step": "objection_or_answer",
+            "stored_audio_data": false,
+            "stores_secrets": false
+          },
+          "guard": {
+            "applied": false,
+            "reason": "conversation_stability_passed",
+            "violations": [],
+            "dialogue_focus": "price",
+            "selected_gap": null
+          }
+        },
+        {
+          "transcript": "tell me more",
+          "response": "The price part is covered. The useful move now is choosing the gap to test: reminders, routing, or handoff review.",
+          "memory": {
+            "schema_version": 1,
+            "active_stage": "objection_or_answer",
+            "active_topic": "price",
+            "selected_gap": null,
+            "callback_semantic": null,
+            "last_agent_question_type": "none",
+            "last_active_agent_question_type": "comparative_gap_diagnostic",
+            "last_agent_question_hash": "08155e645f8f4593",
+            "asked_question_type_counts": {
+              "permission_check": 1,
+              "qualification_gap_diagnostic": 2,
+              "comparative_gap_diagnostic": 2,
+              "gap_diagnostic": 1,
+              "none": 2
+            },
+            "answered_topics": [
+              "price",
+              "qualification"
+            ],
+            "rejected_topics": [],
+            "last_response_hashes": [
+              "0c981feee2e0afe5",
+              "d22acff11ad1d340",
+              "43f3958ff9e71da5",
+              "a2765b021e43fd2c",
+              "a3f7003e7c3d65a2",
+              "08155e645f8f4593",
+              "a2c60ea00ec8a9f4",
+              "4c996daff8949f6b"
+            ],
+            "last_response_signatures": [
+              "opening_permission:0c981feee2e0afe5",
+              "handoff_workflow:d22acff11ad1d340",
+              "price_plan_summary:43f3958ff9e71da5",
+              "callback_workflow:a2765b021e43fd2c",
+              "plan_boundary:a3f7003e7c3d65a2",
+              "handoff_workflow:08155e645f8f4593",
+              "plan_boundary:a2c60ea00ec8a9f4",
+              "handoff_workflow:4c996daff8949f6b"
+            ],
+            "recent_response_subjects": [
+              "opening_permission",
+              "handoff_workflow",
+              "price_plan_summary",
+              "callback_workflow",
+              "plan_boundary",
+              "handoff_workflow",
+              "plan_boundary",
+              "handoff_workflow"
+            ],
+            "candidate_response_subject": "handoff_workflow",
+            "candidate_response_signature": "handoff_workflow:4c996daff8949f6b",
+            "last_customer_intent": "topic:price",
+            "last_sales_progression_step": "objection_or_answer",
+            "stored_audio_data": false,
+            "stores_secrets": false
+          },
+          "guard": {
+            "applied": false,
+            "reason": "conversation_stability_passed",
+            "violations": [],
+            "dialogue_focus": "price",
+            "selected_gap": null
+          }
+        },
+        {
+          "transcript": "tell me more",
+          "response": "At this point, Growth only makes sense if reminders or handoffs are a real problem. Should I keep the next step to that comparison?",
+          "memory": {
+            "schema_version": 1,
+            "active_stage": "objection_or_answer",
+            "active_topic": "price",
+            "selected_gap": null,
+            "callback_semantic": null,
+            "last_agent_question_type": "sales_progression_question",
+            "last_active_agent_question_type": "sales_progression_question",
+            "last_agent_question_hash": "08155e645f8f4593",
+            "asked_question_type_counts": {
+              "permission_check": 1,
+              "qualification_gap_diagnostic": 2,
+              "comparative_gap_diagnostic": 2,
+              "gap_diagnostic": 1,
+              "none": 2,
+              "sales_progression_question": 1
+            },
+            "answered_topics": [
+              "price",
+              "qualification"
+            ],
+            "rejected_topics": [],
+            "last_response_hashes": [
+              "0c981feee2e0afe5",
+              "d22acff11ad1d340",
+              "43f3958ff9e71da5",
+              "a2765b021e43fd2c",
+              "a3f7003e7c3d65a2",
+              "08155e645f8f4593",
+              "a2c60ea00ec8a9f4",
+              "4c996daff8949f6b",
+              "51d3d322019379b2"
+            ],
+            "last_response_signatures": [
+              "opening_permission:0c981feee2e0afe5",
+              "handoff_workflow:d22acff11ad1d340",
+              "price_plan_summary:43f3958ff9e71da5",
+              "callback_workflow:a2765b021e43fd2c",
+              "plan_boundary:a3f7003e7c3d65a2",
+              "handoff_workflow:08155e645f8f4593",
+              "plan_boundary:a2c60ea00ec8a9f4",
+              "handoff_workflow:4c996daff8949f6b",
+              "plan_boundary:51d3d322019379b2"
+            ],
+            "recent_response_subjects": [
+              "opening_permission",
+              "handoff_workflow",
+              "price_plan_summary",
+              "callback_workflow",
+              "plan_boundary",
+              "handoff_workflow",
+              "plan_boundary",
+              "handoff_workflow",
+              "plan_boundary"
+            ],
+            "candidate_response_subject": "plan_boundary",
+            "candidate_response_signature": "plan_boundary:51d3d322019379b2",
+            "last_customer_intent": "topic:price",
+            "last_sales_progression_step": "objection_or_answer",
+            "stored_audio_data": false,
+            "stores_secrets": false
+          },
+          "guard": {
+            "applied": false,
+            "reason": "conversation_stability_passed",
+            "violations": [],
+            "dialogue_focus": "price",
+            "selected_gap": null
+          }
+        },
+        {
+          "transcript": "tell me more",
+          "response": "A short written comparison is the clean next step: Starter for basic routing, Growth for reminders and handoff review. Should I keep it that narrow?",
+          "memory": {
+            "schema_version": 1,
+            "active_stage": "objection_or_answer",
+            "active_topic": "price",
+            "selected_gap": null,
+            "callback_semantic": null,
+            "last_agent_question_type": "sales_progression_question",
+            "last_active_agent_question_type": "sales_progression_question",
+            "last_agent_question_hash": "51d3d322019379b2",
+            "asked_question_type_counts": {
+              "permission_check": 1,
+              "qualification_gap_diagnostic": 2,
+              "comparative_gap_diagnostic": 2,
+              "gap_diagnostic": 1,
+              "none": 2,
+              "sales_progression_question": 2
+            },
+            "answered_topics": [
+              "price",
+              "qualification"
+            ],
+            "rejected_topics": [],
+            "last_response_hashes": [
+              "0c981feee2e0afe5",
+              "d22acff11ad1d340",
+              "43f3958ff9e71da5",
+              "a2765b021e43fd2c",
+              "a3f7003e7c3d65a2",
+              "08155e645f8f4593",
+              "a2c60ea00ec8a9f4",
+              "4c996daff8949f6b",
+              "51d3d322019379b2",
+              "c2f57ab43bfaae5f"
+            ],
+            "last_response_signatures": [
+              "opening_permission:0c981feee2e0afe5",
+              "handoff_workflow:d22acff11ad1d340",
+              "price_plan_summary:43f3958ff9e71da5",
+              "callback_workflow:a2765b021e43fd2c",
+              "plan_boundary:a3f7003e7c3d65a2",
+              "handoff_workflow:08155e645f8f4593",
+              "plan_boundary:a2c60ea00ec8a9f4",
+              "handoff_workflow:4c996daff8949f6b",
+              "plan_boundary:51d3d322019379b2",
+              "plan_boundary:c2f57ab43bfaae5f"
+            ],
+            "recent_response_subjects": [
+              "opening_permission",
+              "handoff_workflow",
+              "price_plan_summary",
+              "callback_workflow",
+              "plan_boundary",
+              "handoff_workflow",
+              "plan_boundary",
+              "handoff_workflow",
+              "plan_boundary",
+              "plan_boundary"
+            ],
+            "candidate_response_subject": "plan_boundary",
+            "candidate_response_signature": "plan_boundary:c2f57ab43bfaae5f",
+            "last_customer_intent": "topic:price",
+            "last_sales_progression_step": "objection_or_answer",
+            "stored_audio_data": false,
+            "stores_secrets": false
+          },
+          "guard": {
+            "applied": false,
+            "reason": "conversation_stability_passed",
+            "violations": [],
+            "dialogue_focus": "price",
+            "selected_gap": null
+          }
+        }
+      ],
+      "duplicate_response_count": 0,
+      "duplicates": [],
+      "last_memory": {
+        "schema_version": 1,
+        "active_stage": "objection_or_answer",
+        "active_topic": "price",
+        "selected_gap": null,
+        "callback_semantic": null,
+        "last_agent_question_type": "sales_progression_question",
+        "last_active_agent_question_type": "sales_progression_question",
+        "last_agent_question_hash": "51d3d322019379b2",
+        "asked_question_type_counts": {
+          "permission_check": 1,
+          "qualification_gap_diagnostic": 2,
+          "comparative_gap_diagnostic": 2,
+          "gap_diagnostic": 1,
+          "none": 2,
+          "sales_progression_question": 2
+        },
+        "answered_topics": [
+          "price",
+          "qualification"
+        ],
+        "rejected_topics": [],
+        "last_response_hashes": [
+          "0c981feee2e0afe5",
+          "d22acff11ad1d340",
+          "43f3958ff9e71da5",
+          "a2765b021e43fd2c",
+          "a3f7003e7c3d65a2",
+          "08155e645f8f4593",
+          "a2c60ea00ec8a9f4",
+          "4c996daff8949f6b",
+          "51d3d322019379b2",
+          "c2f57ab43bfaae5f"
+        ],
+        "last_response_signatures": [
+          "opening_permission:0c981feee2e0afe5",
+          "handoff_workflow:d22acff11ad1d340",
+          "price_plan_summary:43f3958ff9e71da5",
+          "callback_workflow:a2765b021e43fd2c",
+          "plan_boundary:a3f7003e7c3d65a2",
+          "handoff_workflow:08155e645f8f4593",
+          "plan_boundary:a2c60ea00ec8a9f4",
+          "handoff_workflow:4c996daff8949f6b",
+          "plan_boundary:51d3d322019379b2",
+          "plan_boundary:c2f57ab43bfaae5f"
+        ],
+        "recent_response_subjects": [
+          "opening_permission",
+          "handoff_workflow",
+          "price_plan_summary",
+          "callback_workflow",
+          "plan_boundary",
+          "handoff_workflow",
+          "plan_boundary",
+          "handoff_workflow",
+          "plan_boundary",
+          "plan_boundary"
+        ],
+        "candidate_response_subject": "plan_boundary",
+        "candidate_response_signature": "plan_boundary:c2f57ab43bfaae5f",
+        "last_customer_intent": "topic:price",
+        "last_sales_progression_step": "objection_or_answer",
+        "stored_audio_data": false,
+        "stores_secrets": false
+      }
+    },
+    "docs": {
+      "docs\\thesis\\ROADMAP.md": {
+        "exists": true,
+        "mentions_checkpoint": true
+      },
+      "docs\\product\\CHECKPOINT_INDEX.md": {
+        "exists": true,
+        "mentions_checkpoint": true
+      },
+      "docs\\product\\COMMANDS.md": {
+        "exists": true,
+        "mentions_checkpoint": true
+      },
+      "docs\\product\\LIVE_DEMO_006_MEMORY_TRANSCRIPT_VISIBILITY.md": {
+        "exists": true,
+        "mentions_checkpoint": true
+      }
+    }
+  }
+}
