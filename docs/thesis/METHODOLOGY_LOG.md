@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-19 - LIVE-DEMO-002 conversation stability callback disambiguation
+
+- Objective: make the supervised live demo stable over longer conversations by fixing callback workflow-vs-scheduling ambiguity, preserving useful session memory, reducing repetition/customer echo, and keeping LLM enrichment outside the live speech path.
+- Action taken: added explicit callback semantic helpers, compact `demo_conversation_memory`, a pre-speech conversation stability guard, full-session live-demo state retention, ignored-enrichment handling for provider timeout/schema failures, configurable non-zero reasoner temperature default, an optional local/API enrichment benchmark scaffold, product documentation, command entries, and generated validator evidence.
+- Data used: synthetic text-only live-demo turns for the fictional `Northstar Workflow Labs` / `RouteSignal CRM` campaign, including callback workflow positives, callback scheduling controls, a 12-turn stability sample, a 27-turn stress sample, customer echo examples, casual conversation repairs, and LLM boundary probes. No provider calls, private audio reads, real customer transcripts, production promotion, or `PROD-102` work were used.
+- Output created: updated `runtime/core/live_voice_session_policy.py`, `runtime/core/realtime_turns.py`, `runtime/core/dialogue_reasoner_async_enrichment.py`, `runtime/providers/dialogue_reasoner_llm_client.py`, `scripts/run_live_demo_001_agent_voice_call.py`, `scripts/validate_live_demo_002_conversation_stability.py`, `scripts/run_live_demo_002_llm_enrichment_benchmark.py`, `docs/product/LIVE_DEMO_002_CONVERSATION_STABILITY_CALLBACK_DISAMBIGUATION.md`, and generated evidence under `research/experiments/generated/LIVE-DEMO-002-conversation-stability-callback-disambiguation/`.
+- What was learned: deterministic sales agents need compact turn memory and pre-speech repair before adding broader reasoning; otherwise the same callback/product terms can collapse into scheduling and repeated question loops even when individual one-turn routes look correct.
+- Why it matters for the thesis: it strengthens the reusable sales-worker architecture by separating live call-control authority, conversation stability, and optional LLM enrichment, while preserving buyer agency and keeping final spoken text runtime-owned.
+- Open questions: whether the next supervised listening pass should focus on live ASR/turn-taking latency, richer campaign knowledge, or a narrower sales-progression validator before any further provider experimentation.
+
 ### 2026-05-19 - DIALOGUE-REASONER-004 async enrichment boundary
 
 - Objective: wire the hybrid LLM reasoning layer behind deterministic routing without letting provider latency block the customer response or letting provider output mutate protected runtime decisions.

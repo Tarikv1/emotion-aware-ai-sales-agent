@@ -1,6 +1,6 @@
 {
   "experiment_id": "DIALOGUE-REASONER-002",
-  "created_at": "2026-05-19T16:01:28+00:00",
+  "created_at": "2026-05-19T17:48:02+00:00",
   "case_source": "research/experiments/cases/dialogue-reasoner-001-live-demo-failures.json",
   "case_count": 30,
   "full_case_count": 30,
@@ -27,7 +27,7 @@
     "api_key_configured": true,
     "api_key_value_logged": false,
     "timeout_seconds": 12.0,
-    "temperature": 0.0,
+    "temperature": 1.0,
     "use_json_response_format": true
   },
   "baseline_reference": {

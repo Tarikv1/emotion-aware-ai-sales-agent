@@ -463,9 +463,6 @@ def localized_response(language: str, sales_difficulty: str, campaign: dict | No
 
 def contains_any(text: str, phrases: list[str]) -> bool:
     lowered = text.lower()
-    # Legacy scheduling phrase lists must not treat the product term "callback" as call-control intent.
-    if "short summary and call back" in phrases and "callback" in phrases:
-        phrases = [phrase for phrase in phrases if phrase != "callback"]
     return any(phrase in lowered for phrase in phrases)
 
 
@@ -1355,7 +1352,7 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
-    if contains_any(transcript, ["call back later", "callback later", "call me back", "callback", "short summary and call back", "nächste woche nochmal", "später noch mal", "morgen zurückrufen", "anderen zeitpunkt"]):
+    if contains_any(transcript, ["call back later", "callback later", "call me back", "short summary and call back", "nächste woche nochmal", "später noch mal", "morgen zurückrufen", "anderen zeitpunkt"]):
         sales_difficulty = "callback-request"
         return {
             "response_language": response_language,

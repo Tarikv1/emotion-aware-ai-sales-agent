@@ -22,6 +22,7 @@ from runtime.core.dialogue_reasoner import (  # noqa: E402
     validate_reasoning_packet,
 )
 from runtime.providers.dialogue_reasoner_llm_client import (  # noqa: E402
+    DEFAULT_REASONER_TEMPERATURE,
     OpenAICompatibleReasonerConfig,
     call_openai_compatible_reasoner,
     missing_provider_config,
@@ -313,7 +314,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--base-url", default=None, help="OpenAI-compatible chat/completions URL. Can also use DIALOGUE_REASONER_BASE_URL.")
     parser.add_argument("--model", default=None, help="Model id. Can also use DIALOGUE_REASONER_MODEL.")
     parser.add_argument("--timeout-seconds", type=float, default=12.0)
-    parser.add_argument("--temperature", type=float, default=0.0)
+    parser.add_argument("--temperature", type=float, default=DEFAULT_REASONER_TEMPERATURE)
     parser.add_argument("--disable-json-response-format", action="store_true")
     parser.add_argument("--max-cases", type=int, default=0, help="Optional smoke limit before running the full 30 cases.")
     parser.add_argument("--out", default=None)

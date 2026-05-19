@@ -72,12 +72,12 @@ def validate_modules() -> None:
     ]:
         assert_condition(hasattr(client, name), f"provider client missing {name}")
     assert_condition(
-        client.normalize_chat_completions_url("https://api.example.com/v1") == "https://api.example.com/v1/chat/completions",
+        client.normalize_chat_completions_url("http://127.0.0.1:9/v1") == "http://127.0.0.1:9/v1/chat/completions",
         "provider base URL should normalize to chat completions endpoint",
     )
     assert_condition(
-        client.normalize_chat_completions_url("https://api.example.com/v1/chat/completions")
-        == "https://api.example.com/v1/chat/completions",
+        client.normalize_chat_completions_url("http://127.0.0.1:9/v1/chat/completions")
+        == "http://127.0.0.1:9/v1/chat/completions",
         "full chat completions URL should stay stable",
     )
     prompt = reasoner.render_strict_json_reasoner_prompt(

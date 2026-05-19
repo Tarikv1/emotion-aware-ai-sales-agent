@@ -9,13 +9,16 @@ from typing import Any
 from urllib.parse import urlsplit, urlunsplit
 
 
+DEFAULT_REASONER_TEMPERATURE = 1.0
+
+
 @dataclass(frozen=True)
 class OpenAICompatibleReasonerConfig:
     base_url: str | None
     model: str | None
     api_key: str | None
     timeout_seconds: float = 12.0
-    temperature: float = 0.0
+    temperature: float = DEFAULT_REASONER_TEMPERATURE
     use_json_response_format: bool = True
 
 

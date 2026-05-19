@@ -2926,6 +2926,18 @@ Validate that `LIVE-DEMO-002` preserves the `LIVE-DEMO-001` baseline while using
 python scripts\validate_live_demo_002_runtime_extraction_baseline.py
 ```
 
+Validate the narrow `LIVE-DEMO-002-conversation-stability-callback-disambiguation` checkpoint without provider calls. This checks callback workflow-vs-scheduling semantics, compact conversation memory, long-turn stability, customer-echo suppression, seller-led progression, nonblocking async enrichment boundaries, and the optional benchmark scaffold:
+
+```powershell
+python scripts\validate_live_demo_002_conversation_stability.py
+```
+
+Run the optional local/API async-enrichment benchmark scaffold in provider-off mode:
+
+```powershell
+python scripts\run_live_demo_002_llm_enrichment_benchmark.py
+```
+
 Run the `DIALOGUE-REASONER-001` structured runtime reasoner baseline over 30 frozen live-demo dialogue-act cases without provider calls:
 
 ```powershell
@@ -2970,7 +2982,7 @@ Validate that `DIALOGUE-REASONER-003` keeps deterministic routing in control, bl
 python scripts\validate_dialogue_reasoner_003_hybrid_gate.py
 ```
 
-Run the live hybrid reasoning-provider evaluation only after filling the ignored dialogue-reasoner env file and confirming synthetic transcript upload. Some OpenAI-compatible model families require `--temperature 1`:
+Run the live hybrid reasoning-provider evaluation only after filling the ignored dialogue-reasoner env file and confirming synthetic transcript upload. The default reasoner temperature is `1`; override it only after a benchmark proves the lower setting works for the selected provider/model:
 
 ```powershell
 python scripts\run_dialogue_reasoner_003_hybrid_gate.py --live --consent-confirmed --temperature 1
@@ -2988,7 +3000,7 @@ Validate that `DIALOGUE-REASONER-004` keeps async enrichment nonblocking, blocks
 python scripts\validate_dialogue_reasoner_004_async_enrichment.py
 ```
 
-Run a one-case live async enrichment smoke only after filling the ignored dialogue-reasoner env file and confirming synthetic transcript upload. Some OpenAI-compatible model families require `--temperature 1`:
+Run a one-case live async enrichment smoke only after filling the ignored dialogue-reasoner env file and confirming synthetic transcript upload. The default reasoner temperature is `1`; override it only after a benchmark proves the lower setting works for the selected provider/model:
 
 ```powershell
 python scripts\run_dialogue_reasoner_004_async_enrichment.py --live --consent-confirmed --temperature 1 --max-reasoning-cases 1

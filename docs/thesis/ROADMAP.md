@@ -29,11 +29,11 @@ Status convention:
 
 ## Checkpoint Board
 
-Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped dialogue-policy validation, baseline voice/runtime quality, and thesis evidence preservation.
+Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped dialogue-policy validation, baseline voice/runtime quality, live-demo conversation stability, and thesis evidence preservation.
 
 Current checkpoint:
 
-- [ ] Current: stopped after `PROD-101-english-recommendation-roleplay-post-patch-regression`; do not open `PROD-102` or any other next checkpoint until Tarik explicitly resumes.
+- [ ] Current: `LIVE-DEMO-002-conversation-stability-callback-disambiguation` is the resumed narrow live-demo checkpoint after `PROD-101`. Its scope is live-demo stability, callback semantic disambiguation, compact conversation memory, repetition/echo prevention, and nonblocking LLM enrichment boundaries. It is not full production sales closure, does not open `PROD-102`, and does not promote payment, provider-hosted agents, voice cloning, retrieval defaults, LLM-generated final speech, public demo use, real customer use, legal readiness, or production runtime behavior.
 
 Next checkpoints:
 
@@ -63,6 +63,8 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `LIVE-DEMO-002-conversation-stability-callback-disambiguation`, which hardens the live demo after `PROD-101` without opening `PROD-102`. It records callback workflow-vs-scheduling semantic accuracy: `1.0`, 27-turn stress duplicate responses: `0`, benchmark repetition rate: `0.0`, benchmark echo violation count: `0`, route override violations: `0`, final response mutation violations: `0`, provider calls made by validation: `false`, and deterministic customer response availability before enrichment. It adds compact `demo_conversation_memory`, a pre-speech conversation stability guard, ignored-enrichment handling for provider timeout/schema failures, configurable non-zero reasoner temperature default, optional local/API benchmark scaffolding, and generated evidence under `research/experiments/generated/LIVE-DEMO-002-conversation-stability-callback-disambiguation/`. It keeps payment collection, provider-hosted durable agents, voice cloning, retrieval/LLM production defaults, LLM-written final speech, real customer use, production promotion, and `PROD-102` blocked.
 
 - [x] `PROD-101-english-recommendation-roleplay-post-patch-regression`, which verifies the `PROD-100` English recommendation-roleplay runtime patch after application. It records recommendation roleplay positive failures: `0`, adjacent control failures: `0`, stable English guard passed: `true`, requires customer facts for recommendation: `true`, requires agency preservation: `true`, no agent decides for customer: `true`, no value guarantee: `true`, review HTML created: `false`, do not open the next checkpoint in this run: `true`, changes no runtime behavior, response text behavior, classifier reachability, retrieval default, or deployment boundary inside the regression checkpoint, and keeps retrieval defaults, voice playback, providers, LLM calls, private data, public demo use, real customer use, payment collection, contract signing, legal readiness, German promotion, and production promotion blocked.
 

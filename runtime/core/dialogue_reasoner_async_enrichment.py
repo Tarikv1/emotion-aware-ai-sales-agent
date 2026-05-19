@@ -56,6 +56,8 @@ def async_enrichment_boundary_packet() -> dict[str, Any]:
         "text_sent_to_provider": False,
         "customer_response_blocked_on_provider": False,
         "provider_result_applied_after_response": False,
+        "provider_result_received_after_response": False,
+        "ignored_by_live_turn": True,
         "runtime_route_override_allowed": False,
         "mutates_final_response": False,
         "protected_route_fields": sorted(PROTECTED_ROUTE_FIELDS),
@@ -112,6 +114,8 @@ def build_async_enrichment_request(
         "raw_response_stored": False,
         "customer_response_blocked_on_provider": False,
         "provider_result_applied_after_response": False,
+        "provider_result_received_after_response": False,
+        "ignored_by_live_turn": True,
         "runtime_route_override_allowed": False,
         "mutates_final_response": False,
         "final_response_changed_by_provider": False,
@@ -143,7 +147,9 @@ def complete_async_enrichment(
             "http_status": provider_call.get("http_status"),
             "usage": provider_call.get("usage") or {},
             "raw_response_stored": provider_call.get("raw_response_stored") is True,
-            "provider_result_applied_after_response": True,
+            "provider_result_received_after_response": provider_call.get("provider_calls_made") is True,
+            "provider_result_applied_after_response": False,
+            "ignored_by_live_turn": True,
             "customer_response_blocked_on_provider": False,
             "runtime_route_override_allowed": False,
             "mutates_final_response": False,
@@ -160,8 +166,9 @@ def complete_async_enrichment(
     if provider_call.get("error"):
         completed.update(
             {
-                "status": "failed",
+                "status": "ignored",
                 "error": provider_call["error"],
+                "ignored_reason": "provider_error_or_timeout",
                 "mismatches": {"provider_error": provider_call["error"]},
             }
         )
@@ -180,8 +187,10 @@ def complete_async_enrichment(
     except Exception as exc:
         completed.update(
             {
-                "status": "failed",
+                "status": "ignored",
                 "error": str(exc),
+                "ignored_reason": "parse_or_schema_error",
+                "schema_failure_ignored": True,
                 "mismatches": {"parse_or_schema_error": str(exc)},
             }
         )

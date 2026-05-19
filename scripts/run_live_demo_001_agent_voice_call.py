@@ -1248,6 +1248,37 @@ def build_turn_packet(
             **live_demo_retrieval_kwargs(),
             align_decision_trace=True,
         )
+    conversation_memory = session_policy.build_conversation_memory(
+        session_state,
+        transcript,
+        str(guarded.get("final_response") or ""),
+        continuity,
+    )
+    stability_guard = session_policy.pre_speech_conversation_stability_guard(
+        transcript,
+        session_state,
+        str(campaign.get("language") or "en"),
+        str(guarded.get("final_response") or ""),
+        conversation_memory,
+    )
+    if stability_guard.get("applied"):
+        continuity = stability_guard
+        guarded = build_guarded_response_packet(
+            campaign=campaign,
+            stage=stage,
+            input_type=input_type,
+            transcript=transcript,
+            silence_count=silence_count,
+            candidate_response_override=stability_guard.get("candidate_response"),
+            **live_demo_retrieval_kwargs(),
+            align_decision_trace=True,
+        )
+        conversation_memory = session_policy.build_conversation_memory(
+            session_state,
+            transcript,
+            str(guarded.get("final_response") or ""),
+            continuity,
+        )
     voice_packet = attach_runtime_voice_delivery(guarded, campaign, provider_key="elevenlabs")
     tts_packet = attach_runtime_tts_delivery(
         voice_packet,
@@ -1308,6 +1339,8 @@ def build_turn_packet(
         "runtime_behavior_changed": False,
         "opens_prod_102": False,
         "demo_session_continuity": continuity,
+        "demo_conversation_memory": conversation_memory,
+        "demo_conversation_stability_guard": stability_guard,
         "dialogue_reasoner_async_enrichment": async_enrichment,
         "packet": tts_packet,
         "summary": summary,
@@ -1935,9 +1968,9 @@ def make_handler(metadata: dict, cases_path: Path, private_out: Path):
                         "transcript": transcript,
                         "summary": turn.get("summary", {}),
                         "continuity": turn.get("demo_session_continuity", {}),
+                        "conversation_memory": turn.get("demo_conversation_memory", {}),
                     }
                 )
-                session_state["turns"] = session_state["turns"][-8:]
                 self.send_json(turn)
             except Exception as exc:
                 self.send_json({"error": str(exc)}, status=500)

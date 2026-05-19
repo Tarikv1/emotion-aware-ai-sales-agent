@@ -1,0 +1,1677 @@
+{
+  "checkpoint_id": "LIVE-DEMO-002-conversation-stability-callback-disambiguation",
+  "passed": true,
+  "failure_count": 0,
+  "failures": [],
+  "provider_calls_made": false,
+  "provider_latency_ms": {
+    "median": 617.3,
+    "p95": 913.2
+  },
+  "evidence": {
+    "hard_turn_cap_source_check": {
+      "forbidden_fragments_found": []
+    },
+    "callback_workflow_gap": [
+      {
+        "transcript": "callbacks are the problem",
+        "response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+        "semantic": "callback_workflow_gap",
+        "summary": {
+          "sales_difficulty": "general-product-question",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "final_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "Then callback <break time=\"0.215s\" /> reminders are the value point: fewer inbound demo requests wait without a next step, so, would a short workflow review focus only on that gap?",
+          "browser_fallback_speech_text": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step, so, would a short workflow review focus only on that gap?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag010-response-impact-bridge",
+            "rag010-response-real-timing-check",
+            "rag016a-response-autonomy-reminder"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        },
+        "continuity": {
+          "applied": true,
+          "reason": "seller_gap_selected_for_qualification",
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": "callback_workflow_gap",
+          "candidate_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?"
+        },
+        "realtime_sales_difficulty": "unknown-runtime-signal"
+      },
+      {
+        "transcript": "it is probably the callbacks",
+        "response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+        "semantic": "callback_workflow_gap",
+        "summary": {
+          "sales_difficulty": "general-product-question",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "final_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "Then callback <break time=\"0.238s\" /> reminders are the value point: fewer inbound demo requests wait without a next step, so, would a short workflow review focus only on that gap?",
+          "browser_fallback_speech_text": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step, so, would a short workflow review focus only on that gap?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag016a-response-autonomy-reminder",
+            "rag019-objection-diagnose-before-answering",
+            "rag019-objection-timing-priority-fit"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        },
+        "continuity": {
+          "applied": true,
+          "reason": "seller_gap_selected_for_qualification",
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": "callback_workflow_gap",
+          "candidate_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?"
+        },
+        "realtime_sales_difficulty": "unknown-runtime-signal"
+      },
+      {
+        "transcript": "missed callbacks happen more often than handoffs",
+        "response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+        "semantic": "callback_workflow_gap",
+        "summary": {
+          "sales_difficulty": "general-product-question",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "final_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "Then callback <break time=\"0.24s\" /> reminders are the value point: fewer inbound demo requests wait without a next step. Um, would a short workflow review focus only on that gap?",
+          "browser_fallback_speech_text": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Um, would a short workflow review focus only on that gap?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag010-response-impact-bridge",
+            "rag016a-response-autonomy-reminder",
+            "rag019-objection-diagnose-before-answering"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        },
+        "continuity": {
+          "applied": true,
+          "reason": "seller_gap_selected_for_qualification",
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": "callback_workflow_gap",
+          "candidate_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?"
+        },
+        "realtime_sales_difficulty": "unknown-runtime-signal"
+      },
+      {
+        "transcript": "what do you mean by callbacks",
+        "response": "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?",
+        "semantic": "callback_workflow_gap",
+        "summary": {
+          "sales_difficulty": "general-product-question",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "final_response": "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. Um, RouteSignal keeps owner <break time=\"0.214s\" /> and next step visible. Are missed follow-ups happening often enough to check?",
+          "browser_fallback_speech_text": "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. Um, RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag019-objection-timing-priority-fit",
+            "rag016a-response-autonomy-reminder",
+            "rag019-objection-diagnose-before-answering"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        },
+        "continuity": {
+          "applied": true,
+          "reason": "callback_workflow_clarified",
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": "callback_workflow_gap",
+          "candidate_response": "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?"
+        },
+        "realtime_sales_difficulty": "unknown-runtime-signal"
+      },
+      {
+        "transcript": "are callbacks appointments or reminders",
+        "response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+        "semantic": "callback_workflow_gap",
+        "summary": {
+          "sales_difficulty": "general-product-question",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "final_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "Then callback <break time=\"0.174s\" /> reminders are the value point: fewer inbound demo requests wait without a next step. Um, would a short workflow review focus only on that gap?",
+          "browser_fallback_speech_text": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Um, would a short workflow review focus only on that gap?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag016a-response-autonomy-reminder",
+            "rag019-objection-diagnose-before-answering",
+            "rag019-objection-timing-priority-fit"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        },
+        "continuity": {
+          "applied": true,
+          "reason": "seller_gap_selected_for_qualification",
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": "callback_workflow_gap",
+          "candidate_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?"
+        },
+        "realtime_sales_difficulty": "unknown-runtime-signal"
+      },
+      {
+        "transcript": "callback reminders are where we struggle",
+        "response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+        "semantic": "callback_workflow_gap",
+        "summary": {
+          "sales_difficulty": "general-product-question",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "final_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "Then callback <break time=\"0.194s\" /> reminders are the value point: fewer inbound demo requests wait without a next step, well, would a short workflow review focus only on that gap?",
+          "browser_fallback_speech_text": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step, well, would a short workflow review focus only on that gap?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag016a-response-autonomy-reminder",
+            "rag014-response-consent-based-schedule-confirmation",
+            "rag019-objection-diagnose-before-answering"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        },
+        "continuity": {
+          "applied": true,
+          "reason": "seller_gap_selected_for_qualification",
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": "callback_workflow_gap",
+          "candidate_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?"
+        },
+        "realtime_sales_difficulty": "unknown-runtime-signal"
+      },
+      {
+        "transcript": "demo callbacks keep slipping",
+        "response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+        "semantic": "callback_workflow_gap",
+        "summary": {
+          "sales_difficulty": "general-product-question",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "final_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "Then callback <break time=\"0.175s\" /> reminders are the value point: fewer inbound demo requests wait without a next step, so, would a short workflow review focus only on that gap?",
+          "browser_fallback_speech_text": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step, so, would a short workflow review focus only on that gap?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag019-objection-timing-priority-fit",
+            "rag016a-response-autonomy-reminder",
+            "rag019-objection-diagnose-before-answering"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        },
+        "continuity": {
+          "applied": true,
+          "reason": "seller_gap_selected_for_qualification",
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": "callback_workflow_gap",
+          "candidate_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?"
+        },
+        "realtime_sales_difficulty": "unknown-runtime-signal"
+      },
+      {
+        "transcript": "our team misses follow-ups",
+        "response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+        "semantic": "callback_workflow_gap",
+        "summary": {
+          "sales_difficulty": "general-product-question",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "final_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "Then callback <break time=\"0.24s\" /> reminders are the value point: fewer inbound demo requests wait without a next step. Um, would a short workflow review focus only on that gap?",
+          "browser_fallback_speech_text": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Um, would a short workflow review focus only on that gap?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag016a-response-autonomy-reminder",
+            "rag019-objection-diagnose-before-answering",
+            "rag010-response-impact-bridge"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        },
+        "continuity": {
+          "applied": true,
+          "reason": "seller_gap_selected_for_qualification",
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": "callback_workflow_gap",
+          "candidate_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?"
+        },
+        "realtime_sales_difficulty": "unknown-runtime-signal"
+      }
+    ],
+    "callback_scheduling_controls": [
+      {
+        "transcript": "call me back later",
+        "expected_semantic": "callback_scheduling_request",
+        "semantic": "callback_scheduling_request",
+        "response": "No problem. What time should I note for the callback?",
+        "summary": {
+          "sales_difficulty": "callback-request",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "direct-ask-or-commitment",
+          "next_action": "offer-scheduling",
+          "call_control": "continue-call",
+          "final_response": "No problem. What time should I note for the callback?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "No problem. What time should I note for the callback <break time=\"0.213s\" />?",
+          "browser_fallback_speech_text": "No problem. What time should I note for the callback?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag014-response-consent-based-schedule-confirmation",
+            "rag019-objection-timing-priority-fit",
+            "rag012-response-low-pressure-visual-followup"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        },
+        "continuity": {
+          "applied": true,
+          "reason": "callback_request_time_needed",
+          "dialogue_focus": "timing",
+          "callback_semantic": "callback_scheduling_request",
+          "candidate_response": "No problem. What time should I note for the callback?"
+        }
+      },
+      {
+        "transcript": "can you call me tomorrow",
+        "expected_semantic": "callback_scheduling_request",
+        "semantic": "callback_scheduling_request",
+        "response": "That can work. What time should I note for the callback?",
+        "summary": {
+          "sales_difficulty": "callback-request",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "direct-ask-or-commitment",
+          "next_action": "offer-scheduling",
+          "call_control": "continue-call",
+          "final_response": "That can work. What time should I note for the callback?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "That can work. What time should I note for the callback <break time=\"0.201s\" />?",
+          "browser_fallback_speech_text": "That can work. What time should I note for the callback?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag014-response-consent-based-schedule-confirmation",
+            "rag016a-response-autonomy-reminder",
+            "rag019-objection-timing-priority-fit"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        },
+        "continuity": {
+          "applied": true,
+          "reason": "callback_request_time_needed",
+          "dialogue_focus": "timing",
+          "callback_semantic": "callback_scheduling_request",
+          "candidate_response": "That can work. What time should I note for the callback?"
+        }
+      },
+      {
+        "transcript": "not now, call me later",
+        "expected_semantic": "callback_scheduling_request",
+        "semantic": "callback_scheduling_request",
+        "response": "Sure. What time should I note for the callback?",
+        "summary": {
+          "sales_difficulty": "callback-request",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "direct-ask-or-commitment",
+          "next_action": "offer-scheduling",
+          "call_control": "continue-call",
+          "final_response": "Sure. What time should I note for the callback?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "Sure. What time should I note for the callback <break time=\"0.24s\" />?",
+          "browser_fallback_speech_text": "Sure. What time should I note for the callback?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag019-objection-timing-priority-fit",
+            "rag014-response-consent-based-schedule-confirmation",
+            "rag012-response-low-pressure-visual-followup"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        },
+        "continuity": {
+          "applied": true,
+          "reason": "callback_request_time_needed",
+          "dialogue_focus": "timing",
+          "callback_semantic": "callback_scheduling_request",
+          "candidate_response": "Sure. What time should I note for the callback?"
+        }
+      },
+      {
+        "transcript": "tomorrow at 3 works",
+        "expected_semantic": "callback_time_confirmation",
+        "semantic": "callback_time_confirmation",
+        "response": "Confirmed. I will record that callback time for the specialist. Goodbye.",
+        "summary": {
+          "sales_difficulty": "scheduling-confirmation",
+          "detected_emotion": "positive",
+          "interest_state": "interested",
+          "selected_strategy": "direct-ask-or-commitment",
+          "next_action": "confirm-scheduling",
+          "call_control": "schedule-and-end",
+          "final_response": "Confirmed. I will record that callback time for the specialist. Goodbye.",
+          "tts_input_source": "final_response",
+          "tts_input_text": "Confirmed. I will record that callback time for the specialist. Goodbye.",
+          "browser_fallback_speech_text": "Confirmed. I will record that callback time for the specialist. Goodbye.",
+          "tts_provider_rendering_used": false,
+          "retrieval_status": "blocked",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        },
+        "continuity": {
+          "applied": true,
+          "reason": "callback_time_confirmed",
+          "dialogue_focus": "timing",
+          "candidate_response": "Confirmed. I will record that callback time for the specialist. Goodbye."
+        }
+      }
+    ],
+    "stability_12_turn": [
+      {
+        "turn": 1,
+        "transcript": "__agent_open__",
+        "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute? I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Is that worth a quick check?",
+        "continuity": {
+          "applied": true,
+          "reason": "agent_opening_started",
+          "dialogue_focus": "qualification",
+          "candidate_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute? I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Is that worth a quick check?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "opening",
+          "active_topic": "qualification",
+          "selected_gap": null,
+          "callback_semantic": null,
+          "last_agent_question_type": "permission_check",
+          "last_agent_question_hash": "",
+          "asked_question_type_counts": {
+            "permission_check": 1
+          },
+          "answered_topics": [
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "0c981feee2e0afe5"
+          ],
+          "last_customer_intent": "topic:qualification",
+          "last_sales_progression_step": "opening",
+          "stored_audio_data": false,
+          "stores_secrets": false
+        },
+        "stability_guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "qualification",
+          "selected_gap": null
+        }
+      },
+      {
+        "turn": 2,
+        "transcript": "hmm okay",
+        "response": "Inbound demo requests need owner, callback, and handoff status. Which part slips first for your team?",
+        "continuity": {
+          "applied": true,
+          "reason": "proactive_qualification_guidance_after_acknowledgement",
+          "dialogue_focus": "qualification",
+          "candidate_response": "Inbound demo requests need owner, callback, and handoff status. Which part slips first for your team?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "qualification",
+          "active_topic": "qualification",
+          "selected_gap": null,
+          "callback_semantic": null,
+          "last_agent_question_type": "qualification_gap_diagnostic",
+          "last_agent_question_hash": "0c981feee2e0afe5",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "qualification_gap_diagnostic": 1
+          },
+          "answered_topics": [
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "0c981feee2e0afe5",
+            "d22acff11ad1d340"
+          ],
+          "last_customer_intent": "low_information_acknowledgement",
+          "last_sales_progression_step": "qualification",
+          "stored_audio_data": false,
+          "stores_secrets": false
+        },
+        "stability_guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "qualification",
+          "selected_gap": null
+        }
+      },
+      {
+        "turn": 3,
+        "transcript": "I did not understand what you asked",
+        "response": "I was asking whether missed callbacks, messy handoffs, or unclear owners happen in your inbound demo flow. In plain terms, which part needs a clearer owner or callback?",
+        "continuity": {
+          "applied": true,
+          "reason": "previous_question_clarified",
+          "dialogue_focus": "qualification",
+          "candidate_response": "I was asking whether missed callbacks, messy handoffs, or unclear owners happen in your inbound demo flow. In plain terms, which part needs a clearer owner or callback?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "qualification",
+          "active_topic": "qualification",
+          "selected_gap": null,
+          "callback_semantic": null,
+          "last_agent_question_type": "qualification_gap_diagnostic",
+          "last_agent_question_hash": "d22acff11ad1d340",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "qualification_gap_diagnostic": 2
+          },
+          "answered_topics": [
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "0c981feee2e0afe5",
+            "d22acff11ad1d340",
+            "5b450c99b4c3cb58"
+          ],
+          "last_customer_intent": "clarify_previous_question",
+          "last_sales_progression_step": "qualification",
+          "stored_audio_data": false,
+          "stores_secrets": false
+        },
+        "stability_guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "qualification",
+          "selected_gap": null
+        }
+      },
+      {
+        "turn": 4,
+        "transcript": "callbacks are the problem",
+        "response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+        "continuity": {
+          "applied": true,
+          "reason": "seller_gap_selected_for_qualification",
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": "callback_workflow_gap",
+          "candidate_response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "value_mapping",
+          "active_topic": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": "callback_workflow_gap",
+          "last_agent_question_type": "gap_scope_check",
+          "last_agent_question_hash": "5b450c99b4c3cb58",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "qualification_gap_diagnostic": 2,
+            "gap_scope_check": 1
+          },
+          "answered_topics": [
+            "callbacks",
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "0c981feee2e0afe5",
+            "d22acff11ad1d340",
+            "5b450c99b4c3cb58",
+            "672bf540072df029"
+          ],
+          "last_customer_intent": "callback_workflow_gap",
+          "last_sales_progression_step": "value_mapping",
+          "stored_audio_data": false,
+          "stores_secrets": false
+        },
+        "stability_guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks"
+        }
+      },
+      {
+        "turn": 5,
+        "transcript": "what do you mean by callbacks",
+        "response": "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?",
+        "continuity": {
+          "applied": true,
+          "reason": "callback_workflow_clarified",
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": "callback_workflow_gap",
+          "candidate_response": "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "value_mapping",
+          "active_topic": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": "callback_workflow_gap",
+          "last_agent_question_type": "sales_progression_question",
+          "last_agent_question_hash": "672bf540072df029",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "qualification_gap_diagnostic": 2,
+            "gap_scope_check": 1,
+            "sales_progression_question": 1
+          },
+          "answered_topics": [
+            "callbacks",
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "0c981feee2e0afe5",
+            "672bf540072df029",
+            "d22acff11ad1d340",
+            "5b450c99b4c3cb58",
+            "72ffeba092c00af5"
+          ],
+          "last_customer_intent": "callback_workflow_gap",
+          "last_sales_progression_step": "value_mapping",
+          "stored_audio_data": false,
+          "stores_secrets": false
+        },
+        "stability_guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks"
+        }
+      },
+      {
+        "turn": 6,
+        "transcript": "tell me more",
+        "response": "New trial requests need priority routing, duplicate checks, and callback visibility. Which gap should I keep this focused on?",
+        "continuity": {
+          "applied": true,
+          "reason": "resolved_qualification_focus_progressed",
+          "dialogue_focus": "qualification",
+          "candidate_response": "New trial requests need priority routing, duplicate checks, and callback visibility. Which gap should I keep this focused on?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "value_mapping",
+          "active_topic": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": null,
+          "last_agent_question_type": "focus_scope_question",
+          "last_agent_question_hash": "72ffeba092c00af5",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "qualification_gap_diagnostic": 2,
+            "gap_scope_check": 1,
+            "sales_progression_question": 1,
+            "focus_scope_question": 1
+          },
+          "answered_topics": [
+            "callbacks",
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "672bf540072df029",
+            "72ffeba092c00af5",
+            "0c981feee2e0afe5",
+            "d22acff11ad1d340",
+            "5b450c99b4c3cb58",
+            "7b513645495f9db4"
+          ],
+          "last_customer_intent": "topic:qualification",
+          "last_sales_progression_step": "value_mapping",
+          "stored_audio_data": false,
+          "stores_secrets": false
+        },
+        "stability_guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks"
+        }
+      },
+      {
+        "turn": 7,
+        "transcript": "why does that matter",
+        "response": "Manager review need routing, reminders, and handoff visibility. Are missed callbacks frequent enough to justify a workflow review?",
+        "continuity": {
+          "applied": true,
+          "reason": "resolved_qualification_focus_progressed",
+          "dialogue_focus": "qualification",
+          "candidate_response": "Manager review need routing, reminders, and handoff visibility. Are missed callbacks frequent enough to justify a workflow review?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "value_mapping",
+          "active_topic": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": null,
+          "last_agent_question_type": "workflow_review_next_step",
+          "last_agent_question_hash": "7b513645495f9db4",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "qualification_gap_diagnostic": 2,
+            "gap_scope_check": 1,
+            "sales_progression_question": 1,
+            "focus_scope_question": 1,
+            "workflow_review_next_step": 1
+          },
+          "answered_topics": [
+            "callbacks",
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "672bf540072df029",
+            "72ffeba092c00af5",
+            "0c981feee2e0afe5",
+            "d22acff11ad1d340",
+            "5b450c99b4c3cb58",
+            "7b513645495f9db4",
+            "3aa70468abd9aa39"
+          ],
+          "last_customer_intent": "topic:qualification",
+          "last_sales_progression_step": "value_mapping",
+          "stored_audio_data": false,
+          "stores_secrets": false
+        },
+        "stability_guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks"
+        }
+      },
+      {
+        "turn": 8,
+        "transcript": "how much does it cost",
+        "response": "Starter is $29/month. Growth is $59/month. The useful test is whether missed follow-up costs enough time to justify the plan. Which gap costs more time today: routing, reminders, or handoffs?",
+        "continuity": {
+          "applied": false,
+          "reason": "no_session_continuity_match"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "value_mapping",
+          "active_topic": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": null,
+          "last_agent_question_type": "comparative_gap_diagnostic",
+          "last_agent_question_hash": "3aa70468abd9aa39",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "qualification_gap_diagnostic": 2,
+            "gap_scope_check": 1,
+            "sales_progression_question": 1,
+            "focus_scope_question": 1,
+            "workflow_review_next_step": 1,
+            "comparative_gap_diagnostic": 1
+          },
+          "answered_topics": [
+            "callbacks",
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "672bf540072df029",
+            "72ffeba092c00af5",
+            "0c981feee2e0afe5",
+            "3aa70468abd9aa39",
+            "d22acff11ad1d340",
+            "5b450c99b4c3cb58",
+            "7b513645495f9db4",
+            "0b8eabe8dacfd833"
+          ],
+          "last_customer_intent": "topic:qualification",
+          "last_sales_progression_step": "value_mapping",
+          "stored_audio_data": false,
+          "stores_secrets": false
+        },
+        "stability_guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks"
+        }
+      },
+      {
+        "turn": 9,
+        "transcript": "I am not sure it fits us",
+        "response": "I can answer that directly if you name the point: workflow, price, security, or callback timing.",
+        "continuity": {
+          "applied": true,
+          "reason": "resolved_qualification_focus_followup",
+          "dialogue_focus": "qualification",
+          "candidate_response": "I can answer that directly if you name the point: workflow, price, security, or callback timing."
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "value_mapping",
+          "active_topic": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": null,
+          "last_agent_question_type": "comparative_gap_diagnostic",
+          "last_agent_question_hash": "0b8eabe8dacfd833",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "qualification_gap_diagnostic": 2,
+            "gap_scope_check": 1,
+            "sales_progression_question": 1,
+            "focus_scope_question": 1,
+            "workflow_review_next_step": 1,
+            "comparative_gap_diagnostic": 1,
+            "none": 1
+          },
+          "answered_topics": [
+            "callbacks",
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "672bf540072df029",
+            "72ffeba092c00af5",
+            "0c981feee2e0afe5",
+            "3aa70468abd9aa39",
+            "0b8eabe8dacfd833",
+            "d22acff11ad1d340",
+            "5b450c99b4c3cb58",
+            "7b513645495f9db4",
+            "e587a0e1c3fcd02c"
+          ],
+          "last_customer_intent": "topic:qualification",
+          "last_sales_progression_step": "value_mapping",
+          "stored_audio_data": false,
+          "stores_secrets": false
+        },
+        "stability_guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks"
+        }
+      },
+      {
+        "turn": 10,
+        "transcript": "no",
+        "response": "No problem. Do you mean now is not a good time, or that missed callbacks and handoffs are not an issue?",
+        "continuity": {
+          "applied": true,
+          "reason": "ambiguous_negative_clarified",
+          "dialogue_focus": "qualification",
+          "candidate_response": "No problem. Do you mean now is not a good time, or that missed callbacks and handoffs are not an issue?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "value_mapping",
+          "active_topic": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": null,
+          "last_agent_question_type": "clarification",
+          "last_agent_question_hash": "0b8eabe8dacfd833",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "qualification_gap_diagnostic": 2,
+            "gap_scope_check": 1,
+            "sales_progression_question": 1,
+            "focus_scope_question": 1,
+            "workflow_review_next_step": 1,
+            "comparative_gap_diagnostic": 1,
+            "none": 1,
+            "clarification": 1
+          },
+          "answered_topics": [
+            "callbacks",
+            "qualification"
+          ],
+          "rejected_topics": [
+            "callbacks",
+            "qualification"
+          ],
+          "last_response_hashes": [
+            "672bf540072df029",
+            "72ffeba092c00af5",
+            "0c981feee2e0afe5",
+            "3aa70468abd9aa39",
+            "0b8eabe8dacfd833",
+            "d22acff11ad1d340",
+            "5b450c99b4c3cb58",
+            "7b513645495f9db4",
+            "e587a0e1c3fcd02c",
+            "d4f86ed58fd06eb8"
+          ],
+          "last_customer_intent": "ambiguous_negative",
+          "last_sales_progression_step": "value_mapping",
+          "stored_audio_data": false,
+          "stores_secrets": false
+        },
+        "stability_guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks"
+        }
+      },
+      {
+        "turn": 11,
+        "transcript": "what next",
+        "response": "The useful next step is a short summary of owner, next callback, and handoff status. Would a short written summary help you judge fit?",
+        "continuity": {
+          "applied": true,
+          "reason": "selected_callbacks_next_step_explained",
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks",
+          "candidate_response": "The useful next step is a short summary of owner, next callback, and handoff status. Would a short written summary help you judge fit?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "value_mapping",
+          "active_topic": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": null,
+          "last_agent_question_type": "summary_next_step",
+          "last_agent_question_hash": "d4f86ed58fd06eb8",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "qualification_gap_diagnostic": 2,
+            "gap_scope_check": 1,
+            "sales_progression_question": 1,
+            "focus_scope_question": 1,
+            "workflow_review_next_step": 1,
+            "comparative_gap_diagnostic": 1,
+            "none": 1,
+            "clarification": 1,
+            "summary_next_step": 1
+          },
+          "answered_topics": [
+            "callbacks",
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "672bf540072df029",
+            "72ffeba092c00af5",
+            "0c981feee2e0afe5",
+            "d4f86ed58fd06eb8",
+            "3aa70468abd9aa39",
+            "0b8eabe8dacfd833",
+            "d22acff11ad1d340",
+            "5b450c99b4c3cb58",
+            "7b513645495f9db4",
+            "e587a0e1c3fcd02c",
+            "6c50dbeb699eadb3"
+          ],
+          "last_customer_intent": "topic:qualification",
+          "last_sales_progression_step": "value_mapping",
+          "stored_audio_data": false,
+          "stores_secrets": false
+        },
+        "stability_guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks"
+        }
+      },
+      {
+        "turn": 12,
+        "transcript": "send me the short summary",
+        "response": "I can send a short workflow summary: owner routing, callback reminders, and handoff status. Should it focus on the callback gap you mentioned?",
+        "continuity": {
+          "applied": true,
+          "reason": "written_summary_next_step_offered",
+          "dialogue_focus": "qualification",
+          "candidate_response": "I can send a short workflow summary: owner routing, callback reminders, and handoff status. Should it focus on the callback gap you mentioned?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "value_mapping",
+          "active_topic": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": null,
+          "last_agent_question_type": "workflow_review_next_step",
+          "last_agent_question_hash": "6c50dbeb699eadb3",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "qualification_gap_diagnostic": 2,
+            "gap_scope_check": 1,
+            "sales_progression_question": 1,
+            "focus_scope_question": 1,
+            "workflow_review_next_step": 2,
+            "comparative_gap_diagnostic": 1,
+            "none": 1,
+            "clarification": 1,
+            "summary_next_step": 1
+          },
+          "answered_topics": [
+            "callbacks",
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "672bf540072df029",
+            "72ffeba092c00af5",
+            "0c981feee2e0afe5",
+            "d4f86ed58fd06eb8",
+            "6c50dbeb699eadb3",
+            "3aa70468abd9aa39",
+            "0b8eabe8dacfd833",
+            "d22acff11ad1d340",
+            "5b450c99b4c3cb58",
+            "7b513645495f9db4",
+            "e587a0e1c3fcd02c",
+            "3533996838dfa9ee"
+          ],
+          "last_customer_intent": "topic:qualification",
+          "last_sales_progression_step": "value_mapping",
+          "stored_audio_data": false,
+          "stores_secrets": false
+        },
+        "stability_guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks"
+        }
+      }
+    ],
+    "stress_turn_count": 27,
+    "stress_session_turn_indexes": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27
+    ],
+    "stress_duplicate_response_count": 0,
+    "stress_question_type_counts": {
+      "permission_check": 1,
+      "qualification_gap_diagnostic": 1,
+      "gap_scope_check": 1,
+      "comparative_gap_diagnostic": 2,
+      "workflow_review_next_step": 3,
+      "workflow_breakpoint_question": 1,
+      "sales_progression_question": 5,
+      "gap_diagnostic": 8,
+      "focus_scope_question": 1,
+      "clarification": 1,
+      "summary_next_step": 1,
+      "callback_time": 2
+    },
+    "echo_examples": [
+      {
+        "transcript": "callbacks are the problem",
+        "response": "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+        "guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks"
+        }
+      },
+      {
+        "transcript": "what do you mean by callbacks",
+        "response": "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?",
+        "guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "details",
+          "selected_gap": "callbacks"
+        }
+      },
+      {
+        "transcript": "I don't know what you're talking about",
+        "response": "I am not being clear. RouteSignal is for demo follow-up: owner, callback reminder, and handoff status. Should I keep it to callback reminders, or stop here?",
+        "guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "qualification",
+          "selected_gap": null
+        }
+      },
+      {
+        "transcript": "you called me, you should ask",
+        "response": "Fair. I called to check one workflow: do inbound demo follow-ups lose owners, callback reminders, or handoff status?",
+        "guard": {
+          "applied": false,
+          "reason": "conversation_stability_passed",
+          "violations": [],
+          "dialogue_focus": "qualification",
+          "selected_gap": null
+        }
+      }
+    ],
+    "casual_conversation": [
+      {
+        "transcript": "who are you again?",
+        "response": "I am Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I was calling about missed callbacks and handoffs in inbound demo follow-up. Should I restate the quick reason?",
+        "summary": {
+          "sales_difficulty": "identity-repair",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "rapport",
+          "next_action": "continue",
+          "call_control": "continue-call",
+          "final_response": "I am Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I was calling about missed callbacks and handoffs in inbound demo follow-up. Should I restate the quick reason?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "I'm Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM, so, I was calling about missed callbacks and handoffs in inbound demo follow-up <break time=\"0.185s\" />. Should I restate the quick reason?",
+          "browser_fallback_speech_text": "I'm Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM, so, I was calling about missed callbacks and handoffs in inbound demo follow-up. Should I restate the quick reason?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag016a-response-autonomy-reminder",
+            "rag014-response-consent-based-schedule-confirmation",
+            "rag010-response-so-what-clarifier"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        }
+      },
+      {
+        "transcript": "why are you calling?",
+        "response": "I am calling about inbound demo follow-up: owners, callback reminders, and handoff status. Which of those creates the most missed follow-up?",
+        "summary": {
+          "sales_difficulty": "identity-repair",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "rapport",
+          "next_action": "continue",
+          "call_control": "continue-call",
+          "final_response": "I am calling about inbound demo follow-up: owners, callback reminders, and handoff status. Which of those creates the most missed follow-up?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "I'm calling about inbound demo follow-up <break time=\"0.24s\" />: owners, callback reminders, and handoff status. Um, which of those creates the most missed follow-up?",
+          "browser_fallback_speech_text": "I'm calling about inbound demo follow-up: owners, callback reminders, and handoff status. Um, which of those creates the most missed follow-up?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag016a-response-autonomy-reminder",
+            "rag014-response-consent-based-schedule-confirmation",
+            "rag010-response-so-what-clarifier"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        }
+      },
+      {
+        "transcript": "you called me",
+        "response": "Fair. I called to check one workflow: do inbound demo follow-ups lose owners, callback reminders, or handoff status?",
+        "summary": {
+          "sales_difficulty": "general-product-question",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "final_response": "Fair. I called to check one workflow: do inbound demo follow-ups lose owners, callback reminders, or handoff status?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "Fair. Um, I called to check one workflow: do inbound demo follow-up <break time=\"0.186s\" />s lose owners, callback reminders, or handoff status?",
+          "browser_fallback_speech_text": "Fair. Um, I called to check one workflow: do inbound demo follow-up s lose owners, callback reminders, or handoff status?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag016a-response-autonomy-reminder",
+            "rag019-objection-diagnose-before-answering",
+            "rag010-response-impact-bridge"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        }
+      },
+      {
+        "transcript": "I don't have a question",
+        "response": "Fair. I called to check one workflow: do inbound demo follow-ups lose owners, callback reminders, or handoff status?",
+        "summary": {
+          "sales_difficulty": "general-product-question",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "final_response": "Fair. I called to check one workflow: do inbound demo follow-ups lose owners, callback reminders, or handoff status?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "Fair. Um, I called to check one workflow: do inbound demo follow-up <break time=\"0.212s\" />s lose owners, callback reminders, or handoff status?",
+          "browser_fallback_speech_text": "Fair. Um, I called to check one workflow: do inbound demo follow-up s lose owners, callback reminders, or handoff status?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag016a-response-autonomy-reminder",
+            "rag019-objection-diagnose-before-answering",
+            "rag010-response-impact-bridge"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        }
+      },
+      {
+        "transcript": "I don't know",
+        "response": "No problem. The quick check is simpler: do demo follow-ups ever miss an owner, callback reminder, or handoff?",
+        "summary": {
+          "sales_difficulty": "general-product-question",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "final_response": "No problem. The quick check is simpler: do demo follow-ups ever miss an owner, callback reminder, or handoff?",
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "No problem. Um, the quick check is simpler: do demo follow-ups ever miss an owner <break time=\"0.234s\" />, callback reminder, or handoff?",
+          "browser_fallback_speech_text": "No problem. Um, the quick check is simpler: do demo follow-ups ever miss an owner, callback reminder, or handoff?",
+          "tts_provider_rendering_used": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
+          "retrieved_item_ids": [
+            "rag016a-response-autonomy-reminder",
+            "rag019-objection-diagnose-before-answering",
+            "rag010-response-impact-bridge"
+          ],
+          "composer_hooks_status": "blocked",
+          "composer_hooks_applied": false,
+          "tts_provider_calls_made": false,
+          "tts_audio_file_created": false,
+          "tts_fallback_reason": "dry-run-mode",
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0
+        }
+      }
+    ],
+    "llm_boundary": {
+      "dry_turn_async_packet": {
+        "reasoner_id": "DIALOGUE-REASONER-004",
+        "schema_version": 1,
+        "upstream_hybrid_reasoner_id": "DIALOGUE-REASONER-003",
+        "status": "queued",
+        "blocked_reason": null,
+        "queued_before_provider": true,
+        "provider_call_allowed": true,
+        "provider_call_made": false,
+        "text_sent_to_provider": false,
+        "api_key_value_logged": false,
+        "raw_response_stored": false,
+        "customer_response_blocked_on_provider": false,
+        "provider_result_applied_after_response": false,
+        "provider_result_received_after_response": false,
+        "ignored_by_live_turn": true,
+        "runtime_route_override_allowed": false,
+        "mutates_final_response": false,
+        "final_response_changed_by_provider": false,
+        "opens_prod_102": false,
+        "response_packet_id": "LIVE-DEMO-001:llm-boundary:1",
+        "customer_response_snapshot": {
+          "available_before_provider": true,
+          "text_logged": false,
+          "text_fingerprint": "c38732e39d2d49aa8578049ebf7f686e0d4176023d4fba6c1a68c4202a46c516",
+          "char_count": 155,
+          "immutable_by_provider": true
+        },
+        "locked_deterministic_route": {
+          "buyer_intent": "understand_workflow",
+          "dialogue_act": "workflow_question",
+          "resolved_topic": "workflow_scope",
+          "response_strategy": "answer_then_diagnose",
+          "safety_boundary": "none",
+          "sales_stage": "discovery"
+        },
+        "deterministic_reasoning_fingerprint": "8bce07923fe5f663b6933804e33a66179c85b5aeec625f35e09b2a3d2708fb32",
+        "prompt_char_count": 2582,
+        "prompt_stored": false,
+        "hybrid_schema_fields": [
+          "reasoning_summary",
+          "implied_buyer_concern",
+          "selling_angle",
+          "evidence_to_use",
+          "next_diagnostic_question",
+          "avoid",
+          "confidence"
+        ]
+      },
+      "request": {
+        "reasoner_id": "DIALOGUE-REASONER-004",
+        "schema_version": 1,
+        "upstream_hybrid_reasoner_id": "DIALOGUE-REASONER-003",
+        "status": "queued",
+        "blocked_reason": null,
+        "queued_before_provider": true,
+        "provider_call_allowed": true,
+        "provider_call_made": false,
+        "text_sent_to_provider": false,
+        "api_key_value_logged": false,
+        "raw_response_stored": false,
+        "customer_response_blocked_on_provider": false,
+        "provider_result_applied_after_response": false,
+        "provider_result_received_after_response": false,
+        "ignored_by_live_turn": true,
+        "runtime_route_override_allowed": false,
+        "mutates_final_response": false,
+        "final_response_changed_by_provider": false,
+        "opens_prod_102": false,
+        "response_packet_id": "llm-boundary:1",
+        "customer_response_snapshot": {
+          "available_before_provider": true,
+          "text_logged": false,
+          "text_fingerprint": "c38732e39d2d49aa8578049ebf7f686e0d4176023d4fba6c1a68c4202a46c516",
+          "char_count": 155,
+          "immutable_by_provider": true
+        },
+        "locked_deterministic_route": {
+          "buyer_intent": "understand_workflow",
+          "dialogue_act": "workflow_question",
+          "resolved_topic": "workflow_scope",
+          "response_strategy": "answer_then_diagnose",
+          "safety_boundary": "none",
+          "sales_stage": "discovery"
+        },
+        "deterministic_reasoning_fingerprint": "8bce07923fe5f663b6933804e33a66179c85b5aeec625f35e09b2a3d2708fb32",
+        "prompt_char_count": 2564,
+        "prompt_stored": false,
+        "hybrid_schema_fields": [
+          "reasoning_summary",
+          "implied_buyer_concern",
+          "selling_angle",
+          "evidence_to_use",
+          "next_diagnostic_question",
+          "avoid",
+          "confidence"
+        ]
+      },
+      "provider_error": {
+        "reasoner_id": "DIALOGUE-REASONER-004",
+        "schema_version": 1,
+        "upstream_hybrid_reasoner_id": "DIALOGUE-REASONER-003",
+        "status": "ignored",
+        "blocked_reason": null,
+        "queued_before_provider": true,
+        "provider_call_allowed": true,
+        "provider_call_made": true,
+        "text_sent_to_provider": true,
+        "api_key_value_logged": false,
+        "raw_response_stored": false,
+        "customer_response_blocked_on_provider": false,
+        "provider_result_applied_after_response": false,
+        "provider_result_received_after_response": true,
+        "ignored_by_live_turn": true,
+        "runtime_route_override_allowed": false,
+        "mutates_final_response": false,
+        "final_response_changed_by_provider": false,
+        "opens_prod_102": false,
+        "response_packet_id": "llm-boundary:1",
+        "customer_response_snapshot": {
+          "available_before_provider": true,
+          "text_logged": false,
+          "text_fingerprint": "c38732e39d2d49aa8578049ebf7f686e0d4176023d4fba6c1a68c4202a46c516",
+          "char_count": 155,
+          "immutable_by_provider": true
+        },
+        "locked_deterministic_route": {
+          "buyer_intent": "understand_workflow",
+          "dialogue_act": "workflow_question",
+          "resolved_topic": "workflow_scope",
+          "response_strategy": "answer_then_diagnose",
+          "safety_boundary": "none",
+          "sales_stage": "discovery"
+        },
+        "deterministic_reasoning_fingerprint": "8bce07923fe5f663b6933804e33a66179c85b5aeec625f35e09b2a3d2708fb32",
+        "prompt_char_count": 2564,
+        "prompt_stored": false,
+        "hybrid_schema_fields": [
+          "reasoning_summary",
+          "implied_buyer_concern",
+          "selling_angle",
+          "evidence_to_use",
+          "next_diagnostic_question",
+          "avoid",
+          "confidence"
+        ],
+        "latency_ms": 913.2,
+        "http_status": null,
+        "usage": {},
+        "error": "synthetic timeout",
+        "ignored_reason": "provider_error_or_timeout",
+        "mismatches": {
+          "provider_error": "synthetic timeout"
+        }
+      },
+      "provider_schema_failure": {
+        "reasoner_id": "DIALOGUE-REASONER-004",
+        "schema_version": 1,
+        "upstream_hybrid_reasoner_id": "DIALOGUE-REASONER-003",
+        "status": "ignored",
+        "blocked_reason": null,
+        "queued_before_provider": true,
+        "provider_call_allowed": true,
+        "provider_call_made": true,
+        "text_sent_to_provider": true,
+        "api_key_value_logged": false,
+        "raw_response_stored": false,
+        "customer_response_blocked_on_provider": false,
+        "provider_result_applied_after_response": false,
+        "provider_result_received_after_response": true,
+        "ignored_by_live_turn": true,
+        "runtime_route_override_allowed": false,
+        "mutates_final_response": false,
+        "final_response_changed_by_provider": false,
+        "opens_prod_102": false,
+        "response_packet_id": "llm-boundary:1",
+        "customer_response_snapshot": {
+          "available_before_provider": true,
+          "text_logged": false,
+          "text_fingerprint": "c38732e39d2d49aa8578049ebf7f686e0d4176023d4fba6c1a68c4202a46c516",
+          "char_count": 155,
+          "immutable_by_provider": true
+        },
+        "locked_deterministic_route": {
+          "buyer_intent": "understand_workflow",
+          "dialogue_act": "workflow_question",
+          "resolved_topic": "workflow_scope",
+          "response_strategy": "answer_then_diagnose",
+          "safety_boundary": "none",
+          "sales_stage": "discovery"
+        },
+        "deterministic_reasoning_fingerprint": "8bce07923fe5f663b6933804e33a66179c85b5aeec625f35e09b2a3d2708fb32",
+        "prompt_char_count": 2564,
+        "prompt_stored": false,
+        "hybrid_schema_fields": [
+          "reasoning_summary",
+          "implied_buyer_concern",
+          "selling_angle",
+          "evidence_to_use",
+          "next_diagnostic_question",
+          "avoid",
+          "confidence"
+        ],
+        "latency_ms": 321.4,
+        "http_status": 200,
+        "usage": {},
+        "error": "Hybrid reasoning packet fields mismatch: expected ['avoid', 'confidence', 'evidence_to_use', 'implied_buyer_concern', 'next_diagnostic_question', 'reasoning_summary', 'selling_angle'], got ['dialogue_act', 'final_response']",
+        "ignored_reason": "parse_or_schema_error",
+        "schema_failure_ignored": true,
+        "mismatches": {
+          "parse_or_schema_error": "Hybrid reasoning packet fields mismatch: expected ['avoid', 'confidence', 'evidence_to_use', 'implied_buyer_concern', 'next_diagnostic_question', 'reasoning_summary', 'selling_angle'], got ['dialogue_act', 'final_response']"
+        }
+      }
+    },
+    "benchmark_scaffold": {
+      "checkpoint_id": "LIVE-DEMO-002-conversation-stability-callback-disambiguation",
+      "mode": "dry-run",
+      "provider_calls_made": false,
+      "deterministic_only": {
+        "turn_count": 9,
+        "responses": [
+          "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute? I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Is that worth a quick check?",
+          "Inbound demo requests need owner, callback, and handoff status. Which part slips first for your team?",
+          "Then callback reminders are the value point: fewer inbound demo requests wait without a next step. Would a short workflow review focus only on that gap?",
+          "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?",
+          "Slack alerts and CRM notes need owner lookup, follow-up status, and handoff review. Would a short workflow review test one gap?",
+          "New trial requests need priority routing, duplicate checks, and callback visibility. Which gap should I keep this focused on?",
+          "Starter is $29/month. Growth is $59/month. The useful test is whether missed follow-up costs enough time to justify the plan. Which gap costs more time today: routing, reminders, or handoffs?",
+          "I can answer that directly if you name the point: workflow, price, security, or callback timing.",
+          "If callback reminders are clean today, stop here. If they slip, Growth is worth reviewing. Which gap should the next step test first?"
+        ]
+      },
+      "metrics": {
+        "median_latency_ms": 11.014,
+        "p95_latency_ms": 13.669,
+        "schema_failure_rate": 0.0,
+        "callback_semantic_accuracy": 1.0,
+        "repetition_rate": 0.0,
+        "echo_violation_count": 0,
+        "route_override_violations": 0,
+        "final_response_mutation_violations": 0
+      },
+      "async_request_count": 9,
+      "async_provider_allowed_count": 3,
+      "lanes": [
+        {
+          "name": "deterministic_plus_current_api_llm_async_enrichment",
+          "enabled": false,
+          "consent_confirmed": false,
+          "provider_config": {
+            "base_url_configured": false,
+            "model_configured": false,
+            "api_key_configured": false,
+            "api_key_value_logged": false,
+            "timeout_seconds": 12.0,
+            "temperature": 1.0,
+            "use_json_response_format": true
+          },
+          "missing_config": [
+            "api_key",
+            "base_url",
+            "model"
+          ],
+          "provider_calls_made": false,
+          "text_sent_to_provider": false,
+          "results": [],
+          "mode": "planned-only",
+          "planned_request_count": 9
+        },
+        {
+          "name": "deterministic_plus_local_openai_compatible_async_enrichment",
+          "enabled": false,
+          "consent_confirmed": false,
+          "provider_config": {
+            "base_url_configured": false,
+            "model_configured": false,
+            "api_key_configured": false,
+            "api_key_value_logged": false,
+            "timeout_seconds": 12.0,
+            "temperature": 1.0,
+            "use_json_response_format": true
+          },
+          "missing_config": [
+            "api_key",
+            "base_url",
+            "model"
+          ],
+          "provider_calls_made": false,
+          "text_sent_to_provider": false,
+          "results": [],
+          "mode": "planned-only",
+          "planned_request_count": 9
+        }
+      ]
+    }
+  }
+}
