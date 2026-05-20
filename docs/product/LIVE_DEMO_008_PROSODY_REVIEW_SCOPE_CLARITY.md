@@ -10,7 +10,7 @@ This checkpoint fixes two live-demo defects:
 
 - ElevenLabs provider text must not insert a break inside tight product phrases such as `callback reminders` or `owner and reminder`
 - callback-gap follow-up responses must not ask the buyer to decide internal workflow-review mechanics
-- the agent should state the review scope itself, then ask whether that buyer gap is worth checking
+- the agent should state the review scope itself, then ask whether that buyer gap is worth checking or, after `LIVE-DEMO-009`, move to an appointment-setting next step when the buyer has already confirmed the gap
 
 The fix keeps provider calls disabled by default in validation. It changes deterministic runtime wording and provider-rendered TTS metadata only.
 
@@ -58,13 +58,13 @@ Synthetic gate:
 - no `owner <break ... /> and reminder`
 - no "would a short workflow review focus only on that gap"
 - no "should I keep the review..." as a buyer-facing internal-scope question
-- the agent states what the review would do before asking a buyer-relevant confirmation
+- the agent states what the review would do before asking a buyer-relevant confirmation or appointment-setting next step
 
 Human live check:
 
 - `callback reminders` is spoken as one phrase
 - the agent explains what a workflow review would focus on instead of asking the customer to know it
-- follow-up questions feel buyer-relevant, not like internal product configuration
+- follow-up questions feel buyer-relevant, not like internal product configuration; after a confirmed gap, an appointment-setting ask is acceptable
 
 ## Evidence
 

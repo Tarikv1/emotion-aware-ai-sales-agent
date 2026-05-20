@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-20 - LIVE-DEMO-009 appointment-setting MVP close
+
+- Objective: convert the live demo from repeated workflow-review usefulness questions into a measurable appointment-setting MVP close after real buyer pain and agreement.
+- Action taken: added a provider-off validator for one-question opening behavior, appointment-close readiness, repeated-yes handling, explicit callback scheduling preservation, and appointment-time confirmation; updated deterministic live voice session policy and local call-control override; documented the checkpoint and generated evidence.
+- Data used: synthetic live-demo turns for the fictional `Northstar Workflow Labs` / `RouteSignal CRM` campaign plus Tarik's private listening feedback summarized in this session. No provider call, private audio upload, real customer data, payment collection, production promotion, provider-hosted durable agent, voice cloning, or `PROD-102` work was used.
+- Output created: `scripts/validate_live_demo_009_appointment_lead_close.py`, `docs/product/LIVE_DEMO_009_APPOINTMENT_LEAD_CLOSE.md`, updates to `runtime/core/live_voice_session_policy.py`, `scripts/run_live_demo_001_agent_voice_call.py`, live-demo docs, and generated evidence under `research/experiments/generated/LIVE-DEMO-009-appointment-lead-close/`.
+- What was learned: the current usable MVP close is not autonomous payment or full sales closure; it is getting a buyer who has acknowledged a workflow gap to accept a short human workflow-review appointment.
+- Why it matters for the thesis: it narrows the product claim and creates a clearer evaluation target for sales agency: diagnose pain, map value, preserve buyer agency, and secure a sale-adjacent next step without payment.
+- Open questions: whether the appointment ask feels natural in live ElevenLabs playback, whether browser ASR captures time confirmations reliably, and whether the next failure is wording, turn-taking, or voice delivery.
+
 ### 2026-05-19 - LIVE-DEMO-003 supervised live voice acceptance
 
 - Objective: separate passing text/runtime validation from human-heard live voice acceptance after `LIVE-DEMO-002`.

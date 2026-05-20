@@ -119,12 +119,12 @@ def validate_review_scope_clarity(failures: list[str], evidence: dict[str, Any])
         )
         assert_condition(
             failures,
-            any(fragment in lowered for fragment in {"i would keep", "the review would", "the next step would", "we would check"}),
+            any(fragment in lowered for fragment in {"i would keep", "the review would", "the next step would", "we would check", "they would check", "someone from northstar would check"}),
             f"Response should state what the agent/review would do before asking the buyer: {response}",
         )
         assert_condition(
             failures,
-            any(fragment in lowered for fragment in {"right gap", "useful", "worth checking", "worth a check", "match what"}),
+            any(fragment in lowered for fragment in {"right gap", "useful", "worth checking", "worth a check", "match what", "what time works", "quick call"}),
             f"Response should ask a buyer-relevant confirmation, not an internal scope question: {response}",
         )
         assert_condition(

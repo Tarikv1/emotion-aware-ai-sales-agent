@@ -184,13 +184,13 @@ def sales_opening_response(language: str, campaign: dict | None = None) -> str:
     if language.startswith("de"):
         return (
             f"Hallo, hier ist {representative} von {client_name}, dem Team hinter {product_name}. "
-            "Sind Sie fuer Demo-Nachverfolgung zustaendig? Wir helfen bei verpassten Rueckrufen und Uebergaben. "
-            "Lohnt sich dazu ein kurzer Check?"
+            "Wir helfen bei verpassten Rueckrufen und Uebergaben nach Demo-Anfragen. "
+            "Haben Sie kurz Zeit?"
         )
     return (
         f"Hi, this is {representative} calling from {client_name}, {product_relationship}. "
-        f"Do you have a minute? I am looking for {buyer_role}. We help stop missed callbacks and messy handoffs. "
-        "Is that worth a quick check?"
+        f"I am looking for {buyer_role}. We help stop missed callbacks and messy handoffs. "
+        "Do you have a minute?"
     )
 
 
@@ -266,6 +266,12 @@ def callback_time_confirmed_response(language: str) -> str:
     if language.startswith("de"):
         return "Bestaetigt. Ich notiere den Rueckruf so. Auf Wiederhoeren."
     return "Confirmed. I will record that callback time for the specialist. Goodbye."
+
+
+def appointment_time_confirmed_response(language: str) -> str:
+    if language.startswith("de"):
+        return "Bestaetigt. Ich notiere diese Zeit fuer die Workflow-Pruefung. Auf Wiederhoeren."
+    return "Confirmed. I will note that time for the workflow review. Goodbye."
 
 
 def callback_workflow_clarification_response(language: str) -> str:
@@ -631,6 +637,9 @@ def is_value_relevance_question(normalized: str) -> bool:
             "what does that mean for us",
             "why is this useful",
             "why would this help",
+            "would it",
+            "i dont know would it",
+            "i don t know would it",
         },
     )
 
@@ -1354,7 +1363,7 @@ def selected_sales_gap_from_transcript(normalized: str) -> str | None:
         return "callbacks"
     if normalized_contains_any(normalized, {"reminder", "reminders", "follow up", "follow-up", "followup"}):
         return "reminders"
-    if normalized_contains_any(normalized, {"routing", "route", "assignment", "owner assignment"}):
+    if normalized_contains_any(normalized, {"routing", "route", "assignment", "assigning", "assigned", "owner assignment"}):
         return "routing"
     if normalized_contains_any(normalized, {"duplicate", "duplicates", "duplicate checks"}):
         return "duplicates"
@@ -1396,6 +1405,244 @@ def gap_turn_count(turns: list[dict], gap: str) -> int:
         elif gap == "handoffs" and "handoff" in response:
             count += 1
     return count
+
+
+def sales_gap_from_response_text(response: str) -> str | None:
+    normalized = normalize_text(response)
+    if not normalized:
+        return None
+    if normalized_contains_any(normalized, {"callback reminder", "callback reminders", "missed callback", "missed callbacks", "missed follow up", "missed follow-up", "speed to lead"}):
+        return "callbacks"
+    if normalized_contains_any(normalized, {"handoff review", "handoff status", "handoff", "handoffs"}):
+        return "handoffs"
+    if normalized_contains_any(normalized, {"owner assignment", "assigning the reply", "assigned fast", "priority routing", "basic routing", "clear owner"}):
+        return "routing"
+    if normalized_contains_any(normalized, {"manual tracking", "reminder before it waits", "missed reminders", "missed reminder"}):
+        return "reminders"
+    return None
+
+
+def appointment_gap_from_turns(turns: list[dict]) -> str | None:
+    selected_gap = last_selected_gap_from_turns(turns)
+    if selected_gap:
+        return selected_gap
+    review_signals = {
+        "workflow review",
+        "short check",
+        "short workflow",
+        "worth checking",
+        "frequent enough to check",
+        "useful for that gap",
+        "written summary",
+    }
+    for response in reversed(previous_response_list(turns[-5:])):
+        normalized = normalize_text(response)
+        if not normalized_contains_any(normalized, review_signals):
+            continue
+        gap = sales_gap_from_response_text(response)
+        if gap:
+            return gap
+    return None
+
+
+def has_recent_review_next_step_question(turns: list[dict]) -> bool:
+    review_question_types = {"workflow_review_next_step", "value_review_check", "summary_next_step"}
+    for response in reversed(previous_response_list(turns[-4:])):
+        if question_type_from_response(response) in review_question_types:
+            return True
+        normalized = normalize_text(response)
+        if normalized_contains_any(
+            normalized,
+            {
+                "would a short workflow review be useful",
+                "would a short check be useful",
+                "would a short workflow review be worth",
+                "are missed follow ups frequent enough to check",
+                "are missed follow-ups frequent enough to check",
+                "would a short written summary help",
+                "useful for that gap",
+            },
+        ):
+            return True
+    return False
+
+
+def is_affirmative_next_step_reply(normalized: str) -> bool:
+    if not normalized:
+        return False
+    if is_previous_question_clarification_request(normalized) or "?" in normalized:
+        return False
+    exact_affirmatives = {
+        "yes",
+        "yes yes",
+        "yeah",
+        "yeah yeah",
+        "yep",
+        "sure",
+        "sure sure",
+        "i guess",
+        "i guess so",
+        "yeah i guess",
+        "yes i guess",
+        "sure i guess",
+        "ok",
+        "okay",
+        "sounds good",
+        "go ahead",
+        "do that",
+        "lets do that",
+        "let s do that",
+        "that would help",
+        "it would help",
+        "yeah it would help",
+        "yes it would help",
+        "that would be useful",
+        "it would be useful",
+    }
+    if normalized in exact_affirmatives:
+        return True
+    return normalized_contains_any(
+        normalized,
+        {
+            "would help",
+            "would be useful",
+            "that helps",
+            "that would work",
+            "that works",
+            "worth checking",
+            "worth a check",
+        },
+    )
+
+
+def is_pain_confirmation_reply(normalized: str) -> bool:
+    if not normalized or is_ambiguous_negative_reply(normalized):
+        return False
+    return normalized_contains_any(
+        normalized,
+        {
+            "they can",
+            "it can",
+            "they do",
+            "it does",
+            "that happens",
+            "happens",
+            "often",
+            "a lot",
+            "should not",
+            "shouldn t",
+            "shouldnt",
+            "costs time",
+            "slips",
+            "gets missed",
+            "get missed",
+        },
+    )
+
+
+def should_offer_appointment_close(normalized: str, turns: list[dict]) -> tuple[bool, str | None]:
+    if has_callback_scheduling_request_signal(normalized) or has_callback_time_signal(normalized):
+        return False, None
+    if not (is_affirmative_next_step_reply(normalized) or is_pain_confirmation_reply(normalized)):
+        return False, None
+    if not has_recent_review_next_step_question(turns):
+        return False, None
+    gap = appointment_gap_from_turns(turns)
+    if not gap:
+        return False, None
+    previous_question_type = question_type_from_response(previous_agent_question(turns) or "")
+    if previous_question_type == "permission_check":
+        return False, None
+    return True, gap
+
+
+def pending_appointment_gap_from_turns(turns: list[dict]) -> str | None:
+    for turn in reversed(turns[-3:]):
+        continuity = turn.get("continuity") or {}
+        if str(continuity.get("reason") or "") == "appointment_time_requested":
+            gap = continuity.get("selected_gap")
+            if gap:
+                return str(gap)
+    return None
+
+
+def appointment_time_request_count(turns: list[dict]) -> int:
+    return sum(
+        1
+        for turn in turns
+        if str((turn.get("continuity") or {}).get("reason") or "") == "appointment_time_requested"
+    )
+
+
+def appointment_lead_close_response(language: str, gap: str | None) -> str:
+    if language.startswith("de"):
+        return "Dann ist der naechste Schritt eine kurze Workflow-Pruefung mit jemandem von Northstar. Welche Zeit passt fuer einen kurzen Anruf?"
+    gap_labels = {
+        "callbacks": "missed callback reminders",
+        "reminders": "missed reminders",
+        "routing": "owner routing",
+        "handoffs": "handoff misses",
+        "duplicates": "duplicate lead handling",
+        "visibility": "manager visibility",
+    }
+    gap_label = gap_labels.get(gap or "", "that follow-up gap")
+    return (
+        "Then the next step is a short workflow review with someone from Northstar. "
+        f"They would check {gap_label} against your actual follow-up flow. "
+        "What time works for a quick call?"
+    )
+
+
+def appointment_time_followup_response(language: str, gap: str | None, prior_requests: int = 0) -> str:
+    if language.startswith("de"):
+        if prior_requests >= 2:
+            return "Ich kann die kurze Workflow-Pruefung mit jemandem von Northstar einrichten, brauche aber eine Zeit. Welche Zeit passt fuer den kurzen Anruf?"
+        return "Ja. Der naechste Schritt bleibt eine kurze Workflow-Pruefung mit jemandem von Northstar. Welche Zeit passt fuer diesen kurzen Anruf?"
+    gap_labels = {
+        "callbacks": "missed callback reminders",
+        "reminders": "missed reminders",
+        "routing": "owner routing",
+        "handoffs": "handoff misses",
+        "duplicates": "duplicate lead handling",
+        "visibility": "manager visibility",
+    }
+    gap_clause = f" on {gap_labels.get(gap or '', 'that follow-up gap')}" if gap else ""
+    if prior_requests >= 2:
+        return (
+            f"I can set up that short workflow review{gap_clause} with someone from Northstar, "
+            "but I need a time. What time works for the quick call?"
+        )
+    return f"Yes. The next step is still a short workflow review{gap_clause} with someone from Northstar. What time works for a quick call?"
+
+
+def appointment_value_clarification_response(language: str, gap: str | None) -> str:
+    if language.startswith("de"):
+        return "Sinnvoll ist es nur, wenn diese Luecke wirklich Nachfassung verlangsamt. Jemand von Northstar wuerde das in einer kurzen Workflow-Pruefung gegen Ihren Ablauf pruefen. Welche Zeit passt fuer den kurzen Anruf?"
+    gap_labels = {
+        "callbacks": "missed callback reminders",
+        "reminders": "missed reminders",
+        "routing": "owner routing",
+        "handoffs": "handoff misses",
+        "duplicates": "duplicate lead handling",
+        "visibility": "manager visibility",
+    }
+    gap_label = gap_labels.get(gap or "", "that follow-up gap")
+    return (
+        f"It would help only if {gap_label} are really slowing follow-up. "
+        "Someone from Northstar would check that in a short workflow review against your actual flow. "
+        "If that is worth testing, what time works for a quick call?"
+    )
+
+
+def has_appointment_time_confirmation_signal(normalized: str, session_state: dict | None = None) -> bool:
+    if not has_callback_time_signal(normalized):
+        return False
+    turns = list((session_state or {}).get("turns") or [])
+    for turn in reversed(turns[-3:]):
+        continuity = turn.get("continuity") or {}
+        if str(continuity.get("reason") or "") == "appointment_time_requested":
+            return True
+    return False
 
 
 def gap_progression_text(language: str, gap: str, step: int, seen: set[str] | None = None) -> str:
@@ -2075,6 +2322,8 @@ def question_type_from_response(response: str) -> str:
     normalized = normalize_text(response)
     if "?" not in response:
         return "none"
+    if normalized_contains_any(normalized, {"person from northstar", "someone from northstar", "quick call", "what time works"}):
+        return "appointment_time"
     if normalized_contains_any(normalized, {"what time", "when should", "callback time", "note for the callback"}):
         return "callback_time"
     if normalized_contains_any(normalized, {"which part slips", "which part needs"}):
@@ -2155,6 +2404,8 @@ def last_customer_intent_from_transcript(normalized: str, callback_semantic: str
         return callback_semantic
     if is_starter_growth_plan_boundary_question(normalized):
         return "plan_boundary_question"
+    if is_affirmative_next_step_reply(normalized):
+        return "affirm_next_step"
     if is_low_information_acknowledgement(normalized):
         return "low_information_acknowledgement"
     if is_previous_question_clarification_request(normalized):
@@ -2175,6 +2426,8 @@ def sales_progression_step(active_topic: str | None, selected_gap: str | None, c
     reason = str((continuity or {}).get("reason") or "")
     if reason in {"agent_opening_started", "opening_greeting_answered"}:
         return "opening"
+    if reason in {"appointment_time_requested", "appointment_value_clarified", "appointment_time_confirmed", "callback_time_confirmed"}:
+        return "safe_next_step"
     if selected_gap:
         return "value_mapping"
     if active_topic == "qualification":
@@ -2182,8 +2435,6 @@ def sales_progression_step(active_topic: str | None, selected_gap: str | None, c
     if active_topic in {"price", "fit", "details", "effort", "terms"}:
         return "objection_or_answer"
     if active_topic == "timing":
-        return "safe_next_step"
-    if reason == "callback_time_confirmed":
         return "safe_next_step"
     return "qualification"
 
@@ -2205,7 +2456,12 @@ def build_conversation_memory(
     if is_starter_growth_plan_boundary_question(normalized):
         selected_gap = last_selected_gap_from_turns(turns)
     else:
-        selected_gap = selected_sales_gap_from_transcript(normalized) or last_selected_gap_from_turns(turns)
+        selected_gap = (
+            selected_sales_gap_from_transcript(normalized)
+            or str((continuity or {}).get("selected_gap") or "")
+            or last_selected_gap_from_turns(turns)
+        )
+        selected_gap = selected_gap or None
     callback_semantic = callback_semantic_from_transcript(normalized, session_state)
     if callback_semantic == CALLBACK_WORKFLOW_GAP and selected_gap in {None, "reminders"}:
         selected_gap = "callbacks"
@@ -2236,6 +2492,8 @@ def build_conversation_memory(
         "candidate_response_signature": response_signature(candidate_response or ""),
         "last_customer_intent": last_customer_intent_from_transcript(normalized, callback_semantic, active_topic),
         "last_sales_progression_step": sales_progression_step(active_topic, selected_gap, continuity),
+        "appointment_close_ready": bool((continuity or {}).get("reason") in {"appointment_time_requested", "appointment_value_clarified"}),
+        "appointment_close_gap": selected_gap if (continuity or {}).get("reason") in {"appointment_time_requested", "appointment_value_clarified"} else None,
         "stored_audio_data": False,
         "stores_secrets": False,
     }
@@ -2476,12 +2734,40 @@ def continuity_response(transcript: str, session_state: dict | None, campaign: d
             "dialogue_focus": "price",
             "candidate_response": live_demo_price_answer(language),
         }
+    if has_appointment_time_confirmation_signal(normalized, session_state):
+        return {
+            "applied": True,
+            "reason": "appointment_time_confirmed",
+            "dialogue_focus": "timing",
+            "candidate_response": appointment_time_confirmed_response(language),
+        }
     if callback_semantic == CALLBACK_TIME_CONFIRMATION:
         return {
             "applied": True,
             "reason": "callback_time_confirmed",
             "dialogue_focus": "timing",
             "candidate_response": callback_time_confirmed_response(language),
+        }
+    pending_appointment_gap = pending_appointment_gap_from_turns(turns)
+    if pending_appointment_gap and is_affirmative_next_step_reply(normalized):
+        return {
+            "applied": True,
+            "reason": "appointment_time_requested",
+            "dialogue_focus": "timing",
+            "selected_gap": pending_appointment_gap,
+            "candidate_response": appointment_time_followup_response(
+                language,
+                pending_appointment_gap,
+                appointment_time_request_count(turns),
+            ),
+        }
+    if pending_appointment_gap and is_value_relevance_question(normalized):
+        return {
+            "applied": True,
+            "reason": "appointment_value_clarified",
+            "dialogue_focus": "timing",
+            "selected_gap": pending_appointment_gap,
+            "candidate_response": appointment_value_clarification_response(language, pending_appointment_gap),
         }
     if is_callback_workflow_question(normalized):
         return {
@@ -2512,6 +2798,15 @@ def continuity_response(transcript: str, session_state: dict | None, campaign: d
             "reason": "buyer_no_question_recovered",
             "dialogue_focus": resolved_focus or "qualification",
             "candidate_response": buyer_no_question_response(language),
+        }
+    should_close, appointment_gap = should_offer_appointment_close(normalized, turns)
+    if should_close:
+        return {
+            "applied": True,
+            "reason": "appointment_time_requested",
+            "dialogue_focus": "timing",
+            "selected_gap": appointment_gap,
+            "candidate_response": appointment_lead_close_response(language, appointment_gap),
         }
     if callback_semantic == CALLBACK_WORKFLOW_GAP:
         gap_focus = resolved_focus or "qualification"

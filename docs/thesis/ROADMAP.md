@@ -29,14 +29,15 @@ Status convention:
 
 ## Checkpoint Board
 
-Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped dialogue-policy validation, baseline voice/runtime quality, supervised live voice acceptance, realtime turn-taking stabilization, interrupt/pace/product-plan precision, live transcript reviewability, compact memory hardening, plain early qualification, provider TTS phrase-flow polish, and thesis evidence preservation.
+Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped dialogue-policy validation, baseline voice/runtime quality, supervised live voice acceptance, realtime turn-taking stabilization, interrupt/pace/product-plan precision, live transcript reviewability, compact memory hardening, plain early qualification, provider TTS phrase-flow polish, appointment-setting MVP close behavior, and thesis evidence preservation.
 
 Current checkpoint:
 
-- [ ] Current: `LIVE-DEMO-008-prosody-review-scope-clarity` is the narrow follow-up to Tarik's supervised `LIVE-DEMO-007` listening feedback. Its scope is provider-rendered phrase-flow for tight product phrases and buyer-facing clarity around workflow-review scope. It is not production readiness, does not open `PROD-102`, does not add provider ASR, does not claim true spoken barge-in, does not add spoken backchannels, does not expand sales policy beyond review-scope clarity, and does not promote payment, provider-hosted durable agents, voice cloning, LLM-written final speech, LLM-blocked live responses, public demo use, real customer use, or production runtime behavior.
+- [ ] Current: supervised live listening review of `LIVE-DEMO-009-appointment-lead-close` before any broader runtime rewrite. `LIVE-DEMO-009` passed local text/runtime validation for single-question opening, appointment-setting next-step behavior, and scheduling-context preservation, but it is not live voice acceptance, production readiness, or `PROD-102`.
 
 Next checkpoints:
 
+- [ ] Next: if Tarik's live listening rejects `LIVE-DEMO-009`, create one narrow follow-up from the observed failure: appointment wording, ASR misunderstanding, turn-taking, or voice delivery. Do not broaden into full autonomous sale closure until appointment-setting behavior is heard as usable.
 - [ ] Parked after `PROD-101` until Tarik resumes: select the next remaining English customer-move classifier slice only if recommendation-roleplay positives, adjacent controls, and the stable English guard pass.
 - [ ] Next after `PROD-079`: select the next remaining English customer-move classifier slice only if provider-comparison regression stays stable.
 - [ ] Future persuasion-tactics checkpoint candidate: define and test `guided_option_selection` only after current coverage-boundary/runtime regression work is stable. Guardrails: use only after fit or interest is established, present two real options fairly, preserve `neither`, `not now`, and `explain the difference`, avoid fake urgency, and never pretend the customer already agreed.
@@ -63,6 +64,10 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `LIVE-DEMO-009-appointment-lead-close`, which follows Tarik's supervised `LIVE-DEMO-008` listening feedback by making appointment-setting the current MVP close instead of full payment/sale closure. It changes the opener to one permission question before qualification, adds deterministic appointment-close readiness after a selected workflow gap and buyer agreement, preserves explicit callback scheduling controls, confirms workflow-review times only after appointment context, keeps provider calls disabled by default, and records generated evidence under `research/experiments/generated/LIVE-DEMO-009-appointment-lead-close/`. It keeps `PROD-102`, payment collection, contracts, provider-hosted durable agents, voice cloning, provider ASR, LLM-written final speech, real customer use, production promotion, and full autonomous sale closure blocked.
+
+- [x] `LIVE-DEMO-008-prosody-review-scope-clarity`, which follows Tarik's supervised `LIVE-DEMO-007` listening feedback with provider-rendered phrase-flow checks and buyer-facing workflow-review scope clarity. `LIVE-DEMO-009` intentionally allows the corrected review-scope wording to advance into an appointment-setting next step once the buyer has confirmed a real gap.
 
 - [x] `LIVE-DEMO-003-supervised-live-voice-acceptance`, which creates a supervised live voice acceptance packet/report plus human review form and CSV after `LIVE-DEMO-002`. It separates text/runtime validation from live listening quality for ASR capture, turn-taking, latency perception, voice consistency, callback handling, buyer agency, naturalness, and sales steering. The first supervised listening pass was not accepted, so the next checkpoint is the narrow `LIVE-DEMO-004-realtime-turn-taking-asr-vad` follow-up rather than a broad runtime rewrite or `PROD-102` opening.
 

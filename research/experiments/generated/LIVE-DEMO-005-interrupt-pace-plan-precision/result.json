@@ -28,12 +28,12 @@
     "product_plan_precision": [
       {
         "transcript": "__agent_open__",
-        "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute? I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Is that worth a quick check?",
+        "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
         "continuity": {
           "applied": true,
           "reason": "agent_opening_started",
           "dialogue_focus": "qualification",
-          "candidate_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute? I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Is that worth a quick check?"
+          "candidate_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?"
         },
         "memory": {
           "schema_version": 1,
@@ -52,18 +52,20 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5"
+            "c4f25e2c6ac64318"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5"
+            "opening_permission:c4f25e2c6ac64318"
           ],
           "recent_response_subjects": [
             "opening_permission"
           ],
           "candidate_response_subject": "opening_permission",
-          "candidate_response_signature": "opening_permission:0c981feee2e0afe5",
+          "candidate_response_signature": "opening_permission:c4f25e2c6ac64318",
           "last_customer_intent": "topic:qualification",
           "last_sales_progression_step": "opening",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -92,7 +94,7 @@
           "callback_semantic": null,
           "last_agent_question_type": "gap_diagnostic",
           "last_active_agent_question_type": "gap_diagnostic",
-          "last_agent_question_hash": "0c981feee2e0afe5",
+          "last_agent_question_hash": "c4f25e2c6ac64318",
           "asked_question_type_counts": {
             "permission_check": 1,
             "gap_diagnostic": 1
@@ -102,11 +104,11 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
+            "c4f25e2c6ac64318",
             "66fc7ee12930ef13"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5",
+            "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:66fc7ee12930ef13"
           ],
           "recent_response_subjects": [
@@ -115,8 +117,10 @@
           ],
           "candidate_response_subject": "diagnostic_question",
           "candidate_response_signature": "diagnostic_question:66fc7ee12930ef13",
-          "last_customer_intent": "low_information_acknowledgement",
+          "last_customer_intent": "affirm_next_step",
           "last_sales_progression_step": "qualification",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -157,12 +161,12 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
+            "c4f25e2c6ac64318",
             "66fc7ee12930ef13",
             "43f3958ff9e71da5"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5",
+            "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:66fc7ee12930ef13",
             "price_plan_summary:43f3958ff9e71da5"
           ],
@@ -175,6 +179,8 @@
           "candidate_response_signature": "price_plan_summary:43f3958ff9e71da5",
           "last_customer_intent": "topic:price",
           "last_sales_progression_step": "objection_or_answer",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -217,13 +223,13 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
+            "c4f25e2c6ac64318",
             "66fc7ee12930ef13",
             "43f3958ff9e71da5",
             "af9047b0e95e6587"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5",
+            "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:66fc7ee12930ef13",
             "price_plan_summary:43f3958ff9e71da5",
             "plan_boundary:af9047b0e95e6587"
@@ -238,6 +244,8 @@
           "candidate_response_signature": "plan_boundary:af9047b0e95e6587",
           "last_customer_intent": "plan_boundary_question",
           "last_sales_progression_step": "objection_or_answer",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -280,14 +288,14 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
+            "c4f25e2c6ac64318",
             "66fc7ee12930ef13",
             "43f3958ff9e71da5",
             "af9047b0e95e6587",
             "303b61cc2626efe4"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5",
+            "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:66fc7ee12930ef13",
             "price_plan_summary:43f3958ff9e71da5",
             "plan_boundary:af9047b0e95e6587",
@@ -304,6 +312,8 @@
           "candidate_response_signature": "plan_boundary:303b61cc2626efe4",
           "last_customer_intent": "plan_boundary_question",
           "last_sales_progression_step": "objection_or_answer",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },

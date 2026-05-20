@@ -37,7 +37,7 @@
       "records": [
         {
           "transcript": "__agent_open__",
-          "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute? I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Is that worth a quick check?",
+          "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
           "memory": {
             "schema_version": 1,
             "active_stage": "opening",
@@ -55,18 +55,20 @@
             ],
             "rejected_topics": [],
             "last_response_hashes": [
-              "0c981feee2e0afe5"
+              "c4f25e2c6ac64318"
             ],
             "last_response_signatures": [
-              "opening_permission:0c981feee2e0afe5"
+              "opening_permission:c4f25e2c6ac64318"
             ],
             "recent_response_subjects": [
               "opening_permission"
             ],
             "candidate_response_subject": "opening_permission",
-            "candidate_response_signature": "opening_permission:0c981feee2e0afe5",
+            "candidate_response_signature": "opening_permission:c4f25e2c6ac64318",
             "last_customer_intent": "topic:qualification",
             "last_sales_progression_step": "opening",
+            "appointment_close_ready": false,
+            "appointment_close_gap": null,
             "stored_audio_data": false,
             "stores_secrets": false
           },
@@ -89,7 +91,7 @@
             "callback_semantic": null,
             "last_agent_question_type": "gap_diagnostic",
             "last_active_agent_question_type": "gap_diagnostic",
-            "last_agent_question_hash": "0c981feee2e0afe5",
+            "last_agent_question_hash": "c4f25e2c6ac64318",
             "asked_question_type_counts": {
               "permission_check": 1,
               "gap_diagnostic": 1
@@ -99,11 +101,11 @@
             ],
             "rejected_topics": [],
             "last_response_hashes": [
-              "0c981feee2e0afe5",
+              "c4f25e2c6ac64318",
               "66fc7ee12930ef13"
             ],
             "last_response_signatures": [
-              "opening_permission:0c981feee2e0afe5",
+              "opening_permission:c4f25e2c6ac64318",
               "diagnostic_question:66fc7ee12930ef13"
             ],
             "recent_response_subjects": [
@@ -112,8 +114,10 @@
             ],
             "candidate_response_subject": "diagnostic_question",
             "candidate_response_signature": "diagnostic_question:66fc7ee12930ef13",
-            "last_customer_intent": "low_information_acknowledgement",
+            "last_customer_intent": "affirm_next_step",
             "last_sales_progression_step": "qualification",
+            "appointment_close_ready": false,
+            "appointment_close_gap": null,
             "stored_audio_data": false,
             "stores_secrets": false
           },
@@ -148,12 +152,12 @@
             ],
             "rejected_topics": [],
             "last_response_hashes": [
-              "0c981feee2e0afe5",
+              "c4f25e2c6ac64318",
               "66fc7ee12930ef13",
               "43f3958ff9e71da5"
             ],
             "last_response_signatures": [
-              "opening_permission:0c981feee2e0afe5",
+              "opening_permission:c4f25e2c6ac64318",
               "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5"
             ],
@@ -166,6 +170,8 @@
             "candidate_response_signature": "price_plan_summary:43f3958ff9e71da5",
             "last_customer_intent": "topic:price",
             "last_sales_progression_step": "objection_or_answer",
+            "appointment_close_ready": false,
+            "appointment_close_gap": null,
             "stored_audio_data": false,
             "stores_secrets": false
           },
@@ -200,13 +206,13 @@
             ],
             "rejected_topics": [],
             "last_response_hashes": [
-              "0c981feee2e0afe5",
+              "c4f25e2c6ac64318",
               "66fc7ee12930ef13",
               "43f3958ff9e71da5",
               "a2765b021e43fd2c"
             ],
             "last_response_signatures": [
-              "opening_permission:0c981feee2e0afe5",
+              "opening_permission:c4f25e2c6ac64318",
               "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5",
               "callback_workflow:a2765b021e43fd2c"
@@ -221,6 +227,8 @@
             "candidate_response_signature": "callback_workflow:a2765b021e43fd2c",
             "last_customer_intent": "topic:price",
             "last_sales_progression_step": "objection_or_answer",
+            "appointment_close_ready": false,
+            "appointment_close_gap": null,
             "stored_audio_data": false,
             "stores_secrets": false
           },
@@ -256,14 +264,14 @@
             ],
             "rejected_topics": [],
             "last_response_hashes": [
-              "0c981feee2e0afe5",
+              "c4f25e2c6ac64318",
               "66fc7ee12930ef13",
               "43f3958ff9e71da5",
               "a2765b021e43fd2c",
               "a3f7003e7c3d65a2"
             ],
             "last_response_signatures": [
-              "opening_permission:0c981feee2e0afe5",
+              "opening_permission:c4f25e2c6ac64318",
               "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5",
               "callback_workflow:a2765b021e43fd2c",
@@ -280,6 +288,8 @@
             "candidate_response_signature": "plan_boundary:a3f7003e7c3d65a2",
             "last_customer_intent": "topic:price",
             "last_sales_progression_step": "objection_or_answer",
+            "appointment_close_ready": false,
+            "appointment_close_gap": null,
             "stored_audio_data": false,
             "stores_secrets": false
           },
@@ -315,7 +325,7 @@
             ],
             "rejected_topics": [],
             "last_response_hashes": [
-              "0c981feee2e0afe5",
+              "c4f25e2c6ac64318",
               "66fc7ee12930ef13",
               "43f3958ff9e71da5",
               "a2765b021e43fd2c",
@@ -323,7 +333,7 @@
               "08155e645f8f4593"
             ],
             "last_response_signatures": [
-              "opening_permission:0c981feee2e0afe5",
+              "opening_permission:c4f25e2c6ac64318",
               "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5",
               "callback_workflow:a2765b021e43fd2c",
@@ -342,6 +352,8 @@
             "candidate_response_signature": "handoff_workflow:08155e645f8f4593",
             "last_customer_intent": "topic:price",
             "last_sales_progression_step": "objection_or_answer",
+            "appointment_close_ready": false,
+            "appointment_close_gap": null,
             "stored_audio_data": false,
             "stores_secrets": false
           },
@@ -378,7 +390,7 @@
             ],
             "rejected_topics": [],
             "last_response_hashes": [
-              "0c981feee2e0afe5",
+              "c4f25e2c6ac64318",
               "66fc7ee12930ef13",
               "43f3958ff9e71da5",
               "a2765b021e43fd2c",
@@ -387,7 +399,7 @@
               "a2c60ea00ec8a9f4"
             ],
             "last_response_signatures": [
-              "opening_permission:0c981feee2e0afe5",
+              "opening_permission:c4f25e2c6ac64318",
               "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5",
               "callback_workflow:a2765b021e43fd2c",
@@ -408,6 +420,8 @@
             "candidate_response_signature": "plan_boundary:a2c60ea00ec8a9f4",
             "last_customer_intent": "topic:price",
             "last_sales_progression_step": "objection_or_answer",
+            "appointment_close_ready": false,
+            "appointment_close_gap": null,
             "stored_audio_data": false,
             "stores_secrets": false
           },
@@ -444,7 +458,7 @@
             ],
             "rejected_topics": [],
             "last_response_hashes": [
-              "0c981feee2e0afe5",
+              "c4f25e2c6ac64318",
               "66fc7ee12930ef13",
               "43f3958ff9e71da5",
               "a2765b021e43fd2c",
@@ -454,7 +468,7 @@
               "4c996daff8949f6b"
             ],
             "last_response_signatures": [
-              "opening_permission:0c981feee2e0afe5",
+              "opening_permission:c4f25e2c6ac64318",
               "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5",
               "callback_workflow:a2765b021e43fd2c",
@@ -477,6 +491,8 @@
             "candidate_response_signature": "handoff_workflow:4c996daff8949f6b",
             "last_customer_intent": "topic:price",
             "last_sales_progression_step": "objection_or_answer",
+            "appointment_close_ready": false,
+            "appointment_close_gap": null,
             "stored_audio_data": false,
             "stores_secrets": false
           },
@@ -514,7 +530,7 @@
             ],
             "rejected_topics": [],
             "last_response_hashes": [
-              "0c981feee2e0afe5",
+              "c4f25e2c6ac64318",
               "66fc7ee12930ef13",
               "43f3958ff9e71da5",
               "a2765b021e43fd2c",
@@ -525,7 +541,7 @@
               "51d3d322019379b2"
             ],
             "last_response_signatures": [
-              "opening_permission:0c981feee2e0afe5",
+              "opening_permission:c4f25e2c6ac64318",
               "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5",
               "callback_workflow:a2765b021e43fd2c",
@@ -550,6 +566,8 @@
             "candidate_response_signature": "plan_boundary:51d3d322019379b2",
             "last_customer_intent": "topic:price",
             "last_sales_progression_step": "objection_or_answer",
+            "appointment_close_ready": false,
+            "appointment_close_gap": null,
             "stored_audio_data": false,
             "stores_secrets": false
           },
@@ -587,7 +605,7 @@
             ],
             "rejected_topics": [],
             "last_response_hashes": [
-              "0c981feee2e0afe5",
+              "c4f25e2c6ac64318",
               "66fc7ee12930ef13",
               "43f3958ff9e71da5",
               "a2765b021e43fd2c",
@@ -599,7 +617,7 @@
               "c2f57ab43bfaae5f"
             ],
             "last_response_signatures": [
-              "opening_permission:0c981feee2e0afe5",
+              "opening_permission:c4f25e2c6ac64318",
               "diagnostic_question:66fc7ee12930ef13",
               "price_plan_summary:43f3958ff9e71da5",
               "callback_workflow:a2765b021e43fd2c",
@@ -626,6 +644,8 @@
             "candidate_response_signature": "plan_boundary:c2f57ab43bfaae5f",
             "last_customer_intent": "topic:price",
             "last_sales_progression_step": "objection_or_answer",
+            "appointment_close_ready": false,
+            "appointment_close_gap": null,
             "stored_audio_data": false,
             "stores_secrets": false
           },
@@ -663,7 +683,7 @@
         ],
         "rejected_topics": [],
         "last_response_hashes": [
-          "0c981feee2e0afe5",
+          "c4f25e2c6ac64318",
           "66fc7ee12930ef13",
           "43f3958ff9e71da5",
           "a2765b021e43fd2c",
@@ -675,7 +695,7 @@
           "c2f57ab43bfaae5f"
         ],
         "last_response_signatures": [
-          "opening_permission:0c981feee2e0afe5",
+          "opening_permission:c4f25e2c6ac64318",
           "diagnostic_question:66fc7ee12930ef13",
           "price_plan_summary:43f3958ff9e71da5",
           "callback_workflow:a2765b021e43fd2c",
@@ -702,6 +722,8 @@
         "candidate_response_signature": "plan_boundary:c2f57ab43bfaae5f",
         "last_customer_intent": "topic:price",
         "last_sales_progression_step": "objection_or_answer",
+        "appointment_close_ready": false,
+        "appointment_close_gap": null,
         "stored_audio_data": false,
         "stores_secrets": false
       }

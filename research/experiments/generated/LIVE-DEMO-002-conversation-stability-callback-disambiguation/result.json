@@ -539,12 +539,12 @@
       {
         "turn": 1,
         "transcript": "__agent_open__",
-        "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute? I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Is that worth a quick check?",
+        "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
         "continuity": {
           "applied": true,
           "reason": "agent_opening_started",
           "dialogue_focus": "qualification",
-          "candidate_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute? I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Is that worth a quick check?"
+          "candidate_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?"
         },
         "memory": {
           "schema_version": 1,
@@ -563,18 +563,20 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5"
+            "c4f25e2c6ac64318"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5"
+            "opening_permission:c4f25e2c6ac64318"
           ],
           "recent_response_subjects": [
             "opening_permission"
           ],
           "candidate_response_subject": "opening_permission",
-          "candidate_response_signature": "opening_permission:0c981feee2e0afe5",
+          "candidate_response_signature": "opening_permission:c4f25e2c6ac64318",
           "last_customer_intent": "topic:qualification",
           "last_sales_progression_step": "opening",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -604,7 +606,7 @@
           "callback_semantic": null,
           "last_agent_question_type": "gap_diagnostic",
           "last_active_agent_question_type": "gap_diagnostic",
-          "last_agent_question_hash": "0c981feee2e0afe5",
+          "last_agent_question_hash": "c4f25e2c6ac64318",
           "asked_question_type_counts": {
             "permission_check": 1,
             "gap_diagnostic": 1
@@ -614,11 +616,11 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
+            "c4f25e2c6ac64318",
             "66fc7ee12930ef13"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5",
+            "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:66fc7ee12930ef13"
           ],
           "recent_response_subjects": [
@@ -629,6 +631,8 @@
           "candidate_response_signature": "diagnostic_question:66fc7ee12930ef13",
           "last_customer_intent": "low_information_acknowledgement",
           "last_sales_progression_step": "qualification",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -669,12 +673,12 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
+            "c4f25e2c6ac64318",
             "66fc7ee12930ef13",
             "e708ba871374b953"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5",
+            "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953"
           ],
@@ -687,6 +691,8 @@
           "candidate_response_signature": "general:ace201fe95ce9e10:e708ba871374b953",
           "last_customer_intent": "clarify_previous_question",
           "last_sales_progression_step": "qualification",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -731,13 +737,13 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
+            "c4f25e2c6ac64318",
             "66fc7ee12930ef13",
             "e708ba871374b953",
             "72eb46797e26ac1a"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5",
+            "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
             "general:7c9191fe493c5356:72eb46797e26ac1a"
@@ -752,6 +758,8 @@
           "candidate_response_signature": "general:7c9191fe493c5356:72eb46797e26ac1a",
           "last_customer_intent": "callback_workflow_gap",
           "last_sales_progression_step": "value_mapping",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -796,14 +804,14 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
+            "c4f25e2c6ac64318",
             "66fc7ee12930ef13",
             "e708ba871374b953",
             "72eb46797e26ac1a",
             "72ffeba092c00af5"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5",
+            "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
             "general:7c9191fe493c5356:72eb46797e26ac1a",
@@ -820,6 +828,8 @@
           "candidate_response_signature": "general:32a423e7a13ed9dc:72ffeba092c00af5",
           "last_customer_intent": "callback_workflow_gap",
           "last_sales_progression_step": "value_mapping",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -862,7 +872,7 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
+            "c4f25e2c6ac64318",
             "66fc7ee12930ef13",
             "e708ba871374b953",
             "72eb46797e26ac1a",
@@ -870,7 +880,7 @@
             "84a88d4078508b17"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5",
+            "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
             "general:7c9191fe493c5356:72eb46797e26ac1a",
@@ -889,6 +899,8 @@
           "candidate_response_signature": "general:76bfd8942b81f9dc:84a88d4078508b17",
           "last_customer_intent": "topic:qualification",
           "last_sales_progression_step": "value_mapping",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -931,7 +943,7 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
+            "c4f25e2c6ac64318",
             "66fc7ee12930ef13",
             "e708ba871374b953",
             "72eb46797e26ac1a",
@@ -940,7 +952,7 @@
             "9b6bd2979c4cf2fd"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5",
+            "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
             "general:7c9191fe493c5356:72eb46797e26ac1a",
@@ -961,6 +973,8 @@
           "candidate_response_signature": "callback_workflow:9b6bd2979c4cf2fd",
           "last_customer_intent": "topic:qualification",
           "last_sales_progression_step": "value_mapping",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -1005,7 +1019,7 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
+            "c4f25e2c6ac64318",
             "66fc7ee12930ef13",
             "e708ba871374b953",
             "72eb46797e26ac1a",
@@ -1015,7 +1029,7 @@
             "43f3958ff9e71da5"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5",
+            "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
             "general:7c9191fe493c5356:72eb46797e26ac1a",
@@ -1038,6 +1052,8 @@
           "candidate_response_signature": "price_plan_summary:43f3958ff9e71da5",
           "last_customer_intent": "topic:price",
           "last_sales_progression_step": "value_mapping",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -1083,7 +1099,7 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
+            "c4f25e2c6ac64318",
             "66fc7ee12930ef13",
             "e708ba871374b953",
             "72eb46797e26ac1a",
@@ -1094,7 +1110,7 @@
             "4c3d428cafb127b2"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5",
+            "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
             "general:7c9191fe493c5356:72eb46797e26ac1a",
@@ -1119,6 +1135,8 @@
           "candidate_response_signature": "plan_boundary:4c3d428cafb127b2",
           "last_customer_intent": "topic:price",
           "last_sales_progression_step": "value_mapping",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -1168,7 +1186,7 @@
             "price"
           ],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
+            "c4f25e2c6ac64318",
             "66fc7ee12930ef13",
             "e708ba871374b953",
             "72eb46797e26ac1a",
@@ -1180,7 +1198,7 @@
             "d4f86ed58fd06eb8"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5",
+            "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
             "general:7c9191fe493c5356:72eb46797e26ac1a",
@@ -1207,6 +1225,8 @@
           "candidate_response_signature": "callback_workflow:d4f86ed58fd06eb8",
           "last_customer_intent": "ambiguous_negative",
           "last_sales_progression_step": "value_mapping",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -1254,7 +1274,7 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
+            "c4f25e2c6ac64318",
             "66fc7ee12930ef13",
             "e708ba871374b953",
             "72eb46797e26ac1a",
@@ -1267,7 +1287,7 @@
             "47d67cc0adebca25"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5",
+            "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
             "general:7c9191fe493c5356:72eb46797e26ac1a",
@@ -1296,6 +1316,8 @@
           "candidate_response_signature": "callback_workflow:47d67cc0adebca25",
           "last_customer_intent": "topic:price",
           "last_sales_progression_step": "value_mapping",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -1342,7 +1364,7 @@
           ],
           "rejected_topics": [],
           "last_response_hashes": [
-            "0c981feee2e0afe5",
+            "c4f25e2c6ac64318",
             "66fc7ee12930ef13",
             "e708ba871374b953",
             "72eb46797e26ac1a",
@@ -1356,7 +1378,7 @@
             "3533996838dfa9ee"
           ],
           "last_response_signatures": [
-            "opening_permission:0c981feee2e0afe5",
+            "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:66fc7ee12930ef13",
             "general:ace201fe95ce9e10:e708ba871374b953",
             "general:7c9191fe493c5356:72eb46797e26ac1a",
@@ -1387,6 +1409,8 @@
           "candidate_response_signature": "callback_workflow:3533996838dfa9ee",
           "last_customer_intent": "topic:price",
           "last_sales_progression_step": "value_mapping",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false
         },
@@ -1867,7 +1891,7 @@
       "deterministic_only": {
         "turn_count": 9,
         "responses": [
-          "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. Do you have a minute? I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Is that worth a quick check?",
+          "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
           "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
           "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
           "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?",
@@ -1879,8 +1903,8 @@
         ]
       },
       "metrics": {
-        "median_latency_ms": 13.119,
-        "p95_latency_ms": 16.854,
+        "median_latency_ms": 12.757,
+        "p95_latency_ms": 16.731,
         "schema_failure_rate": 0.0,
         "callback_semantic_accuracy": 0.8333333333333334,
         "repetition_rate": 0.0,

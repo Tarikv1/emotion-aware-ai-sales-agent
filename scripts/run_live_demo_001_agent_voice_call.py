@@ -409,16 +409,18 @@ def apply_live_session_decision_overrides(packet: dict, continuity: dict) -> dic
         )
         packet["decision_snapshot"] = decision
         return packet
-    if continuity.get("reason") != "callback_time_confirmed":
+    if continuity.get("reason") not in {"callback_time_confirmed", "appointment_time_confirmed"}:
         return packet
     decision = packet.get("decision_snapshot", {})
+    sales_difficulty = "appointment-scheduling-confirmation" if continuity.get("reason") == "appointment_time_confirmed" else "scheduling-confirmation"
+    next_action = "confirm-appointment" if continuity.get("reason") == "appointment_time_confirmed" else "confirm-scheduling"
     decision.update(
         {
-            "sales_difficulty": "scheduling-confirmation",
+            "sales_difficulty": sales_difficulty,
             "detected_emotion": "positive",
             "interest_state": "interested",
             "selected_strategy": "direct-ask-or-commitment",
-            "next_action": "confirm-scheduling",
+            "next_action": next_action,
             "call_control": "schedule-and-end",
         }
     )

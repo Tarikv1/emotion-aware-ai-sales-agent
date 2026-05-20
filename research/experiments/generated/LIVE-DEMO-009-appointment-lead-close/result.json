@@ -1,0 +1,609 @@
+{
+  "checkpoint_id": "LIVE-DEMO-009-appointment-lead-close",
+  "passed": true,
+  "failure_count": 0,
+  "failures": [],
+  "provider_calls_made": false,
+  "evidence": {
+    "single_permission_opening": {
+      "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+      "question_count": 1,
+      "provider_calls_made": false
+    },
+    "no_early_appointment_push": {
+      "response": "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
+      "continuity": {
+        "applied": true,
+        "reason": "proactive_qualification_guidance_after_acknowledgement",
+        "dialogue_focus": "qualification",
+        "candidate_response": "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?"
+      }
+    },
+    "confirmed_gap_close": [
+      {
+        "turn": 1,
+        "transcript": "__agent_open__",
+        "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+        "continuity": {
+          "applied": true,
+          "reason": "agent_opening_started",
+          "dialogue_focus": "qualification",
+          "candidate_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "opening",
+          "active_topic": "qualification",
+          "selected_gap": null,
+          "callback_semantic": null,
+          "last_agent_question_type": "permission_check",
+          "last_active_agent_question_type": "permission_check",
+          "last_agent_question_hash": "",
+          "asked_question_type_counts": {
+            "permission_check": 1
+          },
+          "answered_topics": [
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318"
+          ],
+          "recent_response_subjects": [
+            "opening_permission"
+          ],
+          "candidate_response_subject": "opening_permission",
+          "candidate_response_signature": "opening_permission:c4f25e2c6ac64318",
+          "last_customer_intent": "topic:qualification",
+          "last_sales_progression_step": "opening",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false
+        }
+      },
+      {
+        "turn": 2,
+        "transcript": "sure I guess",
+        "response": "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied. Which part is harder today: seeing it, assigning the reply, or remembering the callback?",
+        "continuity": {
+          "applied": true,
+          "reason": "resolved_qualification_focus_followup",
+          "dialogue_focus": "qualification",
+          "candidate_response": "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied. Which part is harder today: seeing it, assigning the reply, or remembering the callback?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "qualification",
+          "active_topic": "qualification",
+          "selected_gap": null,
+          "callback_semantic": null,
+          "last_agent_question_type": "gap_diagnostic",
+          "last_active_agent_question_type": "gap_diagnostic",
+          "last_agent_question_hash": "c4f25e2c6ac64318",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "gap_diagnostic": 1
+          },
+          "answered_topics": [
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318",
+            "c8bbbccede01d007"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318",
+            "diagnostic_question:c8bbbccede01d007"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "diagnostic_question"
+          ],
+          "candidate_response_subject": "diagnostic_question",
+          "candidate_response_signature": "diagnostic_question:c8bbbccede01d007",
+          "last_customer_intent": "affirm_next_step",
+          "last_sales_progression_step": "qualification",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false
+        }
+      },
+      {
+        "turn": 3,
+        "transcript": "I guess assigning is one of the hard parts",
+        "response": "Then priority routing is the value point: each inbound request gets a clear owner faster. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
+        "continuity": {
+          "applied": true,
+          "reason": "seller_gap_selected_for_qualification",
+          "dialogue_focus": "qualification",
+          "selected_gap": "routing",
+          "candidate_response": "Then priority routing is the value point: each inbound request gets a clear owner faster. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "value_mapping",
+          "active_topic": "qualification",
+          "selected_gap": "routing",
+          "callback_semantic": null,
+          "last_agent_question_type": "workflow_review_next_step",
+          "last_active_agent_question_type": "workflow_review_next_step",
+          "last_agent_question_hash": "c8bbbccede01d007",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "gap_diagnostic": 1,
+            "workflow_review_next_step": 1
+          },
+          "answered_topics": [
+            "qualification",
+            "routing"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318",
+            "c8bbbccede01d007",
+            "3574be084ff39cb6"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318",
+            "diagnostic_question:c8bbbccede01d007",
+            "routing_workflow:3574be084ff39cb6"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "diagnostic_question",
+            "routing_workflow"
+          ],
+          "candidate_response_subject": "routing_workflow",
+          "candidate_response_signature": "routing_workflow:3574be084ff39cb6",
+          "last_customer_intent": "selected_gap:routing",
+          "last_sales_progression_step": "value_mapping",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false
+        }
+      },
+      {
+        "turn": 4,
+        "transcript": "I'm not really sure about that",
+        "response": "For inbound demo follow-up, a short check asks who replies next, when they reply, and how it is tracked. Which part is least clear today?",
+        "continuity": {
+          "applied": true,
+          "reason": "duplicate_response_prevented_with_qualification_progression",
+          "dialogue_focus": "qualification",
+          "candidate_response": "For inbound demo follow-up, a short check asks who replies next, when they reply, and how it is tracked. Which part is least clear today?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "value_mapping",
+          "active_topic": "qualification",
+          "selected_gap": "routing",
+          "callback_semantic": null,
+          "last_agent_question_type": "gap_diagnostic",
+          "last_active_agent_question_type": "gap_diagnostic",
+          "last_agent_question_hash": "3574be084ff39cb6",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "gap_diagnostic": 2,
+            "workflow_review_next_step": 1
+          },
+          "answered_topics": [
+            "qualification",
+            "routing"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318",
+            "c8bbbccede01d007",
+            "3574be084ff39cb6",
+            "0b20f226d705c0bd"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318",
+            "diagnostic_question:c8bbbccede01d007",
+            "routing_workflow:3574be084ff39cb6",
+            "diagnostic_question:0b20f226d705c0bd"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "diagnostic_question",
+            "routing_workflow",
+            "diagnostic_question"
+          ],
+          "candidate_response_subject": "diagnostic_question",
+          "candidate_response_signature": "diagnostic_question:0b20f226d705c0bd",
+          "last_customer_intent": "topic:qualification",
+          "last_sales_progression_step": "value_mapping",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false
+        }
+      },
+      {
+        "turn": 5,
+        "transcript": "our inbound follow-ups usually land in one inbox and one person tracks it before it goes to other people",
+        "response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
+        "continuity": {
+          "applied": true,
+          "reason": "seller_gap_selected_for_qualification",
+          "dialogue_focus": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": "callback_workflow_gap",
+          "candidate_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "value_mapping",
+          "active_topic": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": "callback_workflow_gap",
+          "last_agent_question_type": "workflow_review_next_step",
+          "last_active_agent_question_type": "workflow_review_next_step",
+          "last_agent_question_hash": "0b20f226d705c0bd",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "gap_diagnostic": 2,
+            "workflow_review_next_step": 2
+          },
+          "answered_topics": [
+            "callbacks",
+            "qualification",
+            "reminders",
+            "routing"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318",
+            "c8bbbccede01d007",
+            "3574be084ff39cb6",
+            "0b20f226d705c0bd",
+            "72eb46797e26ac1a"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318",
+            "diagnostic_question:c8bbbccede01d007",
+            "routing_workflow:3574be084ff39cb6",
+            "diagnostic_question:0b20f226d705c0bd",
+            "general:7c9191fe493c5356:72eb46797e26ac1a"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "diagnostic_question",
+            "routing_workflow",
+            "diagnostic_question",
+            "general:7c9191fe493c5356"
+          ],
+          "candidate_response_subject": "general:7c9191fe493c5356",
+          "candidate_response_signature": "general:7c9191fe493c5356:72eb46797e26ac1a",
+          "last_customer_intent": "callback_workflow_gap",
+          "last_sales_progression_step": "value_mapping",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false
+        }
+      },
+      {
+        "turn": 6,
+        "transcript": "growth what do you mean by that",
+        "response": "I meant: an inbound demo request needs one clear person for the next reply. Can those requests sit waiting?",
+        "continuity": {
+          "applied": true,
+          "reason": "previous_question_clarified",
+          "dialogue_focus": "qualification",
+          "candidate_response": "I meant: an inbound demo request needs one clear person for the next reply. Can those requests sit waiting?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "value_mapping",
+          "active_topic": "qualification",
+          "selected_gap": "callbacks",
+          "callback_semantic": null,
+          "last_agent_question_type": "sales_progression_question",
+          "last_active_agent_question_type": "sales_progression_question",
+          "last_agent_question_hash": "72eb46797e26ac1a",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "gap_diagnostic": 2,
+            "workflow_review_next_step": 2,
+            "sales_progression_question": 1
+          },
+          "answered_topics": [
+            "callbacks",
+            "qualification",
+            "reminders",
+            "routing"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318",
+            "c8bbbccede01d007",
+            "3574be084ff39cb6",
+            "0b20f226d705c0bd",
+            "72eb46797e26ac1a",
+            "e708ba871374b953"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318",
+            "diagnostic_question:c8bbbccede01d007",
+            "routing_workflow:3574be084ff39cb6",
+            "diagnostic_question:0b20f226d705c0bd",
+            "general:7c9191fe493c5356:72eb46797e26ac1a",
+            "general:ace201fe95ce9e10:e708ba871374b953"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "diagnostic_question",
+            "routing_workflow",
+            "diagnostic_question",
+            "general:7c9191fe493c5356",
+            "general:ace201fe95ce9e10"
+          ],
+          "candidate_response_subject": "general:ace201fe95ce9e10",
+          "candidate_response_signature": "general:ace201fe95ce9e10:e708ba871374b953",
+          "last_customer_intent": "clarify_previous_question",
+          "last_sales_progression_step": "value_mapping",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false
+        }
+      },
+      {
+        "turn": 7,
+        "transcript": "they can but they should not",
+        "response": "Then the next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
+        "continuity": {
+          "applied": true,
+          "reason": "appointment_time_requested",
+          "dialogue_focus": "timing",
+          "selected_gap": "callbacks",
+          "candidate_response": "Then the next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "safe_next_step",
+          "active_topic": "timing",
+          "selected_gap": "callbacks",
+          "callback_semantic": null,
+          "last_agent_question_type": "appointment_time",
+          "last_active_agent_question_type": "appointment_time",
+          "last_agent_question_hash": "e708ba871374b953",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "gap_diagnostic": 2,
+            "workflow_review_next_step": 2,
+            "sales_progression_question": 1,
+            "appointment_time": 1
+          },
+          "answered_topics": [
+            "callbacks",
+            "qualification",
+            "reminders",
+            "routing",
+            "timing"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318",
+            "c8bbbccede01d007",
+            "3574be084ff39cb6",
+            "0b20f226d705c0bd",
+            "72eb46797e26ac1a",
+            "e708ba871374b953",
+            "b654627bc2abf5ac"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318",
+            "diagnostic_question:c8bbbccede01d007",
+            "routing_workflow:3574be084ff39cb6",
+            "diagnostic_question:0b20f226d705c0bd",
+            "general:7c9191fe493c5356:72eb46797e26ac1a",
+            "general:ace201fe95ce9e10:e708ba871374b953",
+            "callback_workflow:b654627bc2abf5ac"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "diagnostic_question",
+            "routing_workflow",
+            "diagnostic_question",
+            "general:7c9191fe493c5356",
+            "general:ace201fe95ce9e10",
+            "callback_workflow"
+          ],
+          "candidate_response_subject": "callback_workflow",
+          "candidate_response_signature": "callback_workflow:b654627bc2abf5ac",
+          "last_customer_intent": "topic:timing",
+          "last_sales_progression_step": "safe_next_step",
+          "appointment_close_ready": true,
+          "appointment_close_gap": "callbacks",
+          "stored_audio_data": false,
+          "stores_secrets": false
+        }
+      },
+      {
+        "turn": 8,
+        "transcript": "yeah it would help",
+        "response": "Yes. The next step is still a short workflow review on missed callback reminders with someone from Northstar. What time works for a quick call?",
+        "continuity": {
+          "applied": true,
+          "reason": "appointment_time_requested",
+          "dialogue_focus": "timing",
+          "selected_gap": "callbacks",
+          "candidate_response": "Yes. The next step is still a short workflow review on missed callback reminders with someone from Northstar. What time works for a quick call?"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "safe_next_step",
+          "active_topic": "timing",
+          "selected_gap": "callbacks",
+          "callback_semantic": null,
+          "last_agent_question_type": "appointment_time",
+          "last_active_agent_question_type": "appointment_time",
+          "last_agent_question_hash": "b654627bc2abf5ac",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "gap_diagnostic": 2,
+            "workflow_review_next_step": 2,
+            "sales_progression_question": 1,
+            "appointment_time": 2
+          },
+          "answered_topics": [
+            "callbacks",
+            "qualification",
+            "reminders",
+            "routing",
+            "timing"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318",
+            "c8bbbccede01d007",
+            "3574be084ff39cb6",
+            "0b20f226d705c0bd",
+            "72eb46797e26ac1a",
+            "e708ba871374b953",
+            "b654627bc2abf5ac",
+            "14241eb17e74b5a7"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318",
+            "diagnostic_question:c8bbbccede01d007",
+            "routing_workflow:3574be084ff39cb6",
+            "diagnostic_question:0b20f226d705c0bd",
+            "general:7c9191fe493c5356:72eb46797e26ac1a",
+            "general:ace201fe95ce9e10:e708ba871374b953",
+            "callback_workflow:b654627bc2abf5ac",
+            "callback_workflow:14241eb17e74b5a7"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "diagnostic_question",
+            "routing_workflow",
+            "diagnostic_question",
+            "general:7c9191fe493c5356",
+            "general:ace201fe95ce9e10",
+            "callback_workflow",
+            "callback_workflow"
+          ],
+          "candidate_response_subject": "callback_workflow",
+          "candidate_response_signature": "callback_workflow:14241eb17e74b5a7",
+          "last_customer_intent": "affirm_next_step",
+          "last_sales_progression_step": "safe_next_step",
+          "appointment_close_ready": true,
+          "appointment_close_gap": "callbacks",
+          "stored_audio_data": false,
+          "stores_secrets": false
+        }
+      }
+    ],
+    "repeated_yes_close": [
+      {
+        "turn": 1,
+        "transcript": "__agent_open__",
+        "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+        "continuity": {
+          "applied": true,
+          "reason": "agent_opening_started",
+          "dialogue_focus": "qualification",
+          "candidate_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?"
+        }
+      },
+      {
+        "turn": 2,
+        "transcript": "sure I guess",
+        "response": "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied. Which part is harder today: seeing it, assigning the reply, or remembering the callback?",
+        "continuity": {
+          "applied": true,
+          "reason": "resolved_qualification_focus_followup",
+          "dialogue_focus": "qualification",
+          "candidate_response": "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied. Which part is harder today: seeing it, assigning the reply, or remembering the callback?"
+        }
+      },
+      {
+        "turn": 3,
+        "transcript": "I guess assigning is one of the hard parts",
+        "response": "Then priority routing is the value point: each inbound request gets a clear owner faster. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
+        "continuity": {
+          "applied": true,
+          "reason": "seller_gap_selected_for_qualification",
+          "dialogue_focus": "qualification",
+          "selected_gap": "routing",
+          "candidate_response": "Then priority routing is the value point: each inbound request gets a clear owner faster. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?"
+        }
+      },
+      {
+        "turn": 4,
+        "transcript": "they can but they should not",
+        "response": "Then the next step is a short workflow review with someone from Northstar. They would check owner routing against your actual follow-up flow. What time works for a quick call?",
+        "continuity": {
+          "applied": true,
+          "reason": "appointment_time_requested",
+          "dialogue_focus": "timing",
+          "selected_gap": "routing",
+          "candidate_response": "Then the next step is a short workflow review with someone from Northstar. They would check owner routing against your actual follow-up flow. What time works for a quick call?"
+        }
+      },
+      {
+        "turn": 5,
+        "transcript": "yes it would help",
+        "response": "Yes. The next step is still a short workflow review on owner routing with someone from Northstar. What time works for a quick call?",
+        "continuity": {
+          "applied": true,
+          "reason": "appointment_time_requested",
+          "dialogue_focus": "timing",
+          "selected_gap": "routing",
+          "candidate_response": "Yes. The next step is still a short workflow review on owner routing with someone from Northstar. What time works for a quick call?"
+        }
+      },
+      {
+        "turn": 6,
+        "transcript": "yes",
+        "response": "I can set up that short workflow review on owner routing with someone from Northstar, but I need a time. What time works for the quick call?",
+        "continuity": {
+          "applied": true,
+          "reason": "appointment_time_requested",
+          "dialogue_focus": "timing",
+          "selected_gap": "routing",
+          "candidate_response": "I can set up that short workflow review on owner routing with someone from Northstar, but I need a time. What time works for the quick call?"
+        }
+      }
+    ],
+    "scheduling_controls": {
+      "request_response": "No problem. What time should I note for the callback?",
+      "request_continuity": {
+        "applied": true,
+        "reason": "callback_request_time_needed",
+        "dialogue_focus": "timing",
+        "callback_semantic": "callback_scheduling_request",
+        "candidate_response": "No problem. What time should I note for the callback?"
+      },
+      "time_response": "Confirmed. I will record that callback time for the specialist. Goodbye.",
+      "time_call_control": "schedule-and-end",
+      "time_continuity": {
+        "applied": true,
+        "reason": "callback_time_confirmed",
+        "dialogue_focus": "timing",
+        "candidate_response": "Confirmed. I will record that callback time for the specialist. Goodbye."
+      }
+    },
+    "appointment_time_confirmation": {
+      "appointment_response": "Yes. The next step is still a short workflow review on missed callback reminders with someone from Northstar. What time works for a quick call?",
+      "time_response": "Confirmed. I will note that time for the workflow review. Goodbye.",
+      "time_call_control": "schedule-and-end",
+      "time_continuity": {
+        "applied": true,
+        "reason": "appointment_time_confirmed",
+        "dialogue_focus": "timing",
+        "candidate_response": "Confirmed. I will note that time for the workflow review. Goodbye."
+      }
+    }
+  }
+}
