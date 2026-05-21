@@ -108,6 +108,17 @@ def audio_filename(packet: dict[str, Any], provider_key: str, language: str, ext
     return f"RESP-003-{campaign_part}-{language}-{provider_key}-{digest}.{extension}"
 
 
+def redacted_voice_id_diagnostics(voice_id: str | None, source: str | None) -> dict[str, Any]:
+    present = bool(voice_id)
+    return {
+        "source": source,
+        "present": present,
+        "length": len(voice_id) if voice_id else 0,
+        "sha256_8": hashlib.sha256(voice_id.encode("utf-8")).hexdigest()[:8] if voice_id else None,
+        "raw_value_logged": False,
+    }
+
+
 def offline_provider_result(reason: str, audio_path: Path) -> dict[str, Any]:
     maybe_remove(audio_path)
     return {
@@ -296,6 +307,7 @@ def build_runtime_tts_delivery(
     audio_root = audio_dir or ROOT / "research" / "experiments" / "generated"
     audio_path = audio_root / audio_filename(packet, provider_key, language, provider["audio_extension"])
     voice_id, voice_env_var = resolve_voice_id(provider, language, force_key_missing)
+    voice_diagnostics = redacted_voice_id_diagnostics(voice_id, voice_env_var)
     api_key = None if force_key_missing else os.environ.get(provider["api_key_env_var"])
     can_call_live = live and bool(api_key) and bool(voice_id)
     tts_input = select_tts_input(packet)
@@ -363,6 +375,8 @@ def build_runtime_tts_delivery(
         "requires_api_key": live and not force_key_missing,
         "api_key_env_var": provider["api_key_env_var"],
         "selected_voice_id_env_var": voice_env_var,
+        "selected_voice_id_source": voice_env_var,
+        "voice_id_diagnostics": voice_diagnostics,
         "api_key_present": bool(api_key),
         "voice_id_present": bool(voice_id),
         "api_key_value_logged": False,

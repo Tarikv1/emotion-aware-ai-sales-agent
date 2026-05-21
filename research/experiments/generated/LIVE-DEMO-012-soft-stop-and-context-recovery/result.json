@@ -1,0 +1,161 @@
+{
+  "checkpoint_id": "LIVE-DEMO-012-soft-stop-and-context-recovery",
+  "passed": true,
+  "failure_count": 0,
+  "failures": [],
+  "provider_calls_made": false,
+  "evidence": {
+    "soft_stop": {
+      "response": "Understood. I will stop here. Goodbye.",
+      "call_control": "end-call",
+      "continuity": {
+        "applied": true,
+        "reason": "buyer_requested_stop",
+        "dialogue_focus": "timing",
+        "candidate_response": "Understood. I will stop here. Goodbye."
+      },
+      "stability_guard": {
+        "applied": false,
+        "reason": "terminal_action_stability_skipped",
+        "violations": [],
+        "dialogue_focus": "timing",
+        "selected_gap": null
+      }
+    },
+    "purpose_after_timing": {
+      "response": "I am calling because RouteSignal helps with inbound demo follow-up: demo leads getting assigned, reminded, and followed up. Northstar is asking for a short workflow review if leads are slipping today.",
+      "call_control": "continue-call",
+      "continuity": {
+        "applied": true,
+        "reason": "call_purpose_explained",
+        "action_id": "recover_call_purpose",
+        "pragmatic_continuity_reason": "pragmatic_call_purpose_explained",
+        "dialogue_focus": "qualification",
+        "selected_gap": null,
+        "candidate_response": "I am calling because RouteSignal helps with inbound demo follow-up: demo leads getting assigned, reminded, and followed up. Northstar is asking for a short workflow review if leads are slipping today.",
+        "pragmatic_move": {
+          "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+          "schema_version": 1,
+          "move_id": "call_purpose_question",
+          "applied": true,
+          "target_action": "recover_call_purpose",
+          "continuity_reason": "pragmatic_call_purpose_explained",
+          "legacy_reason": null,
+          "confidence": 0.95,
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "previous_question": "Of course. What time should I note for the callback?",
+          "previous_question_type": "callback_time",
+          "dialogue_reasoning_act": "unknown",
+          "response_strategy": "refocus_to_sales_call",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false
+        }
+      },
+      "memory": {
+        "schema_version": 1,
+        "active_stage": "qualification",
+        "active_topic": "qualification",
+        "selected_gap": null,
+        "callback_semantic": null,
+        "last_agent_question_type": "none",
+        "last_active_agent_question_type": "callback_time",
+        "last_agent_question_hash": "2f9ce1a7fe321a74",
+        "asked_question_type_counts": {
+          "permission_check": 1,
+          "callback_time": 1,
+          "none": 1
+        },
+        "answered_topics": [
+          "qualification",
+          "timing"
+        ],
+        "rejected_topics": [],
+        "last_response_hashes": [
+          "c4f25e2c6ac64318",
+          "2f9ce1a7fe321a74",
+          "6493582b342d26b9"
+        ],
+        "last_response_signatures": [
+          "opening_permission:c4f25e2c6ac64318",
+          "diagnostic_question:2f9ce1a7fe321a74",
+          "safe_next_step:6493582b342d26b9"
+        ],
+        "recent_response_subjects": [
+          "opening_permission",
+          "diagnostic_question",
+          "safe_next_step"
+        ],
+        "candidate_response_subject": "safe_next_step",
+        "candidate_response_signature": "safe_next_step:6493582b342d26b9",
+        "last_customer_intent": "topic:qualification",
+        "last_sales_progression_step": "qualification",
+        "appointment_close_ready": false,
+        "appointment_close_gap": null,
+        "stored_audio_data": false,
+        "stores_secrets": false
+      }
+    },
+    "owner_after_purpose": {
+      "response": "Then RouteSignal helps each demo lead get a clear next owner faster. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
+      "call_control": "continue-call",
+      "continuity": {
+        "applied": true,
+        "reason": "seller_gap_selected_for_qualification",
+        "dialogue_focus": "qualification",
+        "selected_gap": "routing",
+        "candidate_response": "Then RouteSignal helps each demo lead get a clear next owner faster. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?"
+      },
+      "memory": {
+        "schema_version": 1,
+        "active_stage": "value_mapping",
+        "active_topic": "qualification",
+        "selected_gap": "routing",
+        "callback_semantic": null,
+        "last_agent_question_type": "workflow_review_next_step",
+        "last_active_agent_question_type": "workflow_review_next_step",
+        "last_agent_question_hash": "2f9ce1a7fe321a74",
+        "asked_question_type_counts": {
+          "permission_check": 1,
+          "callback_time": 1,
+          "none": 1,
+          "workflow_review_next_step": 1
+        },
+        "answered_topics": [
+          "qualification",
+          "routing",
+          "timing"
+        ],
+        "rejected_topics": [],
+        "last_response_hashes": [
+          "c4f25e2c6ac64318",
+          "2f9ce1a7fe321a74",
+          "6493582b342d26b9",
+          "975bcb9157a5e4bb"
+        ],
+        "last_response_signatures": [
+          "opening_permission:c4f25e2c6ac64318",
+          "diagnostic_question:2f9ce1a7fe321a74",
+          "safe_next_step:6493582b342d26b9",
+          "safe_next_step:975bcb9157a5e4bb"
+        ],
+        "recent_response_subjects": [
+          "opening_permission",
+          "diagnostic_question",
+          "safe_next_step",
+          "safe_next_step"
+        ],
+        "candidate_response_subject": "safe_next_step",
+        "candidate_response_signature": "safe_next_step:975bcb9157a5e4bb",
+        "last_customer_intent": "selected_gap:routing",
+        "last_sales_progression_step": "value_mapping",
+        "appointment_close_ready": false,
+        "appointment_close_gap": null,
+        "stored_audio_data": false,
+        "stores_secrets": false
+      }
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "checkpoint_id": "LIVE-DEMO-011-live-followup-stop-and-pain-close",
+  "passed": true,
+  "failure_count": 0,
+  "failures": [],
+  "provider_calls_made": false,
+  "evidence": {
+    "callback_never": {
+      "response": "Understood. I will stop here. Goodbye.",
+      "call_control": "end-call",
+      "continuity": {
+        "applied": true,
+        "reason": "buyer_requested_stop",
+        "dialogue_focus": "timing",
+        "candidate_response": "Understood. I will stop here. Goodbye."
+      }
+    },
+    "explicit_do_not_call": {
+      "response": "Understood. I will stop here. Goodbye.",
+      "call_control": "end-call",
+      "continuity": {
+        "applied": true,
+        "reason": "buyer_requested_stop",
+        "dialogue_focus": "timing",
+        "candidate_response": "Understood. I will stop here. Goodbye."
+      }
+    },
+    "confirmed_missed_leads": {
+      "response": "That is exactly what RouteSignal is meant to help with: demo leads getting assigned, reminded, and followed up. The next step is a short workflow review with someone from Northstar. They would check missed demo leads against your actual follow-up flow. What time works for a quick call?",
+      "tts_input_text": "That's exactly what RouteSignal is meant to help with: demo leads getting assigned, <break time=\"0.24s\" /> reminded, and followed up, well, the next step is a short workflow review with someone from Northstar. They would check missed demo leads against your actual follow-up flow. What time works for a quick call?",
+      "continuity": {
+        "applied": true,
+        "reason": "appointment_time_requested",
+        "action_id": "request_appointment_time",
+        "pragmatic_continuity_reason": "pragmatic_pain_to_appointment",
+        "dialogue_focus": "timing",
+        "selected_gap": "handoffs",
+        "candidate_response": "That is exactly what RouteSignal is meant to help with: demo leads getting assigned, reminded, and followed up. The next step is a short workflow review with someone from Northstar. They would check missed demo leads against your actual follow-up flow. What time works for a quick call?",
+        "pragmatic_move": {
+          "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+          "schema_version": 1,
+          "move_id": "pain_statement",
+          "applied": true,
+          "target_action": "request_appointment_time",
+          "continuity_reason": "pragmatic_pain_to_appointment",
+          "legacy_reason": null,
+          "confidence": 0.9,
+          "dialogue_focus": "timing",
+          "selected_gap": "handoffs",
+          "previous_question": "That breaks when follow-up is split between tools. RouteSignal keeps the demo lead, reminder, and next reply in one workflow. Where does it break first today?",
+          "previous_question_type": "gap_diagnostic",
+          "dialogue_reasoning_act": "selected_gap",
+          "response_strategy": "map_gap_to_value",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false
+        }
+      }
+    },
+    "fit_check_confirmation": {
+      "response": "That is exactly what RouteSignal is meant to help with: demo leads getting assigned, reminded, and followed up. The next step is a short workflow review with someone from Northstar. They would check missed demo leads against your actual follow-up flow. What time works for a quick call?",
+      "tts_input_text": "That's exactly what RouteSignal is meant to help with: demo leads getting assigned, <break time=\"0.147s\" /> reminded, and followed up, well, the next step is a short workflow review with someone from Northstar. They would check missed demo leads against your actual follow-up flow. What time works for a quick call?",
+      "continuity": {
+        "applied": true,
+        "reason": "appointment_time_requested",
+        "action_id": "request_appointment_time",
+        "pragmatic_continuity_reason": "pragmatic_pain_to_appointment",
+        "dialogue_focus": "timing",
+        "selected_gap": "handoffs",
+        "candidate_response": "That is exactly what RouteSignal is meant to help with: demo leads getting assigned, reminded, and followed up. The next step is a short workflow review with someone from Northstar. They would check missed demo leads against your actual follow-up flow. What time works for a quick call?",
+        "pragmatic_move": {
+          "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+          "schema_version": 1,
+          "move_id": "pain_statement",
+          "applied": true,
+          "target_action": "request_appointment_time",
+          "continuity_reason": "pragmatic_pain_to_appointment",
+          "legacy_reason": null,
+          "confidence": 0.9,
+          "dialogue_focus": "timing",
+          "selected_gap": "handoffs",
+          "previous_question": null,
+          "previous_question_type": "none",
+          "dialogue_reasoning_act": "selected_gap",
+          "response_strategy": "map_gap_to_value",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false
+        }
+      }
+    }
+  }
+}

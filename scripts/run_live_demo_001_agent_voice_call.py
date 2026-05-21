@@ -25,10 +25,9 @@ from runtime.contracts.voice_turn_state_contract import (  # noqa: E402
 )
 from runtime.core.dialogue_reasoner import (  # noqa: E402
     build_reasoning_context,
-    reason_about_turn,
-    validate_reasoning_packet,
 )
 from runtime.core.dialogue_reasoner_async_enrichment import build_async_enrichment_request  # noqa: E402
+import runtime.core.dialogue_manager as dialogue_manager  # noqa: E402
 import runtime.core.live_voice_session_policy as session_policy  # noqa: E402
 from runtime.entrypoints.generate_guarded_response import (  # noqa: E402
     DEFAULT_RETRIEVAL_REGISTRY,
@@ -38,7 +37,6 @@ from runtime.entrypoints.realtime_turn_cli import find_campaign  # noqa: E402
 from runtime.speech.asr_quality_gate import (  # noqa: E402
     ASR_LOW_CONFIDENCE_THRESHOLD,
     evaluate_asr_quality,
-    repair_response_for_quality_gate,
 )
 from runtime.speech.realtime_turn_taking_policy import (  # noqa: E402
     browser_asr_acceptance_policy,
@@ -367,6 +365,7 @@ def build_metadata(args: argparse.Namespace, cases_path: Path, private_out: Path
 def decision_summary(packet: dict) -> dict:
     decision = packet["decision_snapshot"]
     tts = packet["tts_delivery"]
+    voice_id_diagnostics = tts.get("voice_id_diagnostics") or {}
     retrieval = packet.get("retrieval", {})
     composer_hooks = packet.get("composer_hooks", {})
     return {
@@ -389,43 +388,14 @@ def decision_summary(packet: dict) -> dict:
         "tts_provider_calls_made": tts["provider_calls_made"],
         "tts_audio_file_created": tts["audio_file_created"],
         "tts_fallback_reason": tts["fallback_reason"],
+        "tts_voice_id_source": voice_id_diagnostics.get("source"),
+        "tts_voice_id_present": voice_id_diagnostics.get("present"),
+        "tts_voice_id_length": voice_id_diagnostics.get("length"),
+        "tts_voice_id_hash": voice_id_diagnostics.get("sha256_8"),
+        "tts_voice_id_raw_value_logged": voice_id_diagnostics.get("raw_value_logged"),
         "time_to_first_audio_ms": tts["time_to_first_audio_ms"],
         "total_provider_latency_ms": tts["total_provider_latency_ms"],
     }
-
-
-def apply_live_session_decision_overrides(packet: dict, continuity: dict) -> dict:
-    if continuity.get("reason") == "buyer_requested_stop":
-        decision = packet.get("decision_snapshot", {})
-        decision.update(
-            {
-                "sales_difficulty": "do-not-call",
-                "detected_emotion": "skeptical-or-negative",
-                "interest_state": "do-not-call",
-                "selected_strategy": "rapport",
-                "next_action": "suppress-contact",
-                "call_control": "end-call",
-            }
-        )
-        packet["decision_snapshot"] = decision
-        return packet
-    if continuity.get("reason") not in {"callback_time_confirmed", "appointment_time_confirmed"}:
-        return packet
-    decision = packet.get("decision_snapshot", {})
-    sales_difficulty = "appointment-scheduling-confirmation" if continuity.get("reason") == "appointment_time_confirmed" else "scheduling-confirmation"
-    next_action = "confirm-appointment" if continuity.get("reason") == "appointment_time_confirmed" else "confirm-scheduling"
-    decision.update(
-        {
-            "sales_difficulty": sales_difficulty,
-            "detected_emotion": "positive",
-            "interest_state": "interested",
-            "selected_strategy": "direct-ask-or-commitment",
-            "next_action": next_action,
-            "call_control": "schedule-and-end",
-        }
-    )
-    packet["decision_snapshot"] = decision
-    return packet
 
 
 def audio_url_for_packet(packet: dict) -> str | None:
@@ -539,7 +509,7 @@ def english_live_demo_campaign_response(normalized: str, campaign: dict) -> dict
         return candidate(
             "campaign_depth_integration_boundary_answered",
             "details",
-            "The fictional profile supports owner lookup, but exact setup and permissions need verified review before I claim fit.",
+            "RouteSignal CRM can support owner-routing style workflows, but someone from Northstar needs to verify exact setup and permissions before I claim fit.",
         )
     if normalized_contains_any(normalized, {"do i need to talk to a specialist", "need a specialist", "talk to a specialist"}):
         return candidate(
@@ -699,24 +669,24 @@ def continuity_text(language: str, focus: str, *, persisted: bool = False) -> st
                 return "Dann machen wir den Aufwand konkret: Die Durchsicht lohnt sich nur, wenn Rueckrufe oder Nachverfolgung heute wirklich Zeit kosten."
             return "Verstanden. Dann pruefen wir zuerst, ob sich die Durchsicht fuer Ihre Zeit lohnt; wenn nicht, gibt es keinen Grund zu draengen."
         if persisted:
-            return "The effort test is simple: does missed follow-up cost more time than this review? If not, stop here."
-        return "The effort test is simple: does missed follow-up cost more time than this review? If not, stop here."
+            return "The effort question is simple: would missed follow-up cost more time than a short review?"
+        return "The effort question is simple: would missed follow-up cost more time than a short review?"
     if focus == "fit":
         if german:
             if persisted:
                 return "Dann bleiben wir bei der Passung. Entscheidend ist, ob Rueckruf- oder Nachverfolgungsarbeit in Ihrem aktuellen Ablauf wirklich offen bleibt."
             return "Verstanden. Dann geht es zuerst um Passung: ob das Problem in Ihrer Situation wirklich existiert, bevor wir ueber einen naechsten Schritt sprechen."
         if persisted:
-            return "Fit depends on a real workflow gap: missed leads, callbacks, or handoffs. If that is not happening, stop here."
-        return "Fit depends on a real workflow gap: missed leads, callbacks, or handoffs. If that is not happening, stop here."
+            return "Fit depends on actual missed leads, callbacks, or handoffs. If your team is seeing that, a short review is the next step."
+        return "Fit depends on actual missed leads, callbacks, or handoffs. If your team is seeing that, a short review is the next step."
     if focus == "timing":
         if german:
             if persisted:
                 return "Dann bleibt der Zeitpunkt der Engpass. Ich wuerde es bei einer schriftlichen Zusammenfassung oder einem spaeteren Rueckruf belassen."
             return "Verstanden. Dann steht der Zeitpunkt im Vordergrund. Heute muss nichts entschieden werden; hoechstens eine kurze schriftliche Zusammenfassung oder ein spaeterer Rueckruf."
         if persisted:
-            return "If timing is the blocker, use a written summary or later callback. No decision now."
-        return "If timing is the blocker, use a written summary or later callback. No decision now."
+            return "No problem. We do not need to decide anything now."
+        return "No problem. We do not need to decide anything now."
     if focus == "details":
         if german:
             if persisted:
@@ -763,7 +733,7 @@ def focus_followup_text(language: str, focus: str, normalized: str) -> str:
         if agrees_to_continue:
             if german:
                 return "Gut, dann pruefen wir nur den Aufwand. Wenn der Zeitverlust heute nicht klar ist, sollte ich keinen naechsten Schritt draengen."
-            return "Check effort only: is missed follow-up costing enough time to justify a review? If not, stop here."
+            return "Then keep it to the effort question: is missed follow-up costing enough time to justify a short review?"
     if focus == "details":
         if asks_for_explanation:
             if german:
@@ -772,16 +742,16 @@ def focus_followup_text(language: str, focus: str, normalized: str) -> str:
         if agrees_to_continue:
             if german:
                 return "Gut, dann bleiben wir bei den Details: was der Workflow abdeckt, was offen bleibt und was ein Spezialist pruefen sollte."
-            return "Check scope only: what the workflow covers, what remains open, and what needs verified review."
+            return "Keep the scope narrow: what the workflow covers, what remains open, and what needs verified review."
     if focus == "fit":
         if asks_for_explanation:
             if german:
                 return "Bei der Passung geht es darum, ob Lead-Routing oder Nachverfolgung in Ihrem aktuellen Ablauf wirklich ein Problem ist."
-            return "Fit depends on a real workflow gap: missed leads, callbacks, or handoffs. If that is not happening, stop here."
+            return "Fit depends on actual missed leads, callbacks, or handoffs. If your team is seeing that, a short review is the next step."
         if agrees_to_continue:
             if german:
                 return "Gut, dann bleiben wir bei der Passung und pruefen nur, ob das Problem in Ihrem Ablauf wirklich existiert."
-            return "Check fit only: are leads, callbacks, or handoffs getting missed today? If not, stop here."
+            return "Then keep it to fit: are leads, callbacks, or handoffs actually getting missed today?"
     if focus == "timing":
         if asks_for_explanation or agrees_to_continue:
             return continuity_text(language, "timing", persisted=True)
@@ -810,7 +780,7 @@ def progressive_focus_text(language: str, focus: str, normalized: str, step: int
         ],
         "fit": [
             (
-                "Fit depends on a real workflow gap: missed leads, callbacks, or handoffs. If that is not happening, stop here."
+                "Fit depends on actual missed leads, callbacks, or handoffs. If your team is seeing that, a short review is the next step."
                 if not german
                 else "Bei der Passung geht es darum, ob Lead-Routing oder Nachverfolgung in Ihrem aktuellen Ablauf wirklich ein Problem ist."
             ),
@@ -820,19 +790,19 @@ def progressive_focus_text(language: str, focus: str, normalized: str, step: int
                 else "Die naechste Passungsfrage ist praktisch: Bleiben heute Leads, Rueckrufe oder Uebergaben liegen?"
             ),
             (
-                "If that problem is real, a verified workflow review may be useful. If not, stop here."
+                "If that problem is real, the next step is a short workflow review with someone from Northstar. What time works for a quick call?"
                 if not german
                 else "Wenn dieses Problem real ist, kann ein Spezialist die Passung pruefen; wenn nicht, gibt es keinen Grund weiterzumachen."
             ),
             (
-                "The yes-or-no is whether missed handoffs justify even a short workflow review."
+                "If missed handoffs are real, the workflow review should focus there. What time works for a quick call?"
                 if not german
                 else "Die praktische Ja-Nein-Frage ist, ob verpasste Uebergaben oft genug passieren, um eine kurze Spezialistenpruefung zu rechtfertigen."
             ),
             (
-                "If fit stays unclear after that, stop at a written summary."
+                "If fit stays unclear after that, I can keep it to a written summary."
                 if not german
-                else "Wenn die Passung danach noch unklar ist, wuerde ich bei einer schriftlichen Zusammenfassung stoppen, statt live weiterzudraengen."
+                else "Wenn die Passung danach noch unklar ist, wuerde ich bei einer schriftlichen Zusammenfassung bleiben."
             ),
         ],
         "details": [
@@ -854,12 +824,12 @@ def progressive_focus_text(language: str, focus: str, normalized: str, step: int
         ],
         "effort": [
             (
-                "The effort test is simple: does missed follow-up cost more time than this review? If not, stop here."
+                "The effort question is simple: would missed follow-up cost more time than a short review?"
                 if not german
                 else "Die Aufwandfrage ist konkret: Lohnt sich die Durchsicht nur, wenn Rueckrufe oder Nachverfolgung heute Zeit kosten?"
             ),
             (
-                "If the review takes more time than the problem costs, stop here."
+                "If the review takes more time than the problem costs, there is no reason to push it."
                 if not german
                 else "Wenn die Durchsicht mehr Zeit kostet als das Problem selbst, sollte man sie nicht draengen."
             ),
@@ -883,12 +853,12 @@ def progressive_focus_text(language: str, focus: str, normalized: str, step: int
         ],
         "timing": [
             (
-                "If timing is the blocker, use a written summary or later callback. No decision now."
+                "No problem. We do not need to decide anything now."
                 if not german
                 else "Dann bleibt der Zeitpunkt der Engpass. Ich wuerde es bei schriftlicher Zusammenfassung oder spaeterem Rueckruf belassen."
             ),
             (
-                "If now is not the right time, use a later callback or written summary."
+                "No problem. We can leave it here."
                 if not german
                 else "Wenn jetzt nicht der richtige Zeitpunkt ist, bleibt nur ein spaeterer Rueckruf oder eine schriftliche Zusammenfassung."
             ),
@@ -1321,91 +1291,74 @@ def build_turn_packet(
 ) -> dict:
     start = time.perf_counter()
     campaign = load_campaign(campaign_id, cases_path)
-    language = str(campaign.get("language") or "en")
     quality_gate = evaluate_asr_quality(transcript, asr_confidence)
-    if not quality_gate["accepted"]:
-        continuity = repair_response_for_quality_gate(language, quality_gate)
-    else:
-        continuity = session_policy.continuity_response(transcript, session_state, campaign)
-    guarded = build_guarded_response_packet(
-        campaign=campaign,
-        stage=stage,
-        input_type=input_type,
+    dialogue_action = dialogue_manager.plan_dialogue_action(
         transcript=transcript,
-        silence_count=silence_count,
-        candidate_response_override=continuity.get("candidate_response") if continuity.get("applied") else None,
-        **live_demo_retrieval_kwargs(),
-        align_decision_trace=True,
+        session_state=session_state,
+        campaign=campaign,
+        quality_gate=quality_gate,
     )
-    if not continuity.get("applied"):
-        anti_loop = session_policy.anti_loop_response(
-            transcript,
-            session_state,
-            str(campaign.get("language") or "en"),
-            str(guarded.get("final_response") or ""),
-        )
-        if anti_loop.get("applied"):
-            continuity = anti_loop
-            guarded = build_guarded_response_packet(
-                campaign=campaign,
-                stage=stage,
-                input_type=input_type,
-                transcript=transcript,
-                silence_count=silence_count,
-                candidate_response_override=anti_loop.get("candidate_response"),
-                **live_demo_retrieval_kwargs(),
-                align_decision_trace=True,
-            )
-    duplicate_repair = session_policy.duplicate_response_repair(
-        transcript,
-        session_state,
-        str(campaign.get("language") or "en"),
-        str(guarded.get("final_response") or ""),
-    )
-    if duplicate_repair.get("applied"):
-        continuity = duplicate_repair
-        guarded = build_guarded_response_packet(
+
+    def guarded_packet_for_action(action: dict) -> dict:
+        return build_guarded_response_packet(
             campaign=campaign,
             stage=stage,
             input_type=input_type,
             transcript=transcript,
             silence_count=silence_count,
-            candidate_response_override=duplicate_repair.get("candidate_response"),
+            candidate_response_override=dialogue_manager.candidate_response(action),
             **live_demo_retrieval_kwargs(),
             align_decision_trace=True,
         )
-    conversation_memory = session_policy.build_conversation_memory(
-        session_state,
-        transcript,
-        str(guarded.get("final_response") or ""),
-        continuity,
+
+    guarded = guarded_packet_for_action(dialogue_action)
+    updated_action = dialogue_manager.apply_anti_loop_if_needed(
+        action=dialogue_action,
+        transcript=transcript,
+        session_state=session_state,
+        campaign=campaign,
+        generated_response=str(guarded.get("final_response") or ""),
     )
-    stability_guard = session_policy.pre_speech_conversation_stability_guard(
-        transcript,
-        session_state,
-        str(campaign.get("language") or "en"),
-        str(guarded.get("final_response") or ""),
-        conversation_memory,
+    if updated_action is not dialogue_action:
+        dialogue_action = updated_action
+        guarded = guarded_packet_for_action(dialogue_action)
+    updated_action = dialogue_manager.apply_duplicate_repair_if_needed(
+        action=dialogue_action,
+        transcript=transcript,
+        session_state=session_state,
+        campaign=campaign,
+        generated_response=str(guarded.get("final_response") or ""),
     )
-    if stability_guard.get("applied"):
-        continuity = stability_guard
-        guarded = build_guarded_response_packet(
-            campaign=campaign,
-            stage=stage,
-            input_type=input_type,
+    if updated_action is not dialogue_action:
+        dialogue_action = updated_action
+        guarded = guarded_packet_for_action(dialogue_action)
+
+    continuity = dialogue_manager.continuity(dialogue_action)
+    conversation_memory = dialogue_manager.build_conversation_memory(
+        action=dialogue_action,
+        session_state=session_state,
+        transcript=transcript,
+        final_response=str(guarded.get("final_response") or ""),
+    )
+    updated_action, stability_guard = dialogue_manager.apply_stability_guard_if_needed(
+        action=dialogue_action,
+        transcript=transcript,
+        session_state=session_state,
+        campaign=campaign,
+        generated_response=str(guarded.get("final_response") or ""),
+        conversation_memory=conversation_memory,
+    )
+    if updated_action is not dialogue_action:
+        dialogue_action = updated_action
+        guarded = guarded_packet_for_action(dialogue_action)
+        continuity = dialogue_manager.continuity(dialogue_action)
+        conversation_memory = dialogue_manager.build_conversation_memory(
+            action=dialogue_action,
+            session_state=session_state,
             transcript=transcript,
-            silence_count=silence_count,
-            candidate_response_override=stability_guard.get("candidate_response"),
-            **live_demo_retrieval_kwargs(),
-            align_decision_trace=True,
+            final_response=str(guarded.get("final_response") or ""),
         )
-        conversation_memory = session_policy.build_conversation_memory(
-            session_state,
-            transcript,
-            str(guarded.get("final_response") or ""),
-            continuity,
-        )
-    guarded = apply_live_session_decision_overrides(guarded, continuity)
+    guarded = dialogue_manager.apply_decision_override(guarded, dialogue_action)
     voice_packet = attach_runtime_voice_delivery(guarded, campaign, provider_key="elevenlabs")
     tts_packet = attach_runtime_tts_delivery(
         voice_packet,
@@ -1418,22 +1371,13 @@ def build_turn_packet(
         voice_consistency_mode="live-demo-stable",
     )
     summary = decision_summary(tts_packet)
-    if quality_gate["accepted"]:
-        deterministic_reasoning = reason_about_turn(transcript, session_state, campaign, mode="baseline")
-    else:
-        deterministic_reasoning = validate_reasoning_packet(
-            {
-                "dialogue_act": "asr_fragment",
-                "buyer_intent": "repair_asr",
-                "resolved_topic": "asr_quality",
-                "sales_stage": "repair",
-                "response_strategy": "repeat_request",
-                "must_include": ["repeat request"],
-                "must_avoid": ["guessing buyer intent from low-confidence ASR"],
-                "safety_boundary": "asr_quality_boundary",
-                "confidence": float(quality_gate.get("confidence") or 0.0),
-            }
-        )
+    deterministic_reasoning = dict(dialogue_action.get("dialogue_reasoning") or {})
+    dialogue_manager_trace = dialogue_manager.finalize_trace(
+        action=dialogue_action,
+        packet=tts_packet,
+        conversation_memory=conversation_memory,
+        stability_guard=stability_guard,
+    )
     async_enrichment = build_async_enrichment_request(
         transcript=transcript,
         context=build_reasoning_context(transcript, session_state, campaign),
@@ -1471,6 +1415,8 @@ def build_turn_packet(
         "demo_session_continuity": continuity,
         "demo_conversation_memory": conversation_memory,
         "demo_conversation_stability_guard": stability_guard,
+        "dialogue_manager": dialogue_manager_trace,
+        "dialogue_pragmatics": dialogue_manager_trace.get("pragmatic_move") or {},
         "dialogue_reasoner_async_enrichment": async_enrichment,
         "packet": tts_packet,
         "summary": summary,
@@ -1969,6 +1915,11 @@ def render_html(metadata: dict) -> str:
         elevenlabs_call_made: payload.summary.tts_provider_calls_made,
         audio_file_created: payload.summary.tts_audio_file_created,
         fallback_reason: payload.summary.tts_fallback_reason,
+        voice_id_source: payload.summary.tts_voice_id_source,
+        voice_id_present: payload.summary.tts_voice_id_present,
+        voice_id_length: payload.summary.tts_voice_id_length,
+        voice_id_hash: payload.summary.tts_voice_id_hash,
+        voice_id_raw_value_logged: payload.summary.tts_voice_id_raw_value_logged,
         voice_cloning_used: payload.voice_cloning_used,
         opens_prod_102: payload.opens_prod_102
       }};
@@ -1984,6 +1935,8 @@ def render_html(metadata: dict) -> str:
         call_control: payload.summary.call_control,
         demo_conversation_memory: payload.demo_conversation_memory || {{}},
         demo_conversation_stability_guard: payload.demo_conversation_stability_guard || {{}},
+        dialogue_manager: payload.dialogue_manager || {{}},
+        dialogue_pragmatics: payload.dialogue_pragmatics || {{}},
         async_enrichment_boundary: payload.dialogue_reasoner_async_enrichment || {{}},
         provider_boundary: providerBoundaryForTranscript(payload),
         latency: payload.latency || {{}}
@@ -2009,6 +1962,8 @@ def render_html(metadata: dict) -> str:
       return conversationTranscript.map(turn => {{
         const diagnostics = {{
           turn_index: turn.turn_index,
+          dialogue_manager: turn.dialogue_manager,
+          dialogue_pragmatics: turn.dialogue_pragmatics,
           memory: turn.demo_conversation_memory,
           stability_guard: turn.demo_conversation_stability_guard,
           provider_boundary: turn.provider_boundary,
@@ -2092,6 +2047,9 @@ def render_html(metadata: dict) -> str:
           next_action: payload.summary.next_action,
           call_control: payload.summary.call_control,
           tts_input_source: payload.summary.tts_input_source,
+          tts_voice_id_source: payload.summary.tts_voice_id_source,
+          tts_voice_id_length: payload.summary.tts_voice_id_length,
+          tts_voice_id_hash: payload.summary.tts_voice_id_hash,
           retrieval_status: payload.summary.retrieval_status,
           retrieval_used_in_runtime: payload.summary.retrieval_used_in_runtime,
           composer_hooks_status: payload.summary.composer_hooks_status,
@@ -2102,6 +2060,11 @@ def render_html(metadata: dict) -> str:
           elevenlabs_call_made: payload.summary.tts_provider_calls_made,
           audio_file_created: payload.summary.tts_audio_file_created,
           fallback_reason: payload.summary.tts_fallback_reason,
+          voice_id_source: payload.summary.tts_voice_id_source,
+          voice_id_present: payload.summary.tts_voice_id_present,
+          voice_id_length: payload.summary.tts_voice_id_length,
+          voice_id_hash: payload.summary.tts_voice_id_hash,
+          voice_id_raw_value_logged: payload.summary.tts_voice_id_raw_value_logged,
           fallback_speaks_provider_tts_input: latestSpeechText !== latestResponse,
           retrieved_item_ids: payload.summary.retrieved_item_ids,
           voice_cloning_used: payload.voice_cloning_used,
@@ -2332,6 +2295,8 @@ def make_handler(metadata: dict, cases_path: Path, private_out: Path):
                         "summary": turn.get("summary", {}),
                         "continuity": turn.get("demo_session_continuity", {}),
                         "conversation_memory": turn.get("demo_conversation_memory", {}),
+                        "dialogue_manager": turn.get("dialogue_manager", {}),
+                        "dialogue_pragmatics": turn.get("dialogue_pragmatics", {}),
                     }
                 )
                 self.send_json(turn)

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "manifest_id": "runtime-boundary-001",
-  "updated_on": "2026-05-19",
+  "updated_on": "2026-05-20",
   "purpose": "Make runtime-affecting project files visible separately from research, generated evidence, checkpoint runners, and temporary files.",
   "status": "runtime-sources-and-docs-moved-with-legacy-wrappers",
   "runtime_home_policy": {
@@ -30,11 +30,38 @@
       "path": "runtime/core/live_voice_session_policy.py",
       "path_type": "file",
       "tier": "core-runtime-behavior",
-      "runtime_role": "Runtime-owned live voice session continuity, anti-loop behavior, and fictional campaign product-answer routing extracted from the accepted LIVE-DEMO-001 demo behavior.",
+      "runtime_role": "Runtime-owned live voice session continuity, anti-loop behavior, plain sales response templates, appointment-setting timing repair, and fictional campaign product-answer routing extracted from the accepted LIVE-DEMO-001 demo behavior.",
       "behavior_surface": [
         "session continuity",
         "anti-loop behavior",
+        "plain sales response templates",
+        "appointment-setting timing repair",
         "product-answer routing"
+      ]
+    },
+    {
+      "path": "runtime/core/dialogue_manager.py",
+      "path_type": "file",
+      "tier": "core-runtime-behavior",
+      "runtime_role": "Canonical live voice dialogue manager shell that owns the per-turn action trace, state transition, final-response source, repair chain, and call-control override boundary around the existing live session policy.",
+      "behavior_surface": [
+        "dialogue action selection",
+        "state transition trace",
+        "final response source",
+        "call control",
+        "repair orchestration"
+      ]
+    },
+    {
+      "path": "runtime/core/dialogue_pragmatics.py",
+      "path_type": "file",
+      "tier": "core-runtime-behavior",
+      "runtime_role": "Local pragmatic dialogue move classifier behind the live voice dialogue manager for call-purpose questions, term explanations, relevance challenges, buyer-led agenda repair, CRM boundary questions, and pain-to-appointment routing without provider or local LLM calls.",
+      "behavior_surface": [
+        "pragmatic dialogue move classification",
+        "manager action selection",
+        "customer-facing repair response",
+        "appointment-setting route priority"
       ]
     },
     {

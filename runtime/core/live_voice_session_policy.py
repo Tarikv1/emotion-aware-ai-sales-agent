@@ -250,6 +250,12 @@ def callback_request_time_response(language: str) -> str:
     return "Of course. What time should I note for the callback?"
 
 
+def callback_later_time_request_response(language: str) -> str:
+    if language.startswith("de"):
+        return "Ja. Zu welcher Zeit soll ich den Rueckruf notieren?"
+    return "Sure. What time should I call back?"
+
+
 def callback_request_time_response_for_transcript(language: str, normalized: str) -> str:
     if language.startswith("de"):
         return callback_request_time_response(language)
@@ -280,6 +286,16 @@ def callback_workflow_clarification_response(language: str) -> str:
     return (
         "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. "
         "RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?"
+    )
+
+
+def appointment_think_about_it_response(language: str, gap: str | None) -> str:
+    if language.startswith("de"):
+        return "Kein Problem. Sie muessen die Workflow-Pruefung jetzt nicht zusagen. Ich kann eine kurze Zusammenfassung senden und spaeter zurueckrufen. Zu welcher Zeit soll ich den Rueckruf notieren?"
+    del gap
+    return (
+        "No problem. You do not have to accept the workflow review now. "
+        "I can keep it to a short summary and call back later. What time should I call back?"
     )
 
 
@@ -347,8 +363,86 @@ def has_callback_request_signal(normalized: str) -> bool:
     )
 
 
+def is_permission_time_refusal_reply(normalized: str) -> bool:
+    if not normalized:
+        return False
+    if has_callback_request_signal(normalized):
+        return True
+    if normalized in {
+        "no i don t",
+        "no i dont",
+        "no i do not",
+        "no i cannot",
+        "no i can t",
+        "no i cant",
+    }:
+        return True
+    return normalized_contains_any(
+        normalized,
+        {
+            "do not have a minute",
+            "dont have a minute",
+            "don t have a minute",
+            "do not have a min",
+            "dont have a min",
+            "not a good time",
+            "bad time",
+        },
+    )
+
+
 def has_callback_scheduling_request_signal(normalized: str) -> bool:
     return has_callback_request_signal(normalized)
+
+
+def is_callback_stop_reply(normalized: str) -> bool:
+    if not normalized:
+        return False
+    if normalized in {"never", "not ever"}:
+        return True
+    return normalized_contains_any(
+        normalized,
+        {
+            "maybe just don t",
+            "maybe just dont",
+            "maybe just do not",
+            "maybe don t",
+            "maybe dont",
+            "maybe do not",
+            "just don t",
+            "just dont",
+            "just do not",
+            "no callback",
+            "no call back",
+            "do not call back",
+            "dont call back",
+            "don t call back",
+            "do not call me back",
+            "dont call me back",
+            "don t call me back",
+            "do not call again",
+            "dont call again",
+            "don t call again",
+            "never call",
+            "never call me",
+        },
+    )
+
+
+def previous_response_offered_callback_later(turns: list[dict]) -> bool:
+    if not turns:
+        return False
+    response = normalize_text(str((turns[-1].get("summary") or {}).get("final_response") or ""))
+    return normalized_contains_any(
+        response,
+        {
+            "call back later",
+            "callback later",
+            "what time should i call back",
+            "what time should i note for the callback",
+            "what time should i note for callback",
+        },
+    )
 
 
 def has_callback_time_confirmation_signal(normalized: str, session_state: dict | None = None) -> bool:
@@ -479,8 +573,14 @@ def is_call_purpose_question(normalized: str) -> bool:
             "why are you calling",
             "why did you call",
             "what is this about",
+            "what is this call about",
+            "what is this called about",
+            "what is this called",
             "what s this about",
             "what are you calling about",
+            "what are you trying to say",
+            "what are you trying to sell",
+            "what are you saying",
             "why this call",
         },
     )
@@ -585,7 +685,22 @@ def is_topic_confusion(normalized: str) -> bool:
 
 
 def is_uncertain_gap(normalized: str) -> bool:
-    return normalized in {"i do not know", "i dont know", "i don t know", "not sure", "i m not sure", "im not sure"}
+    return normalized in {
+        "i do not know",
+        "i dont know",
+        "i don t know",
+        "not sure",
+        "i m not sure",
+        "im not sure",
+        "not familiar",
+        "not really familiar",
+        "not familiar to me",
+        "they are not familiar to me",
+        "they re not familiar to me",
+        "they re not really familiar to me",
+        "theyre not familiar to me",
+        "theyre not really familiar to me",
+    }
 
 
 def is_frustrated_confusion(normalized: str) -> bool:
@@ -646,8 +761,8 @@ def is_value_relevance_question(normalized: str) -> bool:
 
 def buyer_stop_response(language: str) -> str:
     if language.startswith("de"):
-        return "Verstanden. Ich stoppe hier und notiere, dass Sie dazu nicht weiter angerufen werden moechten. Auf Wiederhoeren."
-    return "Understood. I will stop here and mark that you do not want another call about this. Goodbye."
+        return "Verstanden. Ich stoppe hier. Auf Wiederhoeren."
+    return "Understood. I will stop here. Goodbye."
 
 
 def new_trial_request_clarification_response(language: str) -> str:
@@ -659,7 +774,7 @@ def new_trial_request_clarification_response(language: str) -> str:
 def buyer_no_question_response(language: str) -> str:
     if language.startswith("de"):
         return "Stimmt, Sie haben keine Frage gestellt. Ich rufe wegen einer Sache an: gehen Demo-Nachfassaktionen bei Besitzer, Rueckruf oder Uebergabe verloren?"
-    return "Fair, you did not ask a question. I called to check one thing: do inbound demo follow-ups lose the owner, callback reminder, or handoff status?"
+    return "Fair, you did not ask a question. I called to check one thing: are demo leads getting assigned, reminded, and followed up, or are some slipping?"
 
 
 def value_relevance_response(language: str) -> str:
@@ -677,31 +792,37 @@ def time_constrained_agenda_response(language: str) -> str:
 def seller_agenda_recovered_response(language: str) -> str:
     if language.startswith("de"):
         return "Fair. Ich pruefe einen Ablauf: verlieren Demo-Nachfassaktionen Besitzer, Rueckruf-Erinnerungen oder Uebergabestatus?"
-    return "Fair. I called to check one workflow: do inbound demo follow-ups lose owners, callback reminders, or handoff status?"
+    return (
+        "Fair. RouteSignal helps with inbound demo follow-up: making sure demo leads get assigned, reminded, and followed up. "
+        "I called to check one thing: are any demo leads slipping through today?"
+    )
 
 
 def call_purpose_response(language: str) -> str:
     if language.startswith("de"):
         return "Ich rufe wegen Demo-Nachfassaktionen an: Besitzer, Rueckruf-Erinnerung und Uebergabestatus. Soll ich eine dieser Luecken pruefen?"
-    return "I am calling about inbound demo follow-up: owners, callback reminders, and handoff status. Which of those creates the most missed follow-up?"
+    return (
+        "I am calling because RouteSignal helps with inbound demo follow-up: demo leads getting assigned, reminded, and followed up. "
+        "Northstar is asking for a short workflow review if leads are slipping today."
+    )
 
 
 def workflow_review_next_step_response(language: str) -> str:
     if language.startswith("de"):
         return "Der naechste Schritt ist eine kurze Pruefung: Besitzer, Rueckruf-Erinnerung oder Uebergabe. Welche Luecke soll ich pruefen?"
-    return "The quick check is one workflow gap: owner, callback reminder, or handoff status. Which one should I check?"
+    return "The quick check is one inbound demo follow-up gap. Should I check who gets the lead, the reminder, or the next reply?"
 
 
 def written_summary_response(language: str) -> str:
     if language.startswith("de"):
         return "Ich kann eine kurze Workflow-Zusammenfassung schicken: Besitzer, Rueckruf-Erinnerung und Uebergabestatus. Soll sie sich auf Rueckruf-Erinnerungen konzentrieren?"
-    return "I can send a short workflow summary: owner routing, callback reminders, and handoff status. Should it focus on the callback gap you mentioned?"
+    return "I can send a short workflow summary: who gets the demo lead, when the reminder happens, and whether the next reply happened. Should it focus on the callback gap you mentioned?"
 
 
 def workflow_review_scope_response(language: str) -> str:
     if language.startswith("de"):
         return "Kurz heisst eine Workflow-Luecke, keine volle Demo: Besitzer, Rueckruf-Erinnerung oder Uebergabe. Welche soll ich pruefen?"
-    return "Short means one workflow gap, not a full demo: owner, callback reminder, or handoff status. Which one should I check?"
+    return "Short means one inbound demo follow-up gap, not a full demo. Should I check who gets the lead, the reminder, or the next reply?"
 
 
 def time_waste_repair_response(language: str) -> str:
@@ -719,7 +840,7 @@ def uncertain_gap_response(language: str) -> str:
 def topic_confusion_response(language: str) -> str:
     if language.startswith("de"):
         return "Ich war nicht klar. RouteSignal betrifft Demo-Nachfassaktionen: Besitzer, Rueckruf-Erinnerung und Uebergabestatus. Soll ich stoppen?"
-    return "I am not being clear. RouteSignal is for demo follow-up: owner, callback reminder, and handoff status. Should I keep it to callback reminders, or stop here?"
+    return "I am not being clear. RouteSignal is for demo follow-up: getting leads assigned, reminded, and followed up. Should I keep it to callback reminders, or stop here?"
 
 
 def frustrated_confusion_response(language: str) -> str:
@@ -744,12 +865,93 @@ def call_context_recovery_response(normalized: str, resolved_focus: str | None, 
     ]
     for detector, reason, response_builder in checks:
         if detector(normalized):
+            dialogue_focus = "qualification" if reason in {"call_purpose_explained", "seller_agenda_recovered"} else focus
             return {
                 "applied": True,
                 "reason": reason,
-                "dialogue_focus": focus,
+                "dialogue_focus": dialogue_focus,
                 "candidate_response": response_builder(language),
             }
+    return None
+
+
+def is_crm_replacement_question(normalized: str) -> bool:
+    return bool(normalized and "crm" in normalized and normalized_contains_any(normalized, {"replace", "replacing", "instead of"}))
+
+
+def public_crm_boundary_response(normalized: str, campaign: dict | None) -> str:
+    product_name = campaign_value(campaign, "product_name", "RouteSignal CRM")
+    if is_crm_replacement_question(normalized):
+        return (
+            f"No. {product_name} is not meant to replace a CRM that already works. "
+            "It is worth reviewing only if demo leads still miss assignment, reminders, or follow-up around the CRM. "
+            "Is that the gap you are checking?"
+        )
+    if normalized_contains_any(normalized, {"salesforce"}):
+        crm_name = "Salesforce"
+    elif normalized_contains_any(normalized, {"hubspot"}):
+        crm_name = "HubSpot"
+    else:
+        crm_name = "your CRM"
+    return (
+        f"For {crm_name}, someone from Northstar would need to verify exact setup and permissions before I claim fit. "
+        "The useful check here is simpler: are demo leads still missing assignment, reminders, or follow-up?"
+    )
+
+
+def structured_reasoning_continuity_response(
+    normalized: str,
+    language: str,
+    campaign: dict,
+    turns: list[dict],
+    resolved_focus: str | None,
+    dialogue_reasoning: dict | None,
+) -> dict | None:
+    if not isinstance(dialogue_reasoning, dict):
+        return None
+    try:
+        confidence = float(dialogue_reasoning.get("confidence") or 0.0)
+    except (TypeError, ValueError):
+        confidence = 0.0
+    if confidence < 0.86:
+        return None
+
+    dialogue_act = str(dialogue_reasoning.get("dialogue_act") or "")
+    if dialogue_act == "integration_question" and not language.startswith("de"):
+        reason = (
+            "structured_reasoner_crm_replacement_answered"
+            if is_crm_replacement_question(normalized)
+            else "structured_reasoner_integration_boundary_answered"
+        )
+        return {
+            "applied": True,
+            "reason": reason,
+            "dialogue_focus": "qualification" if is_crm_replacement_question(normalized) else "details",
+            "structured_reasoner_used": True,
+            "dialogue_reasoning": dialogue_reasoning,
+            "candidate_response": public_crm_boundary_response(normalized, campaign),
+        }
+
+    if dialogue_act == "previous_question_clarification":
+        if (
+            is_callback_workflow_question(normalized)
+            or is_new_trial_request_clarification(normalized)
+            or is_value_relevance_question(normalized)
+            or is_buyer_no_question_repair(normalized)
+            or is_topic_confusion(normalized)
+            or is_frustrated_confusion(normalized)
+            or plain_qualification_term_clarification_text(language, normalized) is not None
+        ):
+            return None
+        focus = resolved_focus or "qualification"
+        return {
+            "applied": True,
+            "reason": "previous_question_clarified",
+            "dialogue_focus": focus,
+            "structured_reasoner_used": True,
+            "dialogue_reasoning": dialogue_reasoning,
+            "candidate_response": clarify_previous_question_text(language, focus, previous_agent_question(turns)),
+        }
     return None
 
 
@@ -774,9 +976,9 @@ def english_live_demo_campaign_response(normalized: str, campaign: dict) -> dict
         )
     if normalized_contains_any(normalized, {"salesforce", "hubspot", "integrate", "integration", "connect with", "crm"}):
         return candidate(
-            "campaign_depth_integration_boundary_answered",
-            "details",
-            "The fictional profile supports owner lookup, but exact setup and permissions need verified review before I claim fit.",
+            "campaign_depth_crm_replacement_answered" if is_crm_replacement_question(normalized) else "campaign_depth_integration_boundary_answered",
+            "qualification" if is_crm_replacement_question(normalized) else "details",
+            public_crm_boundary_response(normalized, campaign),
         )
     if normalized_contains_any(normalized, {"do i need to talk to a specialist", "need a specialist", "talk to a specialist"}):
         return candidate(
@@ -797,7 +999,7 @@ def english_live_demo_campaign_response(normalized: str, campaign: dict) -> dict
         return candidate(
             "campaign_depth_manual_tracking_answered",
             "fit",
-            "That breaks when ownership changes. RouteSignal keeps the lead, callback, reminder, and handoff status in one workflow. Where does it break first today?",
+            "That breaks when follow-up is split between tools. RouteSignal keeps the demo lead, reminder, and next reply in one workflow. Where does it break first today?",
         )
     if normalized_contains_any(normalized, {"small team", "small teams"}):
         return candidate(
@@ -821,9 +1023,9 @@ def english_live_demo_campaign_response(normalized: str, campaign: dict) -> dict
             "details",
             (
                 knowledge.get("short_product_explanation")
-                or "RouteSignal CRM routes leads, captures follow-up tasks, and shows handoff status."
+                or "RouteSignal CRM assigns demo leads, captures follow-up tasks, and shows which replies still need action."
             )
-            + " Where does follow-up break first today: routing, reminders, or handoff review?",
+            + " Where does follow-up break first today: assignment, reminders, or missed replies?",
         )
     if normalized_contains_any(normalized, {"workflow include", "workflow includes", "what is included", "included in the workflow"}):
         return candidate(
@@ -937,24 +1139,24 @@ def continuity_text(language: str, focus: str, *, persisted: bool = False) -> st
                 return "Dann machen wir den Aufwand konkret: Die Durchsicht lohnt sich nur, wenn Rueckrufe oder Nachverfolgung heute wirklich Zeit kosten."
             return "Verstanden. Dann pruefen wir zuerst, ob sich die Durchsicht fuer Ihre Zeit lohnt; wenn nicht, gibt es keinen Grund zu draengen."
         if persisted:
-            return "The effort test is simple: does missed follow-up cost more time than this review? If not, stop here."
-        return "The effort test is simple: does missed follow-up cost more time than this review? If not, stop here."
+            return "The effort question is simple: would missed follow-up cost more time than a short review?"
+        return "The effort question is simple: would missed follow-up cost more time than a short review?"
     if focus == "fit":
         if german:
             if persisted:
                 return "Dann bleiben wir bei der Passung. Entscheidend ist, ob Rueckruf- oder Nachverfolgungsarbeit in Ihrem aktuellen Ablauf wirklich offen bleibt."
             return "Verstanden. Dann geht es zuerst um Passung: ob das Problem in Ihrer Situation wirklich existiert, bevor wir ueber einen naechsten Schritt sprechen."
         if persisted:
-            return "Fit depends on a real workflow gap: missed leads, callbacks, or handoffs. If that is not happening, stop here."
-        return "Fit depends on a real workflow gap: missed leads, callbacks, or handoffs. If that is not happening, stop here."
+            return "Fit depends on actual missed leads, callbacks, or handoffs. If your team is seeing that, a short review is the next step."
+        return "Fit depends on actual missed leads, callbacks, or handoffs. If your team is seeing that, a short review is the next step."
     if focus == "timing":
         if german:
             if persisted:
                 return "Dann bleibt der Zeitpunkt der Engpass. Ich wuerde es bei einer schriftlichen Zusammenfassung oder einem spaeteren Rueckruf belassen."
             return "Verstanden. Dann steht der Zeitpunkt im Vordergrund. Heute muss nichts entschieden werden; hoechstens eine kurze schriftliche Zusammenfassung oder ein spaeterer Rueckruf."
         if persisted:
-            return "If timing is the blocker, use a written summary or later callback. No decision now."
-        return "If timing is the blocker, use a written summary or later callback. No decision now."
+            return "No problem. We do not need to decide anything now."
+        return "No problem. We do not need to decide anything now."
     if focus == "details":
         if german:
             if persisted:
@@ -1022,7 +1224,7 @@ def focus_followup_text(language: str, focus: str, normalized: str) -> str:
         if agrees_to_continue:
             if german:
                 return "Gut, dann pruefen wir nur den Aufwand. Wenn der Zeitverlust heute nicht klar ist, sollte ich keinen naechsten Schritt draengen."
-            return "Check effort only: is missed follow-up costing enough time to justify a review? If not, stop here."
+            return "Then keep it to the effort question: is missed follow-up costing enough time to justify a short review?"
     if focus == "details":
         if asks_for_explanation:
             if german:
@@ -1031,16 +1233,16 @@ def focus_followup_text(language: str, focus: str, normalized: str) -> str:
         if agrees_to_continue:
             if german:
                 return "Gut, dann bleiben wir bei den Details: was der Workflow abdeckt, was offen bleibt und was ein Spezialist pruefen sollte."
-            return "Check scope only: what the workflow covers, what remains open, and what needs verified review."
+            return "Keep the scope narrow: what the workflow covers, what remains open, and what needs verified review."
     if focus == "fit":
         if asks_for_explanation:
             if german:
                 return "Bei der Passung geht es darum, ob Lead-Routing oder Nachverfolgung in Ihrem aktuellen Ablauf wirklich ein Problem ist."
-            return "Fit depends on a real workflow gap: missed leads, callbacks, or handoffs. If that is not happening, stop here."
+            return "Fit depends on actual missed leads, callbacks, or handoffs. If your team is seeing that, a short review is the next step."
         if agrees_to_continue:
             if german:
                 return "Gut, dann bleiben wir bei der Passung und pruefen nur, ob das Problem in Ihrem Ablauf wirklich existiert."
-            return "Check fit only: are leads, callbacks, or handoffs getting missed today? If not, stop here."
+            return "Then keep it to fit: are leads, callbacks, or handoffs actually getting missed today?"
     if focus == "timing":
         if asks_for_explanation or agrees_to_continue:
             return continuity_text(language, "timing", persisted=True)
@@ -1050,7 +1252,7 @@ def focus_followup_text(language: str, focus: str, normalized: str) -> str:
         if asks_for_explanation:
             if german:
                 return "Einfach gesagt: RouteSignal ist nur relevant, wenn Demo-Nachfassung rutscht: verpasste Rueckrufe, unklare Besitzer oder Uebergabestatus. Was davon passiert wirklich?"
-            return "In plain terms, RouteSignal is only relevant if demo follow-up is slipping: missed callbacks, unclear owners, or handoff status. Which of those actually happens?"
+            return "In plain terms, RouteSignal is only relevant if demo follow-up is slipping: missed callbacks, unclear assignment, or missed replies. Which of those actually happens?"
         if agrees_to_continue:
             return modular_qualification_guidance_text(language, 1)
     return continuity_text(language, focus, persisted=True)
@@ -1109,7 +1311,7 @@ def modular_qualification_guidance_text(language: str, step: int) -> str:
     options = [
         "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
         "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied. Which part is harder today: seeing it, assigning the reply, or remembering the callback?",
-        "If callback reminders for demo follow-up live in a spreadsheet, they can slip. Which part is more familiar: manual tracking or missed callbacks?",
+        "If callback reminders for demo follow-up sit in a spreadsheet, they can slip. Which part is more familiar: manual tracking or missed callbacks?",
         "For inbound demo follow-up, a short check asks who replies next, when they reply, and how it is tracked. Which part is least clear today?",
         "For inbound demo or trial requests, quick routing means the next reply is assigned fast. Are missed follow-ups frequent enough to check?",
         "For managers, a short workflow review shows whether inbound demo follow-up is waiting too long. Would a short workflow review be worth checking?",
@@ -1141,7 +1343,7 @@ def progressive_focus_text(language: str, focus: str, normalized: str, step: int
         ],
         "fit": [
             (
-                "Fit depends on a real workflow gap: missed leads, callbacks, or handoffs. If that is not happening, stop here."
+                "Fit depends on actual missed leads, callbacks, or handoffs. If your team is seeing that, a short review is the next step."
                 if not german
                 else "Bei der Passung geht es darum, ob Lead-Routing oder Nachverfolgung in Ihrem aktuellen Ablauf wirklich ein Problem ist."
             ),
@@ -1151,19 +1353,19 @@ def progressive_focus_text(language: str, focus: str, normalized: str, step: int
                 else "Die naechste Passungsfrage ist praktisch: Bleiben heute Leads, Rueckrufe oder Uebergaben liegen?"
             ),
             (
-                "If that problem is real, a verified workflow review may be useful. If not, stop here."
+                "If that problem is real, the next step is a short workflow review with someone from Northstar. What time works for a quick call?"
                 if not german
                 else "Wenn dieses Problem real ist, kann ein Spezialist die Passung pruefen; wenn nicht, gibt es keinen Grund weiterzumachen."
             ),
             (
-                "The yes-or-no is whether missed handoffs justify even a short workflow review."
+                "If missed handoffs are real, the workflow review should focus there. What time works for a quick call?"
                 if not german
                 else "Die praktische Ja-Nein-Frage ist, ob verpasste Uebergaben oft genug passieren, um eine kurze Spezialistenpruefung zu rechtfertigen."
             ),
             (
-                "If fit stays unclear after that, stop at a written summary."
+                "If fit stays unclear after that, I can keep it to a written summary."
                 if not german
-                else "Wenn die Passung danach noch unklar ist, wuerde ich bei einer schriftlichen Zusammenfassung stoppen, statt live weiterzudraengen."
+                else "Wenn die Passung danach noch unklar ist, wuerde ich bei einer schriftlichen Zusammenfassung bleiben."
             ),
         ],
         "details": [
@@ -1185,12 +1387,12 @@ def progressive_focus_text(language: str, focus: str, normalized: str, step: int
         ],
         "effort": [
             (
-                "The effort test is simple: does missed follow-up cost more time than this review? If not, stop here."
+                "The effort question is simple: would missed follow-up cost more time than a short review?"
                 if not german
                 else "Die Aufwandfrage ist konkret: Lohnt sich die Durchsicht nur, wenn Rueckrufe oder Nachverfolgung heute Zeit kosten?"
             ),
             (
-                "If the review takes more time than the problem costs, stop here."
+                "If the review takes more time than the problem costs, there is no reason to push it."
                 if not german
                 else "Wenn die Durchsicht mehr Zeit kostet als das Problem selbst, sollte man sie nicht draengen."
             ),
@@ -1214,17 +1416,17 @@ def progressive_focus_text(language: str, focus: str, normalized: str, step: int
         ],
         "timing": [
             (
-                "If timing is the blocker, use a written summary or later callback. No decision now."
+                "No problem. We do not need to decide anything now."
                 if not german
                 else "Dann bleibt der Zeitpunkt der Engpass. Ich wuerde es bei schriftlicher Zusammenfassung oder spaeterem Rueckruf belassen."
             ),
             (
-                "If now is not the right time, use a later callback or written summary."
+                "No problem. We can leave it here."
                 if not german
                 else "Wenn jetzt nicht der richtige Zeitpunkt ist, bleibt nur ein spaeterer Rueckruf oder eine schriftliche Zusammenfassung."
             ),
             (
-                "A useful timing test is whether missed follow-up is already costing time. If not, wait."
+                "No problem. I can keep this to a short written summary."
                 if not german
                 else "Die sinnvolle Zeitfrage ist, ob verpasste Nachverfolgung heute schon Zeit kostet. Wenn nicht, warten."
             ),
@@ -1232,6 +1434,65 @@ def progressive_focus_text(language: str, focus: str, normalized: str, step: int
     }
     options = variants.get(focus) or [continuity_text(language, focus, persisted=True)]
     return options[min(step, len(options) - 1)]
+
+
+def is_all_clear_or_no_pain_reply(normalized: str) -> bool:
+    if not normalized:
+        return False
+    negative_clear_signals = {
+        "not all clear",
+        "not clear",
+        "isn t clear",
+        "isnt clear",
+        "is not clear",
+        "nothing is clear",
+    }
+    if normalized_contains_any(normalized, negative_clear_signals):
+        return False
+    exact_replies = {
+        "all clear",
+        "it s all clear",
+        "its all clear",
+        "it is all clear",
+        "everything is clear",
+        "that is clear",
+        "that s clear",
+        "thats clear",
+        "no pain point",
+        "no pain points",
+        "no issue",
+        "no issues",
+        "no problem",
+        "no problems",
+        "we are good",
+        "we re good",
+        "were good",
+    }
+    if normalized in exact_replies:
+        return True
+    return normalized_contains_any(
+        normalized,
+        {
+            "all clear on our side",
+            "everything is clear on our side",
+            "no pain point there",
+            "no pain points there",
+            "no real issue",
+            "no real problem",
+            "nothing is slipping",
+            "nothing gets missed",
+        },
+    )
+
+
+def clear_no_pain_response(language: str) -> str:
+    if language.startswith("de"):
+        return "Verstanden. Wenn die Nachverfolgung klar laeuft, sollte ich keine Pruefung draengen. Bevor ich auflege: Gibt es verpasste Rueckrufe, manuelle Nachverfolgung oder Uebergaben ueberhaupt, oder ist das fuer Sie nicht relevant?"
+    return (
+        "Got it. If the follow-up flow is already clear, I should not push a review. "
+        "Before I let you go, do missed callbacks, manual tracking, or handoffs ever create a problem, "
+        "or is this not relevant for you?"
+    )
 
 
 def exhausted_progression_options(language: str, focus: str) -> list[str]:
@@ -1264,8 +1525,8 @@ def exhausted_progression_options(language: str, focus: str) -> list[str]:
         ]
     if focus == "timing":
         return [
-            "Timing is already the blocker. The safe next step is either a later callback you choose or a short written summary.",
-            "No decision now. If you want to continue later, give me a callback time; otherwise I can stop here.",
+            "No problem. We do not need to decide anything now.",
+            "No problem. I can keep this to a short written summary.",
         ]
     if focus == "effort":
         return [
@@ -1357,6 +1618,53 @@ def is_low_information_acknowledgement(normalized: str) -> bool:
 
 
 def selected_sales_gap_from_transcript(normalized: str) -> str | None:
+    if normalized_contains_any(normalized, {"assign", "assigned", "assignment", "assigning", "owner assignment", "different person"}):
+        return "routing"
+    if normalized_contains_any(normalized, {"owner", "owners", "lead owner", "wrong owner", "owner routing"}):
+        return "routing"
+    if normalized_contains_any(normalized, {"missed callback", "missed callbacks", "callbacks happen more often", "callback happens more often"}):
+        return "callbacks"
+    if normalized_contains_any(
+        normalized,
+        {
+            "leads are getting missed",
+            "lead is getting missed",
+            "leads getting missed",
+            "lead getting missed",
+            "leads get missed",
+            "lead gets missed",
+            "leads missing",
+            "lead missing",
+            "leads are missing",
+            "lead is missing",
+            "leads go missing",
+            "lead goes missing",
+            "missed leads",
+            "leads are missed",
+            "lead is missed",
+            "leeds are getting missed",
+            "leed is getting missed",
+            "leeds getting missed",
+            "leed getting missed",
+            "leeds get missed",
+            "leed gets missed",
+            "leeds are missed",
+            "leed is missed",
+            "leads get lost",
+            "lead gets lost",
+            "leeds get lost",
+            "leed gets lost",
+            "lost in the mail",
+            "lost in the mails",
+            "falls through the cracks",
+            "fall through the cracks",
+            "falls through cracks",
+            "fall through cracks",
+            "we just miss it",
+            "we miss it",
+        },
+    ):
+        return "handoffs"
     if normalized_contains_any(normalized, {"handoff", "handoffs", "handoff review", "ownership", "owner changes"}):
         return "handoffs"
     if normalized_contains_any(normalized, {"callback", "callbacks", "call backs", "missed calls", "missed callbacks"}):
@@ -1376,14 +1684,14 @@ def seller_guided_next_step_text(language: str, gap: str) -> str:
     if language.startswith("de"):
         return "Dann ist das die konkrete Luecke. Der naechste Schritt waere eine kurze Workflow-Pruefung, keine lange Demo. Soll ich es auf genau diese Pruefung begrenzen?"
     gap_claims = {
-        "handoffs": "handoff review is the value point: owner, next callback, and status stop getting lost",
-        "callbacks": "callback reminders are the value point: fewer inbound demo requests wait without a next step",
-        "reminders": "reminders are the value point: the team chases fewer follow-ups by hand",
-        "routing": "priority routing is the value point: each inbound request gets a clear owner faster",
-        "duplicates": "duplicate checks are the value point: lead ownership stays cleaner before follow-up",
-        "visibility": "manager visibility is the value point: handoff status and missed follow-up are easier to inspect",
+        "handoffs": "RouteSignal helps keep the next person and next follow-up visible so demo leads do not get lost",
+        "callbacks": "RouteSignal helps remind the team before demo leads wait too long",
+        "reminders": "RouteSignal helps the team stop chasing follow-ups by hand",
+        "routing": "RouteSignal helps each demo lead get a clear next owner faster",
+        "duplicates": "RouteSignal helps keep duplicate demo leads from splitting ownership",
+        "visibility": "RouteSignal helps managers see which demo leads still need follow-up",
     }
-    claim = gap_claims.get(gap, "that workflow gap is the value point")
+    claim = gap_claims.get(gap, "RouteSignal helps keep that follow-up gap visible")
     return (
         f"Then {claim}. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?"
     )
@@ -1460,6 +1768,7 @@ def has_recent_review_next_step_question(turns: list[dict]) -> bool:
                 "are missed follow ups frequent enough to check",
                 "are missed follow-ups frequent enough to check",
                 "would a short written summary help",
+                "would that be useful for this gap",
                 "useful for that gap",
             },
         ):
@@ -1477,9 +1786,14 @@ def is_affirmative_next_step_reply(normalized: str) -> bool:
         "yes yes",
         "yeah",
         "yeah yeah",
+        "yeah sure",
         "yep",
+        "yep sure",
         "sure",
         "sure sure",
+        "yes sure",
+        "okay sure",
+        "ok sure",
         "i guess",
         "i guess so",
         "yeah i guess",
@@ -1492,6 +1806,12 @@ def is_affirmative_next_step_reply(normalized: str) -> bool:
         "do that",
         "lets do that",
         "let s do that",
+        "yeah lets do that",
+        "yeah let s do that",
+        "yes lets do that",
+        "yes let s do that",
+        "sure lets do that",
+        "sure let s do that",
         "that would help",
         "it would help",
         "yeah it would help",
@@ -1515,12 +1835,66 @@ def is_affirmative_next_step_reply(normalized: str) -> bool:
     )
 
 
-def is_pain_confirmation_reply(normalized: str) -> bool:
-    if not normalized or is_ambiguous_negative_reply(normalized):
+def is_think_about_it_reply(normalized: str) -> bool:
+    if not normalized:
         return False
     return normalized_contains_any(
         normalized,
         {
+            "think about it",
+            "think on it",
+            "need to think",
+            "have to think",
+            "i have to think",
+            "i need to think",
+            "i need more time",
+            "need more time",
+            "not ready to accept",
+            "not ready for a quick call",
+            "didn t really accept",
+            "didnt really accept",
+            "did not really accept",
+            "didn t accept",
+            "didnt accept",
+            "did not accept",
+            "haven t accepted",
+            "havent accepted",
+            "have not accepted",
+        },
+    )
+
+
+def is_pain_confirmation_reply(normalized: str) -> bool:
+    if not normalized or is_ambiguous_negative_reply(normalized):
+        return False
+    if normalized_contains_any(
+        normalized,
+        {
+            "no missed",
+            "not missed",
+            "not getting missed",
+            "nothing gets missed",
+            "no issue",
+            "no issues",
+            "not an issue",
+            "not a problem",
+            "do not miss",
+            "dont miss",
+            "don t miss",
+        },
+    ):
+        return False
+    return normalized_contains_any(
+        normalized,
+        {
+            "missed callback",
+            "missed callbacks",
+            "callback gets missed",
+            "callbacks get missed",
+            "manual tracking issue",
+            "manual tracking issues",
+            "tracking issue",
+            "tracking issues",
             "they can",
             "it can",
             "they do",
@@ -1534,8 +1908,14 @@ def is_pain_confirmation_reply(normalized: str) -> bool:
             "shouldnt",
             "costs time",
             "slips",
+            "slipping",
+            "missing",
             "gets missed",
             "get missed",
+            "getting missed",
+            "miss it",
+            "missed it",
+            "falls through",
         },
     )
 
@@ -1547,7 +1927,7 @@ def should_offer_appointment_close(normalized: str, turns: list[dict]) -> tuple[
         return False, None
     if not has_recent_review_next_step_question(turns):
         return False, None
-    gap = appointment_gap_from_turns(turns)
+    gap = appointment_gap_from_turns(turns) or selected_sales_gap_from_transcript(normalized)
     if not gap:
         return False, None
     previous_question_type = question_type_from_response(previous_agent_question(turns) or "")
@@ -1580,16 +1960,36 @@ def appointment_lead_close_response(language: str, gap: str | None) -> str:
     gap_labels = {
         "callbacks": "missed callback reminders",
         "reminders": "missed reminders",
-        "routing": "owner routing",
-        "handoffs": "handoff misses",
+        "routing": "lead assignment",
+        "handoffs": "missed demo leads",
         "duplicates": "duplicate lead handling",
         "visibility": "manager visibility",
     }
     gap_label = gap_labels.get(gap or "", "that follow-up gap")
     return (
-        "Then the next step is a short workflow review with someone from Northstar. "
+        "That is exactly what RouteSignal is meant to help with: demo leads getting assigned, reminded, and followed up. "
+        "The next step is a short workflow review with someone from Northstar. "
         f"They would check {gap_label} against your actual follow-up flow. "
         "What time works for a quick call?"
+    )
+
+
+def pain_review_usefulness_response(language: str, gap: str | None) -> str:
+    if language.startswith("de"):
+        return "Dann ist das die konkrete Luecke. Eine kurze Workflow-Pruefung mit Northstar wuerde genau diesen Ablauf gegen Ihren echten Prozess pruefen. Waere diese kurze Pruefung fuer die Luecke sinnvoll?"
+    gap_labels = {
+        "callbacks": "missed callback reminders",
+        "reminders": "missed reminders",
+        "routing": "lead assignment",
+        "handoffs": "missed demo leads",
+        "duplicates": "duplicate lead handling",
+        "visibility": "manager visibility",
+    }
+    gap_label = gap_labels.get(gap or "", "that follow-up gap")
+    return (
+        "That sounds like the gap. RouteSignal is meant to help demo leads get assigned, reminded, and followed up. "
+        f"A short workflow review with someone from Northstar would check {gap_label} against your actual follow-up flow. "
+        "Would a short workflow review be useful for this gap?"
     )
 
 
@@ -1601,18 +2001,108 @@ def appointment_time_followup_response(language: str, gap: str | None, prior_req
     gap_labels = {
         "callbacks": "missed callback reminders",
         "reminders": "missed reminders",
-        "routing": "owner routing",
-        "handoffs": "handoff misses",
+        "routing": "lead assignment",
+        "handoffs": "missed demo leads",
         "duplicates": "duplicate lead handling",
         "visibility": "manager visibility",
     }
-    gap_clause = f" on {gap_labels.get(gap or '', 'that follow-up gap')}" if gap else ""
+    gap_label = gap_labels.get(gap or "", "that follow-up gap")
+    gap_clause = f" on {gap_label}" if gap else ""
     if prior_requests >= 2:
         return (
             f"I can set up that short workflow review{gap_clause} with someone from Northstar, "
             "but I need a time. What time works for the quick call?"
         )
-    return f"Yes. The next step is still a short workflow review{gap_clause} with someone from Northstar. What time works for a quick call?"
+    return (
+        f"Yes. Someone from Northstar would check {gap_label} against your follow-up flow "
+        "in a short workflow review. What time works for a quick call?"
+    )
+
+
+def appointment_time_clarification_response(language: str, gap: str | None) -> str:
+    if language.startswith("de"):
+        return "Naechste Woche kann funktionieren. Welcher Tag und welche Uhrzeit passen fuer die kurze Workflow-Pruefung?"
+    gap_labels = {
+        "callbacks": "missed callback reminders",
+        "reminders": "missed reminders",
+        "routing": "lead assignment",
+        "handoffs": "missed demo leads",
+        "duplicates": "duplicate lead handling",
+        "visibility": "manager visibility",
+    }
+    gap_clause = f" on {gap_labels.get(gap or '', 'that follow-up gap')}" if gap else ""
+    return f"Next week can work for the short workflow review{gap_clause}. Which day and time should I put down?"
+
+
+def has_vague_appointment_time_signal(normalized: str) -> bool:
+    if not normalized:
+        return False
+    vague_time = normalized_contains_any(
+        normalized,
+        {
+            "sometime",
+            "some time",
+            "next week",
+            "later this week",
+            "this week",
+            "whenever",
+            "any time",
+            "anytime",
+            "maybe next week",
+        },
+    )
+    if not vague_time:
+        return False
+    return not has_callback_time_signal(normalized)
+
+
+def is_already_stated_problem_reply(normalized: str) -> bool:
+    if not normalized:
+        return False
+    return normalized_contains_any(
+        normalized,
+        {
+            "already told you",
+            "i told you",
+            "i already told you",
+            "i said",
+            "like i said",
+            "that is what i said",
+            "that s what i said",
+        },
+    ) and normalized_contains_any(
+        normalized,
+        {
+            "problem",
+            "lead",
+            "leads",
+            "manual",
+            "tracking",
+            "callback",
+            "reminder",
+            "missed",
+            "missing",
+        },
+    )
+
+
+def already_stated_problem_response(language: str, gap: str | None) -> str:
+    if language.startswith("de"):
+        return "Stimmt, Sie haben das Problem schon genannt. Ich sollte es nicht wiederholen. Welche Zeit passt fuer eine kurze Workflow-Pruefung mit Northstar?"
+    gap_labels = {
+        "callbacks": "callback reminders",
+        "reminders": "manual reminders",
+        "routing": "assigning the next follow-up",
+        "handoffs": "demo leads getting missed",
+        "duplicates": "duplicate lead handling",
+        "visibility": "seeing which leads still need follow-up",
+    }
+    gap_label = gap_labels.get(gap or "", "demo leads slipping")
+    return (
+        f"You already told me the problem: {gap_label}. I should not ask you to repeat it. "
+        "The useful next step is a short workflow review with someone from Northstar. "
+        "What time works for a quick call?"
+    )
 
 
 def appointment_value_clarification_response(language: str, gap: str | None) -> str:
@@ -1621,8 +2111,8 @@ def appointment_value_clarification_response(language: str, gap: str | None) -> 
     gap_labels = {
         "callbacks": "missed callback reminders",
         "reminders": "missed reminders",
-        "routing": "owner routing",
-        "handoffs": "handoff misses",
+        "routing": "lead assignment",
+        "handoffs": "missed demo leads",
         "duplicates": "duplicate lead handling",
         "visibility": "manager visibility",
     }
@@ -1652,14 +2142,14 @@ def gap_progression_text(language: str, gap: str, step: int, seen: set[str] | No
     variants = {
         "callbacks": [
             seller_guided_next_step_text(language, "callbacks"),
-            "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
-            "If callback reminders are clean today, stop here. If they slip, Growth is worth reviewing. I would keep the next step focused on missed reminders. Would a short workflow review be useful for that gap?",
-            "The useful next step is a short summary of owner, next callback, and handoff status. Would a short written summary help you judge fit?",
+            "For callbacks, the issue is speed to lead: each demo request has an owner and reminder before it waits. Would a short workflow review help check missed reminders?",
+            "Since missed callbacks are the gap, the useful next step is a short workflow review with someone from Northstar. Would a short workflow review be useful for this gap?",
+            "The useful next step is checking who owns the lead, when the next callback is due, and whether the reply happened. Would a short workflow review help you judge fit?",
         ],
         "handoffs": [
             seller_guided_next_step_text(language, "handoffs"),
             "For handoffs, the value is handoff review: owner, next callback, and manager visibility stay together. I would keep the short workflow review to handoff misses. Would a short workflow review be useful for that gap?",
-            "If handoffs are clean today, stop here. If owner, next callback, or manager visibility slips, a short workflow review has a reason. Which part breaks most often?",
+            "If owner, next callback, or manager visibility slips, a short workflow review has a reason. Which part breaks most often?",
         ],
         "routing": [
             seller_guided_next_step_text(language, "routing"),
@@ -1707,7 +2197,7 @@ def proactive_guidance_text(language: str, focus: str, step: int) -> str:
                 else "Wenn Leads und Rueckrufe heute sauber laufen, stoppen wir hier. Wenn sie liegen bleiben, klaert RouteSignal Routing und Nachverfolgung in einem Ablauf."
             ),
             (
-                "The selling point is consistency: owner lookup, reminders, and handoff status make missed follow-up easier to see and fix."
+                "The practical point is consistency: demo leads get assigned, reminded, and followed up instead of being chased by hand."
                 if not german
                 else "Der Nutzen ist Konsistenz: Besitzerzuordnung, Erinnerungen und Uebergabestatus machen verpasste Nachverfolgung sichtbar."
             ),
@@ -1719,7 +2209,7 @@ def proactive_guidance_text(language: str, focus: str, step: int) -> str:
         ],
         "details": [
             (
-                "The practical workflow is capture, route, remind, and review handoff status. That is the part worth checking before integration details."
+                "The practical workflow is capture the demo lead, assign the next person, remind them, and check whether the reply happened. That is the part worth checking before integration details."
                 if not german
                 else "Der praktische Ablauf ist Erfassen, Routen, Erinnern und Uebergaben pruefen. Das sollte vor Integrationsdetails geklaert werden."
             ),
@@ -1853,6 +2343,15 @@ def is_previous_question_clarification_request(normalized: str) -> bool:
             "say it again",
             "clarify that",
             "clarify your question",
+            "who is harder",
+            "what is harder",
+            "which is harder",
+            "which one is harder",
+            "which part is harder",
+            "who harder",
+            "what harder",
+            "harder who",
+            "harder what",
         },
     )
 
@@ -1870,6 +2369,14 @@ def is_tentative_permission_reply(normalized: str) -> bool:
         "i am not sure",
         "i m not sure",
         "im not sure",
+        "not familiar",
+        "not really familiar",
+        "not familiar to me",
+        "they are not familiar to me",
+        "they re not familiar to me",
+        "they re not really familiar to me",
+        "theyre not familiar to me",
+        "theyre not really familiar to me",
     }
 
 
@@ -1957,7 +2464,7 @@ def clarify_previous_question_text(language: str, focus: str, previous_question:
         return "I meant timing only matters if follow-up gaps are already costing time. In plain terms, should I keep this to a callback later?"
     if focus == "effort":
         return "I meant effort is worth it only if missed follow-up costs time. In plain terms, which gap wastes time: callbacks, routing, or handoffs?"
-    return "I meant: an inbound demo request needs one clear person for the next reply. Can those requests sit waiting?"
+    return "I meant: an inbound demo request needs one clear owner for the next reply. Can owner, callback, or handoff steps sit waiting?"
 
 
 def is_ambiguous_negative_reply(normalized: str) -> bool:
@@ -1993,6 +2500,13 @@ def current_focus_followup_response(
         return None
     turns = list(turns or [])
     prior_question = previous_agent_question(turns)
+    if prior_question and is_all_clear_or_no_pain_reply(normalized):
+        return {
+            "applied": True,
+            "reason": "clear_no_pain_acknowledged",
+            "dialogue_focus": resolved_focus,
+            "candidate_response": clear_no_pain_response(language),
+        }
     if resolved_focus == "qualification":
         term_clarification = plain_qualification_term_clarification_text(language, normalized)
         if term_clarification:
@@ -2035,6 +2549,14 @@ def current_focus_followup_response(
         return call_context_recovery
     selected_gap = selected_sales_gap_from_transcript(normalized)
     if selected_gap and resolved_focus in {"price", "fit", "details", "effort", "qualification"}:
+        if is_pain_confirmation_reply(normalized):
+            return {
+                "applied": True,
+                "reason": "appointment_time_requested",
+                "dialogue_focus": "timing",
+                "selected_gap": selected_gap,
+                "candidate_response": appointment_lead_close_response(language, selected_gap),
+            }
         return {
             "applied": True,
             "reason": f"seller_gap_selected_for_{resolved_focus}",
@@ -2307,11 +2829,24 @@ def last_selected_gap_from_turns(turns: list[dict]) -> str | None:
         continuity = turn.get("continuity") or {}
         memory = turn.get("conversation_memory") or {}
         turn_transcript = normalize_text(str(turn.get("transcript") or ""))
+        pragmatic_move = turn.get("dialogue_pragmatics") or (turn.get("dialogue_manager") or {}).get("pragmatic_move") or {}
+        pragmatic_move_id = str(pragmatic_move.get("move_id") or "")
+        transcript_can_select_gap = pragmatic_move_id not in {
+            "call_purpose_question",
+            "previous_question_clarification",
+            "term_or_context_unfamiliarity",
+            "term_meaning_question",
+            "relevance_challenge",
+            "agent_should_lead",
+            "crm_replacement_question",
+        }
         for value in [
             memory.get("selected_gap") if isinstance(memory, dict) else None,
             continuity.get("selected_gap"),
             continuity.get("dialogue_focus") if str(continuity.get("dialogue_focus") or "") in {"callbacks", "handoffs", "routing", "reminders", "duplicates", "visibility"} else None,
-            None if is_starter_growth_plan_boundary_question(turn_transcript) else selected_sales_gap_from_transcript(turn_transcript),
+            None
+            if is_starter_growth_plan_boundary_question(turn_transcript) or not transcript_can_select_gap
+            else selected_sales_gap_from_transcript(turn_transcript),
         ]:
             if value:
                 return str(value)
@@ -2350,7 +2885,7 @@ def question_type_from_response(response: str) -> str:
         return "value_review_check"
     if normalized_contains_any(normalized, {"short summary", "would that help you judge", "written summary"}):
         return "summary_next_step"
-    if normalized_contains_any(normalized, {"would a short", "workflow review", "short workflow"}):
+    if normalized_contains_any(normalized, {"would a short", "would that be useful for this gap", "workflow review", "short workflow"}):
         return "workflow_review_next_step"
     if response_reopens_focus_menu(response):
         return "generic_focus_menu"
@@ -2453,11 +2988,16 @@ def build_conversation_memory(
         or dialogue_focus_from_turns(turns)
         or "qualification"
     )
+    continuity_reason = str((continuity or {}).get("reason") or "")
+    transcript_can_select_gap = continuity_reason not in {
+        "plain_qualification_term_clarified",
+        "pragmatic_term_explained",
+    }
     if is_starter_growth_plan_boundary_question(normalized):
         selected_gap = last_selected_gap_from_turns(turns)
     else:
         selected_gap = (
-            selected_sales_gap_from_transcript(normalized)
+            (selected_sales_gap_from_transcript(normalized) if transcript_can_select_gap else None)
             or str((continuity or {}).get("selected_gap") or "")
             or last_selected_gap_from_turns(turns)
         )
@@ -2599,6 +3139,8 @@ def pre_speech_conversation_stability_guard(
 
     if memory.get("callback_semantic") == CALLBACK_WORKFLOW_GAP and (
         "what time" in response.lower() or "note for the callback" in response.lower() or "callback time" in response.lower()
+    ) and not (
+        "workflow review" in response.lower() and ("northstar" in response.lower() or "quick call" in response.lower())
     ):
         violations.append("workflow_callback_treated_as_scheduling")
         repaired_response = response_echo_repair(transcript, language, response, memory, turns)
@@ -2615,7 +3157,19 @@ def pre_speech_conversation_stability_guard(
 
     if is_previous_question_clarification_request(normalized) and not normalized_contains_any(
         normalize_text(response),
-        {"i meant", "i was asking", "in plain terms", "callbacks here mean", "route signal is for", "shared inbox means", "by that i mean", "a handoff is"},
+        {
+            "i meant",
+            "i was asking",
+            "in plain terms",
+            "callbacks here mean",
+            "route signal is for",
+            "routesignal",
+            "shared inbox means",
+            "by that i mean",
+            "a handoff is",
+            "i should have explained",
+            "growth is",
+        },
     ):
         violations.append("failed_to_explain_previous_question")
         repaired_response = clarify_previous_question_text(language, str(memory.get("active_topic") or "qualification"), previous_agent_question(turns))
@@ -2677,7 +3231,12 @@ def anti_loop_response(transcript: str, session_state: dict | None, language: st
     }
 
 
-def continuity_response(transcript: str, session_state: dict | None, campaign: dict) -> dict:
+def continuity_response(
+    transcript: str,
+    session_state: dict | None,
+    campaign: dict,
+    dialogue_reasoning: dict | None = None,
+) -> dict:
     language = str(campaign.get("language") or "en")
     normalized = normalize_text(transcript)
     turns = list((session_state or {}).get("turns") or [])
@@ -2695,6 +3254,11 @@ def continuity_response(transcript: str, session_state: dict | None, campaign: d
             "dialogue_focus": "qualification",
             "candidate_response": sales_opening_response(language, campaign),
         }
+    early_call_context_recovery = call_context_recovery_response(normalized, resolved_focus, language)
+    if early_call_context_recovery and str(early_call_context_recovery.get("reason") or "") in {
+        "call_purpose_explained",
+    }:
+        return early_call_context_recovery
     if looks_like_asr_fragment(normalized, selected_focus):
         return {
             "applied": True,
@@ -2709,6 +3273,21 @@ def continuity_response(transcript: str, session_state: dict | None, campaign: d
             "dialogue_focus": resolved_focus or "qualification",
             "candidate_response": buyer_stop_response(language),
         }
+    if question_type_from_response(previous_response) == "callback_time" and is_callback_stop_reply(normalized):
+        return {
+            "applied": True,
+            "reason": "buyer_requested_stop",
+            "dialogue_focus": "timing",
+            "candidate_response": buyer_stop_response(language),
+        }
+    if question_type_from_response(previous_response) == "permission_check" and is_permission_time_refusal_reply(normalized):
+        return {
+            "applied": True,
+            "reason": "callback_request_time_needed",
+            "dialogue_focus": "timing",
+            "callback_semantic": CALLBACK_SCHEDULING_REQUEST,
+            "candidate_response": callback_request_time_response_for_transcript(language, normalized),
+        }
     if is_opening_greeting(normalized) and (
         not turns
         or not resolved_focus
@@ -2720,6 +3299,16 @@ def continuity_response(transcript: str, session_state: dict | None, campaign: d
             "dialogue_focus": "qualification",
             "candidate_response": opening_greeting_response(language, campaign),
         }
+    structured_route = structured_reasoning_continuity_response(
+        normalized,
+        language,
+        campaign,
+        turns,
+        resolved_focus,
+        dialogue_reasoning,
+    )
+    if structured_route:
+        return structured_route
     if is_starter_growth_plan_boundary_question(normalized):
         return {
             "applied": True,
@@ -2749,7 +3338,15 @@ def continuity_response(transcript: str, session_state: dict | None, campaign: d
             "candidate_response": callback_time_confirmed_response(language),
         }
     pending_appointment_gap = pending_appointment_gap_from_turns(turns)
-    if pending_appointment_gap and is_affirmative_next_step_reply(normalized):
+    if pending_appointment_gap and has_vague_appointment_time_signal(normalized):
+        return {
+            "applied": True,
+            "reason": "appointment_time_clarification_needed",
+            "dialogue_focus": "timing",
+            "selected_gap": pending_appointment_gap,
+            "candidate_response": appointment_time_clarification_response(language, pending_appointment_gap),
+        }
+    if pending_appointment_gap and (is_affirmative_next_step_reply(normalized) or is_pain_confirmation_reply(normalized)):
         return {
             "applied": True,
             "reason": "appointment_time_requested",
@@ -2760,6 +3357,15 @@ def continuity_response(transcript: str, session_state: dict | None, campaign: d
                 pending_appointment_gap,
                 appointment_time_request_count(turns),
             ),
+        }
+    if is_already_stated_problem_reply(normalized):
+        stated_gap = pending_appointment_gap or last_selected_gap_from_turns(turns) or selected_sales_gap_from_transcript(normalized) or "handoffs"
+        return {
+            "applied": True,
+            "reason": "appointment_time_requested",
+            "dialogue_focus": "timing",
+            "selected_gap": stated_gap,
+            "candidate_response": already_stated_problem_response(language, stated_gap),
         }
     if pending_appointment_gap and is_value_relevance_question(normalized):
         return {

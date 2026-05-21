@@ -118,13 +118,19 @@ Validate local voice-ID config resolution without printing raw voice IDs:
 python scripts\validate_local_voice_config.py
 ```
 
+Validate live-demo voice-ID diagnostics without provider calls or raw voice-ID logging:
+
+```powershell
+python scripts\validate_live_demo_voice_id_diagnostics.py
+```
+
 Optional local ElevenLabs voice IDs can be stored in ignored config:
 
 ```powershell
 Copy-Item runtime\config\local\voice_ids.example.json runtime\config\local\voice_ids.json
 ```
 
-Then edit `config\local\voice_ids.json` locally. Do not put API keys in this file.
+Then edit `config\local\voice_ids.json` locally. Do not put API keys in this file. Live-demo turn packets expose only redacted voice diagnostics: source, ID length, and a short hash.
 
 ## Relevant File Reading
 
@@ -2912,7 +2918,7 @@ python scripts\run_live_demo_001_agent_voice_call.py
 
 By default, `LIVE-DEMO-001` starts with the English B2B software campaign (`campaign-prod-005-b2b-software`). The browser UI also includes a campaign selector, automatic `Start Conversation` speech loop, a manual `Send To Agent` fallback, and a local full-session transcript panel with JSON/TXT export.
 
-The go-live and MVP boundary is defined in `docs\product\GO_LIVE_MVP_DEFINITION_AND_ROADMAP.md`. That document treats `LIVE-DEMO-001` as the active supervised local-live acceptance front end, not as the product architecture itself. `LIVE-DEMO-002` preserves the corrected text/runtime behavior; `LIVE-DEMO-003` records supervised listening acceptance; `LIVE-DEMO-004` is the narrow browser ASR turn-taking follow-up for premature auto-submit and talk-over risk; `LIVE-DEMO-005-interrupt-pace-plan-precision` follows Tarik's next listening feedback with manual interrupt, slightly faster speech, direct plan-boundary answers, and compact plan-boundary memory; `LIVE-DEMO-006-memory-transcript-visibility` adds local transcript review/export plus compact response subject/signature memory for repetition diagnosis; `LIVE-DEMO-007-human-readable-transcript-and-plain-qualification` makes the transcript human-readable by default and keeps early qualification in plain sales language; `LIVE-DEMO-008-prosody-review-scope-clarity` keeps tight product phrases together in provider-rendered TTS and stops asking buyers to decide internal workflow-review scope; `LIVE-DEMO-009-appointment-lead-close` makes the opener ask one permission question and moves confirmed workflow pain into appointment-setting as the current MVP close.
+The go-live and MVP boundary is defined in `docs\product\GO_LIVE_MVP_DEFINITION_AND_ROADMAP.md`. That document treats `LIVE-DEMO-001` as the active supervised local-live acceptance front end, not as the product architecture itself. `LIVE-DEMO-002` preserves the corrected text/runtime behavior; `LIVE-DEMO-003` records supervised listening acceptance; `LIVE-DEMO-004` is the narrow browser ASR turn-taking follow-up for premature auto-submit and talk-over risk; `LIVE-DEMO-005-interrupt-pace-plan-precision` follows Tarik's next listening feedback with manual interrupt, slightly faster speech, direct plan-boundary answers, and compact plan-boundary memory; `LIVE-DEMO-006-memory-transcript-visibility` adds local transcript review/export plus compact response subject/signature memory for repetition diagnosis; `LIVE-DEMO-007-human-readable-transcript-and-plain-qualification` makes the transcript human-readable by default and keeps early qualification in plain sales language; `LIVE-DEMO-008-prosody-review-scope-clarity` keeps tight product phrases together in provider-rendered TTS and stops asking buyers to decide internal workflow-review scope; `LIVE-DEMO-009-appointment-lead-close` makes the opener ask one permission question and moves confirmed workflow pain into appointment-setting as the current MVP close; `LIVE-DEMO-010-live-feedback-route-polish` makes opener time refusals heard, moves observed missed-lead pain to the appointment ask, blocks internal runtime phrasing, and avoids the ambiguous spreadsheet-verb pronunciation; `LIVE-DEMO-011-live-followup-stop-and-pain-close` makes callback `never` stop, shortens do-not-call wording, and moves confirmed missed-lead pain directly to the appointment ask; `LIVE-DEMO-012-soft-stop-and-context-recovery` makes soft callback refusal terminal and prevents stale timing context from hijacking purpose and owner/routing follow-up; `LIVE-DEMO-013-reasoner-route-guard` lets deterministic structured reasoning gate only high-confidence CRM/integration and previous-question clarification routes before speech, removes fixture wording from CRM answers, and keeps CRM replacement answers non-terminal; `DIALOGUE-MANAGER-001-root-repair` adds the manager action/trace around the existing policy stack; `DIALOGUE-MANAGER-002-pragmatic-dialogue-repair` adds first-class local pragmatic buyer moves behind that manager for purpose questions, term explanations, relevance challenges, buyer-led agenda repair, CRM boundary answers, previous-question clarification, and missed-pain appointment asks; `DIALOGUE-MANAGER-003-plain-sales-clarity-and-vague-appointment-time` makes purpose recovery customer-plain, blocks runtime-label speech, keeps missed-lead pain moving toward a Northstar workflow-review appointment, and keeps vague appointment timing open for a concrete day/time.
 
 Record the `LIVE-DEMO-002` runtime extraction baseline without provider calls:
 
@@ -3011,6 +3017,70 @@ python scripts\validate_live_demo_009_appointment_lead_close.py
 ```
 
 `LIVE-DEMO-009` keeps `PROD-102` closed. It does not add spoken backchannels, true spoken barge-in, provider ASR, payment, provider-hosted durable agents, voice cloning, or LLM-written final speech. It makes the opener ask one permission question before qualification, treats appointment-setting as the current MVP close after a selected workflow gap and buyer agreement, preserves explicit callback scheduling, and confirms workflow-review times only after appointment context. Continue placing browser transcript JSON files under `data\private\live-demo-003\raw-turns\browser-transcript`; do not commit private transcript files.
+
+Validate the `LIVE-DEMO-010-live-feedback-route-polish` gate without live microphone, provider ASR, provider TTS, provider LLM calls, or local LLM calls:
+
+```powershell
+python scripts\validate_live_demo_010_live_feedback_route_polish.py
+```
+
+`LIVE-DEMO-010` keeps `PROD-102` closed. It does not add spoken backchannels, true spoken barge-in, provider ASR, payment, provider-hosted durable agents, voice cloning, local LLM wiring, or LLM-written final speech. It makes `no I don't` after the opener route to callback timing instead of qualification, moves observed missed-lead pain toward the Northstar workflow-review appointment ask, keeps non-time confirmations after appointment context on the time request, blocks internal runtime phrases from customer speech, and avoids the ambiguous spreadsheet-verb TTS phrase. Continue placing browser transcript JSON files under `data\private\live-demo-003\raw-turns\browser-transcript`; do not commit private transcript files.
+
+Validate the `LIVE-DEMO-011-live-followup-stop-and-pain-close` gate without live microphone, provider ASR, provider TTS, provider LLM calls, or local LLM calls:
+
+```powershell
+python scripts\validate_live_demo_011_live_followup_stop_and_pain_close.py
+```
+
+`LIVE-DEMO-011` keeps `PROD-102` closed. It does not add spoken backchannels, true spoken barge-in, provider ASR, payment, provider-hosted durable agents, voice cloning, local LLM wiring, or LLM-written final speech. It makes `never` after a callback-time request end the call, shortens explicit do-not-call wording, maps ASR-style `Leeds` to missed leads, and moves confirmed missed-lead pain directly to the Northstar workflow-review appointment ask. Continue placing browser transcript JSON files under `data\private\live-demo-003\raw-turns\browser-transcript`; do not commit private transcript files.
+
+Validate the `LIVE-DEMO-012-soft-stop-and-context-recovery` gate without live microphone, provider ASR, provider TTS, provider LLM calls, or local LLM calls:
+
+```powershell
+python scripts\validate_live_demo_012_soft_stop_and_context_recovery.py
+```
+
+`LIVE-DEMO-012` keeps `PROD-102` closed. It does not add spoken backchannels, true spoken barge-in, provider ASR, payment, provider-hosted durable agents, voice cloning, local LLM wiring, or LLM-written final speech. It makes soft callback refusal after callback timing end the call, makes ASR-shaped purpose questions override stale timing context, resets purpose recovery to qualification, and keeps owner/routing answers on the sales workflow track. Continue placing browser transcript JSON files under `data\private\live-demo-003\raw-turns\browser-transcript`; do not commit private transcript files.
+
+Validate the `LIVE-DEMO-013-reasoner-route-guard` gate without live microphone, provider ASR, provider TTS, provider LLM calls, or local LLM calls:
+
+```powershell
+python scripts\validate_live_demo_013_reasoner_route_guard.py
+```
+
+`LIVE-DEMO-013` keeps `PROD-102` closed. It does not add spoken backchannels, true spoken barge-in, provider ASR, payment, provider-hosted durable agents, voice cloning, local LLM wiring, or LLM-written final speech. It moves deterministic structured reasoning before final speech only for narrow CRM/integration and previous-question clarification routes, removes customer-facing fixture labels such as `fictional profile`, keeps CRM replacement answers open for qualification, and defers to more specific existing repair routes when they match. Continue placing browser transcript JSON files under `data\private\live-demo-003\raw-turns\browser-transcript`; do not commit private transcript files.
+
+Validate the `DIALOGUE-MANAGER-001-root-repair` gate without live microphone, provider ASR, provider TTS, provider LLM calls, or local LLM calls:
+
+```powershell
+python scripts\validate_dialogue_manager_001_root_repair.py
+```
+
+`DIALOGUE-MANAGER-001` keeps `PROD-102` closed. It does not install or wire a local LLM, does not add provider ASR, does not allow LLM-written final speech, and does not broaden appointment-setting into full sale/payment/contract closure. It adds `runtime\core\dialogue_manager.py` as the live-demo control-plane shell so each tested final response carries one manager action, template id, state trace, final-response source, repair chain, and call-control trace around the existing policy stack. Continue placing browser transcript JSON files under `data\private\live-demo-003\raw-turns\browser-transcript`; do not commit private transcript files.
+
+Validate the `DIALOGUE-MANAGER-002-pragmatic-dialogue-repair` gate without live microphone, provider ASR, provider TTS, provider LLM calls, or local LLM calls:
+
+```powershell
+python scripts\validate_dialogue_manager_002_pragmatic_dialogue_repair.py
+```
+
+`DIALOGUE-MANAGER-002` keeps `PROD-102` closed. It does not install or wire a local LLM, does not add provider ASR, does not allow LLM-written final speech, and does not broaden appointment-setting into full sale/payment/contract closure. It adds `runtime\core\dialogue_pragmatics.py` behind the manager so small human dialogue moves become explicit manager-owned actions instead of scattered policy exceptions. Continue placing browser transcript JSON files under `data\private\live-demo-003\raw-turns\browser-transcript`; do not commit private transcript files.
+
+Validate the `DIALOGUE-MANAGER-003-plain-sales-clarity-and-vague-appointment-time` gate without live microphone, provider ASR, provider TTS, provider LLM calls, or local LLM calls:
+
+```powershell
+python scripts\validate_dialogue_manager_003_plain_sales_clarity_and_vague_appointment_time.py
+```
+
+`DIALOGUE-MANAGER-003` keeps `PROD-102` closed. It does not install or wire a local LLM, does not add provider ASR, does not allow LLM-written final speech, and does not broaden appointment-setting into full sale/payment/contract closure. It keeps the manager/pragmatics architecture, but tightens spoken purpose recovery, missed-lead pain progression, already-stated-problem acknowledgement, customer-facing jargon guards, and vague appointment-time clarification. Continue placing browser transcript JSON files under `data\private\live-demo-003\raw-turns\browser-transcript`; do not commit private transcript files.
+
+Validate the `LIVE-DEMO-014-clear-pain-callback-followup` gate without live microphone, provider ASR, provider TTS, provider LLM calls, or local LLM calls:
+
+```powershell
+python scripts\validate_live_demo_014_clear_pain_callback_followup.py
+```
+
+`LIVE-DEMO-014` keeps `PROD-102` closed. It does not install or wire a local LLM, does not add provider ASR, does not allow LLM-written final speech, and does not broaden appointment-setting into full sale/payment/contract closure. It acknowledges `it's all clear`, moves stated missed callbacks toward a Northstar workflow-review ask without callback-scheduling ambiguity, explains `Growth` if asked, treats `think about it` as callback follow-up instead of a stop, and keeps callback-later agreement open until a usable callback time is captured. Continue placing browser transcript JSON files under `data\private\live-demo-003\raw-turns\browser-transcript`; do not commit private transcript files.
 
 Run the `DIALOGUE-REASONER-001` structured runtime reasoner baseline over 30 frozen live-demo dialogue-act cases without provider calls:
 

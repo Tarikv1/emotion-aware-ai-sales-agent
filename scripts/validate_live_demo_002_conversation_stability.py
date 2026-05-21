@@ -74,6 +74,8 @@ def append_turn(state: dict[str, Any], packet: dict[str, Any]) -> None:
             "summary": packet.get("summary", {}),
             "continuity": packet.get("demo_session_continuity", {}),
             "conversation_memory": packet.get("demo_conversation_memory") or packet.get("conversation_memory") or {},
+            "dialogue_manager": packet.get("dialogue_manager", {}),
+            "dialogue_pragmatics": packet.get("dialogue_pragmatics", {}),
         }
     )
 

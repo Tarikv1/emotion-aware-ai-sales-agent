@@ -1,0 +1,264 @@
+{
+  "checkpoint_id": "LIVE-DEMO-010-live-feedback-route-polish",
+  "passed": true,
+  "failure_count": 0,
+  "failures": [],
+  "provider_calls_made": false,
+  "evidence": {
+    "permission_refusal": {
+      "response": "Of course. What time should I note for the callback?",
+      "continuity": {
+        "applied": true,
+        "reason": "callback_request_time_needed",
+        "dialogue_focus": "timing",
+        "callback_semantic": "callback_scheduling_request",
+        "candidate_response": "Of course. What time should I note for the callback?"
+      },
+      "stability_guard": {
+        "applied": false,
+        "reason": "conversation_stability_passed",
+        "violations": [],
+        "dialogue_focus": "timing",
+        "selected_gap": null
+      }
+    },
+    "observed_pain_sequence": [
+      {
+        "turn": 1,
+        "transcript": "__agent_open__",
+        "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+        "tts_input_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?",
+        "continuity": {
+          "applied": true,
+          "reason": "agent_opening_started",
+          "dialogue_focus": "qualification",
+          "candidate_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?"
+        }
+      },
+      {
+        "turn": 2,
+        "transcript": "yes",
+        "response": "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
+        "tts_input_text": "This is about inbound demo follow-up: <break time=\"0.219s\" /> one person should be responsible for the next reply, so, that prevents missed follow-up. Which part is least clear today?",
+        "continuity": {
+          "applied": true,
+          "reason": "proactive_qualification_guidance_after_acknowledgement",
+          "dialogue_focus": "qualification",
+          "candidate_response": "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?"
+        }
+      },
+      {
+        "turn": 3,
+        "transcript": "I'm sorry what is this about",
+        "response": "I am calling because RouteSignal helps with inbound demo follow-up: demo leads getting assigned, reminded, and followed up. Northstar is asking for a short workflow review if leads are slipping today.",
+        "tts_input_text": "I'm calling because RouteSignal helps with inbound demo follow-up: <break time=\"0.187s\" /> demo leads getting assigned, reminded, and followed up. Um, northstar is asking for a short workflow review if leads are slipping today.",
+        "continuity": {
+          "applied": true,
+          "reason": "call_purpose_explained",
+          "action_id": "recover_call_purpose",
+          "pragmatic_continuity_reason": "pragmatic_call_purpose_explained",
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "candidate_response": "I am calling because RouteSignal helps with inbound demo follow-up: demo leads getting assigned, reminded, and followed up. Northstar is asking for a short workflow review if leads are slipping today.",
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "call_purpose_question",
+            "applied": true,
+            "target_action": "recover_call_purpose",
+            "continuity_reason": "pragmatic_call_purpose_explained",
+            "legacy_reason": null,
+            "confidence": 0.95,
+            "dialogue_focus": "qualification",
+            "selected_gap": null,
+            "previous_question": "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
+            "previous_question_type": "gap_diagnostic",
+            "dialogue_reasoning_act": "asr_fragment",
+            "response_strategy": "repeat_request",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          }
+        }
+      },
+      {
+        "turn": 4,
+        "transcript": "I said what is this about like what are you trying to sell me here",
+        "response": "For inbound demo follow-up, a short check asks who replies next, when they reply, and how it is tracked. Which part is least clear today?",
+        "tts_input_text": "For inbound demo follow-up, <break time=\"0.237s\" /> a short check asks who replies next, when they reply, and how it's tracked, well, which part is least clear today?",
+        "continuity": {
+          "applied": true,
+          "reason": "duplicate_response_prevented_with_qualification_progression",
+          "dialogue_focus": "qualification",
+          "candidate_response": "For inbound demo follow-up, a short check asks who replies next, when they reply, and how it is tracked. Which part is least clear today?"
+        }
+      },
+      {
+        "turn": 5,
+        "transcript": "what do you mean by owners",
+        "response": "By that, I mean the person responsible for the next reply. The check is whether a new demo request always has one clear person following up.",
+        "tts_input_text": "By that, I mean the person responsible for the next reply, so, the check is whether a new demo request always has one clear person following up.",
+        "continuity": {
+          "applied": true,
+          "reason": "plain_qualification_term_clarified",
+          "action_id": "explain_term",
+          "pragmatic_continuity_reason": "pragmatic_term_explained",
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "candidate_response": "By that, I mean the person responsible for the next reply. The check is whether a new demo request always has one clear person following up.",
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "term_meaning_question",
+            "applied": true,
+            "target_action": "explain_term",
+            "continuity_reason": "pragmatic_term_explained",
+            "legacy_reason": null,
+            "confidence": 0.93,
+            "dialogue_focus": "qualification",
+            "selected_gap": null,
+            "previous_question": "For inbound demo follow-up, a short check asks who replies next, when they reply, and how it is tracked. Which part is least clear today?",
+            "previous_question_type": "gap_diagnostic",
+            "dialogue_reasoning_act": "selected_gap",
+            "response_strategy": "map_gap_to_value",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          }
+        }
+      },
+      {
+        "turn": 6,
+        "transcript": "yeah you can contact me about that if we decide to continue of course",
+        "response": "For managers, a short workflow review shows whether inbound demo follow-up is waiting too long. Would a short workflow review be worth checking?",
+        "tts_input_text": "For managers, <break time=\"0.193s\" /> a short workflow review shows whether inbound demo follow-up is waiting too long, well, would a short workflow review be worth checking?",
+        "continuity": {
+          "applied": true,
+          "reason": "conversation_stability_repaired",
+          "violations": [
+            "generic_menu_reopened_after_focus"
+          ],
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "candidate_response": "For managers, a short workflow review shows whether inbound demo follow-up is waiting too long. Would a short workflow review be worth checking?"
+        }
+      },
+      {
+        "turn": 7,
+        "transcript": "I didn't say I am a manager but yeah I guess it would be worth",
+        "response": "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied. Which part is harder today: seeing it, assigning the reply, or remembering the callback?",
+        "tts_input_text": "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied, well, which part is harder today: seeing it, assigning the reply, or remembering the callback? <break time=\"0.24s\" />",
+        "continuity": {
+          "applied": true,
+          "reason": "conversation_stability_repaired",
+          "violations": [
+            "generic_menu_reopened_after_focus"
+          ],
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "candidate_response": "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied. Which part is harder today: seeing it, assigning the reply, or remembering the callback?"
+        }
+      },
+      {
+        "turn": 8,
+        "transcript": "I mean it's completely clear So Gone",
+        "response": "If callback reminders for demo follow-up sit in a spreadsheet, they can slip. Which part is more familiar: manual tracking or missed callbacks?",
+        "tts_input_text": "If callback reminders for demo follow-up sit in a spreadsheet, they can slip, so, which part is more familiar: manual tracking or missed callbacks?",
+        "continuity": {
+          "applied": true,
+          "reason": "conversation_stability_repaired",
+          "violations": [
+            "generic_menu_reopened_after_focus"
+          ],
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "candidate_response": "If callback reminders for demo follow-up sit in a spreadsheet, they can slip. Which part is more familiar: manual tracking or missed callbacks?"
+        }
+      },
+      {
+        "turn": 9,
+        "transcript": "manual tracking",
+        "response": "That breaks when follow-up is split between tools. RouteSignal keeps the demo lead, reminder, and next reply in one workflow. Where does it break first today?",
+        "tts_input_text": "That breaks when follow-up is split between tools. <break time=\"0.189s\" /> Um, RouteSignal keeps the demo lead, reminder, and next reply in one workflow. Where does it break first today?",
+        "continuity": {
+          "applied": true,
+          "reason": "campaign_depth_manual_tracking_answered",
+          "dialogue_focus": "fit",
+          "candidate_response": "That breaks when follow-up is split between tools. RouteSignal keeps the demo lead, reminder, and next reply in one workflow. Where does it break first today?"
+        }
+      },
+      {
+        "turn": 10,
+        "transcript": "so sometimes the leads get lost in the mail because there is a lot of mails and it is kind of overwhelming to assign each lead to a different person and yes sometimes we just miss it and it falls through the cracks",
+        "response": "That is exactly what RouteSignal is meant to help with: demo leads getting assigned, reminded, and followed up. The next step is a short workflow review with someone from Northstar. They would check lead assignment against your actual follow-up flow. What time works for a quick call?",
+        "tts_input_text": "That's exactly what RouteSignal is meant to help with: demo leads getting assigned, <break time=\"0.186s\" /> reminded, and followed up. Um, the next step is a short workflow review with someone from Northstar. They would check lead assignment against your actual follow-up flow. What time works for a quick call?",
+        "continuity": {
+          "applied": true,
+          "reason": "appointment_time_requested",
+          "action_id": "request_appointment_time",
+          "pragmatic_continuity_reason": "pragmatic_pain_to_appointment",
+          "dialogue_focus": "timing",
+          "selected_gap": "routing",
+          "candidate_response": "That is exactly what RouteSignal is meant to help with: demo leads getting assigned, reminded, and followed up. The next step is a short workflow review with someone from Northstar. They would check lead assignment against your actual follow-up flow. What time works for a quick call?",
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "pain_statement",
+            "applied": true,
+            "target_action": "request_appointment_time",
+            "continuity_reason": "pragmatic_pain_to_appointment",
+            "legacy_reason": null,
+            "confidence": 0.94,
+            "dialogue_focus": "timing",
+            "selected_gap": "routing",
+            "previous_question": "That breaks when follow-up is split between tools. RouteSignal keeps the demo lead, reminder, and next reply in one workflow. Where does it break first today?",
+            "previous_question_type": "gap_diagnostic",
+            "dialogue_reasoning_act": "selected_gap",
+            "response_strategy": "map_gap_to_value",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          }
+        }
+      },
+      {
+        "turn": 11,
+        "transcript": "we could say that I guess they are getting missed",
+        "response": "Yes. Someone from Northstar would check lead assignment against your follow-up flow in a short workflow review. What time works for a quick call?",
+        "tts_input_text": "Yes, so, someone from Northstar would check lead assignment against your follow-up flow in a short workflow review. <break time=\"0.23s\" /> What time works for a quick call?",
+        "continuity": {
+          "applied": true,
+          "reason": "appointment_time_requested",
+          "action_id": "request_appointment_time",
+          "pragmatic_continuity_reason": "pragmatic_pain_to_appointment",
+          "dialogue_focus": "timing",
+          "selected_gap": "routing",
+          "candidate_response": "Yes. Someone from Northstar would check lead assignment against your follow-up flow in a short workflow review. What time works for a quick call?",
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "pain_statement",
+            "applied": true,
+            "target_action": "request_appointment_time",
+            "continuity_reason": "pragmatic_pain_to_appointment",
+            "legacy_reason": null,
+            "confidence": 0.94,
+            "dialogue_focus": "timing",
+            "selected_gap": "routing",
+            "previous_question": "That is exactly what RouteSignal is meant to help with: demo leads getting assigned, reminded, and followed up. The next step is a short workflow review with someone from Northstar. They would check lead assignment against your actual follow-up flow. What time works for a quick call?",
+            "previous_question_type": "appointment_time",
+            "dialogue_reasoning_act": "unknown",
+            "response_strategy": "refocus_to_sales_call",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          }
+        }
+      }
+    ]
+  }
+}

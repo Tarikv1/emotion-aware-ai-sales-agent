@@ -16,6 +16,86 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-21 - LIVE-DEMO-014 clear pain callback follow-up
+
+- Objective: fix Tarik's latest supervised ElevenLabs feedback after `DIALOGUE-MANAGER-003` without broad-rewriting the runtime, installing a local LLM, or opening `PROD-102`.
+- Action taken: added a provider-off validator for the observed sequence; added explicit pragmatic routes for `Growth` term explanation, appointment hesitation, and callback-later affirmation; added clear/no-pain acknowledgement; broadened missed-callback pain confirmation; removed the customer-facing `if clean`/unexplained `Growth` callback progression; kept bare callback pain on a workflow-review usefulness ask instead of immediate callback scheduling; and narrowed the stability guard so it does not rewrite true Northstar workflow-review appointment asks.
+- Data used: Tarik's live feedback and the newest private browser transcript JSON under `data/private/live-demo-003/raw-turns/browser-transcript/`. No provider call, private audio upload, real customer data, local LLM install, payment collection, contract flow, production promotion, or `PROD-102` work was used.
+- Output created: `scripts/validate_live_demo_014_clear_pain_callback_followup.py`, `docs/product/LIVE_DEMO_014_CLEAR_PAIN_CALLBACK_FOLLOWUP.md`, updates to `runtime/core/live_voice_session_policy.py`, `runtime/core/dialogue_pragmatics.py`, live-demo docs, and generated evidence under `research/experiments/generated/LIVE-DEMO-014-clear-pain-callback-followup/`.
+- What was learned: the manager/pragmatics layer is catching the right class of problem, but the stability guard can still undo good appointment-setting actions if it cannot distinguish workflow callbacks from callback scheduling.
+- Why it matters for the thesis: it shows the system can improve human dialogue acknowledgement and sales follow-up behavior through local, inspectable routing without moving final speech generation to an LLM.
+- Open questions: whether the next live pass now feels understandable enough in the opening qualification and whether any remaining failure is ASR capture, wording, or missing pragmatic-route coverage.
+
+### 2026-05-20 - DIALOGUE-MANAGER-003 plain sales clarity and vague appointment time
+
+- Objective: fix the next supervised live-demo dialogue failures after `DIALOGUE-MANAGER-002` without installing a local LLM, broad-rewriting the runtime, or opening `PROD-102`.
+- Action taken: added a provider-off validator for plain call-purpose recovery, missed-lead pain progression, already-stated-problem acknowledgement, repeated appointment-time requests, vague appointment-time clarification, and customer-facing runtime-label blockers; then tightened the existing live voice session policy templates and dialogue-manager appointment-time mapping.
+- Data used: Tarik's live feedback and synthetic replay turns for the fictional `Northstar Workflow Labs` / `RouteSignal CRM` campaign. No provider call, private audio upload, real customer data, local LLM install, payment collection, contract flow, production promotion, or `PROD-102` work was used.
+- Output created: `scripts/validate_dialogue_manager_003_plain_sales_clarity_and_vague_appointment_time.py`, `docs/product/DIALOGUE_MANAGER_003_PLAIN_SALES_CLARITY_AND_VAGUE_APPOINTMENT_TIME.md`, updates to `runtime/core/live_voice_session_policy.py`, `runtime/core/dialogue_manager.py`, `runtime/runtime_manifest.json`, live-demo docs, and generated evidence under `research/experiments/generated/DIALOGUE-MANAGER-003-plain-sales-clarity-and-vague-appointment-time/`.
+- What was learned: the manager/pragmatics layer was the right architecture, but customer-facing text still needs guardrails against internal labels and vague timing must be owned by appointment scheduling instead of generic timing closure.
+- Why it matters for the thesis: it shows the project can improve dialogue reasoning through inspectable local control and evidence-driven wording constraints without moving final speech generation to an LLM.
+- Open questions: whether the next ElevenLabs pass now sounds clear enough about what RouteSignal does, and whether any remaining failures are ASR/turn-taking, voice delivery, or missing dialogue-pragmatic coverage.
+
+### 2026-05-20 - DIALOGUE-MANAGER-002 pragmatic dialogue repair
+
+- Objective: fix the remaining small human dialogue reasoning gap after `DIALOGUE-MANAGER-001` without installing a local LLM, broad-rewriting the runtime, or opening `PROD-102`.
+- Action taken: added a provider-off validator for pragmatic buyer moves; added `runtime/core/dialogue_pragmatics.py` behind the dialogue manager; exposed a top-level `dialogue_pragmatics` packet; and routed purpose questions, previous-question clarification, unfamiliarity, term meaning, relevance challenge, buyer-led agenda recovery, CRM replacement boundary, and pain-to-appointment through explicit manager-owned actions.
+- Data used: Tarik's live feedback and synthetic live-demo turns for the fictional `Northstar Workflow Labs` / `RouteSignal CRM` campaign. No provider call, private audio upload, real customer data, local LLM install, payment collection, contract flow, production promotion, or `PROD-102` work was used.
+- Output created: `runtime/core/dialogue_pragmatics.py`, `scripts/validate_dialogue_manager_002_pragmatic_dialogue_repair.py`, `docs/product/DIALOGUE_MANAGER_002_PRAGMATIC_DIALOGUE_REPAIR.md`, updates to `runtime/core/dialogue_manager.py`, `runtime/core/live_voice_session_policy.py`, `scripts/run_live_demo_001_agent_voice_call.py`, `runtime/runtime_manifest.json`, live-demo docs, and generated evidence under `research/experiments/generated/DIALOGUE-MANAGER-002-pragmatic-dialogue-repair/`.
+- What was learned: the remaining gap was not solved by adding more isolated keyword fixes. The useful local abstraction is a pragmatic move layer that sits behind manager call-control ownership and ahead of generic sales routing.
+- Why it matters for the thesis: it creates an inspectable middle layer for human dialogue pragmatics while preserving deterministic safety, provider boundaries, and appointment-setting scope.
+- Open questions: whether the next supervised ElevenLabs pass now feels coherent enough, and which additional pragmatic moves need coverage based on observed live failures rather than speculative expansion.
+
+### 2026-05-20 - DIALOGUE-MANAGER-001 root repair
+
+- Objective: fix the systemic live-demo dialogue-control problem after `LIVE-DEMO-013` without continuing one-off route patches, installing a local LLM, or opening `PROD-102`.
+- Action taken: added a provider-off manager validator from the observed live failure classes; added `runtime/core/dialogue_manager.py` as the live-demo control-plane shell; routed continuity, anti-loop, duplicate, and stability repairs through one manager action/trace; made terminal stop actions skip later sales repairs; and attached the manager trace to live-demo packets and browser diagnostics.
+- Data used: Tarik's live feedback and the newest private browser transcript JSON under `data/private/live-demo-003/raw-turns/browser-transcript/`. No provider call, private audio upload, real customer data, local LLM install, payment collection, contract flow, production promotion, or `PROD-102` work was used.
+- Output created: `runtime/core/dialogue_manager.py`, `scripts/validate_dialogue_manager_001_root_repair.py`, `docs/product/DIALOGUE_MANAGER_001_ROOT_REPAIR.md`, updates to `scripts/run_live_demo_001_agent_voice_call.py`, `runtime/runtime_manifest.json`, live-demo docs, and generated evidence under `research/experiments/generated/DIALOGUE-MANAGER-001-root-repair/`.
+- What was learned: the root issue was split ownership of state, final speech, repair layers, and call control. A local LLM would not fix that unless its output is constrained behind a manager; the manager has to own the action contract first.
+- Why it matters for the thesis: it turns the live demo from a chain of competing deterministic patches into an observable dialogue-control architecture while preserving provider boundaries and appointment-setting scope.
+- Open questions: whether the next supervised ElevenLabs pass now sounds coherent enough, and which old policy branches should migrate from wrapped legacy helpers into first-class manager actions.
+
+### 2026-05-20 - LIVE-DEMO-013 reasoner route guard
+
+- Objective: fix the next supervised ElevenLabs feedback after `LIVE-DEMO-012` without broad runtime rewrite, local LLM install, or `PROD-102`.
+- Action taken: added a provider-off validator from the new live transcript failures; moved deterministic dialogue reasoning before final speech for narrow high-confidence CRM/integration and previous-question clarification routes; replaced customer-facing fixture wording in CRM answers; kept CRM replacement questions on `continue-call`; and expanded ASR-shaped clarification handling for `who is harder`.
+- Data used: Tarik's live feedback and the newest private browser transcript JSON under `data/private/live-demo-003/raw-turns/browser-transcript/`. No provider call, private audio upload, real customer data, local LLM install, payment collection, contract flow, production promotion, or `PROD-102` work was used.
+- Output created: `scripts/validate_live_demo_013_reasoner_route_guard.py`, `docs/product/LIVE_DEMO_013_REASONER_ROUTE_GUARD.md`, updates to `runtime/core/live_voice_session_policy.py`, `scripts/run_live_demo_001_agent_voice_call.py`, live-demo docs, and generated evidence under `research/experiments/generated/LIVE-DEMO-013-reasoner-route-guard/`.
+- What was learned: the deterministic reasoner was useful but placed too late; post-speech evidence cannot prevent spoken route failures. It should gate only small, high-confidence routes and must defer to more specific existing repairs.
+- Why it matters for the thesis: it records a pragmatic middle path between brittle keyword routing and premature local-LLM adoption: structured deterministic reasoning can improve live dialogue behavior while preserving provider and safety boundaries.
+- Open questions: whether the next live pass now handles CRM replacement, ASR-shaped clarification, and appointment-setting flow naturally enough for the supervised demo.
+
+### 2026-05-20 - LIVE-DEMO-012 soft stop and context recovery
+
+- Objective: fix the next supervised ElevenLabs feedback after `LIVE-DEMO-011` without a broad runtime rewrite, local LLM install, or `PROD-102`.
+- Action taken: added a provider-off validator from the newest private browser transcript failure; patched soft callback refusal after callback timing into a terminal stop, broadened ASR-shaped call-purpose detection, moved purpose recovery back to qualification instead of stale timing, and recognized owner/routing answers after purpose recovery.
+- Data used: Tarik's live feedback and the newest private browser transcript JSON under `data/private/live-demo-003/raw-turns/browser-transcript/`. No provider call, private audio upload, real customer data, local LLM install, payment collection, contract flow, production promotion, or `PROD-102` work was used.
+- Output created: `scripts/validate_live_demo_012_soft_stop_and_context_recovery.py`, `docs/product/LIVE_DEMO_012_SOFT_STOP_AND_CONTEXT_RECOVERY.md`, updates to `runtime/core/live_voice_session_policy.py`, live-demo docs, and generated evidence under `research/experiments/generated/LIVE-DEMO-012-soft-stop-and-context-recovery/`.
+- What was learned: deterministic routing is still brittle when stale context is allowed to dominate later turns; purpose recovery must have priority over ASR-fragment repair and must reset focus before the next customer answer.
+- Why it matters for the thesis: it prevents one missed terminal state from cascading into unrelated sales logic, while keeping the live demo bounded to appointment-setting rather than full sale closure.
+- Open questions: whether the next live pass now stops cleanly after soft refusal and recovers purpose questions without stale timing advice.
+
+### 2026-05-20 - LIVE-DEMO-011 live follow-up stop and pain close
+
+- Objective: fix the next supervised ElevenLabs feedback after `LIVE-DEMO-010` without a broad runtime rewrite, local LLM install, or `PROD-102`.
+- Action taken: added a provider-off validator from the two new private browser transcript failures; patched callback-time `never` into a terminal stop, shortened explicit do-not-call wording, expanded ASR-style missed-lead recognition, and moved confirmed missed-lead pain directly to the Northstar workflow-review appointment ask.
+- Data used: Tarik's live feedback and two private browser transcript JSON files under `data/private/live-demo-003/raw-turns/browser-transcript/`. No provider call, private audio upload, real customer data, local LLM install, payment collection, contract flow, production promotion, or `PROD-102` work was used.
+- Output created: `scripts/validate_live_demo_011_live_followup_stop_and_pain_close.py`, `docs/product/LIVE_DEMO_011_LIVE_FOLLOWUP_STOP_AND_PAIN_CLOSE.md`, updates to `runtime/core/live_voice_session_policy.py`, live-demo docs, and generated evidence under `research/experiments/generated/LIVE-DEMO-011-live-followup-stop-and-pain-close/`.
+- What was learned: the stability repair layer can still surface generic timing or fit progression when a route misses; terminal callback refusal and confirmed pain need explicit higher-priority handling before repair text is allowed to speak.
+- Why it matters for the thesis: it tightens buyer-agency handling while preserving the appointment-setting MVP close as the live-demo target.
+- Open questions: whether the next live pass now hears terminal refusal, concise stop handling, and pain-to-appointment progression as natural enough to commit.
+
+### 2026-05-20 - LIVE-DEMO-010 live-feedback route polish
+
+- Objective: fix the latest supervised ElevenLabs feedback without a broad runtime rewrite or `PROD-102`.
+- Action taken: added a provider-off validator from the private browser transcript evidence; patched opener permission-refusal routing, confirmed workflow-pain gap recognition, appointment-context non-time confirmation, customer-safe wording, and spreadsheet phrasing; kept the local LLM idea as a separate future evaluation.
+- Data used: Tarik's live feedback and private browser transcript JSON under `data/private/live-demo-003/raw-turns/browser-transcript/`. No provider call, private audio upload, real customer data, local LLM install, payment collection, contract flow, production promotion, or `PROD-102` work was used.
+- Output created: `scripts/validate_live_demo_010_live_feedback_route_polish.py`, `docs/product/LIVE_DEMO_010_LIVE_FEEDBACK_ROUTE_POLISH.md`, updates to `runtime/core/live_voice_session_policy.py`, `scripts/run_live_demo_001_agent_voice_call.py`, live-demo docs, and generated evidence under `research/experiments/generated/LIVE-DEMO-010-live-feedback-route-polish/`.
+- What was learned: deterministic runtime still leaked implementation labels and missed plain refusal or pain signals; a local LLM might help later, but these transcript-backed failures needed route repair first.
+- Why it matters for the thesis: it protects the sales-agency claim by showing that the agent hears buyer availability, recognizes concrete workflow pain, and asks for the MVP appointment close without exposing runtime instructions.
+- Open questions: whether `LIVE-DEMO-010` sounds usable in the next ElevenLabs pass, and whether remaining missed acknowledgements require dialogue-reasoner or LLM wiring after deterministic fixes are accepted.
+
 ### 2026-05-20 - LIVE-DEMO-009 appointment-setting MVP close
 
 - Objective: convert the live demo from repeated workflow-review usefulness questions into a measurable appointment-setting MVP close after real buyer pain and agreement.

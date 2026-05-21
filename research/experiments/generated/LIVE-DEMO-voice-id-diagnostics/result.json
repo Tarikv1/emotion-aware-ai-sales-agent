@@ -1,0 +1,24 @@
+{
+  "checkpoint_id": "LIVE-DEMO-voice-id-diagnostics",
+  "passed": true,
+  "failure_count": 0,
+  "failures": [],
+  "provider_calls_made": false,
+  "raw_voice_id_logged": false,
+  "evidence": {
+    "diagnostics": {
+      "source": "ELEVENLABS_VOICE_ID_EN",
+      "present": true,
+      "length": 29,
+      "sha256_8": "b3d2da00",
+      "raw_value_logged": false
+    },
+    "summary_voice_fields": {
+      "tts_voice_id_source": "ELEVENLABS_VOICE_ID_EN",
+      "tts_voice_id_present": true,
+      "tts_voice_id_length": 29,
+      "tts_voice_id_hash": "b3d2da00"
+    },
+    "provider_calls_made": false
+  }
+}

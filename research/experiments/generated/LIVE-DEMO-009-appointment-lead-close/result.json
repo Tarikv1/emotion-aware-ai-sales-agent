@@ -117,13 +117,13 @@
       {
         "turn": 3,
         "transcript": "I guess assigning is one of the hard parts",
-        "response": "Then priority routing is the value point: each inbound request gets a clear owner faster. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
+        "response": "Then RouteSignal helps each demo lead get a clear next owner faster. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
         "continuity": {
           "applied": true,
           "reason": "seller_gap_selected_for_qualification",
           "dialogue_focus": "qualification",
           "selected_gap": "routing",
-          "candidate_response": "Then priority routing is the value point: each inbound request gets a clear owner faster. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?"
+          "candidate_response": "Then RouteSignal helps each demo lead get a clear next owner faster. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?"
         },
         "memory": {
           "schema_version": 1,
@@ -147,20 +147,20 @@
           "last_response_hashes": [
             "c4f25e2c6ac64318",
             "c8bbbccede01d007",
-            "3574be084ff39cb6"
+            "975bcb9157a5e4bb"
           ],
           "last_response_signatures": [
             "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:c8bbbccede01d007",
-            "routing_workflow:3574be084ff39cb6"
+            "safe_next_step:975bcb9157a5e4bb"
           ],
           "recent_response_subjects": [
             "opening_permission",
             "diagnostic_question",
-            "routing_workflow"
+            "safe_next_step"
           ],
-          "candidate_response_subject": "routing_workflow",
-          "candidate_response_signature": "routing_workflow:3574be084ff39cb6",
+          "candidate_response_subject": "safe_next_step",
+          "candidate_response_signature": "safe_next_step:975bcb9157a5e4bb",
           "last_customer_intent": "selected_gap:routing",
           "last_sales_progression_step": "value_mapping",
           "appointment_close_ready": false,
@@ -187,7 +187,7 @@
           "callback_semantic": null,
           "last_agent_question_type": "gap_diagnostic",
           "last_active_agent_question_type": "gap_diagnostic",
-          "last_agent_question_hash": "3574be084ff39cb6",
+          "last_agent_question_hash": "975bcb9157a5e4bb",
           "asked_question_type_counts": {
             "permission_check": 1,
             "gap_diagnostic": 2,
@@ -201,19 +201,19 @@
           "last_response_hashes": [
             "c4f25e2c6ac64318",
             "c8bbbccede01d007",
-            "3574be084ff39cb6",
+            "975bcb9157a5e4bb",
             "0b20f226d705c0bd"
           ],
           "last_response_signatures": [
             "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:c8bbbccede01d007",
-            "routing_workflow:3574be084ff39cb6",
+            "safe_next_step:975bcb9157a5e4bb",
             "diagnostic_question:0b20f226d705c0bd"
           ],
           "recent_response_subjects": [
             "opening_permission",
             "diagnostic_question",
-            "routing_workflow",
+            "safe_next_step",
             "diagnostic_question"
           ],
           "candidate_response_subject": "diagnostic_question",
@@ -229,14 +229,14 @@
       {
         "turn": 5,
         "transcript": "our inbound follow-ups usually land in one inbox and one person tracks it before it goes to other people",
-        "response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
+        "response": "For callbacks, the issue is speed to lead: each demo request has an owner and reminder before it waits. Would a short workflow review help check missed reminders?",
         "continuity": {
           "applied": true,
           "reason": "seller_gap_selected_for_qualification",
           "dialogue_focus": "qualification",
           "selected_gap": "callbacks",
           "callback_semantic": "callback_workflow_gap",
-          "candidate_response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?"
+          "candidate_response": "For callbacks, the issue is speed to lead: each demo request has an owner and reminder before it waits. Would a short workflow review help check missed reminders?"
         },
         "memory": {
           "schema_version": 1,
@@ -262,26 +262,26 @@
           "last_response_hashes": [
             "c4f25e2c6ac64318",
             "c8bbbccede01d007",
-            "3574be084ff39cb6",
+            "975bcb9157a5e4bb",
             "0b20f226d705c0bd",
-            "72eb46797e26ac1a"
+            "6fbf63fc586d9ce9"
           ],
           "last_response_signatures": [
             "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:c8bbbccede01d007",
-            "routing_workflow:3574be084ff39cb6",
+            "safe_next_step:975bcb9157a5e4bb",
             "diagnostic_question:0b20f226d705c0bd",
-            "general:7c9191fe493c5356:72eb46797e26ac1a"
+            "safe_next_step:6fbf63fc586d9ce9"
           ],
           "recent_response_subjects": [
             "opening_permission",
             "diagnostic_question",
-            "routing_workflow",
+            "safe_next_step",
             "diagnostic_question",
-            "general:7c9191fe493c5356"
+            "safe_next_step"
           ],
-          "candidate_response_subject": "general:7c9191fe493c5356",
-          "candidate_response_signature": "general:7c9191fe493c5356:72eb46797e26ac1a",
+          "candidate_response_subject": "safe_next_step",
+          "candidate_response_signature": "safe_next_step:6fbf63fc586d9ce9",
           "last_customer_intent": "callback_workflow_gap",
           "last_sales_progression_step": "value_mapping",
           "appointment_close_ready": false,
@@ -293,12 +293,35 @@
       {
         "turn": 6,
         "transcript": "growth what do you mean by that",
-        "response": "I meant: an inbound demo request needs one clear person for the next reply. Can those requests sit waiting?",
+        "response": "Sorry, I should have explained that. Growth is the RouteSignal setup for teams that need follow-up reminders and handoff review around inbound demo requests. The practical question is whether missed callbacks are worth a short workflow review.",
         "continuity": {
           "applied": true,
-          "reason": "previous_question_clarified",
+          "reason": "plain_qualification_term_clarified",
+          "action_id": "explain_term",
+          "pragmatic_continuity_reason": "pragmatic_term_explained",
           "dialogue_focus": "qualification",
-          "candidate_response": "I meant: an inbound demo request needs one clear person for the next reply. Can those requests sit waiting?"
+          "selected_gap": null,
+          "candidate_response": "Sorry, I should have explained that. Growth is the RouteSignal setup for teams that need follow-up reminders and handoff review around inbound demo requests. The practical question is whether missed callbacks are worth a short workflow review.",
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "term_meaning_question",
+            "applied": true,
+            "target_action": "explain_term",
+            "continuity_reason": "pragmatic_term_explained",
+            "legacy_reason": null,
+            "confidence": 0.93,
+            "dialogue_focus": "qualification",
+            "selected_gap": null,
+            "previous_question": "For callbacks, the issue is speed to lead: each demo request has an owner and reminder before it waits. Would a short workflow review help check missed reminders?",
+            "previous_question_type": "workflow_review_next_step",
+            "dialogue_reasoning_act": "previous_question_clarification",
+            "response_strategy": "clarify_prior_question",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          }
         },
         "memory": {
           "schema_version": 1,
@@ -306,14 +329,14 @@
           "active_topic": "qualification",
           "selected_gap": "callbacks",
           "callback_semantic": null,
-          "last_agent_question_type": "sales_progression_question",
-          "last_active_agent_question_type": "sales_progression_question",
-          "last_agent_question_hash": "72eb46797e26ac1a",
+          "last_agent_question_type": "none",
+          "last_active_agent_question_type": "workflow_review_next_step",
+          "last_agent_question_hash": "6fbf63fc586d9ce9",
           "asked_question_type_counts": {
             "permission_check": 1,
             "gap_diagnostic": 2,
             "workflow_review_next_step": 2,
-            "sales_progression_question": 1
+            "none": 1
           },
           "answered_topics": [
             "callbacks",
@@ -325,29 +348,29 @@
           "last_response_hashes": [
             "c4f25e2c6ac64318",
             "c8bbbccede01d007",
-            "3574be084ff39cb6",
+            "975bcb9157a5e4bb",
             "0b20f226d705c0bd",
-            "72eb46797e26ac1a",
-            "e708ba871374b953"
+            "6fbf63fc586d9ce9",
+            "931914a904b3ab87"
           ],
           "last_response_signatures": [
             "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:c8bbbccede01d007",
-            "routing_workflow:3574be084ff39cb6",
+            "safe_next_step:975bcb9157a5e4bb",
             "diagnostic_question:0b20f226d705c0bd",
-            "general:7c9191fe493c5356:72eb46797e26ac1a",
-            "general:ace201fe95ce9e10:e708ba871374b953"
+            "safe_next_step:6fbf63fc586d9ce9",
+            "plan_boundary:931914a904b3ab87"
           ],
           "recent_response_subjects": [
             "opening_permission",
             "diagnostic_question",
-            "routing_workflow",
+            "safe_next_step",
             "diagnostic_question",
-            "general:7c9191fe493c5356",
-            "general:ace201fe95ce9e10"
+            "safe_next_step",
+            "plan_boundary"
           ],
-          "candidate_response_subject": "general:ace201fe95ce9e10",
-          "candidate_response_signature": "general:ace201fe95ce9e10:e708ba871374b953",
+          "candidate_response_subject": "plan_boundary",
+          "candidate_response_signature": "plan_boundary:931914a904b3ab87",
           "last_customer_intent": "clarify_previous_question",
           "last_sales_progression_step": "value_mapping",
           "appointment_close_ready": false,
@@ -359,13 +382,35 @@
       {
         "turn": 7,
         "transcript": "they can but they should not",
-        "response": "Then the next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
+        "response": "That is exactly what RouteSignal is meant to help with: demo leads getting assigned, reminded, and followed up. The next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
         "continuity": {
           "applied": true,
           "reason": "appointment_time_requested",
+          "action_id": "request_appointment_time",
+          "pragmatic_continuity_reason": "pragmatic_pain_to_appointment",
           "dialogue_focus": "timing",
           "selected_gap": "callbacks",
-          "candidate_response": "Then the next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?"
+          "candidate_response": "That is exactly what RouteSignal is meant to help with: demo leads getting assigned, reminded, and followed up. The next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "pain_statement",
+            "applied": true,
+            "target_action": "request_appointment_time",
+            "continuity_reason": "pragmatic_pain_to_appointment",
+            "legacy_reason": null,
+            "confidence": 0.94,
+            "dialogue_focus": "timing",
+            "selected_gap": "callbacks",
+            "previous_question": "For callbacks, the issue is speed to lead: each demo request has an owner and reminder before it waits. Would a short workflow review help check missed reminders?",
+            "previous_question_type": "none",
+            "dialogue_reasoning_act": "unknown",
+            "response_strategy": "refocus_to_sales_call",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          }
         },
         "memory": {
           "schema_version": 1,
@@ -375,12 +420,12 @@
           "callback_semantic": null,
           "last_agent_question_type": "appointment_time",
           "last_active_agent_question_type": "appointment_time",
-          "last_agent_question_hash": "e708ba871374b953",
+          "last_agent_question_hash": "6fbf63fc586d9ce9",
           "asked_question_type_counts": {
             "permission_check": 1,
             "gap_diagnostic": 2,
             "workflow_review_next_step": 2,
-            "sales_progression_question": 1,
+            "none": 1,
             "appointment_time": 1
           },
           "answered_topics": [
@@ -394,32 +439,32 @@
           "last_response_hashes": [
             "c4f25e2c6ac64318",
             "c8bbbccede01d007",
-            "3574be084ff39cb6",
+            "975bcb9157a5e4bb",
             "0b20f226d705c0bd",
-            "72eb46797e26ac1a",
-            "e708ba871374b953",
-            "b654627bc2abf5ac"
+            "6fbf63fc586d9ce9",
+            "931914a904b3ab87",
+            "812aa442854b2f26"
           ],
           "last_response_signatures": [
             "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:c8bbbccede01d007",
-            "routing_workflow:3574be084ff39cb6",
+            "safe_next_step:975bcb9157a5e4bb",
             "diagnostic_question:0b20f226d705c0bd",
-            "general:7c9191fe493c5356:72eb46797e26ac1a",
-            "general:ace201fe95ce9e10:e708ba871374b953",
-            "callback_workflow:b654627bc2abf5ac"
+            "safe_next_step:6fbf63fc586d9ce9",
+            "plan_boundary:931914a904b3ab87",
+            "callback_workflow:812aa442854b2f26"
           ],
           "recent_response_subjects": [
             "opening_permission",
             "diagnostic_question",
-            "routing_workflow",
+            "safe_next_step",
             "diagnostic_question",
-            "general:7c9191fe493c5356",
-            "general:ace201fe95ce9e10",
+            "safe_next_step",
+            "plan_boundary",
             "callback_workflow"
           ],
           "candidate_response_subject": "callback_workflow",
-          "candidate_response_signature": "callback_workflow:b654627bc2abf5ac",
+          "candidate_response_signature": "callback_workflow:812aa442854b2f26",
           "last_customer_intent": "topic:timing",
           "last_sales_progression_step": "safe_next_step",
           "appointment_close_ready": true,
@@ -431,13 +476,35 @@
       {
         "turn": 8,
         "transcript": "yeah it would help",
-        "response": "Yes. The next step is still a short workflow review on missed callback reminders with someone from Northstar. What time works for a quick call?",
+        "response": "Yes. Someone from Northstar would check missed callback reminders against your follow-up flow in a short workflow review. What time works for a quick call?",
         "continuity": {
           "applied": true,
           "reason": "appointment_time_requested",
+          "action_id": "request_appointment_time",
+          "pragmatic_continuity_reason": "pragmatic_pain_to_appointment",
           "dialogue_focus": "timing",
           "selected_gap": "callbacks",
-          "candidate_response": "Yes. The next step is still a short workflow review on missed callback reminders with someone from Northstar. What time works for a quick call?"
+          "candidate_response": "Yes. Someone from Northstar would check missed callback reminders against your follow-up flow in a short workflow review. What time works for a quick call?",
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "pain_statement",
+            "applied": true,
+            "target_action": "request_appointment_time",
+            "continuity_reason": "pragmatic_pain_to_appointment",
+            "legacy_reason": null,
+            "confidence": 0.94,
+            "dialogue_focus": "timing",
+            "selected_gap": "callbacks",
+            "previous_question": "That is exactly what RouteSignal is meant to help with: demo leads getting assigned, reminded, and followed up. The next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
+            "previous_question_type": "appointment_time",
+            "dialogue_reasoning_act": "unknown",
+            "response_strategy": "refocus_to_sales_call",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          }
         },
         "memory": {
           "schema_version": 1,
@@ -447,12 +514,12 @@
           "callback_semantic": null,
           "last_agent_question_type": "appointment_time",
           "last_active_agent_question_type": "appointment_time",
-          "last_agent_question_hash": "b654627bc2abf5ac",
+          "last_agent_question_hash": "812aa442854b2f26",
           "asked_question_type_counts": {
             "permission_check": 1,
             "gap_diagnostic": 2,
             "workflow_review_next_step": 2,
-            "sales_progression_question": 1,
+            "none": 1,
             "appointment_time": 2
           },
           "answered_topics": [
@@ -466,35 +533,35 @@
           "last_response_hashes": [
             "c4f25e2c6ac64318",
             "c8bbbccede01d007",
-            "3574be084ff39cb6",
+            "975bcb9157a5e4bb",
             "0b20f226d705c0bd",
-            "72eb46797e26ac1a",
-            "e708ba871374b953",
-            "b654627bc2abf5ac",
-            "14241eb17e74b5a7"
+            "6fbf63fc586d9ce9",
+            "931914a904b3ab87",
+            "812aa442854b2f26",
+            "89628c0c18f31f50"
           ],
           "last_response_signatures": [
             "opening_permission:c4f25e2c6ac64318",
             "diagnostic_question:c8bbbccede01d007",
-            "routing_workflow:3574be084ff39cb6",
+            "safe_next_step:975bcb9157a5e4bb",
             "diagnostic_question:0b20f226d705c0bd",
-            "general:7c9191fe493c5356:72eb46797e26ac1a",
-            "general:ace201fe95ce9e10:e708ba871374b953",
-            "callback_workflow:b654627bc2abf5ac",
-            "callback_workflow:14241eb17e74b5a7"
+            "safe_next_step:6fbf63fc586d9ce9",
+            "plan_boundary:931914a904b3ab87",
+            "callback_workflow:812aa442854b2f26",
+            "callback_workflow:89628c0c18f31f50"
           ],
           "recent_response_subjects": [
             "opening_permission",
             "diagnostic_question",
-            "routing_workflow",
+            "safe_next_step",
             "diagnostic_question",
-            "general:7c9191fe493c5356",
-            "general:ace201fe95ce9e10",
+            "safe_next_step",
+            "plan_boundary",
             "callback_workflow",
             "callback_workflow"
           ],
           "candidate_response_subject": "callback_workflow",
-          "candidate_response_signature": "callback_workflow:14241eb17e74b5a7",
+          "candidate_response_signature": "callback_workflow:89628c0c18f31f50",
           "last_customer_intent": "affirm_next_step",
           "last_sales_progression_step": "safe_next_step",
           "appointment_close_ready": true,
@@ -530,49 +597,115 @@
       {
         "turn": 3,
         "transcript": "I guess assigning is one of the hard parts",
-        "response": "Then priority routing is the value point: each inbound request gets a clear owner faster. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
+        "response": "Then RouteSignal helps each demo lead get a clear next owner faster. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
         "continuity": {
           "applied": true,
           "reason": "seller_gap_selected_for_qualification",
           "dialogue_focus": "qualification",
           "selected_gap": "routing",
-          "candidate_response": "Then priority routing is the value point: each inbound request gets a clear owner faster. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?"
+          "candidate_response": "Then RouteSignal helps each demo lead get a clear next owner faster. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?"
         }
       },
       {
         "turn": 4,
         "transcript": "they can but they should not",
-        "response": "Then the next step is a short workflow review with someone from Northstar. They would check owner routing against your actual follow-up flow. What time works for a quick call?",
+        "response": "That is exactly what RouteSignal is meant to help with: demo leads getting assigned, reminded, and followed up. The next step is a short workflow review with someone from Northstar. They would check lead assignment against your actual follow-up flow. What time works for a quick call?",
         "continuity": {
           "applied": true,
           "reason": "appointment_time_requested",
+          "action_id": "request_appointment_time",
+          "pragmatic_continuity_reason": "pragmatic_pain_to_appointment",
           "dialogue_focus": "timing",
           "selected_gap": "routing",
-          "candidate_response": "Then the next step is a short workflow review with someone from Northstar. They would check owner routing against your actual follow-up flow. What time works for a quick call?"
+          "candidate_response": "That is exactly what RouteSignal is meant to help with: demo leads getting assigned, reminded, and followed up. The next step is a short workflow review with someone from Northstar. They would check lead assignment against your actual follow-up flow. What time works for a quick call?",
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "pain_statement",
+            "applied": true,
+            "target_action": "request_appointment_time",
+            "continuity_reason": "pragmatic_pain_to_appointment",
+            "legacy_reason": null,
+            "confidence": 0.94,
+            "dialogue_focus": "timing",
+            "selected_gap": "routing",
+            "previous_question": "Then RouteSignal helps each demo lead get a clear next owner faster. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
+            "previous_question_type": "workflow_review_next_step",
+            "dialogue_reasoning_act": "unknown",
+            "response_strategy": "refocus_to_sales_call",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          }
         }
       },
       {
         "turn": 5,
         "transcript": "yes it would help",
-        "response": "Yes. The next step is still a short workflow review on owner routing with someone from Northstar. What time works for a quick call?",
+        "response": "Yes. Someone from Northstar would check lead assignment against your follow-up flow in a short workflow review. What time works for a quick call?",
         "continuity": {
           "applied": true,
           "reason": "appointment_time_requested",
+          "action_id": "request_appointment_time",
+          "pragmatic_continuity_reason": "pragmatic_pain_to_appointment",
           "dialogue_focus": "timing",
           "selected_gap": "routing",
-          "candidate_response": "Yes. The next step is still a short workflow review on owner routing with someone from Northstar. What time works for a quick call?"
+          "candidate_response": "Yes. Someone from Northstar would check lead assignment against your follow-up flow in a short workflow review. What time works for a quick call?",
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "pain_statement",
+            "applied": true,
+            "target_action": "request_appointment_time",
+            "continuity_reason": "pragmatic_pain_to_appointment",
+            "legacy_reason": null,
+            "confidence": 0.94,
+            "dialogue_focus": "timing",
+            "selected_gap": "routing",
+            "previous_question": "That is exactly what RouteSignal is meant to help with: demo leads getting assigned, reminded, and followed up. The next step is a short workflow review with someone from Northstar. They would check lead assignment against your actual follow-up flow. What time works for a quick call?",
+            "previous_question_type": "appointment_time",
+            "dialogue_reasoning_act": "unknown",
+            "response_strategy": "refocus_to_sales_call",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          }
         }
       },
       {
         "turn": 6,
         "transcript": "yes",
-        "response": "I can set up that short workflow review on owner routing with someone from Northstar, but I need a time. What time works for the quick call?",
+        "response": "I can set up that short workflow review on lead assignment with someone from Northstar, but I need a time. What time works for the quick call?",
         "continuity": {
           "applied": true,
           "reason": "appointment_time_requested",
+          "action_id": "request_appointment_time",
+          "pragmatic_continuity_reason": "pragmatic_pain_to_appointment",
           "dialogue_focus": "timing",
           "selected_gap": "routing",
-          "candidate_response": "I can set up that short workflow review on owner routing with someone from Northstar, but I need a time. What time works for the quick call?"
+          "candidate_response": "I can set up that short workflow review on lead assignment with someone from Northstar, but I need a time. What time works for the quick call?",
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "pain_statement",
+            "applied": true,
+            "target_action": "request_appointment_time",
+            "continuity_reason": "pragmatic_pain_to_appointment",
+            "legacy_reason": null,
+            "confidence": 0.94,
+            "dialogue_focus": "timing",
+            "selected_gap": "routing",
+            "previous_question": "Yes. Someone from Northstar would check lead assignment against your follow-up flow in a short workflow review. What time works for a quick call?",
+            "previous_question_type": "appointment_time",
+            "dialogue_reasoning_act": "low_information_acknowledgement",
+            "response_strategy": "proactive_guided_selling",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          }
         }
       }
     ],
@@ -595,7 +728,7 @@
       }
     },
     "appointment_time_confirmation": {
-      "appointment_response": "Yes. The next step is still a short workflow review on missed callback reminders with someone from Northstar. What time works for a quick call?",
+      "appointment_response": "Yes. Someone from Northstar would check missed callback reminders against your follow-up flow in a short workflow review. What time works for a quick call?",
       "time_response": "Confirmed. I will note that time for the workflow review. Goodbye.",
       "time_call_control": "schedule-and-end",
       "time_continuity": {

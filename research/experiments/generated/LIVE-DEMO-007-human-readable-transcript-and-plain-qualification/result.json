@@ -53,8 +53,31 @@
         "continuity": {
           "applied": true,
           "reason": "plain_qualification_term_clarified",
+          "action_id": "explain_term",
+          "pragmatic_continuity_reason": "pragmatic_term_explained",
           "dialogue_focus": "qualification",
-          "candidate_response": "A shared inbox means one place where several people see the same lead emails or demo requests. The risk is simple: two people assume someone else will reply. Is that close to how your team handles new requests?"
+          "selected_gap": null,
+          "candidate_response": "A shared inbox means one place where several people see the same lead emails or demo requests. The risk is simple: two people assume someone else will reply. Is that close to how your team handles new requests?",
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "term_meaning_question",
+            "applied": true,
+            "target_action": "explain_term",
+            "continuity_reason": "pragmatic_term_explained",
+            "legacy_reason": null,
+            "confidence": 0.93,
+            "dialogue_focus": "qualification",
+            "selected_gap": null,
+            "previous_question": "No problem. I mean inbound leads where someone asks for a demo or more information. The simple check is whether one person is clearly responsible for the next reply. Does that ever get fuzzy?",
+            "previous_question_type": "sales_progression_question",
+            "dialogue_reasoning_act": "previous_question_clarification",
+            "response_strategy": "clarify_prior_question",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          }
         }
       },
       {

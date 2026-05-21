@@ -9,15 +9,15 @@
       {
         "turn": 8,
         "transcript": "yeah I guess",
-        "response": "Then the next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
-        "tts_input_text": "Then the next step is a short workflow review with someone from Northstar, so, they would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
+        "response": "Yes. Someone from Northstar would check lead assignment against your follow-up flow in a short workflow review. What time works for a quick call?",
+        "tts_input_text": "Yes, so, someone from Northstar would check lead assignment against your follow-up flow in a short workflow review. <break time=\"0.227s\" /> What time works for a quick call?",
         "provider_calls_made": false
       },
       {
         "turn": 9,
         "transcript": "I don't know would it",
-        "response": "It would help only if missed callback reminders are really slowing follow-up. Someone from Northstar would check that in a short workflow review against your actual flow. If that is worth testing, what time works for a quick call?",
-        "tts_input_text": "It would help only if missed callback reminders are really slowing follow-up, so, someone from Northstar would check that in a short workflow review against your actual flow. If that's worth testing, what time works for a quick call?",
+        "response": "It would help only if lead assignment are really slowing follow-up. Someone from Northstar would check that in a short workflow review against your actual flow. If that is worth testing, what time works for a quick call?",
+        "tts_input_text": "It would help only if lead assignment are really slowing follow-up, well, someone from Northstar would check that in a short workflow review against your actual flow. If that's worth testing, what time works for a quick call?",
         "provider_calls_made": false
       }
     ],
@@ -35,33 +35,9 @@
         "bad_break": false
       },
       {
-        "turn": 4,
-        "response": "That breaks when ownership changes. RouteSignal keeps the lead, callback, reminder, and handoff status in one workflow. Where does it break first today?",
-        "tts_input_text": "That breaks when ownership changes. <break time=\"0.234s\" /> Um, RouteSignal keeps the lead, callback, reminder, and handoff status in one workflow. Where does it break first today?",
-        "bad_break": false
-      },
-      {
-        "turn": 6,
-        "response": "For callbacks, the business case is speed to lead: each demo request has an owner and a reminder before it waits. I would keep the first review to missed reminders. Would a short check be useful for that gap?",
-        "tts_input_text": "For callbacks, <break time=\"0.24s\" /> the business case is speed to lead: each demo request has an owner and a reminder before it waits, well, I'd keep the first review to missed reminders. Would a short check be useful for that gap?",
-        "bad_break": false
-      },
-      {
         "turn": 7,
-        "response": "If callback reminders are clean today, stop here. If they slip, Growth is worth reviewing. I would keep the next step focused on missed reminders. Would a short workflow review be useful for that gap?",
-        "tts_input_text": "If callback reminders are clean today, stop here. <break time=\"0.199s\" /> Um, if they slip, Growth is worth reviewing. I'd keep the next step focused on missed reminders. Would a short workflow review be useful for that gap?",
-        "bad_break": false
-      },
-      {
-        "turn": 8,
-        "response": "Then the next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
-        "tts_input_text": "Then the next step is a short workflow review with someone from Northstar, so, they would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
-        "bad_break": false
-      },
-      {
-        "turn": 9,
-        "response": "It would help only if missed callback reminders are really slowing follow-up. Someone from Northstar would check that in a short workflow review against your actual flow. If that is worth testing, what time works for a quick call?",
-        "tts_input_text": "It would help only if missed callback reminders are really slowing follow-up, so, someone from Northstar would check that in a short workflow review against your actual flow. If that's worth testing, what time works for a quick call?",
+        "response": "For callbacks, the issue is speed to lead: each demo request has an owner and reminder before it waits. Would a short workflow review help check missed reminders?",
+        "tts_input_text": "For callbacks, <break time=\"0.225s\" /> the issue is speed to lead: each demo request has an owner and reminder before it waits, well, would a short workflow review help check missed reminders?",
         "bad_break": false
       }
     ],

@@ -1,0 +1,133 @@
+{
+  "checkpoint_id": "LIVE-DEMO-013-reasoner-route-guard",
+  "passed": true,
+  "failure_count": 0,
+  "failures": [],
+  "provider_calls_made": false,
+  "local_llm_calls_made": false,
+  "evidence": {
+    "crm_replacement": {
+      "response": "No. RouteSignal CRM is not meant to replace a CRM that already works. It is worth reviewing only if demo leads still miss assignment, reminders, or follow-up around the CRM. Is that the gap you are checking?",
+      "call_control": "continue-call",
+      "continuity": {
+        "applied": true,
+        "reason": "structured_reasoner_crm_replacement_answered",
+        "action_id": "answer_crm_boundary_continue",
+        "pragmatic_continuity_reason": "pragmatic_crm_boundary_answered",
+        "dialogue_focus": "qualification",
+        "selected_gap": null,
+        "candidate_response": "No. RouteSignal CRM is not meant to replace a CRM that already works. It is worth reviewing only if demo leads still miss assignment, reminders, or follow-up around the CRM. Is that the gap you are checking?",
+        "pragmatic_move": {
+          "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+          "schema_version": 1,
+          "move_id": "crm_replacement_question",
+          "applied": true,
+          "target_action": "answer_crm_boundary_continue",
+          "continuity_reason": "pragmatic_crm_boundary_answered",
+          "legacy_reason": null,
+          "confidence": 0.95,
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "previous_question": "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied. Which part is harder today: seeing it, assigning the reply, or remembering the callback?",
+          "previous_question_type": "gap_diagnostic",
+          "dialogue_reasoning_act": "integration_question",
+          "response_strategy": "guarded_boundary",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false
+        }
+      },
+      "reasoner_route": {
+        "buyer_intent": "verify_integration",
+        "dialogue_act": "integration_question",
+        "resolved_topic": "integration",
+        "response_strategy": "guarded_boundary",
+        "safety_boundary": "integration_claim_boundary",
+        "sales_stage": "boundary"
+      }
+    },
+    "who_is_harder": {
+      "response": "I meant: an inbound demo request needs one clear owner for the next reply. Can owner, callback, or handoff steps sit waiting?",
+      "call_control": "continue-call",
+      "continuity": {
+        "applied": true,
+        "reason": "previous_question_clarified",
+        "action_id": "clarify_previous_question",
+        "pragmatic_continuity_reason": "pragmatic_previous_question_clarified",
+        "dialogue_focus": "qualification",
+        "selected_gap": null,
+        "candidate_response": "I meant: an inbound demo request needs one clear owner for the next reply. Can owner, callback, or handoff steps sit waiting?",
+        "pragmatic_move": {
+          "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+          "schema_version": 1,
+          "move_id": "previous_question_clarification",
+          "applied": true,
+          "target_action": "clarify_previous_question",
+          "continuity_reason": "pragmatic_previous_question_clarified",
+          "legacy_reason": null,
+          "confidence": 0.93,
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "previous_question": "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied. Which part is harder today: seeing it, assigning the reply, or remembering the callback?",
+          "previous_question_type": "gap_diagnostic",
+          "dialogue_reasoning_act": "previous_question_clarification",
+          "response_strategy": "clarify_prior_question",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false
+        }
+      },
+      "reasoner_route": {
+        "buyer_intent": "clarify_prior_question",
+        "dialogue_act": "previous_question_clarification",
+        "resolved_topic": "qualification",
+        "response_strategy": "clarify_prior_question",
+        "safety_boundary": "none",
+        "sales_stage": "repair"
+      }
+    },
+    "not_familiar_after_clarification": {
+      "response": "No problem. The quick check is simpler: do demo follow-ups ever miss an owner, callback reminder, or handoff?",
+      "call_control": "continue-call",
+      "continuity": {
+        "applied": true,
+        "reason": "uncertain_gap_simplified",
+        "action_id": "simplify_previous_question",
+        "pragmatic_continuity_reason": "pragmatic_question_simplified",
+        "dialogue_focus": "qualification",
+        "selected_gap": null,
+        "candidate_response": "No problem. The quick check is simpler: do demo follow-ups ever miss an owner, callback reminder, or handoff?",
+        "pragmatic_move": {
+          "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+          "schema_version": 1,
+          "move_id": "term_or_context_unfamiliarity",
+          "applied": true,
+          "target_action": "simplify_previous_question",
+          "continuity_reason": "pragmatic_question_simplified",
+          "legacy_reason": null,
+          "confidence": 0.89,
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "previous_question": "I meant: an inbound demo request needs one clear owner for the next reply. Can owner, callback, or handoff steps sit waiting?",
+          "previous_question_type": "sales_progression_question",
+          "dialogue_reasoning_act": "unknown",
+          "response_strategy": "refocus_to_sales_call",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false
+        }
+      },
+      "reasoner_route": {
+        "buyer_intent": "off_topic_or_unclear",
+        "dialogue_act": "unknown",
+        "resolved_topic": "unknown",
+        "response_strategy": "refocus_to_sales_call",
+        "safety_boundary": "none",
+        "sales_stage": "repair"
+      }
+    }
+  }
+}
