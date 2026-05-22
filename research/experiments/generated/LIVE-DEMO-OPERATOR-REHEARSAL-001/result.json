@@ -1,0 +1,949 @@
+{
+  "checkpoint_id": "LIVE-DEMO-OPERATOR-REHEARSAL-001",
+  "creates_calendar_event": false,
+  "dry_run_start_command": "python scripts\\run_live_demo_001_agent_voice_call.py --force-key-missing",
+  "evidence": {
+    "b2b_rehearsal": [
+      {
+        "audio_url": null,
+        "call_control": "continue-call",
+        "campaign_config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+        "campaign_id": "synthetic-b2b-saas-operations",
+        "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
+        "campaign_selector_mode": "generic_config",
+        "cleared_gaps": [],
+        "confirmed_gaps": [],
+        "creates_calendar_event": false,
+        "final_response": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+        "lead_followup_state": {},
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "mode": "dry-run",
+        "opens_prod_102": false,
+        "playbook_id": "synthetic-b2b-saas-operations-playbook",
+        "provider_calls_made": false,
+        "selected_campaign_config": {
+          "appointment_target": "operations fit review",
+          "campaign_id": "synthetic-b2b-saas-operations",
+          "config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+          "human_followup_owner": "implementation specialist",
+          "live_tts_enabled": false,
+          "mode": "generic config dry-run",
+          "product_or_offer_name": "Operations Workflow Review",
+          "route_signal_fallback_used": false,
+          "vertical_id": "b2b_saas"
+        },
+        "semantic": "no_contextual_semantic",
+        "sends_email": false,
+        "target_gap": null,
+        "transcript": "__agent_open__",
+        "tts_input_text": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+        "vertical_id": "b2b_saas",
+        "writes_crm": false
+      },
+      {
+        "audio_url": null,
+        "call_control": "continue-call",
+        "campaign_config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+        "campaign_id": "synthetic-b2b-saas-operations",
+        "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
+        "campaign_selector_mode": "generic_config",
+        "cleared_gaps": [],
+        "confirmed_gaps": [],
+        "creates_calendar_event": false,
+        "final_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+        "lead_followup_state": {},
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "mode": "dry-run",
+        "opens_prod_102": false,
+        "playbook_id": "synthetic-b2b-saas-operations-playbook",
+        "provider_calls_made": false,
+        "selected_campaign_config": {
+          "appointment_target": "operations fit review",
+          "campaign_id": "synthetic-b2b-saas-operations",
+          "config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+          "human_followup_owner": "implementation specialist",
+          "live_tts_enabled": false,
+          "mode": "generic config dry-run",
+          "product_or_offer_name": "Operations Workflow Review",
+          "route_signal_fallback_used": false,
+          "vertical_id": "b2b_saas"
+        },
+        "semantic": "permission_acknowledgement",
+        "sends_email": false,
+        "target_gap": null,
+        "transcript": "yeah sure",
+        "tts_input_text": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+        "vertical_id": "b2b_saas",
+        "writes_crm": false
+      },
+      {
+        "audio_url": null,
+        "call_control": "continue-call",
+        "campaign_config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+        "campaign_id": "synthetic-b2b-saas-operations",
+        "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
+        "campaign_selector_mode": "generic_config",
+        "cleared_gaps": [],
+        "confirmed_gaps": [
+          "manual_work"
+        ],
+        "creates_calendar_event": false,
+        "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+        "lead_followup_state": {},
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "mode": "dry-run",
+        "opens_prod_102": false,
+        "playbook_id": "synthetic-b2b-saas-operations-playbook",
+        "provider_calls_made": false,
+        "selected_campaign_config": {
+          "appointment_target": "operations fit review",
+          "campaign_id": "synthetic-b2b-saas-operations",
+          "config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+          "human_followup_owner": "implementation specialist",
+          "live_tts_enabled": false,
+          "mode": "generic config dry-run",
+          "product_or_offer_name": "Operations Workflow Review",
+          "route_signal_fallback_used": false,
+          "vertical_id": "b2b_saas"
+        },
+        "semantic": "pain_confirmed",
+        "sends_email": false,
+        "target_gap": "manual_work",
+        "transcript": "manual work is a problem",
+        "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+        "vertical_id": "b2b_saas",
+        "writes_crm": false
+      },
+      {
+        "audio_url": null,
+        "call_control": "schedule-and-end",
+        "campaign_config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+        "campaign_id": "synthetic-b2b-saas-operations",
+        "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
+        "campaign_selector_mode": "generic_config",
+        "cleared_gaps": [],
+        "confirmed_gaps": [
+          "manual_work"
+        ],
+        "creates_calendar_event": false,
+        "final_response": "Confirmed. I will note that time for the operations fit review. Goodbye.",
+        "lead_followup_state": {
+          "appointment": {
+            "confirmation_text": "workflow review time captured",
+            "confirmed": true,
+            "type": "workflow_review"
+          },
+          "callback": {
+            "needs_clarification": false,
+            "normalized": {
+              "confidence": 0.9,
+              "date_text": "tomorrow",
+              "day_text": null,
+              "meridiem": "unknown",
+              "relative_date": "tomorrow",
+              "time_text": "3"
+            },
+            "raw_text_redacted": "tomorrow at 3 works"
+          },
+          "capture_status": "callback_time_captured",
+          "contact": {
+            "email_hash": null,
+            "email_redacted": null,
+            "email_source": "none",
+            "email_valid": false,
+            "raw_email_stored_in_public_evidence": false
+          },
+          "lead_status": "open_workflow_review",
+          "requested_summary_type": "workflow_review",
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "stores_private_contact_in_public_evidence": false,
+            "writes_crm": false
+          },
+          "schema_version": 1
+        },
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "mode": "dry-run",
+        "opens_prod_102": false,
+        "playbook_id": "synthetic-b2b-saas-operations-playbook",
+        "provider_calls_made": false,
+        "selected_campaign_config": {
+          "appointment_target": "operations fit review",
+          "campaign_id": "synthetic-b2b-saas-operations",
+          "config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+          "human_followup_owner": "implementation specialist",
+          "live_tts_enabled": false,
+          "mode": "generic config dry-run",
+          "product_or_offer_name": "Operations Workflow Review",
+          "route_signal_fallback_used": false,
+          "vertical_id": "b2b_saas"
+        },
+        "semantic": "appointment_time_given",
+        "sends_email": false,
+        "target_gap": "manual_work",
+        "transcript": "tomorrow at 3 works",
+        "tts_input_text": "Confirmed. I will note that time for the operations fit review. Goodbye.",
+        "vertical_id": "b2b_saas",
+        "writes_crm": false
+      }
+    ],
+    "campaigns_endpoint": {
+      "count": 8,
+      "status": 200
+    },
+    "html_metadata": {
+      "has_browser_fallback_voice": true,
+      "has_download_payload": true,
+      "has_generic_dry_run_warning": true,
+      "has_selector_metadata_panel": true,
+      "html_length": 51748,
+      "metadata_generic_campaign_count": 8
+    },
+    "insurance_rehearsal": [
+      {
+        "audio_url": null,
+        "call_control": "continue-call",
+        "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+        "campaign_id": "synthetic-insurance-review",
+        "campaign_playbook_id": "synthetic-insurance-review-playbook",
+        "campaign_selector_mode": "generic_config",
+        "cleared_gaps": [],
+        "confirmed_gaps": [],
+        "creates_calendar_event": false,
+        "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+        "lead_followup_state": {},
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "mode": "dry-run",
+        "opens_prod_102": false,
+        "playbook_id": "synthetic-insurance-review-playbook",
+        "provider_calls_made": false,
+        "selected_campaign_config": {
+          "appointment_target": "licensed coverage review",
+          "campaign_id": "synthetic-insurance-review",
+          "config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+          "human_followup_owner": "licensed insurance specialist",
+          "live_tts_enabled": false,
+          "mode": "generic config dry-run",
+          "product_or_offer_name": "Policy Review Call",
+          "route_signal_fallback_used": false,
+          "vertical_id": "insurance"
+        },
+        "semantic": "no_contextual_semantic",
+        "sends_email": false,
+        "target_gap": null,
+        "transcript": "__agent_open__",
+        "tts_input_text": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+        "vertical_id": "insurance",
+        "writes_crm": false
+      },
+      {
+        "audio_url": null,
+        "call_control": "continue-call",
+        "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+        "campaign_id": "synthetic-insurance-review",
+        "campaign_playbook_id": "synthetic-insurance-review-playbook",
+        "campaign_selector_mode": "generic_config",
+        "cleared_gaps": [],
+        "confirmed_gaps": [],
+        "creates_calendar_event": false,
+        "final_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
+        "lead_followup_state": {},
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "mode": "dry-run",
+        "opens_prod_102": false,
+        "playbook_id": "synthetic-insurance-review-playbook",
+        "provider_calls_made": false,
+        "selected_campaign_config": {
+          "appointment_target": "licensed coverage review",
+          "campaign_id": "synthetic-insurance-review",
+          "config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+          "human_followup_owner": "licensed insurance specialist",
+          "live_tts_enabled": false,
+          "mode": "generic config dry-run",
+          "product_or_offer_name": "Policy Review Call",
+          "route_signal_fallback_used": false,
+          "vertical_id": "insurance"
+        },
+        "semantic": "permission_acknowledgement",
+        "sends_email": false,
+        "target_gap": null,
+        "transcript": "yeah sure",
+        "tts_input_text": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
+        "vertical_id": "insurance",
+        "writes_crm": false
+      },
+      {
+        "audio_url": null,
+        "call_control": "continue-call",
+        "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+        "campaign_id": "synthetic-insurance-review",
+        "campaign_playbook_id": "synthetic-insurance-review-playbook",
+        "campaign_selector_mode": "generic_config",
+        "cleared_gaps": [],
+        "confirmed_gaps": [
+          "premium_or_budget"
+        ],
+        "creates_calendar_event": false,
+        "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+        "lead_followup_state": {},
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "mode": "dry-run",
+        "opens_prod_102": false,
+        "playbook_id": "synthetic-insurance-review-playbook",
+        "provider_calls_made": false,
+        "selected_campaign_config": {
+          "appointment_target": "licensed coverage review",
+          "campaign_id": "synthetic-insurance-review",
+          "config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+          "human_followup_owner": "licensed insurance specialist",
+          "live_tts_enabled": false,
+          "mode": "generic config dry-run",
+          "product_or_offer_name": "Policy Review Call",
+          "route_signal_fallback_used": false,
+          "vertical_id": "insurance"
+        },
+        "semantic": "pain_confirmed",
+        "sends_email": false,
+        "target_gap": "premium_or_budget",
+        "transcript": "premium is a problem",
+        "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+        "vertical_id": "insurance",
+        "writes_crm": false
+      },
+      {
+        "audio_url": null,
+        "call_control": "schedule-and-end",
+        "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+        "campaign_id": "synthetic-insurance-review",
+        "campaign_playbook_id": "synthetic-insurance-review-playbook",
+        "campaign_selector_mode": "generic_config",
+        "cleared_gaps": [],
+        "confirmed_gaps": [
+          "premium_or_budget"
+        ],
+        "creates_calendar_event": false,
+        "final_response": "Confirmed. I will note that time for the licensed coverage review. Goodbye.",
+        "lead_followup_state": {
+          "appointment": {
+            "confirmation_text": "workflow review time captured",
+            "confirmed": true,
+            "type": "workflow_review"
+          },
+          "callback": {
+            "needs_clarification": false,
+            "normalized": {
+              "confidence": 0.9,
+              "date_text": "tomorrow",
+              "day_text": null,
+              "meridiem": "unknown",
+              "relative_date": "tomorrow",
+              "time_text": "3"
+            },
+            "raw_text_redacted": "tomorrow at 3 works"
+          },
+          "capture_status": "callback_time_captured",
+          "contact": {
+            "email_hash": null,
+            "email_redacted": null,
+            "email_source": "none",
+            "email_valid": false,
+            "raw_email_stored_in_public_evidence": false
+          },
+          "lead_status": "open_workflow_review",
+          "requested_summary_type": "workflow_review",
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "stores_private_contact_in_public_evidence": false,
+            "writes_crm": false
+          },
+          "schema_version": 1
+        },
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "mode": "dry-run",
+        "opens_prod_102": false,
+        "playbook_id": "synthetic-insurance-review-playbook",
+        "provider_calls_made": false,
+        "selected_campaign_config": {
+          "appointment_target": "licensed coverage review",
+          "campaign_id": "synthetic-insurance-review",
+          "config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+          "human_followup_owner": "licensed insurance specialist",
+          "live_tts_enabled": false,
+          "mode": "generic config dry-run",
+          "product_or_offer_name": "Policy Review Call",
+          "route_signal_fallback_used": false,
+          "vertical_id": "insurance"
+        },
+        "semantic": "appointment_time_given",
+        "sends_email": false,
+        "target_gap": "coverage_fit",
+        "transcript": "tomorrow at 3 works",
+        "tts_input_text": "Confirmed. I will note that time for the licensed coverage review. Goodbye.",
+        "vertical_id": "insurance",
+        "writes_crm": false
+      }
+    ],
+    "invalid_config_rehearsal": {
+      "payload": {
+        "audio_url": null,
+        "campaign_config_path": ".tmp/LIVE-DEMO-OPERATOR-REHEARSAL-001/invalid-configs/missing-diagnostic-gaps.json",
+        "campaign_selector_mode": "generic_config",
+        "creates_calendar_event": false,
+        "durable_provider_agent_created": false,
+        "error": "invalid generic campaign config selection",
+        "error_type": "CampaignConfigValidationError",
+        "live_tts": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "message": "invalid campaign config: missing required fields: ['diagnostic_gaps']; diagnostic_gaps: must be a populated object; core_diagnostic_gaps: unknown gaps ['coverage_fit', 'premium_or_budget', 'renewal_or_timing']; gap_order: unknown gaps ['coverage_fit', 'premium_or_budget', 'renewal_or_timing']",
+        "opens_prod_102": false,
+        "provider_agent_used": false,
+        "provider_calls_made": false,
+        "route_signal_fallback_used": false,
+        "selected_campaign_config": null,
+        "sends_email": false,
+        "voice_cloning_used": false,
+        "writes_crm": false
+      },
+      "status": 400
+    },
+    "operator_checklist": {
+      "exists": true,
+      "missing_fragments": [],
+      "path": "docs\\demo\\LIVE_DEMO_OPERATOR_REHEARSAL.md"
+    },
+    "routesignal_rehearsal": [
+      {
+        "audio_url": null,
+        "call_control": "continue-call",
+        "campaign_config_path": null,
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "campaign_playbook_id": null,
+        "campaign_selector_mode": "routesignal_live_demo",
+        "cleared_gaps": [],
+        "confirmed_gaps": [],
+        "creates_calendar_event": false,
+        "final_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+        "lead_followup_state": {},
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "mode": "dry-run",
+        "opens_prod_102": false,
+        "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+        "provider_calls_made": false,
+        "selected_campaign_config": null,
+        "semantic": "no_contextual_semantic",
+        "sends_email": false,
+        "target_gap": null,
+        "transcript": "__agent_open__",
+        "tts_input_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?",
+        "vertical_id": null,
+        "writes_crm": false
+      },
+      {
+        "audio_url": null,
+        "call_control": "continue-call",
+        "campaign_config_path": null,
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "campaign_playbook_id": null,
+        "campaign_selector_mode": "routesignal_live_demo",
+        "cleared_gaps": [],
+        "confirmed_gaps": [],
+        "creates_calendar_event": false,
+        "final_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "lead_followup_state": {},
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "mode": "dry-run",
+        "opens_prod_102": false,
+        "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+        "provider_calls_made": false,
+        "selected_campaign_config": null,
+        "semantic": "permission_acknowledgement",
+        "sends_email": false,
+        "target_gap": null,
+        "transcript": "yeah sure",
+        "tts_input_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "vertical_id": null,
+        "writes_crm": false
+      },
+      {
+        "audio_url": null,
+        "call_control": "continue-call",
+        "campaign_config_path": null,
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "campaign_playbook_id": null,
+        "campaign_selector_mode": "routesignal_live_demo",
+        "cleared_gaps": [
+          "callbacks"
+        ],
+        "confirmed_gaps": [],
+        "creates_calendar_event": false,
+        "final_response": "Got it, callbacks are clear. Should I check manual tracking or handoffs, or stop here?",
+        "lead_followup_state": {},
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "mode": "dry-run",
+        "opens_prod_102": false,
+        "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+        "provider_calls_made": false,
+        "selected_campaign_config": null,
+        "semantic": "current_gap_clear",
+        "sends_email": false,
+        "target_gap": "callbacks",
+        "transcript": "callbacks are fine",
+        "tts_input_text": "Got it, callbacks are clear, well, should I check manual tracking or handoffs, or stop here?",
+        "vertical_id": null,
+        "writes_crm": false
+      }
+    ],
+    "transcript_download_payloads": {
+      "b2b": {
+        "audio_stored": false,
+        "campaign_config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+        "campaign_id": null,
+        "customer_audio_uploaded_to_python_server": false,
+        "live_demo_id": "LIVE-DEMO-001",
+        "session_id": "operator-b2b",
+        "turns": [
+          {
+            "agent_response": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+            "call_control": "continue-call",
+            "campaign_selector": {
+              "campaign_config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+              "campaign_id": "synthetic-b2b-saas-operations",
+              "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
+              "campaign_selector_mode": "generic_config",
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "selected_campaign_config": {
+                "appointment_target": "operations fit review",
+                "campaign_id": "synthetic-b2b-saas-operations",
+                "config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+                "human_followup_owner": "implementation specialist",
+                "live_tts_enabled": false,
+                "mode": "generic config dry-run",
+                "product_or_offer_name": "Operations Workflow Review",
+                "route_signal_fallback_used": false,
+                "vertical_id": "b2b_saas"
+              },
+              "vertical_id": "b2b_saas"
+            },
+            "customer_transcript": "(agent opening)",
+            "input_type": "agent-open",
+            "provider_boundary": {
+              "audio_url": null,
+              "creates_calendar_event": false,
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "opens_prod_102": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "writes_crm": false
+            },
+            "turn_index": 1
+          },
+          {
+            "agent_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+            "call_control": "continue-call",
+            "campaign_selector": {
+              "campaign_config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+              "campaign_id": "synthetic-b2b-saas-operations",
+              "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
+              "campaign_selector_mode": "generic_config",
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "selected_campaign_config": {
+                "appointment_target": "operations fit review",
+                "campaign_id": "synthetic-b2b-saas-operations",
+                "config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+                "human_followup_owner": "implementation specialist",
+                "live_tts_enabled": false,
+                "mode": "generic config dry-run",
+                "product_or_offer_name": "Operations Workflow Review",
+                "route_signal_fallback_used": false,
+                "vertical_id": "b2b_saas"
+              },
+              "vertical_id": "b2b_saas"
+            },
+            "customer_transcript": "yeah sure",
+            "input_type": "speech-final",
+            "provider_boundary": {
+              "audio_url": null,
+              "creates_calendar_event": false,
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "opens_prod_102": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "writes_crm": false
+            },
+            "turn_index": 2
+          },
+          {
+            "agent_response": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+            "call_control": "continue-call",
+            "campaign_selector": {
+              "campaign_config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+              "campaign_id": "synthetic-b2b-saas-operations",
+              "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
+              "campaign_selector_mode": "generic_config",
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "selected_campaign_config": {
+                "appointment_target": "operations fit review",
+                "campaign_id": "synthetic-b2b-saas-operations",
+                "config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+                "human_followup_owner": "implementation specialist",
+                "live_tts_enabled": false,
+                "mode": "generic config dry-run",
+                "product_or_offer_name": "Operations Workflow Review",
+                "route_signal_fallback_used": false,
+                "vertical_id": "b2b_saas"
+              },
+              "vertical_id": "b2b_saas"
+            },
+            "customer_transcript": "manual work is a problem",
+            "input_type": "speech-final",
+            "provider_boundary": {
+              "audio_url": null,
+              "creates_calendar_event": false,
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "opens_prod_102": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "writes_crm": false
+            },
+            "turn_index": 3
+          },
+          {
+            "agent_response": "Confirmed. I will note that time for the operations fit review. Goodbye.",
+            "call_control": "schedule-and-end",
+            "campaign_selector": {
+              "campaign_config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+              "campaign_id": "synthetic-b2b-saas-operations",
+              "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
+              "campaign_selector_mode": "generic_config",
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "selected_campaign_config": {
+                "appointment_target": "operations fit review",
+                "campaign_id": "synthetic-b2b-saas-operations",
+                "config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
+                "human_followup_owner": "implementation specialist",
+                "live_tts_enabled": false,
+                "mode": "generic config dry-run",
+                "product_or_offer_name": "Operations Workflow Review",
+                "route_signal_fallback_used": false,
+                "vertical_id": "b2b_saas"
+              },
+              "vertical_id": "b2b_saas"
+            },
+            "customer_transcript": "tomorrow at 3 works",
+            "input_type": "speech-final",
+            "provider_boundary": {
+              "audio_url": null,
+              "creates_calendar_event": false,
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "opens_prod_102": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "writes_crm": false
+            },
+            "turn_index": 4
+          }
+        ]
+      },
+      "insurance": {
+        "audio_stored": false,
+        "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+        "campaign_id": null,
+        "customer_audio_uploaded_to_python_server": false,
+        "live_demo_id": "LIVE-DEMO-001",
+        "session_id": "operator-insurance",
+        "turns": [
+          {
+            "agent_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+            "call_control": "continue-call",
+            "campaign_selector": {
+              "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+              "campaign_id": "synthetic-insurance-review",
+              "campaign_playbook_id": "synthetic-insurance-review-playbook",
+              "campaign_selector_mode": "generic_config",
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "selected_campaign_config": {
+                "appointment_target": "licensed coverage review",
+                "campaign_id": "synthetic-insurance-review",
+                "config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+                "human_followup_owner": "licensed insurance specialist",
+                "live_tts_enabled": false,
+                "mode": "generic config dry-run",
+                "product_or_offer_name": "Policy Review Call",
+                "route_signal_fallback_used": false,
+                "vertical_id": "insurance"
+              },
+              "vertical_id": "insurance"
+            },
+            "customer_transcript": "(agent opening)",
+            "input_type": "agent-open",
+            "provider_boundary": {
+              "audio_url": null,
+              "creates_calendar_event": false,
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "opens_prod_102": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "writes_crm": false
+            },
+            "turn_index": 1
+          },
+          {
+            "agent_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
+            "call_control": "continue-call",
+            "campaign_selector": {
+              "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+              "campaign_id": "synthetic-insurance-review",
+              "campaign_playbook_id": "synthetic-insurance-review-playbook",
+              "campaign_selector_mode": "generic_config",
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "selected_campaign_config": {
+                "appointment_target": "licensed coverage review",
+                "campaign_id": "synthetic-insurance-review",
+                "config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+                "human_followup_owner": "licensed insurance specialist",
+                "live_tts_enabled": false,
+                "mode": "generic config dry-run",
+                "product_or_offer_name": "Policy Review Call",
+                "route_signal_fallback_used": false,
+                "vertical_id": "insurance"
+              },
+              "vertical_id": "insurance"
+            },
+            "customer_transcript": "yeah sure",
+            "input_type": "speech-final",
+            "provider_boundary": {
+              "audio_url": null,
+              "creates_calendar_event": false,
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "opens_prod_102": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "writes_crm": false
+            },
+            "turn_index": 2
+          },
+          {
+            "agent_response": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+            "call_control": "continue-call",
+            "campaign_selector": {
+              "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+              "campaign_id": "synthetic-insurance-review",
+              "campaign_playbook_id": "synthetic-insurance-review-playbook",
+              "campaign_selector_mode": "generic_config",
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "selected_campaign_config": {
+                "appointment_target": "licensed coverage review",
+                "campaign_id": "synthetic-insurance-review",
+                "config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+                "human_followup_owner": "licensed insurance specialist",
+                "live_tts_enabled": false,
+                "mode": "generic config dry-run",
+                "product_or_offer_name": "Policy Review Call",
+                "route_signal_fallback_used": false,
+                "vertical_id": "insurance"
+              },
+              "vertical_id": "insurance"
+            },
+            "customer_transcript": "premium is a problem",
+            "input_type": "speech-final",
+            "provider_boundary": {
+              "audio_url": null,
+              "creates_calendar_event": false,
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "opens_prod_102": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "writes_crm": false
+            },
+            "turn_index": 3
+          },
+          {
+            "agent_response": "Confirmed. I will note that time for the licensed coverage review. Goodbye.",
+            "call_control": "schedule-and-end",
+            "campaign_selector": {
+              "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+              "campaign_id": "synthetic-insurance-review",
+              "campaign_playbook_id": "synthetic-insurance-review-playbook",
+              "campaign_selector_mode": "generic_config",
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "selected_campaign_config": {
+                "appointment_target": "licensed coverage review",
+                "campaign_id": "synthetic-insurance-review",
+                "config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+                "human_followup_owner": "licensed insurance specialist",
+                "live_tts_enabled": false,
+                "mode": "generic config dry-run",
+                "product_or_offer_name": "Policy Review Call",
+                "route_signal_fallback_used": false,
+                "vertical_id": "insurance"
+              },
+              "vertical_id": "insurance"
+            },
+            "customer_transcript": "tomorrow at 3 works",
+            "input_type": "speech-final",
+            "provider_boundary": {
+              "audio_url": null,
+              "creates_calendar_event": false,
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "opens_prod_102": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "writes_crm": false
+            },
+            "turn_index": 4
+          }
+        ]
+      },
+      "routesignal": {
+        "audio_stored": false,
+        "campaign_config_path": null,
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "customer_audio_uploaded_to_python_server": false,
+        "live_demo_id": "LIVE-DEMO-001",
+        "session_id": "operator-routesignal",
+        "turns": [
+          {
+            "agent_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+            "call_control": "continue-call",
+            "campaign_selector": {
+              "campaign_config_path": null,
+              "campaign_id": "campaign-prod-005-b2b-software",
+              "campaign_playbook_id": null,
+              "campaign_selector_mode": "routesignal_live_demo",
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "selected_campaign_config": null,
+              "vertical_id": null
+            },
+            "customer_transcript": "(agent opening)",
+            "input_type": "agent-open",
+            "provider_boundary": {
+              "audio_url": null,
+              "creates_calendar_event": false,
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "opens_prod_102": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "writes_crm": false
+            },
+            "turn_index": 1
+          },
+          {
+            "agent_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+            "call_control": "continue-call",
+            "campaign_selector": {
+              "campaign_config_path": null,
+              "campaign_id": "campaign-prod-005-b2b-software",
+              "campaign_playbook_id": null,
+              "campaign_selector_mode": "routesignal_live_demo",
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "selected_campaign_config": null,
+              "vertical_id": null
+            },
+            "customer_transcript": "yeah sure",
+            "input_type": "speech-final",
+            "provider_boundary": {
+              "audio_url": null,
+              "creates_calendar_event": false,
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "opens_prod_102": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "writes_crm": false
+            },
+            "turn_index": 2
+          },
+          {
+            "agent_response": "Got it, callbacks are clear. Should I check manual tracking or handoffs, or stop here?",
+            "call_control": "continue-call",
+            "campaign_selector": {
+              "campaign_config_path": null,
+              "campaign_id": "campaign-prod-005-b2b-software",
+              "campaign_playbook_id": null,
+              "campaign_selector_mode": "routesignal_live_demo",
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "selected_campaign_config": null,
+              "vertical_id": null
+            },
+            "customer_transcript": "callbacks are fine",
+            "input_type": "speech-final",
+            "provider_boundary": {
+              "audio_url": null,
+              "creates_calendar_event": false,
+              "live_tts_used": false,
+              "local_llm_calls_made": false,
+              "opens_prod_102": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "writes_crm": false
+            },
+            "turn_index": 3
+          }
+        ]
+      }
+    }
+  },
+  "failures": [],
+  "local_llm_calls_made": false,
+  "opens_prod_102": false,
+  "operator_checklist_path": "docs\\demo\\LIVE_DEMO_OPERATOR_REHEARSAL.md",
+  "provider_calls_made": false,
+  "runtime_behavior_changed": false,
+  "sends_email": false,
+  "status": "pass",
+  "uses_generated_audio": false,
+  "uses_live_tts": false,
+  "uses_private_transcripts": false,
+  "uses_provider_calls": false,
+  "uses_real_customer_data": false,
+  "writes_crm": false
+}
