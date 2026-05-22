@@ -1,0 +1,138 @@
+[
+    {
+        "command":  "python scripts\\validate_human_semantic_delta_findings_002.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_human_review_findings_001.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_generic_campaign_long_conversation_stress_001.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_generic_campaign_response_quality_001.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_generic_campaign_spoken_text_quality_001.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_generic_campaign_fallback_leakage_001.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_generic_campaign_buyer_move_paraphrase_001.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_generic_campaign_runtime_regression_001.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_contextual_buyer_semantics_001.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_contextual_buyer_semantics_002_sequential_dialogue.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_contextual_buyer_semantics_003_memory_alignment.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_contextual_buyer_semantics_004_semantic_memory_invariants.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_contextual_buyer_semantics_005_outgoing_question_state.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_contextual_buyer_semantics_006_send_info_contact_capture.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_contextual_buyer_semantics_007_send_info_action_contract.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_contextual_buyer_semantics_008_contact_time_normalization.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_contextual_buyer_semantics_009_right_person_handoff.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_contextual_buyer_semantics_010_diagnostic_playbook.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_contextual_buyer_semantics_011_campaign_adapter_runtime.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_live_demo_014_clear_pain_callback_followup.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_live_demo_013_reasoner_route_guard.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_dialogue_manager_001_root_repair.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_dialogue_manager_002_pragmatic_dialogue_repair.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_dialogue_manager_003_plain_sales_clarity_and_vague_appointment_time.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_resp_003_runtime_live_tts.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_universal_sales_knowledge_001.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_vertical_sales_playbooks_001.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_campaign_playbook_adapter_001.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_campaign_playbook_adapter_002_cross_vertical_smoke.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_generic_campaign_runtime_entrypoint_001.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_runtime_manifest.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "python scripts\\validate_project_drift_guard.py",
+        "exit_code":  0
+    },
+    {
+        "command":  "git status --short",
+        "exit_code":  0
+    },
+    {
+        "command":  "git diff --check",
+        "exit_code":  0
+    }
+]

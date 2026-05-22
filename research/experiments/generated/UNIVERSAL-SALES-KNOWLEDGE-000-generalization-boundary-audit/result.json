@@ -1,0 +1,277 @@
+{
+  "audit_id": "UNIVERSAL-SALES-KNOWLEDGE-000-generalization-boundary-audit",
+  "schema_version": 1,
+  "created_at": "2026-05-21",
+  "runtime_behavior_changed": false,
+  "existing_validators_changed": false,
+  "provider_calls_made": false,
+  "local_llm_calls_made": false,
+  "live_tts_used": false,
+  "private_transcripts_read": false,
+  "opens_prod_102": false,
+  "summary": {
+    "recommendation": "Do not generalize by expanding the RouteSignal playbook. Add a product-agnostic universal sales knowledge module, vertical adapter skeletons, and a campaign playbook adapter before migrating RouteSignal.",
+    "next_phase": "4B1 universal sales knowledge module",
+    "core_finding": "The semantic frame and state/action contracts are reusable, but contextual_buyer_semantics.py currently imports the RouteSignal diagnostic playbook directly, so universal semantics are coupled to one campaign."
+  },
+  "current_coupling_map": {
+    "universal_pieces": [
+      "semantic frame structure",
+      "context-sensitive buyer move interpretation",
+      "confirmed_gaps and cleared_gaps memory shape",
+      "send_info_state structure",
+      "lead_followup_state structure",
+      "handoff_target_state structure",
+      "manager selected_action/action-template contract",
+      "call_control values and terminal stop persistence",
+      "privacy/safety flags for provider calls, local LLM calls, email, calendar, and CRM writes"
+    ],
+    "campaign_specific_pieces": [
+      "RouteSignal CRM and Northstar campaign context",
+      "callbacks/manual_tracking/handoffs/routing/reminders/duplicates/visibility as RouteSignal diagnostic gaps",
+      "Starter/Growth plan and pricing wording",
+      "inbound demo follow-up and workflow-review copy",
+      "RouteSignal campaign JSON facts",
+      "LIVE_DEMO_014 and DIALOGUE_MANAGER_003 product checkpoint expectations",
+      "validator 010 diagnostic playbook expectations"
+    ],
+    "mixed_pieces": [
+      "contextual_buyer_semantics.py imports sales_diagnostic_playbook.py directly",
+      "CORE_DIAGNOSTIC_GAPS currently comes from the RouteSignal playbook",
+      "universal semantic helpers can emit RouteSignal/Northstar/demo-follow-up wording",
+      "dialogue_manager.py is mostly universal but workflow-review target wording is campaign-shaped",
+      "validators 001 through 009 test universal behaviors with RouteSignal gap IDs"
+    ]
+  },
+  "routesignal_specific_assumptions": [
+    {
+      "file_path": "runtime/core/sales_diagnostic_playbook.py",
+      "symbol_or_area": "PLAYBOOK and campaign_context",
+      "why_campaign_specific": "Names RouteSignal CRM and Northstar and defines an appointment-setting campaign around inbound demo follow-up.",
+      "recommendation": "Keep behind campaign_playbook_adapter as the RouteSignal campaign playbook."
+    },
+    {
+      "file_path": "runtime/core/sales_diagnostic_playbook.py",
+      "symbol_or_area": "callbacks/manual_tracking/handoffs/routing/reminders/duplicates/visibility",
+      "why_campaign_specific": "These are RouteSignal diagnostic gaps and value bridges, not universal sales facts.",
+      "recommendation": "Map to universal pain dimensions through campaign adapter."
+    },
+    {
+      "file_path": "runtime/core/contextual_buyer_semantics.py",
+      "symbol_or_area": "import sales_diagnostic_playbook and CORE_DIAGNOSTIC_GAPS",
+      "why_campaign_specific": "Universal semantics takes one campaign's playbook as default gap universe.",
+      "recommendation": "Replace direct import with adapted campaign playbook input in 4B3."
+    },
+    {
+      "file_path": "runtime/core/contextual_buyer_semantics.py",
+      "symbol_or_area": "response helpers",
+      "why_campaign_specific": "Some final-response wording mentions demo follow-up, workflow review, Growth, RouteSignal, or Northstar concepts.",
+      "recommendation": "Move campaign wording behind response/campaign adapter."
+    },
+    {
+      "file_path": "runtime/core/live_voice_session_policy.py",
+      "symbol_or_area": "opener, price answer, plan boundary, protected fallback copy",
+      "why_campaign_specific": "Contains Northstar, RouteSignal, Starter/Growth pricing, and demo-follow-up wording.",
+      "recommendation": "Keep as RouteSignal policy until adapter migration."
+    },
+    {
+      "file_path": "scripts/validate_contextual_buyer_semantics_010_diagnostic_playbook.py",
+      "symbol_or_area": "diagnostic playbook assertions",
+      "why_campaign_specific": "Asserts RouteSignal gap coverage and review focus labels.",
+      "recommendation": "Keep as RouteSignal campaign regression."
+    }
+  ],
+  "universal_sales_knowledge_contract": {
+    "module": "runtime/core/universal_sales_knowledge.py",
+    "must_not_include": [
+      "RouteSignal",
+      "Northstar",
+      "Starter",
+      "Growth",
+      "campaign pricing",
+      "client-specific product claims"
+    ],
+    "fields": [
+      "knowledge_id",
+      "schema_version",
+      "sales_stages",
+      "buyer_move_families",
+      "qualification_dimensions",
+      "generic_pain_dimensions",
+      "objection_families",
+      "safe_next_action_policies",
+      "call_control_policy",
+      "regulated_vertical_cautions"
+    ]
+  },
+  "vertical_adapter_contract": {
+    "module": "runtime/core/vertical_sales_playbooks.py",
+    "required_verticals": [
+      "b2b_saas",
+      "insurance",
+      "telecom",
+      "home_services",
+      "healthcare_admin_or_medical_equipment",
+      "automotive_service",
+      "membership_or_subscription",
+      "retail_or_ecommerce_support_sales"
+    ],
+    "fields": [
+      "vertical_id",
+      "schema_version",
+      "default_pain_dimensions",
+      "typical_buyer_roles",
+      "authority_signals",
+      "common_objections",
+      "qualification_defaults",
+      "safe_appointment_targets",
+      "regulated_cautions",
+      "forbidden_default_claims",
+      "human_escalation_triggers"
+    ]
+  },
+  "campaign_playbook_contract": {
+    "module": "runtime/core/campaign_playbook_adapter.py",
+    "fields": [
+      "campaign_id",
+      "schema_version",
+      "client_name",
+      "product_name",
+      "vertical_id",
+      "objective",
+      "human_followup_owner",
+      "allowed_claims",
+      "forbidden_claims",
+      "pricing_or_plan_facts",
+      "qualification_goals",
+      "diagnostic_gaps",
+      "review_or_appointment_target",
+      "handoff_owner",
+      "send_info_policy",
+      "callback_policy",
+      "right_person_policy",
+      "escalation_triggers",
+      "spoken_terms"
+    ],
+    "routesignal_mapping": {
+      "client_name": "Northstar Workflow Labs",
+      "product_name": "RouteSignal CRM",
+      "vertical_id": "b2b_saas",
+      "objective": "appointment_setting",
+      "diagnostic_gaps": [
+        "callbacks",
+        "manual_tracking",
+        "handoffs",
+        "routing",
+        "reminders",
+        "duplicates",
+        "visibility",
+        "right_person"
+      ]
+    }
+  },
+  "validator_migration_plan": [
+    {
+      "validator": "validate_contextual_buyer_semantics_001.py",
+      "classification": "mixed",
+      "remain_campaign_regression": true,
+      "create_universal_equivalent": true,
+      "create_vertical_smoke_test": false
+    },
+    {
+      "validator": "validate_contextual_buyer_semantics_002_sequential_dialogue.py",
+      "classification": "mixed",
+      "remain_campaign_regression": true,
+      "create_universal_equivalent": true,
+      "create_vertical_smoke_test": false
+    },
+    {
+      "validator": "validate_contextual_buyer_semantics_003_memory_alignment.py",
+      "classification": "mixed",
+      "remain_campaign_regression": true,
+      "create_universal_equivalent": true,
+      "create_vertical_smoke_test": false
+    },
+    {
+      "validator": "validate_contextual_buyer_semantics_004_semantic_memory_invariants.py",
+      "classification": "mixed",
+      "remain_campaign_regression": true,
+      "create_universal_equivalent": true,
+      "create_vertical_smoke_test": false
+    },
+    {
+      "validator": "validate_contextual_buyer_semantics_005_outgoing_question_state.py",
+      "classification": "mixed",
+      "remain_campaign_regression": true,
+      "create_universal_equivalent": true,
+      "create_vertical_smoke_test": false
+    },
+    {
+      "validator": "validate_contextual_buyer_semantics_006_send_info_contact_capture.py",
+      "classification": "mostly_universal_with_campaign_examples",
+      "remain_campaign_regression": true,
+      "create_universal_equivalent": true,
+      "create_vertical_smoke_test": true
+    },
+    {
+      "validator": "validate_contextual_buyer_semantics_007_send_info_action_contract.py",
+      "classification": "mostly_universal",
+      "remain_campaign_regression": true,
+      "create_universal_equivalent": true,
+      "create_vertical_smoke_test": true
+    },
+    {
+      "validator": "validate_contextual_buyer_semantics_008_contact_time_normalization.py",
+      "classification": "mostly_universal",
+      "remain_campaign_regression": true,
+      "create_universal_equivalent": true,
+      "create_vertical_smoke_test": true
+    },
+    {
+      "validator": "validate_contextual_buyer_semantics_009_right_person_handoff.py",
+      "classification": "mostly_universal_with_b2b_routing_example",
+      "remain_campaign_regression": true,
+      "create_universal_equivalent": true,
+      "create_vertical_smoke_test": true
+    },
+    {
+      "validator": "validate_contextual_buyer_semantics_010_diagnostic_playbook.py",
+      "classification": "routesignal_specific",
+      "remain_campaign_regression": true,
+      "create_universal_equivalent": false,
+      "create_vertical_smoke_test": "b2b_saas_only"
+    }
+  ],
+  "recommended_phases": [
+    {
+      "phase": "4B1",
+      "name": "universal sales knowledge module",
+      "goal": "Create product-agnostic primitives and a validator proving no campaign facts are embedded."
+    },
+    {
+      "phase": "4B2",
+      "name": "vertical adapter skeletons",
+      "goal": "Add compact deterministic vertical defaults and regulated caution boundaries."
+    },
+    {
+      "phase": "4B3",
+      "name": "campaign playbook adapter",
+      "goal": "Route contextual semantics through an adapted campaign contract instead of direct RouteSignal imports."
+    },
+    {
+      "phase": "4B4",
+      "name": "cross-vertical smoke tests",
+      "goal": "Prove universal workflows stay safe across required verticals without provider calls or real data."
+    },
+    {
+      "phase": "4B5",
+      "name": "RouteSignal regression after adapter migration",
+      "goal": "Preserve current RouteSignal behavior after separating universal, vertical, and campaign layers."
+    }
+  ],
+  "uncertainty_or_blockers": [
+    "This audit did not run a broad generated-evidence crawl by design.",
+    "The exact adapter API should be decided in 4B3 after 4B1 and 4B2 define stable universal and vertical contracts.",
+    "Some RouteSignal wording may also exist in older generated reports or checkpoint docs outside the targeted scope, but those are historical unless referenced by active runtime or validators."
+  ]
+}

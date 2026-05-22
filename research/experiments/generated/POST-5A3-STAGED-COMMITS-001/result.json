@@ -1,0 +1,160 @@
+{
+  "checkpoint_id": "POST-5A3-STAGED-COMMITS-001",
+  "created_at": "2026-05-22",
+  "status": "pass",
+  "pushed": false,
+  "runtime_behavior_changed_in_this_phase": false,
+  "commits_created": [
+    {
+      "hash": "cdf7b51",
+      "message": "feat(playbooks): add universal, vertical, and campaign sales playbooks",
+      "group": "Universal, vertical, and campaign playbook architecture",
+      "files": [
+        "runtime/core/campaign_playbook_adapter.py",
+        "runtime/core/sales_diagnostic_playbook.py",
+        "runtime/core/universal_sales_knowledge.py",
+        "runtime/core/vertical_sales_playbooks.py",
+        "scripts/validate_campaign_playbook_adapter_001.py",
+        "scripts/validate_campaign_playbook_adapter_002_cross_vertical_smoke.py",
+        "scripts/validate_universal_sales_knowledge_001.py",
+        "scripts/validate_vertical_sales_playbooks_001.py"
+      ]
+    },
+    {
+      "hash": "ac99e1e",
+      "message": "feat(dialogue): add contextual buyer semantics and RouteSignal dialogue repairs",
+      "group": "Contextual semantics and RouteSignal repair",
+      "files": [
+        "runtime/core/contextual_buyer_semantics.py",
+        "runtime/core/dialogue_manager.py",
+        "runtime/core/dialogue_pragmatics.py",
+        "runtime/core/live_voice_session_policy.py",
+        "scripts/run_live_demo_001_agent_voice_call.py",
+        "scripts/validate_contextual_buyer_semantics_001.py",
+        "scripts/validate_contextual_buyer_semantics_002_sequential_dialogue.py",
+        "scripts/validate_contextual_buyer_semantics_003_memory_alignment.py",
+        "scripts/validate_contextual_buyer_semantics_004_semantic_memory_invariants.py",
+        "scripts/validate_contextual_buyer_semantics_005_outgoing_question_state.py",
+        "scripts/validate_contextual_buyer_semantics_006_send_info_contact_capture.py",
+        "scripts/validate_contextual_buyer_semantics_007_send_info_action_contract.py",
+        "scripts/validate_contextual_buyer_semantics_008_contact_time_normalization.py",
+        "scripts/validate_contextual_buyer_semantics_009_right_person_handoff.py",
+        "scripts/validate_contextual_buyer_semantics_010_diagnostic_playbook.py",
+        "scripts/validate_contextual_buyer_semantics_011_campaign_adapter_runtime.py"
+      ]
+    },
+    {
+      "hash": "098be64",
+      "message": "feat(runtime): add generic campaign dry-run turn entrypoint",
+      "group": "Generic campaign runtime entrypoint and generic runtime validators",
+      "files": [
+        "runtime/entrypoints/generic_campaign_turn.py",
+        "scripts/validate_generic_campaign_runtime_entrypoint_001.py",
+        "scripts/validate_generic_campaign_runtime_regression_001.py",
+        "scripts/validate_generic_campaign_runtime_smoke_001.py"
+      ]
+    },
+    {
+      "hash": "83a9e27",
+      "message": "test(generic-runtime): add generic campaign safety and quality guards",
+      "group": "Generic fallback, response quality, and spoken-text guards",
+      "files": [
+        "runtime/voice/runtime_voice_delivery.py",
+        "scripts/validate_generic_campaign_buyer_move_paraphrase_001.py",
+        "scripts/validate_generic_campaign_fallback_leakage_001.py",
+        "scripts/validate_generic_campaign_long_conversation_stress_001.py",
+        "scripts/validate_generic_campaign_response_quality_001.py",
+        "scripts/validate_generic_campaign_spoken_text_quality_001.py"
+      ]
+    },
+    {
+      "hash": "d3dc58e",
+      "message": "test(review): add human semantic review packets and replay validators",
+      "group": "Human semantic review packets and replay validators",
+      "files": [
+        "scripts/generate_human_semantic_delta_review_packet_002.py",
+        "scripts/generate_human_semantic_review_packet_001.py",
+        "scripts/validate_human_review_findings_001.py",
+        "scripts/validate_human_semantic_delta_findings_002.py",
+        "scripts/validate_human_semantic_delta_review_packet_002.py",
+        "scripts/validate_human_semantic_review_packet_001.py"
+      ]
+    },
+    {
+      "hash": "998b7ea",
+      "message": "chore(evidence): add dialogue repair checkpoint evidence",
+      "group": "Generated evidence",
+      "files_summary": "73 generated evidence files across contextual, playbook, generic runtime, human review, live-demo/dialogue-manager regression, consolidation, and hygiene checkpoints."
+    },
+    {
+      "hash": "eab78aa",
+      "message": "docs(thesis): document dialogue repair methodology and roadmap",
+      "group": "Thesis/docs and drift guard updates",
+      "files": [
+        "docs/thesis/DECISION_LOG.md",
+        "docs/thesis/METHODOLOGY_LOG.md",
+        "docs/thesis/ROADMAP.md",
+        "runtime/runtime_manifest.json",
+        "scripts/validate_project_drift_guard.py"
+      ]
+    }
+  ],
+  "order_adjustment": {
+    "applied": true,
+    "reason": "The originally requested first commit would have added contextual_buyer_semantics.py before its campaign_playbook_adapter dependency. The playbook architecture commit was created first to keep commits reviewable."
+  },
+  "validator_adjustments": [
+    {
+      "file": "scripts/validate_generic_campaign_runtime_smoke_001.py",
+      "reason": "Updated stale smoke assertions to accept current readable 'or stop here' wording and appointment-target-based human follow-up bridging.",
+      "runtime_behavior_changed": false
+    }
+  ],
+  "final_verification": {
+    "status": "pass",
+    "commands_passed": [
+      "python scripts\\validate_human_semantic_delta_findings_002.py",
+      "python scripts\\validate_human_review_findings_001.py",
+      "python scripts\\validate_generic_campaign_long_conversation_stress_001.py",
+      "python scripts\\validate_generic_campaign_response_quality_001.py",
+      "python scripts\\validate_generic_campaign_spoken_text_quality_001.py",
+      "python scripts\\validate_generic_campaign_fallback_leakage_001.py",
+      "python scripts\\validate_generic_campaign_buyer_move_paraphrase_001.py",
+      "python scripts\\validate_generic_campaign_runtime_regression_001.py",
+      "python scripts\\validate_contextual_buyer_semantics_001.py",
+      "python scripts\\validate_contextual_buyer_semantics_002_sequential_dialogue.py",
+      "python scripts\\validate_contextual_buyer_semantics_003_memory_alignment.py",
+      "python scripts\\validate_contextual_buyer_semantics_004_semantic_memory_invariants.py",
+      "python scripts\\validate_contextual_buyer_semantics_005_outgoing_question_state.py",
+      "python scripts\\validate_contextual_buyer_semantics_006_send_info_contact_capture.py",
+      "python scripts\\validate_contextual_buyer_semantics_007_send_info_action_contract.py",
+      "python scripts\\validate_contextual_buyer_semantics_008_contact_time_normalization.py",
+      "python scripts\\validate_contextual_buyer_semantics_009_right_person_handoff.py",
+      "python scripts\\validate_contextual_buyer_semantics_010_diagnostic_playbook.py",
+      "python scripts\\validate_contextual_buyer_semantics_011_campaign_adapter_runtime.py",
+      "python scripts\\validate_live_demo_014_clear_pain_callback_followup.py",
+      "python scripts\\validate_live_demo_013_reasoner_route_guard.py",
+      "python scripts\\validate_dialogue_manager_001_root_repair.py",
+      "python scripts\\validate_dialogue_manager_002_pragmatic_dialogue_repair.py",
+      "python scripts\\validate_dialogue_manager_003_plain_sales_clarity_and_vague_appointment_time.py",
+      "python scripts\\validate_resp_003_runtime_live_tts.py",
+      "python scripts\\validate_universal_sales_knowledge_001.py",
+      "python scripts\\validate_vertical_sales_playbooks_001.py",
+      "python scripts\\validate_campaign_playbook_adapter_001.py",
+      "python scripts\\validate_campaign_playbook_adapter_002_cross_vertical_smoke.py",
+      "python scripts\\validate_generic_campaign_runtime_entrypoint_001.py",
+      "python scripts\\validate_runtime_manifest.py",
+      "python scripts\\validate_project_drift_guard.py",
+      "git status --short",
+      "git diff --check"
+    ]
+  },
+  "remaining_dirty_files": [
+    "research/experiments/generated/POST-5A3-STAGED-COMMITS-001/report.md",
+    "research/experiments/generated/POST-5A3-STAGED-COMMITS-001/result.json",
+    "research/experiments/generated/POST-5A3-STAGED-COMMITS-final-verification.json",
+    "research/experiments/generated/UNIVERSAL-SALES-KNOWLEDGE-000-generalization-boundary-audit/"
+  ],
+  "post_5a5_evidence_committed": false,
+  "blockers": []
+}
