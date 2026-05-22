@@ -397,7 +397,7 @@
       "campaign_selector_mode": "generic_config",
       "cleared_gaps": null,
       "confirmed_gaps": null,
-      "final_response": "The purpose of Policy Review Call is to check whether premium and budget pressure is worth a licensed coverage review. Should I keep it to that relevance check?",
+      "final_response": "This call is only to check whether a short human review is useful around premium pressure. The quick question is whether that area is causing friction now.",
       "label": "product_detail",
       "semantic": "product_detail_limit_question",
       "side_effect_flags": {

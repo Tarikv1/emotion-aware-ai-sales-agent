@@ -109,7 +109,7 @@
         "time_constrained_permission"
       ],
       "failures": [],
-      "final_response": "Sure, I will keep it quick: is this mainly follow-up gap?",
+      "final_response": "Sure, one quick check: is inbound demo follow-up slipping right now?",
       "passed": true,
       "previous_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
       "recognition_confidence": "high",
@@ -197,7 +197,7 @@
         "time_constrained_permission"
       ],
       "failures": [],
-      "final_response": "Sure, I will keep it quick: is this mainly follow-up gap?",
+      "final_response": "Sure, one quick check: is inbound demo follow-up slipping right now?",
       "passed": true,
       "previous_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
       "recognition_confidence": "high",
@@ -747,7 +747,7 @@
         "product_detail_question"
       ],
       "failures": [],
-      "final_response": "The purpose of RouteSignal CRM is to check whether follow-up gap is worth a non-binding workflow review. Should I keep it to that relevance check?",
+      "final_response": "RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, or handoffs. The quick check is whether that problem exists on your side.",
       "passed": true,
       "previous_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
       "recognition_confidence": "high",
@@ -839,7 +839,7 @@
         "what_problem_do_you_solve"
       ],
       "failures": [],
-      "final_response": "It helps check whether follow-up gap is the problem worth a non-binding workflow review. Should I check that one issue?",
+      "final_response": "Mainly inbound demo follow-up slipping. If that is not happening, there is no reason to push a review.",
       "passed": true,
       "previous_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
       "recognition_confidence": "high",
@@ -932,7 +932,7 @@
         "why_should_i_care"
       ],
       "failures": [],
-      "final_response": "You should care only if follow-up gap is relevant enough for a non-binding workflow review. Should I check that one issue?",
+      "final_response": "Only if inbound demo follow-up slipping is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
       "passed": true,
       "previous_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
       "recognition_confidence": "high",
@@ -1025,7 +1025,7 @@
         "what_makes_you_different"
       ],
       "failures": [],
-      "final_response": "The useful difference I can state here is limited: RouteSignal CRM helps inbound sales teams capture, route, follow up, and review ownership of demo and contact-sales requests. Should I keep this to one relevance check?",
+      "final_response": "The approved scope here is RouteSignal CRM helps inbound sales teams capture, route, follow up, and review ownership of demo and contact-sales requests. I will not claim more than that on this call.",
       "passed": true,
       "previous_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
       "recognition_confidence": "high",
@@ -1118,7 +1118,7 @@
         "who_is_this_for"
       ],
       "failures": [],
-      "final_response": "It is for the person handling inbound demo follow-up. Should I check whether follow-up gap applies?",
+      "final_response": "It is for the person handling inbound demo follow-up. If that is not you, I can stop or note the right person.",
       "passed": true,
       "previous_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
       "recognition_confidence": "high",
@@ -1211,7 +1211,7 @@
         "is_this_worth_my_time"
       ],
       "failures": [],
-      "final_response": "It is worth your time only if follow-up gap is relevant enough for a non-binding workflow review. Should I check that?",
+      "final_response": "Only if inbound demo follow-up slipping is real enough to justify a short review. If not, no pressure.",
       "passed": true,
       "previous_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
       "recognition_confidence": "high",
@@ -1304,7 +1304,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Correct, I can explain the purpose of the call, but detailed advice belongs with verified implementation reviewer. This call only checks whether a non-binding workflow review is useful. Should I check whether follow-up gap is relevant, or stop here?",
+      "final_response": "Correct. I can explain the purpose of this call, but detailed policy or product advice belongs with verified implementation reviewer. Since you mentioned inbound demo follow-up slipping, this only checks whether a non-binding workflow review is useful. I can note a time, or leave it there.",
       "passed": true,
       "previous_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
       "recognition_confidence": "high",
@@ -1784,7 +1784,7 @@
         "already_has_provider"
       ],
       "failures": [],
-      "final_response": "Understood, if your current provider handles this, there may be no need. Should I check one narrow gap, or stop here?",
+      "final_response": "Understood. If your current provider already handles this cleanly, there is no reason to change. The only useful check is whether anything still slips through.",
       "passed": true,
       "previous_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
       "recognition_confidence": "high",
@@ -1875,7 +1875,7 @@
         "price_or_budget_objection"
       ],
       "failures": [],
-      "final_response": "Fair, budget matters. I cannot quote or promise savings here; the useful check is whether follow-up gap is worth a non-binding workflow review. Should I check that, or stop here?",
+      "final_response": "Fair. Budget matters. I cannot promise savings here; the only useful question is whether the problem costs enough to justify a short review.",
       "passed": true,
       "previous_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
       "recognition_confidence": "high",
@@ -1967,7 +1967,7 @@
         "no_authority_or_needs_approval"
       ],
       "failures": [],
-      "final_response": "Understood, if someone else approves it, the right next step is to involve that person. Should I note that, or stop here?",
+      "final_response": "Understood. Then the useful next step is not to sell you. It is either a short summary for the decision-maker or the right person's contact.",
       "passed": true,
       "previous_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
       "recognition_confidence": "high",
@@ -2057,7 +2057,7 @@
         "wants_proof_or_case_study"
       ],
       "failures": [],
-      "final_response": "Fair, proof should come from approved material or a human follow-up, not a claim from this call. Should I capture where to send a summary, or stop here?",
+      "final_response": "Fair. I will not invent proof on this call. I can only note a request for approved material or a human follow-up.",
       "passed": true,
       "previous_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
       "recognition_confidence": "high",
@@ -2150,7 +2150,7 @@
         "timing_objection"
       ],
       "failures": [],
-      "final_response": "Understood, this week is not good. Should I stop here?",
+      "final_response": "Understood. Timing is not right this week. We can leave it here or note a later callback.",
       "passed": true,
       "previous_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
       "recognition_confidence": "high",
@@ -2239,7 +2239,7 @@
         "no_clear_need"
       ],
       "failures": [],
-      "final_response": "Understood, if there is no current need, I can stop here. Should I stop?",
+      "final_response": "Understood. If there is no need, I will not push. We can stop here.",
       "passed": true,
       "previous_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
       "recognition_confidence": "high",
@@ -2332,7 +2332,7 @@
         "too_busy_now"
       ],
       "failures": [],
-      "final_response": "No problem, I will keep this short. Should I stop here?",
+      "final_response": "No problem. I will not drag this out. We can stop here or leave it for another time.",
       "passed": true,
       "previous_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
       "recognition_confidence": "high",
@@ -5192,7 +5192,7 @@
         "time_constrained_permission"
       ],
       "failures": [],
-      "final_response": "Sure, I will keep it quick: is this mainly premium or budget or coverage fit?",
+      "final_response": "Sure, one quick check: is premium pressure causing any issue right now? If it is really coverage fit, say that.",
       "passed": true,
       "previous_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
       "recognition_confidence": "high",
@@ -5280,7 +5280,7 @@
         "time_constrained_permission"
       ],
       "failures": [],
-      "final_response": "Sure, I will keep it quick: is this mainly premium or budget or coverage fit?",
+      "final_response": "Sure, one quick check: is premium pressure causing any issue right now? If it is really coverage fit, say that.",
       "passed": true,
       "previous_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
       "recognition_confidence": "high",
@@ -5834,7 +5834,7 @@
         "product_detail_question"
       ],
       "failures": [],
-      "final_response": "The purpose of Policy Review Call is to check whether premium and budget pressure is worth a licensed coverage review. Should I keep it to that relevance check?",
+      "final_response": "This call is only to check whether a short human review is useful around premium pressure. The quick question is whether that area is causing friction now.",
       "passed": true,
       "previous_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -5926,7 +5926,7 @@
         "what_problem_do_you_solve"
       ],
       "failures": [],
-      "final_response": "It helps check whether premium or budget is the problem worth a licensed coverage review. Should I check that one issue?",
+      "final_response": "Mainly premium pressure. If that is not happening, there is no reason to push a review.",
       "passed": true,
       "previous_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -6019,7 +6019,7 @@
         "why_should_i_care"
       ],
       "failures": [],
-      "final_response": "You should care only if premium or budget is relevant enough for a licensed coverage review. Should I check that one issue?",
+      "final_response": "Only if premium pressure is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
       "passed": true,
       "previous_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -6112,7 +6112,7 @@
         "what_makes_you_different"
       ],
       "failures": [],
-      "final_response": "The useful difference I can state here is limited: can collect general review needs. Should I keep this to one relevance check?",
+      "final_response": "The approved scope here is collecting general review needs. I will not claim more than that on this call.",
       "passed": true,
       "previous_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -6205,7 +6205,7 @@
         "who_is_this_for"
       ],
       "failures": [],
-      "final_response": "It is for policy holder or authorized reviewer. Should I check whether premium or budget applies?",
+      "final_response": "It is for policy holder or authorized reviewer. If that is not you, I can stop or note the right person.",
       "passed": true,
       "previous_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -6298,7 +6298,7 @@
         "is_this_worth_my_time"
       ],
       "failures": [],
-      "final_response": "It is worth your time only if premium or budget is relevant enough for a licensed coverage review. Should I check that?",
+      "final_response": "Only if premium pressure is real enough to justify a short review. If not, no pressure.",
       "passed": true,
       "previous_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -6391,7 +6391,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Correct, I can explain the purpose of the call, but detailed advice belongs with licensed insurance specialist. This call only checks whether a licensed coverage review is useful. Should I check whether premium or budget is relevant, or stop here?",
+      "final_response": "Correct. I can explain the purpose of this call, but detailed policy or product advice belongs with licensed insurance specialist. Since you mentioned premium pressure, this only checks whether a licensed coverage review is useful. I can note a time, or leave it there.",
       "passed": true,
       "previous_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -6871,7 +6871,7 @@
         "already_has_provider"
       ],
       "failures": [],
-      "final_response": "Understood, if your current provider handles this, there may be no need. Should I check one narrow gap, or stop here?",
+      "final_response": "Understood. If your current provider already handles this cleanly, there is no reason to change. The only useful check is whether anything still slips through.",
       "passed": true,
       "previous_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -6962,7 +6962,7 @@
         "price_or_budget_objection"
       ],
       "failures": [],
-      "final_response": "Fair, budget matters. I cannot quote or promise savings here; the useful check is whether premium or budget is worth a licensed coverage review. Should I check that, or stop here?",
+      "final_response": "Fair. Budget matters. I cannot promise savings here; the only useful question is whether the problem costs enough to justify a short review.",
       "passed": true,
       "previous_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -7054,7 +7054,7 @@
         "no_authority_or_needs_approval"
       ],
       "failures": [],
-      "final_response": "Understood, if someone else approves it, the right next step is to involve that person. Should I note that, or stop here?",
+      "final_response": "Understood. Then the useful next step is not to sell you. It is either a short summary for the decision-maker or the right person's contact.",
       "passed": true,
       "previous_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -7144,7 +7144,7 @@
         "wants_proof_or_case_study"
       ],
       "failures": [],
-      "final_response": "Fair, proof should come from approved material or a human follow-up, not a claim from this call. Should I capture where to send a summary, or stop here?",
+      "final_response": "Fair. I will not invent proof on this call. I can only note a request for approved material or a human follow-up.",
       "passed": true,
       "previous_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -7237,7 +7237,7 @@
         "timing_objection"
       ],
       "failures": [],
-      "final_response": "Understood, this week is not good. Should I stop here?",
+      "final_response": "Understood. Timing is not right this week. We can leave it here or note a later callback.",
       "passed": true,
       "previous_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -7326,7 +7326,7 @@
         "no_clear_need"
       ],
       "failures": [],
-      "final_response": "Understood, if there is no current need, I can stop here. Should I stop?",
+      "final_response": "Understood. If there is no need, I will not push. We can stop here.",
       "passed": true,
       "previous_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -7419,7 +7419,7 @@
         "too_busy_now"
       ],
       "failures": [],
-      "final_response": "No problem, I will keep this short. Should I stop here?",
+      "final_response": "No problem. I will not drag this out. We can stop here or leave it for another time.",
       "passed": true,
       "previous_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -10315,7 +10315,7 @@
         "time_constrained_permission"
       ],
       "failures": [],
-      "final_response": "Sure, I will keep it quick: is this mainly manual work or integration risk?",
+      "final_response": "Sure, one quick check: is manual work causing any issue right now? If it is really integration risk, say that.",
       "passed": true,
       "previous_response": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
       "recognition_confidence": "high",
@@ -10403,7 +10403,7 @@
         "time_constrained_permission"
       ],
       "failures": [],
-      "final_response": "Sure, I will keep it quick: is this mainly manual work or integration risk?",
+      "final_response": "Sure, one quick check: is manual work causing any issue right now? If it is really integration risk, say that.",
       "passed": true,
       "previous_response": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
       "recognition_confidence": "high",
@@ -10955,7 +10955,7 @@
         "product_detail_question"
       ],
       "failures": [],
-      "final_response": "The purpose of Operations Workflow Review is to check whether manual workflow load is worth a operations fit review. Should I keep it to that relevance check?",
+      "final_response": "This call is only to check whether a short human review is useful around manual work. The quick question is whether that area is causing friction now.",
       "passed": true,
       "previous_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -11047,7 +11047,7 @@
         "what_problem_do_you_solve"
       ],
       "failures": [],
-      "final_response": "It helps check whether manual work is the problem worth a operations fit review. Should I check that one issue?",
+      "final_response": "Mainly manual work. If that is not happening, there is no reason to push a review.",
       "passed": true,
       "previous_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -11140,7 +11140,7 @@
         "why_should_i_care"
       ],
       "failures": [],
-      "final_response": "You should care only if manual work is relevant enough for a operations fit review. Should I check that one issue?",
+      "final_response": "Only if manual work is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
       "passed": true,
       "previous_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -11233,7 +11233,7 @@
         "what_makes_you_different"
       ],
       "failures": [],
-      "final_response": "The useful difference I can state here is limited: can discuss workflow fit at a general level. Should I keep this to one relevance check?",
+      "final_response": "The approved scope here is discussing workflow fit at a general level. I will not claim more than that on this call.",
       "passed": true,
       "previous_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -11326,7 +11326,7 @@
         "who_is_this_for"
       ],
       "failures": [],
-      "final_response": "It is for operations owner or systems contact. Should I check whether manual work applies?",
+      "final_response": "It is for operations owner or systems contact. If that is not you, I can stop or note the right person.",
       "passed": true,
       "previous_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -11419,7 +11419,7 @@
         "is_this_worth_my_time"
       ],
       "failures": [],
-      "final_response": "It is worth your time only if manual work is relevant enough for a operations fit review. Should I check that?",
+      "final_response": "Only if manual work is real enough to justify a short review. If not, no pressure.",
       "passed": true,
       "previous_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -11512,7 +11512,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Correct, I can explain the purpose of the call, but detailed advice belongs with implementation specialist. This call only checks whether a operations fit review is useful. Should I check whether manual work is relevant, or stop here?",
+      "final_response": "Correct. I can explain the purpose of this call, but detailed policy or product advice belongs with implementation specialist. Since you mentioned manual work, this only checks whether an operations fit review is useful. I can note a time, or leave it there.",
       "passed": true,
       "previous_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -11983,7 +11983,7 @@
         "already_has_provider"
       ],
       "failures": [],
-      "final_response": "Understood, if your current provider handles this, there may be no need. Should I check one narrow gap, or stop here?",
+      "final_response": "Understood. If your current provider already handles this cleanly, there is no reason to change. The only useful check is whether anything still slips through.",
       "passed": true,
       "previous_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -12074,7 +12074,7 @@
         "price_or_budget_objection"
       ],
       "failures": [],
-      "final_response": "Fair, budget matters. I cannot quote or promise savings here; the useful check is whether manual work is worth a operations fit review. Should I check that, or stop here?",
+      "final_response": "Fair. Budget matters. I cannot promise savings here; the only useful question is whether the problem costs enough to justify a short review.",
       "passed": true,
       "previous_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -12166,7 +12166,7 @@
         "no_authority_or_needs_approval"
       ],
       "failures": [],
-      "final_response": "Understood, if someone else approves it, the right next step is to involve that person. Should I note that, or stop here?",
+      "final_response": "Understood. Then the useful next step is not to sell you. It is either a short summary for the decision-maker or the right person's contact.",
       "passed": true,
       "previous_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -12256,7 +12256,7 @@
         "wants_proof_or_case_study"
       ],
       "failures": [],
-      "final_response": "Fair, proof should come from approved material or a human follow-up, not a claim from this call. Should I capture where to send a summary, or stop here?",
+      "final_response": "Fair. I will not invent proof on this call. I can only note a request for approved material or a human follow-up.",
       "passed": true,
       "previous_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -12349,7 +12349,7 @@
         "timing_objection"
       ],
       "failures": [],
-      "final_response": "Understood, this week is not good. Should I stop here?",
+      "final_response": "Understood. Timing is not right this week. We can leave it here or note a later callback.",
       "passed": true,
       "previous_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -12438,7 +12438,7 @@
         "no_clear_need"
       ],
       "failures": [],
-      "final_response": "Understood, if there is no current need, I can stop here. Should I stop?",
+      "final_response": "Understood. If there is no need, I will not push. We can stop here.",
       "passed": true,
       "previous_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -12531,7 +12531,7 @@
         "too_busy_now"
       ],
       "failures": [],
-      "final_response": "No problem, I will keep this short. Should I stop here?",
+      "final_response": "No problem. I will not drag this out. We can stop here or leave it for another time.",
       "passed": true,
       "previous_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -15431,7 +15431,7 @@
         "time_constrained_permission"
       ],
       "failures": [],
-      "final_response": "Sure, I will keep it quick: is this mainly vehicle issue or repair timing?",
+      "final_response": "Sure, one quick check: is the vehicle issue causing trouble right now? If it is really repair timing, say that.",
       "passed": true,
       "previous_response": "Hi, this is Maya calling from Synthetic Automotive Service about Service Advisor Review. I am checking whether a short service advisor inspection review is needed; do you have a minute?",
       "recognition_confidence": "high",
@@ -15519,7 +15519,7 @@
         "time_constrained_permission"
       ],
       "failures": [],
-      "final_response": "Sure, I will keep it quick: is this mainly vehicle issue or repair timing?",
+      "final_response": "Sure, one quick check: is the vehicle issue causing trouble right now? If it is really repair timing, say that.",
       "passed": true,
       "previous_response": "Hi, this is Maya calling from Synthetic Automotive Service about Service Advisor Review. I am checking whether a short service advisor inspection review is needed; do you have a minute?",
       "recognition_confidence": "high",
@@ -16076,7 +16076,7 @@
         "product_detail_question"
       ],
       "failures": [],
-      "final_response": "The purpose of Service Advisor Review is to check whether vehicle issue and inspection need is worth a service advisor inspection review. Should I keep it to that relevance check?",
+      "final_response": "This call is only to check whether a short human review is useful around the vehicle issue. The quick question is whether that area is causing friction now.",
       "passed": true,
       "previous_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -16168,7 +16168,7 @@
         "what_problem_do_you_solve"
       ],
       "failures": [],
-      "final_response": "It helps check whether vehicle issue is the problem worth a service advisor inspection review. Should I check that one issue?",
+      "final_response": "Mainly vehicle issue. If that is not happening, there is no reason to push a review.",
       "passed": true,
       "previous_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -16261,7 +16261,7 @@
         "why_should_i_care"
       ],
       "failures": [],
-      "final_response": "You should care only if vehicle issue is relevant enough for a service advisor inspection review. Should I check that one issue?",
+      "final_response": "Only if vehicle issue is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
       "passed": true,
       "previous_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -16354,7 +16354,7 @@
         "what_makes_you_different"
       ],
       "failures": [],
-      "final_response": "The useful difference I can state here is limited: can collect vehicle issue and timing context. Should I keep this to one relevance check?",
+      "final_response": "The approved scope here is collecting vehicle issue and timing context. I will not claim more than that on this call.",
       "passed": true,
       "previous_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -16447,7 +16447,7 @@
         "who_is_this_for"
       ],
       "failures": [],
-      "final_response": "It is for vehicle owner or authorized driver. Should I check whether vehicle issue applies?",
+      "final_response": "It is for vehicle owner or authorized driver. If that is not you, I can stop or note the right person.",
       "passed": true,
       "previous_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -16540,7 +16540,7 @@
         "is_this_worth_my_time"
       ],
       "failures": [],
-      "final_response": "It is worth your time only if vehicle issue is relevant enough for a service advisor inspection review. Should I check that?",
+      "final_response": "Only if vehicle issue is real enough to justify a short review. If not, no pressure.",
       "passed": true,
       "previous_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -16633,7 +16633,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Correct, I can explain the purpose of the call, but detailed advice belongs with service advisor. This call only checks whether a service advisor inspection review is useful. Should I check whether vehicle issue is relevant, or stop here?",
+      "final_response": "Correct. I can explain the purpose of this call, but detailed policy or product advice belongs with service advisor. Since you mentioned vehicle issue, this only checks whether a service advisor inspection review is useful. I can note a time, or leave it there.",
       "passed": true,
       "previous_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -17104,7 +17104,7 @@
         "already_has_provider"
       ],
       "failures": [],
-      "final_response": "Understood, if your current provider handles this, there may be no need. Should I check one narrow gap, or stop here?",
+      "final_response": "Understood. If your current provider already handles this cleanly, there is no reason to change. The only useful check is whether anything still slips through.",
       "passed": true,
       "previous_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -17195,7 +17195,7 @@
         "price_or_budget_objection"
       ],
       "failures": [],
-      "final_response": "Fair, budget matters. I cannot quote or promise savings here; the useful check is whether vehicle issue is worth a service advisor inspection review. Should I check that, or stop here?",
+      "final_response": "Fair. Budget matters. I cannot promise savings here; the only useful question is whether the problem costs enough to justify a short review.",
       "passed": true,
       "previous_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -17287,7 +17287,7 @@
         "no_authority_or_needs_approval"
       ],
       "failures": [],
-      "final_response": "Understood, if someone else approves it, the right next step is to involve that person. Should I note that, or stop here?",
+      "final_response": "Understood. Then the useful next step is not to sell you. It is either a short summary for the decision-maker or the right person's contact.",
       "passed": true,
       "previous_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -17377,7 +17377,7 @@
         "wants_proof_or_case_study"
       ],
       "failures": [],
-      "final_response": "Fair, proof should come from approved material or a human follow-up, not a claim from this call. Should I capture where to send a summary, or stop here?",
+      "final_response": "Fair. I will not invent proof on this call. I can only note a request for approved material or a human follow-up.",
       "passed": true,
       "previous_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -17470,7 +17470,7 @@
         "timing_objection"
       ],
       "failures": [],
-      "final_response": "Understood, this week is not good. Should I stop here?",
+      "final_response": "Understood. Timing is not right this week. We can leave it here or note a later callback.",
       "passed": true,
       "previous_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -17559,7 +17559,7 @@
         "no_clear_need"
       ],
       "failures": [],
-      "final_response": "Understood, if there is no current need, I can stop here. Should I stop?",
+      "final_response": "Understood. If there is no need, I will not push. We can stop here.",
       "passed": true,
       "previous_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -17652,7 +17652,7 @@
         "too_busy_now"
       ],
       "failures": [],
-      "final_response": "No problem, I will keep this short. Should I stop here?",
+      "final_response": "No problem. I will not drag this out. We can stop here or leave it for another time.",
       "passed": true,
       "previous_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -20552,7 +20552,7 @@
         "time_constrained_permission"
       ],
       "failures": [],
-      "final_response": "Sure, I will keep it quick: is this mainly service need or scheduling urgency?",
+      "final_response": "Sure, one quick check: is the service need active right now? If it is really scheduling urgency, say that.",
       "passed": true,
       "previous_response": "Hi, this is Maya calling from Synthetic Home Services about Service Estimate Call. I am checking whether a short inspection or estimate review is needed; do you have a minute?",
       "recognition_confidence": "high",
@@ -20640,7 +20640,7 @@
         "time_constrained_permission"
       ],
       "failures": [],
-      "final_response": "Sure, I will keep it quick: is this mainly service need or scheduling urgency?",
+      "final_response": "Sure, one quick check: is the service need active right now? If it is really scheduling urgency, say that.",
       "passed": true,
       "previous_response": "Hi, this is Maya calling from Synthetic Home Services about Service Estimate Call. I am checking whether a short inspection or estimate review is needed; do you have a minute?",
       "recognition_confidence": "high",
@@ -21200,7 +21200,7 @@
         "product_detail_question"
       ],
       "failures": [],
-      "final_response": "The purpose of Service Estimate Call is to check whether service need and property context is worth a inspection or estimate review. Should I keep it to that relevance check?",
+      "final_response": "This call is only to check whether a short human review is useful around the service need. The quick question is whether that area is causing friction now.",
       "passed": true,
       "previous_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -21292,7 +21292,7 @@
         "what_problem_do_you_solve"
       ],
       "failures": [],
-      "final_response": "It helps check whether service need is the problem worth a inspection or estimate review. Should I check that one issue?",
+      "final_response": "Mainly service need. If that is not happening, there is no reason to push a review.",
       "passed": true,
       "previous_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -21385,7 +21385,7 @@
         "why_should_i_care"
       ],
       "failures": [],
-      "final_response": "You should care only if service need is relevant enough for a inspection or estimate review. Should I check that one issue?",
+      "final_response": "Only if service need is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
       "passed": true,
       "previous_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -21478,7 +21478,7 @@
         "what_makes_you_different"
       ],
       "failures": [],
-      "final_response": "The useful difference I can state here is limited: can collect scheduling and property context. Should I keep this to one relevance check?",
+      "final_response": "The approved scope here is collecting scheduling and property context. I will not claim more than that on this call.",
       "passed": true,
       "previous_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -21571,7 +21571,7 @@
         "who_is_this_for"
       ],
       "failures": [],
-      "final_response": "It is for homeowner or property contact. Should I check whether service need applies?",
+      "final_response": "It is for homeowner or property contact. If that is not you, I can stop or note the right person.",
       "passed": true,
       "previous_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -21664,7 +21664,7 @@
         "is_this_worth_my_time"
       ],
       "failures": [],
-      "final_response": "It is worth your time only if service need is relevant enough for a inspection or estimate review. Should I check that?",
+      "final_response": "Only if service need is real enough to justify a short review. If not, no pressure.",
       "passed": true,
       "previous_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -21757,7 +21757,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Correct, I can explain the purpose of the call, but detailed advice belongs with qualified service coordinator. This call only checks whether a inspection or estimate review is useful. Should I check whether service need is relevant, or stop here?",
+      "final_response": "Correct. I can explain the purpose of this call, but detailed policy or product advice belongs with qualified service coordinator. Since you mentioned service need, this only checks whether an inspection or estimate review is useful. I can note a time, or leave it there.",
       "passed": true,
       "previous_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -22228,7 +22228,7 @@
         "already_has_provider"
       ],
       "failures": [],
-      "final_response": "Understood, if your current provider handles this, there may be no need. Should I check one narrow gap, or stop here?",
+      "final_response": "Understood. If your current provider already handles this cleanly, there is no reason to change. The only useful check is whether anything still slips through.",
       "passed": true,
       "previous_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -22319,7 +22319,7 @@
         "price_or_budget_objection"
       ],
       "failures": [],
-      "final_response": "Fair, budget matters. I cannot quote or promise savings here; the useful check is whether service need is worth a inspection or estimate review. Should I check that, or stop here?",
+      "final_response": "Fair. Budget matters. I cannot promise savings here; the only useful question is whether the problem costs enough to justify a short review.",
       "passed": true,
       "previous_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -22411,7 +22411,7 @@
         "no_authority_or_needs_approval"
       ],
       "failures": [],
-      "final_response": "Understood, if someone else approves it, the right next step is to involve that person. Should I note that, or stop here?",
+      "final_response": "Understood. Then the useful next step is not to sell you. It is either a short summary for the decision-maker or the right person's contact.",
       "passed": true,
       "previous_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -22501,7 +22501,7 @@
         "wants_proof_or_case_study"
       ],
       "failures": [],
-      "final_response": "Fair, proof should come from approved material or a human follow-up, not a claim from this call. Should I capture where to send a summary, or stop here?",
+      "final_response": "Fair. I will not invent proof on this call. I can only note a request for approved material or a human follow-up.",
       "passed": true,
       "previous_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -22594,7 +22594,7 @@
         "timing_objection"
       ],
       "failures": [],
-      "final_response": "Understood, this week is not good. Should I stop here?",
+      "final_response": "Understood. Timing is not right this week. We can leave it here or note a later callback.",
       "passed": true,
       "previous_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -22683,7 +22683,7 @@
         "no_clear_need"
       ],
       "failures": [],
-      "final_response": "Understood, if there is no current need, I can stop here. Should I stop?",
+      "final_response": "Understood. If there is no need, I will not push. We can stop here.",
       "passed": true,
       "previous_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
       "recognition_confidence": "high",
@@ -22776,7 +22776,7 @@
         "too_busy_now"
       ],
       "failures": [],
-      "final_response": "No problem, I will keep this short. Should I stop here?",
+      "final_response": "No problem. I will not drag this out. We can stop here or leave it for another time.",
       "passed": true,
       "previous_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
       "recognition_confidence": "high",

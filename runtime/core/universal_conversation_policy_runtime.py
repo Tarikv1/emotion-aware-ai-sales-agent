@@ -165,6 +165,12 @@ def _campaign_buyer_role(campaign: dict | None) -> str:
     return _nested_campaign_text(campaign, "target_account_context", "buyer_role", "the person responsible for this area")
 
 
+def _is_routesignal_campaign(campaign: dict | None) -> bool:
+    campaign_id = _campaign_text(campaign, "campaign_id")
+    product = _campaign_product_name(campaign).lower()
+    return campaign_id in ROUTESIGNAL_CAMPAIGN_IDS or product.startswith("routesignal")
+
+
 def _string_items(value: Any) -> list[str]:
     if value is None:
         return []
@@ -196,9 +202,57 @@ def _primary_gap_label(campaign: dict | None) -> str:
         label = str(records[0].get("label") or records[0].get("campaign_gap_id") or "").strip()
         if label:
             return label
-    if _campaign_product_name(campaign).lower().startswith("routesignal"):
+    if _is_routesignal_campaign(campaign):
         return "follow-up gap"
     return "the relevant issue"
+
+
+def _plain_phrase(value: str) -> str:
+    phrase = " ".join(str(value or "").replace("_", " ").split()).strip(" .")
+    return phrase or "the relevant issue"
+
+
+def _human_gap_phrase(label: str) -> str:
+    phrase = _plain_phrase(label).lower()
+    replacements = {
+        "follow-up gap": "inbound demo follow-up slipping",
+        "follow up gap": "inbound demo follow-up slipping",
+        "premium or budget": "premium pressure",
+        "visibility gap": "visibility issue",
+    }
+    if phrase in replacements:
+        return replacements[phrase]
+    if phrase.endswith(" gap"):
+        return f"{phrase[:-4]} issue"
+    return phrase
+
+
+def _primary_gap_phrase(campaign: dict | None) -> str:
+    return _human_gap_phrase(_primary_gap_label(campaign))
+
+
+def _secondary_gap_phrase(campaign: dict | None) -> str:
+    records = _gap_records(campaign)
+    if len(records) < 2:
+        return ""
+    label = str(records[1].get("label") or records[1].get("campaign_gap_id") or "").strip()
+    phrase = _human_gap_phrase(label)
+    return "" if phrase == _primary_gap_phrase(campaign) else phrase
+
+
+def _with_indefinite_article(phrase: str) -> str:
+    cleaned = _plain_phrase(phrase)
+    article = "an" if cleaned[:1].lower() in {"a", "e", "i", "o", "u"} else "a"
+    return f"{article} {cleaned}"
+
+
+def _area_phrase(phrase: str) -> str:
+    cleaned = _plain_phrase(phrase)
+    if cleaned.startswith("the "):
+        return cleaned
+    if cleaned.endswith("issue") or cleaned.endswith("need"):
+        return f"the {cleaned}"
+    return cleaned
 
 
 def _short_gap_pair(campaign: dict | None) -> str:
@@ -206,10 +260,10 @@ def _short_gap_pair(campaign: dict | None) -> str:
     for record in _gap_records(campaign)[:2]:
         label = str(record.get("label") or record.get("campaign_gap_id") or "").strip()
         if label:
-            labels.append(label)
+            labels.append(_human_gap_phrase(label))
     if len(labels) >= 2:
         return f"{labels[0]} or {labels[1]}"
-    return _primary_gap_label(campaign)
+    return _primary_gap_phrase(campaign)
 
 
 def _primary_gap_review_focus(campaign: dict | None) -> str:
@@ -217,15 +271,59 @@ def _primary_gap_review_focus(campaign: dict | None) -> str:
     if records:
         focus = str(records[0].get("review_focus") or records[0].get("definition") or "").strip()
         if focus:
-            return focus
-    return _primary_gap_label(campaign)
+            return _plain_phrase(focus)
+    return _primary_gap_phrase(campaign)
 
 
 def _allowed_claim_summary(campaign: dict | None) -> str:
     claims = _string_items((campaign or {}).get("allowed_claims") if isinstance(campaign, dict) else None)
     if claims:
         return claims[0].rstrip(".")
-    return f"can check whether {_primary_gap_label(campaign)} is worth a {_campaign_appointment_target(campaign)}"
+    return f"can check whether {_primary_gap_phrase(campaign)} is worth {_with_indefinite_article(_campaign_appointment_target(campaign))}"
+
+
+def _approved_scope_response(campaign: dict | None) -> str:
+    claim = _allowed_claim_summary(campaign)
+    lowered = claim.lower()
+    if lowered.startswith("can "):
+        action = claim[4:].strip()
+        gerund = _gerund_action(action)
+        return f"The approved scope here is {gerund}. I will not claim more than that on this call."
+    return f"The approved scope here is {claim}. I will not claim more than that on this call."
+
+
+def _gerund_action(action: str) -> str:
+    cleaned = _plain_phrase(action)
+    for verb, gerund in (
+        ("collect ", "collecting "),
+        ("discuss ", "discussing "),
+        ("arrange ", "arranging "),
+        ("check ", "checking "),
+        ("schedule ", "scheduling "),
+        ("capture ", "capturing "),
+    ):
+        if cleaned.lower().startswith(verb):
+            return gerund + cleaned[len(verb):]
+    return cleaned
+
+
+def _time_pressure_response(campaign: dict | None) -> str:
+    primary_gap = _primary_gap_phrase(campaign)
+    secondary_gap = _secondary_gap_phrase(campaign)
+    if primary_gap == "inbound demo follow-up slipping":
+        question = "is inbound demo follow-up slipping right now?"
+    elif primary_gap.endswith("issue"):
+        question = f"is {_area_phrase(primary_gap)} causing trouble right now?"
+    elif primary_gap.endswith("need"):
+        question = f"is {_area_phrase(primary_gap)} active right now?"
+    else:
+        question = f"is {primary_gap} causing any issue right now?"
+    if secondary_gap:
+        return (
+            f"Sure, one quick check: {question} "
+            f"If it is really {secondary_gap}, say that."
+        )
+    return f"Sure, one quick check: {question}"
 
 
 def _response_shape_category(buyer_move_id: str) -> str | None:
@@ -756,48 +854,70 @@ def render_universal_response_outline(
 ) -> str:
     del session_state
     buyer_move_id = str((frame or {}).get("buyer_move_id") or "")
-    product = _campaign_product_name(campaign)
     target = _campaign_appointment_target(campaign)
+    article_target = _with_indefinite_article(target)
     owner = _campaign_owner(campaign)
     buyer_role = _campaign_buyer_role(campaign)
-    primary_gap = _primary_gap_label(campaign)
-    review_focus = _primary_gap_review_focus(campaign)
-    allowed_summary = _allowed_claim_summary(campaign)
+    primary_gap = _primary_gap_phrase(campaign)
 
     if buyer_move_id == "time_constrained_permission":
-        return f"Sure, I will keep it quick: is this mainly {_short_gap_pair(campaign)}?"
+        return _time_pressure_response(campaign)
 
     if buyer_move_id == "product_detail_question":
-        return f"The purpose of {product} is to check whether {review_focus} is worth a {target}. Should I keep it to that relevance check?"
+        if _is_routesignal_campaign(campaign):
+            return (
+                "RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, "
+                "or handoffs. The quick check is whether that problem exists on your side."
+            )
+        return (
+            f"This call is only to check whether a short human review is useful around {_area_phrase(primary_gap)}. "
+            "The quick question is whether that area is causing friction now."
+        )
     if buyer_move_id == "what_problem_do_you_solve":
-        return f"It helps check whether {primary_gap} is the problem worth a {target}. Should I check that one issue?"
+        return f"Mainly {primary_gap}. If that is not happening, there is no reason to push a review."
     if buyer_move_id == "why_should_i_care":
-        return f"You should care only if {primary_gap} is relevant enough for a {target}. Should I check that one issue?"
+        return f"Only if {primary_gap} is costing time, money, risk, or follow-up quality. If it is not, we can stop here."
     if buyer_move_id == "what_makes_you_different":
-        return f"The useful difference I can state here is limited: {allowed_summary}. Should I keep this to one relevance check?"
+        return _approved_scope_response(campaign)
     if buyer_move_id == "who_is_this_for":
-        return f"It is for {buyer_role}. Should I check whether {primary_gap} applies?"
+        return f"It is for {buyer_role}. If that is not you, I can stop or note the right person."
     if buyer_move_id == "is_this_worth_my_time":
-        return f"It is worth your time only if {primary_gap} is relevant enough for a {target}. Should I check that?"
+        return f"Only if {primary_gap} is real enough to justify a short review. If not, no pressure."
     if buyer_move_id == "scope_limit_question":
-        return f"Correct, I can explain the purpose of the call, but detailed advice belongs with {owner}. This call only checks whether a {target} is useful. Should I check whether {primary_gap} is relevant, or stop here?"
+        return (
+            f"Correct. I can explain the purpose of this call, but detailed policy or product advice belongs with {owner}. "
+            f"Since you mentioned {primary_gap}, this only checks whether {article_target} is useful. "
+            "I can note a time, or leave it there."
+        )
 
     if buyer_move_id == "already_has_provider":
-        return "Understood, if your current provider handles this, there may be no need. Should I check one narrow gap, or stop here?"
+        return (
+            "Understood. If your current provider already handles this cleanly, there is no reason to change. "
+            "The only useful check is whether anything still slips through."
+        )
     if buyer_move_id == "price_or_budget_objection":
-        return f"Fair, budget matters. I cannot quote or promise savings here; the useful check is whether {primary_gap} is worth a {target}. Should I check that, or stop here?"
+        return (
+            "Fair. Budget matters. I cannot promise savings here; the only useful question is whether the problem "
+            "costs enough to justify a short review."
+        )
     if buyer_move_id == "no_authority_or_needs_approval":
-        return "Understood, if someone else approves it, the right next step is to involve that person. Should I note that, or stop here?"
+        return (
+            "Understood. Then the useful next step is not to sell you. It is either a short summary for the "
+            "decision-maker or the right person's contact."
+        )
     if buyer_move_id == "wants_proof_or_case_study":
-        return "Fair, proof should come from approved material or a human follow-up, not a claim from this call. Should I capture where to send a summary, or stop here?"
+        return (
+            "Fair. I will not invent proof on this call. I can only note a request for approved material or a "
+            "human follow-up."
+        )
     if buyer_move_id == "timing_objection":
-        return "Understood, this week is not good. Should I stop here?"
+        return "Understood. Timing is not right this week. We can leave it here or note a later callback."
     if buyer_move_id == "no_clear_need":
-        return "Understood, if there is no current need, I can stop here. Should I stop?"
+        return "Understood. If there is no need, I will not push. We can stop here."
     if buyer_move_id == "too_busy_now":
-        return "No problem, I will keep this short. Should I stop here?"
+        return "No problem. I will not drag this out. We can stop here or leave it for another time."
 
-    return "I hear you. Should I keep this to one relevance check, or stop here?"
+    return "I hear you. I can keep this to one relevance check or leave it there."
 
 
 def universal_response_shape_continuity(
