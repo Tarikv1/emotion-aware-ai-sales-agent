@@ -26,9 +26,14 @@ from runtime.contracts.voice_turn_state_contract import (  # noqa: E402
 from runtime.core.dialogue_reasoner import (  # noqa: E402
     build_reasoning_context,
 )
+from runtime.core import campaign_registry  # noqa: E402
 from runtime.core.dialogue_reasoner_async_enrichment import build_async_enrichment_request  # noqa: E402
 import runtime.core.dialogue_manager as dialogue_manager  # noqa: E402
 import runtime.core.live_voice_session_policy as session_policy  # noqa: E402
+from runtime.entrypoints.generic_campaign_turn import (  # noqa: E402
+    GenericCampaignConfigError,
+    build_generic_campaign_turn_packet_from_config_path,
+)
 from runtime.entrypoints.generate_guarded_response import (  # noqa: E402
     DEFAULT_RETRIEVAL_REGISTRY,
     build_guarded_response_packet,
@@ -265,8 +270,32 @@ def campaign_options(cases_path: Path) -> list[dict]:
     return options
 
 
+def generic_campaign_options(root: Path | None = None) -> list[dict]:
+    options: list[dict] = []
+    for entry in campaign_registry.list_campaign_configs(root):
+        if entry.get("valid") is not True:
+            continue
+        config_path = ROOT / str(entry.get("path") or "")
+        config = campaign_registry.load_campaign_config(config_path)
+        options.append(
+            {
+                "campaign_id": config.get("campaign_id"),
+                "vertical_id": config.get("vertical_id"),
+                "product_or_offer_name": config.get("product_or_offer_name"),
+                "appointment_target": config.get("appointment_target"),
+                "human_followup_owner": config.get("human_followup_owner"),
+                "config_path": project_relative_string(config_path),
+                "language": config.get("language") or "en",
+                "validation_status": "valid",
+            }
+        )
+    return options
+
+
 def build_metadata(args: argparse.Namespace, cases_path: Path, private_out: Path) -> dict:
     profile = load_live_demo_profile()
+    generic_options = generic_campaign_options()
+    default_campaign_config_path = resolve_project_path(getattr(args, "campaign_config", None))
     return {
         "live_demo_id": LIVE_DEMO_ID,
         "purpose": "Talk to the repo-owned sales agent through browser ASR and ElevenLabs voice output.",
@@ -274,11 +303,24 @@ def build_metadata(args: argparse.Namespace, cases_path: Path, private_out: Path
             "host": args.host,
             "port": args.port,
             "url": f"http://{args.host}:{args.port}/",
-            "endpoints": ["/", "/metadata", "/turn", "/audio"],
+            "endpoints": ["/", "/metadata", "/campaigns", "/turn", "/audio"],
         },
         "default_campaign_id": args.campaign,
+        "default_campaign_config_path": project_relative_string(default_campaign_config_path),
         "default_stage": args.stage,
         "campaign_options": campaign_options(cases_path),
+        "generic_campaign_options": generic_options,
+        "campaign_selector": {
+            "default_mode": "generic_config" if default_campaign_config_path else "routesignal_live_demo",
+            "routesignal_default_campaign_id": args.campaign,
+            "generic_config_path_field": "campaign_config_path",
+            "generic_campaign_count": len(generic_options),
+            "generic_campaigns_root": project_relative_string(campaign_registry.DEFAULT_CONFIG_ROOT),
+            "generic_campaigns_use_registry": True,
+            "generic_campaigns_use_config_path_runtime": True,
+            "generic_campaigns_live_tts_enabled_by_default": False,
+            "invalid_generic_config_falls_back_to_routesignal": False,
+        },
         "case_file": project_relative_string(cases_path),
         "fictional_campaign_profile": {
             "profile_id": profile["profile_id"],
@@ -1430,6 +1472,73 @@ def build_turn_packet(
     }
 
 
+def build_browser_demo_turn_packet(
+    *,
+    transcript: str,
+    campaign_id: str,
+    stage: str,
+    input_type: str,
+    silence_count: int,
+    cases_path: Path,
+    private_out: Path,
+    live_tts: bool,
+    force_key_missing: bool,
+    timeout_seconds: float,
+    campaign_config_path: str | Path | None = None,
+    session_id: str | None = None,
+    session_state: dict | None = None,
+    asr_confidence: float | None = None,
+    voice_turn_state: str | None = None,
+) -> dict:
+    selected_config_path = resolve_project_path(str(campaign_config_path)) if campaign_config_path else None
+    if selected_config_path is None:
+        turn = build_turn_packet(
+            transcript=transcript,
+            campaign_id=campaign_id,
+            stage=stage,
+            input_type=input_type,
+            silence_count=silence_count,
+            cases_path=cases_path,
+            private_out=private_out,
+            live_tts=live_tts,
+            force_key_missing=force_key_missing,
+            timeout_seconds=timeout_seconds,
+            session_id=session_id,
+            session_state=session_state,
+            asr_confidence=asr_confidence,
+            voice_turn_state=voice_turn_state,
+        )
+        turn["campaign_selector_mode"] = "routesignal_live_demo"
+        turn["campaign_config_path"] = None
+        return turn
+
+    turn = build_generic_campaign_turn_packet_from_config_path(
+        transcript=transcript,
+        campaign_config_path=selected_config_path,
+        stage=stage,
+        input_type=input_type,
+        silence_count=silence_count,
+        session_id=session_id,
+        session_state=session_state,
+        asr_confidence=asr_confidence,
+        voice_turn_state=voice_turn_state,
+        private_out=private_out / "generic-campaigns",
+        live_tts=False,
+        force_key_missing=True,
+        timeout_seconds=timeout_seconds,
+    )
+    turn["live_demo_id"] = LIVE_DEMO_ID
+    turn["campaign_selector_mode"] = "generic_config"
+    turn["campaign_config_path"] = project_relative_string(selected_config_path)
+    turn["selected_campaign_config"] = {
+        "config_path": project_relative_string(selected_config_path),
+        "live_tts_enabled": False,
+        "route_signal_fallback_used": False,
+    }
+    turn["runtime_behavior_changed"] = False
+    return turn
+
+
 def render_html(metadata: dict) -> str:
     metadata_json = json.dumps(metadata, ensure_ascii=False)
     title = "LIVE-DEMO-001 Agent Voice Call"
@@ -1715,9 +1824,18 @@ def render_html(metadata: dict) -> str:
       }}, submitDelayMs);
     }}
 
-    function campaignLanguage(campaignId) {{
-      const option = metadata.campaign_options.find(item => item.campaign_id === campaignId);
-      return option ? option.language : "en";
+    function selectedCampaignOption() {{
+      return campaign.selectedOptions && campaign.selectedOptions.length ? campaign.selectedOptions[0] : null;
+    }}
+
+    function selectedCampaignConfigPath() {{
+      const option = selectedCampaignOption();
+      return option ? (option.dataset.campaignConfigPath || "") : "";
+    }}
+
+    function campaignLanguage() {{
+      const option = selectedCampaignOption();
+      return option ? (option.dataset.language || "en") : "en";
     }}
 
     function selectFallbackVoice() {{
@@ -1738,16 +1856,33 @@ def render_html(metadata: dict) -> str:
     }}
 
     function syncLanguageToCampaign() {{
-      language.value = campaignLanguage(campaign.value).startsWith("de") ? "de-DE" : "en-US";
+      language.value = campaignLanguage().startsWith("de") ? "de-DE" : "en-US";
     }}
 
+    const routesignalGroup = document.createElement("optgroup");
+    routesignalGroup.label = "RouteSignal live demo";
     metadata.campaign_options.forEach(item => {{
       const option = document.createElement("option");
       option.value = item.campaign_id;
+      option.dataset.language = item.language || "en";
       option.textContent = `${{item.campaign_id}} (${{item.language}})`;
-      if (item.campaign_id === metadata.default_campaign_id) option.selected = true;
-      campaign.appendChild(option);
+      if (!metadata.default_campaign_config_path && item.campaign_id === metadata.default_campaign_id) option.selected = true;
+      routesignalGroup.appendChild(option);
     }});
+    campaign.appendChild(routesignalGroup);
+
+    const genericGroup = document.createElement("optgroup");
+    genericGroup.label = "Generic campaign configs";
+    (metadata.generic_campaign_options || []).forEach(item => {{
+      const option = document.createElement("option");
+      option.value = item.campaign_id;
+      option.dataset.campaignConfigPath = item.config_path;
+      option.dataset.language = item.language || "en";
+      option.textContent = `${{item.campaign_id}} — ${{item.product_or_offer_name}}`;
+      if (metadata.default_campaign_config_path && item.config_path === metadata.default_campaign_config_path) option.selected = true;
+      genericGroup.appendChild(option);
+    }});
+    campaign.appendChild(genericGroup);
     syncLanguageToCampaign();
     campaign.addEventListener("change", syncLanguageToCampaign);
 
@@ -1981,10 +2116,12 @@ def render_html(metadata: dict) -> str:
     }}
 
     function transcriptDownloadPayload() {{
+      const configPath = selectedCampaignConfigPath();
       return {{
         live_demo_id: metadata.live_demo_id,
         session_id: sessionId,
-        campaign_id: campaign.value || metadata.default_campaign_id,
+        campaign_id: configPath ? null : campaign.value || metadata.default_campaign_id,
+        campaign_config_path: configPath || null,
         generated_at: new Date().toISOString(),
         audio_stored: false,
         customer_audio_uploaded_to_python_server: false,
@@ -2027,7 +2164,8 @@ def render_html(metadata: dict) -> str:
           headers: {{ "Content-Type": "application/json" }},
           body: JSON.stringify({{
             transcript: text,
-            campaign_id: campaign.value || metadata.default_campaign_id,
+            campaign_id: selectedCampaignConfigPath() ? null : campaign.value || metadata.default_campaign_id,
+            campaign_config_path: selectedCampaignConfigPath() || null,
             stage: metadata.default_stage,
             input_type: inputTypeOverride,
             session_id: sessionId,
@@ -2208,6 +2346,27 @@ def persist_private_turn(private_out: Path, turn: dict) -> None:
     write_text(report_path, render_report(turn))
 
 
+def campaign_selection_error_payload(exc: Exception, campaign_config_path: str | Path | None) -> dict:
+    return {
+        "error": "invalid generic campaign config selection",
+        "error_type": type(exc).__name__,
+        "message": str(exc),
+        "campaign_config_path": project_relative_string(resolve_project_path(str(campaign_config_path))) if campaign_config_path else None,
+        "route_signal_fallback_used": False,
+        "provider_calls_made": False,
+        "local_llm_calls_made": False,
+        "sends_email": False,
+        "creates_calendar_event": False,
+        "writes_crm": False,
+        "opens_prod_102": False,
+        "provider_agent_used": False,
+        "durable_provider_agent_created": False,
+        "voice_cloning_used": False,
+        "audio_url": None,
+        "live_tts": False,
+    }
+
+
 def safe_audio_path(requested: str, private_out: Path) -> Path:
     candidate = (ROOT / requested).resolve()
     allowed = private_out.resolve()
@@ -2246,6 +2405,16 @@ def make_handler(metadata: dict, cases_path: Path, private_out: Path):
             if parsed.path == "/metadata":
                 self.send_json(metadata)
                 return
+            if parsed.path == "/campaigns":
+                self.send_json(
+                    {
+                        "campaigns": generic_campaign_options(),
+                        "routesignal_campaigns": metadata.get("campaign_options", []),
+                        "default_campaign_id": metadata.get("default_campaign_id"),
+                        "default_campaign_config_path": metadata.get("default_campaign_config_path"),
+                    }
+                )
+                return
             if parsed.path == "/audio":
                 try:
                     requested = parse_qs(parsed.query).get("path", [""])[0]
@@ -2274,22 +2443,28 @@ def make_handler(metadata: dict, cases_path: Path, private_out: Path):
                     return
                 session_id = str(payload.get("session_id") or "default-session")
                 session_state = sessions.setdefault(session_id, {"turns": []})
-                turn = build_turn_packet(
-                    transcript=transcript,
-                    campaign_id=str(payload.get("campaign_id") or metadata["default_campaign_id"]),
-                    stage=str(payload.get("stage") or metadata["default_stage"]),
-                    input_type=str(payload.get("input_type") or "speech-final"),
-                    silence_count=int(payload.get("silence_count") or 0),
-                    cases_path=cases_path,
-                    private_out=private_out,
-                    live_tts=metadata["tts"]["live_tts_enabled"],
-                    force_key_missing=metadata["tts"]["force_key_missing"],
-                    timeout_seconds=float(metadata["tts"]["timeout_seconds"]),
-                    session_id=session_id,
-                    session_state=session_state,
-                    asr_confidence=payload.get("asr_confidence"),
-                    voice_turn_state=payload.get("voice_turn_state") or payload.get("turn_state"),
-                )
+                campaign_config_path = str(payload.get("campaign_config_path") or metadata.get("default_campaign_config_path") or "").strip()
+                try:
+                    turn = build_browser_demo_turn_packet(
+                        transcript=transcript,
+                        campaign_id=str(payload.get("campaign_id") or metadata["default_campaign_id"]),
+                        campaign_config_path=campaign_config_path or None,
+                        stage=str(payload.get("stage") or metadata["default_stage"]),
+                        input_type=str(payload.get("input_type") or "speech-final"),
+                        silence_count=int(payload.get("silence_count") or 0),
+                        cases_path=cases_path,
+                        private_out=private_out,
+                        live_tts=metadata["tts"]["live_tts_enabled"],
+                        force_key_missing=metadata["tts"]["force_key_missing"],
+                        timeout_seconds=float(metadata["tts"]["timeout_seconds"]),
+                        session_id=session_id,
+                        session_state=session_state,
+                        asr_confidence=payload.get("asr_confidence"),
+                        voice_turn_state=payload.get("voice_turn_state") or payload.get("turn_state"),
+                    )
+                except (campaign_registry.CampaignRegistryError, GenericCampaignConfigError) as exc:
+                    self.send_json(campaign_selection_error_payload(exc, campaign_config_path), status=400)
+                    return
                 persist_private_turn(private_out, turn)
                 session_state["turns"].append(
                     {
@@ -2325,6 +2500,7 @@ def serve(metadata: dict, cases_path: Path, private_out: Path) -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run LIVE-DEMO-001: browser mic -> repo agent -> ElevenLabs voice.")
     parser.add_argument("--campaign", default=DEFAULT_CAMPAIGN_ID)
+    parser.add_argument("--campaign-config", help="Local generic campaign config JSON path. Uses dry-run TTS and no RouteSignal fallback.")
     parser.add_argument("--stage", default=DEFAULT_STAGE)
     parser.add_argument("--host", default=DEFAULT_HOST)
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
@@ -2350,6 +2526,8 @@ def main() -> None:
     args = parse_args()
     if args.timeout_seconds <= 0 or args.timeout_seconds > 10:
         raise SystemExit("--timeout-seconds must be greater than 0 and no more than 10.")
+    if args.campaign_config and args.live_tts:
+        raise SystemExit("--campaign-config is limited to dry-run TTS in this phase; omit --live-tts.")
     if args.live_tts and not args.consent_confirmed:
         raise SystemExit("--consent-confirmed is required with --live-tts.")
 
@@ -2365,9 +2543,10 @@ def main() -> None:
     metadata = build_metadata(args, cases_path, private_out)
 
     if args.decision_transcript:
-        turn = build_turn_packet(
+        turn = build_browser_demo_turn_packet(
             transcript=args.decision_transcript,
             campaign_id=args.campaign,
+            campaign_config_path=args.campaign_config,
             stage=args.stage,
             input_type="speech-final",
             silence_count=0,
