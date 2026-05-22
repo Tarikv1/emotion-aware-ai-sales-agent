@@ -1,0 +1,83 @@
+{
+  "audio_url_helper": {
+    "url": "/audio?path=data/private/live-demo-001/audio/file%20name.mp3"
+  },
+  "browser_error_distinction": {
+    "audio_play_caught_separately": true,
+    "does_not_route_audio_to_turn_error": true,
+    "has_audio_error_handler": true,
+    "has_provider_audio_error_message": true
+  },
+  "checkpoint_id": "LIVE-DEMO-TTS-AUDIO-PLAYBACK-001",
+  "existing_private_audio_artifact": {
+    "audio_file_created": true,
+    "audio_output_path": "data\\private\\live-demo-001\\generic-campaigns\\audio\\RESP-003-synthetic-insurance-review-en-elevenlabs-3de21fed.mp3",
+    "audio_url": "data\\private\\live-demo-001\\generic-campaigns\\audio\\RESP-003-synthetic-insurance-review-en-elevenlabs-3de21fed.mp3",
+    "campaign_id": "synthetic-insurance-review",
+    "campaign_selector_mode": "generic_config",
+    "content_type_guess": "audio/mpeg",
+    "exists": true,
+    "extension": ".mp3",
+    "fallback_reason": null,
+    "first_bytes": "49 44 33 04 00 00 00 00 00 23 54 53 53 45 00 00",
+    "found": true,
+    "packet_path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260522-215913.json",
+    "private_root": "data/private/live-demo-001",
+    "provider_calls_made": true,
+    "response_content_type": "audio/mpeg",
+    "signature": "mp3",
+    "size": 152182
+  },
+  "existing_private_audio_serving": {
+    "body_length": 152182,
+    "body_preview": "",
+    "body_signature": "mp3",
+    "content_length_header": "152182",
+    "content_type": "audio/mpeg",
+    "status": 200
+  },
+  "failures": [],
+  "generic_packet_audio_url_normalization": {
+    "audio_file_created": true,
+    "audio_url": "/audio?path=data/private/live-demo-001/generic-campaigns/audio/fake%20provider%20audio.mp3",
+    "provider_calls_made": true,
+    "selected_live_tts_enabled": true
+  },
+  "live_provider_call_used": false,
+  "passed": true,
+  "secret_like_content_found": false,
+  "synthetic_audio_serving": {
+    "invalid_text_mp3": {
+      "body_length": 104,
+      "body_preview": "{\n  \"error\": \"invalid audio artifact\",\n  \"message\": \"audio content does not match .mp3: detected text\"\n}",
+      "body_signature": "json-or-text",
+      "content_length_header": "104",
+      "content_type": "application/json; charset=utf-8",
+      "status": 415
+    },
+    "missing": {
+      "body_length": 42,
+      "body_preview": "{\n  \"error\": \"audio file does not exist\"\n}",
+      "body_signature": "json-or-text",
+      "content_length_header": "42",
+      "content_type": "application/json; charset=utf-8",
+      "status": 404
+    },
+    "outside_private": {
+      "body_length": 67,
+      "body_preview": "{\n  \"error\": \"audio path is outside LIVE-DEMO-001 private output\"\n}",
+      "body_signature": "json-or-text",
+      "content_length_header": "67",
+      "content_type": "application/json; charset=utf-8",
+      "status": 404
+    },
+    "valid": {
+      "body_length": 60,
+      "body_preview": "",
+      "body_signature": "wav",
+      "content_length_header": "60",
+      "content_type": "audio/wav",
+      "status": 200
+    }
+  }
+}

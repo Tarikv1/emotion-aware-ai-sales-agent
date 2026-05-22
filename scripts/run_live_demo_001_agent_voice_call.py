@@ -4,14 +4,13 @@ from __future__ import annotations
 import argparse
 import html
 import json
-import mimetypes
 import os
 import re
 import sys
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, quote, urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -70,6 +69,11 @@ GENERIC_LIVE_TTS_WARNING = (
     "Generic campaign live TTS is enabled. Generated agent text may be sent to ElevenLabs. "
     "Customer audio is not sent to Python or the TTS provider."
 )
+SUPPORTED_AUDIO_CONTENT_TYPES = {
+    ".mp3": "audio/mpeg",
+    ".wav": "audio/wav",
+    ".ogg": "audio/ogg",
+}
 SECRET_PATTERN = re.compile(
     r"(sk-[A-Za-z0-9_-]{20,}|sk_[A-Za-z0-9-]{20,}|ELEVENLABS_API_KEY\s*=\s*[^\s]+|xi-api-key\s*[:=]\s*[A-Za-z0-9]|Authorization:\s*Bearer\s+[A-Za-z0-9])"
 )
@@ -492,11 +496,57 @@ def decision_summary(packet: dict) -> dict:
     }
 
 
+class AudioArtifactError(ValueError):
+    pass
+
+
+def audio_signature_for_bytes(data: bytes) -> str:
+    if not data:
+        return "empty"
+    if data.startswith(b"ID3") or (len(data) >= 2 and data[0] == 0xFF and (data[1] & 0xE0) == 0xE0):
+        return "mp3"
+    if data.startswith(b"RIFF") and data[8:12] == b"WAVE":
+        return "wav"
+    if data.startswith(b"OggS"):
+        return "ogg"
+    stripped = data.lstrip()
+    if stripped.startswith((b"{", b"[")):
+        return "json-or-text"
+    if all((byte in b"\r\n\t" or 32 <= byte < 127) for byte in data[: min(len(data), 12)]):
+        return "text"
+    return "unknown"
+
+
+def audio_signature_for_file(path: Path) -> str:
+    with path.open("rb") as handle:
+        return audio_signature_for_bytes(handle.read(16))
+
+
+def browser_audio_content_type(path: Path) -> str:
+    if not path.exists() or not path.is_file():
+        raise FileNotFoundError("audio file not found")
+    if path.stat().st_size <= 0:
+        raise AudioArtifactError("audio file is empty")
+    suffix = path.suffix.lower()
+    content_type = SUPPORTED_AUDIO_CONTENT_TYPES.get(suffix)
+    if not content_type:
+        raise AudioArtifactError(f"unsupported audio extension: {suffix or '(none)'}")
+    signature = audio_signature_for_file(path)
+    expected_signature = suffix.lstrip(".")
+    if expected_signature == "mp3" and signature == "mp3":
+        return content_type
+    if expected_signature == "wav" and signature == "wav":
+        return content_type
+    if expected_signature == "ogg" and signature == "ogg":
+        return content_type
+    raise AudioArtifactError(f"audio content does not match {suffix}: detected {signature}")
+
+
 def audio_url_for_packet(packet: dict) -> str | None:
-    output = packet["tts_delivery"].get("audio_output_path")
+    output = (packet.get("tts_delivery") or {}).get("audio_output_path")
     if not output:
         return None
-    return "/audio?path=" + output.replace("\\", "/")
+    return "/audio?path=" + quote(str(output).replace("\\", "/"), safe="/")
 
 
 def browser_fallback_speech_text(text: str) -> str:
@@ -1618,6 +1668,7 @@ def build_browser_demo_turn_packet(
     turn["live_demo_id"] = LIVE_DEMO_ID
     turn["campaign_config_path"] = project_relative_string(selected_config_path)
     turn["vertical_id"] = selected_config.get("vertical_id")
+    turn["audio_url"] = audio_url_for_packet(turn.get("packet") or {})
     turn["selected_campaign_config"] = {
         "campaign_id": selected_config.get("campaign_id"),
         "vertical_id": selected_config.get("vertical_id"),
@@ -2092,6 +2143,53 @@ def render_html(metadata: dict) -> str:
       );
     }}
 
+    function handleAudioPlaybackError(error, payload) {{
+      autoConversation = false;
+      stopRecognitionForAgentTurn();
+      if (!audio.paused) audio.pause();
+      const errorName = error && error.name ? error.name : "AudioPlaybackError";
+      const errorMessage = error && error.message ? error.message : String(error || "unknown audio playback error");
+      const operatorMessage = "Provider audio could not be played. Review audio diagnostics or use Browser Fallback Voice manually.";
+      campaignError.textContent = `${{operatorMessage}} ${{errorName}}: ${{errorMessage}}`;
+      campaignError.classList.remove("hidden");
+      setVoiceTurnState(VOICE_TURN_STATES.PAUSED, operatorMessage);
+      const audioErrorPayload = {{
+        audio_playback_error: true,
+        error_type: errorName,
+        message: errorMessage,
+        audio_url: payload.audio_url || null,
+        campaign_selector_mode: payload.campaign_selector_mode || selectedCampaignTrace().campaign_selector_mode,
+        campaign_config_path: payload.campaign_config_path || selectedCampaignConfigPath() || null,
+        provider_calls_made: payload.provider_calls_made === true,
+        tts_provider_calls_made: payload.tts_provider_calls_made === true || payload.summary.tts_provider_calls_made === true,
+        audio_file_created: payload.audio_file_created === true || payload.summary.tts_audio_file_created === true
+      }};
+      decision.textContent = JSON.stringify({{
+        campaign_selector_mode: payload.campaign_selector_mode,
+        campaign_config_path: payload.campaign_config_path,
+        selected_campaign_config: payload.selected_campaign_config,
+        campaign_id: payload.campaign_id,
+        campaign_playbook_id: payload.campaign_playbook_id,
+        call_control: payload.summary.call_control,
+        audio_playback_error: audioErrorPayload
+      }}, null, 2);
+      boundary.textContent = JSON.stringify({{
+        provider_calls_made: payload.provider_calls_made === true,
+        local_llm_calls_made: payload.local_llm_calls_made === true,
+        sends_email: payload.sends_email === true,
+        creates_calendar_event: payload.creates_calendar_event === true,
+        writes_crm: payload.writes_crm === true,
+        opens_prod_102: payload.opens_prod_102 === true,
+        live_tts_used: payload.live_tts_used === true,
+        tts_provider_calls_made: payload.tts_provider_calls_made === true || payload.summary.tts_provider_calls_made === true,
+        audio_file_created: payload.audio_file_created === true || payload.summary.tts_audio_file_created === true,
+        customer_audio_uploaded_to_python_server: payload.customer_audio_uploaded_to_python_server === true,
+        customer_audio_uploaded_to_tts_provider: payload.customer_audio_uploaded_to_tts_provider === true,
+        fallback_reason: payload.summary.tts_fallback_reason,
+        audio_playback_error: audioErrorPayload
+      }}, null, 2);
+    }}
+
     function campaignLanguage() {{
       const option = selectedCampaignOption();
       return option ? (option.dataset.language || "en") : "en";
@@ -2543,7 +2641,11 @@ def render_html(metadata: dict) -> str:
           audio.src = payload.audio_url;
           audio.volume = AGENT_PLAYBACK_VOLUME;
           setVoiceTurnState(VOICE_TURN_STATES.AGENT_SPEAKING, "Agent speaking...");
-          await audio.play();
+          try {{
+            await audio.play();
+          }} catch (audioError) {{
+            handleAudioPlaybackError(audioError, payload);
+          }}
         }} else {{
           audio.removeAttribute("src");
           if (fromAutoConversation) {{
@@ -2804,12 +2906,17 @@ def make_handler(metadata: dict, cases_path: Path, private_out: Path):
                 try:
                     requested = parse_qs(parsed.query).get("path", [""])[0]
                     audio_path = safe_audio_path(requested, private_out)
+                    content_type = browser_audio_content_type(audio_path)
                     body = audio_path.read_bytes()
                     self.send_response(200)
-                    self.send_header("Content-Type", mimetypes.guess_type(str(audio_path))[0] or "application/octet-stream")
+                    self.send_header("Content-Type", content_type)
                     self.send_header("Content-Length", str(len(body)))
                     self.end_headers()
                     self.wfile.write(body)
+                except AudioArtifactError as exc:
+                    self.send_json({"error": "invalid audio artifact", "message": str(exc)}, status=415)
+                except FileNotFoundError:
+                    self.send_json({"error": "audio not found"}, status=404)
                 except Exception as exc:
                     self.send_json({"error": str(exc)}, status=404)
                 return
