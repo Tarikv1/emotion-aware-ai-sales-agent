@@ -29,7 +29,7 @@ Status convention:
 
 ## Checkpoint Board
 
-Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped dialogue-policy validation, baseline voice/runtime quality, supervised live voice acceptance, realtime turn-taking stabilization, interrupt/pace/product-plan precision, live transcript reviewability, compact memory hardening, plain early qualification, provider TTS phrase-flow polish, appointment-setting MVP close behavior, live-feedback route polish, terminal stop handling, stale-context recovery, plain sales clarity, appointment timing repair, and thesis evidence preservation.
+Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped dialogue-policy validation, baseline voice/runtime quality, supervised live voice acceptance, realtime turn-taking stabilization, interrupt/pace/product-plan precision, live transcript reviewability, compact memory hardening, plain early qualification, provider TTS phrase-flow polish, appointment-setting MVP close behavior, live-feedback route polish, terminal stop handling, stale-context recovery, plain sales clarity, appointment timing repair, generic campaign-playbook resolution, cross-vertical smoke evidence, and thesis evidence preservation.
 
 Current checkpoint:
 
@@ -38,6 +38,7 @@ Current checkpoint:
 Next checkpoints:
 
 - [ ] Next: if Tarik's live listening rejects `LIVE-DEMO-014`, create one narrow follow-up from the observed failure: manager route priority, pragmatic-move coverage, wording, ASR misunderstanding, turn-taking, acknowledgement, stale-context repair, appointment timing, or voice delivery. Do not broaden into full autonomous sale closure, local LLM wiring, or `PROD-102` until appointment-setting behavior is heard as usable.
+- [ ] Next before live non-RouteSignal routing: define a narrow runtime integration gate for generic campaign configs. `CAMPAIGN-PLAYBOOK-ADAPTER-002` proves offline resolution only; do not route non-RouteSignal campaigns through live speech until the campaign config review contract, regulated-caution handling, and RouteSignal regression boundary are explicit.
 - [ ] Parked after `PROD-101` until Tarik resumes: select the next remaining English customer-move classifier slice only if recommendation-roleplay positives, adjacent controls, and the stable English guard pass.
 - [ ] Next after `PROD-079`: select the next remaining English customer-move classifier slice only if provider-comparison regression stays stable.
 - [ ] Future persuasion-tactics checkpoint candidate: define and test `guided_option_selection` only after current coverage-boundary/runtime regression work is stable. Guardrails: use only after fit or interest is established, present two real options fairly, preserve `neither`, `not now`, and `explain the difference`, avoid fake urgency, and never pretend the customer already agreed.
@@ -64,6 +65,16 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `CAMPAIGN-PLAYBOOK-ADAPTER-002-cross-vertical-smoke`, which extends `runtime/core/campaign_playbook_adapter.py` so synthetic generic campaign configs with `vertical_id`, `diagnostic_gaps`, `core_diagnostic_gaps`, and `gap_order` resolve without falling back to `ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001`. It validates B2B SaaS, insurance, telecom, home services, healthcare admin or medical equipment, automotive service, membership or subscription, and retail or ecommerce support-sales smoke campaigns in memory only, requires known universal pain and qualification dimensions, requires vertical regulated cautions and blocked-claim coverage, keeps all side-effect flags false, preserves the RouteSignal default/live campaign behavior, and records generated evidence under `research/experiments/generated/CAMPAIGN-PLAYBOOK-ADAPTER-002-cross-vertical-smoke/`. It does not integrate non-RouteSignal campaigns into live runtime routing.
+
+- [x] `CAMPAIGN-PLAYBOOK-ADAPTER-001`, which moves the RouteSignal diagnostic playbook behind `runtime/core/campaign_playbook_adapter.py`, maps RouteSignal gaps to universal pain and qualification dimensions, blocks direct RouteSignal playbook import from contextual buyer semantics, preserves RouteSignal gap IDs, labels, order, review focus labels, and selected behavior cases, and records generated evidence under `research/experiments/generated/CAMPAIGN-PLAYBOOK-ADAPTER-001/`. It changes the source boundary but not the current RouteSignal live-demo behavior.
+
+- [x] `UNIVERSAL-SALES-KNOWLEDGE-001` and `VERTICAL-SALES-PLAYBOOKS-001`, which add product-agnostic sales stages, buyer move families, qualification dimensions, generic pain dimensions, objection families, safe next-action policies, call-control rules, regulated vertical cautions, and compact vertical playbook skeletons for B2B SaaS, insurance, telecom, home services, healthcare admin or medical equipment, automotive service, membership or subscription, and retail/ecommerce support-sales. The preceding `UNIVERSAL-SALES-KNOWLEDGE-000-generalization-boundary-audit` explicitly decided not to treat RouteSignal as universal knowledge.
+
+- [x] `CONTEXTUAL-BUYER-SEMANTICS-001` through `CONTEXTUAL-BUYER-SEMANTICS-010-diagnostic-playbook`, which add and validate context-sensitive buyer interpretation, sequential dialogue replay, memory alignment, semantic-memory invariants, outgoing question state, send-info contact capture, send-info action contracts, contact/time normalization, right-person handoff, and RouteSignal diagnostic playbook use. These checkpoints keep provider calls, local LLM calls, email sending, calendar creation, CRM writes, real customer data, and `PROD-102` disabled while proving the runtime uses previous-agent-question context and outgoing diagnostic scope.
+
+- [x] Runtime manifest and drift-guard traceability update, which records the new contextual semantics, diagnostic playbook, universal sales knowledge, vertical playbook, and campaign adapter modules in `runtime/runtime_manifest.json`, and extends the drift-guard timeout to cover the expanded offline validator set. This is traceability infrastructure only; it does not add provider calls, live routing, CRM/email/calendar side effects, or `PROD-102`.
 
 - [x] `LIVE-DEMO-014-clear-pain-callback-followup`, which follows Tarik's live listening feedback after `DIALOGUE-MANAGER-003` that the agent still ignored `it's all clear`, contradicted stated missed-callback pain with `if clean` wording, used unexplained `Growth` jargon, treated `think about it` as a stop, and failed to capture a time after callback-later agreement. It adds explicit pragmatic routes and policy wording for those cases, keeps bare callback pain on a Northstar workflow-review usefulness ask before any callback-time capture, records generated evidence under `research/experiments/generated/LIVE-DEMO-014-clear-pain-callback-followup/`, keeps provider calls disabled by default, and does not install or wire a local LLM. It keeps `PROD-102`, payment collection, contracts, provider-hosted durable agents, voice cloning, provider ASR, LLM-written final speech, real customer use, production promotion, and full autonomous sale closure blocked.
 
@@ -409,6 +420,10 @@ The first concrete B2C client example is a German call center selling consumer i
 
 The product simulation runner now supports campaign wrappers, so one reusable core can be exercised across multiple client/product profiles while preserving per-campaign guardrails. The mixed case sets are examples of that breadth, not the boundary of the product.
 
+`CAMPAIGN-PLAYBOOK-ADAPTER-002` now proves the next layer of that model offline: generic campaign dictionaries can resolve to campaign-specific diagnostic playbooks through universal sales knowledge and vertical playbooks, while RouteSignal remains the only live-demo routed campaign. Non-RouteSignal live routing is still a future gated integration step, not a current runtime behavior.
+
+The contextual buyer semantics layer is now a separate thesis-relevant evidence chain. It proves that customer moves must be interpreted against previous-agent-question context, outgoing diagnostic scope, durable semantic memory, send-info/contact state, callback timing state, and right-person handoff state. This is part of the reusable dialogue core, while the current diagnostic vocabulary remains campaign-owned through the adapter.
+
 The next product-learning priority is difficulty-first: strengthen the reusable core against universal sales objections and edge cases before expanding aggressively into more industries.
 
 The product runtime priority is low latency. The live call path should be a fast real-time sales-agent core with deterministic guardrails and short bridge responses when slower lookup is needed. Specialist modules or sub-agents should support background compliance, product lookup, CRM work, handoff preparation, and post-call learning rather than blocking every customer-facing reply.
@@ -571,6 +586,10 @@ Current integrated prototype evidence:
 - runtime live-capable TTS bridge in `RESP-003`, with dry-run default, explicit live opt-in, generated-audio asset logging, and protected-text fallback to exact `final_response`
 - first bilingual RESP-003 ElevenLabs live TTS run, with German and English audio created, no customer audio upload, no voice cloning, and sub-second provider latency in both cases
 - first bilingual RESP-003 human listening review, finding clear pronunciation but voice still too slow and obviously AI-generated for real leads
+- contextual buyer semantics 001-010, which add previous-question-sensitive buyer interpretation, outgoing diagnostic-scope memory, send-info/contact capture, callback/contact-time normalization, right-person handoff, and diagnostic playbook trace evidence without provider calls or external side effects
+- universal sales knowledge and vertical playbook modules, which separate product-agnostic sales reasoning and regulated-vertical caution defaults from the RouteSignal/Northstar campaign
+- campaign playbook adapter 001/002, which preserves current RouteSignal behavior while proving generic synthetic campaign configs can resolve offline across eight verticals
+- runtime manifest and drift-guard coverage for the contextual semantics, diagnostic playbook, universal sales knowledge, vertical playbook, and campaign adapter modules
 
 Out of scope:
 

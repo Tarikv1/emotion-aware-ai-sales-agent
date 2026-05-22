@@ -16,6 +16,54 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-21 - Runtime manifest and drift-guard traceability for dialogue-core generalization
+
+- Objective: keep the project manifest and drift guard aligned with the new dialogue-core and campaign-playbook modules created during contextual semantics, universal sales knowledge, vertical playbook, and campaign adapter work.
+- Action taken: updated `runtime/runtime_manifest.json` so it explicitly lists `runtime/core/contextual_buyer_semantics.py`, `runtime/core/sales_diagnostic_playbook.py`, `runtime/core/universal_sales_knowledge.py`, `runtime/core/vertical_sales_playbooks.py`, and `runtime/core/campaign_playbook_adapter.py`; extended `scripts/validate_project_drift_guard.py` timeout from 30 seconds to 60 seconds for the expanded offline validator set.
+- Data used: repository-local module paths, generated validator evidence, and deterministic project validators only. No provider call, live TTS, web research, private transcript, real customer data, local LLM, CRM write, email send, calendar event, production promotion, or `PROD-102` work was used.
+- Output created: manifest/drift-guard maintenance in `runtime/runtime_manifest.json` and `scripts/validate_project_drift_guard.py`; this is validation and traceability infrastructure, not live runtime routing.
+- Why it matters for the thesis: the new abstraction chain is now visible to the runtime manifest and guarded by the project drift checker instead of existing only as loose files and generated evidence.
+
+### 2026-05-21 - CAMPAIGN-PLAYBOOK-ADAPTER-002 cross-vertical smoke
+
+- Objective: prove that the campaign playbook adapter can resolve generic non-RouteSignal campaign configs without changing the current RouteSignal live-demo behavior or opening live non-RouteSignal routing.
+- Action taken: added a generic config path in `runtime/core/campaign_playbook_adapter.py`, preserving `None`, `live-demo-001-routesignal`, and `campaign-prod-005-b2b-software` as RouteSignal paths; added an in-memory cross-vertical smoke validator for synthetic campaigns across B2B SaaS, insurance, telecom, home services, healthcare admin or medical equipment, automotive service, membership or subscription, and retail or ecommerce support-sales.
+- Data used: synthetic campaign dictionaries and existing universal/vertical playbook modules only. No provider call, live TTS, web research, private transcript, real customer data, local LLM, CRM write, email send, calendar event, production promotion, or `PROD-102` work was used.
+- Output created: updates to `runtime/core/campaign_playbook_adapter.py`, `scripts/validate_campaign_playbook_adapter_002_cross_vertical_smoke.py`, and generated evidence under `research/experiments/generated/CAMPAIGN-PLAYBOOK-ADAPTER-002-cross-vertical-smoke/`.
+- What was learned: the RouteSignal diagnostic playbook can now be treated as one campaign-specific playbook behind a universal-to-vertical-to-campaign adapter chain, but generic campaign configs still need an explicit live-runtime integration gate before they can affect spoken behavior.
+- Why it matters for the thesis: it strengthens the claim that the sales-agent core is campaign-configurable rather than hard-coded to the RouteSignal sandbox, while preserving reproducibility, regulated-vertical caution coverage, and side-effect-free validation.
+- Open questions: what minimal runtime routing contract should safely admit a non-RouteSignal campaign, how real campaign configs should be reviewed before use, and whether vertical-specific caution text should remain adapter metadata or become part of the live dialogue manager.
+
+### 2026-05-21 - CAMPAIGN-PLAYBOOK-ADAPTER-001 RouteSignal adapter boundary
+
+- Objective: move the RouteSignal diagnostic playbook behind a campaign adapter without changing the current live-demo semantics, gap labels, gap order, review focus labels, or validators.
+- Action taken: added `runtime/core/campaign_playbook_adapter.py`; mapped RouteSignal gaps to universal pain and qualification dimensions; blocked direct `sales_diagnostic_playbook` import from `contextual_buyer_semantics.py`; preserved the legacy helper surface consumed by the dialogue runtime; and validated behavior preservation on callbacks clear, callbacks pain, duplicates pain, and visibility pain.
+- Data used: existing RouteSignal diagnostic playbook definitions, synthetic live-demo replay turns, universal sales knowledge, and vertical playbooks. No provider call, private transcript, real customer data, local LLM, CRM write, email send, calendar event, production promotion, or `PROD-102` work was used.
+- Output created: `runtime/core/campaign_playbook_adapter.py`, `scripts/validate_campaign_playbook_adapter_001.py`, and generated evidence under `research/experiments/generated/CAMPAIGN-PLAYBOOK-ADAPTER-001/`.
+- What was learned: the current RouteSignal behavior can be preserved while changing the dependency direction: contextual semantics can consume an adapter contract instead of treating one campaign's diagnostic playbook as universal truth.
+- Why it matters for the thesis: it is the first concrete product-architecture separation between reusable sales-agent reasoning and campaign-specific product knowledge.
+- Open questions: which RouteSignal-only response templates should later move behind campaign configuration, and what minimum regression set is required before live non-RouteSignal routing can be admitted.
+
+### 2026-05-21 - Universal sales knowledge and vertical playbook boundary
+
+- Objective: separate universal sales reasoning primitives and vertical-level caution defaults from the RouteSignal/Northstar live-demo campaign.
+- Action taken: recorded a generalization boundary audit; added `runtime/core/universal_sales_knowledge.py` with product-agnostic sales stages, buyer move families, qualification dimensions, pain dimensions, objection families, next-action policies, call-control rules, and regulated vertical cautions; added `runtime/core/vertical_sales_playbooks.py` with non-integrated vertical skeletons for B2B SaaS, insurance, telecom, home services, healthcare admin or medical equipment, automotive service, membership or subscription, and retail or ecommerce support-sales.
+- Data used: targeted reads of the existing contextual semantics runtime, dialogue manager, RouteSignal diagnostic playbook, live voice policy surfaces, validators, and generated evidence. No private transcripts, provider calls, live TTS, web research, real customer data, local LLM, CRM/email/calendar side effects, production promotion, or `PROD-102` work was used.
+- Output created: `runtime/core/universal_sales_knowledge.py`, `runtime/core/vertical_sales_playbooks.py`, `scripts/validate_universal_sales_knowledge_001.py`, `scripts/validate_vertical_sales_playbooks_001.py`, generated evidence under `research/experiments/generated/UNIVERSAL-SALES-KNOWLEDGE-000-generalization-boundary-audit/`, `research/experiments/generated/UNIVERSAL-SALES-KNOWLEDGE-001/`, and `research/experiments/generated/VERTICAL-SALES-PLAYBOOKS-001/`.
+- What was learned: the reusable core should be concepts like buyer move, qualification dimension, call-control policy, side-effect safety, and regulated caution. RouteSignal callbacks, manual tracking, handoffs, Starter, Growth, Northstar, and pricing facts belong in campaign-level material.
+- Why it matters for the thesis: it gives the project a defensible abstraction chain for cross-vertical sales adaptation instead of claiming generality from one B2B SaaS demo.
+- Open questions: how much vertical default behavior should be allowed before human campaign review, and how to prove vertical caution metadata affects live speech safely without turning the runtime into generic legal/compliance advice.
+
+### 2026-05-21 - CONTEXTUAL-BUYER-SEMANTICS-001 through 010
+
+- Objective: repair and validate context-sensitive buyer interpretation so the runtime uses the agent's actual previous question, outgoing diagnostic scope, durable memory, and campaign diagnostic playbook instead of treating buyer phrases as context-free keywords.
+- Action taken: added `runtime/core/contextual_buyer_semantics.py` and validators `001` through `010` covering previous-question-sensitive semantics, sequential dialogue replay, memory alignment, semantic-memory invariants, outgoing question state, send-info contact capture, explicit send-info action contracts, contact/time normalization, right-person handoff, and RouteSignal diagnostic playbook use.
+- Data used: synthetic live-demo turns and generated replay packets for the fictional `Northstar Workflow Labs` / `RouteSignal CRM` campaign. Synthetic emails and contact details were redacted from public evidence. No provider call, live TTS, private transcript, real customer data, local LLM, email send, calendar event, CRM write, production promotion, or `PROD-102` work was used.
+- Output created: `runtime/core/contextual_buyer_semantics.py`, `runtime/core/sales_diagnostic_playbook.py`, `scripts/validate_contextual_buyer_semantics_001.py` through `scripts/validate_contextual_buyer_semantics_010_diagnostic_playbook.py`, and generated evidence under `research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-001/` through `research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-010-diagnostic-playbook/`.
+- What was learned: the live-demo failures were state-ownership failures, not just missing phrase lists. Buyer language such as clear/no-pain, send-info, callback, right-person, and pain confirmation must be interpreted against the immediately preceding agent question and stored outgoing diagnostic scope.
+- Why it matters for the thesis: this creates inspectable evidence for dialogue-state adaptation, buyer agency preservation, and side-effect-safe lead follow-up handling before any broader LLM or provider integration.
+- Open questions: which contextual semantics should be made campaign-agnostic after the adapter boundary, and which RouteSignal-specific diagnostic examples should remain only as campaign regression tests.
+
 ### 2026-05-21 - LIVE-DEMO-014 clear pain callback follow-up
 
 - Objective: fix Tarik's latest supervised ElevenLabs feedback after `DIALOGUE-MANAGER-003` without broad-rewriting the runtime, installing a local LLM, or opening `PROD-102`.

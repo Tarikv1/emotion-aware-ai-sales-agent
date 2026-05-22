@@ -65,6 +65,65 @@
       ]
     },
     {
+      "path": "runtime/core/contextual_buyer_semantics.py",
+      "path_type": "file",
+      "tier": "core-runtime-behavior",
+      "runtime_role": "Contextual buyer semantics layer that interprets buyer utterances against the previous question, active gap, confirmed pain, cleared gaps, and pending callback or appointment state before pragmatic routing.",
+      "behavior_surface": [
+        "buyer meaning classification",
+        "dialogue manager route priority",
+        "no-pain and refusal handling",
+        "conversation memory gap state"
+      ]
+    },
+    {
+      "path": "runtime/core/sales_diagnostic_playbook.py",
+      "path_type": "file",
+      "tier": "core-runtime-behavior",
+      "runtime_role": "Compact deterministic diagnostic playbook for RouteSignal gap definitions, next diagnostic selection, review focus labels, and product-vs-contact routing distinction.",
+      "behavior_surface": [
+        "diagnostic gap definitions",
+        "next diagnostic selection",
+        "review focus labels",
+        "product routing distinction"
+      ]
+    },
+    {
+      "path": "runtime/core/universal_sales_knowledge.py",
+      "path_type": "file",
+      "tier": "core-runtime-knowledge",
+      "runtime_role": "Product-agnostic universal sales knowledge primitives for stages, buyer move families, qualification dimensions, generic pain dimensions, objection families, safe next-action policies, call-control rules, and regulated-vertical cautions. Not integrated into route selection yet.",
+      "behavior_surface": [
+        "sales knowledge contract",
+        "decision-support primitives",
+        "regulated caution boundaries"
+      ]
+    },
+    {
+      "path": "runtime/core/vertical_sales_playbooks.py",
+      "path_type": "file",
+      "tier": "core-runtime-knowledge",
+      "runtime_role": "Non-integrated vertical sales adapter skeletons between universal sales knowledge and campaign-specific playbooks, covering required call-center sales verticals with safe discovery, qualification, caution, and handoff patterns.",
+      "behavior_surface": [
+        "vertical sales adapter contract",
+        "vertical discovery patterns",
+        "regulated caution mapping",
+        "campaign configuration requirements"
+      ]
+    },
+    {
+      "path": "runtime/core/campaign_playbook_adapter.py",
+      "path_type": "file",
+      "tier": "core-runtime-knowledge",
+      "runtime_role": "Campaign playbook adapter that resolves universal sales knowledge, vertical sales playbook defaults, and the RouteSignal campaign diagnostic playbook into a single behavior-preserving campaign gap surface for contextual semantics.",
+      "behavior_surface": [
+        "campaign playbook resolution",
+        "RouteSignal campaign boundary",
+        "gap-to-universal mapping",
+        "semantic playbook trace"
+      ]
+    },
+    {
       "path": "runtime/core/dialogue_reasoner.py",
       "path_type": "file",
       "tier": "core-runtime-behavior",
@@ -124,6 +183,19 @@
         "composer hooks"
       ],
       "legacy_path": "scripts/generate_guarded_response.py"
+    },
+    {
+      "path": "runtime/entrypoints/generic_campaign_turn.py",
+      "path_type": "file",
+      "tier": "core-runtime-entrypoint",
+      "runtime_role": "Reusable local entrypoint for running in-memory generic campaign configs through deterministic dialogue manager planning, guarded response assembly, conversation memory, and dry-run voice/TTS packet attachment without campaign case-file lookup.",
+      "behavior_surface": [
+        "generic campaign config validation",
+        "runtime input shape",
+        "turn output shape",
+        "dry-run voice delivery",
+        "dry-run TTS delivery"
+      ]
     },
     {
       "path": "runtime/contracts/product_agent_output_contract.py",

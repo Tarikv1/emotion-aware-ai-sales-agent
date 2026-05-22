@@ -380,7 +380,7 @@ def run_guard(root: Path) -> subprocess.CompletedProcess[str]:
         text=True,
         capture_output=True,
         check=False,
-        timeout=30,
+        timeout=60,
     )
 
 

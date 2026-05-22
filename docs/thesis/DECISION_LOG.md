@@ -15,6 +15,27 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-121 - Split universal sales knowledge from campaign playbooks before non-RouteSignal live routing
+
+- Date: 2026-05-21
+- Status: accepted
+- Decision: keep RouteSignal as one campaign playbook behind `campaign_playbook_adapter`, add product-agnostic `universal_sales_knowledge`, add vertical-level playbook defaults, and require a separate runtime integration gate before any non-RouteSignal campaign affects live speech.
+- Why:
+  - the contextual buyer semantics, dialogue manager action contract, call-control state, send-info/contact state, callback timing state, and right-person handoff state are reusable core behavior
+  - RouteSignal gaps, Northstar wording, Starter/Growth plan facts, `$29`/`$59` pricing, inbound-demo callbacks, manual tracking, handoffs, routing, duplicates, and visibility are campaign-specific facts, not universal sales knowledge
+  - synthetic cross-vertical resolution is useful evidence only if it does not silently change the accepted RouteSignal live-demo behavior
+  - regulated verticals need explicit caution and blocked-claim metadata before any live customer-facing routing
+- Alternatives considered:
+  - keep extending the RouteSignal diagnostic playbook as if it were universal
+  - integrate generic campaign configs directly into live routing after adapter smoke tests
+  - create separate hard-coded runtimes per vertical
+- Consequences:
+  - `runtime/core/universal_sales_knowledge.py`, `runtime/core/vertical_sales_playbooks.py`, `runtime/core/sales_diagnostic_playbook.py`, and `runtime/core/campaign_playbook_adapter.py` form the current abstraction chain
+  - `runtime/runtime_manifest.json` and `scripts/validate_project_drift_guard.py` now track the expanded dialogue-core and campaign-playbook surface for project drift evidence
+  - `CONTEXTUAL-BUYER-SEMANTICS-001` through `010` remain valid RouteSignal-shaped/runtime-state evidence, not proof of every vertical
+  - `CAMPAIGN-PLAYBOOK-ADAPTER-002` proves generic synthetic campaign config resolution in memory only
+  - live non-RouteSignal routing, provider calls, local LLM calls, CRM writes, email sending, calendar events, real customer data, production promotion, full autonomous sale closure, and `PROD-102` remain blocked until an explicit integration checkpoint
+
 ### DEC-120 - Promote only safe English wording in PROD-053E
 
 - Date: 2026-05-15
