@@ -1,0 +1,1157 @@
+{
+  "checkpoint_id": "CAMPAIGN-REGISTRY-001",
+  "creates_calendar_event": false,
+  "evidence": {
+    "config_path_runtime": {
+      "b2b_saas": {
+        "config_path": "runtime\\campaigns\\examples\\synthetic-b2b-saas-operations.json",
+        "expected_gap": "visibility_gap",
+        "pain_phrase": "visibility is a problem",
+        "turns": [
+          {
+            "audio_url": null,
+            "call_control": "continue-call",
+            "campaign_id": "synthetic-b2b-saas-operations",
+            "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+            "lead_followup_state": {},
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-b2b-saas-operations-playbook",
+            "playbook_review_focus": null,
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "no_contextual_semantic",
+            "sends_email": false,
+            "target_gap": null,
+            "transcript": "__agent_open__",
+            "tts_input_text": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          },
+          {
+            "audio_url": null,
+            "call_control": "continue-call",
+            "campaign_id": "synthetic-b2b-saas-operations",
+            "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+            "lead_followup_state": {},
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-b2b-saas-operations-playbook",
+            "playbook_review_focus": null,
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "permission_acknowledgement",
+            "sends_email": false,
+            "target_gap": null,
+            "transcript": "yeah sure",
+            "tts_input_text": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          },
+          {
+            "audio_url": null,
+            "call_control": "continue-call",
+            "campaign_id": "synthetic-b2b-saas-operations",
+            "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+            "lead_followup_state": {},
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-b2b-saas-operations-playbook",
+            "playbook_review_focus": "visibility into workflow status",
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "pain_confirmed",
+            "sends_email": false,
+            "target_gap": "visibility_gap",
+            "transcript": "visibility is a problem",
+            "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          },
+          {
+            "audio_url": null,
+            "call_control": "schedule-and-end",
+            "campaign_id": "synthetic-b2b-saas-operations",
+            "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Confirmed. I will note that time for the operations fit review. Goodbye.",
+            "lead_followup_state": {
+              "appointment": {
+                "confirmation_text": "workflow review time captured",
+                "confirmed": true,
+                "type": "workflow_review"
+              },
+              "callback": {
+                "needs_clarification": false,
+                "normalized": {
+                  "confidence": 0.9,
+                  "date_text": "tomorrow",
+                  "day_text": null,
+                  "meridiem": "unknown",
+                  "relative_date": "tomorrow",
+                  "time_text": "3"
+                },
+                "raw_text_redacted": "tomorrow at 3 works"
+              },
+              "capture_status": "callback_time_captured",
+              "contact": {
+                "email_hash": null,
+                "email_redacted": null,
+                "email_source": "none",
+                "email_valid": false,
+                "raw_email_stored_in_public_evidence": false
+              },
+              "lead_status": "open_workflow_review",
+              "requested_summary_type": "workflow_review",
+              "safety": {
+                "creates_calendar_event": false,
+                "local_llm_calls_made": false,
+                "provider_calls_made": false,
+                "sends_email": false,
+                "stores_private_contact_in_public_evidence": false,
+                "writes_crm": false
+              },
+              "schema_version": 1
+            },
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-b2b-saas-operations-playbook",
+            "playbook_review_focus": "visibility into workflow status",
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "appointment_time_given",
+            "sends_email": false,
+            "target_gap": "visibility_gap",
+            "transcript": "tomorrow at 3 works",
+            "tts_input_text": "Confirmed. I will note that time for the operations fit review. Goodbye.",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          }
+        ]
+      },
+      "home_services": {
+        "config_path": "runtime\\campaigns\\examples\\synthetic-home-services-estimate.json",
+        "expected_gap": "estimate_or_property_details",
+        "pain_phrase": "estimate is unclear",
+        "turns": [
+          {
+            "audio_url": null,
+            "call_control": "continue-call",
+            "campaign_id": "synthetic-home-services-estimate",
+            "campaign_playbook_id": "synthetic-home-services-estimate-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Hi, this is Maya calling from Synthetic Home Services about Service Estimate Call. I am checking whether a short inspection or estimate review is needed; do you have a minute?",
+            "lead_followup_state": {},
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-home-services-estimate-playbook",
+            "playbook_review_focus": null,
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "no_contextual_semantic",
+            "sends_email": false,
+            "target_gap": null,
+            "transcript": "__agent_open__",
+            "tts_input_text": "Hi, this is Maya calling from Synthetic Home Services about Service Estimate Call. I am checking whether a short inspection or estimate review is needed; do you have a minute?",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          },
+          {
+            "audio_url": null,
+            "call_control": "continue-call",
+            "campaign_id": "synthetic-home-services-estimate",
+            "campaign_playbook_id": "synthetic-home-services-estimate-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
+            "lead_followup_state": {},
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-home-services-estimate-playbook",
+            "playbook_review_focus": null,
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "permission_acknowledgement",
+            "sends_email": false,
+            "target_gap": null,
+            "transcript": "yeah sure",
+            "tts_input_text": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          },
+          {
+            "audio_url": null,
+            "call_control": "continue-call",
+            "campaign_id": "synthetic-home-services-estimate",
+            "campaign_playbook_id": "synthetic-home-services-estimate-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short inspection or estimate review; what time works for that review?",
+            "lead_followup_state": {},
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-home-services-estimate-playbook",
+            "playbook_review_focus": "estimate details and property context",
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "pain_confirmed",
+            "sends_email": false,
+            "target_gap": "estimate_or_property_details",
+            "transcript": "estimate is unclear",
+            "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short inspection or estimate review; what time works for that review?",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          },
+          {
+            "audio_url": null,
+            "call_control": "schedule-and-end",
+            "campaign_id": "synthetic-home-services-estimate",
+            "campaign_playbook_id": "synthetic-home-services-estimate-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Confirmed. I will note that time for the inspection or estimate review. Goodbye.",
+            "lead_followup_state": {
+              "appointment": {
+                "confirmation_text": "workflow review time captured",
+                "confirmed": true,
+                "type": "workflow_review"
+              },
+              "callback": {
+                "needs_clarification": false,
+                "normalized": {
+                  "confidence": 0.9,
+                  "date_text": "tomorrow",
+                  "day_text": null,
+                  "meridiem": "unknown",
+                  "relative_date": "tomorrow",
+                  "time_text": "3"
+                },
+                "raw_text_redacted": "tomorrow at 3 works"
+              },
+              "capture_status": "callback_time_captured",
+              "contact": {
+                "email_hash": null,
+                "email_redacted": null,
+                "email_source": "none",
+                "email_valid": false,
+                "raw_email_stored_in_public_evidence": false
+              },
+              "lead_status": "open_workflow_review",
+              "requested_summary_type": "workflow_review",
+              "safety": {
+                "creates_calendar_event": false,
+                "local_llm_calls_made": false,
+                "provider_calls_made": false,
+                "sends_email": false,
+                "stores_private_contact_in_public_evidence": false,
+                "writes_crm": false
+              },
+              "schema_version": 1
+            },
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-home-services-estimate-playbook",
+            "playbook_review_focus": "estimate details and property context",
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "appointment_time_given",
+            "sends_email": false,
+            "target_gap": "estimate_or_property_details",
+            "transcript": "tomorrow at 3 works",
+            "tts_input_text": "Confirmed. I will note that time for the inspection or estimate review. Goodbye.",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          }
+        ]
+      },
+      "insurance": {
+        "config_path": "runtime\\campaigns\\examples\\synthetic-insurance-review.json",
+        "expected_gap": "premium_or_budget",
+        "pain_phrase": "premium is a problem",
+        "turns": [
+          {
+            "audio_url": null,
+            "call_control": "continue-call",
+            "campaign_id": "synthetic-insurance-review",
+            "campaign_playbook_id": "synthetic-insurance-review-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+            "lead_followup_state": {},
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-insurance-review-playbook",
+            "playbook_review_focus": null,
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "no_contextual_semantic",
+            "sends_email": false,
+            "target_gap": null,
+            "transcript": "__agent_open__",
+            "tts_input_text": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          },
+          {
+            "audio_url": null,
+            "call_control": "continue-call",
+            "campaign_id": "synthetic-insurance-review",
+            "campaign_playbook_id": "synthetic-insurance-review-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
+            "lead_followup_state": {},
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-insurance-review-playbook",
+            "playbook_review_focus": null,
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "permission_acknowledgement",
+            "sends_email": false,
+            "target_gap": null,
+            "transcript": "yeah sure",
+            "tts_input_text": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          },
+          {
+            "audio_url": null,
+            "call_control": "continue-call",
+            "campaign_id": "synthetic-insurance-review",
+            "campaign_playbook_id": "synthetic-insurance-review-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+            "lead_followup_state": {},
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-insurance-review-playbook",
+            "playbook_review_focus": "premium and budget pressure",
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "pain_confirmed",
+            "sends_email": false,
+            "target_gap": "premium_or_budget",
+            "transcript": "premium is a problem",
+            "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          },
+          {
+            "audio_url": null,
+            "call_control": "schedule-and-end",
+            "campaign_id": "synthetic-insurance-review",
+            "campaign_playbook_id": "synthetic-insurance-review-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Confirmed. I will note that time for the licensed coverage review. Goodbye.",
+            "lead_followup_state": {
+              "appointment": {
+                "confirmation_text": "workflow review time captured",
+                "confirmed": true,
+                "type": "workflow_review"
+              },
+              "callback": {
+                "needs_clarification": false,
+                "normalized": {
+                  "confidence": 0.9,
+                  "date_text": "tomorrow",
+                  "day_text": null,
+                  "meridiem": "unknown",
+                  "relative_date": "tomorrow",
+                  "time_text": "3"
+                },
+                "raw_text_redacted": "tomorrow at 3 works"
+              },
+              "capture_status": "callback_time_captured",
+              "contact": {
+                "email_hash": null,
+                "email_redacted": null,
+                "email_source": "none",
+                "email_valid": false,
+                "raw_email_stored_in_public_evidence": false
+              },
+              "lead_status": "open_workflow_review",
+              "requested_summary_type": "workflow_review",
+              "safety": {
+                "creates_calendar_event": false,
+                "local_llm_calls_made": false,
+                "provider_calls_made": false,
+                "sends_email": false,
+                "stores_private_contact_in_public_evidence": false,
+                "writes_crm": false
+              },
+              "schema_version": 1
+            },
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-insurance-review-playbook",
+            "playbook_review_focus": "coverage fit against policy details",
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "appointment_time_given",
+            "sends_email": false,
+            "target_gap": "coverage_fit",
+            "transcript": "tomorrow at 3 works",
+            "tts_input_text": "Confirmed. I will note that time for the licensed coverage review. Goodbye.",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          }
+        ]
+      },
+      "telecom": {
+        "config_path": "runtime\\campaigns\\examples\\synthetic-telecom-plan-review.json",
+        "expected_gap": "coverage_or_availability",
+        "pain_phrase": "coverage is the issue",
+        "turns": [
+          {
+            "audio_url": null,
+            "call_control": "continue-call",
+            "campaign_id": "synthetic-telecom-plan-review",
+            "campaign_playbook_id": "synthetic-telecom-plan-review-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Hi, this is Maya calling from Synthetic Telecom Provider about Plan Review Call. I am checking whether a short human plan and availability review is needed; do you have a minute?",
+            "lead_followup_state": {},
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-telecom-plan-review-playbook",
+            "playbook_review_focus": null,
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "no_contextual_semantic",
+            "sends_email": false,
+            "target_gap": null,
+            "transcript": "__agent_open__",
+            "tts_input_text": "Hi, this is Maya calling from Synthetic Telecom Provider about Plan Review Call. I am checking whether a short human plan and availability review is needed; do you have a minute?",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          },
+          {
+            "audio_url": null,
+            "call_control": "continue-call",
+            "campaign_id": "synthetic-telecom-plan-review",
+            "campaign_playbook_id": "synthetic-telecom-plan-review-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Thanks, I am checking plan fit, coverage or availability, or contract or switching. Which one is causing trouble, if any?",
+            "lead_followup_state": {},
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-telecom-plan-review-playbook",
+            "playbook_review_focus": null,
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "permission_acknowledgement",
+            "sends_email": false,
+            "target_gap": null,
+            "transcript": "yeah sure",
+            "tts_input_text": "Thanks, I am checking plan fit, coverage or availability, or contract or switching. Which one is causing trouble, if any?",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          },
+          {
+            "audio_url": null,
+            "call_control": "continue-call",
+            "campaign_id": "synthetic-telecom-plan-review",
+            "campaign_playbook_id": "synthetic-telecom-plan-review-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short human plan and availability review; what time works for that review?",
+            "lead_followup_state": {},
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-telecom-plan-review-playbook",
+            "playbook_review_focus": "coverage and availability fit",
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "pain_confirmed",
+            "sends_email": false,
+            "target_gap": "coverage_or_availability",
+            "transcript": "coverage is the issue",
+            "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short human plan and availability review; what time works for that review?",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          },
+          {
+            "audio_url": null,
+            "call_control": "schedule-and-end",
+            "campaign_id": "synthetic-telecom-plan-review",
+            "campaign_playbook_id": "synthetic-telecom-plan-review-playbook",
+            "creates_calendar_event": false,
+            "durable_provider_agent_created": false,
+            "final_response": "Confirmed. I will note that time for the human plan and availability review. Goodbye.",
+            "lead_followup_state": {
+              "appointment": {
+                "confirmation_text": "workflow review time captured",
+                "confirmed": true,
+                "type": "workflow_review"
+              },
+              "callback": {
+                "needs_clarification": false,
+                "normalized": {
+                  "confidence": 0.9,
+                  "date_text": "tomorrow",
+                  "day_text": null,
+                  "meridiem": "unknown",
+                  "relative_date": "tomorrow",
+                  "time_text": "3"
+                },
+                "raw_text_redacted": "tomorrow at 3 works"
+              },
+              "capture_status": "callback_time_captured",
+              "contact": {
+                "email_hash": null,
+                "email_redacted": null,
+                "email_source": "none",
+                "email_valid": false,
+                "raw_email_stored_in_public_evidence": false
+              },
+              "lead_status": "open_workflow_review",
+              "requested_summary_type": "workflow_review",
+              "safety": {
+                "creates_calendar_event": false,
+                "local_llm_calls_made": false,
+                "provider_calls_made": false,
+                "sends_email": false,
+                "stores_private_contact_in_public_evidence": false,
+                "writes_crm": false
+              },
+              "schema_version": 1
+            },
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "playbook_id": "synthetic-telecom-plan-review-playbook",
+            "playbook_review_focus": "coverage and availability fit",
+            "provider_agent_used": false,
+            "provider_calls_made": false,
+            "semantic": "appointment_time_given",
+            "sends_email": false,
+            "target_gap": null,
+            "transcript": "tomorrow at 3 works",
+            "tts_input_text": "Confirmed. I will note that time for the human plan and availability review. Goodbye.",
+            "voice_cloning_used": false,
+            "writes_crm": false
+          }
+        ]
+      }
+    },
+    "examples_load": {
+      "automotive_service": {
+        "adapter_validation": {
+          "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+          "campaign_playbook_id": "synthetic-automotive-service-review-playbook",
+          "failures": [],
+          "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+          "valid": true,
+          "vertical_id": "automotive_service"
+        },
+        "campaign_id": "synthetic-automotive-service-review",
+        "campaign_playbook_id": "synthetic-automotive-service-review-playbook",
+        "path": "runtime\\campaigns\\examples\\synthetic-automotive-service-review.json",
+        "registry_entry": {
+          "appointment_target": "service advisor inspection review",
+          "campaign_id": "synthetic-automotive-service-review",
+          "failures": [],
+          "path": "runtime\\campaigns\\examples\\synthetic-automotive-service-review.json",
+          "product_or_offer_name": "Service Advisor Review",
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "valid": true,
+          "validation_status": "valid",
+          "vertical_id": "automotive_service"
+        },
+        "validation": {
+          "campaign_id": "synthetic-automotive-service-review",
+          "failures": [],
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "schema_version": 1,
+          "valid": true,
+          "vertical_id": "automotive_service"
+        },
+        "vertical_id": "automotive_service"
+      },
+      "b2b_saas": {
+        "adapter_validation": {
+          "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+          "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
+          "failures": [],
+          "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+          "valid": true,
+          "vertical_id": "b2b_saas"
+        },
+        "campaign_id": "synthetic-b2b-saas-operations",
+        "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
+        "path": "runtime\\campaigns\\examples\\synthetic-b2b-saas-operations.json",
+        "registry_entry": {
+          "appointment_target": "operations fit review",
+          "campaign_id": "synthetic-b2b-saas-operations",
+          "failures": [],
+          "path": "runtime\\campaigns\\examples\\synthetic-b2b-saas-operations.json",
+          "product_or_offer_name": "Operations Workflow Review",
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "valid": true,
+          "validation_status": "valid",
+          "vertical_id": "b2b_saas"
+        },
+        "validation": {
+          "campaign_id": "synthetic-b2b-saas-operations",
+          "failures": [],
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "schema_version": 1,
+          "valid": true,
+          "vertical_id": "b2b_saas"
+        },
+        "vertical_id": "b2b_saas"
+      },
+      "healthcare_admin": {
+        "adapter_validation": {
+          "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+          "campaign_playbook_id": "synthetic-healthcare-admin-review-playbook",
+          "failures": [],
+          "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+          "valid": true,
+          "vertical_id": "healthcare_admin_or_medical_equipment"
+        },
+        "campaign_id": "synthetic-healthcare-admin-review",
+        "campaign_playbook_id": "synthetic-healthcare-admin-review-playbook",
+        "path": "runtime\\campaigns\\examples\\synthetic-healthcare-admin-review.json",
+        "registry_entry": {
+          "appointment_target": "specialist human review",
+          "campaign_id": "synthetic-healthcare-admin-review",
+          "failures": [],
+          "path": "runtime\\campaigns\\examples\\synthetic-healthcare-admin-review.json",
+          "product_or_offer_name": "Specialist Review Call",
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "valid": true,
+          "validation_status": "valid",
+          "vertical_id": "healthcare_admin_or_medical_equipment"
+        },
+        "validation": {
+          "campaign_id": "synthetic-healthcare-admin-review",
+          "failures": [],
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "schema_version": 1,
+          "valid": true,
+          "vertical_id": "healthcare_admin_or_medical_equipment"
+        },
+        "vertical_id": "healthcare_admin_or_medical_equipment"
+      },
+      "home_services": {
+        "adapter_validation": {
+          "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+          "campaign_playbook_id": "synthetic-home-services-estimate-playbook",
+          "failures": [],
+          "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+          "valid": true,
+          "vertical_id": "home_services"
+        },
+        "campaign_id": "synthetic-home-services-estimate",
+        "campaign_playbook_id": "synthetic-home-services-estimate-playbook",
+        "path": "runtime\\campaigns\\examples\\synthetic-home-services-estimate.json",
+        "registry_entry": {
+          "appointment_target": "inspection or estimate review",
+          "campaign_id": "synthetic-home-services-estimate",
+          "failures": [],
+          "path": "runtime\\campaigns\\examples\\synthetic-home-services-estimate.json",
+          "product_or_offer_name": "Service Estimate Call",
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "valid": true,
+          "validation_status": "valid",
+          "vertical_id": "home_services"
+        },
+        "validation": {
+          "campaign_id": "synthetic-home-services-estimate",
+          "failures": [],
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "schema_version": 1,
+          "valid": true,
+          "vertical_id": "home_services"
+        },
+        "vertical_id": "home_services"
+      },
+      "insurance": {
+        "adapter_validation": {
+          "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+          "campaign_playbook_id": "synthetic-insurance-review-playbook",
+          "failures": [],
+          "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+          "valid": true,
+          "vertical_id": "insurance"
+        },
+        "campaign_id": "synthetic-insurance-review",
+        "campaign_playbook_id": "synthetic-insurance-review-playbook",
+        "path": "runtime\\campaigns\\examples\\synthetic-insurance-review.json",
+        "registry_entry": {
+          "appointment_target": "licensed coverage review",
+          "campaign_id": "synthetic-insurance-review",
+          "failures": [],
+          "path": "runtime\\campaigns\\examples\\synthetic-insurance-review.json",
+          "product_or_offer_name": "Policy Review Call",
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "valid": true,
+          "validation_status": "valid",
+          "vertical_id": "insurance"
+        },
+        "validation": {
+          "campaign_id": "synthetic-insurance-review",
+          "failures": [],
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "schema_version": 1,
+          "valid": true,
+          "vertical_id": "insurance"
+        },
+        "vertical_id": "insurance"
+      },
+      "membership": {
+        "adapter_validation": {
+          "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+          "campaign_playbook_id": "synthetic-membership-plan-review-playbook",
+          "failures": [],
+          "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+          "valid": true,
+          "vertical_id": "membership_or_subscription"
+        },
+        "campaign_id": "synthetic-membership-plan-review",
+        "campaign_playbook_id": "synthetic-membership-plan-review-playbook",
+        "path": "runtime\\campaigns\\examples\\synthetic-membership-plan-review.json",
+        "registry_entry": {
+          "appointment_target": "account support or plan-fit review",
+          "campaign_id": "synthetic-membership-plan-review",
+          "failures": [],
+          "path": "runtime\\campaigns\\examples\\synthetic-membership-plan-review.json",
+          "product_or_offer_name": "Plan Support Call",
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "valid": true,
+          "validation_status": "valid",
+          "vertical_id": "membership_or_subscription"
+        },
+        "validation": {
+          "campaign_id": "synthetic-membership-plan-review",
+          "failures": [],
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "schema_version": 1,
+          "valid": true,
+          "vertical_id": "membership_or_subscription"
+        },
+        "vertical_id": "membership_or_subscription"
+      },
+      "retail_support": {
+        "adapter_validation": {
+          "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+          "campaign_playbook_id": "synthetic-retail-support-review-playbook",
+          "failures": [],
+          "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+          "valid": true,
+          "vertical_id": "retail_or_ecommerce_support_sales"
+        },
+        "campaign_id": "synthetic-retail-support-review",
+        "campaign_playbook_id": "synthetic-retail-support-review-playbook",
+        "path": "runtime\\campaigns\\examples\\synthetic-retail-support-review.json",
+        "registry_entry": {
+          "appointment_target": "product or order support review",
+          "campaign_id": "synthetic-retail-support-review",
+          "failures": [],
+          "path": "runtime\\campaigns\\examples\\synthetic-retail-support-review.json",
+          "product_or_offer_name": "Product Support Call",
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "valid": true,
+          "validation_status": "valid",
+          "vertical_id": "retail_or_ecommerce_support_sales"
+        },
+        "validation": {
+          "campaign_id": "synthetic-retail-support-review",
+          "failures": [],
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "schema_version": 1,
+          "valid": true,
+          "vertical_id": "retail_or_ecommerce_support_sales"
+        },
+        "vertical_id": "retail_or_ecommerce_support_sales"
+      },
+      "telecom": {
+        "adapter_validation": {
+          "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+          "campaign_playbook_id": "synthetic-telecom-plan-review-playbook",
+          "failures": [],
+          "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+          "valid": true,
+          "vertical_id": "telecom"
+        },
+        "campaign_id": "synthetic-telecom-plan-review",
+        "campaign_playbook_id": "synthetic-telecom-plan-review-playbook",
+        "path": "runtime\\campaigns\\examples\\synthetic-telecom-plan-review.json",
+        "registry_entry": {
+          "appointment_target": "human plan and availability review",
+          "campaign_id": "synthetic-telecom-plan-review",
+          "failures": [],
+          "path": "runtime\\campaigns\\examples\\synthetic-telecom-plan-review.json",
+          "product_or_offer_name": "Plan Review Call",
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "valid": true,
+          "validation_status": "valid",
+          "vertical_id": "telecom"
+        },
+        "validation": {
+          "campaign_id": "synthetic-telecom-plan-review",
+          "failures": [],
+          "registry_id": "CAMPAIGN-REGISTRY-001",
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "schema_version": 1,
+          "valid": true,
+          "vertical_id": "telecom"
+        },
+        "vertical_id": "telecom"
+      }
+    },
+    "invalid_config_rejection": {
+      "missing_appointment_target": {
+        "load_error": {
+          "message": "invalid campaign config: missing required fields: ['appointment_target']",
+          "type": "CampaignConfigValidationError"
+        },
+        "path": ".tmp\\CAMPAIGN-REGISTRY-001\\invalid-configs\\missing_appointment_target.json",
+        "runtime_error": {
+          "message": "invalid campaign config: missing required fields: ['appointment_target']",
+          "type": "CampaignConfigValidationError"
+        }
+      },
+      "missing_blocked_claims_regulated": {
+        "load_error": {
+          "message": "invalid campaign config: missing required fields: ['blocked_claims']; blocked_claims: regulated verticals require at least one blocked claim",
+          "type": "CampaignConfigValidationError"
+        },
+        "path": ".tmp\\CAMPAIGN-REGISTRY-001\\invalid-configs\\missing_blocked_claims_regulated.json",
+        "runtime_error": {
+          "message": "invalid campaign config: missing required fields: ['blocked_claims']; blocked_claims: regulated verticals require at least one blocked claim",
+          "type": "CampaignConfigValidationError"
+        }
+      },
+      "missing_diagnostic_gaps": {
+        "load_error": {
+          "message": "invalid campaign config: missing required fields: ['diagnostic_gaps']; diagnostic_gaps: must be a populated object; core_diagnostic_gaps: unknown gaps ['coverage_fit', 'premium_or_budget', 'renewal_or_timing']; gap_order: unknown gaps ['coverage_fit', 'premium_or_budget', 'renewal_or_timing']",
+          "type": "CampaignConfigValidationError"
+        },
+        "path": ".tmp\\CAMPAIGN-REGISTRY-001\\invalid-configs\\missing_diagnostic_gaps.json",
+        "runtime_error": {
+          "message": "invalid campaign config: missing required fields: ['diagnostic_gaps']; diagnostic_gaps: must be a populated object; core_diagnostic_gaps: unknown gaps ['coverage_fit', 'premium_or_budget', 'renewal_or_timing']; gap_order: unknown gaps ['coverage_fit', 'premium_or_budget', 'renewal_or_timing']",
+          "type": "CampaignConfigValidationError"
+        }
+      },
+      "missing_human_followup_owner": {
+        "load_error": {
+          "message": "invalid campaign config: missing required fields: ['human_followup_owner']",
+          "type": "CampaignConfigValidationError"
+        },
+        "path": ".tmp\\CAMPAIGN-REGISTRY-001\\invalid-configs\\missing_human_followup_owner.json",
+        "runtime_error": {
+          "message": "invalid campaign config: missing required fields: ['human_followup_owner']",
+          "type": "CampaignConfigValidationError"
+        }
+      },
+      "unknown_universal_pain_dimension": {
+        "load_error": {
+          "message": "invalid campaign config: diagnostic_gaps.premium_or_budget: unknown universal_pain_dimensions ['not_a_real_pain_dimension']",
+          "type": "CampaignConfigValidationError"
+        },
+        "path": ".tmp\\CAMPAIGN-REGISTRY-001\\invalid-configs\\unknown_universal_pain_dimension.json",
+        "runtime_error": {
+          "message": "invalid campaign config: diagnostic_gaps.premium_or_budget: unknown universal_pain_dimensions ['not_a_real_pain_dimension']",
+          "type": "CampaignConfigValidationError"
+        }
+      },
+      "unsupported_vertical_id": {
+        "load_error": {
+          "message": "invalid campaign config: unsupported vertical_id: unsupported_vertical",
+          "type": "CampaignConfigValidationError"
+        },
+        "path": ".tmp\\CAMPAIGN-REGISTRY-001\\invalid-configs\\unsupported_vertical_id.json",
+        "runtime_error": {
+          "message": "invalid campaign config: unsupported vertical_id: unsupported_vertical",
+          "type": "CampaignConfigValidationError"
+        }
+      }
+    },
+    "registry_import": {
+      "import_error": null,
+      "imported": true
+    },
+    "registry_listing": [
+      {
+        "appointment_target": "service advisor inspection review",
+        "campaign_id": "synthetic-automotive-service-review",
+        "failures": [],
+        "path": "runtime\\campaigns\\examples\\synthetic-automotive-service-review.json",
+        "product_or_offer_name": "Service Advisor Review",
+        "registry_id": "CAMPAIGN-REGISTRY-001",
+        "valid": true,
+        "validation_status": "valid",
+        "vertical_id": "automotive_service"
+      },
+      {
+        "appointment_target": "operations fit review",
+        "campaign_id": "synthetic-b2b-saas-operations",
+        "failures": [],
+        "path": "runtime\\campaigns\\examples\\synthetic-b2b-saas-operations.json",
+        "product_or_offer_name": "Operations Workflow Review",
+        "registry_id": "CAMPAIGN-REGISTRY-001",
+        "valid": true,
+        "validation_status": "valid",
+        "vertical_id": "b2b_saas"
+      },
+      {
+        "appointment_target": "specialist human review",
+        "campaign_id": "synthetic-healthcare-admin-review",
+        "failures": [],
+        "path": "runtime\\campaigns\\examples\\synthetic-healthcare-admin-review.json",
+        "product_or_offer_name": "Specialist Review Call",
+        "registry_id": "CAMPAIGN-REGISTRY-001",
+        "valid": true,
+        "validation_status": "valid",
+        "vertical_id": "healthcare_admin_or_medical_equipment"
+      },
+      {
+        "appointment_target": "inspection or estimate review",
+        "campaign_id": "synthetic-home-services-estimate",
+        "failures": [],
+        "path": "runtime\\campaigns\\examples\\synthetic-home-services-estimate.json",
+        "product_or_offer_name": "Service Estimate Call",
+        "registry_id": "CAMPAIGN-REGISTRY-001",
+        "valid": true,
+        "validation_status": "valid",
+        "vertical_id": "home_services"
+      },
+      {
+        "appointment_target": "licensed coverage review",
+        "campaign_id": "synthetic-insurance-review",
+        "failures": [],
+        "path": "runtime\\campaigns\\examples\\synthetic-insurance-review.json",
+        "product_or_offer_name": "Policy Review Call",
+        "registry_id": "CAMPAIGN-REGISTRY-001",
+        "valid": true,
+        "validation_status": "valid",
+        "vertical_id": "insurance"
+      },
+      {
+        "appointment_target": "account support or plan-fit review",
+        "campaign_id": "synthetic-membership-plan-review",
+        "failures": [],
+        "path": "runtime\\campaigns\\examples\\synthetic-membership-plan-review.json",
+        "product_or_offer_name": "Plan Support Call",
+        "registry_id": "CAMPAIGN-REGISTRY-001",
+        "valid": true,
+        "validation_status": "valid",
+        "vertical_id": "membership_or_subscription"
+      },
+      {
+        "appointment_target": "product or order support review",
+        "campaign_id": "synthetic-retail-support-review",
+        "failures": [],
+        "path": "runtime\\campaigns\\examples\\synthetic-retail-support-review.json",
+        "product_or_offer_name": "Product Support Call",
+        "registry_id": "CAMPAIGN-REGISTRY-001",
+        "valid": true,
+        "validation_status": "valid",
+        "vertical_id": "retail_or_ecommerce_support_sales"
+      },
+      {
+        "appointment_target": "human plan and availability review",
+        "campaign_id": "synthetic-telecom-plan-review",
+        "failures": [],
+        "path": "runtime\\campaigns\\examples\\synthetic-telecom-plan-review.json",
+        "product_or_offer_name": "Plan Review Call",
+        "registry_id": "CAMPAIGN-REGISTRY-001",
+        "valid": true,
+        "validation_status": "valid",
+        "vertical_id": "telecom"
+      }
+    ],
+    "routesignal_preservation": [
+      {
+        "audio_url": null,
+        "call_control": "continue-call",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "campaign_playbook_id": null,
+        "creates_calendar_event": false,
+        "durable_provider_agent_created": false,
+        "final_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+        "lead_followup_state": {},
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+        "playbook_review_focus": null,
+        "provider_agent_used": false,
+        "provider_calls_made": false,
+        "semantic": "no_contextual_semantic",
+        "sends_email": false,
+        "target_gap": null,
+        "transcript": "__agent_open__",
+        "tts_input_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?",
+        "voice_cloning_used": false,
+        "writes_crm": false
+      },
+      {
+        "audio_url": null,
+        "call_control": "continue-call",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "campaign_playbook_id": null,
+        "creates_calendar_event": false,
+        "durable_provider_agent_created": false,
+        "final_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "lead_followup_state": {},
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+        "playbook_review_focus": null,
+        "provider_agent_used": false,
+        "provider_calls_made": false,
+        "semantic": "permission_acknowledgement",
+        "sends_email": false,
+        "target_gap": null,
+        "transcript": "yeah sure",
+        "tts_input_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "voice_cloning_used": false,
+        "writes_crm": false
+      },
+      {
+        "audio_url": null,
+        "call_control": "continue-call",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "campaign_playbook_id": null,
+        "creates_calendar_event": false,
+        "durable_provider_agent_created": false,
+        "final_response": "Got it, callbacks are clear. Should I check manual tracking or handoffs, or stop here?",
+        "lead_followup_state": {},
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+        "playbook_review_focus": "missed callback reminders",
+        "provider_agent_used": false,
+        "provider_calls_made": false,
+        "semantic": "current_gap_clear",
+        "sends_email": false,
+        "target_gap": "callbacks",
+        "transcript": "callbacks are fine",
+        "tts_input_text": "Got it, callbacks are clear, well, should I check manual tracking or handoffs, or stop here?",
+        "voice_cloning_used": false,
+        "writes_crm": false
+      }
+    ],
+    "schema_and_examples": {
+      "automotive_service": "runtime\\campaigns\\examples\\synthetic-automotive-service-review.json",
+      "b2b_saas": "runtime\\campaigns\\examples\\synthetic-b2b-saas-operations.json",
+      "healthcare_admin": "runtime\\campaigns\\examples\\synthetic-healthcare-admin-review.json",
+      "home_services": "runtime\\campaigns\\examples\\synthetic-home-services-estimate.json",
+      "insurance": "runtime\\campaigns\\examples\\synthetic-insurance-review.json",
+      "membership": "runtime\\campaigns\\examples\\synthetic-membership-plan-review.json",
+      "readme": "runtime\\campaigns\\README.md",
+      "retail_support": "runtime\\campaigns\\examples\\synthetic-retail-support-review.json",
+      "schema": "runtime\\campaigns\\schema\\campaign_config.schema.json",
+      "telecom": "runtime\\campaigns\\examples\\synthetic-telecom-plan-review.json"
+    }
+  },
+  "failures": [],
+  "forbidden_terms_checked": [
+    "RouteSignal",
+    "Northstar",
+    "Starter",
+    "Growth",
+    "$29",
+    "$59"
+  ],
+  "local_llm_calls_made": false,
+  "opens_prod_102": false,
+  "provider_calls_made": false,
+  "routesignal_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+  "runtime_behavior_changed": false,
+  "safety_assertions": {
+    "creates_calendar_event": false,
+    "local_llm_calls_made": false,
+    "opens_prod_102": false,
+    "provider_calls_made": false,
+    "sends_email": false,
+    "writes_crm": false
+  },
+  "sends_email": false,
+  "status": "pass",
+  "uses_generated_audio": false,
+  "uses_live_tts": false,
+  "uses_private_transcripts": false,
+  "uses_provider_calls": false,
+  "uses_real_customer_data": false,
+  "writes_crm": false
+}

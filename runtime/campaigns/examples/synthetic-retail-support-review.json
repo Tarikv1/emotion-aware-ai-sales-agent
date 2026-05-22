@@ -1,0 +1,159 @@
+{
+  "allowed_claims": [
+    "can collect product fit or support context",
+    "can arrange a support callback"
+  ],
+  "appointment_target": "product or order support review",
+  "blocked_claims": [
+    "false stock promise",
+    "delivery promise",
+    "refund promise",
+    "warranty promise"
+  ],
+  "caller_identity": {
+    "relationship_to_offer": "calling about a synthetic retail support review",
+    "representative_name": "Maya"
+  },
+  "campaign_id": "synthetic-retail-support-review",
+  "client_name": "Synthetic Retail Support",
+  "core_diagnostic_gaps": [
+    "product_fit",
+    "availability_or_delivery",
+    "return_or_warranty"
+  ],
+  "diagnostic_gaps": {
+    "availability_or_delivery": {
+      "campaign_gap_id": "availability_or_delivery",
+      "causal_story": "If availability or delivery timing is uncertain, support must verify facts before any promise.",
+      "customer_language": [
+        "availability",
+        "delivery",
+        "shipping"
+      ],
+      "definition": "Determine whether availability or delivery is the current support issue.",
+      "diagnostic_questions": [
+        "Is availability or delivery timing the part support should review?"
+      ],
+      "evidence_negative": [
+        "availability is handled",
+        "delivery is fine"
+      ],
+      "evidence_positive": [
+        "availability is a problem",
+        "delivery is the issue"
+      ],
+      "label": "availability or delivery",
+      "next_gap_candidates": [
+        "product_fit",
+        "return_or_warranty"
+      ],
+      "qualification_dimensions": [
+        "timing",
+        "contact_path",
+        "compliance_or_risk_constraints"
+      ],
+      "review_focus": "availability and delivery support boundary",
+      "universal_pain_dimensions": [
+        "delay",
+        "trust_or_risk_concern"
+      ],
+      "value_bridge": "Support can verify availability or delivery details before any commitment is made."
+    },
+    "product_fit": {
+      "campaign_gap_id": "product_fit",
+      "causal_story": "If product fit is unclear, the buyer may need support before deciding on the right next step.",
+      "customer_language": [
+        "product fit",
+        "product",
+        "right item"
+      ],
+      "definition": "Determine whether product fit is the current reason for support review.",
+      "diagnostic_questions": [
+        "Is this about product fit, availability, delivery timing, or support?"
+      ],
+      "evidence_negative": [
+        "product fit is fine",
+        "product is handled"
+      ],
+      "evidence_positive": [
+        "product fit is a problem",
+        "product is the issue"
+      ],
+      "label": "product fit",
+      "next_gap_candidates": [
+        "availability_or_delivery",
+        "return_or_warranty"
+      ],
+      "qualification_dimensions": [
+        "need_or_pain",
+        "fit",
+        "budget_or_price_sensitivity"
+      ],
+      "review_focus": "product fit and support need",
+      "universal_pain_dimensions": [
+        "customer_experience_friction",
+        "unclear_next_step"
+      ],
+      "value_bridge": "A support review can clarify product fit without promising stock, delivery, refund, or warranty outcomes."
+    },
+    "return_or_warranty": {
+      "campaign_gap_id": "return_or_warranty",
+      "causal_story": "If return or warranty context is unresolved, support must review policy facts before any account-specific statement.",
+      "customer_language": [
+        "return",
+        "warranty",
+        "refund"
+      ],
+      "definition": "Determine whether return or warranty context is the current support issue.",
+      "diagnostic_questions": [
+        "Is return or warranty context the part support should review?"
+      ],
+      "evidence_negative": [
+        "return is handled",
+        "warranty is fine"
+      ],
+      "evidence_positive": [
+        "return is a problem",
+        "warranty is unclear"
+      ],
+      "label": "return or warranty",
+      "next_gap_candidates": [
+        "product_fit",
+        "availability_or_delivery"
+      ],
+      "qualification_dimensions": [
+        "contact_path",
+        "compliance_or_risk_constraints"
+      ],
+      "review_focus": "return or warranty support boundary",
+      "universal_pain_dimensions": [
+        "trust_or_risk_concern",
+        "unclear_next_step"
+      ],
+      "value_bridge": "Support can review policy facts without promising refund or warranty outcomes in this call."
+    }
+  },
+  "gap_order": [
+    "product_fit",
+    "availability_or_delivery",
+    "return_or_warranty"
+  ],
+  "human_followup_owner": "support specialist",
+  "language": "en",
+  "objective": "appointment_setting",
+  "product_or_offer_name": "Product Support Call",
+  "vertical_id": "retail_or_ecommerce_support_sales",
+  "qualification_goals": [
+    "identify product or support need",
+    "keep order-specific claims with human support"
+  ],
+  "regulated_cautions": [
+    "retail_or_ecommerce_refund_warranty_availability",
+    "financial_or_payment_sensitive",
+    "legal_or_contract_sensitive"
+  ],
+  "specialist_handoff_route": "support specialist",
+  "target_account_context": {
+    "buyer_role": "shopper or account holder"
+  }
+}

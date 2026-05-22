@@ -4,6 +4,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from runtime.core import campaign_registry
 from runtime.core import campaign_playbook_adapter
 from runtime.core import dialogue_manager
 from runtime.core import universal_sales_knowledge
@@ -73,8 +74,10 @@ def validate_generic_campaign_config(campaign: dict[str, Any] | None) -> dict[st
 
     if not isinstance(normalized.get("diagnostic_gaps"), dict) or not normalized.get("diagnostic_gaps"):
         failures.append("diagnostic_gaps must be a populated dict")
-    if not _string_list(normalized.get("allowed_claims")):
-        failures.append("allowed_claims must be populated")
+    if "allowed_claims" not in normalized:
+        failures.append("allowed_claims is required")
+    elif not isinstance(normalized.get("allowed_claims"), list):
+        failures.append("allowed_claims must be a list")
     if not _string_list(normalized.get("blocked_claims")):
         failures.append("blocked_claims must be populated")
     if not str(normalized.get("human_followup_owner") or ""):
@@ -329,9 +332,44 @@ def build_generic_campaign_turn_packet(
     }
 
 
+def build_generic_campaign_turn_packet_from_config_path(
+    *,
+    transcript: str,
+    campaign_config_path: str | Path,
+    stage: str = "relevance-check",
+    input_type: str = "speech-final",
+    silence_count: int = 0,
+    session_id: str | None = None,
+    session_state: dict | None = None,
+    asr_confidence: float | None = 0.94,
+    voice_turn_state: str | None = "listening",
+    private_out: Path | None = None,
+    live_tts: bool = False,
+    force_key_missing: bool = False,
+    timeout_seconds: float = 8.0,
+) -> dict:
+    campaign_config = campaign_registry.load_campaign_config(campaign_config_path)
+    return build_generic_campaign_turn_packet(
+        transcript=transcript,
+        campaign=campaign_config,
+        stage=stage,
+        input_type=input_type,
+        silence_count=silence_count,
+        session_id=session_id,
+        session_state=session_state,
+        asr_confidence=asr_confidence,
+        voice_turn_state=voice_turn_state,
+        private_out=private_out,
+        live_tts=live_tts,
+        force_key_missing=force_key_missing,
+        timeout_seconds=timeout_seconds,
+    )
+
+
 __all__ = [
     "ENTRYPOINT_ID",
     "GenericCampaignConfigError",
+    "build_generic_campaign_turn_packet_from_config_path",
     "build_generic_campaign_turn_packet",
     "validate_generic_campaign_config",
 ]

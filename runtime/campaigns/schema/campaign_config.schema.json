@@ -1,0 +1,242 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "CAMPAIGN-CONFIG-SCHEMA-001",
+  "title": "Local Synthetic Campaign Config",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "campaign_id",
+    "client_name",
+    "product_or_offer_name",
+    "vertical_id",
+    "objective",
+    "human_followup_owner",
+    "appointment_target",
+    "allowed_claims",
+    "blocked_claims",
+    "diagnostic_gaps",
+    "core_diagnostic_gaps",
+    "gap_order",
+    "caller_identity",
+    "language"
+  ],
+  "properties": {
+    "campaign_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "client_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "product_or_offer_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "vertical_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "objective": {
+      "const": "appointment_setting"
+    },
+    "human_followup_owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "appointment_target": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_claims": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "blocked_claims": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "regulated_cautions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "diagnostic_gaps": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/diagnostic_gap"
+      }
+    },
+    "core_diagnostic_gaps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "gap_order": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "caller_identity": {
+      "type": "object",
+      "required": [
+        "representative_name",
+        "relationship_to_offer"
+      ],
+      "properties": {
+        "representative_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relationship_to_offer": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "language": {
+      "type": "string",
+      "minLength": 1
+    },
+    "safety": {
+      "type": "object",
+      "properties": {
+        "provider_calls_made": {
+          "const": false
+        },
+        "local_llm_calls_made": {
+          "const": false
+        },
+        "sends_email": {
+          "const": false
+        },
+        "creates_calendar_event": {
+          "const": false
+        },
+        "writes_crm": {
+          "const": false
+        },
+        "opens_prod_102": {
+          "const": false
+        }
+      }
+    }
+  },
+  "$defs": {
+    "diagnostic_gap": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "campaign_gap_id",
+        "label",
+        "universal_pain_dimensions",
+        "qualification_dimensions",
+        "definition",
+        "causal_story",
+        "customer_language",
+        "evidence_positive",
+        "evidence_negative",
+        "diagnostic_questions",
+        "value_bridge",
+        "review_focus",
+        "next_gap_candidates"
+      ],
+      "properties": {
+        "campaign_gap_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "universal_pain_dimensions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "qualification_dimensions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "causal_story": {
+          "type": "string",
+          "minLength": 1
+        },
+        "customer_language": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "evidence_positive": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "evidence_negative": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "diagnostic_questions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "value_bridge": {
+          "type": "string",
+          "minLength": 1
+        },
+        "review_focus": {
+          "type": "string",
+          "minLength": 1
+        },
+        "next_gap_candidates": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

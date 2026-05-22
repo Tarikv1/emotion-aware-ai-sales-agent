@@ -1,0 +1,159 @@
+{
+  "allowed_claims": [
+    "can collect admin workflow or equipment review needs",
+    "can arrange a qualified specialist callback"
+  ],
+  "appointment_target": "specialist human review",
+  "blocked_claims": [
+    "diagnosis",
+    "medical advice",
+    "guaranteed outcome",
+    "eligibility promise"
+  ],
+  "caller_identity": {
+    "relationship_to_offer": "calling about a synthetic healthcare admin review",
+    "representative_name": "Maya"
+  },
+  "campaign_id": "synthetic-healthcare-admin-review",
+  "client_name": "Synthetic Healthcare Admin",
+  "core_diagnostic_gaps": [
+    "admin_workflow_need",
+    "equipment_or_service_fit",
+    "specialist_review_needed"
+  ],
+  "diagnostic_gaps": {
+    "admin_workflow_need": {
+      "campaign_gap_id": "admin_workflow_need",
+      "causal_story": "If admin workflow friction remains unresolved, staff may need a qualified operational review before next steps.",
+      "customer_language": [
+        "admin workflow",
+        "workflow",
+        "manual admin work"
+      ],
+      "definition": "Determine whether admin workflow friction is the current review need.",
+      "diagnostic_questions": [
+        "Is this about admin workflow, equipment logistics, or a specialist question?"
+      ],
+      "evidence_negative": [
+        "admin workflow is handled",
+        "workflow is fine"
+      ],
+      "evidence_positive": [
+        "admin workflow is a problem",
+        "workflow is the issue"
+      ],
+      "label": "admin workflow need",
+      "next_gap_candidates": [
+        "equipment_or_service_fit",
+        "specialist_review_needed"
+      ],
+      "qualification_dimensions": [
+        "need_or_pain",
+        "authority_or_right_person",
+        "fit"
+      ],
+      "review_focus": "admin workflow and operational fit",
+      "universal_pain_dimensions": [
+        "manual_work",
+        "delay",
+        "visibility_gap"
+      ],
+      "value_bridge": "A qualified admin review can check workflow context without moving into clinical advice."
+    },
+    "equipment_or_service_fit": {
+      "campaign_gap_id": "equipment_or_service_fit",
+      "causal_story": "If equipment or service fit is unclear, a qualified human should review details before any suitability statement.",
+      "customer_language": [
+        "equipment fit",
+        "service fit",
+        "suitability"
+      ],
+      "definition": "Determine whether equipment or service fit needs human review.",
+      "diagnostic_questions": [
+        "Is equipment or service fit the part a qualified specialist should review?"
+      ],
+      "evidence_negative": [
+        "equipment fit is handled",
+        "service fit is fine"
+      ],
+      "evidence_positive": [
+        "equipment fit is a problem",
+        "service fit is a concern"
+      ],
+      "label": "equipment or service fit",
+      "next_gap_candidates": [
+        "admin_workflow_need",
+        "specialist_review_needed"
+      ],
+      "qualification_dimensions": [
+        "fit",
+        "compliance_or_risk_constraints"
+      ],
+      "review_focus": "equipment or service fit boundary",
+      "universal_pain_dimensions": [
+        "trust_or_risk_concern",
+        "unclear_next_step"
+      ],
+      "value_bridge": "A qualified specialist can review fit without giving clinical or patient-specific advice."
+    },
+    "specialist_review_needed": {
+      "campaign_gap_id": "specialist_review_needed",
+      "causal_story": "If the right specialist is unclear, the buyer may need a safer human handoff path.",
+      "customer_language": [
+        "specialist review",
+        "qualified human",
+        "right specialist"
+      ],
+      "definition": "Determine whether the next step should be routed to a specific qualified specialist.",
+      "diagnostic_questions": [
+        "Would a qualified human callback be the safer next step?"
+      ],
+      "evidence_negative": [
+        "specialist review is not needed",
+        "we have the right contact"
+      ],
+      "evidence_positive": [
+        "specialist review is needed",
+        "we need a qualified human"
+      ],
+      "label": "specialist review needed",
+      "next_gap_candidates": [
+        "admin_workflow_need",
+        "equipment_or_service_fit"
+      ],
+      "qualification_dimensions": [
+        "contact_path",
+        "authority_or_right_person"
+      ],
+      "review_focus": "qualified specialist callback path",
+      "universal_pain_dimensions": [
+        "unclear_next_step",
+        "trust_or_risk_concern"
+      ],
+      "value_bridge": "A safe specialist callback can keep operational details separate from clinical decisions."
+    }
+  },
+  "gap_order": [
+    "admin_workflow_need",
+    "equipment_or_service_fit",
+    "specialist_review_needed"
+  ],
+  "human_followup_owner": "qualified healthcare admin specialist",
+  "language": "en",
+  "objective": "appointment_setting",
+  "product_or_offer_name": "Specialist Review Call",
+  "vertical_id": "healthcare_admin_or_medical_equipment",
+  "qualification_goals": [
+    "identify the operational review need",
+    "avoid clinical or patient-specific advice"
+  ],
+  "regulated_cautions": [
+    "healthcare_admin_or_medical_equipment",
+    "financial_or_payment_sensitive",
+    "legal_or_contract_sensitive"
+  ],
+  "specialist_handoff_route": "qualified healthcare admin specialist",
+  "target_account_context": {
+    "buyer_role": "clinic administrator or authorized support contact"
+  }
+}

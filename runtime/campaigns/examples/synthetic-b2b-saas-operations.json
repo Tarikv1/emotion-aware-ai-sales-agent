@@ -1,0 +1,156 @@
+{
+  "allowed_claims": [
+    "can discuss workflow fit at a general level",
+    "can arrange an implementation-readiness review"
+  ],
+  "appointment_target": "operations fit review",
+  "blocked_claims": [
+    "integration guarantee",
+    "security certification guarantee",
+    "ROI guarantee",
+    "guaranteed business outcome"
+  ],
+  "caller_identity": {
+    "relationship_to_offer": "calling about a synthetic operations workflow review",
+    "representative_name": "Maya"
+  },
+  "campaign_id": "synthetic-b2b-saas-operations",
+  "client_name": "Synthetic SaaS Operations",
+  "core_diagnostic_gaps": [
+    "manual_work",
+    "integration_risk",
+    "visibility_gap"
+  ],
+  "diagnostic_gaps": {
+    "integration_risk": {
+      "campaign_gap_id": "integration_risk",
+      "causal_story": "If integration or security fit is uncertain, a technical human should review before any implementation claim is made.",
+      "customer_language": [
+        "integration",
+        "security",
+        "technical fit"
+      ],
+      "definition": "Determine whether integration or security review is the current blocker.",
+      "diagnostic_questions": [
+        "Is integration or security review the main thing a technical specialist should look at?"
+      ],
+      "evidence_negative": [
+        "integration is fine",
+        "security is handled"
+      ],
+      "evidence_positive": [
+        "integration is a problem",
+        "security is a concern"
+      ],
+      "label": "integration risk",
+      "next_gap_candidates": [
+        "manual_work",
+        "visibility_gap"
+      ],
+      "qualification_dimensions": [
+        "fit",
+        "compliance_or_risk_constraints"
+      ],
+      "review_focus": "integration and security review",
+      "universal_pain_dimensions": [
+        "trust_or_risk_concern",
+        "unclear_next_step"
+      ],
+      "value_bridge": "A technical fit review can check integration and security boundaries without making unverified claims."
+    },
+    "manual_work": {
+      "campaign_gap_id": "manual_work",
+      "causal_story": "If manual work stays unresolved, the team may keep losing time to repeated operational steps.",
+      "customer_language": [
+        "manual work",
+        "manual",
+        "spreadsheet work"
+      ],
+      "definition": "Determine whether manual workflow load is a current operations pain.",
+      "diagnostic_questions": [
+        "Where does the current process still depend on manual work?"
+      ],
+      "evidence_negative": [
+        "manual work is handled",
+        "manual work is fine"
+      ],
+      "evidence_positive": [
+        "manual work is the problem",
+        "manual work is a problem"
+      ],
+      "label": "manual work",
+      "next_gap_candidates": [
+        "integration_risk",
+        "visibility_gap"
+      ],
+      "qualification_dimensions": [
+        "current_solution_or_status_quo",
+        "need_or_pain"
+      ],
+      "review_focus": "manual workflow load",
+      "universal_pain_dimensions": [
+        "manual_work",
+        "cost_or_time_waste"
+      ],
+      "value_bridge": "A human operations review can map the manual workload before discussing fit."
+    },
+    "visibility_gap": {
+      "campaign_gap_id": "visibility_gap",
+      "causal_story": "If workflow status is hard to see, ownership and handoff decisions may stay unclear.",
+      "customer_language": [
+        "visibility",
+        "status",
+        "see status"
+      ],
+      "definition": "Determine whether lack of workflow visibility is a current issue.",
+      "diagnostic_questions": [
+        "Is visibility into workflow status the part creating friction?"
+      ],
+      "evidence_negative": [
+        "visibility is fine",
+        "status is handled"
+      ],
+      "evidence_positive": [
+        "visibility is a problem",
+        "visibility is the problem"
+      ],
+      "label": "visibility gap",
+      "next_gap_candidates": [
+        "manual_work",
+        "integration_risk"
+      ],
+      "qualification_dimensions": [
+        "need_or_pain",
+        "authority_or_right_person"
+      ],
+      "review_focus": "visibility into workflow status",
+      "universal_pain_dimensions": [
+        "visibility_gap",
+        "unclear_next_step"
+      ],
+      "value_bridge": "A human fit review can connect the visibility issue to the actual operating workflow."
+    }
+  },
+  "gap_order": [
+    "manual_work",
+    "integration_risk",
+    "visibility_gap"
+  ],
+  "human_followup_owner": "implementation specialist",
+  "language": "en",
+  "objective": "appointment_setting",
+  "product_or_offer_name": "Operations Workflow Review",
+  "vertical_id": "b2b_saas",
+  "qualification_goals": [
+    "identify current workflow friction",
+    "route technical and security questions to a human"
+  ],
+  "regulated_cautions": [
+    "legal_or_contract_sensitive",
+    "financial_or_payment_sensitive"
+  ],
+  "specialist_handoff_route": "implementation specialist",
+  "target_account_context": {
+    "buyer_role": "operations owner or systems contact"
+  }
+}

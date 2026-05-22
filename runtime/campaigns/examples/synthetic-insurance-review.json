@@ -1,0 +1,158 @@
+{
+  "allowed_claims": [
+    "can collect general review needs",
+    "can schedule a licensed human review"
+  ],
+  "appointment_target": "licensed coverage review",
+  "blocked_claims": [
+    "coverage guarantee",
+    "premium savings guarantee",
+    "eligibility decision",
+    "claim outcome promise"
+  ],
+  "caller_identity": {
+    "relationship_to_offer": "calling about a synthetic policy review",
+    "representative_name": "Maya"
+  },
+  "campaign_id": "synthetic-insurance-review",
+  "client_name": "Synthetic Insurance Agency",
+  "core_diagnostic_gaps": [
+    "premium_or_budget",
+    "coverage_fit",
+    "renewal_or_timing"
+  ],
+  "diagnostic_gaps": {
+    "coverage_fit": {
+      "campaign_gap_id": "coverage_fit",
+      "causal_story": "If coverage fit is unclear, a licensed human should review policy details before any next step is promised.",
+      "customer_language": [
+        "coverage fit",
+        "coverage",
+        "covered"
+      ],
+      "definition": "Determine whether the buyer has a current coverage-fit concern that requires licensed review.",
+      "diagnostic_questions": [
+        "Is the main issue coverage fit, premium pressure, or renewal timing?"
+      ],
+      "evidence_negative": [
+        "coverage is fine",
+        "coverage fit is handled"
+      ],
+      "evidence_positive": [
+        "coverage fit is a problem",
+        "coverage is the issue"
+      ],
+      "label": "coverage fit",
+      "next_gap_candidates": [
+        "premium_or_budget",
+        "renewal_or_timing"
+      ],
+      "qualification_dimensions": [
+        "fit",
+        "compliance_or_risk_constraints"
+      ],
+      "review_focus": "coverage fit against policy details",
+      "universal_pain_dimensions": [
+        "trust_or_risk_concern",
+        "unclear_next_step"
+      ],
+      "value_bridge": "A licensed human review can check the actual policy context without making coverage promises in this call."
+    },
+    "premium_or_budget": {
+      "campaign_gap_id": "premium_or_budget",
+      "causal_story": "If premium pressure is unresolved, the buyer may need a licensed human to review options and constraints.",
+      "customer_language": [
+        "premium",
+        "budget",
+        "cost"
+      ],
+      "definition": "Determine whether premium or budget pressure is a current reason for review.",
+      "diagnostic_questions": [
+        "Is premium or budget pressure the main thing a licensed specialist should review?"
+      ],
+      "evidence_negative": [
+        "premium is fine",
+        "budget is handled"
+      ],
+      "evidence_positive": [
+        "premium is a problem",
+        "premium is the problem"
+      ],
+      "label": "premium or budget",
+      "next_gap_candidates": [
+        "coverage_fit",
+        "renewal_or_timing"
+      ],
+      "qualification_dimensions": [
+        "budget_or_price_sensitivity",
+        "fit"
+      ],
+      "review_focus": "premium and budget pressure",
+      "universal_pain_dimensions": [
+        "cost_or_time_waste",
+        "trust_or_risk_concern"
+      ],
+      "value_bridge": "The useful next step is a licensed review of the premium concern, not a savings promise."
+    },
+    "renewal_or_timing": {
+      "campaign_gap_id": "renewal_or_timing",
+      "causal_story": "If renewal timing is unclear, the buyer may miss the right review window or need help with next steps.",
+      "customer_language": [
+        "renewal",
+        "timing",
+        "review window"
+      ],
+      "definition": "Determine whether renewal timing creates a current next-step issue.",
+      "diagnostic_questions": [
+        "Is renewal timing creating any pressure right now?"
+      ],
+      "evidence_negative": [
+        "renewal timing is handled",
+        "timing is fine"
+      ],
+      "evidence_positive": [
+        "renewal timing is an issue",
+        "timing is a problem"
+      ],
+      "label": "renewal or timing",
+      "next_gap_candidates": [
+        "premium_or_budget",
+        "coverage_fit"
+      ],
+      "qualification_dimensions": [
+        "timing",
+        "urgency",
+        "contact_path"
+      ],
+      "review_focus": "renewal timing and next-step urgency",
+      "universal_pain_dimensions": [
+        "delay",
+        "unclear_next_step"
+      ],
+      "value_bridge": "A licensed review can clarify timing before any policy detail is discussed."
+    }
+  },
+  "gap_order": [
+    "premium_or_budget",
+    "coverage_fit",
+    "renewal_or_timing"
+  ],
+  "human_followup_owner": "licensed insurance specialist",
+  "language": "en",
+  "objective": "appointment_setting",
+  "product_or_offer_name": "Policy Review Call",
+  "vertical_id": "insurance",
+  "qualification_goals": [
+    "identify the review need",
+    "stay within licensed human review boundaries"
+  ],
+  "regulated_cautions": [
+    "insurance",
+    "financial_or_payment_sensitive",
+    "legal_or_contract_sensitive"
+  ],
+  "specialist_handoff_route": "licensed insurance specialist",
+  "target_account_context": {
+    "buyer_role": "policy holder or authorized reviewer"
+  }
+}

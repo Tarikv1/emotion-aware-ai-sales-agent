@@ -1,0 +1,158 @@
+{
+  "allowed_claims": [
+    "can collect vehicle issue and timing context",
+    "can arrange a service advisor review"
+  ],
+  "appointment_target": "service advisor inspection review",
+  "blocked_claims": [
+    "exact diagnosis",
+    "guaranteed repair cost",
+    "warranty guarantee",
+    "roadworthiness claim"
+  ],
+  "caller_identity": {
+    "relationship_to_offer": "calling about a synthetic service advisor review",
+    "representative_name": "Maya"
+  },
+  "campaign_id": "synthetic-automotive-service-review",
+  "client_name": "Synthetic Automotive Service",
+  "core_diagnostic_gaps": [
+    "vehicle_issue",
+    "repair_timing",
+    "warranty_or_estimate"
+  ],
+  "diagnostic_gaps": {
+    "repair_timing": {
+      "campaign_gap_id": "repair_timing",
+      "causal_story": "If repair timing is unresolved, a service advisor may need to review urgency and appointment options.",
+      "customer_language": [
+        "repair timing",
+        "schedule",
+        "urgent repair"
+      ],
+      "definition": "Determine whether repair timing or urgency is the current issue.",
+      "diagnostic_questions": [
+        "Is timing or urgency the main thing the service advisor should review?"
+      ],
+      "evidence_negative": [
+        "repair timing is handled",
+        "schedule is fine"
+      ],
+      "evidence_positive": [
+        "repair timing is a problem",
+        "schedule is the issue"
+      ],
+      "label": "repair timing",
+      "next_gap_candidates": [
+        "vehicle_issue",
+        "warranty_or_estimate"
+      ],
+      "qualification_dimensions": [
+        "urgency",
+        "timing",
+        "contact_path"
+      ],
+      "review_focus": "repair timing and service scheduling",
+      "universal_pain_dimensions": [
+        "delay",
+        "cost_or_time_waste"
+      ],
+      "value_bridge": "A service advisor callback can review timing without remote repair conclusions."
+    },
+    "vehicle_issue": {
+      "campaign_gap_id": "vehicle_issue",
+      "causal_story": "If the vehicle issue is unclear, safety and repair details should be handled by service staff.",
+      "customer_language": [
+        "vehicle issue",
+        "car problem",
+        "inspection"
+      ],
+      "definition": "Determine whether a vehicle issue needs advisor review.",
+      "diagnostic_questions": [
+        "Is the main need inspection, maintenance, repair scheduling, or advisor review?"
+      ],
+      "evidence_negative": [
+        "vehicle issue is handled",
+        "inspection is not needed"
+      ],
+      "evidence_positive": [
+        "vehicle issue is a problem",
+        "inspection is needed"
+      ],
+      "label": "vehicle issue",
+      "next_gap_candidates": [
+        "repair_timing",
+        "warranty_or_estimate"
+      ],
+      "qualification_dimensions": [
+        "need_or_pain",
+        "fit"
+      ],
+      "review_focus": "vehicle issue and inspection need",
+      "universal_pain_dimensions": [
+        "trust_or_risk_concern",
+        "unclear_next_step"
+      ],
+      "value_bridge": "A service advisor can review the vehicle context without diagnosing remotely."
+    },
+    "warranty_or_estimate": {
+      "campaign_gap_id": "warranty_or_estimate",
+      "causal_story": "If warranty or estimate expectations are unclear, advisor review is needed before claims or prices are discussed.",
+      "customer_language": [
+        "warranty",
+        "estimate",
+        "repair cost"
+      ],
+      "definition": "Determine whether warranty or estimate details need advisor review.",
+      "diagnostic_questions": [
+        "Is warranty or estimate context the part the advisor should review?"
+      ],
+      "evidence_negative": [
+        "warranty is handled",
+        "estimate is fine"
+      ],
+      "evidence_positive": [
+        "warranty is a problem",
+        "estimate is unclear"
+      ],
+      "label": "warranty or estimate",
+      "next_gap_candidates": [
+        "vehicle_issue",
+        "repair_timing"
+      ],
+      "qualification_dimensions": [
+        "budget_or_price_sensitivity",
+        "compliance_or_risk_constraints"
+      ],
+      "review_focus": "warranty or estimate boundary",
+      "universal_pain_dimensions": [
+        "trust_or_risk_concern",
+        "cost_or_time_waste"
+      ],
+      "value_bridge": "Advisor review can cover warranty or estimate context without promising cost or outcome."
+    }
+  },
+  "gap_order": [
+    "vehicle_issue",
+    "repair_timing",
+    "warranty_or_estimate"
+  ],
+  "human_followup_owner": "service advisor",
+  "language": "en",
+  "objective": "appointment_setting",
+  "product_or_offer_name": "Service Advisor Review",
+  "vertical_id": "automotive_service",
+  "qualification_goals": [
+    "identify vehicle issue and timing",
+    "route safety, estimate, and warranty questions to service staff"
+  ],
+  "regulated_cautions": [
+    "automotive_service_safety_or_warranty",
+    "legal_or_contract_sensitive",
+    "financial_or_payment_sensitive"
+  ],
+  "specialist_handoff_route": "service advisor",
+  "target_account_context": {
+    "buyer_role": "vehicle owner or authorized driver"
+  }
+}

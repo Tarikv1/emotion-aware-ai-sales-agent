@@ -1,0 +1,159 @@
+{
+  "allowed_claims": [
+    "can discuss plan fit generally",
+    "can arrange a human plan and availability review"
+  ],
+  "appointment_target": "human plan and availability review",
+  "blocked_claims": [
+    "coverage guarantee",
+    "speed guarantee",
+    "contract cancellation guarantee",
+    "unverified fee claim"
+  ],
+  "caller_identity": {
+    "relationship_to_offer": "calling about a synthetic plan review",
+    "representative_name": "Maya"
+  },
+  "campaign_id": "synthetic-telecom-plan-review",
+  "client_name": "Synthetic Telecom Provider",
+  "core_diagnostic_gaps": [
+    "plan_fit",
+    "coverage_or_availability",
+    "contract_or_switching"
+  ],
+  "diagnostic_gaps": {
+    "contract_or_switching": {
+      "campaign_gap_id": "contract_or_switching",
+      "causal_story": "If contract or switching friction is unresolved, account-specific details need a human review.",
+      "customer_language": [
+        "contract",
+        "switching",
+        "porting"
+      ],
+      "definition": "Determine whether contract timing or switching friction is blocking next steps.",
+      "diagnostic_questions": [
+        "Is contract timing or switching friction the part a human should review?"
+      ],
+      "evidence_negative": [
+        "contract is handled",
+        "switching is fine"
+      ],
+      "evidence_positive": [
+        "switching is a problem",
+        "contract timing is a problem"
+      ],
+      "label": "contract or switching",
+      "next_gap_candidates": [
+        "plan_fit",
+        "coverage_or_availability"
+      ],
+      "qualification_dimensions": [
+        "timing",
+        "contact_path",
+        "compliance_or_risk_constraints"
+      ],
+      "review_focus": "contract timing and switching friction",
+      "universal_pain_dimensions": [
+        "trust_or_risk_concern",
+        "unclear_next_step"
+      ],
+      "value_bridge": "A human account review can check switching constraints without promising contract outcomes."
+    },
+    "coverage_or_availability": {
+      "campaign_gap_id": "coverage_or_availability",
+      "causal_story": "If coverage or availability is unclear, verified service facts must be checked before any promise is made.",
+      "customer_language": [
+        "coverage",
+        "availability",
+        "service area"
+      ],
+      "definition": "Determine whether coverage or availability is the buyer's current concern.",
+      "diagnostic_questions": [
+        "Is coverage or availability the main thing that needs human review?"
+      ],
+      "evidence_negative": [
+        "coverage is fine",
+        "availability is handled"
+      ],
+      "evidence_positive": [
+        "coverage is the issue",
+        "availability is a problem"
+      ],
+      "label": "coverage or availability",
+      "next_gap_candidates": [
+        "plan_fit",
+        "contract_or_switching"
+      ],
+      "qualification_dimensions": [
+        "fit",
+        "compliance_or_risk_constraints"
+      ],
+      "review_focus": "coverage and availability fit",
+      "universal_pain_dimensions": [
+        "trust_or_risk_concern",
+        "delay"
+      ],
+      "value_bridge": "A human review can verify service details instead of guessing availability on this call."
+    },
+    "plan_fit": {
+      "campaign_gap_id": "plan_fit",
+      "causal_story": "If plan fit is wrong, the buyer may waste time on details that do not match usage or account needs.",
+      "customer_language": [
+        "plan fit",
+        "plan",
+        "usage"
+      ],
+      "definition": "Determine whether the current plan fit is a meaningful issue.",
+      "diagnostic_questions": [
+        "Is plan fit the main thing a human should review?"
+      ],
+      "evidence_negative": [
+        "plan fit is fine",
+        "plan is handled"
+      ],
+      "evidence_positive": [
+        "plan is the problem",
+        "plan fit is a problem"
+      ],
+      "label": "plan fit",
+      "next_gap_candidates": [
+        "coverage_or_availability",
+        "contract_or_switching"
+      ],
+      "qualification_dimensions": [
+        "need_or_pain",
+        "fit",
+        "budget_or_price_sensitivity"
+      ],
+      "review_focus": "plan fit and usage needs",
+      "universal_pain_dimensions": [
+        "customer_experience_friction",
+        "cost_or_time_waste"
+      ],
+      "value_bridge": "A human plan review can map usage to fit without promising price or coverage."
+    }
+  },
+  "gap_order": [
+    "plan_fit",
+    "coverage_or_availability",
+    "contract_or_switching"
+  ],
+  "human_followup_owner": "telecom account specialist",
+  "language": "en",
+  "objective": "appointment_setting",
+  "product_or_offer_name": "Plan Review Call",
+  "vertical_id": "telecom",
+  "qualification_goals": [
+    "identify plan-fit concern",
+    "route account-specific details to a human"
+  ],
+  "regulated_cautions": [
+    "telecom_contract_or_coverage",
+    "legal_or_contract_sensitive",
+    "financial_or_payment_sensitive"
+  ],
+  "specialist_handoff_route": "telecom account specialist",
+  "target_account_context": {
+    "buyer_role": "account owner or authorized telecom contact"
+  }
+}

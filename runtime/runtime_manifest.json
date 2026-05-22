@@ -124,6 +124,18 @@
       ]
     },
     {
+      "path": "runtime/core/campaign_registry.py",
+      "path_type": "file",
+      "tier": "campaign-runtime-config",
+      "runtime_role": "Local file-backed campaign config registry and validator for loading generic campaign configs before adapter resolution, with controlled validation errors and no provider, secret, private-data, or RouteSignal fallback behavior.",
+      "behavior_surface": [
+        "campaign config loading",
+        "campaign config validation",
+        "registry listing",
+        "generic dry-run config boundary"
+      ]
+    },
+    {
       "path": "runtime/core/dialogue_reasoner.py",
       "path_type": "file",
       "tier": "core-runtime-behavior",
@@ -269,10 +281,33 @@
       "path": "runtime/campaigns/examples",
       "path_type": "directory",
       "tier": "campaign-runtime-profile-examples",
-      "runtime_role": "Example SalesCampaign profiles, including valid and invalid profile fixtures.",
+      "runtime_role": "Example SalesCampaign profile fixtures and synthetic local campaign-registry configs used by validators to prove generic campaign loading without real customer data.",
       "behavior_surface": [
         "campaign profile shape",
-        "approved field boundary"
+        "approved field boundary",
+        "campaign config examples"
+      ]
+    },
+    {
+      "path": "runtime/campaigns/README.md",
+      "path_type": "file",
+      "tier": "campaign-runtime-config-doc",
+      "runtime_role": "Local campaign registry documentation for the synthetic-only JSON config directory, invalid-config failure boundary, safety defaults, and no-provider/no-private-data loading rules.",
+      "behavior_surface": [
+        "campaign config documentation",
+        "local registry boundary",
+        "synthetic example policy"
+      ]
+    },
+    {
+      "path": "runtime/campaigns/schema/campaign_config.schema.json",
+      "path_type": "file",
+      "tier": "campaign-runtime-config-schema",
+      "runtime_role": "JSON schema documentation for local synthetic campaign configs, including required campaign fields, diagnostic gap shape, caller identity, safety defaults, and appointment-setting objective.",
+      "behavior_surface": [
+        "campaign config schema",
+        "diagnostic gap shape",
+        "safety flag defaults"
       ]
     },
     {

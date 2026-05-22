@@ -1,0 +1,156 @@
+{
+  "allowed_claims": [
+    "can collect scheduling and property context",
+    "can arrange a qualified inspection or estimate review"
+  ],
+  "appointment_target": "inspection or estimate review",
+  "blocked_claims": [
+    "exact quote without inspection",
+    "safety diagnosis without inspection",
+    "permit or code interpretation"
+  ],
+  "caller_identity": {
+    "relationship_to_offer": "calling about a synthetic service estimate review",
+    "representative_name": "Maya"
+  },
+  "campaign_id": "synthetic-home-services-estimate",
+  "client_name": "Synthetic Home Services",
+  "core_diagnostic_gaps": [
+    "service_need",
+    "scheduling_urgency",
+    "estimate_or_property_details"
+  ],
+  "diagnostic_gaps": {
+    "estimate_or_property_details": {
+      "campaign_gap_id": "estimate_or_property_details",
+      "causal_story": "If estimate or property details are unclear, a qualified human should review before price or scope is discussed.",
+      "customer_language": [
+        "estimate",
+        "property details",
+        "price"
+      ],
+      "definition": "Determine whether estimate uncertainty or missing property context is the current issue.",
+      "diagnostic_questions": [
+        "Is the estimate or property context the part a qualified human should review?"
+      ],
+      "evidence_negative": [
+        "estimate is fine",
+        "property details are handled"
+      ],
+      "evidence_positive": [
+        "estimate is unclear",
+        "price is unclear"
+      ],
+      "label": "estimate or property details",
+      "next_gap_candidates": [
+        "service_need",
+        "scheduling_urgency"
+      ],
+      "qualification_dimensions": [
+        "budget_or_price_sensitivity",
+        "compliance_or_risk_constraints"
+      ],
+      "review_focus": "estimate details and property context",
+      "universal_pain_dimensions": [
+        "trust_or_risk_concern",
+        "cost_or_time_waste"
+      ],
+      "value_bridge": "A qualified review can check scope before any estimate is discussed."
+    },
+    "scheduling_urgency": {
+      "campaign_gap_id": "scheduling_urgency",
+      "causal_story": "If scheduling urgency is unresolved, the buyer may need a clearer appointment window or inspection path.",
+      "customer_language": [
+        "scheduling",
+        "schedule",
+        "urgent"
+      ],
+      "definition": "Determine whether timing or urgency is the main service issue.",
+      "diagnostic_questions": [
+        "Is this urgent, routine, or just something you want reviewed?"
+      ],
+      "evidence_negative": [
+        "scheduling is fine",
+        "schedule is handled"
+      ],
+      "evidence_positive": [
+        "scheduling is a problem",
+        "schedule is the issue"
+      ],
+      "label": "scheduling urgency",
+      "next_gap_candidates": [
+        "service_need",
+        "estimate_or_property_details"
+      ],
+      "qualification_dimensions": [
+        "urgency",
+        "timing",
+        "contact_path"
+      ],
+      "review_focus": "schedule urgency",
+      "universal_pain_dimensions": [
+        "delay"
+      ],
+      "value_bridge": "A qualified coordinator can review timing and the next safe scheduling step."
+    },
+    "service_need": {
+      "campaign_gap_id": "service_need",
+      "causal_story": "If the service need is not understood, the buyer may need a qualified review before scope or next steps are promised.",
+      "customer_language": [
+        "service",
+        "repair",
+        "need"
+      ],
+      "definition": "Determine whether there is a current home-service need worth scheduling.",
+      "diagnostic_questions": [
+        "Is the service need the main thing a qualified human should review?"
+      ],
+      "evidence_negative": [
+        "service need is handled",
+        "service is fine"
+      ],
+      "evidence_positive": [
+        "we need service",
+        "service is the issue"
+      ],
+      "label": "service need",
+      "next_gap_candidates": [
+        "scheduling_urgency",
+        "estimate_or_property_details"
+      ],
+      "qualification_dimensions": [
+        "need_or_pain",
+        "fit"
+      ],
+      "review_focus": "service need and property context",
+      "universal_pain_dimensions": [
+        "unclear_next_step",
+        "customer_experience_friction"
+      ],
+      "value_bridge": "A qualified review can confirm scope and scheduling without a remote diagnosis."
+    }
+  },
+  "gap_order": [
+    "service_need",
+    "scheduling_urgency",
+    "estimate_or_property_details"
+  ],
+  "human_followup_owner": "qualified service coordinator",
+  "language": "en",
+  "objective": "appointment_setting",
+  "product_or_offer_name": "Service Estimate Call",
+  "vertical_id": "home_services",
+  "qualification_goals": [
+    "identify the service need",
+    "avoid remote diagnosis or price certainty"
+  ],
+  "regulated_cautions": [
+    "home_services_safety_or_estimate",
+    "legal_or_contract_sensitive",
+    "financial_or_payment_sensitive"
+  ],
+  "specialist_handoff_route": "qualified service coordinator",
+  "target_account_context": {
+    "buyer_role": "homeowner or property contact"
+  }
+}

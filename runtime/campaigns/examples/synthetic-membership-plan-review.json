@@ -1,0 +1,160 @@
+{
+  "allowed_claims": [
+    "can discuss plan fit and support options generally",
+    "can route account-specific actions to support"
+  ],
+  "appointment_target": "account support or plan-fit review",
+  "blocked_claims": [
+    "misleading cancellation claim",
+    "misleading renewal claim",
+    "unverified refund claim",
+    "binding account change"
+  ],
+  "caller_identity": {
+    "relationship_to_offer": "calling about a synthetic membership plan review",
+    "representative_name": "Maya"
+  },
+  "campaign_id": "synthetic-membership-plan-review",
+  "client_name": "Synthetic Membership Program",
+  "core_diagnostic_gaps": [
+    "plan_fit",
+    "renewal_or_cancellation",
+    "usage_or_value"
+  ],
+  "diagnostic_gaps": {
+    "plan_fit": {
+      "campaign_gap_id": "plan_fit",
+      "causal_story": "If plan fit is unclear, the account holder may need support before renewal or account choices.",
+      "customer_language": [
+        "plan fit",
+        "plan",
+        "membership level"
+      ],
+      "definition": "Determine whether the current membership plan fit is the review need.",
+      "diagnostic_questions": [
+        "Is the concern plan fit, renewal timing, cancellation, or help using the service?"
+      ],
+      "evidence_negative": [
+        "plan fit is fine",
+        "plan is handled"
+      ],
+      "evidence_positive": [
+        "plan fit is a problem",
+        "plan is the problem"
+      ],
+      "label": "plan fit",
+      "next_gap_candidates": [
+        "renewal_or_cancellation",
+        "usage_or_value"
+      ],
+      "qualification_dimensions": [
+        "need_or_pain",
+        "fit",
+        "budget_or_price_sensitivity"
+      ],
+      "review_focus": "membership plan fit",
+      "universal_pain_dimensions": [
+        "customer_experience_friction",
+        "cost_or_time_waste"
+      ],
+      "value_bridge": "Account support can review plan fit without obscuring billing or cancellation boundaries."
+    },
+    "renewal_or_cancellation": {
+      "campaign_gap_id": "renewal_or_cancellation",
+      "causal_story": "If renewal or cancellation intent is present, account-specific support must handle it carefully.",
+      "customer_language": [
+        "renewal",
+        "cancellation",
+        "cancel"
+      ],
+      "definition": "Determine whether renewal timing or cancellation intent is the current issue.",
+      "diagnostic_questions": [
+        "Is renewal or cancellation the part that needs account support?"
+      ],
+      "evidence_negative": [
+        "renewal is handled",
+        "cancellation is not the issue"
+      ],
+      "evidence_positive": [
+        "renewal is a problem",
+        "cancellation is a concern"
+      ],
+      "label": "renewal or cancellation",
+      "next_gap_candidates": [
+        "plan_fit",
+        "usage_or_value"
+      ],
+      "qualification_dimensions": [
+        "timing",
+        "contact_path",
+        "compliance_or_risk_constraints"
+      ],
+      "review_focus": "renewal or cancellation boundary",
+      "universal_pain_dimensions": [
+        "trust_or_risk_concern",
+        "unclear_next_step"
+      ],
+      "value_bridge": "A support review can handle account-specific renewal or cancellation details without making promises here."
+    },
+    "usage_or_value": {
+      "campaign_gap_id": "usage_or_value",
+      "causal_story": "If usage or value is unclear, the member may need help deciding whether support can improve fit.",
+      "customer_language": [
+        "usage",
+        "value",
+        "using the service"
+      ],
+      "definition": "Determine whether usage or perceived value is the current issue.",
+      "diagnostic_questions": [
+        "Is usage or value the main thing support should review?"
+      ],
+      "evidence_negative": [
+        "usage is fine",
+        "value is handled"
+      ],
+      "evidence_positive": [
+        "usage is a problem",
+        "value is unclear"
+      ],
+      "label": "usage or value",
+      "next_gap_candidates": [
+        "plan_fit",
+        "renewal_or_cancellation"
+      ],
+      "qualification_dimensions": [
+        "need_or_pain",
+        "current_solution_or_status_quo",
+        "fit"
+      ],
+      "review_focus": "usage and value fit",
+      "universal_pain_dimensions": [
+        "cost_or_time_waste",
+        "customer_experience_friction"
+      ],
+      "value_bridge": "Account support can review usage context before any account action is discussed."
+    }
+  },
+  "gap_order": [
+    "plan_fit",
+    "renewal_or_cancellation",
+    "usage_or_value"
+  ],
+  "human_followup_owner": "account support specialist",
+  "language": "en",
+  "objective": "appointment_setting",
+  "product_or_offer_name": "Plan Support Call",
+  "vertical_id": "membership_or_subscription",
+  "qualification_goals": [
+    "identify plan-fit or support need",
+    "respect cancellation and account-action boundaries"
+  ],
+  "regulated_cautions": [
+    "membership_or_subscription_cancellation",
+    "financial_or_payment_sensitive",
+    "legal_or_contract_sensitive"
+  ],
+  "specialist_handoff_route": "account support specialist",
+  "target_account_context": {
+    "buyer_role": "account holder or billing contact"
+  }
+}
