@@ -310,6 +310,10 @@ def build_metadata(args: argparse.Namespace, cases_path: Path, private_out: Path
         "default_stage": args.stage,
         "campaign_options": campaign_options(cases_path),
         "generic_campaign_options": generic_options,
+        "generic_campaign_count": len(generic_options),
+        "generic_campaigns_use_registry": True,
+        "generic_campaigns_use_config_path_runtime": True,
+        "generic_campaigns_live_tts_enabled_by_default": False,
         "campaign_selector": {
             "default_mode": "generic_config" if default_campaign_config_path else "routesignal_live_demo",
             "routesignal_default_campaign_id": args.campaign,
@@ -1490,6 +1494,32 @@ def build_browser_demo_turn_packet(
     asr_confidence: float | None = None,
     voice_turn_state: str | None = None,
 ) -> dict:
+    def attach_selector_trace(turn: dict, selector_mode: str, selected_config: dict | None) -> dict:
+        packet = turn.get("packet") or {}
+        tts = packet.get("tts_delivery") or {}
+        voice = packet.get("voice_delivery") or {}
+        manager = turn.get("dialogue_manager") or {}
+        memory = turn.get("demo_conversation_memory") or turn.get("conversation_memory") or {}
+        lead = memory.get("lead_followup_state") or {}
+        safety = lead.get("safety") or {}
+        summary = turn.get("summary") or {}
+        turn["campaign_selector_mode"] = selector_mode
+        turn["selected_campaign_config"] = selected_config
+        turn["provider_calls_made"] = bool(
+            turn.get("provider_calls_made")
+            or tts.get("provider_calls_made")
+            or summary.get("tts_provider_calls_made")
+            or voice.get("provider_calls_made")
+            or packet.get("api_calls_made")
+        )
+        turn["local_llm_calls_made"] = bool(turn.get("local_llm_calls_made") or manager.get("local_llm_calls_made") or packet.get("llm_used"))
+        turn["sends_email"] = bool(turn.get("sends_email") or safety.get("sends_email"))
+        turn["creates_calendar_event"] = bool(turn.get("creates_calendar_event") or safety.get("creates_calendar_event"))
+        turn["writes_crm"] = bool(turn.get("writes_crm") or safety.get("writes_crm"))
+        turn["opens_prod_102"] = bool(turn.get("opens_prod_102") or manager.get("opens_prod_102"))
+        turn["live_tts_used"] = bool(turn["provider_calls_made"] and summary.get("tts_provider_calls_made"))
+        return turn
+
     selected_config_path = resolve_project_path(str(campaign_config_path)) if campaign_config_path else None
     if selected_config_path is None:
         turn = build_turn_packet(
@@ -1508,10 +1538,10 @@ def build_browser_demo_turn_packet(
             asr_confidence=asr_confidence,
             voice_turn_state=voice_turn_state,
         )
-        turn["campaign_selector_mode"] = "routesignal_live_demo"
         turn["campaign_config_path"] = None
-        return turn
+        return attach_selector_trace(turn, "routesignal_live_demo", None)
 
+    selected_config = campaign_registry.load_campaign_config(selected_config_path)
     turn = build_generic_campaign_turn_packet_from_config_path(
         transcript=transcript,
         campaign_config_path=selected_config_path,
@@ -1528,15 +1558,21 @@ def build_browser_demo_turn_packet(
         timeout_seconds=timeout_seconds,
     )
     turn["live_demo_id"] = LIVE_DEMO_ID
-    turn["campaign_selector_mode"] = "generic_config"
     turn["campaign_config_path"] = project_relative_string(selected_config_path)
+    turn["vertical_id"] = selected_config.get("vertical_id")
     turn["selected_campaign_config"] = {
+        "campaign_id": selected_config.get("campaign_id"),
+        "vertical_id": selected_config.get("vertical_id"),
+        "product_or_offer_name": selected_config.get("product_or_offer_name"),
+        "appointment_target": selected_config.get("appointment_target"),
+        "human_followup_owner": selected_config.get("human_followup_owner"),
         "config_path": project_relative_string(selected_config_path),
+        "mode": "generic config dry-run",
         "live_tts_enabled": False,
         "route_signal_fallback_used": False,
     }
     turn["runtime_behavior_changed"] = False
-    return turn
+    return attach_selector_trace(turn, "generic_config", turn["selected_campaign_config"])
 
 
 def render_html(metadata: dict) -> str:
@@ -1614,6 +1650,30 @@ def render_html(metadata: dict) -> str:
     audio {{ width: 100%; margin-top: 10px; }}
     .full {{ grid-column: 1 / -1; }}
     .status {{ margin-top: 10px; color: var(--muted); }}
+    .campaign-panel {{
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfaf7;
+      padding: 12px;
+    }}
+    .campaign-panel strong {{ display: block; margin-bottom: 8px; }}
+    .campaign-meta {{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px 12px;
+      font: 0.85rem/1.35 Consolas, "Cascadia Mono", monospace;
+      overflow-wrap: anywhere;
+    }}
+    .notice, .error {{
+      margin-top: 10px;
+      border-radius: 6px;
+      padding: 10px;
+      line-height: 1.4;
+    }}
+    .notice {{ border: 1px solid #d9bf7b; background: #fff7da; color: #5f4713; }}
+    .error {{ border: 1px solid #b85b50; background: #fff0ed; color: #7c261d; }}
+    .hidden {{ display: none; }}
     @media (max-width: 820px) {{ .grid {{ grid-template-columns: 1fr; }} header {{ align-items: start; flex-direction: column; }} }}
   </style>
 </head>
@@ -1641,6 +1701,12 @@ def render_html(metadata: dict) -> str:
           <button id="listen" type="button">Start Conversation</button>
           <button id="stop" class="secondary" type="button">Stop Conversation</button>
           <button id="send" class="warn" type="button">Send To Agent</button>
+        </div>
+        <div class="campaign-panel" aria-live="polite">
+          <strong id="selectedCampaignMode">RouteSignal live-demo mode</strong>
+          <div id="selectedCampaignMetadata" class="campaign-meta"></div>
+          <div id="genericCampaignDryRunWarning" class="notice hidden">Generic campaign configs run dry-run TTS by default. No provider calls are made.</div>
+          <div id="campaignError" class="error hidden"></div>
         </div>
         <textarea id="transcript" placeholder="Speak, or type a test turn here."></textarea>
         <div id="status" class="status">Ready.</div>
@@ -1692,6 +1758,10 @@ def render_html(metadata: dict) -> str:
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const consent = document.querySelector("#consent");
     const campaign = document.querySelector("#campaign");
+    const selectedCampaignMode = document.querySelector("#selectedCampaignMode");
+    const selectedCampaignMetadata = document.querySelector("#selectedCampaignMetadata");
+    const genericCampaignDryRunWarning = document.querySelector("#genericCampaignDryRunWarning");
+    const campaignError = document.querySelector("#campaignError");
     const language = document.querySelector("#language");
     const listen = document.querySelector("#listen");
     const stop = document.querySelector("#stop");
@@ -1744,7 +1814,10 @@ def render_html(metadata: dict) -> str:
     let callEnded = false;
     let fallbackVoice = null;
     const conversationTranscript = [];
-    const sessionId = (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : String(Date.now());
+    function newSessionId() {{
+      return (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : String(Date.now());
+    }}
+    let sessionId = newSessionId();
 
     function setStatus(text) {{ status.textContent = text; }}
 
@@ -1833,6 +1906,106 @@ def render_html(metadata: dict) -> str:
       return option ? (option.dataset.campaignConfigPath || "") : "";
     }}
 
+    function selectedGenericCampaign() {{
+      const configPath = selectedCampaignConfigPath();
+      if (!configPath) return null;
+      return (metadata.generic_campaign_options || []).find(item => item.config_path === configPath) || null;
+    }}
+
+    function selectedRouteSignalCampaign() {{
+      const option = selectedCampaignOption();
+      const campaignId = option ? option.value : metadata.default_campaign_id;
+      return (metadata.campaign_options || []).find(item => item.campaign_id === campaignId) || null;
+    }}
+
+    function selectedCampaignTrace() {{
+      const generic = selectedGenericCampaign();
+      if (generic) {{
+        return {{
+          campaign_selector_mode: "generic_config",
+          mode: "generic config dry-run",
+          campaign_id: generic.campaign_id,
+          vertical_id: generic.vertical_id,
+          product_or_offer_name: generic.product_or_offer_name,
+          appointment_target: generic.appointment_target,
+          human_followup_owner: generic.human_followup_owner,
+          config_path: generic.config_path
+        }};
+      }}
+      const routeSignal = selectedRouteSignalCampaign() || {{}};
+      return {{
+        campaign_selector_mode: "routesignal_live_demo",
+        mode: "RouteSignal live-demo",
+        campaign_id: routeSignal.campaign_id || metadata.default_campaign_id,
+        vertical_id: "b2b_saas",
+        product_or_offer_name: routeSignal.product_name || "RouteSignal CRM",
+        appointment_target: "workflow review",
+        human_followup_owner: "Northstar Workflow Labs",
+        config_path: null
+      }};
+    }}
+
+    function renderSelectedCampaignMetadata() {{
+      const trace = selectedCampaignTrace();
+      selectedCampaignMode.textContent = trace.mode;
+      selectedCampaignMetadata.innerHTML = "";
+      [
+        ["campaign_id", trace.campaign_id],
+        ["vertical_id", trace.vertical_id],
+        ["product_or_offer_name", trace.product_or_offer_name],
+        ["appointment_target", trace.appointment_target],
+        ["human_followup_owner", trace.human_followup_owner],
+        ["config_path", trace.config_path || "(none)"],
+        ["mode", trace.mode]
+      ].forEach(([key, value]) => {{
+        const item = document.createElement("div");
+        item.textContent = `${{key}}: ${{value || "(not set)"}}`;
+        selectedCampaignMetadata.appendChild(item);
+      }});
+      genericCampaignDryRunWarning.classList.toggle("hidden", trace.campaign_selector_mode !== "generic_config");
+    }}
+
+    function clearCampaignError() {{
+      campaignError.textContent = "";
+      campaignError.classList.add("hidden");
+    }}
+
+    function handleTurnError(payload, statusCode=null) {{
+      autoConversation = false;
+      callEnded = true;
+      stopRecognitionForAgentTurn();
+      if (!audio.paused) audio.pause();
+      audio.removeAttribute("src");
+      window.speechSynthesis.cancel();
+      latestResponse = "";
+      latestSpeechText = "";
+      const message = payload && (payload.error || payload.message)
+        ? `${{payload.error}}: ${{payload.message || ""}}`.trim()
+        : `Turn failed${{statusCode ? ` (HTTP ${{statusCode}})` : ""}}.`;
+      campaignError.textContent = message;
+      campaignError.classList.remove("hidden");
+      responseBox.textContent = "Turn failed. Review the campaign selection error before continuing.";
+      decision.textContent = JSON.stringify({{
+        error: payload.error || "turn failed",
+        error_type: payload.error_type || null,
+        campaign_selector_mode: selectedCampaignTrace().campaign_selector_mode,
+        campaign_config_path: payload.campaign_config_path || selectedCampaignConfigPath() || null,
+        route_signal_fallback_used: payload.route_signal_fallback_used === true
+      }}, null, 2);
+      boundary.textContent = JSON.stringify({{
+        provider_calls_made: payload.provider_calls_made === true,
+        local_llm_calls_made: payload.local_llm_calls_made === true,
+        sends_email: payload.sends_email === true,
+        creates_calendar_event: payload.creates_calendar_event === true,
+        writes_crm: payload.writes_crm === true,
+        opens_prod_102: payload.opens_prod_102 === true,
+        live_tts_used: payload.live_tts === true,
+        route_signal_fallback_used: payload.route_signal_fallback_used === true
+      }}, null, 2);
+      packet.textContent = JSON.stringify(payload, null, 2);
+      setVoiceTurnState(VOICE_TURN_STATES.PAUSED, "Campaign selection failed. Listening is paused.");
+    }}
+
     function campaignLanguage() {{
       const option = selectedCampaignOption();
       return option ? (option.dataset.language || "en") : "en";
@@ -1865,6 +2038,7 @@ def render_html(metadata: dict) -> str:
       const option = document.createElement("option");
       option.value = item.campaign_id;
       option.dataset.language = item.language || "en";
+      option.dataset.campaignSelectorMode = "routesignal_live_demo";
       option.textContent = `${{item.campaign_id}} (${{item.language}})`;
       if (!metadata.default_campaign_config_path && item.campaign_id === metadata.default_campaign_id) option.selected = true;
       routesignalGroup.appendChild(option);
@@ -1872,19 +2046,33 @@ def render_html(metadata: dict) -> str:
     campaign.appendChild(routesignalGroup);
 
     const genericGroup = document.createElement("optgroup");
-    genericGroup.label = "Generic campaign configs";
+    genericGroup.label = "Generic config dry-run campaigns";
     (metadata.generic_campaign_options || []).forEach(item => {{
       const option = document.createElement("option");
       option.value = item.campaign_id;
       option.dataset.campaignConfigPath = item.config_path;
       option.dataset.language = item.language || "en";
-      option.textContent = `${{item.campaign_id}} — ${{item.product_or_offer_name}}`;
+      option.dataset.campaignSelectorMode = "generic_config";
+      option.textContent = `${{item.campaign_id}} - ${{item.product_or_offer_name}}`;
       if (metadata.default_campaign_config_path && item.config_path === metadata.default_campaign_config_path) option.selected = true;
       genericGroup.appendChild(option);
     }});
     campaign.appendChild(genericGroup);
     syncLanguageToCampaign();
-    campaign.addEventListener("change", syncLanguageToCampaign);
+    renderSelectedCampaignMetadata();
+    campaign.addEventListener("change", () => {{
+      syncLanguageToCampaign();
+      clearCampaignError();
+      autoConversation = false;
+      callEnded = false;
+      sessionStarted = false;
+      transcript.value = "";
+      sessionId = newSessionId();
+      conversationTranscript.length = 0;
+      renderConversationTranscript();
+      renderSelectedCampaignMetadata();
+      setVoiceTurnState(VOICE_TURN_STATES.PAUSED, "Campaign changed. Press Start Conversation to begin.");
+    }});
 
     function startRecognition() {{
       if (!autoConversation) return;
@@ -2045,10 +2233,27 @@ def render_html(metadata: dict) -> str:
       submitTurn(true, AGENT_OPEN_TRANSCRIPT, "agent-open");
     }}
 
+    function campaignSelectorTraceForPayload(payload) {{
+      return {{
+        campaign_selector_mode: payload.campaign_selector_mode || selectedCampaignTrace().campaign_selector_mode,
+        campaign_config_path: payload.campaign_config_path || null,
+        selected_campaign_config: payload.selected_campaign_config || null,
+        campaign_id: payload.campaign_id || null,
+        campaign_playbook_id: payload.campaign_playbook_id || null,
+        vertical_id: payload.vertical_id || (payload.selected_campaign_config ? payload.selected_campaign_config.vertical_id : null),
+        provider_calls_made: payload.provider_calls_made === true,
+        local_llm_calls_made: payload.local_llm_calls_made === true,
+        live_tts_used: payload.live_tts_used === true
+      }};
+    }}
+
     function providerBoundaryForTranscript(payload) {{
       return {{
         provider_agent_used: payload.provider_agent_used,
         durable_provider_agent_created: payload.durable_provider_agent_created,
+        provider_calls_made: payload.provider_calls_made === true,
+        local_llm_calls_made: payload.local_llm_calls_made === true,
+        live_tts_used: payload.live_tts_used === true,
         elevenlabs_call_made: payload.summary.tts_provider_calls_made,
         audio_file_created: payload.summary.tts_audio_file_created,
         fallback_reason: payload.summary.tts_fallback_reason,
@@ -2070,6 +2275,7 @@ def render_html(metadata: dict) -> str:
         customer_transcript: visibleTranscript,
         agent_response: payload.summary.final_response,
         call_control: payload.summary.call_control,
+        campaign_selector: campaignSelectorTraceForPayload(payload),
         demo_conversation_memory: payload.demo_conversation_memory || {{}},
         demo_conversation_stability_guard: payload.demo_conversation_stability_guard || {{}},
         dialogue_manager: payload.dialogue_manager || {{}},
@@ -2099,6 +2305,7 @@ def render_html(metadata: dict) -> str:
       return conversationTranscript.map(turn => {{
         const diagnostics = {{
           turn_index: turn.turn_index,
+          campaign_selector: turn.campaign_selector,
           dialogue_manager: turn.dialogue_manager,
           dialogue_pragmatics: turn.dialogue_pragmatics,
           memory: turn.demo_conversation_memory,
@@ -2174,7 +2381,11 @@ def render_html(metadata: dict) -> str:
           }})
         }});
         const payload = await result.json();
-        if (!result.ok) throw new Error(payload.error || `HTTP ${{result.status}}`);
+        if (!result.ok) {{
+          handleTurnError(payload, result.status);
+          return;
+        }}
+        clearCampaignError();
         sessionStarted = true;
         latestResponse = payload.summary.final_response;
         latestSpeechText = payload.summary.browser_fallback_speech_text || payload.summary.tts_input_text || payload.packet?.tts_delivery?.tts_input_text || latestResponse;
@@ -2193,10 +2404,23 @@ def render_html(metadata: dict) -> str:
           retrieval_status: payload.summary.retrieval_status,
           retrieval_used_in_runtime: payload.summary.retrieval_used_in_runtime,
           composer_hooks_status: payload.summary.composer_hooks_status,
-          composer_hooks_applied: payload.summary.composer_hooks_applied
+          composer_hooks_applied: payload.summary.composer_hooks_applied,
+          campaign_selector_mode: payload.campaign_selector_mode,
+          campaign_config_path: payload.campaign_config_path,
+          selected_campaign_config: payload.selected_campaign_config,
+          campaign_id: payload.campaign_id,
+          campaign_playbook_id: payload.campaign_playbook_id,
+          vertical_id: payload.vertical_id,
+          live_tts_used: payload.live_tts_used === true
         }}, null, 2);
         boundary.textContent = JSON.stringify({{
           provider_agent_used: payload.provider_agent_used,
+          provider_calls_made: payload.provider_calls_made === true,
+          local_llm_calls_made: payload.local_llm_calls_made === true,
+          sends_email: payload.sends_email === true,
+          creates_calendar_event: payload.creates_calendar_event === true,
+          writes_crm: payload.writes_crm === true,
+          live_tts_used: payload.live_tts_used === true,
           elevenlabs_call_made: payload.summary.tts_provider_calls_made,
           audio_file_created: payload.summary.tts_audio_file_created,
           fallback_reason: payload.summary.tts_fallback_reason,
@@ -2234,7 +2458,21 @@ def render_html(metadata: dict) -> str:
           }}
         }}
       }} catch (error) {{
-        setVoiceTurnState(VOICE_TURN_STATES.PAUSED, `Turn failed: ${{error.message}}`);
+        handleTurnError({{
+          error: "turn failed",
+          error_type: error.name || "Error",
+          message: error.message || String(error),
+          campaign_config_path: selectedCampaignConfigPath() || null,
+          route_signal_fallback_used: false,
+          provider_calls_made: false,
+          local_llm_calls_made: false,
+          sends_email: false,
+          creates_calendar_event: false,
+          writes_crm: false,
+          opens_prod_102: false,
+          live_tts: false,
+          audio_url: null
+        }});
       }} finally {{
         send.disabled = false;
         turnInFlight = false;
@@ -2351,7 +2589,9 @@ def campaign_selection_error_payload(exc: Exception, campaign_config_path: str |
         "error": "invalid generic campaign config selection",
         "error_type": type(exc).__name__,
         "message": str(exc),
+        "campaign_selector_mode": "generic_config",
         "campaign_config_path": project_relative_string(resolve_project_path(str(campaign_config_path))) if campaign_config_path else None,
+        "selected_campaign_config": None,
         "route_signal_fallback_used": False,
         "provider_calls_made": False,
         "local_llm_calls_made": False,
@@ -2364,6 +2604,7 @@ def campaign_selection_error_payload(exc: Exception, campaign_config_path: str |
         "voice_cloning_used": False,
         "audio_url": None,
         "live_tts": False,
+        "live_tts_used": False,
     }
 
 
