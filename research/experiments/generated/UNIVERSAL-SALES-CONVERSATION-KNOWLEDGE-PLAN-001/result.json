@@ -1,0 +1,347 @@
+{
+  "checkpoint_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-PLAN-001",
+  "status": "plan_created",
+  "scope": {
+    "planning_only": true,
+    "runtime_behavior_changed": false,
+    "dialogue_logic_changed": false,
+    "campaign_configs_changed": false,
+    "provider_calls_made": false,
+    "live_tts_used": false,
+    "local_llm_calls_made": false,
+    "real_customer_data_used": false,
+    "private_transcript_content_copied": false
+  },
+  "inspected_files": [
+    "runtime/core/universal_sales_knowledge.py",
+    "runtime/core/vertical_sales_playbooks.py",
+    "runtime/core/campaign_playbook_adapter.py",
+    "runtime/core/contextual_buyer_semantics.py",
+    "runtime/core/live_voice_session_policy.py",
+    "runtime/core/dialogue_manager.py",
+    "runtime/core/dialogue_pragmatics.py",
+    "runtime/speech/asr_quality_gate.py",
+    "runtime/entrypoints/generic_campaign_turn.py",
+    "scripts/run_live_demo_001_agent_voice_call.py",
+    "runtime/campaigns/examples/synthetic-*.json",
+    "research/experiments/generated/LIVE-DEMO-MANUAL-FEEDBACK-002/result.json",
+    "research/experiments/generated/LIVE-DEMO-MANUAL-FEEDBACK-002/report.md",
+    "research/experiments/generated/LIVE-DEMO-GENERIC-CAMPAIGN-LIVE-TTS-GATE-001/result.json",
+    "research/experiments/generated/LIVE-DEMO-TTS-AUDIO-PLAYBACK-001/result.json",
+    "research/experiments/generated/GENERIC-CAMPAIGN-RESPONSE-QUALITY-001/report.md",
+    "research/experiments/generated/GENERIC-CAMPAIGN-SPOKEN-TEXT-QUALITY-001/report.md",
+    "research/experiments/generated/GENERIC-CAMPAIGN-LONG-CONVERSATION-STRESS-001/report.md"
+  ],
+  "private_raw_turn_check": {
+    "path_checked": "data/private/live-demo-003/raw-turns/browser-transcript",
+    "path_exists": true,
+    "latest_reference_files_present": [
+      "LIVE-DEMO-001-a2f3c4dc-9a1f-45a1-be23-3652e3fa30b0-transcript.json",
+      "LIVE-DEMO-001-f9de5fca-bc89-430f-982d-2b982d808d38-transcript.json"
+    ],
+    "known_feedback_terms_matched": true,
+    "raw_transcript_content_copied_to_plan": false
+  },
+  "current_architecture_findings": [
+    {
+      "area": "universal_sales_knowledge",
+      "finding": "The repo already has a universal sales knowledge object with stages and buyer move families, but it is mostly descriptive knowledge. It does not own executable response-shape policy, universal repair rules, or ASR-garble routing."
+    },
+    {
+      "area": "vertical_sales_playbooks",
+      "finding": "Vertical playbooks provide common pain dimensions, qualification dimensions, value bridge principles, cautions, and handoff patterns. They are appropriate fact/policy inputs, not the right place for per-turn repair logic."
+    },
+    {
+      "area": "campaign_playbook_adapter",
+      "finding": "The adapter cleanly maps RouteSignal and generic campaign configs into campaign_context, diagnostic_gaps, allowed_claims, blocked_claims, regulated_cautions, core_diagnostic_gaps, and gap_order. This is a good campaign fact boundary."
+    },
+    {
+      "area": "contextual_buyer_semantics",
+      "finding": "Recent manual-feedback fixes are implemented as direct semantic branches and vertical/gap-specific response helpers. Examples include insurance product-detail limitation handling, automotive repair timing purpose explanations, automotive contradiction repair, time-constrained permission, and tentative gap interest."
+    },
+    {
+      "area": "live_voice_session_policy",
+      "finding": "Generic response text is built with campaign-aware helper templates such as generic_campaign_review_question, generic_campaign_product_detail_text, generic_campaign_claim_boundary_text, continuity_text, duplicate_response_repair, anti_loop_response, and pre_speech_conversation_stability_guard. This makes response shape depend on scattered helpers instead of one universal contract."
+    },
+    {
+      "area": "dialogue_manager",
+      "finding": "The manager coordinates semantic frames, pragmatic moves, anti-loop repair, duplicate repair, stability guard, memory, and call_control. It is a good integration point, but it currently consumes scattered semantic/policy decisions rather than one normalized buyer-move contract."
+    },
+    {
+      "area": "asr_quality_gate",
+      "finding": "The ASR gate rejects empty transcripts and explicit low confidence below 0.45. It does not detect accepted but semantically garbled browser ASR phrases such as 'play a double be good', 'yadav would be good', or misheard domain terms."
+    },
+    {
+      "area": "browser_demo",
+      "finding": "Browser metadata correctly tracks SpeechRecognition boundaries, selected campaign mode, generic live TTS gating, customer_audio_uploaded_to_python_server false, and customer_audio_uploaded_to_tts_provider false. Voice ID consistency and ASR provider replacement should stay outside this architecture refactor."
+    }
+  ],
+  "leakage_points": [
+    {
+      "leak": "Repeated diagnostic menu fallback",
+      "evidence": "Generic permission-to-diagnostic samples across B2B, insurance, telecom, home services, healthcare, automotive, membership, and retail still use the same 'Thanks, I am checking ... Which one is causing trouble, if any?' shape.",
+      "target_state": "Universal policy decides when a full menu is allowed and when a direct acknowledgement, answer, clarification, or one-gap question is required."
+    },
+    {
+      "leak": "Vertical-specific repair responses in contextual semantics",
+      "evidence": "Current helpers special-case insurance coverage/product-detail limitation and automotive repair_timing purpose/contradiction repairs.",
+      "target_state": "Universal buyer move handling owns purpose questions, product-detail limitations, contradiction repair, and already-answered repair. Campaign/vertical data supplies safe nouns, owners, and blocked claims only."
+    },
+    {
+      "leak": "Product-detail and scope-limit handling per campaign class",
+      "evidence": "Generic product detail detection and response generation live in contextual semantics and live session policy, with regulated behavior tied directly to vertical checks.",
+      "target_state": "Universal scope-limit move resolves to a response shape; campaign facts decide allowed facts and regulated cautions."
+    },
+    {
+      "leak": "Ordinary uncertainty can be confused with escalation",
+      "evidence": "Recent patches explicitly prohibited transfer-or-escalate for tentative gaps and product detail limitation, showing the call_control boundary is not centralized.",
+      "target_state": "Universal call_control policy only uses transfer/escalate for explicit buyer request, true regulated claim escalation, or configured human handoff requirement."
+    },
+    {
+      "leak": "ASR-garbled text enters semantics as if meaningful",
+      "evidence": "The existing quality gate handles confidence and empty text but not high-confidence nonsense or mismatch with the previous agent question.",
+      "target_state": "ASR repair runs before buyer-move classification and can force repeat/rephrase without selecting pain, appointment, or diagnostic fallback."
+    },
+    {
+      "leak": "Duplicate/loop repair is reactive",
+      "evidence": "Anti-loop and duplicate repairs exist after a candidate response is generated. They can prevent exact repeats, but they do not guarantee the direct question was answered.",
+      "target_state": "Universal response-shape rules prevent non-answer loops before text generation, then duplicate/stability guards remain as safety nets."
+    }
+  ],
+  "recommended_architecture": {
+    "primary_new_module": "runtime/core/universal_sales_conversation_knowledge.py",
+    "optional_followup_module": "runtime/core/asr_repair_policy.py",
+    "reasoning": "The missing layer is not more campaign facts. It is an executable, reusable conversation contract that maps buyer moves and stage to response shape, safe next action, call_control constraints, and repair rules before campaign-specific wording is composed.",
+    "contract_sections": [
+      "buyer_move_taxonomy",
+      "conversation_stage_policy",
+      "response_shape_library",
+      "universal_repair_rules",
+      "call_control_policy",
+      "asr_repair_boundary",
+      "campaign_fact_slots",
+      "forbidden_customer_facing_patterns",
+      "validator_matrix"
+    ]
+  },
+  "buyer_move_taxonomy": [
+    "permission_acknowledgement",
+    "time_constrained_permission",
+    "pain_confirmed",
+    "tentative_gap_interest",
+    "no_pain_clear",
+    "not_relevant",
+    "product_detail_question",
+    "scope_limit_question",
+    "regulated_claim_question",
+    "why_are_you_asking",
+    "contradiction_challenge",
+    "already_answered_challenge",
+    "confusion_not_clear",
+    "repeat_or_rephrase_request",
+    "send_info_request",
+    "callback_request",
+    "callback_time_provided",
+    "appointment_interest",
+    "right_person_redirect",
+    "support_request",
+    "stop_request",
+    "asr_garbled_or_low_confidence"
+  ],
+  "conversation_stage_policy": [
+    "opening",
+    "permission",
+    "diagnostic",
+    "value_bridge",
+    "scope_limit",
+    "appointment_progression",
+    "callback_capture",
+    "send_info_capture",
+    "handoff_right_person",
+    "stop_close"
+  ],
+  "response_shape_contract": {
+    "required_order": [
+      "acknowledge buyer meaning",
+      "answer the direct question if one was asked",
+      "use campaign facts only from allowed slots",
+      "respect blocked claims and regulated cautions",
+      "choose one next action"
+    ],
+    "must_not_do": [
+      "use internal policy wording such as 'I should'",
+      "say 'approved qualified reviewer path'",
+      "repeat a full diagnostic menu after a concrete answer",
+      "invent product details, prices, guarantees, coverage, refunds, or integration/security claims",
+      "transfer-or-escalate for ordinary uncertainty",
+      "erase confirmed or cleared gaps",
+      "guess buyer meaning from garbled ASR",
+      "route generic campaigns to RouteSignal fallback"
+    ]
+  },
+  "campaign_fact_adapter_contract": {
+    "campaign_config_should_own": [
+      "campaign_id",
+      "client_name",
+      "product_or_offer_name",
+      "vertical_id",
+      "objective",
+      "human_followup_owner",
+      "appointment_target",
+      "allowed_claims",
+      "blocked_claims",
+      "regulated_cautions",
+      "diagnostic_gaps",
+      "core_diagnostic_gaps",
+      "gap_order",
+      "caller_identity",
+      "language",
+      "customer_language examples"
+    ],
+    "campaign_config_should_not_own": [
+      "generic acknowledgement strategy",
+      "why-are-you-asking repair strategy",
+      "product-detail limitation response shape",
+      "loop repair strategy",
+      "ASR-garble handling",
+      "appointment progression policy",
+      "transfer/escalate policy except explicit configured escalation triggers"
+    ]
+  },
+  "asr_repair_boundary": {
+    "location": "Before contextual buyer semantics and before appointment or pain routing.",
+    "detect": [
+      "explicit low ASR confidence",
+      "empty or fragment transcript",
+      "phonetic nonsense",
+      "malformed phrases such as 'play a double be good'",
+      "domain near-misses such as 'repeal timings' near automotive repair timing",
+      "mismatch between previous agent question and buyer response",
+      "high-risk ambiguity around times, names, email, prices, coverage, refunds, and regulated claims"
+    ],
+    "behavior": [
+      "ask for a repeat or short rephrase",
+      "do not infer pain",
+      "do not capture appointment",
+      "do not reopen a diagnostic menu",
+      "do not call providers",
+      "preserve previous confirmed and cleared memory"
+    ]
+  },
+  "runtime_integration_points": [
+    {
+      "point": "generic_campaign_turn.build_generic_campaign_turn_packet",
+      "change_type": "future integration",
+      "plan": "Run ASR repair policy after evaluate_asr_quality and before dialogue_manager.plan_dialogue_action."
+    },
+    {
+      "point": "dialogue_manager.plan_dialogue_action",
+      "change_type": "future integration",
+      "plan": "Consume a normalized universal buyer move frame with response-shape constraints, call_control constraints, and memory update instructions."
+    },
+    {
+      "point": "contextual_buyer_semantics",
+      "change_type": "future migration",
+      "plan": "Reduce to feature extraction and campaign gap matching. Move universal repair decisions into universal_sales_conversation_knowledge."
+    },
+    {
+      "point": "live_voice_session_policy",
+      "change_type": "future migration",
+      "plan": "Keep low-level text helpers but make them render from universal response shapes rather than selecting strategy themselves."
+    },
+    {
+      "point": "campaign_playbook_adapter",
+      "change_type": "preserve",
+      "plan": "Continue using it as the fact adapter for RouteSignal and file-backed generic campaign configs."
+    },
+    {
+      "point": "scripts/run_live_demo_001_agent_voice_call.py",
+      "change_type": "preserve",
+      "plan": "Keep selector contract, live TTS gating, browser ASR metadata, and no-customer-audio-upload boundary unchanged."
+    }
+  ],
+  "validator_strategy": {
+    "new_validators": [
+      "scripts/validate_universal_sales_conversation_knowledge_001.py",
+      "scripts/validate_universal_buyer_moves_cross_campaign_001.py",
+      "scripts/validate_universal_asr_repair_boundary_001.py",
+      "scripts/validate_universal_response_shape_quality_001.py"
+    ],
+    "campaign_matrix": [
+      "RouteSignal",
+      "synthetic-insurance-review",
+      "synthetic-b2b-saas-operations",
+      "synthetic-automotive-service-review",
+      "synthetic-home-services-estimate"
+    ],
+    "buyer_move_cases": [
+      "make it quick",
+      "maybe X",
+      "X is usually a problem",
+      "what does your product do?",
+      "so you can't give me details?",
+      "why are you asking?",
+      "you didn't answer my question",
+      "if you're not the right person, why ask?",
+      "I already told you",
+      "yeah that would be good",
+      "play a double be good",
+      "yadav would be good",
+      "repeal timings are long",
+      "send me details",
+      "tomorrow at 3 works",
+      "no thanks",
+      "stop calling"
+    ],
+    "assertions": [
+      "buyer meaning acknowledged",
+      "direct question answered",
+      "no repeated full menu after answer",
+      "no internal policy wording",
+      "no transfer/escalate unless required",
+      "no campaign leakage",
+      "appointment ask only when appropriate",
+      "safe claim boundaries preserved",
+      "side-effect flags false",
+      "generic selected configs do not fall back to RouteSignal"
+    ]
+  },
+  "migration_phases": {
+    "4E1": "Create runtime/core/universal_sales_conversation_knowledge.py as a data/contract module with schema validation and response-shape rules. Add a narrow validator. No runtime behavior change except optional manifest registration.",
+    "4E2": "Integrate universal buyer-move policy before campaign-specific routing. Replace repeated generic diagnostic fallback with universal explanation/repair. Add ASR-garble boundary.",
+    "4E3": "Move product-detail and scope-limit handling into universal policy. Campaign configs provide allowed facts, blocked claims, owner, target, and cautions only.",
+    "4E4": "Treat all generic campaign configs as fixtures. Validate the same universal buyer-move matrix across RouteSignal, regulated generic, non-regulated generic, and service-style generic campaigns.",
+    "4E5": "Re-run browser typed and live TTS rehearsals. Only after the universal dialogue layer is stable, evaluate voice ID consistency and ASR provider replacement."
+  },
+  "risks": [
+    {
+      "risk": "Overabstracting the conversation layer into a second dialogue manager.",
+      "mitigation": "Keep the new module declarative: taxonomy, response-shape rules, constraints, and render slots. Let dialogue_manager remain the orchestrator."
+    },
+    {
+      "risk": "Weakening regulated claim boundaries while making responses more natural.",
+      "mitigation": "Separate product_detail_question from regulated_claim_question and require blocked_claims/regulatory cautions in validator assertions."
+    },
+    {
+      "risk": "Breaking RouteSignal behavior while generalizing generic campaign behavior.",
+      "mitigation": "Include RouteSignal in every universal buyer-move validator and preserve campaign_playbook_adapter as the playbook resolver."
+    },
+    {
+      "risk": "ASR repair blocks valid short replies.",
+      "mitigation": "Use previous-question compatibility and confidence/phrase heuristics; accept clean low-information replies when they are valid for the stage."
+    },
+    {
+      "risk": "Existing validators encode current brittle wording.",
+      "mitigation": "Move validators toward semantic and response-shape assertions, not exact full-sentence matching except for safety-critical strings."
+    },
+    {
+      "risk": "Voice ID consistency distracts from dialogue architecture.",
+      "mitigation": "Track as a separate live TTS configuration issue after 4E5."
+    }
+  ],
+  "recommended_next_phase": {
+    "phase": "4E1",
+    "summary": "Add the universal sales conversation knowledge module as a contract-only artifact plus validators. Do not integrate behavior until the taxonomy, response-shape rules, forbidden patterns, and campaign fact slots pass against current RouteSignal and generic fixture expectations.",
+    "why": "The repo already has enough campaign data. The next valuable step is to make the missing conversation contract explicit before another runtime patch adds more branches."
+  }
+}

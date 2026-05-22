@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "manifest_id": "runtime-boundary-001",
-  "updated_on": "2026-05-20",
+  "updated_on": "2026-05-22",
   "purpose": "Make runtime-affecting project files visible separately from research, generated evidence, checkpoint runners, and temporary files.",
   "status": "runtime-sources-and-docs-moved-with-legacy-wrappers",
   "runtime_home_policy": {
@@ -97,6 +97,19 @@
         "sales knowledge contract",
         "decision-support primitives",
         "regulated caution boundaries"
+      ]
+    },
+    {
+      "path": "runtime/core/universal_sales_conversation_knowledge.py",
+      "path_type": "file",
+      "tier": "core-runtime-knowledge",
+      "runtime_role": "Declarative universal sales conversation knowledge contract for buyer-move taxonomy, stage policy, response-shape outlines, repair rules, ASR repair boundaries, call-control constraints, campaign fact slots, forbidden customer-facing patterns, and validator matrix. Not integrated into route selection yet.",
+      "behavior_surface": [
+        "conversation knowledge contract",
+        "buyer move taxonomy",
+        "response-shape outlines",
+        "ASR repair boundary",
+        "call-control constraints"
       ]
     },
     {

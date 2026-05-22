@@ -1,0 +1,180 @@
+{
+  "checkpoint_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
+  "creates_calendar_event": false,
+  "evidence": {
+    "asr_boundary_checks": {
+      "expected_policy": {
+        "forbidden_behavior": [
+          "infer pain",
+          "capture appointment",
+          "repeat diagnostic menu",
+          "call providers"
+        ],
+        "required_behavior": [
+          "ask for repeat/rephrase",
+          "preserve existing confirmed/cleared memory"
+        ],
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "live_tts_used": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "private_transcript_content_copied": false,
+          "provider_calls_made": false,
+          "real_customer_data_used": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "missing_known_phrases": []
+    },
+    "buyer_move_contract_failures": {},
+    "call_control_checks": {
+      "asr_garble": {
+        "allowed_call_control": [
+          "continue-call"
+        ],
+        "forbidden_call_control": [
+          "transfer-or-escalate",
+          "schedule-and-end",
+          "end-call"
+        ],
+        "id": "asr_garble",
+        "reason": "Garbled transcript needs a repeat request and must not advance state."
+      },
+      "ordinary_uncertainty": {
+        "allowed_call_control": [
+          "continue-call"
+        ],
+        "forbidden_call_control": [
+          "transfer-or-escalate",
+          "schedule-and-end"
+        ],
+        "id": "ordinary_uncertainty",
+        "reason": "Uncertainty needs clarification, not escalation."
+      },
+      "product_detail_limitation": {
+        "allowed_call_control": [
+          "continue-call",
+          "end-call"
+        ],
+        "forbidden_call_control": [
+          "transfer-or-escalate"
+        ],
+        "id": "product_detail_limitation",
+        "reason": "Scope limitation should be answered plainly unless the buyer asks for transfer or the campaign has a true escalation trigger."
+      },
+      "stop_or_refusal": {
+        "allowed_call_control": [
+          "end-call"
+        ],
+        "forbidden_call_control": [
+          "continue-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "id": "stop_or_refusal",
+        "reason": "Explicit stop or refusal must close without further selling."
+      },
+      "transfer_or_escalate": {
+        "allowed_only_when": [
+          "explicit_transfer_request",
+          "configured_escalation_trigger",
+          "true_regulated_escalation_requirement"
+        ],
+        "description": "Escalation boundary for explicit transfer request, configured escalation trigger, or true regulated escalation requirement.",
+        "forbidden_when": [
+          "ordinary uncertainty",
+          "product detail limitation",
+          "ASR garble"
+        ],
+        "id": "transfer-or-escalate"
+      },
+      "valid_callback_or_appointment_time": {
+        "allowed_call_control": [
+          "continue-call",
+          "schedule-and-end"
+        ],
+        "forbidden_call_control": [
+          "transfer-or-escalate"
+        ],
+        "id": "valid_callback_or_appointment_time",
+        "reason": "A usable time can be confirmed locally without provider, email, calendar, or CRM side effects."
+      }
+    },
+    "campaign_fact_boundary": {
+      "forbidden_responsibility_count": 7,
+      "slot_count": 20
+    },
+    "checkpoint_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
+    "id_counts": {
+      "asr_cases": 8,
+      "buyer_moves": 22,
+      "call_controls": 9,
+      "campaign_fact_slots": 20,
+      "conversation_stages": 10,
+      "response_shapes": 16
+    },
+    "identity": {
+      "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
+      "schema_version": 1
+    },
+    "leakage_scan": {
+      "leaks": {},
+      "validator_matrix_fixture_exception_applied": true
+    },
+    "module_path": "runtime\\core\\universal_sales_conversation_knowledge.py",
+    "module_validation": {
+      "counts": {
+        "asr_cases": 8,
+        "buyer_moves": 22,
+        "campaign_fact_slots": 20,
+        "conversation_stages": 10,
+        "repair_rules": 12,
+        "response_shapes": 16
+      },
+      "creates_calendar_event": false,
+      "declarative_only": true,
+      "failures": [],
+      "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
+      "live_tts_used": false,
+      "local_llm_calls_made": false,
+      "no_contextual_buyer_semantics_import": true,
+      "no_dialogue_manager_import": true,
+      "no_final_runtime_response_generation": true,
+      "no_live_voice_session_policy_import": true,
+      "opens_prod_102": false,
+      "private_transcript_content_copied": false,
+      "provider_calls_made": false,
+      "real_customer_data_used": false,
+      "schema_version": 1,
+      "sends_email": false,
+      "status": "pass",
+      "writes_crm": false
+    },
+    "repair_rule_failures": {},
+    "response_shape_required_step_failures": {},
+    "stage_policy_failures": {}
+  },
+  "failures": [],
+  "live_tts_used": false,
+  "local_llm_calls_made": false,
+  "opens_prod_102": false,
+  "private_transcript_content_copied": false,
+  "provider_calls_made": false,
+  "real_customer_data_used": false,
+  "sends_email": false,
+  "side_effects": {
+    "creates_calendar_event": false,
+    "live_tts_used": false,
+    "local_llm_calls_made": false,
+    "opens_prod_102": false,
+    "private_transcript_content_copied": false,
+    "provider_calls_made": false,
+    "real_customer_data_used": false,
+    "sends_email": false,
+    "writes_crm": false
+  },
+  "status": "pass",
+  "writes_crm": false
+}
