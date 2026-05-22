@@ -239,6 +239,8 @@ def assert_callback_workflow_not_scheduling(response: str, context: str) -> None
                 "callback reminder",
                 "missed follow-up",
                 "inbound demo",
+                "demo leads",
+                "workflow review",
                 "next step",
                 "without a next step",
                 "owner",
@@ -352,6 +354,7 @@ def assert_seller_led_next_move(response: str, context: str) -> None:
                 "frequent enough",
                 "should i keep",
                 "would a short",
+                "what time works",
             }
         ),
         f"{context} should guide discovery instead of only giving information: {response}",
@@ -373,16 +376,21 @@ def assert_sales_context_depth(response: str, context: str) -> None:
     for fragment in blocked_generic:
         assert_condition(fragment not in lowered, f"{context} used thin generic sales wording: {response}")
     concepts = {
+        "routesignal": "routesignal",
         "inbound": "inbound",
         "demo": "demo",
+        "leads": "leads",
         "owner": "owner",
         "routing": "routing",
         "callback": "callback",
         "handoff": "handoff",
+        "manual_tracking": "manual tracking",
+        "remind": "remind",
         "reminder": "reminder",
         "visibility": "visibility",
         "manager": "manager",
         "follow-up": "follow-up",
+        "workflow_review": "workflow review",
         "spreadsheet": "spreadsheet",
         "slack": "slack",
     }
@@ -580,7 +588,9 @@ def main() -> None:
     assert_condition(set(metadata["fictional_campaign_profile"]["source_urls"]) == profile_source_urls, "Profile source metadata mismatch.")
     english_campaigns = [item for item in metadata["campaign_options"] if item["language"] == "en"]
     assert_condition(any(item["campaign_id"] == "campaign-prod-005-b2b-software" for item in english_campaigns), "English campaign option missing.")
-    assert_condition(metadata["local_server"]["endpoints"] == ["/", "/metadata", "/turn", "/audio"], "Endpoint metadata mismatch.")
+    assert_condition(metadata["local_server"]["endpoints"] == ["/", "/metadata", "/campaigns", "/turn", "/audio"], "Endpoint metadata mismatch.")
+    assert_condition("generic_campaign_options" in html, "Generic campaign selector metadata missing.")
+    assert_condition("campaign_config_path" in html, "Generic campaign config path payload field missing.")
     assert_condition(metadata["repo_owned_agent"]["provider_agent_used"] is False, "Provider agent boundary missing.")
     assert_condition(metadata["repo_owned_agent"]["guarded_retrieval"]["enabled_when_registry_present"] is True, "LIVE-DEMO-001 should wire local guarded retrieval when the registry exists.")
     assert_condition(metadata["repo_owned_agent"]["guarded_retrieval"]["campaign_facts_override_rag"] is True, "Campaign facts must override RAG in the demo.")
@@ -796,9 +806,19 @@ def main() -> None:
         voice_turn_state="listening",
     )
     validate_turn(qualification_ack, live_tts=False, fallback_reason="dry-run-mode")
+    qualification_ack_continuity = qualification_ack["demo_session_continuity"]
+    qualification_ack_semantics = qualification_ack_continuity.get("contextual_buyer_semantics") or {}
     assert_condition(
-        qualification_ack["demo_session_continuity"]["reason"] == "proactive_qualification_guidance_after_acknowledgement",
-        f"Weak reply after agent opening should keep the agent steering discovery: {qualification_ack['demo_session_continuity']}",
+        qualification_ack_continuity["reason"] == "contextual_permission_acknowledgement",
+        f"Weak reply after agent opening should keep contextual permission continuity: {qualification_ack_continuity}",
+    )
+    assert_condition(
+        qualification_ack_semantics.get("semantic") == "permission_acknowledgement",
+        f"Weak reply should be interpreted as permission acknowledgement: {qualification_ack_semantics}",
+    )
+    assert_condition(
+        qualification_ack_semantics.get("action_id") == "continue_with_session_policy",
+        f"Weak reply should continue through session policy: {qualification_ack_semantics}",
     )
     assert_seller_led_next_move(qualification_ack["summary"]["final_response"], "agent-led acknowledgement")
     assert_contains_any(
@@ -916,9 +936,27 @@ def main() -> None:
         voice_turn_state="listening",
     )
     validate_turn(qualification_gap, live_tts=False, fallback_reason="dry-run-mode")
+    qualification_gap_continuity = qualification_gap["demo_session_continuity"]
+    qualification_gap_semantics = qualification_gap_continuity.get("contextual_buyer_semantics") or {}
     assert_condition(
-        qualification_gap["demo_session_continuity"]["reason"] == "seller_gap_selected_for_qualification",
-        f"Named gap after agent opening should map to value and next step: {qualification_gap['demo_session_continuity']}",
+        qualification_gap_continuity["reason"] == "contextual_pain_confirmed",
+        f"Named gap after agent opening should map through contextual pain confirmation: {qualification_gap_continuity}",
+    )
+    assert_condition(
+        qualification_gap_semantics.get("semantic") == "pain_confirmed",
+        f"Named gap should be semantically confirmed as pain: {qualification_gap_semantics}",
+    )
+    assert_condition(
+        qualification_gap_semantics.get("target_gap") == "handoffs",
+        f"Named gap should target handoffs: {qualification_gap_semantics}",
+    )
+    assert_condition(
+        qualification_gap_semantics.get("playbook_id") == "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+        f"Named gap should stay on RouteSignal playbook: {qualification_gap_semantics}",
+    )
+    assert_condition(
+        qualification_gap_semantics.get("action_id") == "request_appointment_time",
+        f"Named gap should move toward a workflow review time: {qualification_gap_semantics}",
     )
     assert_contains_any(
         qualification_gap["summary"]["final_response"],
@@ -1040,30 +1078,34 @@ def main() -> None:
         (
             "new trial request clarification",
             "what do you mean by new trial request",
-            "new_trial_request_clarified",
+            "conversation_stability_repaired",
+            {"failed_to_explain_previous_question"},
             {"inbound demo", "trial inquiries", "owner"},
         ),
         (
             "value relevance clarification",
             "no I don't understand what this means for us I'm asking you",
-            "value_relevance_explained",
-            {"matters only if", "missed callbacks", "unclear owners"},
+            "contextual_confusion_not_clear",
+            set(),
+            {"inbound demo", "callbacks", "missed"},
         ),
         (
             "buyer did not ask question",
             "I didn't ask a question",
             "buyer_no_question_recovered",
+            set(),
             {"you did not ask", "I called to check", "inbound demo"},
         ),
         (
             "short topic confusion fragment",
             "I don't know what",
             "topic_confusion_repaired",
+            set(),
             {"lost the thread", "demo follow-up", "should I stop"},
         ),
     ]
     seen_failure_responses = {turn["summary"]["final_response"] for turn in live_failure_state["turns"]}
-    for context, transcript_text, expected_reason, expected_fragments in live_failure_cases:
+    for context, transcript_text, expected_reason, expected_violations, expected_fragments in live_failure_cases:
         packet = build_turn_packet(
             transcript=transcript_text,
             campaign_id="campaign-prod-005-b2b-software",
@@ -1083,6 +1125,11 @@ def main() -> None:
         assert_condition(
             packet["demo_session_continuity"]["reason"] == expected_reason,
             f"{context} should route to the specific live failure repair: {packet['demo_session_continuity']}",
+        )
+        actual_violations = set(packet["demo_session_continuity"].get("violations") or [])
+        assert_condition(
+            expected_violations.issubset(actual_violations),
+            f"{context} should report expected repair violations {expected_violations}: {packet['demo_session_continuity']}",
         )
         assert_condition(
             packet["summary"]["final_response"] not in seen_failure_responses,
@@ -1116,9 +1163,19 @@ def main() -> None:
         voice_turn_state="listening",
     )
     validate_turn(buyer_stop_packet, live_tts=False, fallback_reason="dry-run-mode")
+    buyer_stop_continuity = buyer_stop_packet["demo_session_continuity"]
+    buyer_stop_semantics = buyer_stop_continuity.get("contextual_buyer_semantics") or {}
     assert_condition(
-        buyer_stop_packet["demo_session_continuity"]["reason"] == "buyer_requested_stop",
-        f"Buyer stop request should be respected before sales progression: {buyer_stop_packet['demo_session_continuity']}",
+        buyer_stop_continuity["reason"] == "contextual_stop_request",
+        f"Buyer stop request should be respected before sales progression: {buyer_stop_continuity}",
+    )
+    assert_condition(
+        buyer_stop_semantics.get("semantic") == "stop_request",
+        f"Buyer stop request should use stop-request semantics: {buyer_stop_semantics}",
+    )
+    assert_condition(
+        buyer_stop_semantics.get("action_id") == "end_call_stop_request",
+        f"Buyer stop request should end through the semantic action: {buyer_stop_semantics}",
     )
     assert_condition(
         buyer_stop_packet["summary"]["call_control"] == "end-call",
@@ -1438,8 +1495,8 @@ def main() -> None:
     )
     direct_price_response = direct_price_packet["summary"]["final_response"]
     assert_condition(
-        direct_price_packet["summary"]["sales_difficulty"] == "price-first-direct",
-        f"Direct price question should use price-first route: {direct_price_packet['summary']}",
+        direct_price_response.lower().startswith("starter is $29/month"),
+        f"Direct price question should answer price before steering discovery: {direct_price_packet['summary']}",
     )
     assert_condition(
         "$29/month" in direct_price_response and "$59/month" in direct_price_response,
@@ -1770,16 +1827,26 @@ def main() -> None:
 
     assert_sales_opening_response(callback_packets[0]["summary"]["final_response"])
     no_time = callback_packets[1]
+    no_time_continuity = no_time["demo_session_continuity"]
+    no_time_semantics = no_time_continuity.get("contextual_buyer_semantics") or {}
     assert_condition(
-        no_time["demo_session_continuity"]["reason"] == "callback_request_time_needed",
-        f"No-time boundary should ask for callback time through session policy: {no_time['demo_session_continuity']}",
+        no_time_continuity["reason"] == "contextual_callback_scheduling_request",
+        f"No-time boundary should ask for callback time through contextual semantics: {no_time_continuity}",
     )
     assert_condition(
-        no_time["summary"]["sales_difficulty"] == "callback-request",
+        no_time_semantics.get("semantic") == "callback_scheduling_request",
+        f"No-time boundary should classify as callback scheduling request: {no_time_semantics}",
+    )
+    assert_condition(
+        no_time_semantics.get("action_id") == "request_callback_time",
+        f"No-time boundary should request callback time: {no_time_semantics}",
+    )
+    assert_condition(
+        no_time["summary"]["sales_difficulty"] == "callback-scheduling",
         f"No-time boundary should classify as callback request: {no_time['summary']}",
     )
     assert_condition(
-        no_time["summary"]["next_action"] == "offer-scheduling",
+        no_time["summary"]["next_action"] == "request-callback-time",
         f"No-time boundary should offer scheduling: {no_time['summary']}",
     )
     assert_condition(
@@ -1789,9 +1856,19 @@ def main() -> None:
     assert_contains_any(no_time["summary"]["final_response"], {"time", "callback"}, "no-time callback request")
 
     callback_time = callback_packets[2]
+    callback_time_continuity = callback_time["demo_session_continuity"]
+    callback_time_semantics = callback_time_continuity.get("contextual_buyer_semantics") or {}
     assert_condition(
-        callback_time["demo_session_continuity"]["reason"] == "callback_time_confirmed",
-        f"Callback time should be confirmed through session policy: {callback_time['demo_session_continuity']}",
+        callback_time_continuity["reason"] == "contextual_callback_time_confirmation",
+        f"Callback time should be confirmed through contextual semantics: {callback_time_continuity}",
+    )
+    assert_condition(
+        callback_time_semantics.get("semantic") == "callback_time_confirmation",
+        f"Callback time should use callback-time semantics: {callback_time_semantics}",
+    )
+    assert_condition(
+        callback_time_semantics.get("action_id") == "confirm_callback_and_end",
+        f"Callback time should confirm callback and end: {callback_time_semantics}",
     )
     assert_condition(
         callback_time["summary"]["sales_difficulty"] == "scheduling-confirmation",
