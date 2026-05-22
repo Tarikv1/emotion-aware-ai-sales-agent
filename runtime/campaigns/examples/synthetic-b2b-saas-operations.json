@@ -63,6 +63,8 @@
       "causal_story": "If manual work stays unresolved, the team may keep losing time to repeated operational steps.",
       "customer_language": [
         "manual work",
+        "manual workflow",
+        "manual process",
         "manual",
         "spreadsheet work"
       ],
@@ -72,11 +74,14 @@
       ],
       "evidence_negative": [
         "manual work is handled",
-        "manual work is fine"
+        "manual work is fine",
+        "manual work is not a problem",
+        "manual process is handled"
       ],
       "evidence_positive": [
+        "manual work is a problem",
         "manual work is the problem",
-        "manual work is a problem"
+        "manual workflow is a problem"
       ],
       "label": "manual work",
       "next_gap_candidates": [

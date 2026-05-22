@@ -5,8 +5,8 @@
     "config_path_runtime": {
       "b2b_saas": {
         "config_path": "runtime\\campaigns\\examples\\synthetic-b2b-saas-operations.json",
-        "expected_gap": "visibility_gap",
-        "pain_phrase": "visibility is a problem",
+        "expected_gap": "manual_work",
+        "pain_phrase": "manual work is a problem",
         "turns": [
           {
             "audio_url": null,
@@ -66,13 +66,13 @@
             "local_llm_calls_made": false,
             "opens_prod_102": false,
             "playbook_id": "synthetic-b2b-saas-operations-playbook",
-            "playbook_review_focus": "visibility into workflow status",
+            "playbook_review_focus": "manual workflow load",
             "provider_agent_used": false,
             "provider_calls_made": false,
             "semantic": "pain_confirmed",
             "sends_email": false,
-            "target_gap": "visibility_gap",
-            "transcript": "visibility is a problem",
+            "target_gap": "manual_work",
+            "transcript": "manual work is a problem",
             "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
             "voice_cloning_used": false,
             "writes_crm": false
@@ -126,12 +126,12 @@
             "local_llm_calls_made": false,
             "opens_prod_102": false,
             "playbook_id": "synthetic-b2b-saas-operations-playbook",
-            "playbook_review_focus": "visibility into workflow status",
+            "playbook_review_focus": "manual workflow load",
             "provider_agent_used": false,
             "provider_calls_made": false,
             "semantic": "appointment_time_given",
             "sends_email": false,
-            "target_gap": "visibility_gap",
+            "target_gap": "manual_work",
             "transcript": "tomorrow at 3 works",
             "tts_input_text": "Confirmed. I will note that time for the operations fit review. Goodbye.",
             "voice_cloning_used": false,

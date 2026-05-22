@@ -69,7 +69,7 @@ CONFIG_PATH_RUNTIME_LABELS = ["insurance", "telecom", "b2b_saas", "home_services
 CONFIG_PATH_TARGET_GAPS = {
     "insurance": "premium_or_budget",
     "telecom": "coverage_or_availability",
-    "b2b_saas": "visibility_gap",
+    "b2b_saas": "manual_work",
     "home_services": "estimate_or_property_details",
 }
 

@@ -133,8 +133,8 @@ def _join_or(labels: list[str]) -> str:
 
 def _normalized_gap_phrases(gap_id: str, campaign: dict | None, fields: list[str] | None = None) -> list[str]:
     definition = _gap_definition(gap_id, campaign)
-    values: list[str] = [gap_id.replace("_", " "), str(definition.get("label") or "")]
     if fields is None:
+        values: list[str] = [gap_id.replace("_", " "), str(definition.get("label") or "")]
         fields = [
             "customer_language",
             "evidence_positive",
@@ -142,8 +142,15 @@ def _normalized_gap_phrases(gap_id: str, campaign: dict | None, fields: list[str
             "diagnostic_questions",
             "review_focus",
         ]
+    else:
+        values = []
     for field in fields:
-        values.extend(_string_list(definition.get(field)))
+        if field == "label":
+            values.append(str(definition.get("label") or ""))
+        elif field in {"campaign_gap_id", "gap_id"}:
+            values.extend([gap_id.replace("_", " "), str(definition.get("campaign_gap_id") or "")])
+        else:
+            values.extend(_string_list(definition.get(field)))
     phrases: list[str] = []
     for value in values:
         normalized = session_policy.normalize_text(value)
