@@ -1,0 +1,151 @@
+{
+  "checkpoint_id": "POST-5A3-CHECKPOINT-HYGIENE-001",
+  "created_at": "2026-05-22",
+  "status": "pass",
+  "runtime_behavior_changed_in_this_phase": false,
+  "committed_or_pushed": false,
+  "destructive_git_commands_used": false,
+  "git_status_summary": {
+    "tracked_modified_entries": 15,
+    "untracked_entries": 64,
+    "untracked_generated_evidence_dirs": 29,
+    "untracked_runtime_files": 6,
+    "untracked_script_files": 29,
+    "total_status_entries": 79
+  },
+  "git_diff_check": {
+    "status": "pass",
+    "notes": "Exit code 0. Git reported LF-to-CRLF warnings for existing tracked files, but no whitespace errors."
+  },
+  "runtime_manifest_coverage": {
+    "status": "pass",
+    "runtime_entry_count": 61,
+    "non_runtime_default_count": 9,
+    "registered_runtime_files_checked": [
+      "runtime/core/live_voice_session_policy.py",
+      "runtime/core/contextual_buyer_semantics.py",
+      "runtime/core/universal_sales_knowledge.py",
+      "runtime/core/vertical_sales_playbooks.py",
+      "runtime/core/campaign_playbook_adapter.py",
+      "runtime/entrypoints/generic_campaign_turn.py",
+      "runtime/voice/runtime_voice_delivery.py"
+    ]
+  },
+  "critical_validator_results": [
+    {"command": "python scripts\\validate_runtime_manifest.py", "status": "pass"},
+    {"command": "python scripts\\validate_project_drift_guard.py", "status": "pass"},
+    {"command": "python scripts\\validate_human_semantic_delta_findings_002.py", "status": "pass", "failure_count": 0},
+    {"command": "python scripts\\validate_human_review_findings_001.py", "status": "pass", "reproduced_failure_count": 0},
+    {"command": "python scripts\\validate_generic_campaign_long_conversation_stress_001.py", "status": "pass"},
+    {"command": "python scripts\\validate_generic_campaign_response_quality_001.py", "status": "pass", "failure_count": 0},
+    {"command": "python scripts\\validate_generic_campaign_spoken_text_quality_001.py", "status": "pass", "failure_count": 0},
+    {"command": "git diff --check", "status": "pass"}
+  ],
+  "changed_file_categories": {
+    "runtime_behavior_files": [
+      {"path": "runtime/core/contextual_buyer_semantics.py", "tracked": false, "likely_phase": "4B5-5A3", "surface": "dialogue semantics and human-review repair", "should_commit": true, "generated_evidence": false, "manual_review_before_staging": true},
+      {"path": "runtime/core/dialogue_manager.py", "tracked": true, "likely_phase": "1A-4C", "surface": "dialogue manager behavior", "should_commit": true, "generated_evidence": false, "manual_review_before_staging": true},
+      {"path": "runtime/core/dialogue_pragmatics.py", "tracked": true, "likely_phase": "1A-4C", "surface": "dialogue pragmatics", "should_commit": true, "generated_evidence": false, "manual_review_before_staging": true},
+      {"path": "runtime/core/live_voice_session_policy.py", "tracked": true, "likely_phase": "1A-5A3", "surface": "live policy, generic fallback, spoken response wording", "should_commit": true, "generated_evidence": false, "manual_review_before_staging": true},
+      {"path": "runtime/core/sales_diagnostic_playbook.py", "tracked": false, "likely_phase": "4B3", "surface": "RouteSignal diagnostic playbook compatibility", "should_commit": true, "generated_evidence": false, "manual_review_before_staging": true},
+      {"path": "runtime/core/universal_sales_knowledge.py", "tracked": false, "likely_phase": "4B1", "surface": "universal sales knowledge", "should_commit": true, "generated_evidence": false, "manual_review_before_staging": true},
+      {"path": "runtime/core/vertical_sales_playbooks.py", "tracked": false, "likely_phase": "4B2", "surface": "vertical playbooks", "should_commit": true, "generated_evidence": false, "manual_review_before_staging": true},
+      {"path": "runtime/core/campaign_playbook_adapter.py", "tracked": false, "likely_phase": "4B3", "surface": "campaign adapter", "should_commit": true, "generated_evidence": false, "manual_review_before_staging": true}
+    ],
+    "runtime_entrypoints": [
+      {"path": "runtime/entrypoints/generic_campaign_turn.py", "tracked": false, "likely_phase": "4B7", "surface": "generic campaign dry-run turn packet entrypoint", "should_commit": true, "generated_evidence": false, "manual_review_before_staging": true},
+      {"path": "scripts/run_live_demo_001_agent_voice_call.py", "tracked": true, "likely_phase": "4B-5A", "surface": "RouteSignal live-demo wrapper", "should_commit": true, "generated_evidence": false, "manual_review_before_staging": true}
+    ],
+    "voice_tts_files": [
+      {"path": "runtime/voice/runtime_voice_delivery.py", "tracked": true, "likely_phase": "4C4", "surface": "dry-run voice/TTS spoken text", "should_commit": true, "generated_evidence": false, "manual_review_before_staging": true}
+    ],
+    "runtime_manifest": [
+      {"path": "runtime/runtime_manifest.json", "tracked": true, "likely_phase": "4B7-4D0", "surface": "runtime file registry", "should_commit": true, "generated_evidence": false, "manual_review_before_staging": true}
+    ],
+    "validators_scripts": [
+      "scripts/generate_human_semantic_delta_review_packet_002.py",
+      "scripts/generate_human_semantic_review_packet_001.py",
+      "scripts/validate_campaign_playbook_adapter_001.py",
+      "scripts/validate_campaign_playbook_adapter_002_cross_vertical_smoke.py",
+      "scripts/validate_contextual_buyer_semantics_001.py",
+      "scripts/validate_contextual_buyer_semantics_002_sequential_dialogue.py",
+      "scripts/validate_contextual_buyer_semantics_003_memory_alignment.py",
+      "scripts/validate_contextual_buyer_semantics_004_semantic_memory_invariants.py",
+      "scripts/validate_contextual_buyer_semantics_005_outgoing_question_state.py",
+      "scripts/validate_contextual_buyer_semantics_006_send_info_contact_capture.py",
+      "scripts/validate_contextual_buyer_semantics_007_send_info_action_contract.py",
+      "scripts/validate_contextual_buyer_semantics_008_contact_time_normalization.py",
+      "scripts/validate_contextual_buyer_semantics_009_right_person_handoff.py",
+      "scripts/validate_contextual_buyer_semantics_010_diagnostic_playbook.py",
+      "scripts/validate_contextual_buyer_semantics_011_campaign_adapter_runtime.py",
+      "scripts/validate_generic_campaign_buyer_move_paraphrase_001.py",
+      "scripts/validate_generic_campaign_fallback_leakage_001.py",
+      "scripts/validate_generic_campaign_long_conversation_stress_001.py",
+      "scripts/validate_generic_campaign_response_quality_001.py",
+      "scripts/validate_generic_campaign_runtime_entrypoint_001.py",
+      "scripts/validate_generic_campaign_runtime_regression_001.py",
+      "scripts/validate_generic_campaign_runtime_smoke_001.py",
+      "scripts/validate_generic_campaign_spoken_text_quality_001.py",
+      "scripts/validate_human_review_findings_001.py",
+      "scripts/validate_human_semantic_delta_findings_002.py",
+      "scripts/validate_human_semantic_delta_review_packet_002.py",
+      "scripts/validate_human_semantic_review_packet_001.py",
+      "scripts/validate_universal_sales_knowledge_001.py",
+      "scripts/validate_vertical_sales_playbooks_001.py",
+      "scripts/validate_project_drift_guard.py"
+    ],
+    "generated_evidence": [
+      "research/experiments/generated/CAMPAIGN-PLAYBOOK-ADAPTER-001/",
+      "research/experiments/generated/CAMPAIGN-PLAYBOOK-ADAPTER-002-cross-vertical-smoke/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-001/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-002-sequential-dialogue/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-003-memory-alignment/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-004-semantic-memory-invariants/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-005-outgoing-question-state/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-006-send-info-contact-capture/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-007-send-info-action-contract/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-008-contact-time-normalization/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-009-right-person-handoff/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-010-diagnostic-playbook/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-011-campaign-adapter-runtime/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-BUYER-MOVE-PARAPHRASE-001/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-FALLBACK-LEAKAGE-001/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-LONG-CONVERSATION-STRESS-001/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-RESPONSE-QUALITY-001/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-RUNTIME-ENTRYPOINT-001/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-RUNTIME-REGRESSION-001/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-RUNTIME-SMOKE-001/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-SPOKEN-TEXT-QUALITY-001/",
+      "research/experiments/generated/HUMAN-REVIEW-FINDINGS-001/",
+      "research/experiments/generated/HUMAN-SEMANTIC-DELTA-FINDINGS-002/",
+      "research/experiments/generated/HUMAN-SEMANTIC-DELTA-REVIEW-PACKET-002/",
+      "research/experiments/generated/HUMAN-SEMANTIC-REVIEW-PACKET-001/",
+      "research/experiments/generated/PROJECT-CHECKPOINT-CONSOLIDATION-001/",
+      "research/experiments/generated/UNIVERSAL-SALES-KNOWLEDGE-000-generalization-boundary-audit/",
+      "research/experiments/generated/UNIVERSAL-SALES-KNOWLEDGE-001/",
+      "research/experiments/generated/VERTICAL-SALES-PLAYBOOKS-001/",
+      "research/experiments/generated/POST-5A3-CHECKPOINT-HYGIENE-001/"
+    ],
+    "docs_reports": [
+      "docs/thesis/DECISION_LOG.md",
+      "docs/thesis/METHODOLOGY_LOG.md",
+      "docs/thesis/ROADMAP.md"
+    ],
+    "temporary_files": [],
+    "unrelated_or_preexisting_dirty_files": [
+      "No unrelated file was confirmed. Several tracked modifications and generated artifacts clearly predate Phase 5A4 and belong to earlier phases in the same 1A-5A3 sequence."
+    ]
+  },
+  "logical_commit_groups": [
+    {"id": "A", "name": "Contextual semantics and RouteSignal repair", "recommended_message": "Repair contextual semantics and RouteSignal dialogue state", "risk": "High behavior surface; review before staging."},
+    {"id": "B", "name": "Send-info/contact/callback state", "recommended_message": "Stabilize send-info contact and callback capture state", "risk": "Medium; verify contact redaction and no side effects."},
+    {"id": "C", "name": "Universal vertical campaign adapter architecture", "recommended_message": "Add universal vertical playbooks and campaign adapter", "risk": "Medium-high architecture boundary."},
+    {"id": "D", "name": "Generic campaign runtime entrypoint", "recommended_message": "Add generic campaign dry-run runtime entrypoint", "risk": "Medium; keep provider defaults off."},
+    {"id": "E", "name": "Generic runtime quality and fallback guards", "recommended_message": "Guard generic campaign fallback and spoken response quality", "risk": "Medium; response wording sensitive."},
+    {"id": "F", "name": "Human review findings and validators", "recommended_message": "Replay and patch human semantic review findings", "risk": "Medium; validator semantics should match intended behavior."},
+    {"id": "G", "name": "Generated evidence", "recommended_message": "Add generated validation evidence for 1A-5A4 checkpoints", "risk": "Large diff; review for privacy and size before staging."},
+    {"id": "H", "name": "Manifest drift docs", "recommended_message": "Update runtime manifest, drift guard, and thesis checkpoint docs", "risk": "Low-medium; check line-ending warnings."}
+  ],
+  "blockers": [],
+  "recommended_next_phase": "A staging/commit execution phase that applies the proposed commit groups and reruns the critical ring after each behavior-affecting group. Productization work should wait until the dirty tree is split into reviewable commits."
+}

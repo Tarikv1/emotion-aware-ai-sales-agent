@@ -1,0 +1,453 @@
+{
+  "checkpoint_id": "PROJECT-CHECKPOINT-CONSOLIDATION-001",
+  "status": "pass",
+  "purpose": "Consolidate Phase 1A through 4C5 runtime, validator, evidence, and command-ring state without changing dialogue behavior.",
+  "files_created": [
+    "research/experiments/generated/PROJECT-CHECKPOINT-CONSOLIDATION-001/result.json",
+    "research/experiments/generated/PROJECT-CHECKPOINT-CONSOLIDATION-001/report.md"
+  ],
+  "commands_run": [
+    {
+      "command": "git status --short",
+      "status": "pass",
+      "notes": "Captured dirty worktree with tracked runtime/script/docs changes and many untracked phase validators/evidence artifacts."
+    },
+    {
+      "command": "git diff --stat",
+      "status": "pass",
+      "notes": "Tracked diff reported 15 changed files, 12655 insertions, and 636 deletions; generated result JSON dominates the count."
+    },
+    {
+      "command": "git diff --check",
+      "status": "pass",
+      "notes": "No whitespace errors; PowerShell reported LF-to-CRLF warnings for several text files."
+    },
+    {
+      "command": "python scripts\\validate_runtime_manifest.py",
+      "status": "pass",
+      "notes": "runtime_entry_count=61, non_runtime_default_count=9, runtime_behavior_changed=false, response_text_changed=false."
+    },
+    {
+      "command": "python scripts\\validate_project_drift_guard.py",
+      "status": "pass",
+      "notes": "Project drift guard passed without timeout or drift failure."
+    }
+  ],
+  "git_status_summary": {
+    "tracked_modified_count": 15,
+    "untracked_runtime_core_count": 5,
+    "untracked_runtime_entrypoint_count": 1,
+    "untracked_validator_count": 23,
+    "untracked_generated_evidence_count_after_this_checkpoint": 25,
+    "diff_check": "pass",
+    "destructive_git_commands_run": false,
+    "commit_or_push_run": false
+  },
+  "changed_file_categories": {
+    "runtime_core_files": [
+      "runtime/core/dialogue_manager.py",
+      "runtime/core/dialogue_pragmatics.py",
+      "runtime/core/live_voice_session_policy.py",
+      "runtime/core/campaign_playbook_adapter.py",
+      "runtime/core/contextual_buyer_semantics.py",
+      "runtime/core/sales_diagnostic_playbook.py",
+      "runtime/core/universal_sales_knowledge.py",
+      "runtime/core/vertical_sales_playbooks.py"
+    ],
+    "runtime_entrypoints": [
+      "runtime/entrypoints/generic_campaign_turn.py"
+    ],
+    "runtime_voice_tts_files": [
+      "runtime/voice/runtime_voice_delivery.py"
+    ],
+    "runtime_manifest": [
+      "runtime/runtime_manifest.json"
+    ],
+    "validators_scripts": [
+      "scripts/validate_universal_sales_knowledge_001.py",
+      "scripts/validate_vertical_sales_playbooks_001.py",
+      "scripts/validate_campaign_playbook_adapter_001.py",
+      "scripts/validate_campaign_playbook_adapter_002_cross_vertical_smoke.py",
+      "scripts/validate_contextual_buyer_semantics_001.py",
+      "scripts/validate_contextual_buyer_semantics_002_sequential_dialogue.py",
+      "scripts/validate_contextual_buyer_semantics_003_memory_alignment.py",
+      "scripts/validate_contextual_buyer_semantics_004_semantic_memory_invariants.py",
+      "scripts/validate_contextual_buyer_semantics_005_outgoing_question_state.py",
+      "scripts/validate_contextual_buyer_semantics_006_send_info_contact_capture.py",
+      "scripts/validate_contextual_buyer_semantics_007_send_info_action_contract.py",
+      "scripts/validate_contextual_buyer_semantics_008_contact_time_normalization.py",
+      "scripts/validate_contextual_buyer_semantics_009_right_person_handoff.py",
+      "scripts/validate_contextual_buyer_semantics_010_diagnostic_playbook.py",
+      "scripts/validate_contextual_buyer_semantics_011_campaign_adapter_runtime.py",
+      "scripts/validate_generic_campaign_runtime_smoke_001.py",
+      "scripts/validate_generic_campaign_runtime_entrypoint_001.py",
+      "scripts/validate_generic_campaign_runtime_regression_001.py",
+      "scripts/validate_generic_campaign_buyer_move_paraphrase_001.py",
+      "scripts/validate_generic_campaign_fallback_leakage_001.py",
+      "scripts/validate_generic_campaign_response_quality_001.py",
+      "scripts/validate_generic_campaign_spoken_text_quality_001.py",
+      "scripts/validate_generic_campaign_long_conversation_stress_001.py",
+      "scripts/validate_project_drift_guard.py"
+    ],
+    "generated_evidence": [
+      "research/experiments/generated/CAMPAIGN-PLAYBOOK-ADAPTER-001/",
+      "research/experiments/generated/CAMPAIGN-PLAYBOOK-ADAPTER-002-cross-vertical-smoke/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-001/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-002-sequential-dialogue/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-003-memory-alignment/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-004-semantic-memory-invariants/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-005-outgoing-question-state/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-006-send-info-contact-capture/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-007-send-info-action-contract/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-008-contact-time-normalization/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-009-right-person-handoff/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-010-diagnostic-playbook/",
+      "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-011-campaign-adapter-runtime/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-RUNTIME-SMOKE-001/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-RUNTIME-ENTRYPOINT-001/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-RUNTIME-REGRESSION-001/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-BUYER-MOVE-PARAPHRASE-001/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-FALLBACK-LEAKAGE-001/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-RESPONSE-QUALITY-001/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-SPOKEN-TEXT-QUALITY-001/",
+      "research/experiments/generated/GENERIC-CAMPAIGN-LONG-CONVERSATION-STRESS-001/",
+      "research/experiments/generated/PROJECT-CHECKPOINT-CONSOLIDATION-001/",
+      "research/experiments/generated/UNIVERSAL-SALES-KNOWLEDGE-001/",
+      "research/experiments/generated/VERTICAL-SALES-PLAYBOOKS-001/"
+    ],
+    "docs_reports": [
+      "docs/thesis/DECISION_LOG.md",
+      "docs/thesis/METHODOLOGY_LOG.md",
+      "docs/thesis/ROADMAP.md",
+      "research/experiments/generated/*/report.md"
+    ],
+    "temporary_untracked_files": [],
+    "unrelated_or_pre_existing_if_identifiable": [
+      "docs/thesis/DECISION_LOG.md",
+      "docs/thesis/METHODOLOGY_LOG.md",
+      "docs/thesis/ROADMAP.md",
+      "older modified generated result JSON files from prior checkpoints"
+    ]
+  },
+  "runtime_manifest_coverage": {
+    "validate_runtime_manifest": "pass",
+    "required_new_runtime_files_registered": {
+      "runtime/core/universal_sales_knowledge.py": true,
+      "runtime/core/vertical_sales_playbooks.py": true,
+      "runtime/core/campaign_playbook_adapter.py": true,
+      "runtime/entrypoints/generic_campaign_turn.py": true,
+      "runtime/voice/runtime_voice_delivery.py": true
+    },
+    "additional_changed_runtime_files_registered": {
+      "runtime/core/contextual_buyer_semantics.py": true,
+      "runtime/core/dialogue_manager.py": true,
+      "runtime/core/dialogue_pragmatics.py": true,
+      "runtime/core/live_voice_session_policy.py": true,
+      "scripts/run_live_demo_001_agent_voice_call.py": true
+    },
+    "manifest_patch_required": false
+  },
+  "runtime_file_map": [
+    {
+      "path": "runtime/core/universal_sales_knowledge.py",
+      "phases": ["4B1"],
+      "behavior_surface": ["universal sales knowledge", "gap dimension vocabulary"],
+      "registered_in_manifest": true,
+      "validator_coverage": ["validate_universal_sales_knowledge_001.py", "validate_campaign_playbook_adapter_001.py", "validate_campaign_playbook_adapter_002_cross_vertical_smoke.py", "generic campaign runtime validators"]
+    },
+    {
+      "path": "runtime/core/vertical_sales_playbooks.py",
+      "phases": ["4B2"],
+      "behavior_surface": ["vertical sales playbooks", "generic campaign defaults"],
+      "registered_in_manifest": true,
+      "validator_coverage": ["validate_vertical_sales_playbooks_001.py", "validate_campaign_playbook_adapter_002_cross_vertical_smoke.py", "generic campaign runtime validators"]
+    },
+    {
+      "path": "runtime/core/campaign_playbook_adapter.py",
+      "phases": ["4B3", "4B4"],
+      "behavior_surface": ["campaign adapter", "RouteSignal compatibility", "generic campaign config resolution"],
+      "registered_in_manifest": true,
+      "validator_coverage": ["validate_campaign_playbook_adapter_001.py", "validate_campaign_playbook_adapter_002_cross_vertical_smoke.py", "validate_contextual_buyer_semantics_011_campaign_adapter_runtime.py"]
+    },
+    {
+      "path": "runtime/core/contextual_buyer_semantics.py",
+      "phases": ["4B5", "4C1", "4C2", "4C3", "4C5"],
+      "behavior_surface": ["dialogue semantics", "campaign-aware gap classification", "memory state updates", "fallback semantics"],
+      "registered_in_manifest": true,
+      "validator_coverage": ["validate_contextual_buyer_semantics_001.py through 011.py", "validate_generic_campaign_runtime_regression_001.py", "validate_generic_campaign_buyer_move_paraphrase_001.py", "validate_generic_campaign_fallback_leakage_001.py", "validate_generic_campaign_long_conversation_stress_001.py"]
+    },
+    {
+      "path": "runtime/entrypoints/generic_campaign_turn.py",
+      "phases": ["4B7"],
+      "behavior_surface": ["generic runtime entrypoint", "dry-run turn packet", "campaign config validation"],
+      "registered_in_manifest": true,
+      "validator_coverage": ["validate_generic_campaign_runtime_entrypoint_001.py", "validate_generic_campaign_runtime_regression_001.py", "validate_generic_campaign_long_conversation_stress_001.py"]
+    },
+    {
+      "path": "runtime/core/dialogue_manager.py",
+      "phases": ["1A-3", "4B", "4C"],
+      "behavior_surface": ["dialogue manager planning", "memory planning", "action selection"],
+      "registered_in_manifest": true,
+      "validator_coverage": ["validate_dialogue_manager_001_root_repair.py", "validate_dialogue_manager_002_pragmatic_dialogue_repair.py", "validate_dialogue_manager_003_plain_sales_clarity_and_vague_appointment_time.py", "contextual and generic runtime validators"]
+    },
+    {
+      "path": "runtime/core/dialogue_pragmatics.py",
+      "phases": ["2", "4C5"],
+      "behavior_surface": ["dialogue pragmatics", "repair behavior", "campaign-aware appointment close"],
+      "registered_in_manifest": true,
+      "validator_coverage": ["validate_dialogue_manager_002_pragmatic_dialogue_repair.py", "validate_dialogue_manager_003_plain_sales_clarity_and_vague_appointment_time.py", "validate_generic_campaign_long_conversation_stress_001.py"]
+    },
+    {
+      "path": "runtime/core/live_voice_session_policy.py",
+      "phases": ["1A-3", "4B6", "4C2", "4C3", "4C5"],
+      "behavior_surface": ["live session policy", "generic fallback wording", "appointment close wording", "RouteSignal live demo"],
+      "registered_in_manifest": true,
+      "validator_coverage": ["validate_live_demo_013_reasoner_route_guard.py", "validate_live_demo_014_clear_pain_callback_followup.py", "generic runtime smoke/regression/fallback/quality/long validators"]
+    },
+    {
+      "path": "runtime/voice/runtime_voice_delivery.py",
+      "phases": ["4C4"],
+      "behavior_surface": ["voice/spoken text", "TTS dry-run text shaping"],
+      "registered_in_manifest": true,
+      "validator_coverage": ["validate_generic_campaign_spoken_text_quality_001.py", "validate_resp_003_runtime_live_tts.py"]
+    },
+    {
+      "path": "scripts/run_live_demo_001_agent_voice_call.py",
+      "phases": ["1A-3", "4B4-4C5 preservation"],
+      "behavior_surface": ["RouteSignal live demo", "live-demo turn packet"],
+      "registered_in_manifest": true,
+      "validator_coverage": ["contextual 001-011", "validate_live_demo_013_reasoner_route_guard.py", "validate_live_demo_014_clear_pain_callback_followup.py"]
+    }
+  ],
+  "validator_registry": [
+    {
+      "group": "contextual_routesignal",
+      "validators": [
+        "validate_contextual_buyer_semantics_001.py",
+        "validate_contextual_buyer_semantics_002_sequential_dialogue.py",
+        "validate_contextual_buyer_semantics_003_memory_alignment.py",
+        "validate_contextual_buyer_semantics_004_semantic_memory_invariants.py",
+        "validate_contextual_buyer_semantics_005_outgoing_question_state.py",
+        "validate_contextual_buyer_semantics_006_send_info_contact_capture.py",
+        "validate_contextual_buyer_semantics_007_send_info_action_contract.py",
+        "validate_contextual_buyer_semantics_008_contact_time_normalization.py",
+        "validate_contextual_buyer_semantics_009_right_person_handoff.py",
+        "validate_contextual_buyer_semantics_010_diagnostic_playbook.py",
+        "validate_contextual_buyer_semantics_011_campaign_adapter_runtime.py"
+      ],
+      "path": "RouteSignal live-demo path plus direct contextual semantics",
+      "writes_generated_evidence": true,
+      "side_effect_expectations": "provider/local LLM/email/calendar/CRM/PROD-102 false",
+      "run_when": "Any contextual semantics, RouteSignal preservation, campaign-adapter semantic, or live-demo turn-packet behavior changes."
+    },
+    {
+      "group": "universal_vertical_campaign",
+      "validators": [
+        "validate_universal_sales_knowledge_001.py",
+        "validate_vertical_sales_playbooks_001.py",
+        "validate_campaign_playbook_adapter_001.py",
+        "validate_campaign_playbook_adapter_002_cross_vertical_smoke.py"
+      ],
+      "path": "Direct universal/vertical/adapter checks and limited live-demo compatibility",
+      "writes_generated_evidence": true,
+      "side_effect_expectations": "provider/local LLM/email/calendar/CRM/PROD-102 false",
+      "run_when": "Any universal knowledge, vertical playbook, campaign config resolution, or adapter behavior changes."
+    },
+    {
+      "group": "generic_runtime",
+      "validators": [
+        "validate_generic_campaign_runtime_smoke_001.py",
+        "validate_generic_campaign_runtime_entrypoint_001.py",
+        "validate_generic_campaign_runtime_regression_001.py",
+        "validate_generic_campaign_buyer_move_paraphrase_001.py",
+        "validate_generic_campaign_fallback_leakage_001.py",
+        "validate_generic_campaign_response_quality_001.py",
+        "validate_generic_campaign_spoken_text_quality_001.py",
+        "validate_generic_campaign_long_conversation_stress_001.py"
+      ],
+      "path": "Generic campaign entrypoint with synthetic in-memory campaigns",
+      "writes_generated_evidence": true,
+      "side_effect_expectations": "provider/local LLM/email/calendar/CRM/PROD-102 false; raw synthetic emails redacted from public evidence",
+      "run_when": "Any generic campaign runtime, fallback, wording, spoken text, long-state, memory, or side-effect boundary behavior changes."
+    },
+    {
+      "group": "existing_regression_ring",
+      "validators": [
+        "validate_live_demo_014_clear_pain_callback_followup.py",
+        "validate_live_demo_013_reasoner_route_guard.py",
+        "validate_dialogue_manager_001_root_repair.py",
+        "validate_dialogue_manager_002_pragmatic_dialogue_repair.py",
+        "validate_dialogue_manager_003_plain_sales_clarity_and_vague_appointment_time.py",
+        "validate_runtime_manifest.py",
+        "validate_project_drift_guard.py",
+        "validate_resp_003_runtime_live_tts.py"
+      ],
+      "path": "RouteSignal live-demo path, dialogue manager direct regression, manifest/drift checks, and dry-run live TTS validator",
+      "writes_generated_evidence": "mixed; dialogue/live-demo/RESP validators write evidence, manifest/drift primarily validate project metadata",
+      "side_effect_expectations": "provider/local LLM/email/calendar/CRM/PROD-102 false unless a provider-gated validator is explicitly approved; no live TTS for generic dry-run work",
+      "run_when": "Before checkpoint close, after shared runtime changes, after voice/spoken text changes, and before commit-like milestones."
+    }
+  ],
+  "recommended_command_rings": [
+    {
+      "name": "A. Small RouteSignal dialogue ring",
+      "cost": "cheap",
+      "providers_off": true,
+      "updates_generated_evidence": true,
+      "when_to_use": "Small RouteSignal semantic or dialogue-manager changes.",
+      "commands": [
+        "python scripts\\validate_contextual_buyer_semantics_001.py",
+        "python scripts\\validate_contextual_buyer_semantics_002_sequential_dialogue.py",
+        "python scripts\\validate_live_demo_014_clear_pain_callback_followup.py",
+        "python scripts\\validate_dialogue_manager_001_root_repair.py"
+      ]
+    },
+    {
+      "name": "B. Full RouteSignal contextual ring",
+      "cost": "medium",
+      "providers_off": true,
+      "updates_generated_evidence": true,
+      "when_to_use": "Any contextual semantics, memory, send-info, callback, right-person, diagnostic playbook, or live-demo RouteSignal behavior change.",
+      "commands": [
+        "python scripts\\validate_contextual_buyer_semantics_001.py",
+        "python scripts\\validate_contextual_buyer_semantics_002_sequential_dialogue.py",
+        "python scripts\\validate_contextual_buyer_semantics_003_memory_alignment.py",
+        "python scripts\\validate_contextual_buyer_semantics_004_semantic_memory_invariants.py",
+        "python scripts\\validate_contextual_buyer_semantics_005_outgoing_question_state.py",
+        "python scripts\\validate_contextual_buyer_semantics_006_send_info_contact_capture.py",
+        "python scripts\\validate_contextual_buyer_semantics_007_send_info_action_contract.py",
+        "python scripts\\validate_contextual_buyer_semantics_008_contact_time_normalization.py",
+        "python scripts\\validate_contextual_buyer_semantics_009_right_person_handoff.py",
+        "python scripts\\validate_contextual_buyer_semantics_010_diagnostic_playbook.py",
+        "python scripts\\validate_contextual_buyer_semantics_011_campaign_adapter_runtime.py",
+        "python scripts\\validate_live_demo_014_clear_pain_callback_followup.py",
+        "python scripts\\validate_live_demo_013_reasoner_route_guard.py",
+        "python scripts\\validate_dialogue_manager_001_root_repair.py",
+        "python scripts\\validate_dialogue_manager_002_pragmatic_dialogue_repair.py",
+        "python scripts\\validate_dialogue_manager_003_plain_sales_clarity_and_vague_appointment_time.py"
+      ]
+    },
+    {
+      "name": "C. Generic campaign adapter ring",
+      "cost": "cheap to medium",
+      "providers_off": true,
+      "updates_generated_evidence": true,
+      "when_to_use": "Universal knowledge, vertical playbook, campaign playbook adapter, or campaign-aware semantic classification changes.",
+      "commands": [
+        "python scripts\\validate_universal_sales_knowledge_001.py",
+        "python scripts\\validate_vertical_sales_playbooks_001.py",
+        "python scripts\\validate_campaign_playbook_adapter_001.py",
+        "python scripts\\validate_campaign_playbook_adapter_002_cross_vertical_smoke.py",
+        "python scripts\\validate_contextual_buyer_semantics_011_campaign_adapter_runtime.py"
+      ]
+    },
+    {
+      "name": "D. Generic runtime safety ring",
+      "cost": "expensive",
+      "providers_off": true,
+      "updates_generated_evidence": true,
+      "when_to_use": "Generic runtime entrypoint, generic fallback, generic state memory, side-effect boundary, or long-conversation behavior changes.",
+      "commands": [
+        "python scripts\\validate_generic_campaign_runtime_smoke_001.py",
+        "python scripts\\validate_generic_campaign_runtime_entrypoint_001.py",
+        "python scripts\\validate_generic_campaign_runtime_regression_001.py",
+        "python scripts\\validate_generic_campaign_buyer_move_paraphrase_001.py",
+        "python scripts\\validate_generic_campaign_fallback_leakage_001.py",
+        "python scripts\\validate_generic_campaign_response_quality_001.py",
+        "python scripts\\validate_generic_campaign_spoken_text_quality_001.py",
+        "python scripts\\validate_generic_campaign_long_conversation_stress_001.py",
+        "python scripts\\validate_runtime_manifest.py",
+        "python scripts\\validate_project_drift_guard.py",
+        "git diff --check"
+      ]
+    },
+    {
+      "name": "E. Voice/spoken dry-run ring",
+      "cost": "medium",
+      "providers_off": true,
+      "updates_generated_evidence": true,
+      "when_to_use": "Voice delivery, TTS input shaping, provider-rendered dry-run text, or spoken naturalness changes.",
+      "commands": [
+        "python scripts\\validate_generic_campaign_response_quality_001.py",
+        "python scripts\\validate_generic_campaign_spoken_text_quality_001.py",
+        "python scripts\\validate_resp_003_runtime_live_tts.py",
+        "python scripts\\validate_runtime_manifest.py",
+        "git diff --check"
+      ]
+    },
+    {
+      "name": "F. Full pre-commit local ring",
+      "cost": "expensive",
+      "providers_off": true,
+      "updates_generated_evidence": true,
+      "when_to_use": "Before commit-like checkpoints or after any shared runtime behavior patch.",
+      "commands": [
+        "python scripts\\validate_universal_sales_knowledge_001.py",
+        "python scripts\\validate_vertical_sales_playbooks_001.py",
+        "python scripts\\validate_campaign_playbook_adapter_001.py",
+        "python scripts\\validate_campaign_playbook_adapter_002_cross_vertical_smoke.py",
+        "python scripts\\validate_contextual_buyer_semantics_001.py",
+        "python scripts\\validate_contextual_buyer_semantics_002_sequential_dialogue.py",
+        "python scripts\\validate_contextual_buyer_semantics_003_memory_alignment.py",
+        "python scripts\\validate_contextual_buyer_semantics_004_semantic_memory_invariants.py",
+        "python scripts\\validate_contextual_buyer_semantics_005_outgoing_question_state.py",
+        "python scripts\\validate_contextual_buyer_semantics_006_send_info_contact_capture.py",
+        "python scripts\\validate_contextual_buyer_semantics_007_send_info_action_contract.py",
+        "python scripts\\validate_contextual_buyer_semantics_008_contact_time_normalization.py",
+        "python scripts\\validate_contextual_buyer_semantics_009_right_person_handoff.py",
+        "python scripts\\validate_contextual_buyer_semantics_010_diagnostic_playbook.py",
+        "python scripts\\validate_contextual_buyer_semantics_011_campaign_adapter_runtime.py",
+        "python scripts\\validate_generic_campaign_runtime_smoke_001.py",
+        "python scripts\\validate_generic_campaign_runtime_entrypoint_001.py",
+        "python scripts\\validate_generic_campaign_runtime_regression_001.py",
+        "python scripts\\validate_generic_campaign_buyer_move_paraphrase_001.py",
+        "python scripts\\validate_generic_campaign_fallback_leakage_001.py",
+        "python scripts\\validate_generic_campaign_response_quality_001.py",
+        "python scripts\\validate_generic_campaign_spoken_text_quality_001.py",
+        "python scripts\\validate_generic_campaign_long_conversation_stress_001.py",
+        "python scripts\\validate_live_demo_014_clear_pain_callback_followup.py",
+        "python scripts\\validate_live_demo_013_reasoner_route_guard.py",
+        "python scripts\\validate_dialogue_manager_001_root_repair.py",
+        "python scripts\\validate_dialogue_manager_002_pragmatic_dialogue_repair.py",
+        "python scripts\\validate_dialogue_manager_003_plain_sales_clarity_and_vague_appointment_time.py",
+        "python scripts\\validate_resp_003_runtime_live_tts.py",
+        "python scripts\\validate_runtime_manifest.py",
+        "python scripts\\validate_project_drift_guard.py",
+        "git diff --check"
+      ]
+    }
+  ],
+  "generated_evidence_map": {
+    "contextual_routesignal": "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-*",
+    "universal_vertical_campaign": "research/experiments/generated/UNIVERSAL-SALES-KNOWLEDGE-001, VERTICAL-SALES-PLAYBOOKS-001, CAMPAIGN-PLAYBOOK-ADAPTER-*",
+    "generic_runtime": "research/experiments/generated/GENERIC-CAMPAIGN-*",
+    "existing_regressions": "research/experiments/generated/LIVE-DEMO-*, DIALOGUE-MANAGER-*, RESP-003-runtime-live-tts if present",
+    "checkpoint_consolidation": "research/experiments/generated/PROJECT-CHECKPOINT-CONSOLIDATION-001"
+  },
+  "safety_side_effect_boundary_summary": {
+    "providers_called": false,
+    "live_tts_called": false,
+    "local_llm_called": false,
+    "email_sent": false,
+    "calendar_event_created": false,
+    "crm_written": false,
+    "prod_102_opened": false,
+    "real_customer_data_used": false,
+    "private_transcripts_used": false
+  },
+  "phase_1_2_3_backpatch_decision": {
+    "required_now": false,
+    "reason": "The consolidation commands passed, runtime manifest coverage is complete for new runtime files, drift guard passed, and prior Phase 4C5 full shared-runtime validation reported no remaining required failures."
+  },
+  "recommended_next_phase": {
+    "primary": "4D1 campaign registry / campaign-config file loading",
+    "reason": "The generic in-memory entrypoint is already validated; durable local campaign config loading is the next missing operational contract before browser-demo selection, LLM judge work, or provider audio review.",
+    "defer_or_gate": {
+      "4D2 browser demo generic campaign selector": "Best after 4D1 so the selector reads the same registry/config contract the runtime uses.",
+      "5A offline/default-off LLM semantic evaluator": "Useful later as judge-only coverage, but less foundational than config loading.",
+      "5B provider-audio listening review": "Provider-gated and should wait until local config/runtime surfaces are settled.",
+      "thesis/docs update phase": "Useful milestone cleanup, but secondary unless documentation is the immediate deliverable."
+    }
+  },
+  "blockers": []
+}

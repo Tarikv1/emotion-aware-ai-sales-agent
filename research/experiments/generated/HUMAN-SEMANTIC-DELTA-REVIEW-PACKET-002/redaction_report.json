@@ -1,0 +1,23 @@
+{
+  "audio_files_included": false,
+  "checkpoint_id": "HUMAN-SEMANTIC-DELTA-REVIEW-PACKET-002",
+  "generated_audio_required": false,
+  "live_tts_called": false,
+  "local_llm_calls_made": false,
+  "private_or_secret_pattern_matches": [],
+  "private_transcripts_included": false,
+  "prod_102_opened": false,
+  "provider_calls_made": false,
+  "raw_customer_data_included": false,
+  "raw_synthetic_emails_found": [],
+  "redaction_scheme": "Email-like values are replaced with <email:sha256_12:...> stable hash tokens.",
+  "side_effect_summary": {
+    "creates_calendar_event": false,
+    "local_llm_calls_made": false,
+    "opens_prod_102": false,
+    "provider_calls_made": false,
+    "sends_email": false,
+    "writes_crm": false
+  },
+  "synthetic_only": true
+}

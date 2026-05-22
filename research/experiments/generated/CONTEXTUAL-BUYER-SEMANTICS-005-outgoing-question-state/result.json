@@ -1,0 +1,2865 @@
+{
+  "checkpoint_id": "CONTEXTUAL-BUYER-SEMANTICS-005-outgoing-question-state",
+  "passed": true,
+  "failure_count": 0,
+  "failures": [],
+  "provider_calls_made": false,
+  "local_llm_calls_made": false,
+  "opens_prod_102": false,
+  "evidence": {
+    "scenario_a_permission_outgoing_scope": [
+      {
+        "turn": 1,
+        "transcript": "__agent_open__",
+        "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+        "tts_input_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?",
+        "call_control": "continue-call",
+        "semantic_frame": {
+          "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
+          "schema_version": 1,
+          "semantic": "no_contextual_semantic",
+          "target_gap": null,
+          "target_topic": null,
+          "primary_gap": null,
+          "secondary_confirmed_gaps": [],
+          "active_gap_scope": "unknown",
+          "candidate_gaps": [],
+          "answered_gaps": [],
+          "cleared_gaps": [],
+          "confirmed_gaps": [],
+          "outgoing_question_type": null,
+          "outgoing_candidate_gaps": [],
+          "outgoing_active_gap_scope": "unknown",
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_gap": null,
+          "playbook_next_gap": "callbacks",
+          "playbook_review_focus": null,
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "polarity": "neutral",
+          "confidence": 0.0,
+          "evidence": {
+            "buyer_utterance": "__agent_open__",
+            "normalized_buyer_utterance": "agent open",
+            "previous_agent_question_type": "none",
+            "previous_agent_question_text": null,
+            "conversation_stage": "opening",
+            "active_gap": null,
+            "active_gap_scope": "unknown",
+            "candidate_gaps": [],
+            "answered_gaps": [],
+            "confirmed_gaps": [],
+            "cleared_gaps": [],
+            "current_confirmed_gaps": [],
+            "current_cleared_gaps": [],
+            "outgoing_question_type": null,
+            "outgoing_candidate_gaps": [],
+            "outgoing_active_gap_scope": "unknown",
+            "playbook": {
+              "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "schema_version": 1,
+              "playbook_gap": null,
+              "playbook_next_gap": "callbacks",
+              "playbook_review_focus": null,
+              "playbook_supported_gap_ids": [
+                "callbacks",
+                "manual_tracking",
+                "handoffs",
+                "routing",
+                "reminders",
+                "duplicates",
+                "visibility",
+                "right_person"
+              ],
+              "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+              "vertical_id": "b2b_saas",
+              "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+              "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "universal_pain_dimensions": [],
+              "qualification_dimensions": []
+            },
+            "pending_callback": false,
+            "pending_appointment": false
+          },
+          "next_action_hint": "continue",
+          "must_not_do": [],
+          "candidate_response": null,
+          "action_id": null,
+          "dialogue_focus": null,
+          "send_info_state_update": {},
+          "lead_followup_state_update": {},
+          "handoff_target_state_update": {},
+          "applied": false,
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "sends_email": false,
+          "creates_calendar_event": false,
+          "writes_crm": false,
+          "opens_prod_102": false
+        },
+        "manager_source": "live_voice_session_policy",
+        "selected_action": {
+          "action_id": "open_with_permission",
+          "template_id": "sales_opening_permission",
+          "source": "live_voice_session_policy",
+          "continuity_reason": "agent_opening_started",
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "no_pragmatic_repair",
+            "applied": false,
+            "target_action": null,
+            "continuity_reason": null,
+            "legacy_reason": null,
+            "confidence": 0.0,
+            "normalized_transcript": "agent open",
+            "dialogue_focus": "qualification",
+            "selected_gap": null,
+            "previous_question": null,
+            "previous_question_type": "none",
+            "dialogue_reasoning_act": "agent_open",
+            "response_strategy": "open_with_permission",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "candidate_response": null,
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          },
+          "candidate_response_available": true,
+          "call_control": "continue-call"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "opening",
+          "active_topic": "qualification",
+          "selected_gap": null,
+          "callback_semantic": null,
+          "last_agent_question_type": "permission_check",
+          "last_active_agent_question_type": "permission_check",
+          "last_agent_question_hash": "",
+          "asked_question_type_counts": {
+            "permission_check": 1
+          },
+          "answered_topics": [
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318"
+          ],
+          "recent_response_subjects": [
+            "opening_permission"
+          ],
+          "candidate_response_subject": "opening_permission",
+          "candidate_response_signature": "opening_permission:c4f25e2c6ac64318",
+          "last_customer_intent": "topic:qualification",
+          "last_sales_progression_step": "opening",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false,
+          "active_gap_scope": "unknown",
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_next_gap": "callbacks",
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "outgoing_question_type": "permission_check",
+          "outgoing_candidate_gaps": [],
+          "outgoing_active_gap_scope": "unknown"
+        },
+        "provider_calls_made": false,
+        "local_llm_calls_made": false
+      },
+      {
+        "turn": 2,
+        "transcript": "yeah sure",
+        "response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "tts_input_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "call_control": "continue-call",
+        "semantic_frame": {
+          "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
+          "schema_version": 1,
+          "semantic": "permission_acknowledgement",
+          "target_gap": null,
+          "target_topic": null,
+          "primary_gap": null,
+          "secondary_confirmed_gaps": [],
+          "active_gap_scope": "campaign_relevance",
+          "candidate_gaps": [
+            "callbacks",
+            "handoffs"
+          ],
+          "answered_gaps": [],
+          "cleared_gaps": [],
+          "confirmed_gaps": [],
+          "outgoing_question_type": "multi_gap_diagnostic",
+          "outgoing_candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "outgoing_active_gap_scope": "multi_gap",
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_gap": null,
+          "playbook_next_gap": "callbacks",
+          "playbook_review_focus": null,
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "polarity": "permission_granted",
+          "confidence": 0.94,
+          "evidence": {
+            "buyer_utterance": "yeah sure",
+            "normalized_buyer_utterance": "yeah sure",
+            "previous_agent_question_type": "permission_check",
+            "previous_agent_question_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+            "conversation_stage": "opening",
+            "active_gap": null,
+            "active_gap_scope": "campaign_relevance",
+            "candidate_gaps": [
+              "callbacks",
+              "handoffs"
+            ],
+            "answered_gaps": [],
+            "confirmed_gaps": [],
+            "cleared_gaps": [],
+            "current_confirmed_gaps": [],
+            "current_cleared_gaps": [],
+            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_candidate_gaps": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs"
+            ],
+            "outgoing_active_gap_scope": "multi_gap",
+            "playbook": {
+              "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "schema_version": 1,
+              "playbook_gap": null,
+              "playbook_next_gap": "callbacks",
+              "playbook_review_focus": null,
+              "playbook_supported_gap_ids": [
+                "callbacks",
+                "manual_tracking",
+                "handoffs",
+                "routing",
+                "reminders",
+                "duplicates",
+                "visibility",
+                "right_person"
+              ],
+              "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+              "vertical_id": "b2b_saas",
+              "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+              "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "universal_pain_dimensions": [],
+              "qualification_dimensions": []
+            },
+            "pending_callback": false,
+            "pending_appointment": false
+          },
+          "next_action_hint": "start_diagnostic",
+          "must_not_do": [
+            "classify as no pain",
+            "ask appointment"
+          ],
+          "candidate_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "action_id": "continue_with_session_policy",
+          "dialogue_focus": "qualification",
+          "send_info_state_update": {},
+          "lead_followup_state_update": {},
+          "handoff_target_state_update": {},
+          "applied": true,
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "sends_email": false,
+          "creates_calendar_event": false,
+          "writes_crm": false,
+          "opens_prod_102": false
+        },
+        "manager_source": "contextual_buyer_semantics",
+        "selected_action": {
+          "action_id": "continue_with_session_policy",
+          "template_id": "session_policy_contextual_permission_acknowledgement",
+          "source": "contextual_buyer_semantics",
+          "continuity_reason": "contextual_permission_acknowledgement",
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "no_pragmatic_repair",
+            "applied": false,
+            "target_action": null,
+            "continuity_reason": null,
+            "legacy_reason": null,
+            "confidence": 0.0,
+            "normalized_transcript": "yeah sure",
+            "dialogue_focus": "qualification",
+            "selected_gap": null,
+            "previous_question": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+            "previous_question_type": "permission_check",
+            "dialogue_reasoning_act": "low_information_acknowledgement",
+            "response_strategy": "proactive_guided_selling",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "candidate_response": null,
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          },
+          "candidate_response_available": true,
+          "call_control": "continue-call"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "qualification",
+          "active_topic": "qualification",
+          "selected_gap": null,
+          "callback_semantic": null,
+          "last_agent_question_type": "sales_progression_question",
+          "last_active_agent_question_type": "sales_progression_question",
+          "last_agent_question_hash": "c4f25e2c6ac64318",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "sales_progression_question": 1
+          },
+          "answered_topics": [
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318",
+            "65e3b3575d13c41c"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318",
+            "callback_workflow:65e3b3575d13c41c"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "callback_workflow"
+          ],
+          "candidate_response_subject": "callback_workflow",
+          "candidate_response_signature": "callback_workflow:65e3b3575d13c41c",
+          "last_customer_intent": "permission_acknowledgement",
+          "last_sales_progression_step": "qualification",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false,
+          "active_gap_scope": "campaign_relevance",
+          "candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_next_gap": "callbacks",
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "outgoing_question_type": "multi_gap_diagnostic",
+          "outgoing_candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "outgoing_active_gap_scope": "multi_gap"
+        },
+        "provider_calls_made": false,
+        "local_llm_calls_made": false
+      }
+    ],
+    "scenario_b_outgoing_drives_all_clear": [
+      {
+        "turn": 1,
+        "transcript": "__agent_open__",
+        "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+        "tts_input_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?",
+        "call_control": "continue-call",
+        "semantic_frame": {
+          "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
+          "schema_version": 1,
+          "semantic": "no_contextual_semantic",
+          "target_gap": null,
+          "target_topic": null,
+          "primary_gap": null,
+          "secondary_confirmed_gaps": [],
+          "active_gap_scope": "unknown",
+          "candidate_gaps": [],
+          "answered_gaps": [],
+          "cleared_gaps": [],
+          "confirmed_gaps": [],
+          "outgoing_question_type": null,
+          "outgoing_candidate_gaps": [],
+          "outgoing_active_gap_scope": "unknown",
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_gap": null,
+          "playbook_next_gap": "callbacks",
+          "playbook_review_focus": null,
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "polarity": "neutral",
+          "confidence": 0.0,
+          "evidence": {
+            "buyer_utterance": "__agent_open__",
+            "normalized_buyer_utterance": "agent open",
+            "previous_agent_question_type": "none",
+            "previous_agent_question_text": null,
+            "conversation_stage": "opening",
+            "active_gap": null,
+            "active_gap_scope": "unknown",
+            "candidate_gaps": [],
+            "answered_gaps": [],
+            "confirmed_gaps": [],
+            "cleared_gaps": [],
+            "current_confirmed_gaps": [],
+            "current_cleared_gaps": [],
+            "outgoing_question_type": null,
+            "outgoing_candidate_gaps": [],
+            "outgoing_active_gap_scope": "unknown",
+            "playbook": {
+              "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "schema_version": 1,
+              "playbook_gap": null,
+              "playbook_next_gap": "callbacks",
+              "playbook_review_focus": null,
+              "playbook_supported_gap_ids": [
+                "callbacks",
+                "manual_tracking",
+                "handoffs",
+                "routing",
+                "reminders",
+                "duplicates",
+                "visibility",
+                "right_person"
+              ],
+              "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+              "vertical_id": "b2b_saas",
+              "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+              "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "universal_pain_dimensions": [],
+              "qualification_dimensions": []
+            },
+            "pending_callback": false,
+            "pending_appointment": false
+          },
+          "next_action_hint": "continue",
+          "must_not_do": [],
+          "candidate_response": null,
+          "action_id": null,
+          "dialogue_focus": null,
+          "send_info_state_update": {},
+          "lead_followup_state_update": {},
+          "handoff_target_state_update": {},
+          "applied": false,
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "sends_email": false,
+          "creates_calendar_event": false,
+          "writes_crm": false,
+          "opens_prod_102": false
+        },
+        "manager_source": "live_voice_session_policy",
+        "selected_action": {
+          "action_id": "open_with_permission",
+          "template_id": "sales_opening_permission",
+          "source": "live_voice_session_policy",
+          "continuity_reason": "agent_opening_started",
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "no_pragmatic_repair",
+            "applied": false,
+            "target_action": null,
+            "continuity_reason": null,
+            "legacy_reason": null,
+            "confidence": 0.0,
+            "normalized_transcript": "agent open",
+            "dialogue_focus": "qualification",
+            "selected_gap": null,
+            "previous_question": null,
+            "previous_question_type": "none",
+            "dialogue_reasoning_act": "agent_open",
+            "response_strategy": "open_with_permission",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "candidate_response": null,
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          },
+          "candidate_response_available": true,
+          "call_control": "continue-call"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "opening",
+          "active_topic": "qualification",
+          "selected_gap": null,
+          "callback_semantic": null,
+          "last_agent_question_type": "permission_check",
+          "last_active_agent_question_type": "permission_check",
+          "last_agent_question_hash": "",
+          "asked_question_type_counts": {
+            "permission_check": 1
+          },
+          "answered_topics": [
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318"
+          ],
+          "recent_response_subjects": [
+            "opening_permission"
+          ],
+          "candidate_response_subject": "opening_permission",
+          "candidate_response_signature": "opening_permission:c4f25e2c6ac64318",
+          "last_customer_intent": "topic:qualification",
+          "last_sales_progression_step": "opening",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false,
+          "active_gap_scope": "unknown",
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_next_gap": "callbacks",
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "outgoing_question_type": "permission_check",
+          "outgoing_candidate_gaps": [],
+          "outgoing_active_gap_scope": "unknown"
+        },
+        "provider_calls_made": false,
+        "local_llm_calls_made": false
+      },
+      {
+        "turn": 2,
+        "transcript": "yeah sure",
+        "response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "tts_input_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "call_control": "continue-call",
+        "semantic_frame": {
+          "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
+          "schema_version": 1,
+          "semantic": "permission_acknowledgement",
+          "target_gap": null,
+          "target_topic": null,
+          "primary_gap": null,
+          "secondary_confirmed_gaps": [],
+          "active_gap_scope": "campaign_relevance",
+          "candidate_gaps": [
+            "callbacks",
+            "handoffs"
+          ],
+          "answered_gaps": [],
+          "cleared_gaps": [],
+          "confirmed_gaps": [],
+          "outgoing_question_type": "multi_gap_diagnostic",
+          "outgoing_candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "outgoing_active_gap_scope": "multi_gap",
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_gap": null,
+          "playbook_next_gap": "callbacks",
+          "playbook_review_focus": null,
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "polarity": "permission_granted",
+          "confidence": 0.94,
+          "evidence": {
+            "buyer_utterance": "yeah sure",
+            "normalized_buyer_utterance": "yeah sure",
+            "previous_agent_question_type": "permission_check",
+            "previous_agent_question_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+            "conversation_stage": "opening",
+            "active_gap": null,
+            "active_gap_scope": "campaign_relevance",
+            "candidate_gaps": [
+              "callbacks",
+              "handoffs"
+            ],
+            "answered_gaps": [],
+            "confirmed_gaps": [],
+            "cleared_gaps": [],
+            "current_confirmed_gaps": [],
+            "current_cleared_gaps": [],
+            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_candidate_gaps": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs"
+            ],
+            "outgoing_active_gap_scope": "multi_gap",
+            "playbook": {
+              "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "schema_version": 1,
+              "playbook_gap": null,
+              "playbook_next_gap": "callbacks",
+              "playbook_review_focus": null,
+              "playbook_supported_gap_ids": [
+                "callbacks",
+                "manual_tracking",
+                "handoffs",
+                "routing",
+                "reminders",
+                "duplicates",
+                "visibility",
+                "right_person"
+              ],
+              "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+              "vertical_id": "b2b_saas",
+              "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+              "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "universal_pain_dimensions": [],
+              "qualification_dimensions": []
+            },
+            "pending_callback": false,
+            "pending_appointment": false
+          },
+          "next_action_hint": "start_diagnostic",
+          "must_not_do": [
+            "classify as no pain",
+            "ask appointment"
+          ],
+          "candidate_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "action_id": "continue_with_session_policy",
+          "dialogue_focus": "qualification",
+          "send_info_state_update": {},
+          "lead_followup_state_update": {},
+          "handoff_target_state_update": {},
+          "applied": true,
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "sends_email": false,
+          "creates_calendar_event": false,
+          "writes_crm": false,
+          "opens_prod_102": false
+        },
+        "manager_source": "contextual_buyer_semantics",
+        "selected_action": {
+          "action_id": "continue_with_session_policy",
+          "template_id": "session_policy_contextual_permission_acknowledgement",
+          "source": "contextual_buyer_semantics",
+          "continuity_reason": "contextual_permission_acknowledgement",
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "no_pragmatic_repair",
+            "applied": false,
+            "target_action": null,
+            "continuity_reason": null,
+            "legacy_reason": null,
+            "confidence": 0.0,
+            "normalized_transcript": "yeah sure",
+            "dialogue_focus": "qualification",
+            "selected_gap": null,
+            "previous_question": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+            "previous_question_type": "permission_check",
+            "dialogue_reasoning_act": "low_information_acknowledgement",
+            "response_strategy": "proactive_guided_selling",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "candidate_response": null,
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          },
+          "candidate_response_available": true,
+          "call_control": "continue-call"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "qualification",
+          "active_topic": "qualification",
+          "selected_gap": null,
+          "callback_semantic": null,
+          "last_agent_question_type": "sales_progression_question",
+          "last_active_agent_question_type": "sales_progression_question",
+          "last_agent_question_hash": "c4f25e2c6ac64318",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "sales_progression_question": 1
+          },
+          "answered_topics": [
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318",
+            "65e3b3575d13c41c"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318",
+            "callback_workflow:65e3b3575d13c41c"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "callback_workflow"
+          ],
+          "candidate_response_subject": "callback_workflow",
+          "candidate_response_signature": "callback_workflow:65e3b3575d13c41c",
+          "last_customer_intent": "permission_acknowledgement",
+          "last_sales_progression_step": "qualification",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false,
+          "active_gap_scope": "campaign_relevance",
+          "candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_next_gap": "callbacks",
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "outgoing_question_type": "multi_gap_diagnostic",
+          "outgoing_candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "outgoing_active_gap_scope": "multi_gap"
+        },
+        "provider_calls_made": false,
+        "local_llm_calls_made": false
+      },
+      {
+        "turn": 3,
+        "transcript": "all good",
+        "response": "Understood. If callbacks, manual tracking, and handoffs are clean, I should not push this further. Is there any other gap worth checking, or should I stop here?",
+        "tts_input_text": "Understood. Um, <break time=\"0.225s\" /> if callbacks, manual tracking, and handoffs are clean, I shouldn't push this further. Is there any other gap worth checking, or should I stop here?",
+        "call_control": "continue-call",
+        "semantic_frame": {
+          "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
+          "schema_version": 1,
+          "semantic": "multi_gap_clear",
+          "target_gap": null,
+          "target_topic": "campaign_relevance",
+          "primary_gap": null,
+          "secondary_confirmed_gaps": [],
+          "active_gap_scope": "multi_gap",
+          "candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "answered_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "cleared_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "confirmed_gaps": [],
+          "outgoing_question_type": "permission_to_stop",
+          "outgoing_candidate_gaps": [],
+          "outgoing_active_gap_scope": "unknown",
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": null,
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_gap": null,
+          "playbook_next_gap": null,
+          "playbook_review_focus": null,
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "polarity": "no_pain",
+          "confidence": 0.92,
+          "evidence": {
+            "buyer_utterance": "all good",
+            "normalized_buyer_utterance": "all good",
+            "previous_agent_question_type": "sales_progression_question",
+            "previous_agent_question_text": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+            "conversation_stage": "qualification",
+            "active_gap": null,
+            "active_gap_scope": "multi_gap",
+            "candidate_gaps": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs"
+            ],
+            "answered_gaps": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs"
+            ],
+            "confirmed_gaps": [],
+            "cleared_gaps": [],
+            "current_confirmed_gaps": [],
+            "current_cleared_gaps": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs"
+            ],
+            "outgoing_question_type": "permission_to_stop",
+            "outgoing_candidate_gaps": [],
+            "outgoing_active_gap_scope": "unknown",
+            "playbook": {
+              "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "schema_version": 1,
+              "playbook_gap": null,
+              "playbook_next_gap": null,
+              "playbook_review_focus": null,
+              "playbook_supported_gap_ids": [
+                "callbacks",
+                "manual_tracking",
+                "handoffs",
+                "routing",
+                "reminders",
+                "duplicates",
+                "visibility",
+                "right_person"
+              ],
+              "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+              "vertical_id": "b2b_saas",
+              "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+              "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "universal_pain_dimensions": [],
+              "qualification_dimensions": []
+            },
+            "pending_callback": false,
+            "pending_appointment": false
+          },
+          "next_action_hint": "one_final_save_question",
+          "must_not_do": [
+            "repeat same diagnostic",
+            "push workflow review"
+          ],
+          "candidate_response": "Understood. If callbacks, manual tracking, and handoffs are clean, I should not push this further. Is there any other gap worth checking, or should I stop here?",
+          "action_id": "continue_with_session_policy",
+          "dialogue_focus": "qualification",
+          "send_info_state_update": {},
+          "lead_followup_state_update": {},
+          "handoff_target_state_update": {},
+          "applied": true,
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "sends_email": false,
+          "creates_calendar_event": false,
+          "writes_crm": false,
+          "opens_prod_102": false
+        },
+        "manager_source": "contextual_buyer_semantics",
+        "selected_action": {
+          "action_id": "continue_with_session_policy",
+          "template_id": "session_policy_contextual_multi_gap_clear",
+          "source": "contextual_buyer_semantics",
+          "continuity_reason": "contextual_multi_gap_clear",
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "no_pragmatic_repair",
+            "applied": false,
+            "target_action": null,
+            "continuity_reason": null,
+            "legacy_reason": null,
+            "confidence": 0.0,
+            "normalized_transcript": "all good",
+            "dialogue_focus": "qualification",
+            "selected_gap": null,
+            "previous_question": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+            "previous_question_type": "sales_progression_question",
+            "dialogue_reasoning_act": "low_information_acknowledgement",
+            "response_strategy": "proactive_guided_selling",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "candidate_response": null,
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          },
+          "candidate_response_available": true,
+          "call_control": "continue-call"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "qualification",
+          "active_topic": "qualification",
+          "selected_gap": null,
+          "callback_semantic": null,
+          "last_agent_question_type": "permission_to_stop",
+          "last_active_agent_question_type": "permission_to_stop",
+          "last_agent_question_hash": "65e3b3575d13c41c",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "sales_progression_question": 1,
+            "permission_to_stop": 1
+          },
+          "answered_topics": [
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318",
+            "65e3b3575d13c41c",
+            "f1c91c5198fd087d"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318",
+            "callback_workflow:65e3b3575d13c41c",
+            "handoff_workflow:f1c91c5198fd087d"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "callback_workflow",
+            "handoff_workflow"
+          ],
+          "candidate_response_subject": "handoff_workflow",
+          "candidate_response_signature": "handoff_workflow:f1c91c5198fd087d",
+          "last_customer_intent": "multi_gap_clear",
+          "last_sales_progression_step": "qualification",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false,
+          "final_save_pending": true,
+          "active_gap_scope": "multi_gap",
+          "candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": null,
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "outgoing_question_type": "permission_to_stop",
+          "outgoing_candidate_gaps": [],
+          "outgoing_active_gap_scope": "unknown",
+          "answered_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "cleared_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "no_pain_topics": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ]
+        },
+        "provider_calls_made": false,
+        "local_llm_calls_made": false
+      }
+    ],
+    "scenario_c_outgoing_drives_specific_clear": [
+      {
+        "turn": 1,
+        "transcript": "__agent_open__",
+        "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+        "tts_input_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?",
+        "call_control": "continue-call",
+        "semantic_frame": {
+          "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
+          "schema_version": 1,
+          "semantic": "no_contextual_semantic",
+          "target_gap": null,
+          "target_topic": null,
+          "primary_gap": null,
+          "secondary_confirmed_gaps": [],
+          "active_gap_scope": "unknown",
+          "candidate_gaps": [],
+          "answered_gaps": [],
+          "cleared_gaps": [],
+          "confirmed_gaps": [],
+          "outgoing_question_type": null,
+          "outgoing_candidate_gaps": [],
+          "outgoing_active_gap_scope": "unknown",
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_gap": null,
+          "playbook_next_gap": "callbacks",
+          "playbook_review_focus": null,
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "polarity": "neutral",
+          "confidence": 0.0,
+          "evidence": {
+            "buyer_utterance": "__agent_open__",
+            "normalized_buyer_utterance": "agent open",
+            "previous_agent_question_type": "none",
+            "previous_agent_question_text": null,
+            "conversation_stage": "opening",
+            "active_gap": null,
+            "active_gap_scope": "unknown",
+            "candidate_gaps": [],
+            "answered_gaps": [],
+            "confirmed_gaps": [],
+            "cleared_gaps": [],
+            "current_confirmed_gaps": [],
+            "current_cleared_gaps": [],
+            "outgoing_question_type": null,
+            "outgoing_candidate_gaps": [],
+            "outgoing_active_gap_scope": "unknown",
+            "playbook": {
+              "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "schema_version": 1,
+              "playbook_gap": null,
+              "playbook_next_gap": "callbacks",
+              "playbook_review_focus": null,
+              "playbook_supported_gap_ids": [
+                "callbacks",
+                "manual_tracking",
+                "handoffs",
+                "routing",
+                "reminders",
+                "duplicates",
+                "visibility",
+                "right_person"
+              ],
+              "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+              "vertical_id": "b2b_saas",
+              "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+              "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "universal_pain_dimensions": [],
+              "qualification_dimensions": []
+            },
+            "pending_callback": false,
+            "pending_appointment": false
+          },
+          "next_action_hint": "continue",
+          "must_not_do": [],
+          "candidate_response": null,
+          "action_id": null,
+          "dialogue_focus": null,
+          "send_info_state_update": {},
+          "lead_followup_state_update": {},
+          "handoff_target_state_update": {},
+          "applied": false,
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "sends_email": false,
+          "creates_calendar_event": false,
+          "writes_crm": false,
+          "opens_prod_102": false
+        },
+        "manager_source": "live_voice_session_policy",
+        "selected_action": {
+          "action_id": "open_with_permission",
+          "template_id": "sales_opening_permission",
+          "source": "live_voice_session_policy",
+          "continuity_reason": "agent_opening_started",
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "no_pragmatic_repair",
+            "applied": false,
+            "target_action": null,
+            "continuity_reason": null,
+            "legacy_reason": null,
+            "confidence": 0.0,
+            "normalized_transcript": "agent open",
+            "dialogue_focus": "qualification",
+            "selected_gap": null,
+            "previous_question": null,
+            "previous_question_type": "none",
+            "dialogue_reasoning_act": "agent_open",
+            "response_strategy": "open_with_permission",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "candidate_response": null,
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          },
+          "candidate_response_available": true,
+          "call_control": "continue-call"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "opening",
+          "active_topic": "qualification",
+          "selected_gap": null,
+          "callback_semantic": null,
+          "last_agent_question_type": "permission_check",
+          "last_active_agent_question_type": "permission_check",
+          "last_agent_question_hash": "",
+          "asked_question_type_counts": {
+            "permission_check": 1
+          },
+          "answered_topics": [
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318"
+          ],
+          "recent_response_subjects": [
+            "opening_permission"
+          ],
+          "candidate_response_subject": "opening_permission",
+          "candidate_response_signature": "opening_permission:c4f25e2c6ac64318",
+          "last_customer_intent": "topic:qualification",
+          "last_sales_progression_step": "opening",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false,
+          "active_gap_scope": "unknown",
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_next_gap": "callbacks",
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "outgoing_question_type": "permission_check",
+          "outgoing_candidate_gaps": [],
+          "outgoing_active_gap_scope": "unknown"
+        },
+        "provider_calls_made": false,
+        "local_llm_calls_made": false
+      },
+      {
+        "turn": 2,
+        "transcript": "yeah sure",
+        "response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "tts_input_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "call_control": "continue-call",
+        "semantic_frame": {
+          "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
+          "schema_version": 1,
+          "semantic": "permission_acknowledgement",
+          "target_gap": null,
+          "target_topic": null,
+          "primary_gap": null,
+          "secondary_confirmed_gaps": [],
+          "active_gap_scope": "campaign_relevance",
+          "candidate_gaps": [
+            "callbacks",
+            "handoffs"
+          ],
+          "answered_gaps": [],
+          "cleared_gaps": [],
+          "confirmed_gaps": [],
+          "outgoing_question_type": "multi_gap_diagnostic",
+          "outgoing_candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "outgoing_active_gap_scope": "multi_gap",
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_gap": null,
+          "playbook_next_gap": "callbacks",
+          "playbook_review_focus": null,
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "polarity": "permission_granted",
+          "confidence": 0.94,
+          "evidence": {
+            "buyer_utterance": "yeah sure",
+            "normalized_buyer_utterance": "yeah sure",
+            "previous_agent_question_type": "permission_check",
+            "previous_agent_question_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+            "conversation_stage": "opening",
+            "active_gap": null,
+            "active_gap_scope": "campaign_relevance",
+            "candidate_gaps": [
+              "callbacks",
+              "handoffs"
+            ],
+            "answered_gaps": [],
+            "confirmed_gaps": [],
+            "cleared_gaps": [],
+            "current_confirmed_gaps": [],
+            "current_cleared_gaps": [],
+            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_candidate_gaps": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs"
+            ],
+            "outgoing_active_gap_scope": "multi_gap",
+            "playbook": {
+              "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "schema_version": 1,
+              "playbook_gap": null,
+              "playbook_next_gap": "callbacks",
+              "playbook_review_focus": null,
+              "playbook_supported_gap_ids": [
+                "callbacks",
+                "manual_tracking",
+                "handoffs",
+                "routing",
+                "reminders",
+                "duplicates",
+                "visibility",
+                "right_person"
+              ],
+              "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+              "vertical_id": "b2b_saas",
+              "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+              "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "universal_pain_dimensions": [],
+              "qualification_dimensions": []
+            },
+            "pending_callback": false,
+            "pending_appointment": false
+          },
+          "next_action_hint": "start_diagnostic",
+          "must_not_do": [
+            "classify as no pain",
+            "ask appointment"
+          ],
+          "candidate_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "action_id": "continue_with_session_policy",
+          "dialogue_focus": "qualification",
+          "send_info_state_update": {},
+          "lead_followup_state_update": {},
+          "handoff_target_state_update": {},
+          "applied": true,
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "sends_email": false,
+          "creates_calendar_event": false,
+          "writes_crm": false,
+          "opens_prod_102": false
+        },
+        "manager_source": "contextual_buyer_semantics",
+        "selected_action": {
+          "action_id": "continue_with_session_policy",
+          "template_id": "session_policy_contextual_permission_acknowledgement",
+          "source": "contextual_buyer_semantics",
+          "continuity_reason": "contextual_permission_acknowledgement",
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "no_pragmatic_repair",
+            "applied": false,
+            "target_action": null,
+            "continuity_reason": null,
+            "legacy_reason": null,
+            "confidence": 0.0,
+            "normalized_transcript": "yeah sure",
+            "dialogue_focus": "qualification",
+            "selected_gap": null,
+            "previous_question": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+            "previous_question_type": "permission_check",
+            "dialogue_reasoning_act": "low_information_acknowledgement",
+            "response_strategy": "proactive_guided_selling",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "candidate_response": null,
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          },
+          "candidate_response_available": true,
+          "call_control": "continue-call"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "qualification",
+          "active_topic": "qualification",
+          "selected_gap": null,
+          "callback_semantic": null,
+          "last_agent_question_type": "sales_progression_question",
+          "last_active_agent_question_type": "sales_progression_question",
+          "last_agent_question_hash": "c4f25e2c6ac64318",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "sales_progression_question": 1
+          },
+          "answered_topics": [
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318",
+            "65e3b3575d13c41c"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318",
+            "callback_workflow:65e3b3575d13c41c"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "callback_workflow"
+          ],
+          "candidate_response_subject": "callback_workflow",
+          "candidate_response_signature": "callback_workflow:65e3b3575d13c41c",
+          "last_customer_intent": "permission_acknowledgement",
+          "last_sales_progression_step": "qualification",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false,
+          "active_gap_scope": "campaign_relevance",
+          "candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_next_gap": "callbacks",
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "outgoing_question_type": "multi_gap_diagnostic",
+          "outgoing_candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "outgoing_active_gap_scope": "multi_gap"
+        },
+        "provider_calls_made": false,
+        "local_llm_calls_made": false
+      },
+      {
+        "turn": 3,
+        "transcript": "manual tracking is fine",
+        "response": "Got it, manual tracking is clear. Should I check callbacks or handoffs, or stop here?",
+        "tts_input_text": "Got it, manual tracking is clear. <break time=\"0.24s\" /> Um, should I check callbacks or handoffs, or stop here?",
+        "call_control": "continue-call",
+        "semantic_frame": {
+          "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
+          "schema_version": 1,
+          "semantic": "current_gap_clear",
+          "target_gap": "manual_tracking",
+          "target_topic": "manual_tracking",
+          "primary_gap": "manual_tracking",
+          "secondary_confirmed_gaps": [],
+          "active_gap_scope": "multi_gap",
+          "candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "answered_gaps": [
+            "manual_tracking"
+          ],
+          "cleared_gaps": [
+            "manual_tracking"
+          ],
+          "confirmed_gaps": [],
+          "outgoing_question_type": "permission_to_stop",
+          "outgoing_candidate_gaps": [],
+          "outgoing_active_gap_scope": "unknown",
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": "manual_tracking",
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": "manual follow-up tracking",
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [
+              "manual_work",
+              "missed_follow_up",
+              "unclear_next_step"
+            ],
+            "qualification_dimensions": [
+              "need_or_pain",
+              "current_solution_or_status_quo",
+              "fit"
+            ]
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_gap": "manual_tracking",
+          "playbook_next_gap": "callbacks",
+          "playbook_review_focus": "manual follow-up tracking",
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "polarity": "clear_current_gap",
+          "confidence": 0.92,
+          "evidence": {
+            "buyer_utterance": "manual tracking is fine",
+            "normalized_buyer_utterance": "manual tracking is fine",
+            "previous_agent_question_type": "sales_progression_question",
+            "previous_agent_question_text": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+            "conversation_stage": "qualification",
+            "active_gap": "manual_tracking",
+            "active_gap_scope": "multi_gap",
+            "candidate_gaps": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs"
+            ],
+            "answered_gaps": [
+              "manual_tracking"
+            ],
+            "confirmed_gaps": [],
+            "cleared_gaps": [],
+            "current_confirmed_gaps": [],
+            "current_cleared_gaps": [
+              "manual_tracking"
+            ],
+            "outgoing_question_type": "permission_to_stop",
+            "outgoing_candidate_gaps": [],
+            "outgoing_active_gap_scope": "unknown",
+            "playbook": {
+              "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "schema_version": 1,
+              "playbook_gap": "manual_tracking",
+              "playbook_next_gap": "callbacks",
+              "playbook_review_focus": "manual follow-up tracking",
+              "playbook_supported_gap_ids": [
+                "callbacks",
+                "manual_tracking",
+                "handoffs",
+                "routing",
+                "reminders",
+                "duplicates",
+                "visibility",
+                "right_person"
+              ],
+              "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+              "vertical_id": "b2b_saas",
+              "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+              "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "universal_pain_dimensions": [
+                "manual_work",
+                "missed_follow_up",
+                "unclear_next_step"
+              ],
+              "qualification_dimensions": [
+                "need_or_pain",
+                "current_solution_or_status_quo",
+                "fit"
+              ]
+            },
+            "pending_callback": false,
+            "pending_appointment": false
+          },
+          "next_action_hint": "ask_remaining_diagnostic",
+          "must_not_do": [
+            "classify as pain",
+            "erase confirmed pain"
+          ],
+          "candidate_response": "Got it, manual tracking is clear. Should I check callbacks or handoffs, or stop here?",
+          "action_id": "continue_with_session_policy",
+          "dialogue_focus": "qualification",
+          "send_info_state_update": {},
+          "lead_followup_state_update": {},
+          "handoff_target_state_update": {},
+          "applied": true,
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "sends_email": false,
+          "creates_calendar_event": false,
+          "writes_crm": false,
+          "opens_prod_102": false
+        },
+        "manager_source": "contextual_buyer_semantics",
+        "selected_action": {
+          "action_id": "continue_with_session_policy",
+          "template_id": "session_policy_contextual_current_gap_clear",
+          "source": "contextual_buyer_semantics",
+          "continuity_reason": "contextual_current_gap_clear",
+          "dialogue_focus": "qualification",
+          "selected_gap": "manual_tracking",
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "no_pragmatic_repair",
+            "applied": false,
+            "target_action": null,
+            "continuity_reason": null,
+            "legacy_reason": null,
+            "confidence": 0.0,
+            "normalized_transcript": "manual tracking is fine",
+            "dialogue_focus": "qualification",
+            "selected_gap": null,
+            "previous_question": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+            "previous_question_type": "sales_progression_question",
+            "dialogue_reasoning_act": "manual_tracking_objection",
+            "response_strategy": "answer_then_diagnose",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "candidate_response": null,
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          },
+          "candidate_response_available": true,
+          "call_control": "continue-call"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "value_mapping",
+          "active_topic": "manual_tracking",
+          "selected_gap": "manual_tracking",
+          "callback_semantic": null,
+          "last_agent_question_type": "permission_to_stop",
+          "last_active_agent_question_type": "permission_to_stop",
+          "last_agent_question_hash": "65e3b3575d13c41c",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "sales_progression_question": 1,
+            "permission_to_stop": 1
+          },
+          "answered_topics": [
+            "manual_tracking",
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318",
+            "65e3b3575d13c41c",
+            "44e21ed13017811d"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318",
+            "callback_workflow:65e3b3575d13c41c",
+            "handoff_workflow:44e21ed13017811d"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "callback_workflow",
+            "handoff_workflow"
+          ],
+          "candidate_response_subject": "handoff_workflow",
+          "candidate_response_signature": "handoff_workflow:44e21ed13017811d",
+          "last_customer_intent": "current_gap_clear",
+          "last_sales_progression_step": "value_mapping",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false,
+          "active_gap_scope": "multi_gap",
+          "candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": "manual_tracking",
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": "manual follow-up tracking",
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [
+              "manual_work",
+              "missed_follow_up",
+              "unclear_next_step"
+            ],
+            "qualification_dimensions": [
+              "need_or_pain",
+              "current_solution_or_status_quo",
+              "fit"
+            ]
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_gap": "manual_tracking",
+          "playbook_next_gap": "callbacks",
+          "playbook_review_focus": "manual follow-up tracking",
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "outgoing_question_type": "permission_to_stop",
+          "outgoing_candidate_gaps": [],
+          "outgoing_active_gap_scope": "unknown",
+          "answered_gaps": [
+            "manual_tracking"
+          ],
+          "primary_gap": "manual_tracking",
+          "cleared_gaps": [
+            "manual_tracking"
+          ],
+          "no_pain_topics": [
+            "manual_tracking"
+          ]
+        },
+        "provider_calls_made": false,
+        "local_llm_calls_made": false
+      }
+    ],
+    "scenario_d_outgoing_drives_mixed_response": [
+      {
+        "turn": 1,
+        "transcript": "__agent_open__",
+        "response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+        "tts_input_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?",
+        "call_control": "continue-call",
+        "semantic_frame": {
+          "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
+          "schema_version": 1,
+          "semantic": "no_contextual_semantic",
+          "target_gap": null,
+          "target_topic": null,
+          "primary_gap": null,
+          "secondary_confirmed_gaps": [],
+          "active_gap_scope": "unknown",
+          "candidate_gaps": [],
+          "answered_gaps": [],
+          "cleared_gaps": [],
+          "confirmed_gaps": [],
+          "outgoing_question_type": null,
+          "outgoing_candidate_gaps": [],
+          "outgoing_active_gap_scope": "unknown",
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_gap": null,
+          "playbook_next_gap": "callbacks",
+          "playbook_review_focus": null,
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "polarity": "neutral",
+          "confidence": 0.0,
+          "evidence": {
+            "buyer_utterance": "__agent_open__",
+            "normalized_buyer_utterance": "agent open",
+            "previous_agent_question_type": "none",
+            "previous_agent_question_text": null,
+            "conversation_stage": "opening",
+            "active_gap": null,
+            "active_gap_scope": "unknown",
+            "candidate_gaps": [],
+            "answered_gaps": [],
+            "confirmed_gaps": [],
+            "cleared_gaps": [],
+            "current_confirmed_gaps": [],
+            "current_cleared_gaps": [],
+            "outgoing_question_type": null,
+            "outgoing_candidate_gaps": [],
+            "outgoing_active_gap_scope": "unknown",
+            "playbook": {
+              "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "schema_version": 1,
+              "playbook_gap": null,
+              "playbook_next_gap": "callbacks",
+              "playbook_review_focus": null,
+              "playbook_supported_gap_ids": [
+                "callbacks",
+                "manual_tracking",
+                "handoffs",
+                "routing",
+                "reminders",
+                "duplicates",
+                "visibility",
+                "right_person"
+              ],
+              "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+              "vertical_id": "b2b_saas",
+              "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+              "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "universal_pain_dimensions": [],
+              "qualification_dimensions": []
+            },
+            "pending_callback": false,
+            "pending_appointment": false
+          },
+          "next_action_hint": "continue",
+          "must_not_do": [],
+          "candidate_response": null,
+          "action_id": null,
+          "dialogue_focus": null,
+          "send_info_state_update": {},
+          "lead_followup_state_update": {},
+          "handoff_target_state_update": {},
+          "applied": false,
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "sends_email": false,
+          "creates_calendar_event": false,
+          "writes_crm": false,
+          "opens_prod_102": false
+        },
+        "manager_source": "live_voice_session_policy",
+        "selected_action": {
+          "action_id": "open_with_permission",
+          "template_id": "sales_opening_permission",
+          "source": "live_voice_session_policy",
+          "continuity_reason": "agent_opening_started",
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "no_pragmatic_repair",
+            "applied": false,
+            "target_action": null,
+            "continuity_reason": null,
+            "legacy_reason": null,
+            "confidence": 0.0,
+            "normalized_transcript": "agent open",
+            "dialogue_focus": "qualification",
+            "selected_gap": null,
+            "previous_question": null,
+            "previous_question_type": "none",
+            "dialogue_reasoning_act": "agent_open",
+            "response_strategy": "open_with_permission",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "candidate_response": null,
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          },
+          "candidate_response_available": true,
+          "call_control": "continue-call"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "opening",
+          "active_topic": "qualification",
+          "selected_gap": null,
+          "callback_semantic": null,
+          "last_agent_question_type": "permission_check",
+          "last_active_agent_question_type": "permission_check",
+          "last_agent_question_hash": "",
+          "asked_question_type_counts": {
+            "permission_check": 1
+          },
+          "answered_topics": [
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318"
+          ],
+          "recent_response_subjects": [
+            "opening_permission"
+          ],
+          "candidate_response_subject": "opening_permission",
+          "candidate_response_signature": "opening_permission:c4f25e2c6ac64318",
+          "last_customer_intent": "topic:qualification",
+          "last_sales_progression_step": "opening",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false,
+          "active_gap_scope": "unknown",
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_next_gap": "callbacks",
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "outgoing_question_type": "permission_check",
+          "outgoing_candidate_gaps": [],
+          "outgoing_active_gap_scope": "unknown"
+        },
+        "provider_calls_made": false,
+        "local_llm_calls_made": false
+      },
+      {
+        "turn": 2,
+        "transcript": "yeah sure",
+        "response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "tts_input_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "call_control": "continue-call",
+        "semantic_frame": {
+          "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
+          "schema_version": 1,
+          "semantic": "permission_acknowledgement",
+          "target_gap": null,
+          "target_topic": null,
+          "primary_gap": null,
+          "secondary_confirmed_gaps": [],
+          "active_gap_scope": "campaign_relevance",
+          "candidate_gaps": [
+            "callbacks",
+            "handoffs"
+          ],
+          "answered_gaps": [],
+          "cleared_gaps": [],
+          "confirmed_gaps": [],
+          "outgoing_question_type": "multi_gap_diagnostic",
+          "outgoing_candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "outgoing_active_gap_scope": "multi_gap",
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_gap": null,
+          "playbook_next_gap": "callbacks",
+          "playbook_review_focus": null,
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "polarity": "permission_granted",
+          "confidence": 0.94,
+          "evidence": {
+            "buyer_utterance": "yeah sure",
+            "normalized_buyer_utterance": "yeah sure",
+            "previous_agent_question_type": "permission_check",
+            "previous_agent_question_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+            "conversation_stage": "opening",
+            "active_gap": null,
+            "active_gap_scope": "campaign_relevance",
+            "candidate_gaps": [
+              "callbacks",
+              "handoffs"
+            ],
+            "answered_gaps": [],
+            "confirmed_gaps": [],
+            "cleared_gaps": [],
+            "current_confirmed_gaps": [],
+            "current_cleared_gaps": [],
+            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_candidate_gaps": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs"
+            ],
+            "outgoing_active_gap_scope": "multi_gap",
+            "playbook": {
+              "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "schema_version": 1,
+              "playbook_gap": null,
+              "playbook_next_gap": "callbacks",
+              "playbook_review_focus": null,
+              "playbook_supported_gap_ids": [
+                "callbacks",
+                "manual_tracking",
+                "handoffs",
+                "routing",
+                "reminders",
+                "duplicates",
+                "visibility",
+                "right_person"
+              ],
+              "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+              "vertical_id": "b2b_saas",
+              "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+              "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "universal_pain_dimensions": [],
+              "qualification_dimensions": []
+            },
+            "pending_callback": false,
+            "pending_appointment": false
+          },
+          "next_action_hint": "start_diagnostic",
+          "must_not_do": [
+            "classify as no pain",
+            "ask appointment"
+          ],
+          "candidate_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "action_id": "continue_with_session_policy",
+          "dialogue_focus": "qualification",
+          "send_info_state_update": {},
+          "lead_followup_state_update": {},
+          "handoff_target_state_update": {},
+          "applied": true,
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "sends_email": false,
+          "creates_calendar_event": false,
+          "writes_crm": false,
+          "opens_prod_102": false
+        },
+        "manager_source": "contextual_buyer_semantics",
+        "selected_action": {
+          "action_id": "continue_with_session_policy",
+          "template_id": "session_policy_contextual_permission_acknowledgement",
+          "source": "contextual_buyer_semantics",
+          "continuity_reason": "contextual_permission_acknowledgement",
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "no_pragmatic_repair",
+            "applied": false,
+            "target_action": null,
+            "continuity_reason": null,
+            "legacy_reason": null,
+            "confidence": 0.0,
+            "normalized_transcript": "yeah sure",
+            "dialogue_focus": "qualification",
+            "selected_gap": null,
+            "previous_question": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+            "previous_question_type": "permission_check",
+            "dialogue_reasoning_act": "low_information_acknowledgement",
+            "response_strategy": "proactive_guided_selling",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "candidate_response": null,
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          },
+          "candidate_response_available": true,
+          "call_control": "continue-call"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "qualification",
+          "active_topic": "qualification",
+          "selected_gap": null,
+          "callback_semantic": null,
+          "last_agent_question_type": "sales_progression_question",
+          "last_active_agent_question_type": "sales_progression_question",
+          "last_agent_question_hash": "c4f25e2c6ac64318",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "sales_progression_question": 1
+          },
+          "answered_topics": [
+            "qualification"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318",
+            "65e3b3575d13c41c"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318",
+            "callback_workflow:65e3b3575d13c41c"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "callback_workflow"
+          ],
+          "candidate_response_subject": "callback_workflow",
+          "candidate_response_signature": "callback_workflow:65e3b3575d13c41c",
+          "last_customer_intent": "permission_acknowledgement",
+          "last_sales_progression_step": "qualification",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false,
+          "active_gap_scope": "campaign_relevance",
+          "candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": null,
+            "playbook_next_gap": "callbacks",
+            "playbook_review_focus": null,
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_next_gap": "callbacks",
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "outgoing_question_type": "multi_gap_diagnostic",
+          "outgoing_candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "outgoing_active_gap_scope": "multi_gap"
+        },
+        "provider_calls_made": false,
+        "local_llm_calls_made": false
+      },
+      {
+        "turn": 3,
+        "transcript": "manual tracking is fine but callbacks get missed",
+        "response": "Got it, missed callbacks is the real gap. RouteSignal helps demo leads stay assigned, reminded, and followed up before callback gaps turn into lost opportunities. The next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
+        "tts_input_text": "Got it, missed callbacks is the real gap, so, RouteSignal helps demo leads stay assigned, reminded, and followed up before callback gaps turn into lost opportunities. The next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
+        "call_control": "continue-call",
+        "semantic_frame": {
+          "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
+          "schema_version": 1,
+          "semantic": "mixed_gap_response",
+          "target_gap": "callbacks",
+          "target_topic": "callbacks",
+          "primary_gap": "callbacks",
+          "secondary_confirmed_gaps": [],
+          "active_gap_scope": "multi_gap",
+          "candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "answered_gaps": [
+            "manual_tracking",
+            "callbacks"
+          ],
+          "cleared_gaps": [
+            "manual_tracking"
+          ],
+          "confirmed_gaps": [
+            "callbacks"
+          ],
+          "outgoing_question_type": "appointment_time",
+          "outgoing_candidate_gaps": [],
+          "outgoing_active_gap_scope": "unknown",
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": "callbacks",
+            "playbook_next_gap": "handoffs",
+            "playbook_review_focus": "missed callback reminders",
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [
+              "missed_follow_up",
+              "delay",
+              "unclear_next_step"
+            ],
+            "qualification_dimensions": [
+              "need_or_pain",
+              "urgency",
+              "fit",
+              "contact_path"
+            ]
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_gap": "callbacks",
+          "playbook_next_gap": "handoffs",
+          "playbook_review_focus": "missed callback reminders",
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "polarity": "pain",
+          "confidence": 0.9,
+          "evidence": {
+            "buyer_utterance": "manual tracking is fine but callbacks get missed",
+            "normalized_buyer_utterance": "manual tracking is fine but callbacks get missed",
+            "previous_agent_question_type": "sales_progression_question",
+            "previous_agent_question_text": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+            "conversation_stage": "qualification",
+            "active_gap": "callbacks",
+            "active_gap_scope": "multi_gap",
+            "candidate_gaps": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs"
+            ],
+            "answered_gaps": [
+              "manual_tracking",
+              "callbacks"
+            ],
+            "confirmed_gaps": [],
+            "cleared_gaps": [],
+            "current_confirmed_gaps": [
+              "callbacks"
+            ],
+            "current_cleared_gaps": [
+              "manual_tracking"
+            ],
+            "outgoing_question_type": "appointment_time",
+            "outgoing_candidate_gaps": [],
+            "outgoing_active_gap_scope": "unknown",
+            "playbook": {
+              "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "schema_version": 1,
+              "playbook_gap": "callbacks",
+              "playbook_next_gap": "handoffs",
+              "playbook_review_focus": "missed callback reminders",
+              "playbook_supported_gap_ids": [
+                "callbacks",
+                "manual_tracking",
+                "handoffs",
+                "routing",
+                "reminders",
+                "duplicates",
+                "visibility",
+                "right_person"
+              ],
+              "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+              "vertical_id": "b2b_saas",
+              "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+              "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+              "universal_pain_dimensions": [
+                "missed_follow_up",
+                "delay",
+                "unclear_next_step"
+              ],
+              "qualification_dimensions": [
+                "need_or_pain",
+                "urgency",
+                "fit",
+                "contact_path"
+              ]
+            },
+            "pending_callback": false,
+            "pending_appointment": false
+          },
+          "next_action_hint": "move_toward_workflow_review",
+          "must_not_do": [
+            "treat as no pain",
+            "erase cleared gaps"
+          ],
+          "candidate_response": "Got it, missed callbacks is the real gap. RouteSignal helps demo leads stay assigned, reminded, and followed up before callback gaps turn into lost opportunities. The next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
+          "action_id": "request_appointment_time",
+          "dialogue_focus": "timing",
+          "send_info_state_update": {},
+          "lead_followup_state_update": {},
+          "handoff_target_state_update": {},
+          "applied": true,
+          "provider_calls_made": false,
+          "local_llm_calls_made": false,
+          "sends_email": false,
+          "creates_calendar_event": false,
+          "writes_crm": false,
+          "opens_prod_102": false
+        },
+        "manager_source": "contextual_buyer_semantics",
+        "selected_action": {
+          "action_id": "request_appointment_time",
+          "template_id": "appointment_time_request",
+          "source": "contextual_buyer_semantics",
+          "continuity_reason": "contextual_mixed_gap_response",
+          "dialogue_focus": "timing",
+          "selected_gap": "callbacks",
+          "pragmatic_move": {
+            "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
+            "schema_version": 1,
+            "move_id": "pain_review_offered",
+            "applied": true,
+            "target_action": "continue_with_session_policy",
+            "continuity_reason": "pragmatic_pain_review_offered",
+            "legacy_reason": null,
+            "confidence": 0.88,
+            "normalized_transcript": "manual tracking is fine but callbacks get missed",
+            "dialogue_focus": "qualification",
+            "selected_gap": "callbacks",
+            "previous_question": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+            "previous_question_type": "sales_progression_question",
+            "dialogue_reasoning_act": "selected_gap",
+            "response_strategy": "map_gap_to_value",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "candidate_response": "That sounds like the gap. RouteSignal is meant to help demo leads get assigned, reminded, and followed up. A short workflow review with someone from Northstar would check missed callback reminders against your actual follow-up flow. Would a short workflow review be useful for this gap?",
+            "provider_calls_made": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false
+          },
+          "candidate_response_available": true,
+          "call_control": "continue-call"
+        },
+        "memory": {
+          "schema_version": 1,
+          "active_stage": "value_mapping",
+          "active_topic": "callbacks",
+          "selected_gap": "callbacks",
+          "callback_semantic": "callback_workflow_gap",
+          "last_agent_question_type": "appointment_time",
+          "last_active_agent_question_type": "appointment_time",
+          "last_agent_question_hash": "65e3b3575d13c41c",
+          "asked_question_type_counts": {
+            "permission_check": 1,
+            "sales_progression_question": 1,
+            "appointment_time": 1
+          },
+          "answered_topics": [
+            "callbacks",
+            "qualification",
+            "timing"
+          ],
+          "rejected_topics": [],
+          "last_response_hashes": [
+            "c4f25e2c6ac64318",
+            "65e3b3575d13c41c",
+            "e553559e9af10234"
+          ],
+          "last_response_signatures": [
+            "opening_permission:c4f25e2c6ac64318",
+            "callback_workflow:65e3b3575d13c41c",
+            "callback_workflow:e553559e9af10234"
+          ],
+          "recent_response_subjects": [
+            "opening_permission",
+            "callback_workflow",
+            "callback_workflow"
+          ],
+          "candidate_response_subject": "callback_workflow",
+          "candidate_response_signature": "callback_workflow:e553559e9af10234",
+          "last_customer_intent": "mixed_gap_response",
+          "last_sales_progression_step": "value_mapping",
+          "appointment_close_ready": false,
+          "appointment_close_gap": null,
+          "stored_audio_data": false,
+          "stores_secrets": false,
+          "active_gap_scope": "multi_gap",
+          "candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "playbook": {
+            "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "schema_version": 1,
+            "playbook_gap": "callbacks",
+            "playbook_next_gap": "handoffs",
+            "playbook_review_focus": "missed callback reminders",
+            "playbook_supported_gap_ids": [
+              "callbacks",
+              "manual_tracking",
+              "handoffs",
+              "routing",
+              "reminders",
+              "duplicates",
+              "visibility",
+              "right_person"
+            ],
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "vertical_id": "b2b_saas",
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+            "universal_pain_dimensions": [
+              "missed_follow_up",
+              "delay",
+              "unclear_next_step"
+            ],
+            "qualification_dimensions": [
+              "need_or_pain",
+              "urgency",
+              "fit",
+              "contact_path"
+            ]
+          },
+          "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+          "playbook_gap": "callbacks",
+          "playbook_next_gap": "handoffs",
+          "playbook_review_focus": "missed callback reminders",
+          "playbook_supported_gap_ids": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs",
+            "routing",
+            "reminders",
+            "duplicates",
+            "visibility",
+            "right_person"
+          ],
+          "outgoing_question_type": "appointment_time",
+          "outgoing_candidate_gaps": [],
+          "outgoing_active_gap_scope": "unknown",
+          "answered_gaps": [
+            "manual_tracking",
+            "callbacks"
+          ],
+          "primary_gap": "callbacks",
+          "confirmed_gaps": [
+            "callbacks"
+          ],
+          "cleared_gaps": [
+            "manual_tracking"
+          ],
+          "no_pain_topics": [
+            "manual_tracking"
+          ]
+        },
+        "provider_calls_made": false,
+        "local_llm_calls_made": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,3337 @@
+{
+  "checkpoint_id": "HUMAN-REVIEW-FINDINGS-001",
+  "creates_calendar_event": false,
+  "evidence": {
+    "automotive_route_concept_leakage_replay": [
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-automotive-service-regression-001",
+        "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Hi, this is Maya calling from Synthetic Automotive Service about Service Advisor Review. I am checking whether a short service advisor inspection review is needed; do you have a minute?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "Hi, this is Maya calling from Synthetic Automotive Service about Service Advisor Review. I am checking whether a short service advisor inspection review is needed; do you have a minute?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "live_voice_session_policy"
+        },
+        "semantic": "no_contextual_semantic",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "__agent_open__",
+        "tts_input_text": "Hi, this is Maya calling from Synthetic Automotive Service about Service Advisor Review. I am checking whether a short service advisor inspection review is needed; do you have a minute?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-automotive-service-regression-001",
+        "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [
+          "vehicle_issue",
+          "repair_timing",
+          "warranty_or_estimate"
+        ],
+        "provider_rendered_text": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "contextual_buyer_semantics"
+        },
+        "semantic": "permission_acknowledgement",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "yeah sure",
+        "tts_input_text": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-automotive-service-regression-001",
+        "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "I am asking whether vehicle issue, repair timing, or warranty or estimate are worth a possible service advisor inspection review. Which part should I ask about first, if any?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "I am asking whether vehicle issue, repair timing, or warranty or estimate are worth a possible service advisor inspection review. Which part should I ask about first, if any?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "pre_speech_conversation_stability_guard"
+        },
+        "semantic": "confusion_not_clear",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "I do not understand",
+        "tts_input_text": "I am asking whether vehicle issue, repair timing, or warranty or estimate are worth a possible service advisor inspection review. Which part should I ask about first, if any?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-automotive-service-regression-001",
+        "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "I am calling from Synthetic Automotive Service about Service Advisor Review, and asking whether vehicle issue, repair timing, or warranty or estimate are worth a short service advisor inspection review. If none of those apply, I can stop here.",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "I am calling from Synthetic Automotive Service about Service Advisor Review, and asking whether vehicle issue, repair timing, or warranty or estimate are worth a short service advisor inspection review. If none of those apply, I can stop here.",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "dialogue_pragmatics"
+        },
+        "semantic": "no_contextual_semantic",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "what is this about?",
+        "tts_input_text": "I am calling from Synthetic Automotive Service about Service Advisor Review, and asking whether vehicle issue, repair timing, or warranty or estimate are worth a short service advisor inspection review. If none of those apply, I can stop here."
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-automotive-service-regression-001",
+        "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "If vehicle issue, repair timing, or warranty or estimate are actually relevant, a service advisor can do a short service advisor inspection review. If not, I can stop here; should I ask one quick fit question?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "If vehicle issue, repair timing, or warranty or estimate are actually relevant, a service advisor can do a short service advisor inspection review. If not, I can stop here; should I ask one quick fit question?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "live_voice_session_policy"
+        },
+        "semantic": "no_contextual_semantic",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "what happens next?",
+        "tts_input_text": "If vehicle issue, repair timing, or warranty or estimate are actually relevant, a service advisor can do a short service advisor inspection review. If not, I can stop here; should I ask one quick fit question?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-automotive-service-regression-001",
+        "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "No problem. Should I ask one simpler yes-or-no question, or stop here?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "No problem. Should I ask one simpler yes-or-no question, or stop here?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "contextual_buyer_semantics"
+        },
+        "semantic": "uncertainty_after_diagnostic",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "maybe",
+        "tts_input_text": "No problem. Should I ask one simpler yes-or-no question, or stop here?"
+      }
+    ],
+    "automotive_uncertainty_replay": [
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-automotive-service-regression-001",
+        "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Hi, this is Maya calling from Synthetic Automotive Service about Service Advisor Review. I am checking whether a short service advisor inspection review is needed; do you have a minute?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "Hi, this is Maya calling from Synthetic Automotive Service about Service Advisor Review. I am checking whether a short service advisor inspection review is needed; do you have a minute?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "live_voice_session_policy"
+        },
+        "semantic": "no_contextual_semantic",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "__agent_open__",
+        "tts_input_text": "Hi, this is Maya calling from Synthetic Automotive Service about Service Advisor Review. I am checking whether a short service advisor inspection review is needed; do you have a minute?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-automotive-service-regression-001",
+        "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [
+          "vehicle_issue",
+          "repair_timing",
+          "warranty_or_estimate"
+        ],
+        "provider_rendered_text": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "contextual_buyer_semantics"
+        },
+        "semantic": "permission_acknowledgement",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "yeah sure",
+        "tts_input_text": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-automotive-service-regression-001",
+        "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "I am asking whether vehicle issue, repair timing, or warranty or estimate are worth a possible service advisor inspection review. Which part should I ask about first, if any?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "I am asking whether vehicle issue, repair timing, or warranty or estimate are worth a possible service advisor inspection review. Which part should I ask about first, if any?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "pre_speech_conversation_stability_guard"
+        },
+        "semantic": "confusion_not_clear",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "I do not understand",
+        "tts_input_text": "I am asking whether vehicle issue, repair timing, or warranty or estimate are worth a possible service advisor inspection review. Which part should I ask about first, if any?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-automotive-service-regression-001",
+        "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "If vehicle issue, repair timing, or warranty or estimate are actually relevant, a service advisor can do a short service advisor inspection review. If not, I can stop here; should I ask one quick fit question?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "If vehicle issue, repair timing, or warranty or estimate are actually relevant, a service advisor can do a short service advisor inspection review. If not, I can stop here; should I ask one quick fit question?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "live_voice_session_policy"
+        },
+        "semantic": "no_contextual_semantic",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "what happens next?",
+        "tts_input_text": "If vehicle issue, repair timing, or warranty or estimate are actually relevant, a service advisor can do a short service advisor inspection review. If not, I can stop here; should I ask one quick fit question?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-automotive-service-regression-001",
+        "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "No problem. Should I ask one simpler yes-or-no question, or stop here?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "No problem. Should I ask one simpler yes-or-no question, or stop here?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "contextual_buyer_semantics"
+        },
+        "semantic": "uncertainty_after_diagnostic",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "maybe",
+        "tts_input_text": "No problem. Should I ask one simpler yes-or-no question, or stop here?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-automotive-service-regression-001",
+        "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "No problem. Should I simplify the question, or stop here?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "No problem. Should I simplify the question, or stop here?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "contextual_buyer_semantics"
+        },
+        "semantic": "uncertainty_after_diagnostic",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "not sure",
+        "tts_input_text": "No problem. Should I simplify the question, or stop here?"
+      }
+    ],
+    "callback_wording_replay": {
+      "healthcare_admin_or_medical_equipment": [
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-healthcare-admin-regression-001",
+          "campaign_playbook_id": "synthetic-healthcare-admin-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Hi, this is Maya calling from Synthetic Healthcare Admin about Admin Equipment Review. I am checking whether a short specialist admin review is needed; do you have a minute?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Hi, this is Maya calling from Synthetic Healthcare Admin about Admin Equipment Review. I am checking whether a short specialist admin review is needed; do you have a minute?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "__agent_open__",
+          "tts_input_text": "Hi, this is Maya calling from Synthetic Healthcare Admin about Admin Equipment Review. I am checking whether a short specialist admin review is needed; do you have a minute?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-healthcare-admin-regression-001",
+          "campaign_playbook_id": "synthetic-healthcare-admin-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Thanks, I am checking admin workflow need, equipment or service fit, or specialist review needed. Which one is causing trouble, if any?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [
+            "admin_workflow_need",
+            "equipment_or_service_fit",
+            "specialist_review_needed"
+          ],
+          "provider_rendered_text": "Thanks, I am checking admin workflow need, equipment or service fit, or specialist review needed. Which one is causing trouble, if any?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "permission_acknowledgement",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "yeah sure",
+          "tts_input_text": "Thanks, I am checking admin workflow need, equipment or service fit, or specialist review needed. Which one is causing trouble, if any?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-healthcare-admin-regression-001",
+          "campaign_playbook_id": "synthetic-healthcare-admin-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "No problem. I can keep it to a short written summary. What email or callback time should I note?",
+          "handoff_target_state": null,
+          "lead_followup_state": {
+            "appointment": {
+              "confirmation_text": null,
+              "confirmed": false,
+              "type": "send_info_followup"
+            },
+            "callback": {
+              "needs_clarification": false,
+              "normalized": {
+                "confidence": 0.0,
+                "date_text": null,
+                "day_text": null,
+                "meridiem": null,
+                "relative_date": null,
+                "time_text": null
+              },
+              "raw_text_redacted": null
+            },
+            "capture_status": "needs_contact",
+            "contact": {
+              "email_hash": null,
+              "email_redacted": null,
+              "email_source": "none",
+              "email_valid": false,
+              "raw_email_stored_in_public_evidence": false
+            },
+            "lead_status": "open_send_info",
+            "requested_summary_type": "product_details",
+            "safety": {
+              "creates_calendar_event": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "stores_private_contact_in_public_evidence": false,
+              "writes_crm": false
+            },
+            "schema_version": 1
+          },
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "No problem. I can keep it to a short written summary. What email or callback time should I note?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "send_info_request",
+          "send_info_state": {
+            "capture_status": "needs_email_or_callback_time",
+            "captured_callback_time": null,
+            "captured_email_redacted": null,
+            "human_followup_needed": true,
+            "lead_status": "open_send_info",
+            "requested": true,
+            "requested_at_turn": 3,
+            "requested_summary_type": "product_details",
+            "stores_private_contact_in_public_evidence": false
+          },
+          "target_gap": null,
+          "transcript": "send me details",
+          "tts_input_text": "No problem. I can keep it to a short written summary. What email or callback time should I note?"
+        },
+        {
+          "call_control": "schedule-and-end",
+          "campaign_id": "synthetic-healthcare-admin-regression-001",
+          "campaign_playbook_id": "synthetic-healthcare-admin-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Confirmed. I will note that time for your specialist admin review. Goodbye.",
+          "handoff_target_state": null,
+          "lead_followup_state": {
+            "appointment": {
+              "confirmation_text": "send-info callback time captured",
+              "confirmed": true,
+              "type": "send_info_followup"
+            },
+            "callback": {
+              "needs_clarification": false,
+              "normalized": {
+                "confidence": 0.9,
+                "date_text": "tomorrow",
+                "day_text": null,
+                "meridiem": "unknown",
+                "relative_date": "tomorrow",
+                "time_text": "3"
+              },
+              "raw_text_redacted": "tomorrow at 3 works"
+            },
+            "capture_status": "callback_time_captured",
+            "contact": {
+              "email_hash": null,
+              "email_redacted": null,
+              "email_source": "none",
+              "email_valid": false,
+              "raw_email_stored_in_public_evidence": false
+            },
+            "lead_status": "open_callback",
+            "requested_summary_type": "product_details",
+            "safety": {
+              "creates_calendar_event": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "stores_private_contact_in_public_evidence": false,
+              "writes_crm": false
+            },
+            "schema_version": 1
+          },
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Confirmed. I will note that time for your specialist admin review. Goodbye.",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "callback_time_provided",
+          "send_info_state": {
+            "capture_status": "callback_time_captured",
+            "captured_callback_time": "tomorrow at 3 works",
+            "captured_email_redacted": null,
+            "human_followup_needed": true,
+            "lead_status": "open_callback",
+            "requested": true,
+            "requested_at_turn": 3,
+            "requested_summary_type": "product_details",
+            "stores_private_contact_in_public_evidence": false
+          },
+          "target_gap": null,
+          "transcript": "tomorrow at 3 works",
+          "tts_input_text": "Confirmed. I will note that time for your specialist admin review. Goodbye."
+        }
+      ],
+      "insurance": [
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-insurance-regression-001",
+          "campaign_playbook_id": "synthetic-insurance-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "__agent_open__",
+          "tts_input_text": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-insurance-regression-001",
+          "campaign_playbook_id": "synthetic-insurance-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Thanks, I am checking coverage fit, premium or budget, or renewal or timing. Which one is causing trouble, if any?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [
+            "coverage_fit",
+            "premium_or_budget",
+            "renewal_or_timing"
+          ],
+          "provider_rendered_text": "Thanks, I am checking coverage fit, premium or budget, or renewal or timing. Which one is causing trouble, if any?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "permission_acknowledgement",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "yeah sure",
+          "tts_input_text": "Thanks, I am checking coverage fit, premium or budget, or renewal or timing. Which one is causing trouble, if any?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-insurance-regression-001",
+          "campaign_playbook_id": "synthetic-insurance-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "No problem. I can keep it to a short written summary. What email or callback time should I note?",
+          "handoff_target_state": null,
+          "lead_followup_state": {
+            "appointment": {
+              "confirmation_text": null,
+              "confirmed": false,
+              "type": "send_info_followup"
+            },
+            "callback": {
+              "needs_clarification": false,
+              "normalized": {
+                "confidence": 0.0,
+                "date_text": null,
+                "day_text": null,
+                "meridiem": null,
+                "relative_date": null,
+                "time_text": null
+              },
+              "raw_text_redacted": null
+            },
+            "capture_status": "needs_contact",
+            "contact": {
+              "email_hash": null,
+              "email_redacted": null,
+              "email_source": "none",
+              "email_valid": false,
+              "raw_email_stored_in_public_evidence": false
+            },
+            "lead_status": "open_send_info",
+            "requested_summary_type": "product_details",
+            "safety": {
+              "creates_calendar_event": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "stores_private_contact_in_public_evidence": false,
+              "writes_crm": false
+            },
+            "schema_version": 1
+          },
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "No problem. I can keep it to a short written summary. What email or callback time should I note?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "send_info_request",
+          "send_info_state": {
+            "capture_status": "needs_email_or_callback_time",
+            "captured_callback_time": null,
+            "captured_email_redacted": null,
+            "human_followup_needed": true,
+            "lead_status": "open_send_info",
+            "requested": true,
+            "requested_at_turn": 3,
+            "requested_summary_type": "product_details",
+            "stores_private_contact_in_public_evidence": false
+          },
+          "target_gap": null,
+          "transcript": "send me details",
+          "tts_input_text": "No problem. I can keep it to a short written summary. What email or callback time should I note?"
+        },
+        {
+          "call_control": "schedule-and-end",
+          "campaign_id": "synthetic-insurance-regression-001",
+          "campaign_playbook_id": "synthetic-insurance-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Confirmed. I will note that time for your licensed coverage review. Goodbye.",
+          "handoff_target_state": null,
+          "lead_followup_state": {
+            "appointment": {
+              "confirmation_text": "send-info callback time captured",
+              "confirmed": true,
+              "type": "send_info_followup"
+            },
+            "callback": {
+              "needs_clarification": false,
+              "normalized": {
+                "confidence": 0.9,
+                "date_text": "tomorrow",
+                "day_text": null,
+                "meridiem": "unknown",
+                "relative_date": "tomorrow",
+                "time_text": "3"
+              },
+              "raw_text_redacted": "tomorrow at 3 works"
+            },
+            "capture_status": "callback_time_captured",
+            "contact": {
+              "email_hash": null,
+              "email_redacted": null,
+              "email_source": "none",
+              "email_valid": false,
+              "raw_email_stored_in_public_evidence": false
+            },
+            "lead_status": "open_callback",
+            "requested_summary_type": "product_details",
+            "safety": {
+              "creates_calendar_event": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "stores_private_contact_in_public_evidence": false,
+              "writes_crm": false
+            },
+            "schema_version": 1
+          },
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Confirmed. I will note that time for your licensed coverage review. Goodbye.",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "callback_time_provided",
+          "send_info_state": {
+            "capture_status": "callback_time_captured",
+            "captured_callback_time": "tomorrow at 3 works",
+            "captured_email_redacted": null,
+            "human_followup_needed": true,
+            "lead_status": "open_callback",
+            "requested": true,
+            "requested_at_turn": 3,
+            "requested_summary_type": "product_details",
+            "stores_private_contact_in_public_evidence": false
+          },
+          "target_gap": null,
+          "transcript": "tomorrow at 3 works",
+          "tts_input_text": "Confirmed. I will note that time for your licensed coverage review. Goodbye."
+        }
+      ],
+      "membership_or_subscription": [
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-membership-regression-001",
+          "campaign_playbook_id": "synthetic-membership-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Hi, this is Maya calling from Synthetic Membership Services about Membership Plan Review. I am checking whether a short membership account review is needed; do you have a minute?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Hi, this is Maya calling from Synthetic Membership Services about Membership Plan Review. I am checking whether a short membership account review is needed; do you have a minute?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "__agent_open__",
+          "tts_input_text": "Hi, this is Maya calling from Synthetic Membership Services about Membership Plan Review. I am checking whether a short membership account review is needed; do you have a minute?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-membership-regression-001",
+          "campaign_playbook_id": "synthetic-membership-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Thanks, I am checking plan fit, renewal or cancellation, or usage or value. Which one is causing trouble, if any?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [
+            "plan_fit",
+            "renewal_or_cancellation",
+            "usage_or_value"
+          ],
+          "provider_rendered_text": "Thanks, I am checking plan fit, renewal or cancellation, or usage or value. Which one is causing trouble, if any?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "permission_acknowledgement",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "yeah sure",
+          "tts_input_text": "Thanks, I am checking plan fit, renewal or cancellation, or usage or value. Which one is causing trouble, if any?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-membership-regression-001",
+          "campaign_playbook_id": "synthetic-membership-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "No problem. I can keep it to a short written summary. What email or callback time should I note?",
+          "handoff_target_state": null,
+          "lead_followup_state": {
+            "appointment": {
+              "confirmation_text": null,
+              "confirmed": false,
+              "type": "send_info_followup"
+            },
+            "callback": {
+              "needs_clarification": false,
+              "normalized": {
+                "confidence": 0.0,
+                "date_text": null,
+                "day_text": null,
+                "meridiem": null,
+                "relative_date": null,
+                "time_text": null
+              },
+              "raw_text_redacted": null
+            },
+            "capture_status": "needs_contact",
+            "contact": {
+              "email_hash": null,
+              "email_redacted": null,
+              "email_source": "none",
+              "email_valid": false,
+              "raw_email_stored_in_public_evidence": false
+            },
+            "lead_status": "open_send_info",
+            "requested_summary_type": "product_details",
+            "safety": {
+              "creates_calendar_event": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "stores_private_contact_in_public_evidence": false,
+              "writes_crm": false
+            },
+            "schema_version": 1
+          },
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "No problem. I can keep it to a short written summary. What email or callback time should I note?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "send_info_request",
+          "send_info_state": {
+            "capture_status": "needs_email_or_callback_time",
+            "captured_callback_time": null,
+            "captured_email_redacted": null,
+            "human_followup_needed": true,
+            "lead_status": "open_send_info",
+            "requested": true,
+            "requested_at_turn": 3,
+            "requested_summary_type": "product_details",
+            "stores_private_contact_in_public_evidence": false
+          },
+          "target_gap": null,
+          "transcript": "send me details",
+          "tts_input_text": "No problem. I can keep it to a short written summary. What email or callback time should I note?"
+        },
+        {
+          "call_control": "schedule-and-end",
+          "campaign_id": "synthetic-membership-regression-001",
+          "campaign_playbook_id": "synthetic-membership-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Confirmed. I will note that time for your membership account review. Goodbye.",
+          "handoff_target_state": null,
+          "lead_followup_state": {
+            "appointment": {
+              "confirmation_text": "send-info callback time captured",
+              "confirmed": true,
+              "type": "send_info_followup"
+            },
+            "callback": {
+              "needs_clarification": false,
+              "normalized": {
+                "confidence": 0.9,
+                "date_text": "tomorrow",
+                "day_text": null,
+                "meridiem": "unknown",
+                "relative_date": "tomorrow",
+                "time_text": "3"
+              },
+              "raw_text_redacted": "tomorrow at 3 works"
+            },
+            "capture_status": "callback_time_captured",
+            "contact": {
+              "email_hash": null,
+              "email_redacted": null,
+              "email_source": "none",
+              "email_valid": false,
+              "raw_email_stored_in_public_evidence": false
+            },
+            "lead_status": "open_callback",
+            "requested_summary_type": "product_details",
+            "safety": {
+              "creates_calendar_event": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "stores_private_contact_in_public_evidence": false,
+              "writes_crm": false
+            },
+            "schema_version": 1
+          },
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Confirmed. I will note that time for your membership account review. Goodbye.",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "callback_time_provided",
+          "send_info_state": {
+            "capture_status": "callback_time_captured",
+            "captured_callback_time": "tomorrow at 3 works",
+            "captured_email_redacted": null,
+            "human_followup_needed": true,
+            "lead_status": "open_callback",
+            "requested": true,
+            "requested_at_turn": 3,
+            "requested_summary_type": "product_details",
+            "stores_private_contact_in_public_evidence": false
+          },
+          "target_gap": null,
+          "transcript": "tomorrow at 3 works",
+          "tts_input_text": "Confirmed. I will note that time for your membership account review. Goodbye."
+        }
+      ]
+    },
+    "checkpoint_id": "HUMAN-REVIEW-FINDINGS-001",
+    "findings_covered": [
+      "generic RouteSignal-concept leakage beyond exact forbidden terms",
+      "uncertainty should not jump to appointment/review",
+      "what happens next should answer process",
+      "out-of-scope support/account requests must not become sales next-step",
+      "right-person contact capture wording",
+      "callback confirmation wording",
+      "RouteSignal preservation"
+    ],
+    "process_question_replay": {
+      "automotive_service": [
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-automotive-service-regression-001",
+          "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Hi, this is Maya calling from Synthetic Automotive Service about Service Advisor Review. I am checking whether a short service advisor inspection review is needed; do you have a minute?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Hi, this is Maya calling from Synthetic Automotive Service about Service Advisor Review. I am checking whether a short service advisor inspection review is needed; do you have a minute?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "__agent_open__",
+          "tts_input_text": "Hi, this is Maya calling from Synthetic Automotive Service about Service Advisor Review. I am checking whether a short service advisor inspection review is needed; do you have a minute?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-automotive-service-regression-001",
+          "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [
+            "vehicle_issue",
+            "repair_timing",
+            "warranty_or_estimate"
+          ],
+          "provider_rendered_text": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "permission_acknowledgement",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "yeah sure",
+          "tts_input_text": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-automotive-service-regression-001",
+          "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "If vehicle issue, repair timing, or warranty or estimate are actually relevant, a service advisor can do a short service advisor inspection review. If not, I can stop here; should I ask one quick fit question?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "If vehicle issue, repair timing, or warranty or estimate are actually relevant, a service advisor can do a short service advisor inspection review. If not, I can stop here; should I ask one quick fit question?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "what happens next?",
+          "tts_input_text": "If vehicle issue, repair timing, or warranty or estimate are actually relevant, a service advisor can do a short service advisor inspection review. If not, I can stop here; should I ask one quick fit question?"
+        }
+      ],
+      "b2b_saas": [
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-b2b-saas-regression-001",
+          "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "__agent_open__",
+          "tts_input_text": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-b2b-saas-regression-001",
+          "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [
+            "manual_work",
+            "integration_risk",
+            "visibility_gap"
+          ],
+          "provider_rendered_text": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "permission_acknowledgement",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "yeah sure",
+          "tts_input_text": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-b2b-saas-regression-001",
+          "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "If manual work, integration risk, or visibility gap are actually relevant, an implementation specialist can do a short operations fit review. If not, I can stop here; should I ask one quick fit question?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "If manual work, integration risk, or visibility gap are actually relevant, an implementation specialist can do a short operations fit review. If not, I can stop here; should I ask one quick fit question?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "what happens next?",
+          "tts_input_text": "If manual work, integration risk, or visibility gap are actually relevant, an implementation specialist can do a short operations fit review. If not, I can stop here; should I ask one quick fit question?"
+        }
+      ],
+      "insurance": [
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-insurance-regression-001",
+          "campaign_playbook_id": "synthetic-insurance-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "__agent_open__",
+          "tts_input_text": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-insurance-regression-001",
+          "campaign_playbook_id": "synthetic-insurance-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Thanks, I am checking coverage fit, premium or budget, or renewal or timing. Which one is causing trouble, if any?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [
+            "coverage_fit",
+            "premium_or_budget",
+            "renewal_or_timing"
+          ],
+          "provider_rendered_text": "Thanks, I am checking coverage fit, premium or budget, or renewal or timing. Which one is causing trouble, if any?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "permission_acknowledgement",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "yeah sure",
+          "tts_input_text": "Thanks, I am checking coverage fit, premium or budget, or renewal or timing. Which one is causing trouble, if any?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-insurance-regression-001",
+          "campaign_playbook_id": "synthetic-insurance-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "If coverage fit, premium or budget, or renewal or timing are actually relevant, a licensed insurance specialist can do a short licensed coverage review. If not, I can stop here; should I ask one quick fit question?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "If coverage fit, premium or budget, or renewal or timing are actually relevant, a licensed insurance specialist can do a short licensed coverage review. If not, I can stop here; should I ask one quick fit question?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "what happens next?",
+          "tts_input_text": "If coverage fit, premium or budget, or renewal or timing are actually relevant, a licensed insurance specialist can do a short licensed coverage review. If not, I can stop here; should I ask one quick fit question?"
+        }
+      ],
+      "telecom": [
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-telecom-regression-001",
+          "campaign_playbook_id": "synthetic-telecom-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Hi, this is Maya calling from Synthetic Telecom Provider about Plan Review Call. I am checking whether a short plan and coverage review is needed; do you have a minute?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Hi, this is Maya calling from Synthetic Telecom Provider about Plan Review Call. I am checking whether a short plan and coverage review is needed; do you have a minute?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "__agent_open__",
+          "tts_input_text": "Hi, this is Maya calling from Synthetic Telecom Provider about Plan Review Call. I am checking whether a short plan and coverage review is needed; do you have a minute?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-telecom-regression-001",
+          "campaign_playbook_id": "synthetic-telecom-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Thanks, I am checking coverage or availability, plan fit, or contract or switching. Which one is causing trouble, if any?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [
+            "coverage_or_availability",
+            "plan_fit",
+            "contract_or_switching"
+          ],
+          "provider_rendered_text": "Thanks, I am checking coverage or availability, plan fit, or contract or switching. Which one is causing trouble, if any?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "permission_acknowledgement",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "yeah sure",
+          "tts_input_text": "Thanks, I am checking coverage or availability, plan fit, or contract or switching. Which one is causing trouble, if any?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-telecom-regression-001",
+          "campaign_playbook_id": "synthetic-telecom-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "If coverage or availability, plan fit, or contract or switching are actually relevant, a telecom plan specialist can do a short plan and coverage review. If not, I can stop here; should I ask one quick fit question?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "If coverage or availability, plan fit, or contract or switching are actually relevant, a telecom plan specialist can do a short plan and coverage review. If not, I can stop here; should I ask one quick fit question?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "what happens next?",
+          "tts_input_text": "If coverage or availability, plan fit, or contract or switching are actually relevant, a telecom plan specialist can do a short plan and coverage review. If not, I can stop here; should I ask one quick fit question?"
+        }
+      ]
+    },
+    "replayed_against_current_runtime": true,
+    "right_person_email_replay": [
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-b2b-saas-regression-001",
+        "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "live_voice_session_policy"
+        },
+        "semantic": "no_contextual_semantic",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "__agent_open__",
+        "tts_input_text": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-b2b-saas-regression-001",
+        "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [
+          "manual_work",
+          "integration_risk",
+          "visibility_gap"
+        ],
+        "provider_rendered_text": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "contextual_buyer_semantics"
+        },
+        "semantic": "permission_acknowledgement",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "yeah sure",
+        "tts_input_text": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-b2b-saas-regression-001",
+        "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Understood. Who is the right person or team for operations fit review, or should I stop here?",
+        "handoff_target_state": {
+          "capture_status": "needs_right_person",
+          "human_followup_needed": true,
+          "lead_status": "open_right_person_handoff",
+          "reason": "wrong_person",
+          "requested": true,
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "stores_private_contact_in_public_evidence": false,
+            "writes_crm": false
+          },
+          "schema_version": 1,
+          "target": {
+            "email_hash": null,
+            "email_redacted": null,
+            "person_name_redacted": null,
+            "phone_redacted": null,
+            "raw_contact_stored_in_public_evidence": false,
+            "role_or_department": null
+          }
+        },
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "Understood. Who is the right person or team for operations fit review, or should I stop here?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "contextual_buyer_semantics"
+        },
+        "semantic": "wrong_person_or_wrong_department",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "I do not handle this",
+        "tts_input_text": "Understood. Who is the right person or team for operations fit review, or should I stop here?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-b2b-saas-regression-001",
+        "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Understood, operations handles that. Who is the right person there, or what contact, email, or callback path should I note?",
+        "handoff_target_state": {
+          "capture_status": "department_captured",
+          "human_followup_needed": true,
+          "lead_status": "open_right_person_handoff",
+          "reason": "buyer_named_team",
+          "requested": true,
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "stores_private_contact_in_public_evidence": false,
+            "writes_crm": false
+          },
+          "schema_version": 1,
+          "target": {
+            "email_hash": null,
+            "email_redacted": null,
+            "person_name_redacted": null,
+            "phone_redacted": null,
+            "raw_contact_stored_in_public_evidence": false,
+            "role_or_department": "operations"
+          }
+        },
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "Understood, operations handles that. Who is the right person there, or what contact, email, or callback path should I note?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "contextual_buyer_semantics"
+        },
+        "semantic": "wrong_person_or_wrong_department",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "operations handles it",
+        "tts_input_text": "Understood, operations handles that. Who is the right person there, or what contact, email, or callback path should I note?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-b2b-saas-regression-001",
+        "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Got it. I will note that contact for operations so a human can follow up through the right path. I will not send anything from this call.",
+        "handoff_target_state": {
+          "capture_status": "contact_detail_captured",
+          "human_followup_needed": true,
+          "lead_status": "open_send_info_to_right_person",
+          "reason": "buyer_named_team",
+          "requested": true,
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "stores_private_contact_in_public_evidence": false,
+            "writes_crm": false
+          },
+          "schema_version": 1,
+          "target": {
+            "email_hash": "af3c82544f648b38",
+            "email_redacted": "o***@example.com",
+            "person_name_redacted": null,
+            "phone_redacted": null,
+            "raw_contact_stored_in_public_evidence": false,
+            "role_or_department": "operations"
+          }
+        },
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "Got it. I will note that contact for operations so a human can follow up through the right path. I will not send anything from this call.",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "contextual_buyer_semantics"
+        },
+        "semantic": "right_person_email_provided",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "send it to <email:sha256_12:af3c82544f64>",
+        "tts_input_text": "Got it. I will note that contact for operations so a human can follow up through the right path. I will not send anything from this call."
+      }
+    ],
+    "routesignal_callback_wording_replay": [
+      {
+        "call_control": "continue-call",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "campaign_playbook_id": null,
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "live_voice_session_policy"
+        },
+        "semantic": "no_contextual_semantic",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "__agent_open__",
+        "tts_input_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "campaign_playbook_id": null,
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [
+          "callbacks",
+          "manual_tracking",
+          "handoffs"
+        ],
+        "provider_rendered_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "contextual_buyer_semantics"
+        },
+        "semantic": "permission_acknowledgement",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "yeah sure",
+        "tts_input_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "campaign_playbook_id": null,
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "No problem. I can keep it to a short written summary. What email or callback time should I note?",
+        "handoff_target_state": null,
+        "lead_followup_state": {
+          "appointment": {
+            "confirmation_text": null,
+            "confirmed": false,
+            "type": "send_info_followup"
+          },
+          "callback": {
+            "needs_clarification": false,
+            "normalized": {
+              "confidence": 0.0,
+              "date_text": null,
+              "day_text": null,
+              "meridiem": null,
+              "relative_date": null,
+              "time_text": null
+            },
+            "raw_text_redacted": null
+          },
+          "capture_status": "needs_contact",
+          "contact": {
+            "email_hash": null,
+            "email_redacted": null,
+            "email_source": "none",
+            "email_valid": false,
+            "raw_email_stored_in_public_evidence": false
+          },
+          "lead_status": "open_send_info",
+          "requested_summary_type": "product_details",
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "stores_private_contact_in_public_evidence": false,
+            "writes_crm": false
+          },
+          "schema_version": 1
+        },
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "No problem, so, I can keep it to a short written summary. <break time=\"0.24s\" /> What email or callback time should I note?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "contextual_buyer_semantics"
+        },
+        "semantic": "send_info_request",
+        "send_info_state": {
+          "capture_status": "needs_email_or_callback_time",
+          "captured_callback_time": null,
+          "captured_email_redacted": null,
+          "human_followup_needed": true,
+          "lead_status": "open_send_info",
+          "requested": true,
+          "requested_at_turn": 3,
+          "requested_summary_type": "product_details",
+          "stores_private_contact_in_public_evidence": false
+        },
+        "target_gap": null,
+        "transcript": "send me details",
+        "tts_input_text": "No problem, so, I can keep it to a short written summary. <break time=\"0.24s\" /> What email or callback time should I note?"
+      },
+      {
+        "call_control": "schedule-and-end",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "campaign_playbook_id": null,
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Confirmed. I will record that callback time for the specialist. Goodbye.",
+        "handoff_target_state": null,
+        "lead_followup_state": {
+          "appointment": {
+            "confirmation_text": "send-info callback time captured",
+            "confirmed": true,
+            "type": "send_info_followup"
+          },
+          "callback": {
+            "needs_clarification": false,
+            "normalized": {
+              "confidence": 0.9,
+              "date_text": "tomorrow",
+              "day_text": null,
+              "meridiem": "unknown",
+              "relative_date": "tomorrow",
+              "time_text": "3"
+            },
+            "raw_text_redacted": "tomorrow at 3 works"
+          },
+          "capture_status": "callback_time_captured",
+          "contact": {
+            "email_hash": null,
+            "email_redacted": null,
+            "email_source": "none",
+            "email_valid": false,
+            "raw_email_stored_in_public_evidence": false
+          },
+          "lead_status": "open_callback",
+          "requested_summary_type": "product_details",
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "stores_private_contact_in_public_evidence": false,
+            "writes_crm": false
+          },
+          "schema_version": 1
+        },
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "Confirmed. I will record that callback time for the specialist. Goodbye.",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "contextual_buyer_semantics"
+        },
+        "semantic": "callback_time_provided",
+        "send_info_state": {
+          "capture_status": "callback_time_captured",
+          "captured_callback_time": "tomorrow at 3 works",
+          "captured_email_redacted": null,
+          "human_followup_needed": true,
+          "lead_status": "open_callback",
+          "requested": true,
+          "requested_at_turn": 3,
+          "requested_summary_type": "product_details",
+          "stores_private_contact_in_public_evidence": false
+        },
+        "target_gap": null,
+        "transcript": "tomorrow at 3 works",
+        "tts_input_text": "Confirmed. I will record that callback time for the specialist. Goodbye."
+      }
+    ],
+    "routesignal_preservation_replay": {
+      "callback_time": [
+        {
+          "call_control": "continue-call",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "campaign_playbook_id": null,
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "__agent_open__",
+          "tts_input_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "campaign_playbook_id": null,
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "provider_rendered_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "permission_acknowledgement",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "yeah sure",
+          "tts_input_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "campaign_playbook_id": null,
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "No problem. I can keep it to a short written summary. What email or callback time should I note?",
+          "handoff_target_state": null,
+          "lead_followup_state": {
+            "appointment": {
+              "confirmation_text": null,
+              "confirmed": false,
+              "type": "send_info_followup"
+            },
+            "callback": {
+              "needs_clarification": false,
+              "normalized": {
+                "confidence": 0.0,
+                "date_text": null,
+                "day_text": null,
+                "meridiem": null,
+                "relative_date": null,
+                "time_text": null
+              },
+              "raw_text_redacted": null
+            },
+            "capture_status": "needs_contact",
+            "contact": {
+              "email_hash": null,
+              "email_redacted": null,
+              "email_source": "none",
+              "email_valid": false,
+              "raw_email_stored_in_public_evidence": false
+            },
+            "lead_status": "open_send_info",
+            "requested_summary_type": "product_details",
+            "safety": {
+              "creates_calendar_event": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "stores_private_contact_in_public_evidence": false,
+              "writes_crm": false
+            },
+            "schema_version": 1
+          },
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "No problem, so, I can keep it to a short written summary. <break time=\"0.24s\" /> What email or callback time should I note?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "send_info_request",
+          "send_info_state": {
+            "capture_status": "needs_email_or_callback_time",
+            "captured_callback_time": null,
+            "captured_email_redacted": null,
+            "human_followup_needed": true,
+            "lead_status": "open_send_info",
+            "requested": true,
+            "requested_at_turn": 3,
+            "requested_summary_type": "product_details",
+            "stores_private_contact_in_public_evidence": false
+          },
+          "target_gap": null,
+          "transcript": "send me details",
+          "tts_input_text": "No problem, so, I can keep it to a short written summary. <break time=\"0.24s\" /> What email or callback time should I note?"
+        },
+        {
+          "call_control": "schedule-and-end",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "campaign_playbook_id": null,
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Confirmed. I will record that callback time for the specialist. Goodbye.",
+          "handoff_target_state": null,
+          "lead_followup_state": {
+            "appointment": {
+              "confirmation_text": "send-info callback time captured",
+              "confirmed": true,
+              "type": "send_info_followup"
+            },
+            "callback": {
+              "needs_clarification": false,
+              "normalized": {
+                "confidence": 0.9,
+                "date_text": "tomorrow",
+                "day_text": null,
+                "meridiem": "unknown",
+                "relative_date": "tomorrow",
+                "time_text": "3"
+              },
+              "raw_text_redacted": "tomorrow at 3 works"
+            },
+            "capture_status": "callback_time_captured",
+            "contact": {
+              "email_hash": null,
+              "email_redacted": null,
+              "email_source": "none",
+              "email_valid": false,
+              "raw_email_stored_in_public_evidence": false
+            },
+            "lead_status": "open_callback",
+            "requested_summary_type": "product_details",
+            "safety": {
+              "creates_calendar_event": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "stores_private_contact_in_public_evidence": false,
+              "writes_crm": false
+            },
+            "schema_version": 1
+          },
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Confirmed. I will record that callback time for the specialist. Goodbye.",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "callback_time_provided",
+          "send_info_state": {
+            "capture_status": "callback_time_captured",
+            "captured_callback_time": "tomorrow at 3 works",
+            "captured_email_redacted": null,
+            "human_followup_needed": true,
+            "lead_status": "open_callback",
+            "requested": true,
+            "requested_at_turn": 3,
+            "requested_summary_type": "product_details",
+            "stores_private_contact_in_public_evidence": false
+          },
+          "target_gap": null,
+          "transcript": "tomorrow at 3 works",
+          "tts_input_text": "Confirmed. I will record that callback time for the specialist. Goodbye."
+        }
+      ],
+      "callbacks_clear": [
+        {
+          "call_control": "continue-call",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "campaign_playbook_id": null,
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "__agent_open__",
+          "tts_input_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "campaign_playbook_id": null,
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "provider_rendered_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "permission_acknowledgement",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "yeah sure",
+          "tts_input_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "campaign_playbook_id": null,
+          "cleared_gaps": [
+            "callbacks"
+          ],
+          "confirmed_gaps": null,
+          "final_response": "Got it, callbacks are clear. Should I check manual tracking or handoffs, or stop here?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Got it, callbacks are clear, well, should I check manual tracking or handoffs, or stop here?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "current_gap_clear",
+          "send_info_state": null,
+          "target_gap": "callbacks",
+          "transcript": "callbacks are fine",
+          "tts_input_text": "Got it, callbacks are clear, well, should I check manual tracking or handoffs, or stop here?"
+        }
+      ],
+      "handoffs_pain": [
+        {
+          "call_control": "continue-call",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "campaign_playbook_id": null,
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "__agent_open__",
+          "tts_input_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "campaign_playbook_id": null,
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "provider_rendered_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "permission_acknowledgement",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "yeah sure",
+          "tts_input_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "campaign_playbook_id": null,
+          "cleared_gaps": null,
+          "confirmed_gaps": [
+            "handoffs"
+          ],
+          "final_response": "Got it, handoff ownership is the real gap. RouteSignal helps each demo lead keep a clear owner and next reply. The next step is a short workflow review with someone from Northstar. They would check handoff ownership against your actual follow-up flow. What time works for a quick call?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Got it, handoff ownership is the real gap, well, RouteSignal helps each demo lead keep a clear owner and next reply. The next step is a short workflow review with someone from Northstar. They would check handoff ownership against your actual follow-up flow. What time works for a quick call?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "pain_confirmed",
+          "send_info_state": null,
+          "target_gap": "handoffs",
+          "transcript": "handoffs get messy",
+          "tts_input_text": "Got it, handoff ownership is the real gap, well, RouteSignal helps each demo lead keep a clear owner and next reply. The next step is a short workflow review with someone from Northstar. They would check handoff ownership against your actual follow-up flow. What time works for a quick call?"
+        }
+      ],
+      "send_info_yes": [
+        {
+          "call_control": "continue-call",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "campaign_playbook_id": null,
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "__agent_open__",
+          "tts_input_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I'm looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. <break time=\"0.225s\" /> Do you have a minute?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "campaign_playbook_id": null,
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [
+            "callbacks",
+            "manual_tracking",
+            "handoffs"
+          ],
+          "provider_rendered_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "permission_acknowledgement",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "yeah sure",
+          "tts_input_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "campaign_playbook_id": null,
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "No problem. I can keep it to a short written summary. What email or callback time should I note?",
+          "handoff_target_state": null,
+          "lead_followup_state": {
+            "appointment": {
+              "confirmation_text": null,
+              "confirmed": false,
+              "type": "send_info_followup"
+            },
+            "callback": {
+              "needs_clarification": false,
+              "normalized": {
+                "confidence": 0.0,
+                "date_text": null,
+                "day_text": null,
+                "meridiem": null,
+                "relative_date": null,
+                "time_text": null
+              },
+              "raw_text_redacted": null
+            },
+            "capture_status": "needs_contact",
+            "contact": {
+              "email_hash": null,
+              "email_redacted": null,
+              "email_source": "none",
+              "email_valid": false,
+              "raw_email_stored_in_public_evidence": false
+            },
+            "lead_status": "open_send_info",
+            "requested_summary_type": "product_details",
+            "safety": {
+              "creates_calendar_event": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "stores_private_contact_in_public_evidence": false,
+              "writes_crm": false
+            },
+            "schema_version": 1
+          },
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "No problem. Um, I can keep it to a short written summary. <break time=\"0.24s\" /> What email or callback time should I note?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "send_info_request",
+          "send_info_state": {
+            "capture_status": "needs_email_or_callback_time",
+            "captured_callback_time": null,
+            "captured_email_redacted": null,
+            "human_followup_needed": true,
+            "lead_status": "open_send_info",
+            "requested": true,
+            "requested_at_turn": 3,
+            "requested_summary_type": "product_details",
+            "stores_private_contact_in_public_evidence": false
+          },
+          "target_gap": null,
+          "transcript": "send me details first",
+          "tts_input_text": "No problem. Um, I can keep it to a short written summary. <break time=\"0.24s\" /> What email or callback time should I note?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "campaign_playbook_id": null,
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Sure. What email should I note for the summary, or what callback time should I use?",
+          "handoff_target_state": null,
+          "lead_followup_state": {
+            "appointment": {
+              "confirmation_text": null,
+              "confirmed": false,
+              "type": "send_info_followup"
+            },
+            "callback": {
+              "needs_clarification": false,
+              "normalized": {
+                "confidence": 0.0,
+                "date_text": null,
+                "day_text": null,
+                "meridiem": null,
+                "relative_date": null,
+                "time_text": null
+              },
+              "raw_text_redacted": null
+            },
+            "capture_status": "needs_contact",
+            "contact": {
+              "email_hash": null,
+              "email_redacted": null,
+              "email_source": "none",
+              "email_valid": false,
+              "raw_email_stored_in_public_evidence": false
+            },
+            "lead_status": "open_send_info",
+            "requested_summary_type": "product_details",
+            "safety": {
+              "creates_calendar_event": false,
+              "local_llm_calls_made": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "stores_private_contact_in_public_evidence": false,
+              "writes_crm": false
+            },
+            "schema_version": 1
+          },
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Sure. Um, what email should I note for the summary, <break time=\"0.24s\" /> or what callback time should I use?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "send_info_affirmed_without_contact",
+          "send_info_state": {
+            "capture_status": "needs_email_or_callback_time",
+            "captured_callback_time": null,
+            "captured_email_redacted": null,
+            "human_followup_needed": true,
+            "lead_status": "open_send_info",
+            "requested": true,
+            "requested_at_turn": 3,
+            "requested_summary_type": "product_details",
+            "stores_private_contact_in_public_evidence": false
+          },
+          "target_gap": null,
+          "transcript": "yes send it",
+          "tts_input_text": "Sure. Um, what email should I note for the summary, <break time=\"0.24s\" /> or what callback time should I use?"
+        }
+      ]
+    },
+    "support_boundary_handoff_preserve_replay": [
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-b2b-saas-regression-001",
+        "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "live_voice_session_policy"
+        },
+        "semantic": "no_contextual_semantic",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "__agent_open__",
+        "tts_input_text": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-b2b-saas-regression-001",
+        "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+        "handoff_target_state": null,
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [
+          "manual_work",
+          "integration_risk",
+          "visibility_gap"
+        ],
+        "provider_rendered_text": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "contextual_buyer_semantics"
+        },
+        "semantic": "permission_acknowledgement",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "yeah sure",
+        "tts_input_text": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-b2b-saas-regression-001",
+        "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Understood. Who is the right person or team for operations fit review, or should I stop here?",
+        "handoff_target_state": {
+          "capture_status": "needs_right_person",
+          "human_followup_needed": true,
+          "lead_status": "open_right_person_handoff",
+          "reason": "wrong_person",
+          "requested": true,
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "stores_private_contact_in_public_evidence": false,
+            "writes_crm": false
+          },
+          "schema_version": 1,
+          "target": {
+            "email_hash": null,
+            "email_redacted": null,
+            "person_name_redacted": null,
+            "phone_redacted": null,
+            "raw_contact_stored_in_public_evidence": false,
+            "role_or_department": null
+          }
+        },
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "Understood. Who is the right person or team for operations fit review, or should I stop here?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "contextual_buyer_semantics"
+        },
+        "semantic": "wrong_person_or_wrong_department",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "I do not handle this",
+        "tts_input_text": "Understood. Who is the right person or team for operations fit review, or should I stop here?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-b2b-saas-regression-001",
+        "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "Understood, operations handles that. Who is the right person there, or what contact, email, or callback path should I note?",
+        "handoff_target_state": {
+          "capture_status": "department_captured",
+          "human_followup_needed": true,
+          "lead_status": "open_right_person_handoff",
+          "reason": "buyer_named_team",
+          "requested": true,
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "stores_private_contact_in_public_evidence": false,
+            "writes_crm": false
+          },
+          "schema_version": 1,
+          "target": {
+            "email_hash": null,
+            "email_redacted": null,
+            "person_name_redacted": null,
+            "phone_redacted": null,
+            "raw_contact_stored_in_public_evidence": false,
+            "role_or_department": "operations"
+          }
+        },
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "Understood, operations handles that. Who is the right person there, or what contact, email, or callback path should I note?",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "contextual_buyer_semantics"
+        },
+        "semantic": "wrong_person_or_wrong_department",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "operations handles it",
+        "tts_input_text": "Understood, operations handles that. Who is the right person there, or what contact, email, or callback path should I note?"
+      },
+      {
+        "call_control": "continue-call",
+        "campaign_id": "synthetic-b2b-saas-regression-001",
+        "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+        "cleared_gaps": null,
+        "confirmed_gaps": null,
+        "final_response": "I cannot help with account support on this call. If useful, an implementation specialist can follow up separately, or I can stop here.",
+        "handoff_target_state": {
+          "capture_status": "department_captured",
+          "human_followup_needed": true,
+          "lead_status": "open_right_person_handoff",
+          "reason": "buyer_named_team",
+          "requested": true,
+          "safety": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "stores_private_contact_in_public_evidence": false,
+            "writes_crm": false
+          },
+          "schema_version": 1,
+          "target": {
+            "email_hash": null,
+            "email_redacted": null,
+            "person_name_redacted": null,
+            "phone_redacted": null,
+            "raw_contact_stored_in_public_evidence": false,
+            "role_or_department": "operations"
+          }
+        },
+        "lead_followup_state": null,
+        "outgoing_candidate_gaps": [],
+        "provider_rendered_text": "I cannot help with account support on this call. If useful, an implementation specialist can follow up separately, or I can stop here.",
+        "safety_flags": {
+          "creates_calendar_event": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "selected_action": {
+          "memory_update_key": null,
+          "next_action": null,
+          "question_type": null,
+          "semantic": null,
+          "source": "pre_speech_conversation_stability_guard"
+        },
+        "semantic": "account_support_boundary",
+        "send_info_state": null,
+        "target_gap": null,
+        "transcript": "can you help with my password?",
+        "tts_input_text": "I cannot help with account support on this call. If useful, an implementation specialist can follow up separately, or I can stop here."
+      }
+    ],
+    "support_boundary_replay": {
+      "b2b_saas": [
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-b2b-saas-regression-001",
+          "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "__agent_open__",
+          "tts_input_text": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-b2b-saas-regression-001",
+          "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [
+            "manual_work",
+            "integration_risk",
+            "visibility_gap"
+          ],
+          "provider_rendered_text": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "permission_acknowledgement",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "yeah sure",
+          "tts_input_text": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-b2b-saas-regression-001",
+          "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "I cannot help with account support on this call. If useful, an implementation specialist can follow up separately, or I can stop here.",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "I cannot help with account support on this call. If useful, an implementation specialist can follow up separately, or I can stop here.",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "pre_speech_conversation_stability_guard"
+          },
+          "semantic": "account_support_boundary",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "can you help with my password?",
+          "tts_input_text": "I cannot help with account support on this call. If useful, an implementation specialist can follow up separately, or I can stop here."
+        }
+      ],
+      "membership_or_subscription": [
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-membership-regression-001",
+          "campaign_playbook_id": "synthetic-membership-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Hi, this is Maya calling from Synthetic Membership Services about Membership Plan Review. I am checking whether a short membership account review is needed; do you have a minute?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Hi, this is Maya calling from Synthetic Membership Services about Membership Plan Review. I am checking whether a short membership account review is needed; do you have a minute?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "__agent_open__",
+          "tts_input_text": "Hi, this is Maya calling from Synthetic Membership Services about Membership Plan Review. I am checking whether a short membership account review is needed; do you have a minute?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-membership-regression-001",
+          "campaign_playbook_id": "synthetic-membership-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Thanks, I am checking plan fit, renewal or cancellation, or usage or value. Which one is causing trouble, if any?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [
+            "plan_fit",
+            "renewal_or_cancellation",
+            "usage_or_value"
+          ],
+          "provider_rendered_text": "Thanks, I am checking plan fit, renewal or cancellation, or usage or value. Which one is causing trouble, if any?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "permission_acknowledgement",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "yeah sure",
+          "tts_input_text": "Thanks, I am checking plan fit, renewal or cancellation, or usage or value. Which one is causing trouble, if any?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-membership-regression-001",
+          "campaign_playbook_id": "synthetic-membership-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "I cannot cancel or change an account on this call. Please use authorized account support; I can stop here.",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "I cannot cancel or change an account on this call. Please use authorized account support; I can stop here.",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "pre_speech_conversation_stability_guard"
+          },
+          "semantic": "account_support_boundary",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "can you cancel my account?",
+          "tts_input_text": "I cannot cancel or change an account on this call. Please use authorized account support; I can stop here."
+        }
+      ],
+      "retail_or_ecommerce_support_sales": [
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-retail-ecommerce-regression-001",
+          "campaign_playbook_id": "synthetic-retail-ecommerce-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Hi, this is Maya calling from Synthetic Retail Support about Product Support Review. I am checking whether a short product support review is needed; do you have a minute?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Hi, this is Maya calling from Synthetic Retail Support about Product Support Review. I am checking whether a short product support review is needed; do you have a minute?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "__agent_open__",
+          "tts_input_text": "Hi, this is Maya calling from Synthetic Retail Support about Product Support Review. I am checking whether a short product support review is needed; do you have a minute?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-retail-ecommerce-regression-001",
+          "campaign_playbook_id": "synthetic-retail-ecommerce-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Thanks, I am checking product fit, availability or delivery, or return or warranty. Which one is causing trouble, if any?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [
+            "product_fit",
+            "availability_or_delivery",
+            "return_or_warranty"
+          ],
+          "provider_rendered_text": "Thanks, I am checking product fit, availability or delivery, or return or warranty. Which one is causing trouble, if any?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "permission_acknowledgement",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "yeah sure",
+          "tts_input_text": "Thanks, I am checking product fit, availability or delivery, or return or warranty. Which one is causing trouble, if any?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-retail-ecommerce-regression-001",
+          "campaign_playbook_id": "synthetic-retail-ecommerce-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "I cannot handle order support on this call. Please use the support team for order details; I can stop here.",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "I cannot handle order support on this call. Please use the support team for order details; I can stop here.",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "pre_speech_conversation_stability_guard"
+          },
+          "semantic": "account_support_boundary",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "can you help with my order?",
+          "tts_input_text": "I cannot handle order support on this call. Please use the support team for order details; I can stop here."
+        }
+      ],
+      "telecom": [
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-telecom-regression-001",
+          "campaign_playbook_id": "synthetic-telecom-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Hi, this is Maya calling from Synthetic Telecom Provider about Plan Review Call. I am checking whether a short plan and coverage review is needed; do you have a minute?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "Hi, this is Maya calling from Synthetic Telecom Provider about Plan Review Call. I am checking whether a short plan and coverage review is needed; do you have a minute?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "live_voice_session_policy"
+          },
+          "semantic": "no_contextual_semantic",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "__agent_open__",
+          "tts_input_text": "Hi, this is Maya calling from Synthetic Telecom Provider about Plan Review Call. I am checking whether a short plan and coverage review is needed; do you have a minute?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-telecom-regression-001",
+          "campaign_playbook_id": "synthetic-telecom-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "Thanks, I am checking coverage or availability, plan fit, or contract or switching. Which one is causing trouble, if any?",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [
+            "coverage_or_availability",
+            "plan_fit",
+            "contract_or_switching"
+          ],
+          "provider_rendered_text": "Thanks, I am checking coverage or availability, plan fit, or contract or switching. Which one is causing trouble, if any?",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "contextual_buyer_semantics"
+          },
+          "semantic": "permission_acknowledgement",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "yeah sure",
+          "tts_input_text": "Thanks, I am checking coverage or availability, plan fit, or contract or switching. Which one is causing trouble, if any?"
+        },
+        {
+          "call_control": "continue-call",
+          "campaign_id": "synthetic-telecom-regression-001",
+          "campaign_playbook_id": "synthetic-telecom-regression-001-playbook",
+          "cleared_gaps": null,
+          "confirmed_gaps": null,
+          "final_response": "I cannot change account plans on this call. Please use the authorized support path; I can keep this to the review topic, or stop here.",
+          "handoff_target_state": null,
+          "lead_followup_state": null,
+          "outgoing_candidate_gaps": [],
+          "provider_rendered_text": "I cannot change account plans on this call. Please use the authorized support path; I can keep this to the review topic, or stop here.",
+          "safety_flags": {
+            "creates_calendar_event": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          },
+          "selected_action": {
+            "memory_update_key": null,
+            "next_action": null,
+            "question_type": null,
+            "semantic": null,
+            "source": "pre_speech_conversation_stability_guard"
+          },
+          "semantic": "account_support_boundary",
+          "send_info_state": null,
+          "target_gap": null,
+          "transcript": "can you help with my password?",
+          "tts_input_text": "I cannot change account plans on this call. Please use the authorized support path; I can keep this to the review topic, or stop here."
+        }
+      ]
+    },
+    "synthetic_campaigns": [
+      "automotive_service",
+      "b2b_saas",
+      "healthcare_admin_or_medical_equipment",
+      "home_services",
+      "insurance",
+      "membership_or_subscription",
+      "retail_or_ecommerce_support_sales",
+      "telecom"
+    ]
+  },
+  "failures": [],
+  "findings_covered": [
+    "generic RouteSignal-concept leakage beyond exact forbidden terms",
+    "uncertainty should not jump to appointment/review",
+    "what happens next should answer process",
+    "out-of-scope support/account requests must not become sales next-step",
+    "right-person contact capture wording",
+    "callback confirmation wording",
+    "RouteSignal preservation"
+  ],
+  "initial_red_replay_reproduced_failure_count": 20,
+  "initial_red_replay_reproduced_findings": [
+    "Automotive uncertainty repair leaked RouteSignal/B2B-demo concepts: inbound leads, asks for a demo, demo or more information, next reply.",
+    "Automotive repeated uncertainty moved to an appointment/review bridge instead of clarification or polite stop.",
+    "B2B SaaS and telecom password/account-support requests fell back to sales diagnostics.",
+    "Membership cancellation request implied a fake cancellation-team transfer.",
+    "B2B SaaS handoff-state account-support boundary kept the right-person state but used a sales review target phrase.",
+    "B2B SaaS right-person email capture sounded like a dead end rather than a human follow-up path.",
+    "Insurance, healthcare, and membership callback confirmations used generic 'the specialist' wording instead of campaign owner/target wording."
+  ],
+  "local_llm_calls_made": false,
+  "opens_prod_102": false,
+  "patches_made": [
+    "Made generic tentative/uncertain qualification repair campaign-aware and free of RouteSignal/B2B-demo concepts.",
+    "Changed generic next-step wording to explain the if-issue/if-no-issue process before asking another diagnostic.",
+    "Added a generic account/support boundary for password, order, and cancellation requests without fake support actions.",
+    "Kept 'talk to support' as a right-person routing phrase rather than treating it as an account-support request.",
+    "Changed right-person email capture wording to note human follow-up through the right path without claiming to send anything.",
+    "Made send-info callback confirmation campaign-aware by naming the campaign owner/appointment target instead of 'the specialist'."
+  ],
+  "phase_1_2_3_backpatch_required": false,
+  "provider_calls_made": false,
+  "replayed_against_current_runtime": true,
+  "reproduced_failure_count": 0,
+  "runtime_behavior_change_scope": "Targeted generic fallback/support/uncertainty/contact/callback wording behavior changed; RouteSignal behavior was preserved.",
+  "runtime_behavior_changed": true,
+  "sends_email": false,
+  "stale_or_already_fixed_findings": [
+    "The direct 'what happens next?' process question already passed current-runtime replay for automotive, insurance, telecom, and B2B SaaS.",
+    "Retail order-support boundary already passed current-runtime replay.",
+    "RouteSignal preservation cases already passed current-runtime replay and were not patched."
+  ],
+  "status": "pass",
+  "writes_crm": false
+}

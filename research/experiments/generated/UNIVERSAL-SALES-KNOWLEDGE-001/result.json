@@ -1,0 +1,181 @@
+{
+  "checkpoint_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+  "counts": {
+    "buyer_move_families": 18,
+    "call_control_rules": 4,
+    "generic_pain_dimensions": 10,
+    "objection_families": 12,
+    "qualification_dimensions": 9,
+    "regulated_vertical_cautions": 9,
+    "safe_next_action_policies": 11,
+    "sales_stages": 12
+  },
+  "failures": [],
+  "forbidden_campaign_terms_check": {
+    "checked_terms": [
+      "RouteSignal",
+      "Northstar",
+      "Starter",
+      "Growth",
+      "demo lead",
+      "inbound demo",
+      "workflow review with Northstar",
+      "$29",
+      "$59"
+    ],
+    "found_terms": [],
+    "passed": true
+  },
+  "generated_evidence": {
+    "report_md": "research\\experiments\\generated\\UNIVERSAL-SALES-KNOWLEDGE-001\\report.md",
+    "result_json": "research\\experiments\\generated\\UNIVERSAL-SALES-KNOWLEDGE-001\\result.json"
+  },
+  "helper_functions_checked": [
+    "buyer_move_family",
+    "call_control_rule",
+    "generic_pain_dimension",
+    "objection_family",
+    "qualification_dimension",
+    "regulated_caution",
+    "safe_next_action_policy",
+    "sales_stage",
+    "all_buyer_move_family_ids",
+    "all_call_control_ids",
+    "all_generic_pain_dimension_ids",
+    "all_objection_family_ids",
+    "all_qualification_dimension_ids",
+    "all_regulated_caution_ids",
+    "all_safe_next_action_policy_ids",
+    "all_sales_stage_ids",
+    "validate_universal_sales_knowledge"
+  ],
+  "knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+  "phase_1_2_3_backpatch_required": false,
+  "required_ids": {
+    "buyer_move_families": [
+      "all_clear_or_no_pain",
+      "appointment_acceptance",
+      "appointment_hesitation",
+      "appointment_time_given",
+      "callback_request",
+      "confusion_or_term_question",
+      "current_issue_clear",
+      "low_information_continue",
+      "objection",
+      "pain_confirmed",
+      "permission_acknowledgement",
+      "possible_pain_unclear",
+      "refusal_not_interested",
+      "send_info_request",
+      "social_acknowledgement",
+      "stop_request",
+      "timing_deferral",
+      "wrong_person_or_authority_unclear"
+    ],
+    "call_control_policy": [
+      "continue-call",
+      "end-call",
+      "schedule-and-end",
+      "transfer-or-escalate"
+    ],
+    "generic_pain_dimensions": [
+      "cost_or_time_waste",
+      "customer_experience_friction",
+      "delay",
+      "duplicate_work",
+      "manual_work",
+      "missed_follow_up",
+      "ownership_confusion",
+      "trust_or_risk_concern",
+      "unclear_next_step",
+      "visibility_gap"
+    ],
+    "objection_families": [
+      "authority",
+      "complexity",
+      "existing_vendor_or_process",
+      "no_need_or_all_set",
+      "not_interested",
+      "not_relevant",
+      "price",
+      "privacy_or_security",
+      "send_info_first",
+      "stop_or_do_not_contact",
+      "timing",
+      "trust"
+    ],
+    "qualification_dimensions": [
+      "authority_or_right_person",
+      "budget_or_price_sensitivity",
+      "compliance_or_risk_constraints",
+      "contact_path",
+      "current_solution_or_status_quo",
+      "fit",
+      "need_or_pain",
+      "timing",
+      "urgency"
+    ],
+    "regulated_vertical_cautions": [
+      "automotive_service_safety_or_warranty",
+      "financial_or_payment_sensitive",
+      "healthcare_admin_or_medical_equipment",
+      "home_services_safety_or_estimate",
+      "insurance",
+      "legal_or_contract_sensitive",
+      "membership_or_subscription_cancellation",
+      "retail_or_ecommerce_refund_warranty_availability",
+      "telecom_contract_or_coverage"
+    ],
+    "safe_next_action_policies": [
+      "ask_next_diagnostic_if_current_issue_clear",
+      "avoid_unverified_claims",
+      "bridge_to_appointment_after_credible_pain_or_interest",
+      "capture_callback_time_before_schedule_and_end",
+      "capture_send_info_contact_without_pretending_appointment",
+      "clarify_if_confused",
+      "do_not_push_appointment_on_confusion",
+      "do_not_push_appointment_on_no_pain",
+      "end_on_explicit_stop_request",
+      "preserve_buyer_agency",
+      "route_wrong_person_toward_right_contact_or_polite_close"
+    ],
+    "sales_stages": [
+      "appointment_setting",
+      "callback_scheduling",
+      "close_or_end",
+      "discovery",
+      "objection_or_resistance",
+      "opening",
+      "permission",
+      "qualification",
+      "refusal_or_stop",
+      "right_person_handoff",
+      "send_info",
+      "value_mapping"
+    ]
+  },
+  "response_text_changed": false,
+  "runtime_behavior_changed": false,
+  "safety": {
+    "creates_calendar_event": false,
+    "local_llm_calls_made": false,
+    "opens_prod_102": false,
+    "provider_calls_made": false,
+    "sends_email": false,
+    "writes_crm": false
+  },
+  "schema_version": 1,
+  "status": "pass",
+  "top_level_fields": [
+    "buyer_move_families",
+    "call_control_policy",
+    "generic_pain_dimensions",
+    "knowledge_id",
+    "objection_families",
+    "qualification_dimensions",
+    "regulated_vertical_cautions",
+    "safe_next_action_policies",
+    "sales_stages",
+    "schema_version"
+  ]
+}

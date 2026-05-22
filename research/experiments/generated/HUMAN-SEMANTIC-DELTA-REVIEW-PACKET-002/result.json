@@ -1,0 +1,46 @@
+{
+  "checkpoint_id": "HUMAN-SEMANTIC-DELTA-REVIEW-PACKET-002",
+  "conversation_count": 50,
+  "creates_calendar_event": false,
+  "focus_areas_covered": [
+    "5a1_replayed_fixes",
+    "appointment_pressure_calibration",
+    "confusion_explanation_quality",
+    "long_state_drift",
+    "regulated_caution",
+    "routesignal_preservation",
+    "support_out_of_scope_boundaries"
+  ],
+  "hard_edge_conversations": 50,
+  "local_llm_calls_made": false,
+  "opens_prod_102": false,
+  "phase_1_2_3_backpatch_required": false,
+  "provider_calls_made": false,
+  "redaction_result": {
+    "private_or_secret_pattern_matches": [],
+    "raw_synthetic_emails_found": []
+  },
+  "route_signal_conversations": 10,
+  "runtime_behavior_changed": false,
+  "sends_email": false,
+  "status": "pass",
+  "turn_record_count": 323,
+  "upload_for_manual_review": [
+    "review_packet.md",
+    "review_packet.json",
+    "review_packet.jsonl",
+    "redaction_report.json"
+  ],
+  "verticals_covered": [
+    "automotive_service",
+    "b2b_saas",
+    "healthcare_admin_or_medical_equipment",
+    "home_services",
+    "insurance",
+    "membership_or_subscription",
+    "retail_or_ecommerce_support_sales",
+    "routesignal_live_demo",
+    "telecom"
+  ],
+  "writes_crm": false
+}

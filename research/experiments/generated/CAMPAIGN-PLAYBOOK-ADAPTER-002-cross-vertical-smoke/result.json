@@ -1,0 +1,1502 @@
+{
+  "campaigns": {
+    "synthetic-automotive-service-001": {
+      "campaign_context": {
+        "allowed_claims": [
+          "can collect vehicle issue and timing context"
+        ],
+        "appointment_target": "service advisor inspection review",
+        "blocked_claims": [
+          "exact diagnosis",
+          "guaranteed repair cost",
+          "warranty guarantee",
+          "exact diagnosis without inspection",
+          "warranty outcome promise",
+          "repair cost certainty",
+          "remote safety diagnosis",
+          "warranty interpretation",
+          "roadworthiness claim",
+          "legal advice",
+          "contract interpretation",
+          "enforceability claim",
+          "binding commitment",
+          "investment advice",
+          "guaranteed return",
+          "credit decision",
+          "payment commitment"
+        ],
+        "client_name": "Synthetic Automotive Service",
+        "human_followup_owner": "service advisor",
+        "objective": "appointment_setting",
+        "product_or_offer_name": "Service Advisor Review",
+        "regulated_cautions": [
+          "automotive_service_safety_or_warranty",
+          "legal_or_contract_sensitive",
+          "financial_or_payment_sensitive"
+        ],
+        "vertical_blocked_claim_types": [
+          "exact diagnosis without inspection",
+          "warranty outcome promise",
+          "repair cost certainty"
+        ]
+      },
+      "campaign_id": "synthetic-automotive-service-001",
+      "campaign_playbook_id": "synthetic-automotive-service-001-playbook",
+      "core_diagnostic_gaps": [
+        "vehicle_issue",
+        "repair_timing",
+        "warranty_or_estimate"
+      ],
+      "diagnostic_gaps": {
+        "repair_timing": {
+          "campaign_gap_id": "repair_timing",
+          "causal_story": "If repair timing is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "repair timing",
+            "question about repair timing"
+          ],
+          "definition": "Determine whether repair timing is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is repair timing the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "repair timing is handled",
+            "no issue with repair timing"
+          ],
+          "evidence_positive": [
+            "repair timing is a problem",
+            "we need help with repair timing"
+          ],
+          "label": "repair timing",
+          "next_gap_candidates": [
+            "warranty_or_estimate"
+          ],
+          "qualification_dimensions": [
+            "urgency",
+            "timing",
+            "contact_path"
+          ],
+          "review_focus": "repair timing",
+          "universal_pain_dimensions": [
+            "delay",
+            "cost_or_time_waste"
+          ],
+          "value_bridge": "The useful next step is a human review of repair timing without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "delay",
+            "cost_or_time_waste"
+          ]
+        },
+        "vehicle_issue": {
+          "campaign_gap_id": "vehicle_issue",
+          "causal_story": "If vehicle issue is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "vehicle issue",
+            "question about vehicle issue"
+          ],
+          "definition": "Determine whether vehicle issue is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is vehicle issue the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "vehicle issue is handled",
+            "no issue with vehicle issue"
+          ],
+          "evidence_positive": [
+            "vehicle issue is a problem",
+            "we need help with vehicle issue"
+          ],
+          "label": "vehicle issue",
+          "next_gap_candidates": [
+            "repair_timing"
+          ],
+          "qualification_dimensions": [
+            "need_or_pain",
+            "fit"
+          ],
+          "review_focus": "vehicle issue",
+          "universal_pain_dimensions": [
+            "trust_or_risk_concern",
+            "unclear_next_step"
+          ],
+          "value_bridge": "The useful next step is a human review of vehicle issue without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "trust_or_risk_concern",
+            "unclear_next_step"
+          ]
+        },
+        "warranty_or_estimate": {
+          "campaign_gap_id": "warranty_or_estimate",
+          "causal_story": "If warranty or estimate is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "warranty or estimate",
+            "question about warranty or estimate"
+          ],
+          "definition": "Determine whether warranty or estimate is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is warranty or estimate the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "warranty or estimate is handled",
+            "no issue with warranty or estimate"
+          ],
+          "evidence_positive": [
+            "warranty or estimate is a problem",
+            "we need help with warranty or estimate"
+          ],
+          "label": "warranty or estimate",
+          "next_gap_candidates": [],
+          "qualification_dimensions": [
+            "budget_or_price_sensitivity",
+            "compliance_or_risk_constraints"
+          ],
+          "review_focus": "warranty or estimate",
+          "universal_pain_dimensions": [
+            "trust_or_risk_concern",
+            "cost_or_time_waste"
+          ],
+          "value_bridge": "The useful next step is a human review of warranty or estimate without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "trust_or_risk_concern",
+            "cost_or_time_waste"
+          ]
+        }
+      },
+      "gap_order": [
+        "vehicle_issue",
+        "repair_timing",
+        "warranty_or_estimate"
+      ],
+      "regulated_cautions": [
+        "automotive_service_safety_or_warranty",
+        "legal_or_contract_sensitive",
+        "financial_or_payment_sensitive"
+      ],
+      "safety": {
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "vertical_id": "automotive_service"
+    },
+    "synthetic-b2b-saas-001": {
+      "campaign_context": {
+        "allowed_claims": [
+          "can discuss workflow fit at a general level"
+        ],
+        "appointment_target": "human fit and technical review",
+        "blocked_claims": [
+          "integration guarantee",
+          "security certification guarantee",
+          "ROI guarantee",
+          "unverified integration claim",
+          "unverified security claim",
+          "guaranteed business outcome",
+          "legal advice",
+          "contract interpretation",
+          "enforceability claim",
+          "binding commitment",
+          "investment advice",
+          "guaranteed return",
+          "credit decision",
+          "payment commitment"
+        ],
+        "client_name": "Synthetic SaaS Operations",
+        "human_followup_owner": "technical fit specialist",
+        "objective": "appointment_setting",
+        "product_or_offer_name": "Workflow Fit Review",
+        "regulated_cautions": [
+          "legal_or_contract_sensitive",
+          "financial_or_payment_sensitive"
+        ],
+        "vertical_blocked_claim_types": [
+          "unverified integration claim",
+          "unverified security claim",
+          "guaranteed business outcome"
+        ]
+      },
+      "campaign_id": "synthetic-b2b-saas-001",
+      "campaign_playbook_id": "synthetic-b2b-saas-001-playbook",
+      "core_diagnostic_gaps": [
+        "manual_work",
+        "integration_risk",
+        "visibility_gap"
+      ],
+      "diagnostic_gaps": {
+        "integration_risk": {
+          "campaign_gap_id": "integration_risk",
+          "causal_story": "If integration risk is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "integration risk",
+            "question about integration risk"
+          ],
+          "definition": "Determine whether integration risk is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is integration risk the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "integration risk is handled",
+            "no issue with integration risk"
+          ],
+          "evidence_positive": [
+            "integration risk is a problem",
+            "we need help with integration risk"
+          ],
+          "label": "integration risk",
+          "next_gap_candidates": [
+            "visibility_gap"
+          ],
+          "qualification_dimensions": [
+            "fit",
+            "compliance_or_risk_constraints"
+          ],
+          "review_focus": "integration risk",
+          "universal_pain_dimensions": [
+            "trust_or_risk_concern",
+            "unclear_next_step"
+          ],
+          "value_bridge": "The useful next step is a human review of integration risk without making unsupported claims.",
+          "vertical_pain_dimensions": []
+        },
+        "manual_work": {
+          "campaign_gap_id": "manual_work",
+          "causal_story": "If manual work is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "manual work",
+            "question about manual work"
+          ],
+          "definition": "Determine whether manual work is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is manual work the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "manual work is handled",
+            "no issue with manual work"
+          ],
+          "evidence_positive": [
+            "manual work is a problem",
+            "we need help with manual work"
+          ],
+          "label": "manual work",
+          "next_gap_candidates": [
+            "integration_risk"
+          ],
+          "qualification_dimensions": [
+            "need_or_pain",
+            "current_solution_or_status_quo",
+            "fit"
+          ],
+          "review_focus": "manual work",
+          "universal_pain_dimensions": [
+            "manual_work",
+            "cost_or_time_waste"
+          ],
+          "value_bridge": "The useful next step is a human review of manual work without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "manual_work"
+          ]
+        },
+        "visibility_gap": {
+          "campaign_gap_id": "visibility_gap",
+          "causal_story": "If visibility gap is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "visibility gap",
+            "question about visibility gap"
+          ],
+          "definition": "Determine whether visibility gap is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is visibility gap the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "visibility gap is handled",
+            "no issue with visibility gap"
+          ],
+          "evidence_positive": [
+            "visibility gap is a problem",
+            "we need help with visibility gap"
+          ],
+          "label": "visibility gap",
+          "next_gap_candidates": [],
+          "qualification_dimensions": [
+            "need_or_pain",
+            "authority_or_right_person",
+            "fit"
+          ],
+          "review_focus": "visibility gap",
+          "universal_pain_dimensions": [
+            "visibility_gap",
+            "unclear_next_step"
+          ],
+          "value_bridge": "The useful next step is a human review of visibility gap without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "visibility_gap"
+          ]
+        }
+      },
+      "gap_order": [
+        "manual_work",
+        "integration_risk",
+        "visibility_gap"
+      ],
+      "regulated_cautions": [
+        "legal_or_contract_sensitive",
+        "financial_or_payment_sensitive"
+      ],
+      "safety": {
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "vertical_id": "b2b_saas"
+    },
+    "synthetic-healthcare-admin-001": {
+      "campaign_context": {
+        "allowed_claims": [
+          "can collect admin workflow or equipment review needs"
+        ],
+        "appointment_target": "specialist human review",
+        "blocked_claims": [
+          "diagnosis",
+          "medical advice",
+          "guaranteed outcome",
+          "eligibility promise",
+          "approval or outcome promise",
+          "treatment recommendation",
+          "patient-specific eligibility",
+          "investment advice",
+          "guaranteed return",
+          "credit decision",
+          "payment commitment",
+          "legal advice",
+          "contract interpretation",
+          "enforceability claim",
+          "binding commitment"
+        ],
+        "client_name": "Synthetic Healthcare Admin",
+        "human_followup_owner": "qualified healthcare admin specialist",
+        "objective": "appointment_setting",
+        "product_or_offer_name": "Specialist Review Call",
+        "regulated_cautions": [
+          "healthcare_admin_or_medical_equipment",
+          "financial_or_payment_sensitive",
+          "legal_or_contract_sensitive"
+        ],
+        "vertical_blocked_claim_types": [
+          "medical advice",
+          "diagnosis",
+          "approval or outcome promise"
+        ]
+      },
+      "campaign_id": "synthetic-healthcare-admin-001",
+      "campaign_playbook_id": "synthetic-healthcare-admin-001-playbook",
+      "core_diagnostic_gaps": [
+        "admin_workflow_need",
+        "equipment_or_service_fit",
+        "specialist_review_needed"
+      ],
+      "diagnostic_gaps": {
+        "admin_workflow_need": {
+          "campaign_gap_id": "admin_workflow_need",
+          "causal_story": "If admin workflow need is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "admin workflow need",
+            "question about admin workflow need"
+          ],
+          "definition": "Determine whether admin workflow need is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is admin workflow need the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "admin workflow need is handled",
+            "no issue with admin workflow need"
+          ],
+          "evidence_positive": [
+            "admin workflow need is a problem",
+            "we need help with admin workflow need"
+          ],
+          "label": "admin workflow need",
+          "next_gap_candidates": [
+            "equipment_or_service_fit"
+          ],
+          "qualification_dimensions": [
+            "need_or_pain",
+            "authority_or_right_person",
+            "fit"
+          ],
+          "review_focus": "admin workflow need",
+          "universal_pain_dimensions": [
+            "manual_work",
+            "delay",
+            "visibility_gap"
+          ],
+          "value_bridge": "The useful next step is a human review of admin workflow need without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "manual_work",
+            "delay",
+            "visibility_gap"
+          ]
+        },
+        "equipment_or_service_fit": {
+          "campaign_gap_id": "equipment_or_service_fit",
+          "causal_story": "If equipment or service fit is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "equipment or service fit",
+            "question about equipment or service fit"
+          ],
+          "definition": "Determine whether equipment or service fit is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is equipment or service fit the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "equipment or service fit is handled",
+            "no issue with equipment or service fit"
+          ],
+          "evidence_positive": [
+            "equipment or service fit is a problem",
+            "we need help with equipment or service fit"
+          ],
+          "label": "equipment or service fit",
+          "next_gap_candidates": [
+            "specialist_review_needed"
+          ],
+          "qualification_dimensions": [
+            "fit",
+            "compliance_or_risk_constraints"
+          ],
+          "review_focus": "equipment or service fit",
+          "universal_pain_dimensions": [
+            "trust_or_risk_concern",
+            "unclear_next_step"
+          ],
+          "value_bridge": "The useful next step is a human review of equipment or service fit without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "trust_or_risk_concern",
+            "unclear_next_step"
+          ]
+        },
+        "specialist_review_needed": {
+          "campaign_gap_id": "specialist_review_needed",
+          "causal_story": "If specialist review needed is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "specialist review needed",
+            "question about specialist review needed"
+          ],
+          "definition": "Determine whether specialist review needed is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is specialist review needed the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "specialist review needed is handled",
+            "no issue with specialist review needed"
+          ],
+          "evidence_positive": [
+            "specialist review needed is a problem",
+            "we need help with specialist review needed"
+          ],
+          "label": "specialist review needed",
+          "next_gap_candidates": [],
+          "qualification_dimensions": [
+            "contact_path",
+            "authority_or_right_person"
+          ],
+          "review_focus": "specialist review needed",
+          "universal_pain_dimensions": [
+            "unclear_next_step",
+            "trust_or_risk_concern"
+          ],
+          "value_bridge": "The useful next step is a human review of specialist review needed without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "unclear_next_step",
+            "trust_or_risk_concern"
+          ]
+        }
+      },
+      "gap_order": [
+        "admin_workflow_need",
+        "equipment_or_service_fit",
+        "specialist_review_needed"
+      ],
+      "regulated_cautions": [
+        "healthcare_admin_or_medical_equipment",
+        "financial_or_payment_sensitive",
+        "legal_or_contract_sensitive"
+      ],
+      "safety": {
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "vertical_id": "healthcare_admin_or_medical_equipment"
+    },
+    "synthetic-home-services-001": {
+      "campaign_context": {
+        "allowed_claims": [
+          "can collect scheduling and property context"
+        ],
+        "appointment_target": "inspection or estimate review",
+        "blocked_claims": [
+          "exact quote without inspection",
+          "safety diagnosis without inspection",
+          "remote safety diagnosis",
+          "permit or code interpretation",
+          "guaranteed estimate",
+          "code compliance claim",
+          "emergency instruction",
+          "legal advice",
+          "contract interpretation",
+          "enforceability claim",
+          "binding commitment",
+          "investment advice",
+          "guaranteed return",
+          "credit decision",
+          "payment commitment"
+        ],
+        "client_name": "Synthetic Home Services",
+        "human_followup_owner": "qualified service coordinator",
+        "objective": "appointment_setting",
+        "product_or_offer_name": "Inspection Scheduling Call",
+        "regulated_cautions": [
+          "home_services_safety_or_estimate",
+          "legal_or_contract_sensitive",
+          "financial_or_payment_sensitive"
+        ],
+        "vertical_blocked_claim_types": [
+          "exact quote without inspection",
+          "remote safety diagnosis",
+          "permit or code interpretation"
+        ]
+      },
+      "campaign_id": "synthetic-home-services-001",
+      "campaign_playbook_id": "synthetic-home-services-001-playbook",
+      "core_diagnostic_gaps": [
+        "service_need",
+        "scheduling_urgency",
+        "estimate_or_property_details"
+      ],
+      "diagnostic_gaps": {
+        "estimate_or_property_details": {
+          "campaign_gap_id": "estimate_or_property_details",
+          "causal_story": "If estimate or property details is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "estimate or property details",
+            "question about estimate or property details"
+          ],
+          "definition": "Determine whether estimate or property details is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is estimate or property details the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "estimate or property details is handled",
+            "no issue with estimate or property details"
+          ],
+          "evidence_positive": [
+            "estimate or property details is a problem",
+            "we need help with estimate or property details"
+          ],
+          "label": "estimate or property details",
+          "next_gap_candidates": [],
+          "qualification_dimensions": [
+            "fit",
+            "compliance_or_risk_constraints"
+          ],
+          "review_focus": "estimate or property details",
+          "universal_pain_dimensions": [
+            "trust_or_risk_concern",
+            "unclear_next_step"
+          ],
+          "value_bridge": "The useful next step is a human review of estimate or property details without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "trust_or_risk_concern",
+            "unclear_next_step"
+          ]
+        },
+        "scheduling_urgency": {
+          "campaign_gap_id": "scheduling_urgency",
+          "causal_story": "If scheduling urgency is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "scheduling urgency",
+            "question about scheduling urgency"
+          ],
+          "definition": "Determine whether scheduling urgency is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is scheduling urgency the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "scheduling urgency is handled",
+            "no issue with scheduling urgency"
+          ],
+          "evidence_positive": [
+            "scheduling urgency is a problem",
+            "we need help with scheduling urgency"
+          ],
+          "label": "scheduling urgency",
+          "next_gap_candidates": [
+            "estimate_or_property_details"
+          ],
+          "qualification_dimensions": [
+            "urgency",
+            "timing",
+            "contact_path"
+          ],
+          "review_focus": "scheduling urgency",
+          "universal_pain_dimensions": [
+            "delay",
+            "trust_or_risk_concern"
+          ],
+          "value_bridge": "The useful next step is a human review of scheduling urgency without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "delay",
+            "trust_or_risk_concern"
+          ]
+        },
+        "service_need": {
+          "campaign_gap_id": "service_need",
+          "causal_story": "If service need is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "service need",
+            "question about service need"
+          ],
+          "definition": "Determine whether service need is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is service need the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "service need is handled",
+            "no issue with service need"
+          ],
+          "evidence_positive": [
+            "service need is a problem",
+            "we need help with service need"
+          ],
+          "label": "service need",
+          "next_gap_candidates": [
+            "scheduling_urgency"
+          ],
+          "qualification_dimensions": [
+            "need_or_pain",
+            "fit"
+          ],
+          "review_focus": "service need",
+          "universal_pain_dimensions": [
+            "customer_experience_friction",
+            "unclear_next_step"
+          ],
+          "value_bridge": "The useful next step is a human review of service need without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "customer_experience_friction",
+            "unclear_next_step"
+          ]
+        }
+      },
+      "gap_order": [
+        "service_need",
+        "scheduling_urgency",
+        "estimate_or_property_details"
+      ],
+      "regulated_cautions": [
+        "home_services_safety_or_estimate",
+        "legal_or_contract_sensitive",
+        "financial_or_payment_sensitive"
+      ],
+      "safety": {
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "vertical_id": "home_services"
+    },
+    "synthetic-insurance-001": {
+      "campaign_context": {
+        "allowed_claims": [
+          "can collect general review needs"
+        ],
+        "appointment_target": "licensed coverage review",
+        "blocked_claims": [
+          "coverage guarantee",
+          "premium savings guarantee",
+          "eligibility decision",
+          "claim outcome promise",
+          "coverage decision",
+          "legal or financial advice",
+          "coverage advice",
+          "guaranteed savings",
+          "policy interpretation",
+          "investment advice",
+          "guaranteed return",
+          "credit decision",
+          "payment commitment",
+          "legal advice",
+          "contract interpretation",
+          "enforceability claim",
+          "binding commitment"
+        ],
+        "client_name": "Synthetic Insurance Agency",
+        "human_followup_owner": "licensed insurance specialist",
+        "objective": "appointment_setting",
+        "product_or_offer_name": "Policy Review Call",
+        "regulated_cautions": [
+          "insurance",
+          "financial_or_payment_sensitive",
+          "legal_or_contract_sensitive"
+        ],
+        "vertical_blocked_claim_types": [
+          "coverage decision",
+          "claim outcome promise",
+          "legal or financial advice"
+        ]
+      },
+      "campaign_id": "synthetic-insurance-001",
+      "campaign_playbook_id": "synthetic-insurance-001-playbook",
+      "core_diagnostic_gaps": [
+        "coverage_fit",
+        "premium_or_budget",
+        "renewal_or_timing"
+      ],
+      "diagnostic_gaps": {
+        "coverage_fit": {
+          "campaign_gap_id": "coverage_fit",
+          "causal_story": "If coverage fit is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "coverage fit",
+            "question about coverage fit"
+          ],
+          "definition": "Determine whether coverage fit is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is coverage fit the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "coverage fit is handled",
+            "no issue with coverage fit"
+          ],
+          "evidence_positive": [
+            "coverage fit is a problem",
+            "we need help with coverage fit"
+          ],
+          "label": "coverage fit",
+          "next_gap_candidates": [
+            "premium_or_budget"
+          ],
+          "qualification_dimensions": [
+            "need_or_pain",
+            "fit",
+            "compliance_or_risk_constraints"
+          ],
+          "review_focus": "coverage fit",
+          "universal_pain_dimensions": [
+            "trust_or_risk_concern",
+            "unclear_next_step"
+          ],
+          "value_bridge": "The useful next step is a human review of coverage fit without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "trust_or_risk_concern",
+            "unclear_next_step"
+          ]
+        },
+        "premium_or_budget": {
+          "campaign_gap_id": "premium_or_budget",
+          "causal_story": "If premium or budget is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "premium or budget",
+            "question about premium or budget"
+          ],
+          "definition": "Determine whether premium or budget is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is premium or budget the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "premium or budget is handled",
+            "no issue with premium or budget"
+          ],
+          "evidence_positive": [
+            "premium or budget is a problem",
+            "we need help with premium or budget"
+          ],
+          "label": "premium or budget",
+          "next_gap_candidates": [
+            "renewal_or_timing"
+          ],
+          "qualification_dimensions": [
+            "budget_or_price_sensitivity",
+            "fit"
+          ],
+          "review_focus": "premium or budget",
+          "universal_pain_dimensions": [
+            "cost_or_time_waste",
+            "trust_or_risk_concern"
+          ],
+          "value_bridge": "The useful next step is a human review of premium or budget without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "cost_or_time_waste",
+            "trust_or_risk_concern"
+          ]
+        },
+        "renewal_or_timing": {
+          "campaign_gap_id": "renewal_or_timing",
+          "causal_story": "If renewal or timing is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "renewal or timing",
+            "question about renewal or timing"
+          ],
+          "definition": "Determine whether renewal or timing is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is renewal or timing the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "renewal or timing is handled",
+            "no issue with renewal or timing"
+          ],
+          "evidence_positive": [
+            "renewal or timing is a problem",
+            "we need help with renewal or timing"
+          ],
+          "label": "renewal or timing",
+          "next_gap_candidates": [],
+          "qualification_dimensions": [
+            "timing",
+            "urgency",
+            "contact_path"
+          ],
+          "review_focus": "renewal or timing",
+          "universal_pain_dimensions": [
+            "delay",
+            "unclear_next_step"
+          ],
+          "value_bridge": "The useful next step is a human review of renewal or timing without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "delay",
+            "unclear_next_step"
+          ]
+        }
+      },
+      "gap_order": [
+        "coverage_fit",
+        "premium_or_budget",
+        "renewal_or_timing"
+      ],
+      "regulated_cautions": [
+        "insurance",
+        "financial_or_payment_sensitive",
+        "legal_or_contract_sensitive"
+      ],
+      "safety": {
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "vertical_id": "insurance"
+    },
+    "synthetic-membership-001": {
+      "campaign_context": {
+        "allowed_claims": [
+          "can discuss plan fit and support options generally"
+        ],
+        "appointment_target": "account support or plan-fit review",
+        "blocked_claims": [
+          "misleading cancellation claim",
+          "misleading renewal claim",
+          "unverified refund claim",
+          "hidden cancellation terms",
+          "unapproved account change",
+          "misleading cancellation terms",
+          "unverified renewal claim",
+          "guaranteed refund",
+          "binding account change",
+          "investment advice",
+          "guaranteed return",
+          "credit decision",
+          "payment commitment",
+          "legal advice",
+          "contract interpretation",
+          "enforceability claim",
+          "binding commitment"
+        ],
+        "client_name": "Synthetic Membership Program",
+        "human_followup_owner": "account support specialist",
+        "objective": "appointment_setting",
+        "product_or_offer_name": "Plan Support Call",
+        "regulated_cautions": [
+          "membership_or_subscription_cancellation",
+          "financial_or_payment_sensitive",
+          "legal_or_contract_sensitive"
+        ],
+        "vertical_blocked_claim_types": [
+          "hidden cancellation terms",
+          "unverified refund claim",
+          "unapproved account change"
+        ]
+      },
+      "campaign_id": "synthetic-membership-001",
+      "campaign_playbook_id": "synthetic-membership-001-playbook",
+      "core_diagnostic_gaps": [
+        "plan_fit",
+        "renewal_or_cancellation",
+        "usage_or_value"
+      ],
+      "diagnostic_gaps": {
+        "plan_fit": {
+          "campaign_gap_id": "plan_fit",
+          "causal_story": "If plan fit is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "plan fit",
+            "question about plan fit"
+          ],
+          "definition": "Determine whether plan fit is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is plan fit the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "plan fit is handled",
+            "no issue with plan fit"
+          ],
+          "evidence_positive": [
+            "plan fit is a problem",
+            "we need help with plan fit"
+          ],
+          "label": "plan fit",
+          "next_gap_candidates": [
+            "renewal_or_cancellation"
+          ],
+          "qualification_dimensions": [
+            "need_or_pain",
+            "fit",
+            "budget_or_price_sensitivity"
+          ],
+          "review_focus": "plan fit",
+          "universal_pain_dimensions": [
+            "customer_experience_friction",
+            "cost_or_time_waste"
+          ],
+          "value_bridge": "The useful next step is a human review of plan fit without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "customer_experience_friction",
+            "cost_or_time_waste"
+          ]
+        },
+        "renewal_or_cancellation": {
+          "campaign_gap_id": "renewal_or_cancellation",
+          "causal_story": "If renewal or cancellation is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "renewal or cancellation",
+            "question about renewal or cancellation"
+          ],
+          "definition": "Determine whether renewal or cancellation is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is renewal or cancellation the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "renewal or cancellation is handled",
+            "no issue with renewal or cancellation"
+          ],
+          "evidence_positive": [
+            "renewal or cancellation is a problem",
+            "we need help with renewal or cancellation"
+          ],
+          "label": "renewal or cancellation",
+          "next_gap_candidates": [
+            "usage_or_value"
+          ],
+          "qualification_dimensions": [
+            "timing",
+            "contact_path",
+            "compliance_or_risk_constraints"
+          ],
+          "review_focus": "renewal or cancellation",
+          "universal_pain_dimensions": [
+            "trust_or_risk_concern",
+            "unclear_next_step"
+          ],
+          "value_bridge": "The useful next step is a human review of renewal or cancellation without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "trust_or_risk_concern",
+            "unclear_next_step"
+          ]
+        },
+        "usage_or_value": {
+          "campaign_gap_id": "usage_or_value",
+          "causal_story": "If usage or value is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "usage or value",
+            "question about usage or value"
+          ],
+          "definition": "Determine whether usage or value is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is usage or value the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "usage or value is handled",
+            "no issue with usage or value"
+          ],
+          "evidence_positive": [
+            "usage or value is a problem",
+            "we need help with usage or value"
+          ],
+          "label": "usage or value",
+          "next_gap_candidates": [],
+          "qualification_dimensions": [
+            "need_or_pain",
+            "current_solution_or_status_quo",
+            "fit"
+          ],
+          "review_focus": "usage or value",
+          "universal_pain_dimensions": [
+            "cost_or_time_waste",
+            "customer_experience_friction"
+          ],
+          "value_bridge": "The useful next step is a human review of usage or value without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "cost_or_time_waste",
+            "customer_experience_friction"
+          ]
+        }
+      },
+      "gap_order": [
+        "plan_fit",
+        "renewal_or_cancellation",
+        "usage_or_value"
+      ],
+      "regulated_cautions": [
+        "membership_or_subscription_cancellation",
+        "financial_or_payment_sensitive",
+        "legal_or_contract_sensitive"
+      ],
+      "safety": {
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "vertical_id": "membership_or_subscription"
+    },
+    "synthetic-retail-support-001": {
+      "campaign_context": {
+        "allowed_claims": [
+          "can collect product fit or support context"
+        ],
+        "appointment_target": "product or order support review",
+        "blocked_claims": [
+          "false stock promise",
+          "delivery promise",
+          "refund promise",
+          "warranty promise",
+          "false stock claim",
+          "delivery promise without approved facts",
+          "refund or warranty promise",
+          "guaranteed delivery",
+          "unverified refund",
+          "warranty interpretation",
+          "investment advice",
+          "guaranteed return",
+          "credit decision",
+          "payment commitment",
+          "legal advice",
+          "contract interpretation",
+          "enforceability claim",
+          "binding commitment"
+        ],
+        "client_name": "Synthetic Retail Support",
+        "human_followup_owner": "support specialist",
+        "objective": "appointment_setting",
+        "product_or_offer_name": "Product Support Call",
+        "regulated_cautions": [
+          "retail_or_ecommerce_refund_warranty_availability",
+          "financial_or_payment_sensitive",
+          "legal_or_contract_sensitive"
+        ],
+        "vertical_blocked_claim_types": [
+          "false stock claim",
+          "delivery promise without approved facts",
+          "refund or warranty promise"
+        ]
+      },
+      "campaign_id": "synthetic-retail-support-001",
+      "campaign_playbook_id": "synthetic-retail-support-001-playbook",
+      "core_diagnostic_gaps": [
+        "product_fit",
+        "availability_or_delivery",
+        "return_or_warranty"
+      ],
+      "diagnostic_gaps": {
+        "availability_or_delivery": {
+          "campaign_gap_id": "availability_or_delivery",
+          "causal_story": "If availability or delivery is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "availability or delivery",
+            "question about availability or delivery"
+          ],
+          "definition": "Determine whether availability or delivery is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is availability or delivery the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "availability or delivery is handled",
+            "no issue with availability or delivery"
+          ],
+          "evidence_positive": [
+            "availability or delivery is a problem",
+            "we need help with availability or delivery"
+          ],
+          "label": "availability or delivery",
+          "next_gap_candidates": [
+            "return_or_warranty"
+          ],
+          "qualification_dimensions": [
+            "timing",
+            "contact_path",
+            "compliance_or_risk_constraints"
+          ],
+          "review_focus": "availability or delivery",
+          "universal_pain_dimensions": [
+            "delay",
+            "trust_or_risk_concern"
+          ],
+          "value_bridge": "The useful next step is a human review of availability or delivery without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "delay",
+            "trust_or_risk_concern"
+          ]
+        },
+        "product_fit": {
+          "campaign_gap_id": "product_fit",
+          "causal_story": "If product fit is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "product fit",
+            "question about product fit"
+          ],
+          "definition": "Determine whether product fit is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is product fit the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "product fit is handled",
+            "no issue with product fit"
+          ],
+          "evidence_positive": [
+            "product fit is a problem",
+            "we need help with product fit"
+          ],
+          "label": "product fit",
+          "next_gap_candidates": [
+            "availability_or_delivery"
+          ],
+          "qualification_dimensions": [
+            "need_or_pain",
+            "fit",
+            "budget_or_price_sensitivity"
+          ],
+          "review_focus": "product fit",
+          "universal_pain_dimensions": [
+            "customer_experience_friction",
+            "unclear_next_step"
+          ],
+          "value_bridge": "The useful next step is a human review of product fit without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "customer_experience_friction",
+            "unclear_next_step"
+          ]
+        },
+        "return_or_warranty": {
+          "campaign_gap_id": "return_or_warranty",
+          "causal_story": "If return or warranty is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "return or warranty",
+            "question about return or warranty"
+          ],
+          "definition": "Determine whether return or warranty is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is return or warranty the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "return or warranty is handled",
+            "no issue with return or warranty"
+          ],
+          "evidence_positive": [
+            "return or warranty is a problem",
+            "we need help with return or warranty"
+          ],
+          "label": "return or warranty",
+          "next_gap_candidates": [],
+          "qualification_dimensions": [
+            "contact_path",
+            "compliance_or_risk_constraints"
+          ],
+          "review_focus": "return or warranty",
+          "universal_pain_dimensions": [
+            "trust_or_risk_concern",
+            "unclear_next_step"
+          ],
+          "value_bridge": "The useful next step is a human review of return or warranty without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "trust_or_risk_concern",
+            "unclear_next_step"
+          ]
+        }
+      },
+      "gap_order": [
+        "product_fit",
+        "availability_or_delivery",
+        "return_or_warranty"
+      ],
+      "regulated_cautions": [
+        "retail_or_ecommerce_refund_warranty_availability",
+        "financial_or_payment_sensitive",
+        "legal_or_contract_sensitive"
+      ],
+      "safety": {
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "vertical_id": "retail_or_ecommerce_support_sales"
+    },
+    "synthetic-telecom-001": {
+      "campaign_context": {
+        "allowed_claims": [
+          "can discuss plan fit generally"
+        ],
+        "appointment_target": "human plan and availability review",
+        "blocked_claims": [
+          "coverage guarantee",
+          "speed guarantee",
+          "contract cancellation guarantee",
+          "unverified coverage claim",
+          "unverified fee claim",
+          "contract cancellation outcome",
+          "guaranteed coverage",
+          "guaranteed speed",
+          "unverified plan terms",
+          "legal advice",
+          "contract interpretation",
+          "enforceability claim",
+          "binding commitment",
+          "investment advice",
+          "guaranteed return",
+          "credit decision",
+          "payment commitment"
+        ],
+        "client_name": "Synthetic Telecom Provider",
+        "human_followup_owner": "telecom account specialist",
+        "objective": "appointment_setting",
+        "product_or_offer_name": "Plan Review Call",
+        "regulated_cautions": [
+          "telecom_contract_or_coverage",
+          "legal_or_contract_sensitive",
+          "financial_or_payment_sensitive"
+        ],
+        "vertical_blocked_claim_types": [
+          "unverified coverage claim",
+          "unverified fee claim",
+          "contract cancellation outcome"
+        ]
+      },
+      "campaign_id": "synthetic-telecom-001",
+      "campaign_playbook_id": "synthetic-telecom-001-playbook",
+      "core_diagnostic_gaps": [
+        "coverage_or_availability",
+        "plan_fit",
+        "contract_or_switching"
+      ],
+      "diagnostic_gaps": {
+        "contract_or_switching": {
+          "campaign_gap_id": "contract_or_switching",
+          "causal_story": "If contract or switching is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "contract or switching",
+            "question about contract or switching"
+          ],
+          "definition": "Determine whether contract or switching is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is contract or switching the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "contract or switching is handled",
+            "no issue with contract or switching"
+          ],
+          "evidence_positive": [
+            "contract or switching is a problem",
+            "we need help with contract or switching"
+          ],
+          "label": "contract or switching",
+          "next_gap_candidates": [],
+          "qualification_dimensions": [
+            "timing",
+            "contact_path",
+            "compliance_or_risk_constraints"
+          ],
+          "review_focus": "contract or switching",
+          "universal_pain_dimensions": [
+            "unclear_next_step",
+            "trust_or_risk_concern"
+          ],
+          "value_bridge": "The useful next step is a human review of contract or switching without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "trust_or_risk_concern"
+          ]
+        },
+        "coverage_or_availability": {
+          "campaign_gap_id": "coverage_or_availability",
+          "causal_story": "If coverage or availability is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "coverage or availability",
+            "question about coverage or availability"
+          ],
+          "definition": "Determine whether coverage or availability is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is coverage or availability the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "coverage or availability is handled",
+            "no issue with coverage or availability"
+          ],
+          "evidence_positive": [
+            "coverage or availability is a problem",
+            "we need help with coverage or availability"
+          ],
+          "label": "coverage or availability",
+          "next_gap_candidates": [
+            "plan_fit"
+          ],
+          "qualification_dimensions": [
+            "fit",
+            "compliance_or_risk_constraints"
+          ],
+          "review_focus": "coverage or availability",
+          "universal_pain_dimensions": [
+            "trust_or_risk_concern",
+            "delay"
+          ],
+          "value_bridge": "The useful next step is a human review of coverage or availability without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "trust_or_risk_concern",
+            "delay"
+          ]
+        },
+        "plan_fit": {
+          "campaign_gap_id": "plan_fit",
+          "causal_story": "If plan fit is unresolved, the buyer may need a qualified human review before choosing the next step.",
+          "customer_language": [
+            "plan fit",
+            "question about plan fit"
+          ],
+          "definition": "Determine whether plan fit is a real current sales or support constraint.",
+          "diagnostic_questions": [
+            "Is plan fit the main thing a human should review?"
+          ],
+          "evidence_negative": [
+            "plan fit is handled",
+            "no issue with plan fit"
+          ],
+          "evidence_positive": [
+            "plan fit is a problem",
+            "we need help with plan fit"
+          ],
+          "label": "plan fit",
+          "next_gap_candidates": [
+            "contract_or_switching"
+          ],
+          "qualification_dimensions": [
+            "need_or_pain",
+            "fit",
+            "budget_or_price_sensitivity"
+          ],
+          "review_focus": "plan fit",
+          "universal_pain_dimensions": [
+            "customer_experience_friction",
+            "cost_or_time_waste"
+          ],
+          "value_bridge": "The useful next step is a human review of plan fit without making unsupported claims.",
+          "vertical_pain_dimensions": [
+            "customer_experience_friction",
+            "cost_or_time_waste"
+          ]
+        }
+      },
+      "gap_order": [
+        "coverage_or_availability",
+        "plan_fit",
+        "contract_or_switching"
+      ],
+      "regulated_cautions": [
+        "telecom_contract_or_coverage",
+        "legal_or_contract_sensitive",
+        "financial_or_payment_sensitive"
+      ],
+      "safety": {
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "vertical_id": "telecom"
+    }
+  },
+  "checkpoint_id": "CAMPAIGN-PLAYBOOK-ADAPTER-002-cross-vertical-smoke",
+  "failures": [],
+  "generated_evidence": {
+    "report_md": "research\\experiments\\generated\\CAMPAIGN-PLAYBOOK-ADAPTER-002-cross-vertical-smoke\\report.md",
+    "result_json": "research\\experiments\\generated\\CAMPAIGN-PLAYBOOK-ADAPTER-002-cross-vertical-smoke\\result.json"
+  },
+  "phase_1_2_3_backpatch_required": false,
+  "routesignal_preservation": {
+    "core_diagnostic_gaps": [
+      "callbacks",
+      "manual_tracking",
+      "handoffs"
+    ],
+    "default_campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+    "gap_order": [
+      "callbacks",
+      "manual_tracking",
+      "handoffs",
+      "routing",
+      "reminders",
+      "duplicates",
+      "visibility",
+      "right_person"
+    ],
+    "live_campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+    "validator_valid": true
+  },
+  "runtime_behavior_changed": false,
+  "safety": {
+    "creates_calendar_event": false,
+    "local_llm_calls_made": false,
+    "opens_prod_102": false,
+    "provider_calls_made": false,
+    "sends_email": false,
+    "writes_crm": false
+  },
+  "status": "pass",
+  "synthetic_campaign_count": 8,
+  "verticals_covered": [
+    "automotive_service",
+    "b2b_saas",
+    "healthcare_admin_or_medical_equipment",
+    "home_services",
+    "insurance",
+    "membership_or_subscription",
+    "retail_or_ecommerce_support_sales",
+    "telecom"
+  ]
+}

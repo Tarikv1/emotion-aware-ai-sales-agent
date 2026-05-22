@@ -1,0 +1,121 @@
+{
+  "checkpoint_id": "VERTICAL-SALES-PLAYBOOKS-001",
+  "failures": [],
+  "forbidden_campaign_terms_check": {
+    "checked_terms": [
+      "RouteSignal",
+      "Northstar",
+      "Starter",
+      "Growth",
+      "demo lead",
+      "inbound demo",
+      "workflow review with Northstar",
+      "$29",
+      "$59"
+    ],
+    "found_terms": [],
+    "passed": true
+  },
+  "forbidden_claim_phrase_check": {
+    "checked_terms": [
+      "saves money",
+      "guaranteed approval",
+      "covered by insurance",
+      "best price",
+      "compliant",
+      "certified",
+      "guaranteed results"
+    ],
+    "found_terms": [],
+    "passed": true
+  },
+  "generated_evidence": {
+    "report_md": "research\\experiments\\generated\\VERTICAL-SALES-PLAYBOOKS-001\\report.md",
+    "result_json": "research\\experiments\\generated\\VERTICAL-SALES-PLAYBOOKS-001\\result.json"
+  },
+  "helper_functions_checked": [
+    "vertical_playbook",
+    "all_vertical_ids",
+    "vertical_ids_for_regulated_caution",
+    "validate_vertical_sales_playbooks",
+    "vertical_required_campaign_fields",
+    "vertical_regulated_cautions",
+    "vertical_safe_discovery_questions",
+    "vertical_blocked_claim_types"
+  ],
+  "optional_vertical_ids_present": [],
+  "phase_1_2_3_backpatch_required": false,
+  "regulated_caution_coverage": {
+    "automotive_service": [
+      "automotive_service_safety_or_warranty",
+      "financial_or_payment_sensitive",
+      "legal_or_contract_sensitive"
+    ],
+    "b2b_saas": [
+      "financial_or_payment_sensitive",
+      "legal_or_contract_sensitive"
+    ],
+    "healthcare_admin_or_medical_equipment": [
+      "financial_or_payment_sensitive",
+      "healthcare_admin_or_medical_equipment",
+      "legal_or_contract_sensitive"
+    ],
+    "home_services": [
+      "financial_or_payment_sensitive",
+      "home_services_safety_or_estimate",
+      "legal_or_contract_sensitive"
+    ],
+    "insurance": [
+      "financial_or_payment_sensitive",
+      "insurance",
+      "legal_or_contract_sensitive"
+    ],
+    "membership_or_subscription": [
+      "financial_or_payment_sensitive",
+      "legal_or_contract_sensitive",
+      "membership_or_subscription_cancellation"
+    ],
+    "retail_or_ecommerce_support_sales": [
+      "financial_or_payment_sensitive",
+      "legal_or_contract_sensitive",
+      "retail_or_ecommerce_refund_warranty_availability"
+    ],
+    "telecom": [
+      "financial_or_payment_sensitive",
+      "legal_or_contract_sensitive",
+      "telecom_contract_or_coverage"
+    ]
+  },
+  "required_vertical_ids": [
+    "automotive_service",
+    "b2b_saas",
+    "healthcare_admin_or_medical_equipment",
+    "home_services",
+    "insurance",
+    "membership_or_subscription",
+    "retail_or_ecommerce_support_sales",
+    "telecom"
+  ],
+  "response_text_changed": false,
+  "runtime_behavior_changed": false,
+  "safety": {
+    "creates_calendar_event": false,
+    "local_llm_calls_made": false,
+    "opens_prod_102": false,
+    "provider_calls_made": false,
+    "sends_email": false,
+    "writes_crm": false
+  },
+  "status": "pass",
+  "suggested_universal_additions": [],
+  "vertical_ids": [
+    "automotive_service",
+    "b2b_saas",
+    "healthcare_admin_or_medical_equipment",
+    "home_services",
+    "insurance",
+    "membership_or_subscription",
+    "retail_or_ecommerce_support_sales",
+    "telecom"
+  ]
+}
