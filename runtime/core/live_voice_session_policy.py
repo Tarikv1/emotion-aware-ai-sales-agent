@@ -254,13 +254,68 @@ def generic_campaign_product_detail_text(language: str, campaign: dict | None) -
     context = generic_campaign_context(campaign)
     if language.startswith("de"):
         return (
-            f"Bei {context['offer']} sollte ich nur freigegebene Details nutzen. "
-            f"Hier pruefe ich zunaechst, ob {context['gaps']} eine {context['target']} brauchen."
+            f"Das ist kein Produktdetail-Gespraech. Ich kann nur pruefen, ob eine kurze {context['target']} "
+            f"zu {context['gaps']} sinnvoll ist."
         )
     return (
-        f"For {context['offer']}, I should stick to approved details. "
-        f"I am only checking whether {context['gaps']} should go to a short {context['target']}."
+        f"This is not a product-detail call. I can only check whether a short {context['target']} "
+        f"is useful, mainly around {context['gaps']}."
     )
+
+
+def is_generic_product_detail_limitation_ack(normalized: str) -> bool:
+    if not normalized:
+        return False
+    return normalized_contains_any(
+        normalized,
+        {
+            "cannot give me any details",
+            "can t give me any details",
+            "cant give me any details",
+            "cannot give me details",
+            "can t give me details",
+            "cant give me details",
+            "cannot give detailed",
+            "can t give detailed",
+            "cant give detailed",
+            "cannot give me any information",
+            "can t give me any information",
+            "cant give me any information",
+            "cannot give me information",
+            "can t give me information",
+            "cant give me information",
+            "only a licensed",
+            "only a license",
+            "only licensed",
+            "only license",
+        },
+    )
+
+
+def generic_campaign_product_detail_limitation_text(language: str, campaign: dict | None, *, repeated: bool = False) -> str:
+    context = generic_campaign_context(campaign)
+    if language.startswith("de"):
+        return (
+            f"Ja, genau. Ich kann den Zweck des Anrufs erklaeren, aber keine detaillierte Beratung geben. "
+            f"{context['owner_sentence']} uebernimmt die {context['target']}. Ich kann eine Zeit notieren oder hier stoppen."
+        )
+    owner = context["owner_phrase"]
+    if "insurance" in str((campaign or {}).get("vertical_id") or ""):
+        owner = "a licensed insurance specialist"
+    if repeated:
+        return (
+            f"Yes, that is right. I can explain the purpose of the call, but not detailed policy advice. "
+            f"{session_role_sentence(owner)} would handle that. I can note a time for the review, or stop here."
+        )
+    return (
+        "Correct, I cannot give detailed policy or product advice on this call. "
+        f"This call only checks whether a {context['target']} is worth setting up. "
+        "If premium is the issue, I can note a time for that review, or stop here."
+    )
+
+
+def session_role_sentence(role: str) -> str:
+    return sentence_start(generic_campaign_role_phrase(role))
 
 
 def generic_campaign_price_text(language: str, campaign: dict | None) -> str:
@@ -304,6 +359,8 @@ def generic_campaign_focus_text(
     if focus in {"details", "product", "security"}:
         if normalized_contains_any(normalized, {"guarantee", "guaranteed", "promise", "promised", "compliance", "compliant"}):
             return generic_campaign_claim_boundary_text(language, campaign)
+        if is_generic_product_detail_limitation_ack(normalized):
+            return generic_campaign_product_detail_limitation_text(language, campaign, repeated=True)
         return generic_campaign_product_detail_text(language, campaign)
     if focus in {"fit", "qualification", "provider_gap"}:
         return generic_campaign_review_question(language, campaign)

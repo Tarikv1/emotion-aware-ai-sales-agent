@@ -62,7 +62,7 @@ DEFAULT_PRIVATE_OUT = ROOT / "data" / "private" / "live-demo-001"
 DEFAULT_ELEVENLABS_ENV_FILE = ROOT / "runtime" / "config" / "local" / "elevenlabs.env"
 LIVE_DEMO_ID = "LIVE-DEMO-001"
 SECRET_PATTERN = re.compile(
-    r"(sk-[A-Za-z0-9_-]{20,}|sk_[A-Za-z0-9_-]{20,}|ELEVENLABS_API_KEY\s*=\s*[^\s]+|xi-api-key\s*[:=]\s*[A-Za-z0-9]|Authorization:\s*Bearer\s+[A-Za-z0-9])"
+    r"(sk-[A-Za-z0-9_-]{20,}|sk_[A-Za-z0-9-]{20,}|ELEVENLABS_API_KEY\s*=\s*[^\s]+|xi-api-key\s*[:=]\s*[A-Za-z0-9]|Authorization:\s*Bearer\s+[A-Za-z0-9])"
 )
 LIVE_TTS_ENV_KEYS = {
     "ELEVENLABS_API_KEY",
@@ -1970,6 +1970,10 @@ def render_html(metadata: dict) -> str:
       campaignError.classList.add("hidden");
     }}
 
+    function isInvalidCampaignConfigError(payload) {{
+      return payload && payload.error === "invalid generic campaign config selection";
+    }}
+
     function handleTurnError(payload, statusCode=null) {{
       autoConversation = false;
       callEnded = true;
@@ -1979,31 +1983,44 @@ def render_html(metadata: dict) -> str:
       window.speechSynthesis.cancel();
       latestResponse = "";
       latestSpeechText = "";
-      const message = payload && (payload.error || payload.message)
-        ? `${{payload.error}}: ${{payload.message || ""}}`.trim()
+      const errorPayload = payload || {{}};
+      const campaignSelectionError = isInvalidCampaignConfigError(errorPayload);
+      const message = errorPayload && (errorPayload.error || errorPayload.message)
+        ? `${{errorPayload.error}}: ${{errorPayload.message || ""}}`.trim()
         : `Turn failed${{statusCode ? ` (HTTP ${{statusCode}})` : ""}}.`;
       campaignError.textContent = message;
       campaignError.classList.remove("hidden");
-      responseBox.textContent = "Turn failed. Review the campaign selection error before continuing.";
-      decision.textContent = JSON.stringify({{
-        error: payload.error || "turn failed",
-        error_type: payload.error_type || null,
-        campaign_selector_mode: selectedCampaignTrace().campaign_selector_mode,
-        campaign_config_path: payload.campaign_config_path || selectedCampaignConfigPath() || null,
-        route_signal_fallback_used: payload.route_signal_fallback_used === true
-      }}, null, 2);
-      boundary.textContent = JSON.stringify({{
-        provider_calls_made: payload.provider_calls_made === true,
-        local_llm_calls_made: payload.local_llm_calls_made === true,
-        sends_email: payload.sends_email === true,
-        creates_calendar_event: payload.creates_calendar_event === true,
-        writes_crm: payload.writes_crm === true,
-        opens_prod_102: payload.opens_prod_102 === true,
-        live_tts_used: payload.live_tts === true,
-        route_signal_fallback_used: payload.route_signal_fallback_used === true
-      }}, null, 2);
-      packet.textContent = JSON.stringify(payload, null, 2);
-      setVoiceTurnState(VOICE_TURN_STATES.PAUSED, "Campaign selection failed. Listening is paused.");
+      responseBox.textContent = campaignSelectionError
+        ? "Turn failed. Review the campaign selection error before continuing."
+        : "Turn failed. Review the error before continuing.";
+      const decisionPayload = {{
+        error: errorPayload.error || "turn failed",
+        error_type: errorPayload.error_type || null,
+        campaign_selector_mode: errorPayload.campaign_selector_mode || selectedCampaignTrace().campaign_selector_mode,
+        campaign_config_path: errorPayload.campaign_config_path || selectedCampaignConfigPath() || null
+      }};
+      if (Object.prototype.hasOwnProperty.call(errorPayload, "route_signal_fallback_used")) {{
+        decisionPayload.route_signal_fallback_used = errorPayload.route_signal_fallback_used === true;
+      }}
+      decision.textContent = JSON.stringify(decisionPayload, null, 2);
+      const boundaryPayload = {{
+        provider_calls_made: errorPayload.provider_calls_made === true,
+        local_llm_calls_made: errorPayload.local_llm_calls_made === true,
+        sends_email: errorPayload.sends_email === true,
+        creates_calendar_event: errorPayload.creates_calendar_event === true,
+        writes_crm: errorPayload.writes_crm === true,
+        opens_prod_102: errorPayload.opens_prod_102 === true,
+        live_tts_used: errorPayload.live_tts === true || errorPayload.live_tts_used === true
+      }};
+      if (Object.prototype.hasOwnProperty.call(errorPayload, "route_signal_fallback_used")) {{
+        boundaryPayload.route_signal_fallback_used = errorPayload.route_signal_fallback_used === true;
+      }}
+      boundary.textContent = JSON.stringify(boundaryPayload, null, 2);
+      packet.textContent = JSON.stringify(errorPayload, null, 2);
+      setVoiceTurnState(
+        VOICE_TURN_STATES.PAUSED,
+        campaignSelectionError ? "Campaign selection failed. Listening is paused." : "Turn failed. Listening is paused."
+      );
     }}
 
     function campaignLanguage() {{
@@ -2608,6 +2625,30 @@ def campaign_selection_error_payload(exc: Exception, campaign_config_path: str |
     }
 
 
+def turn_runtime_error_payload(exc: Exception, campaign_config_path: str | Path | None) -> dict:
+    selected_path = str(campaign_config_path or "").strip()
+    return {
+        "error": "turn failed",
+        "error_type": type(exc).__name__,
+        "message": str(exc),
+        "campaign_selector_mode": "generic_config" if selected_path else "routesignal_live_demo",
+        "campaign_config_path": project_relative_string(resolve_project_path(selected_path)) if selected_path else None,
+        "selected_campaign_config": None,
+        "provider_calls_made": False,
+        "local_llm_calls_made": False,
+        "sends_email": False,
+        "creates_calendar_event": False,
+        "writes_crm": False,
+        "opens_prod_102": False,
+        "provider_agent_used": False,
+        "durable_provider_agent_created": False,
+        "voice_cloning_used": False,
+        "audio_url": None,
+        "live_tts": False,
+        "live_tts_used": False,
+    }
+
+
 def safe_audio_path(requested: str, private_out: Path) -> Path:
     candidate = (ROOT / requested).resolve()
     allowed = private_out.resolve()
@@ -2719,7 +2760,12 @@ def make_handler(metadata: dict, cases_path: Path, private_out: Path):
                 )
                 self.send_json(turn)
             except Exception as exc:
-                self.send_json({"error": str(exc)}, status=500)
+                selected_path = ""
+                try:
+                    selected_path = str((payload or {}).get("campaign_config_path") or metadata.get("default_campaign_config_path") or "").strip()
+                except Exception:
+                    selected_path = ""
+                self.send_json(turn_runtime_error_payload(exc, selected_path), status=500)
 
     return LiveDemoHandler
 

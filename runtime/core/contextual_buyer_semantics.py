@@ -1521,6 +1521,41 @@ def _is_generic_claim_boundary_question(normalized: str, raw_text: str, campaign
     )
 
 
+def _is_generic_product_detail_scope_question(normalized: str, campaign: dict | None) -> bool:
+    if _is_routesignal_playbook(campaign) or not session_policy.is_generic_campaign_config(campaign):
+        return False
+    if session_policy.is_generic_product_detail_limitation_ack(normalized):
+        return True
+    return _contains(
+        normalized,
+        {
+            "what does your product",
+            "what does the product",
+            "what do you do",
+            "what does it do",
+            "what is your product",
+            "what your product do",
+            "what your product does",
+            "product actually do",
+            "product details",
+            "what is included",
+            "what s included",
+            "whats included",
+            "can you give me information",
+            "can you give me details",
+            "give me information about the product",
+            "give me details about the product",
+        },
+    )
+
+
+def _generic_product_detail_scope_response(language: str, normalized: str, campaign: dict | None) -> str:
+    if session_policy.is_generic_product_detail_limitation_ack(normalized):
+        repeated = _contains(normalized, {"only a licensed", "only a license", "only licensed", "only license"})
+        return session_policy.generic_campaign_product_detail_limitation_text(language, campaign, repeated=repeated)
+    return session_policy.generic_campaign_product_detail_text(language, campaign)
+
+
 def _is_account_support_boundary_question(normalized: str) -> bool:
     return _contains(
         normalized,
@@ -2521,6 +2556,36 @@ def classify_contextual_buyer_semantics(
             candidate_response="Understood. I will stop here. Goodbye.",
             action_id="end_call_stop_request",
             dialogue_focus=active_gap or "qualification",
+        )
+
+    if _is_generic_product_detail_scope_question(normalized, campaign):
+        selected_gap = (confirmed_gaps[0] if confirmed_gaps else None) or _gap_from_text(normalized, campaign) or active_gap
+        semantic = (
+            "cannot_provide_product_details_acknowledged"
+            if session_policy.is_generic_product_detail_limitation_ack(normalized)
+            else "product_detail_limit_question"
+        )
+        return _frame(
+            semantic=semantic,
+            transcript=transcript,
+            normalized=normalized,
+            previous_question_type=previous_question_type,
+            previous_question_text=previous_question,
+            conversation_stage=stage,
+            active_gap=active_gap,
+            confirmed_gaps=confirmed_gaps,
+            cleared_gaps=cleared_gaps,
+            pending_callback=pending_callback,
+            pending_appointment=pending_appointment,
+            target_gap=selected_gap,
+            target_topic=selected_gap or "product_detail_scope",
+            polarity="scope_limit",
+            confidence=0.9,
+            next_action_hint="answer_scope_limit_continue",
+            must_not_do=["give regulated product advice", "invent product details", "escalate without buyer request"],
+            candidate_response=_generic_product_detail_scope_response(language, normalized, campaign),
+            action_id="answer_product_detail_scope_limit",
+            dialogue_focus="details",
         )
 
     if _is_generic_claim_boundary_question(normalized, transcript, campaign):
