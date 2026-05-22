@@ -1,0 +1,3190 @@
+{
+  "checkpoint_id": "UNIVERSAL-BUYER-MOVE-RECOGNITION-001",
+  "results": [
+    {
+      "actual_buyer_move_id": "price_or_budget_objection",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "routesignal_live_demo",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "price_or_budget_objection"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "price_or_budget_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "too expensive"
+    },
+    {
+      "actual_buyer_move_id": "already_has_provider",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "routesignal_live_demo",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "already_has_provider"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "existing_provider_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "we already have a provider"
+    },
+    {
+      "actual_buyer_move_id": "no_authority_or_needs_approval",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "routesignal_live_demo",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "no_authority_or_needs_approval"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "authority_or_approval_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "I need to ask my manager"
+    },
+    {
+      "actual_buyer_move_id": "wants_proof_or_case_study",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "routesignal_live_demo",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "wants_proof_or_case_study"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "proof_request_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "send me proof"
+    },
+    {
+      "actual_buyer_move_id": "too_busy_now",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "routesignal_live_demo",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "too_busy_now"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "too_busy_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "we are too busy"
+    },
+    {
+      "actual_buyer_move_id": "who_are_you",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "routesignal_live_demo",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "who_are_you"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "identity_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "who are you"
+    },
+    {
+      "actual_buyer_move_id": "are_you_ai_or_robot",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "routesignal_live_demo",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "are_you_ai_or_robot"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "ai_or_robot_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "are you a robot"
+    },
+    {
+      "actual_buyer_move_id": "how_did_you_get_my_number",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "routesignal_live_demo",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "how_did_you_get_my_number"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "contact_source_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "how did you get my number"
+    },
+    {
+      "actual_buyer_move_id": "is_this_recorded",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "routesignal_live_demo",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "is_this_recorded"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "recording_policy_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "is this recorded"
+    },
+    {
+      "actual_buyer_move_id": "privacy_data_use_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "routesignal_live_demo",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "privacy_data_use_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "privacy_data_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "what do you do with my data"
+    },
+    {
+      "actual_buyer_move_id": "permission_to_continue_denied",
+      "asr_repair_required": false,
+      "buyer_move_category": "trust_identity_privacy_consent",
+      "campaign": "routesignal_live_demo",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "permission_to_continue_denied",
+        "stop_request"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "permission_to_continue_denied_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "I don't want to continue"
+    },
+    {
+      "actual_buyer_move_id": "what_problem_do_you_solve",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "routesignal_live_demo",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "what_problem_do_you_solve"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "problem_solved_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "what problem do you solve"
+    },
+    {
+      "actual_buyer_move_id": "why_should_i_care",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "routesignal_live_demo",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "why_should_i_care"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "why_should_i_care_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "why should I care"
+    },
+    {
+      "actual_buyer_move_id": "what_makes_you_different",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "routesignal_live_demo",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "what_makes_you_different"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "differentiation_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "what makes you different"
+    },
+    {
+      "actual_buyer_move_id": "who_is_this_for",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "routesignal_live_demo",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "who_is_this_for"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "target_buyer_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "who is this for"
+    },
+    {
+      "actual_buyer_move_id": "is_this_worth_my_time",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "routesignal_live_demo",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "is_this_worth_my_time"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "time_value_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "is this worth my time"
+    },
+    {
+      "actual_buyer_move_id": "scope_limit_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "routesignal_live_demo",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "scope_limit_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "scope_limit_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "so you cannot give me details"
+    },
+    {
+      "actual_buyer_move_id": "regulated_claim_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "routesignal_live_demo",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "regulated_claim_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "regulated_or_exact_claim_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "can you guarantee that"
+    },
+    {
+      "actual_buyer_move_id": "regulated_claim_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "routesignal_live_demo",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "regulated_claim_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "regulated_or_exact_claim_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "am I covered"
+    },
+    {
+      "actual_buyer_move_id": "regulated_claim_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "routesignal_live_demo",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "regulated_claim_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "regulated_or_exact_claim_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "can you promise the result"
+    },
+    {
+      "actual_buyer_move_id": "slow_down_or_speak_faster",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "routesignal_live_demo",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "slow_down_or_speak_faster"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "speech_rate_request_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "slow down"
+    },
+    {
+      "actual_buyer_move_id": "repeat_last_answer",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "routesignal_live_demo",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "repeat_last_answer",
+        "repeat_or_rephrase_request"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "repeat_last_answer_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "say that again"
+    },
+    {
+      "actual_buyer_move_id": "language_mismatch",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "routesignal_live_demo",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "language_mismatch"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "language_mismatch_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "I don't speak English well"
+    },
+    {
+      "actual_buyer_move_id": "pronunciation_or_name_correction",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "routesignal_live_demo",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "pronunciation_or_name_correction"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "name_or_pronunciation_correction_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "that's not how you say my name"
+    },
+    {
+      "actual_buyer_move_id": "small_talk",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "routesignal_live_demo",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "silence_or_backchannel",
+        "small_talk"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "medium",
+      "recognition_reason": "small_talk_or_backchannel_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "haha okay"
+    },
+    {
+      "actual_buyer_move_id": "emotional_frustration",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "routesignal_live_demo",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "abusive_or_hostile_buyer",
+        "emotional_frustration"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "frustration_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "you're annoying"
+    },
+    {
+      "actual_buyer_move_id": "asr_garbled_or_low_confidence",
+      "asr_repair_required": true,
+      "buyer_move_category": "asr_repair",
+      "campaign": "routesignal_live_demo",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "asr_garbled_or_low_confidence"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "known_phonetic_nonsense",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "play a double be good"
+    },
+    {
+      "actual_buyer_move_id": "asr_garbled_or_low_confidence",
+      "asr_repair_required": true,
+      "buyer_move_category": "asr_repair",
+      "campaign": "routesignal_live_demo",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "asr_garbled_or_low_confidence"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "known_phonetic_nonsense",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "yadav would be good"
+    },
+    {
+      "actual_buyer_move_id": "pain_confirmed",
+      "asr_repair_required": false,
+      "buyer_move_category": "pain_tentative_pain",
+      "campaign": "routesignal_live_demo",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "confusion_not_clear",
+        "pain_confirmed"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "medium",
+      "recognition_reason": "clean_pain_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "repair timings are usually pretty long"
+    },
+    {
+      "actual_buyer_move_id": "appointment_interest",
+      "asr_repair_required": false,
+      "buyer_move_category": "appointment_callback_send_info",
+      "campaign": "routesignal_live_demo",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "appointment_interest",
+        "permission_acknowledgement"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "medium",
+      "recognition_reason": "clean_positive_after_progression",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "yeah that would be good"
+    },
+    {
+      "actual_buyer_move_id": "price_or_budget_objection",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "synthetic-insurance-review",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "price_or_budget_objection"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "price_or_budget_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "too expensive"
+    },
+    {
+      "actual_buyer_move_id": "already_has_provider",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "synthetic-insurance-review",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "already_has_provider"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "existing_provider_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "we already have a provider"
+    },
+    {
+      "actual_buyer_move_id": "no_authority_or_needs_approval",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "synthetic-insurance-review",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "no_authority_or_needs_approval"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "authority_or_approval_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "I need to ask my manager"
+    },
+    {
+      "actual_buyer_move_id": "wants_proof_or_case_study",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "synthetic-insurance-review",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "wants_proof_or_case_study"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "proof_request_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "send me proof"
+    },
+    {
+      "actual_buyer_move_id": "too_busy_now",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "synthetic-insurance-review",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "too_busy_now"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "too_busy_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "we are too busy"
+    },
+    {
+      "actual_buyer_move_id": "who_are_you",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "synthetic-insurance-review",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "who_are_you"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "identity_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "who are you"
+    },
+    {
+      "actual_buyer_move_id": "are_you_ai_or_robot",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "synthetic-insurance-review",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "are_you_ai_or_robot"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "ai_or_robot_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "are you a robot"
+    },
+    {
+      "actual_buyer_move_id": "how_did_you_get_my_number",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "synthetic-insurance-review",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "how_did_you_get_my_number"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "contact_source_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "how did you get my number"
+    },
+    {
+      "actual_buyer_move_id": "is_this_recorded",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "synthetic-insurance-review",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "is_this_recorded"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "recording_policy_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "is this recorded"
+    },
+    {
+      "actual_buyer_move_id": "privacy_data_use_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "synthetic-insurance-review",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "privacy_data_use_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "privacy_data_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "what do you do with my data"
+    },
+    {
+      "actual_buyer_move_id": "permission_to_continue_denied",
+      "asr_repair_required": false,
+      "buyer_move_category": "trust_identity_privacy_consent",
+      "campaign": "synthetic-insurance-review",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "permission_to_continue_denied",
+        "stop_request"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "permission_to_continue_denied_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "I don't want to continue"
+    },
+    {
+      "actual_buyer_move_id": "what_problem_do_you_solve",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-insurance-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "what_problem_do_you_solve"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "problem_solved_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "what problem do you solve"
+    },
+    {
+      "actual_buyer_move_id": "why_should_i_care",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-insurance-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "why_should_i_care"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "why_should_i_care_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "why should I care"
+    },
+    {
+      "actual_buyer_move_id": "what_makes_you_different",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-insurance-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "what_makes_you_different"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "differentiation_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "what makes you different"
+    },
+    {
+      "actual_buyer_move_id": "who_is_this_for",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-insurance-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "who_is_this_for"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "target_buyer_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "who is this for"
+    },
+    {
+      "actual_buyer_move_id": "is_this_worth_my_time",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-insurance-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "is_this_worth_my_time"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "time_value_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "is this worth my time"
+    },
+    {
+      "actual_buyer_move_id": "scope_limit_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-insurance-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "scope_limit_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "scope_limit_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "so you cannot give me details"
+    },
+    {
+      "actual_buyer_move_id": "regulated_claim_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-insurance-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "regulated_claim_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "regulated_or_exact_claim_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "can you guarantee that"
+    },
+    {
+      "actual_buyer_move_id": "regulated_claim_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-insurance-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "regulated_claim_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "regulated_or_exact_claim_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "am I covered"
+    },
+    {
+      "actual_buyer_move_id": "regulated_claim_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-insurance-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "regulated_claim_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "regulated_or_exact_claim_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "can you promise the result"
+    },
+    {
+      "actual_buyer_move_id": "slow_down_or_speak_faster",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-insurance-review",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "slow_down_or_speak_faster"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "speech_rate_request_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "slow down"
+    },
+    {
+      "actual_buyer_move_id": "repeat_last_answer",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-insurance-review",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "repeat_last_answer",
+        "repeat_or_rephrase_request"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "repeat_last_answer_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "say that again"
+    },
+    {
+      "actual_buyer_move_id": "language_mismatch",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-insurance-review",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "language_mismatch"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "language_mismatch_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "I don't speak English well"
+    },
+    {
+      "actual_buyer_move_id": "pronunciation_or_name_correction",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-insurance-review",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "pronunciation_or_name_correction"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "name_or_pronunciation_correction_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "that's not how you say my name"
+    },
+    {
+      "actual_buyer_move_id": "small_talk",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-insurance-review",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "silence_or_backchannel",
+        "small_talk"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "medium",
+      "recognition_reason": "small_talk_or_backchannel_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "haha okay"
+    },
+    {
+      "actual_buyer_move_id": "emotional_frustration",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-insurance-review",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "abusive_or_hostile_buyer",
+        "emotional_frustration"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "frustration_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "you're annoying"
+    },
+    {
+      "actual_buyer_move_id": "asr_garbled_or_low_confidence",
+      "asr_repair_required": true,
+      "buyer_move_category": "asr_repair",
+      "campaign": "synthetic-insurance-review",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": true,
+      "expected_buyer_move_ids": [
+        "asr_garbled_or_low_confidence"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "known_phonetic_nonsense",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "play a double be good"
+    },
+    {
+      "actual_buyer_move_id": "asr_garbled_or_low_confidence",
+      "asr_repair_required": true,
+      "buyer_move_category": "asr_repair",
+      "campaign": "synthetic-insurance-review",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": true,
+      "expected_buyer_move_ids": [
+        "asr_garbled_or_low_confidence"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "known_phonetic_nonsense",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "yadav would be good"
+    },
+    {
+      "actual_buyer_move_id": "pain_confirmed",
+      "asr_repair_required": false,
+      "buyer_move_category": "pain_tentative_pain",
+      "campaign": "synthetic-insurance-review",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "confusion_not_clear",
+        "pain_confirmed"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "medium",
+      "recognition_reason": "clean_pain_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "repair timings are usually pretty long"
+    },
+    {
+      "actual_buyer_move_id": "appointment_interest",
+      "asr_repair_required": false,
+      "buyer_move_category": "appointment_callback_send_info",
+      "campaign": "synthetic-insurance-review",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "appointment_interest",
+        "permission_acknowledgement"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "medium",
+      "recognition_reason": "clean_positive_after_progression",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "yeah that would be good"
+    },
+    {
+      "actual_buyer_move_id": "price_or_budget_objection",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "price_or_budget_objection"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "price_or_budget_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "too expensive"
+    },
+    {
+      "actual_buyer_move_id": "already_has_provider",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "already_has_provider"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "existing_provider_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "we already have a provider"
+    },
+    {
+      "actual_buyer_move_id": "no_authority_or_needs_approval",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "no_authority_or_needs_approval"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "authority_or_approval_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "I need to ask my manager"
+    },
+    {
+      "actual_buyer_move_id": "wants_proof_or_case_study",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "wants_proof_or_case_study"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "proof_request_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "send me proof"
+    },
+    {
+      "actual_buyer_move_id": "too_busy_now",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "too_busy_now"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "too_busy_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "we are too busy"
+    },
+    {
+      "actual_buyer_move_id": "who_are_you",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "who_are_you"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "identity_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "who are you"
+    },
+    {
+      "actual_buyer_move_id": "are_you_ai_or_robot",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "are_you_ai_or_robot"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "ai_or_robot_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "are you a robot"
+    },
+    {
+      "actual_buyer_move_id": "how_did_you_get_my_number",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "how_did_you_get_my_number"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "contact_source_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "how did you get my number"
+    },
+    {
+      "actual_buyer_move_id": "is_this_recorded",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "is_this_recorded"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "recording_policy_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "is this recorded"
+    },
+    {
+      "actual_buyer_move_id": "privacy_data_use_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "privacy_data_use_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "privacy_data_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "what do you do with my data"
+    },
+    {
+      "actual_buyer_move_id": "permission_to_continue_denied",
+      "asr_repair_required": false,
+      "buyer_move_category": "trust_identity_privacy_consent",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "permission_to_continue_denied",
+        "stop_request"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "permission_to_continue_denied_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "I don't want to continue"
+    },
+    {
+      "actual_buyer_move_id": "what_problem_do_you_solve",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "what_problem_do_you_solve"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "problem_solved_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "what problem do you solve"
+    },
+    {
+      "actual_buyer_move_id": "why_should_i_care",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "why_should_i_care"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "why_should_i_care_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "why should I care"
+    },
+    {
+      "actual_buyer_move_id": "what_makes_you_different",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "what_makes_you_different"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "differentiation_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "what makes you different"
+    },
+    {
+      "actual_buyer_move_id": "who_is_this_for",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "who_is_this_for"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "target_buyer_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "who is this for"
+    },
+    {
+      "actual_buyer_move_id": "is_this_worth_my_time",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "is_this_worth_my_time"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "time_value_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "is this worth my time"
+    },
+    {
+      "actual_buyer_move_id": "scope_limit_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "scope_limit_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "scope_limit_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "so you cannot give me details"
+    },
+    {
+      "actual_buyer_move_id": "regulated_claim_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "regulated_claim_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "regulated_or_exact_claim_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "can you guarantee that"
+    },
+    {
+      "actual_buyer_move_id": "regulated_claim_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "regulated_claim_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "regulated_or_exact_claim_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "am I covered"
+    },
+    {
+      "actual_buyer_move_id": "regulated_claim_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "regulated_claim_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "regulated_or_exact_claim_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "can you promise the result"
+    },
+    {
+      "actual_buyer_move_id": "slow_down_or_speak_faster",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "slow_down_or_speak_faster"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "speech_rate_request_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "slow down"
+    },
+    {
+      "actual_buyer_move_id": "repeat_last_answer",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "repeat_last_answer",
+        "repeat_or_rephrase_request"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "repeat_last_answer_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "say that again"
+    },
+    {
+      "actual_buyer_move_id": "language_mismatch",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "language_mismatch"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "language_mismatch_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "I don't speak English well"
+    },
+    {
+      "actual_buyer_move_id": "pronunciation_or_name_correction",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "pronunciation_or_name_correction"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "name_or_pronunciation_correction_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "that's not how you say my name"
+    },
+    {
+      "actual_buyer_move_id": "small_talk",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "silence_or_backchannel",
+        "small_talk"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "medium",
+      "recognition_reason": "small_talk_or_backchannel_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "haha okay"
+    },
+    {
+      "actual_buyer_move_id": "emotional_frustration",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "abusive_or_hostile_buyer",
+        "emotional_frustration"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "frustration_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "you're annoying"
+    },
+    {
+      "actual_buyer_move_id": "asr_garbled_or_low_confidence",
+      "asr_repair_required": true,
+      "buyer_move_category": "asr_repair",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": true,
+      "expected_buyer_move_ids": [
+        "asr_garbled_or_low_confidence"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "known_phonetic_nonsense",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "play a double be good"
+    },
+    {
+      "actual_buyer_move_id": "asr_garbled_or_low_confidence",
+      "asr_repair_required": true,
+      "buyer_move_category": "asr_repair",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": true,
+      "expected_buyer_move_ids": [
+        "asr_garbled_or_low_confidence"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "known_phonetic_nonsense",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "yadav would be good"
+    },
+    {
+      "actual_buyer_move_id": "pain_confirmed",
+      "asr_repair_required": false,
+      "buyer_move_category": "pain_tentative_pain",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "confusion_not_clear",
+        "pain_confirmed"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "medium",
+      "recognition_reason": "clean_pain_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "repair timings are usually pretty long"
+    },
+    {
+      "actual_buyer_move_id": "appointment_interest",
+      "asr_repair_required": false,
+      "buyer_move_category": "appointment_callback_send_info",
+      "campaign": "synthetic-b2b-saas-operations",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "appointment_interest",
+        "permission_acknowledgement"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "medium",
+      "recognition_reason": "clean_positive_after_progression",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "yeah that would be good"
+    },
+    {
+      "actual_buyer_move_id": "price_or_budget_objection",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "price_or_budget_objection"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "price_or_budget_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "too expensive"
+    },
+    {
+      "actual_buyer_move_id": "already_has_provider",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "already_has_provider"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "existing_provider_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "we already have a provider"
+    },
+    {
+      "actual_buyer_move_id": "no_authority_or_needs_approval",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "no_authority_or_needs_approval"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "authority_or_approval_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "I need to ask my manager"
+    },
+    {
+      "actual_buyer_move_id": "wants_proof_or_case_study",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "wants_proof_or_case_study"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "proof_request_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "send me proof"
+    },
+    {
+      "actual_buyer_move_id": "too_busy_now",
+      "asr_repair_required": false,
+      "buyer_move_category": "objections",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "objections",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "too_busy_now"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "too_busy_objection_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "we are too busy"
+    },
+    {
+      "actual_buyer_move_id": "who_are_you",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "who_are_you"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "identity_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "who are you"
+    },
+    {
+      "actual_buyer_move_id": "are_you_ai_or_robot",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "are_you_ai_or_robot"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "ai_or_robot_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "are you a robot"
+    },
+    {
+      "actual_buyer_move_id": "how_did_you_get_my_number",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "how_did_you_get_my_number"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "contact_source_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "how did you get my number"
+    },
+    {
+      "actual_buyer_move_id": "is_this_recorded",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "is_this_recorded"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "recording_policy_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "is this recorded"
+    },
+    {
+      "actual_buyer_move_id": "privacy_data_use_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "identity_trust_privacy",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "privacy_data_use_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "privacy_data_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "what do you do with my data"
+    },
+    {
+      "actual_buyer_move_id": "permission_to_continue_denied",
+      "asr_repair_required": false,
+      "buyer_move_category": "trust_identity_privacy_consent",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "identity_trust_privacy",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "permission_to_continue_denied",
+        "stop_request"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "permission_to_continue_denied_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "I don't want to continue"
+    },
+    {
+      "actual_buyer_move_id": "what_problem_do_you_solve",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "what_problem_do_you_solve"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "problem_solved_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "what problem do you solve"
+    },
+    {
+      "actual_buyer_move_id": "why_should_i_care",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "why_should_i_care"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "why_should_i_care_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "why should I care"
+    },
+    {
+      "actual_buyer_move_id": "what_makes_you_different",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "what_makes_you_different"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "differentiation_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "what makes you different"
+    },
+    {
+      "actual_buyer_move_id": "who_is_this_for",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "who_is_this_for"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "target_buyer_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "who is this for"
+    },
+    {
+      "actual_buyer_move_id": "is_this_worth_my_time",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "is_this_worth_my_time"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "time_value_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "is this worth my time"
+    },
+    {
+      "actual_buyer_move_id": "scope_limit_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "scope_limit_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "scope_limit_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "so you cannot give me details"
+    },
+    {
+      "actual_buyer_move_id": "regulated_claim_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "regulated_claim_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "regulated_or_exact_claim_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "can you guarantee that"
+    },
+    {
+      "actual_buyer_move_id": "regulated_claim_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "regulated_claim_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "regulated_or_exact_claim_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "am I covered"
+    },
+    {
+      "actual_buyer_move_id": "regulated_claim_question",
+      "asr_repair_required": false,
+      "buyer_move_category": "product_value_scope",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "product_value_scope",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "regulated_claim_question"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "regulated_or_exact_claim_question_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "can you promise the result"
+    },
+    {
+      "actual_buyer_move_id": "slow_down_or_speak_faster",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "slow_down_or_speak_faster"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "speech_rate_request_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "slow down"
+    },
+    {
+      "actual_buyer_move_id": "repeat_last_answer",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "repeat_last_answer",
+        "repeat_or_rephrase_request"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "repeat_last_answer_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "say that again"
+    },
+    {
+      "actual_buyer_move_id": "language_mismatch",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "language_mismatch"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "language_mismatch_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "I don't speak English well"
+    },
+    {
+      "actual_buyer_move_id": "pronunciation_or_name_correction",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "pronunciation_or_name_correction"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "name_or_pronunciation_correction_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "that's not how you say my name"
+    },
+    {
+      "actual_buyer_move_id": "small_talk",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "silence_or_backchannel",
+        "small_talk"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "medium",
+      "recognition_reason": "small_talk_or_backchannel_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "haha okay"
+    },
+    {
+      "actual_buyer_move_id": "emotional_frustration",
+      "asr_repair_required": false,
+      "buyer_move_category": "social_conversation_management",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "social_conversation_management",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "abusive_or_hostile_buyer",
+        "emotional_frustration"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "frustration_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "you're annoying"
+    },
+    {
+      "actual_buyer_move_id": "asr_garbled_or_low_confidence",
+      "asr_repair_required": true,
+      "buyer_move_category": "asr_repair",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": true,
+      "expected_buyer_move_ids": [
+        "asr_garbled_or_low_confidence"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "known_phonetic_nonsense",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "play a double be good"
+    },
+    {
+      "actual_buyer_move_id": "asr_garbled_or_low_confidence",
+      "asr_repair_required": true,
+      "buyer_move_category": "asr_repair",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": true,
+      "expected_buyer_move_ids": [
+        "asr_garbled_or_low_confidence"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "high",
+      "recognition_reason": "known_phonetic_nonsense",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "yadav would be good"
+    },
+    {
+      "actual_buyer_move_id": "pain_confirmed",
+      "asr_repair_required": false,
+      "buyer_move_category": "pain_tentative_pain",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "confusion_not_clear",
+        "pain_confirmed"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "medium",
+      "recognition_reason": "clean_pain_phrase",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "repair timings are usually pretty long"
+    },
+    {
+      "actual_buyer_move_id": "appointment_interest",
+      "asr_repair_required": false,
+      "buyer_move_category": "appointment_callback_send_info",
+      "campaign": "synthetic-automotive-service-review",
+      "category": "asr_and_clean_controls",
+      "enforcement_enabled": false,
+      "expected_buyer_move_ids": [
+        "appointment_interest",
+        "permission_acknowledgement"
+      ],
+      "failures": [],
+      "passed": true,
+      "recognition_confidence": "medium",
+      "recognition_reason": "clean_positive_after_progression",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "transcript": "yeah that would be good"
+    }
+  ],
+  "runtime_final_responses_changed": false,
+  "side_effects": {
+    "creates_calendar_event": false,
+    "customer_audio_uploaded_to_python_server": false,
+    "customer_audio_uploaded_to_tts_provider": false,
+    "local_llm_calls_made": false,
+    "opens_prod_102": false,
+    "provider_calls_made": false,
+    "sends_email": false,
+    "writes_crm": false
+  },
+  "status": "pass",
+  "summary": {
+    "by_category": {
+      "asr_and_clean_controls": {
+        "failed": 0,
+        "passed": 16
+      },
+      "identity_trust_privacy": {
+        "failed": 0,
+        "passed": 24
+      },
+      "objections": {
+        "failed": 0,
+        "passed": 20
+      },
+      "product_value_scope": {
+        "failed": 0,
+        "passed": 36
+      },
+      "social_conversation_management": {
+        "failed": 0,
+        "passed": 24
+      }
+    },
+    "failure_count": 0,
+    "failure_examples": [],
+    "matrix_size": 120,
+    "pass_count": 120,
+    "top_failed_actual_labels": []
+  }
+}

@@ -82,6 +82,10 @@ TIME_WORDS = {
 FRAGMENT_WORDS = {"a", "an", "the", "about", "of", "to", "for", "with", "and", "or", "but"}
 
 
+def _contains_any(normalized: str, phrases: set[str] | list[str] | tuple[str, ...]) -> bool:
+    return any(phrase in normalized for phrase in phrases)
+
+
 def _turns(session_state: dict | None) -> list[dict[str, Any]]:
     return list((session_state or {}).get("turns") or [])
 
@@ -183,6 +187,279 @@ def _buyer_move_from_context(contextual_semantics: dict | None, transcript: str)
     return "confusion_not_clear"
 
 
+def _recognition(
+    buyer_move_id: str,
+    *,
+    reason: str,
+    confidence: str,
+    category: str,
+) -> dict[str, Any]:
+    move = knowledge.buyer_move(buyer_move_id)
+    return {
+        "buyer_move_id": buyer_move_id,
+        "recognition_reason": reason,
+        "recognition_confidence": confidence,
+        "buyer_move_category": category,
+        "direct_question_required": bool(move.get("must_answer_direct_question")),
+    }
+
+
+def classify_universal_buyer_move_from_transcript(
+    *,
+    transcript: str,
+    normalized_transcript: str | None = None,
+    previous_question_type: str | None = None,
+    contextual_semantics: dict | None = None,
+    pragmatic_move: dict | None = None,
+    campaign: dict | None = None,
+    session_state: dict | None = None,
+    asr_detection: dict | None = None,
+) -> dict[str, Any]:
+    normalized = normalized_transcript if normalized_transcript is not None else normalize_transcript(transcript)
+    detection = asr_detection or detect_universal_asr_garble(
+        transcript=transcript,
+        session_state=session_state,
+        campaign=campaign,
+    )
+    if detection.get("applied"):
+        return _recognition(
+            "asr_garbled_or_low_confidence",
+            reason=str(detection.get("reason") or "asr_repair_required"),
+            confidence="high",
+            category="asr_repair",
+        )
+
+    if _contains_any(
+        normalized,
+        {
+            "stop calling",
+            "do not call",
+            "don t call",
+            "no thanks",
+            "not interested",
+            "leave me alone",
+        },
+    ):
+        return _recognition(
+            "stop_request",
+            reason="explicit_stop_or_refusal_phrase",
+            confidence="high",
+            category="trust_identity_privacy_consent",
+        )
+    if _contains_any(
+        normalized,
+        {
+            "do not want to continue",
+            "don t want to continue",
+            "dont want to continue",
+            "do not continue",
+        },
+    ):
+        return _recognition(
+            "permission_to_continue_denied",
+            reason="permission_to_continue_denied_phrase",
+            confidence="high",
+            category="trust_identity_privacy_consent",
+        )
+
+    if normalized in {"who are you", "who is calling", "who am i speaking with"} or normalized.startswith("who are you "):
+        return _recognition("who_are_you", reason="identity_question_phrase", confidence="high", category="identity_trust_privacy")
+    if _contains_any(normalized, {"are you a robot", "are you ai", "are you an ai", "is this automated"}):
+        return _recognition("are_you_ai_or_robot", reason="ai_or_robot_question_phrase", confidence="high", category="identity_trust_privacy")
+    if _contains_any(
+        normalized,
+        {
+            "how did you get my number",
+            "why do you have my number",
+            "how did you get my contact",
+            "why do you have my contact",
+        },
+    ):
+        return _recognition(
+            "how_did_you_get_my_number",
+            reason="contact_source_question_phrase",
+            confidence="high",
+            category="identity_trust_privacy",
+        )
+    if _contains_any(normalized, {"is this recorded", "are you recording", "is this monitored"}):
+        return _recognition("is_this_recorded", reason="recording_policy_question_phrase", confidence="high", category="identity_trust_privacy")
+    if _contains_any(
+        normalized,
+        {
+            "what do you do with my data",
+            "what do you do with my information",
+            "how is my data used",
+            "how do you use my data",
+            "privacy",
+        },
+    ):
+        return _recognition("privacy_data_use_question", reason="privacy_data_question_phrase", confidence="high", category="identity_trust_privacy")
+
+    if _contains_any(
+        normalized,
+        {
+            "cannot give me details",
+            "can t give me details",
+            "cant give me details",
+            "cannot give details",
+            "only a licensed",
+            "only licensed",
+            "not give me details",
+        },
+    ):
+        return _recognition("scope_limit_question", reason="scope_limit_question_phrase", confidence="high", category="product_value_scope")
+    if _contains_any(
+        normalized,
+        {
+            "guarantee",
+            "promise the result",
+            "promise result",
+            "am i covered",
+            "exact price",
+            "exact quote",
+            "refund",
+            "roi guarantee",
+            "security guarantee",
+            "coverage guarantee",
+        },
+    ):
+        return _recognition(
+            "regulated_claim_question",
+            reason="regulated_or_exact_claim_question_phrase",
+            confidence="high",
+            category="product_value_scope",
+        )
+    if _contains_any(normalized, {"what does your product do", "what is your product", "what your product do"}):
+        return _recognition("product_detail_question", reason="product_detail_question_phrase", confidence="high", category="product_value_scope")
+    if _contains_any(normalized, {"what problem do you solve", "what do you solve", "what do you help with", "what is this for"}):
+        return _recognition("what_problem_do_you_solve", reason="problem_solved_question_phrase", confidence="high", category="product_value_scope")
+    if _contains_any(normalized, {"why should i care", "why would i care", "why care"}):
+        return _recognition("why_should_i_care", reason="why_should_i_care_phrase", confidence="high", category="product_value_scope")
+    if _contains_any(normalized, {"what makes you different", "what is different", "why are you different"}):
+        return _recognition("what_makes_you_different", reason="differentiation_question_phrase", confidence="high", category="product_value_scope")
+    if _contains_any(normalized, {"who is this for", "who uses this", "is this for me"}):
+        return _recognition("who_is_this_for", reason="target_buyer_question_phrase", confidence="high", category="product_value_scope")
+    if _contains_any(normalized, {"is this worth my time", "worth my time", "why stay on the phone"}):
+        return _recognition("is_this_worth_my_time", reason="time_value_question_phrase", confidence="high", category="product_value_scope")
+    if _contains_any(normalized, {"what result can i expect", "what will this do for me", "what improvement"}):
+        return _recognition("what_result_can_i_expect", reason="expected_result_question_phrase", confidence="high", category="product_value_scope")
+    if _contains_any(normalized, {"does this apply to us", "is this relevant for us", "would this matter here"}):
+        return _recognition("does_this_apply_to_us", reason="relevance_question_phrase", confidence="high", category="product_value_scope")
+
+    if _contains_any(normalized, {"already have a provider", "already have provider", "use someone else", "we use someone else", "covered by another"}):
+        return _recognition("already_has_provider", reason="existing_provider_objection_phrase", confidence="high", category="objections")
+    if _contains_any(normalized, {"too expensive", "no budget", "not in budget", "cost too much", "how much does it cost", "what does it cost"}):
+        return _recognition("price_or_budget_objection", reason="price_or_budget_objection_phrase", confidence="high", category="objections")
+    if _contains_any(normalized, {"ask my manager", "ask manager", "need approval", "not my decision", "legal has to approve"}):
+        return _recognition(
+            "no_authority_or_needs_approval",
+            reason="authority_or_approval_objection_phrase",
+            confidence="high",
+            category="objections",
+        )
+    if _contains_any(normalized, {"send me proof", "show me proof", "case study", "case studies", "send proof"}):
+        return _recognition("wants_proof_or_case_study", reason="proof_request_phrase", confidence="high", category="objections")
+    if _contains_any(normalized, {"not this week", "not this month", "not this quarter", "bad timing"}):
+        return _recognition("timing_objection", reason="timing_objection_phrase", confidence="high", category="objections")
+    if _contains_any(normalized, {"do not see the need", "don t see the need", "dont see the need", "no clear need", "not seeing the need"}):
+        return _recognition("no_clear_need", reason="no_clear_need_objection_phrase", confidence="high", category="objections")
+    if _contains_any(normalized, {"too busy", "we are busy", "in a meeting", "not a good time"}):
+        return _recognition("too_busy_now", reason="too_busy_objection_phrase", confidence="high", category="objections")
+
+    if _contains_any(normalized, {"send me details", "send details", "send me information", "send me info"}):
+        return _recognition("send_info_request", reason="send_info_request_phrase", confidence="high", category="appointment_callback_send_info")
+    if _contains_any(normalized, {"call me next week", "call me later", "call back", "callback request", "call me back"}):
+        return _recognition("callback_request", reason="callback_request_phrase", confidence="high", category="appointment_callback_send_info")
+    if _contains_any(normalized, {"available times", "send available times", "what times are available"}):
+        return _recognition("buyer_requests_available_times", reason="available_times_request_phrase", confidence="high", category="appointment_callback_send_info")
+    if _contains_any(normalized, {"email first", "need email first", "send email first"}):
+        return _recognition("buyer_wants_email_before_booking", reason="email_before_booking_phrase", confidence="high", category="appointment_callback_send_info")
+    if _contains_any(normalized, {"not now maybe later", "maybe later", "later maybe"}):
+        return _recognition("buyer_defers_to_later", reason="defer_to_later_phrase", confidence="high", category="appointment_callback_send_info")
+    if _looks_like_time(normalized) and _contains_any(normalized, {"works", "work", "is good", "would be good"}):
+        return _recognition("callback_time_provided", reason="time_phrase_with_acceptance", confidence="high", category="appointment_callback_send_info")
+    if "that would be good" in normalized:
+        return _recognition("appointment_interest", reason="clean_positive_after_progression", confidence="medium", category="appointment_callback_send_info")
+
+    if _contains_any(normalized, {"slow down", "too fast", "speak faster", "speak slower"}):
+        return _recognition("slow_down_or_speak_faster", reason="speech_rate_request_phrase", confidence="high", category="social_conversation_management")
+    if _contains_any(normalized, {"say that again", "repeat that", "say again", "can you repeat"}):
+        return _recognition("repeat_last_answer", reason="repeat_last_answer_phrase", confidence="high", category="social_conversation_management")
+    if _contains_any(normalized, {"don t speak english", "dont speak english", "do not speak english", "english well", "different language"}):
+        return _recognition("language_mismatch", reason="language_mismatch_phrase", confidence="high", category="social_conversation_management")
+    if _contains_any(normalized, {"not how you say my name", "that s not how you say my name", "you said my name wrong", "call me"}):
+        return _recognition(
+            "pronunciation_or_name_correction",
+            reason="name_or_pronunciation_correction_phrase",
+            confidence="high",
+            category="social_conversation_management",
+        )
+    if _contains_any(normalized, {"haha", "ha ha", "lol", "how are you", "nice weather"}):
+        return _recognition("small_talk", reason="small_talk_or_backchannel_phrase", confidence="medium", category="social_conversation_management")
+    if _contains_any(normalized, {"annoying", "frustrated", "frustrating", "you re annoying", "you are annoying"}):
+        return _recognition("emotional_frustration", reason="frustration_phrase", confidence="high", category="social_conversation_management")
+
+    if _contains_any(normalized, {"what do you mean", "i do not understand", "i don t understand", "dont understand"}):
+        return _recognition("confusion_not_clear", reason="confusion_or_clarification_phrase", confidence="high", category="confusion_challenge_repair")
+    if "why" in normalized and "asking" in normalized:
+        return _recognition("why_are_you_asking", reason="why_are_you_asking_phrase", confidence="high", category="confusion_challenge_repair")
+    if _contains_any(normalized, {"didn t answer", "did not answer", "you didn t answer", "you did not answer"}):
+        return _recognition(
+            "already_answered_challenge",
+            reason="did_not_answer_challenge_phrase",
+            confidence="high",
+            category="confusion_challenge_repair",
+        )
+    if _contains_any(normalized, {"already told you", "i told you", "keep asking the same"}):
+        return _recognition(
+            "already_answered_challenge",
+            reason="already_answered_challenge_phrase",
+            confidence="high",
+            category="confusion_challenge_repair",
+        )
+    if _contains_any(normalized, {"not the right person why ask", "not the right contact why ask", "why ask"}):
+        return _recognition(
+            "contradiction_challenge",
+            reason="role_contradiction_challenge_phrase",
+            confidence="high",
+            category="confusion_challenge_repair",
+        )
+
+    if normalized.startswith("maybe ") or _contains_any(normalized, {"maybe coverage", "maybe integration"}):
+        return _recognition("tentative_gap_interest", reason="tentative_gap_phrase", confidence="high", category="pain_tentative_pain")
+    if _contains_any(normalized, {"is a problem", "is the problem", "usually pretty long", "we need service", "is unclear", "is the issue"}):
+        return _recognition("pain_confirmed", reason="clean_pain_phrase", confidence="medium", category="pain_tentative_pain")
+
+    context_move = _buyer_move_from_context(contextual_semantics, transcript)
+    if context_move != "confusion_not_clear":
+        category = {
+            "pain_confirmed": "pain_tentative_pain",
+            "no_pain_clear": "pain_tentative_pain",
+            "callback_time_provided": "appointment_callback_send_info",
+            "permission_acknowledgement": "permission_time_pressure",
+            "why_are_you_asking": "confusion_challenge_repair",
+            "product_detail_question": "product_value_scope",
+        }.get(context_move, "contextual_semantics")
+        return _recognition(context_move, reason="contextual_semantics_mapping", confidence="medium", category=category)
+
+    if normalized in CLEAN_ACKNOWLEDGEMENTS:
+        return _recognition(
+            "permission_acknowledgement",
+            reason="clean_acknowledgement_phrase",
+            confidence="high",
+            category="permission_time_pressure",
+        )
+    if _contains_any(normalized, {"make it quick", "short minute", "quick minute", "keep it quick"}):
+        return _recognition(
+            "time_constrained_permission",
+            reason="time_constrained_permission_phrase",
+            confidence="high",
+            category="permission_time_pressure",
+        )
+
+    return _recognition("confusion_not_clear", reason="fallback_no_universal_buyer_move_match", confidence="low", category="fallback")
+
+
 def _conversation_stage(
     *,
     transcript: str,
@@ -234,15 +511,21 @@ def build_universal_conversation_policy_frame(
         session_state=session_state,
         campaign=campaign,
     )
-    if detection.get("applied"):
-        buyer_move_id = "asr_garbled_or_low_confidence"
-        response_shape_id = "ask_repeat_for_asr_garble"
-    else:
-        buyer_move_id = _buyer_move_from_context(contextual_semantics, transcript)
-        response_shape_id = (
-            knowledge.buyer_move(buyer_move_id).get("expected_response_shape_id")
-            or "confusion_explain_plainly"
-        )
+    recognition = classify_universal_buyer_move_from_transcript(
+        transcript=transcript,
+        normalized_transcript=detection.get("normalized_transcript"),
+        previous_question_type=detection.get("previous_question_type"),
+        contextual_semantics=contextual_semantics,
+        pragmatic_move=pragmatic_move,
+        campaign=campaign,
+        session_state=session_state,
+        asr_detection=detection,
+    )
+    buyer_move_id = str(recognition.get("buyer_move_id") or "confusion_not_clear")
+    response_shape_id = (
+        knowledge.buyer_move(buyer_move_id).get("expected_response_shape_id")
+        or "confusion_explain_plainly"
+    )
 
     move = knowledge.buyer_move(buyer_move_id)
     shape = knowledge.response_shape(response_shape_id)
@@ -256,6 +539,9 @@ def build_universal_conversation_policy_frame(
         "knowledge_id": knowledge.KNOWLEDGE_ID,
         "buyer_move_id": buyer_move_id,
         "response_shape_id": response_shape_id,
+        "recognition_reason": recognition.get("recognition_reason"),
+        "recognition_confidence": recognition.get("recognition_confidence"),
+        "buyer_move_category": recognition.get("buyer_move_category"),
         "conversation_stage": _conversation_stage(
             transcript=transcript,
             session_state=session_state,
@@ -267,7 +553,7 @@ def build_universal_conversation_policy_frame(
         "allowed_call_controls": allowed_call_controls,
         "memory_policy": memory_policy,
         "appointment_pressure_level": str(shape.get("appointment_pressure_level") or "none"),
-        "direct_question_required": bool(move.get("must_answer_direct_question")),
+        "direct_question_required": bool(recognition.get("direct_question_required") or move.get("must_answer_direct_question")),
         "asr_repair_required": bool(detection.get("applied")),
         "should_preserve_confirmed_gaps": "preserve" in memory_policy or bool(detection.get("applied")),
         "should_preserve_cleared_gaps": "preserve" in memory_policy or bool(detection.get("applied")),

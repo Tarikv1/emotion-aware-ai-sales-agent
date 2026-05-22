@@ -81,6 +81,63 @@ EXPECTED_GAP_BY_TRANSCRIPT = {
     "maybe integration": {"synthetic-b2b-saas-operations": "integration_risk"},
 }
 
+EXPECTED_BUYER_MOVES_BY_TRANSCRIPT = {
+    "yeah sure": {"permission_acknowledgement"},
+    "make it quick": {"time_constrained_permission"},
+    "just a short minute": {"time_constrained_permission"},
+    "manual work is a problem": {"pain_confirmed"},
+    "premium is a problem": {"pain_confirmed"},
+    "repair timings are usually pretty long": {"pain_confirmed"},
+    "maybe coverage fit": {"tentative_gap_interest"},
+    "maybe integration": {"tentative_gap_interest"},
+    "what does your product do": {"product_detail_question"},
+    "what problem do you solve": {"what_problem_do_you_solve"},
+    "why should I care": {"why_should_i_care"},
+    "what makes you different": {"what_makes_you_different"},
+    "who is this for": {"who_is_this_for"},
+    "is this worth my time": {"is_this_worth_my_time"},
+    "so you cannot give me details": {"scope_limit_question"},
+    "can you guarantee that": {"regulated_claim_question"},
+    "what exact price": {"regulated_claim_question", "price_or_budget_objection"},
+    "am I covered": {"regulated_claim_question"},
+    "can you promise the result": {"regulated_claim_question"},
+    "we already have a provider": {"already_has_provider"},
+    "too expensive": {"price_or_budget_objection"},
+    "I need to ask my manager": {"no_authority_or_needs_approval"},
+    "send me proof": {"wants_proof_or_case_study"},
+    "not this week": {"timing_objection", "buyer_defers_to_later"},
+    "I do not see the need": {"no_clear_need"},
+    "we are too busy": {"too_busy_now"},
+    "who are you": {"who_are_you"},
+    "are you a robot": {"are_you_ai_or_robot"},
+    "how did you get my number": {"how_did_you_get_my_number"},
+    "is this recorded": {"is_this_recorded"},
+    "what do you do with my data": {"privacy_data_use_question"},
+    "I don't want to continue": {"permission_to_continue_denied", "stop_request"},
+    "what do you mean": {"confusion_not_clear"},
+    "why are you asking": {"why_are_you_asking"},
+    "you didn't answer my question": {"already_answered_challenge"},
+    "I already told you": {"already_answered_challenge"},
+    "if you're not the right person why ask": {"contradiction_challenge"},
+    "you keep asking the same thing": {"already_answered_challenge", "emotional_frustration"},
+    "send me details": {"send_info_request"},
+    "call me next week": {"callback_request"},
+    "tomorrow at 3 works": {"callback_time_provided"},
+    "can you send available times": {"buyer_requests_available_times"},
+    "I need email first": {"buyer_wants_email_before_booking"},
+    "not now maybe later": {"buyer_defers_to_later", "timing_objection"},
+    "slow down": {"slow_down_or_speak_faster"},
+    "say that again": {"repeat_last_answer", "repeat_or_rephrase_request"},
+    "I don't speak English well": {"language_mismatch"},
+    "that's not how you say my name": {"pronunciation_or_name_correction"},
+    "haha okay": {"small_talk", "silence_or_backchannel"},
+    "you're annoying": {"emotional_frustration", "abusive_or_hostile_buyer"},
+    "play a double be good": {"asr_garbled_or_low_confidence"},
+    "yadav would be good": {"asr_garbled_or_low_confidence"},
+    "repeal timings are usually pretty long": {"asr_garbled_or_low_confidence"},
+    "yeah that would be good": {"appointment_interest", "permission_acknowledgement"},
+}
+
 INTERNAL_PATTERNS = [
     "i should",
     "approved qualified reviewer path",
@@ -398,11 +455,20 @@ def snapshot(
         "actual_call_control": call_control(packet),
         "final_response": final_response(packet),
         "universal_policy_frame": universal_policy_frame(packet),
+        "expected_buyer_move_ids": sorted(expected_buyer_moves(case)),
+        "actual_buyer_move_id": (universal_policy_frame(packet) or {}).get("buyer_move_id"),
+        "recognition_reason": (universal_policy_frame(packet) or {}).get("recognition_reason"),
+        "recognition_confidence": (universal_policy_frame(packet) or {}).get("recognition_confidence"),
+        "recognized_buyer_move_category": (universal_policy_frame(packet) or {}).get("buyer_move_category"),
         "confirmed_gaps": memory.get("confirmed_gaps"),
         "cleared_gaps": memory.get("cleared_gaps"),
         "side_effect_flags": side_effect_flags(packet),
         "previous_response": final_response(packets[-2]) if len(packets) >= 2 else "",
     }
+
+
+def expected_buyer_moves(case: dict[str, Any]) -> set[str]:
+    return set(EXPECTED_BUYER_MOVES_BY_TRANSCRIPT.get(str(case["transcript"]), {"confusion_not_clear"}))
 
 
 def evaluate_result(
@@ -419,6 +485,21 @@ def evaluate_result(
     target_gap = str(result.get("actual_target_gap") or "")
     call = str(result.get("actual_call_control") or "")
     frame = result.get("universal_policy_frame") or {}
+    expected_moves = expected_buyer_moves(case)
+    actual_move = str(frame.get("buyer_move_id") or "")
+
+    if actual_move not in expected_moves:
+        add_failure(
+            failures,
+            "buyer_move_recognition_failure",
+            f"expected one of {sorted(expected_moves)}, got {actual_move}",
+        )
+    if not frame.get("recognition_reason"):
+        add_failure(failures, "buyer_move_recognition_failure", "missing recognition_reason")
+    if frame.get("recognition_confidence") not in {"high", "medium", "low"}:
+        add_failure(failures, "buyer_move_recognition_failure", "missing recognition_confidence")
+    if not frame.get("buyer_move_category"):
+        add_failure(failures, "buyer_move_recognition_failure", "missing buyer_move_category")
 
     for flag, value in (result.get("side_effect_flags") or {}).items():
         if value:
@@ -595,9 +676,22 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
     failures = [failure for result in results for failure in result["failures"]]
     by_category: dict[str, dict[str, int]] = defaultdict(lambda: {"passed": 0, "failed": 0})
     cluster_counter: Counter[tuple[str, str]] = Counter()
+    recognition_cluster_counter: Counter[tuple[str, str]] = Counter()
+    response_cluster_counter: Counter[tuple[str, str]] = Counter()
     campaign_failure_counter: Counter[str] = Counter()
+    recognition_failure_count = 0
+    response_failure_count = 0
     for result in results:
         bucket = by_category[result["buyer_move_category"]]
+        recognition_failed = any(failure["failure_type"] == "buyer_move_recognition_failure" for failure in result["failures"])
+        response_failed = any(
+            failure["failure_type"] not in {"buyer_move_recognition_failure", "side_effect_boundary_failure"}
+            for failure in result["failures"]
+        )
+        if recognition_failed:
+            recognition_failure_count += 1
+        if response_failed:
+            response_failure_count += 1
         if result["passed"]:
             bucket["passed"] += 1
         else:
@@ -605,9 +699,21 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
             campaign_failure_counter[result["campaign"]] += 1
             for failure in result["failures"]:
                 cluster_counter[(result["buyer_move_category"], failure["failure_type"])] += 1
+                if failure["failure_type"] == "buyer_move_recognition_failure":
+                    recognition_cluster_counter[(result["buyer_move_category"], result["transcript"])] += 1
+                elif failure["failure_type"] != "side_effect_boundary_failure":
+                    response_cluster_counter[(result["buyer_move_category"], failure["failure_type"])] += 1
     top_clusters = [
         {"buyer_move_category": category, "failure_type": failure_type, "count": count}
         for (category, failure_type), count in cluster_counter.most_common(12)
+    ]
+    top_recognition_failures = [
+        {"buyer_move_category": category, "transcript": transcript, "count": count}
+        for (category, transcript), count in recognition_cluster_counter.most_common(12)
+    ]
+    top_response_shape_failures = [
+        {"buyer_move_category": category, "failure_type": failure_type, "count": count}
+        for (category, failure_type), count in response_cluster_counter.most_common(12)
     ]
     strongest = [
         {
@@ -618,6 +724,10 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
             "actual_semantic": result["actual_semantic"],
             "actual_target_gap": result["actual_target_gap"],
             "actual_call_control": result["actual_call_control"],
+            "expected_buyer_move_ids": result["expected_buyer_move_ids"],
+            "actual_buyer_move_id": result["actual_buyer_move_id"],
+            "recognition_reason": result["recognition_reason"],
+            "recognition_confidence": result["recognition_confidence"],
             "final_response": result["final_response"],
             "universal_policy_frame": result["universal_policy_frame"],
         }
@@ -634,8 +744,14 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
         "pass_count": sum(1 for result in results if result["passed"]),
         "failure_count": sum(1 for result in results if not result["passed"]),
         "failure_instance_count": len(failures),
+        "recognition_pass_count": len(results) - recognition_failure_count,
+        "recognition_failure_count": recognition_failure_count,
+        "response_pass_count": len(results) - response_failure_count,
+        "response_failure_count": response_failure_count,
         "by_category": dict(sorted(by_category.items())),
         "top_failure_clusters": top_clusters,
+        "top_recognition_failures": top_recognition_failures,
+        "top_response_shape_failures": top_response_shape_failures,
         "campaign_failure_counts": dict(campaign_failure_counter.most_common()),
         "strongest_failure_examples": strongest,
         "universal_failure_clusters": universal_clusters,
@@ -681,6 +797,8 @@ def write_evidence(result: dict[str, Any]) -> None:
         f"- Campaigns: {len(CAMPAIGNS)}",
         f"- Buyer-move cases per campaign: {len(cases())}",
         f"- Total turns evaluated: {summary['matrix_size']}",
+        f"- Recognition pass/fail: {summary['recognition_pass_count']} / {summary['recognition_failure_count']}",
+        f"- Response pass/fail: {summary['response_pass_count']} / {summary['response_failure_count']}",
         "",
         "## Pass/Fail Counts By Buyer-Move Category",
     ]
@@ -691,11 +809,22 @@ def write_evidence(result: dict[str, Any]) -> None:
         report.append(
             f"- {cluster['buyer_move_category']} / {cluster['failure_type']}: {cluster['count']}"
         )
+    report.extend(["", "## Top Recognition Failures"])
+    for cluster in summary["top_recognition_failures"]:
+        report.append(
+            f"- {cluster['buyer_move_category']} / {cluster['transcript']}: {cluster['count']}"
+        )
+    report.extend(["", "## Top Response-Shape Failures"])
+    for cluster in summary["top_response_shape_failures"]:
+        report.append(
+            f"- {cluster['buyer_move_category']} / {cluster['failure_type']}: {cluster['count']}"
+        )
     report.extend(["", "## Examples Of Strongest Failures"])
     for example in summary["strongest_failure_examples"][:10]:
         report.append(
             f"- {example['campaign']} | {example['buyer_move_category']} | {example['transcript']} | "
-            f"{', '.join(example['failure_types'])} | response={example['final_response']!r}"
+            f"{', '.join(example['failure_types'])} | recognized={example['actual_buyer_move_id']} | "
+            f"response={example['final_response']!r}"
         )
     report.extend(
         [
@@ -762,7 +891,13 @@ def main() -> int:
                 "pass_count": summary["pass_count"],
                 "failure_count": summary["failure_count"],
                 "failure_instance_count": summary["failure_instance_count"],
+                "recognition_pass_count": summary["recognition_pass_count"],
+                "recognition_failure_count": summary["recognition_failure_count"],
+                "response_pass_count": summary["response_pass_count"],
+                "response_failure_count": summary["response_failure_count"],
                 "top_failure_clusters": summary["top_failure_clusters"][:8],
+                "top_recognition_failures": summary["top_recognition_failures"][:8],
+                "top_response_shape_failures": summary["top_response_shape_failures"][:8],
                 "recommended_next_implementation_slice": summary["recommended_next_implementation_slice"],
                 "side_effects": side_effects,
             },
