@@ -136,12 +136,22 @@ def is_agent_opening_packet(packet: dict[str, Any]) -> bool:
     )
 
 
+def is_generic_campaign_config(campaign: dict[str, Any]) -> bool:
+    if not isinstance(campaign, dict):
+        return False
+    campaign_id = str(campaign.get("campaign_id") or "")
+    if campaign_id in {"live-demo-001-routesignal", "campaign-prod-005-b2b-software"}:
+        return False
+    return bool(campaign.get("vertical_id") and isinstance(campaign.get("diagnostic_gaps"), dict) and campaign.get("diagnostic_gaps"))
+
+
 def build_delivery_segments(packet: dict[str, Any], campaign: dict[str, Any]) -> list[dict[str, Any]]:
     segment_type, source, allow_prosody = segment_type_for_packet(packet)
     final_response = packet["final_response"]
     emphasis_targets = sales_emphasis_targets(campaign)
     primary_sales_target = first_matching_sales_target(final_response, emphasis_targets)
     agent_opening = is_agent_opening_packet(packet)
+    generic_campaign = is_generic_campaign_config(campaign)
     return [
         {
             "segment_id": "resp-002-final-response",
@@ -151,10 +161,10 @@ def build_delivery_segments(packet: dict[str, Any], campaign: dict[str, Any]) ->
             "emphasis_targets": emphasis_targets,
             "pause_after": primary_sales_target,
             "pitch_target": primary_sales_target,
-            "allow_fillers": allow_prosody,
-            "allow_speech_realism": allow_prosody and not agent_opening,
+            "allow_fillers": allow_prosody and not generic_campaign,
+            "allow_speech_realism": allow_prosody and not agent_opening and not generic_campaign,
             "allow_interaction_prosody": allow_prosody,
-            "allow_speech_imperfections": allow_prosody and not agent_opening,
+            "allow_speech_imperfections": allow_prosody and not agent_opening and not generic_campaign,
             "allow_prosody": allow_prosody,
             "eligible_for_prosody": allow_prosody,
             "decision_source": {
