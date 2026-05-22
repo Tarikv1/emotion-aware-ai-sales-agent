@@ -61,6 +61,15 @@ DEFAULT_PORT = 8781
 DEFAULT_PRIVATE_OUT = ROOT / "data" / "private" / "live-demo-001"
 DEFAULT_ELEVENLABS_ENV_FILE = ROOT / "runtime" / "config" / "local" / "elevenlabs.env"
 LIVE_DEMO_ID = "LIVE-DEMO-001"
+GENERIC_LIVE_TTS_GATE_ERROR = (
+    "--campaign-config with --live-tts requires --allow-generic-live-tts. "
+    "Generic campaign provider audio is explicitly gated."
+)
+GENERIC_DRY_RUN_WARNING = "Generic campaign configs run dry-run TTS by default. No provider calls are made."
+GENERIC_LIVE_TTS_WARNING = (
+    "Generic campaign live TTS is enabled. Generated agent text may be sent to ElevenLabs. "
+    "Customer audio is not sent to Python or the TTS provider."
+)
 SECRET_PATTERN = re.compile(
     r"(sk-[A-Za-z0-9_-]{20,}|sk_[A-Za-z0-9-]{20,}|ELEVENLABS_API_KEY\s*=\s*[^\s]+|xi-api-key\s*[:=]\s*[A-Za-z0-9]|Authorization:\s*Bearer\s+[A-Za-z0-9])"
 )
@@ -141,9 +150,20 @@ def load_live_tts_env_file(path: Path | None) -> dict:
     }
 
 
-def live_tts_preflight(campaign_id: str, cases_path: Path, force_key_missing: bool) -> dict:
+def live_tts_preflight(
+    campaign_id: str,
+    cases_path: Path,
+    force_key_missing: bool,
+    campaign_config_path: str | Path | None = None,
+) -> dict:
     provider = provider_for_key("elevenlabs")
-    campaign = load_campaign(campaign_id, cases_path)
+    if campaign_config_path:
+        config_path = resolve_project_path(str(campaign_config_path))
+        if config_path is None:
+            raise SystemExit("--campaign-config path is required for generic live TTS preflight.")
+        campaign = campaign_registry.load_campaign_config(config_path)
+    else:
+        campaign = load_campaign(campaign_id, cases_path)
     language = str(campaign.get("language") or "en")
     api_key_present = False if force_key_missing else bool(os.environ.get(provider["api_key_env_var"]))
     voice_id, voice_source = resolve_voice_id(provider, language, force_key_missing)
@@ -155,6 +175,15 @@ def live_tts_preflight(campaign_id: str, cases_path: Path, force_key_missing: bo
         "voice_id_present": bool(voice_id),
         "voice_id_source": voice_source,
     }
+
+
+def generic_live_tts_gate_active(args: argparse.Namespace) -> bool:
+    return bool(
+        getattr(args, "campaign_config", None)
+        and getattr(args, "live_tts", False)
+        and getattr(args, "consent_confirmed", False)
+        and getattr(args, "allow_generic_live_tts", False)
+    )
 
 
 def require_live_tts_ready(preflight: dict, env_file_status: dict) -> None:
@@ -296,6 +325,10 @@ def build_metadata(args: argparse.Namespace, cases_path: Path, private_out: Path
     profile = load_live_demo_profile()
     generic_options = generic_campaign_options()
     default_campaign_config_path = resolve_project_path(getattr(args, "campaign_config", None))
+    generic_live_tts_allowed = generic_live_tts_gate_active(args)
+    for option in generic_options:
+        option["live_tts_enabled"] = bool(generic_live_tts_allowed)
+        option["mode"] = "generic config live TTS gated" if generic_live_tts_allowed else "generic config dry-run"
     return {
         "live_demo_id": LIVE_DEMO_ID,
         "purpose": "Talk to the repo-owned sales agent through browser ASR and ElevenLabs voice output.",
@@ -314,6 +347,9 @@ def build_metadata(args: argparse.Namespace, cases_path: Path, private_out: Path
         "generic_campaigns_use_registry": True,
         "generic_campaigns_use_config_path_runtime": True,
         "generic_campaigns_live_tts_enabled_by_default": False,
+        "generic_selected_campaign_live_tts_allowed": generic_live_tts_allowed,
+        "generic_campaign_dry_run_warning": GENERIC_DRY_RUN_WARNING,
+        "generic_campaign_live_tts_warning": GENERIC_LIVE_TTS_WARNING,
         "campaign_selector": {
             "default_mode": "generic_config" if default_campaign_config_path else "routesignal_live_demo",
             "routesignal_default_campaign_id": args.campaign,
@@ -323,6 +359,14 @@ def build_metadata(args: argparse.Namespace, cases_path: Path, private_out: Path
             "generic_campaigns_use_registry": True,
             "generic_campaigns_use_config_path_runtime": True,
             "generic_campaigns_live_tts_enabled_by_default": False,
+            "generic_selected_campaign_live_tts_allowed": generic_live_tts_allowed,
+            "generic_live_tts_requires": [
+                "--campaign-config",
+                "--live-tts",
+                "--consent-confirmed",
+                "--allow-generic-live-tts",
+                "ElevenLabs preflight unless --force-key-missing",
+            ],
             "invalid_generic_config_falls_back_to_routesignal": False,
         },
         "case_file": project_relative_string(cases_path),
@@ -378,6 +422,8 @@ def build_metadata(args: argparse.Namespace, cases_path: Path, private_out: Path
             ],
             "voice_id_present_at_start": bool(getattr(args, "live_tts_preflight", {}).get("voice_id_present", False)),
             "selected_voice_id_source_at_start": getattr(args, "live_tts_preflight", {}).get("voice_id_source"),
+            "generic_selected_campaign_live_tts_allowed": generic_live_tts_allowed,
+            "customer_audio_uploaded_to_python_server": False,
             "customer_audio_uploaded_to_tts_provider": False,
             "text_sent_to_tts_provider_when_live": True,
             "voice_cloning_used": False,
@@ -403,6 +449,8 @@ def build_metadata(args: argparse.Namespace, cases_path: Path, private_out: Path
             "tarik_mic_demo_allowed": args.consent_confirmed,
             "runtime_behavior_changed": False,
             "opens_prod_102": False,
+            "customer_audio_uploaded_to_python_server": False,
+            "customer_audio_uploaded_to_tts_provider": False,
             "stores_turns_under_ignored_private_data": True,
         },
     }
@@ -1493,22 +1541,25 @@ def build_browser_demo_turn_packet(
     session_state: dict | None = None,
     asr_confidence: float | None = None,
     voice_turn_state: str | None = None,
+    generic_live_tts_allowed: bool = False,
 ) -> dict:
     def attach_selector_trace(turn: dict, selector_mode: str, selected_config: dict | None) -> dict:
         packet = turn.get("packet") or {}
         tts = packet.get("tts_delivery") or {}
         voice = packet.get("voice_delivery") or {}
+        asr = turn.get("asr") or {}
         manager = turn.get("dialogue_manager") or {}
         memory = turn.get("demo_conversation_memory") or turn.get("conversation_memory") or {}
         lead = memory.get("lead_followup_state") or {}
         safety = lead.get("safety") or {}
         summary = turn.get("summary") or {}
+        tts_provider_calls_made = bool(tts.get("provider_calls_made") or summary.get("tts_provider_calls_made"))
+        audio_file_created = bool(tts.get("audio_file_created") or summary.get("tts_audio_file_created"))
         turn["campaign_selector_mode"] = selector_mode
         turn["selected_campaign_config"] = selected_config
         turn["provider_calls_made"] = bool(
             turn.get("provider_calls_made")
-            or tts.get("provider_calls_made")
-            or summary.get("tts_provider_calls_made")
+            or tts_provider_calls_made
             or voice.get("provider_calls_made")
             or packet.get("api_calls_made")
         )
@@ -1517,7 +1568,12 @@ def build_browser_demo_turn_packet(
         turn["creates_calendar_event"] = bool(turn.get("creates_calendar_event") or safety.get("creates_calendar_event"))
         turn["writes_crm"] = bool(turn.get("writes_crm") or safety.get("writes_crm"))
         turn["opens_prod_102"] = bool(turn.get("opens_prod_102") or manager.get("opens_prod_102"))
-        turn["live_tts_used"] = bool(turn["provider_calls_made"] and summary.get("tts_provider_calls_made"))
+        turn["tts_provider_calls_made"] = tts_provider_calls_made
+        turn["audio_file_created"] = audio_file_created
+        turn["customer_audio_uploaded_to_python_server"] = bool(asr.get("audio_uploaded_to_python_server"))
+        turn["customer_audio_uploaded_to_tts_provider"] = bool(tts.get("customer_audio_uploaded"))
+        turn["generic_selected_campaign_live_tts_allowed"] = bool(selected_config and selected_config.get("live_tts_enabled"))
+        turn["live_tts_used"] = bool(tts_provider_calls_made and audio_file_created and turn.get("audio_url"))
         return turn
 
     selected_config_path = resolve_project_path(str(campaign_config_path)) if campaign_config_path else None
@@ -1542,6 +1598,8 @@ def build_browser_demo_turn_packet(
         return attach_selector_trace(turn, "routesignal_live_demo", None)
 
     selected_config = campaign_registry.load_campaign_config(selected_config_path)
+    generic_live_tts_enabled = bool(generic_live_tts_allowed and live_tts)
+    generic_force_key_missing = bool(force_key_missing) if generic_live_tts_enabled else True
     turn = build_generic_campaign_turn_packet_from_config_path(
         transcript=transcript,
         campaign_config_path=selected_config_path,
@@ -1553,8 +1611,8 @@ def build_browser_demo_turn_packet(
         asr_confidence=asr_confidence,
         voice_turn_state=voice_turn_state,
         private_out=private_out / "generic-campaigns",
-        live_tts=False,
-        force_key_missing=True,
+        live_tts=generic_live_tts_enabled,
+        force_key_missing=generic_force_key_missing,
         timeout_seconds=timeout_seconds,
     )
     turn["live_demo_id"] = LIVE_DEMO_ID
@@ -1567,8 +1625,8 @@ def build_browser_demo_turn_packet(
         "appointment_target": selected_config.get("appointment_target"),
         "human_followup_owner": selected_config.get("human_followup_owner"),
         "config_path": project_relative_string(selected_config_path),
-        "mode": "generic config dry-run",
-        "live_tts_enabled": False,
+        "mode": "generic config live TTS gated" if generic_live_tts_enabled else "generic config dry-run",
+        "live_tts_enabled": generic_live_tts_enabled,
         "route_signal_fallback_used": False,
     }
     turn["runtime_behavior_changed"] = False
@@ -1705,7 +1763,8 @@ def render_html(metadata: dict) -> str:
         <div class="campaign-panel" aria-live="polite">
           <strong id="selectedCampaignMode">RouteSignal live-demo mode</strong>
           <div id="selectedCampaignMetadata" class="campaign-meta"></div>
-          <div id="genericCampaignDryRunWarning" class="notice hidden">Generic campaign configs run dry-run TTS by default. No provider calls are made.</div>
+          <div id="genericCampaignDryRunWarning" class="notice hidden">{html.escape(GENERIC_DRY_RUN_WARNING)}</div>
+          <div id="genericCampaignLiveTtsWarning" class="notice hidden">{html.escape(GENERIC_LIVE_TTS_WARNING)}</div>
           <div id="campaignError" class="error hidden"></div>
         </div>
         <textarea id="transcript" placeholder="Speak, or type a test turn here."></textarea>
@@ -1761,6 +1820,7 @@ def render_html(metadata: dict) -> str:
     const selectedCampaignMode = document.querySelector("#selectedCampaignMode");
     const selectedCampaignMetadata = document.querySelector("#selectedCampaignMetadata");
     const genericCampaignDryRunWarning = document.querySelector("#genericCampaignDryRunWarning");
+    const genericCampaignLiveTtsWarning = document.querySelector("#genericCampaignLiveTtsWarning");
     const campaignError = document.querySelector("#campaignError");
     const language = document.querySelector("#language");
     const listen = document.querySelector("#listen");
@@ -1921,15 +1981,17 @@ def render_html(metadata: dict) -> str:
     function selectedCampaignTrace() {{
       const generic = selectedGenericCampaign();
       if (generic) {{
+        const liveTtsEnabled = generic.live_tts_enabled === true;
         return {{
           campaign_selector_mode: "generic_config",
-          mode: "generic config dry-run",
+          mode: liveTtsEnabled ? "generic config live TTS gated" : "generic config dry-run",
           campaign_id: generic.campaign_id,
           vertical_id: generic.vertical_id,
           product_or_offer_name: generic.product_or_offer_name,
           appointment_target: generic.appointment_target,
           human_followup_owner: generic.human_followup_owner,
-          config_path: generic.config_path
+          config_path: generic.config_path,
+          live_tts_enabled: liveTtsEnabled
         }};
       }}
       const routeSignal = selectedRouteSignalCampaign() || {{}};
@@ -1941,7 +2003,8 @@ def render_html(metadata: dict) -> str:
         product_or_offer_name: routeSignal.product_name || "RouteSignal CRM",
         appointment_target: "workflow review",
         human_followup_owner: "Northstar Workflow Labs",
-        config_path: null
+        config_path: null,
+        live_tts_enabled: metadata.tts.live_tts_enabled === true
       }};
     }}
 
@@ -1956,13 +2019,15 @@ def render_html(metadata: dict) -> str:
         ["appointment_target", trace.appointment_target],
         ["human_followup_owner", trace.human_followup_owner],
         ["config_path", trace.config_path || "(none)"],
-        ["mode", trace.mode]
+        ["mode", trace.mode],
+        ["live_tts_enabled", trace.live_tts_enabled === true ? "true" : "false"]
       ].forEach(([key, value]) => {{
         const item = document.createElement("div");
         item.textContent = `${{key}}: ${{value || "(not set)"}}`;
         selectedCampaignMetadata.appendChild(item);
       }});
-      genericCampaignDryRunWarning.classList.toggle("hidden", trace.campaign_selector_mode !== "generic_config");
+      genericCampaignDryRunWarning.classList.toggle("hidden", trace.campaign_selector_mode !== "generic_config" || trace.live_tts_enabled === true);
+      genericCampaignLiveTtsWarning.classList.toggle("hidden", trace.campaign_selector_mode !== "generic_config" || trace.live_tts_enabled !== true);
     }}
 
     function clearCampaignError() {{
@@ -2010,7 +2075,11 @@ def render_html(metadata: dict) -> str:
         creates_calendar_event: errorPayload.creates_calendar_event === true,
         writes_crm: errorPayload.writes_crm === true,
         opens_prod_102: errorPayload.opens_prod_102 === true,
-        live_tts_used: errorPayload.live_tts === true || errorPayload.live_tts_used === true
+        live_tts_used: errorPayload.live_tts === true || errorPayload.live_tts_used === true,
+        tts_provider_calls_made: errorPayload.tts_provider_calls_made === true,
+        audio_file_created: errorPayload.audio_file_created === true,
+        customer_audio_uploaded_to_python_server: errorPayload.customer_audio_uploaded_to_python_server === true,
+        customer_audio_uploaded_to_tts_provider: errorPayload.customer_audio_uploaded_to_tts_provider === true
       }};
       if (Object.prototype.hasOwnProperty.call(errorPayload, "route_signal_fallback_used")) {{
         boundaryPayload.route_signal_fallback_used = errorPayload.route_signal_fallback_used === true;
@@ -2260,7 +2329,11 @@ def render_html(metadata: dict) -> str:
         vertical_id: payload.vertical_id || (payload.selected_campaign_config ? payload.selected_campaign_config.vertical_id : null),
         provider_calls_made: payload.provider_calls_made === true,
         local_llm_calls_made: payload.local_llm_calls_made === true,
-        live_tts_used: payload.live_tts_used === true
+        live_tts_used: payload.live_tts_used === true,
+        tts_provider_calls_made: payload.tts_provider_calls_made === true || payload.summary.tts_provider_calls_made === true,
+        audio_file_created: payload.audio_file_created === true || payload.summary.tts_audio_file_created === true,
+        customer_audio_uploaded_to_python_server: payload.customer_audio_uploaded_to_python_server === true,
+        customer_audio_uploaded_to_tts_provider: payload.customer_audio_uploaded_to_tts_provider === true
       }};
     }}
 
@@ -2272,7 +2345,10 @@ def render_html(metadata: dict) -> str:
         local_llm_calls_made: payload.local_llm_calls_made === true,
         live_tts_used: payload.live_tts_used === true,
         elevenlabs_call_made: payload.summary.tts_provider_calls_made,
+        tts_provider_calls_made: payload.tts_provider_calls_made === true || payload.summary.tts_provider_calls_made === true,
         audio_file_created: payload.summary.tts_audio_file_created,
+        customer_audio_uploaded_to_python_server: payload.customer_audio_uploaded_to_python_server === true,
+        customer_audio_uploaded_to_tts_provider: payload.customer_audio_uploaded_to_tts_provider === true,
         fallback_reason: payload.summary.tts_fallback_reason,
         voice_id_source: payload.summary.tts_voice_id_source,
         voice_id_present: payload.summary.tts_voice_id_present,
@@ -2428,7 +2504,12 @@ def render_html(metadata: dict) -> str:
           campaign_id: payload.campaign_id,
           campaign_playbook_id: payload.campaign_playbook_id,
           vertical_id: payload.vertical_id,
-          live_tts_used: payload.live_tts_used === true
+          generic_selected_campaign_live_tts_allowed: payload.generic_selected_campaign_live_tts_allowed === true,
+          live_tts_used: payload.live_tts_used === true,
+          tts_provider_calls_made: payload.tts_provider_calls_made === true,
+          audio_file_created: payload.audio_file_created === true,
+          customer_audio_uploaded_to_python_server: payload.customer_audio_uploaded_to_python_server === true,
+          customer_audio_uploaded_to_tts_provider: payload.customer_audio_uploaded_to_tts_provider === true
         }}, null, 2);
         boundary.textContent = JSON.stringify({{
           provider_agent_used: payload.provider_agent_used,
@@ -2439,7 +2520,10 @@ def render_html(metadata: dict) -> str:
           writes_crm: payload.writes_crm === true,
           live_tts_used: payload.live_tts_used === true,
           elevenlabs_call_made: payload.summary.tts_provider_calls_made,
+          tts_provider_calls_made: payload.tts_provider_calls_made === true || payload.summary.tts_provider_calls_made === true,
           audio_file_created: payload.summary.tts_audio_file_created,
+          customer_audio_uploaded_to_python_server: payload.customer_audio_uploaded_to_python_server === true,
+          customer_audio_uploaded_to_tts_provider: payload.customer_audio_uploaded_to_tts_provider === true,
           fallback_reason: payload.summary.tts_fallback_reason,
           voice_id_source: payload.summary.tts_voice_id_source,
           voice_id_present: payload.summary.tts_voice_id_present,
@@ -2463,7 +2547,10 @@ def render_html(metadata: dict) -> str:
         }} else {{
           audio.removeAttribute("src");
           if (fromAutoConversation) {{
-            if (metadata.tts.live_tts_enabled && payload.summary.tts_provider_calls_made) {{
+            const genericLiveTtsExpected = payload.campaign_selector_mode === "generic_config"
+              && payload.selected_campaign_config
+              && payload.selected_campaign_config.live_tts_enabled === true;
+            if (genericLiveTtsExpected || (metadata.tts.live_tts_enabled && payload.summary.tts_provider_calls_made)) {{
               autoConversation = false;
               setVoiceTurnState(VOICE_TURN_STATES.PAUSED, `ElevenLabs audio unavailable (${{payload.summary.tts_fallback_reason || "unknown"}}). Browser fallback is manual to avoid switching voices mid-call.`);
             }} else {{
@@ -2488,6 +2575,12 @@ def render_html(metadata: dict) -> str:
           writes_crm: false,
           opens_prod_102: false,
           live_tts: false,
+          live_tts_used: false,
+          tts_provider_calls_made: false,
+          audio_file_created: false,
+          customer_audio_uploaded_to_python_server: false,
+          customer_audio_uploaded_to_tts_provider: false,
+          generic_selected_campaign_live_tts_allowed: false,
           audio_url: null
         }});
       }} finally {{
@@ -2622,6 +2715,11 @@ def campaign_selection_error_payload(exc: Exception, campaign_config_path: str |
         "audio_url": None,
         "live_tts": False,
         "live_tts_used": False,
+        "tts_provider_calls_made": False,
+        "audio_file_created": False,
+        "customer_audio_uploaded_to_python_server": False,
+        "customer_audio_uploaded_to_tts_provider": False,
+        "generic_selected_campaign_live_tts_allowed": False,
     }
 
 
@@ -2646,6 +2744,11 @@ def turn_runtime_error_payload(exc: Exception, campaign_config_path: str | Path 
         "audio_url": None,
         "live_tts": False,
         "live_tts_used": False,
+        "tts_provider_calls_made": False,
+        "audio_file_created": False,
+        "customer_audio_uploaded_to_python_server": False,
+        "customer_audio_uploaded_to_tts_provider": False,
+        "generic_selected_campaign_live_tts_allowed": False,
     }
 
 
@@ -2743,6 +2846,7 @@ def make_handler(metadata: dict, cases_path: Path, private_out: Path):
                         session_state=session_state,
                         asr_confidence=payload.get("asr_confidence"),
                         voice_turn_state=payload.get("voice_turn_state") or payload.get("turn_state"),
+                        generic_live_tts_allowed=metadata.get("generic_selected_campaign_live_tts_allowed") is True,
                     )
                 except (campaign_registry.CampaignRegistryError, GenericCampaignConfigError) as exc:
                     self.send_json(campaign_selection_error_payload(exc, campaign_config_path), status=400)
@@ -2787,7 +2891,7 @@ def serve(metadata: dict, cases_path: Path, private_out: Path) -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run LIVE-DEMO-001: browser mic -> repo agent -> ElevenLabs voice.")
     parser.add_argument("--campaign", default=DEFAULT_CAMPAIGN_ID)
-    parser.add_argument("--campaign-config", help="Local generic campaign config JSON path. Uses dry-run TTS and no RouteSignal fallback.")
+    parser.add_argument("--campaign-config", help="Local generic campaign config JSON path. Uses dry-run TTS unless explicitly live-TTS gated.")
     parser.add_argument("--stage", default=DEFAULT_STAGE)
     parser.add_argument("--host", default=DEFAULT_HOST)
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
@@ -2797,6 +2901,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--live-tts", action="store_true", help="Allow ElevenLabs TTS provider calls.")
     parser.add_argument("--force-key-missing", action="store_true", help="Validate missing-key fallback without reading provider env vars.")
     parser.add_argument("--consent-confirmed", action="store_true", help="Confirm Tarik-approved local live demo boundary.")
+    parser.add_argument("--allow-generic-live-tts", action="store_true", help="Explicitly allow selected generic campaign configs to use live ElevenLabs TTS.")
     parser.add_argument(
         "--elevenlabs-env-file",
         default=str(DEFAULT_ELEVENLABS_ENV_FILE),
@@ -2813,8 +2918,8 @@ def main() -> None:
     args = parse_args()
     if args.timeout_seconds <= 0 or args.timeout_seconds > 10:
         raise SystemExit("--timeout-seconds must be greater than 0 and no more than 10.")
-    if args.campaign_config and args.live_tts:
-        raise SystemExit("--campaign-config is limited to dry-run TTS in this phase; omit --live-tts.")
+    if args.campaign_config and args.live_tts and not args.allow_generic_live_tts:
+        raise SystemExit(GENERIC_LIVE_TTS_GATE_ERROR)
     if args.live_tts and not args.consent_confirmed:
         raise SystemExit("--consent-confirmed is required with --live-tts.")
 
@@ -2824,7 +2929,12 @@ def main() -> None:
         raise SystemExit("Cases and private output paths are required.")
     env_file = resolve_project_path(args.elevenlabs_env_file)
     args.live_tts_env_file_status = load_live_tts_env_file(env_file)
-    args.live_tts_preflight = live_tts_preflight(args.campaign, cases_path, args.force_key_missing)
+    args.live_tts_preflight = live_tts_preflight(
+        args.campaign,
+        cases_path,
+        args.force_key_missing,
+        campaign_config_path=args.campaign_config if generic_live_tts_gate_active(args) else None,
+    )
     if args.live_tts and not args.force_key_missing:
         require_live_tts_ready(args.live_tts_preflight, args.live_tts_env_file_status)
     metadata = build_metadata(args, cases_path, private_out)
@@ -2842,6 +2952,7 @@ def main() -> None:
             live_tts=args.live_tts,
             force_key_missing=args.force_key_missing,
             timeout_seconds=args.timeout_seconds,
+            generic_live_tts_allowed=generic_live_tts_gate_active(args),
         )
         decision_out = resolve_project_path(args.decision_out)
         if decision_out is not None:
