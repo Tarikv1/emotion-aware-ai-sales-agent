@@ -232,8 +232,8 @@ def generic_campaign_review_question(language: str, campaign: dict | None) -> st
             f"mit {context['owner']} brauchen. Welchen Teil soll ich zuerst pruefen?"
         )
     return (
-        f"I am asking whether {context['gaps']} are worth a possible {context['target']}. "
-        "Which part should I ask about first, if any?"
+        f"The quick check is whether any of these areas is worth a short {context['target']}: {context['gaps']}. "
+        "If not, I can stop here; which part should I check first?"
     )
 
 

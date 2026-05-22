@@ -381,7 +381,7 @@
           ],
           "creates_calendar_event": false,
           "durable_provider_agent_created": false,
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+          "final_response": "Got it, manual work sounds like the issue; an implementation specialist can review manual workflow load. What time works for a quick operations fit review?",
           "lead_followup_state": {},
           "local_llm_calls_made": false,
           "opens_prod_102": false,
@@ -393,7 +393,7 @@
           "sends_email": false,
           "target_gap": "manual_work",
           "transcript": "manual work is a problem",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+          "tts_input_text": "Got it, manual work sounds like the issue; an implementation specialist can review manual workflow load. What time works for a quick operations fit review?",
           "voice_cloning_used": false,
           "writes_crm": false
         }
@@ -460,7 +460,7 @@
           ],
           "creates_calendar_event": false,
           "durable_provider_agent_created": false,
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+          "final_response": "Got it, manual work sounds like the issue; an implementation specialist can review manual workflow load. What time works for a quick operations fit review?",
           "lead_followup_state": {},
           "local_llm_calls_made": false,
           "opens_prod_102": false,
@@ -472,7 +472,7 @@
           "sends_email": false,
           "target_gap": "manual_work",
           "transcript": "manual work is the problem",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+          "tts_input_text": "Got it, manual work sounds like the issue; an implementation specialist can review manual workflow load. What time works for a quick operations fit review?",
           "voice_cloning_used": false,
           "writes_crm": false
         }
@@ -539,7 +539,7 @@
           ],
           "creates_calendar_event": false,
           "durable_provider_agent_created": false,
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+          "final_response": "Got it, manual work sounds like the issue; an implementation specialist can review manual workflow load. What time works for a quick operations fit review?",
           "lead_followup_state": {},
           "local_llm_calls_made": false,
           "opens_prod_102": false,
@@ -551,7 +551,7 @@
           "sends_email": false,
           "target_gap": "manual_work",
           "transcript": "manual workflow is a problem",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+          "tts_input_text": "Got it, manual work sounds like the issue; an implementation specialist can review manual workflow load. What time works for a quick operations fit review?",
           "voice_cloning_used": false,
           "writes_crm": false
         }
@@ -620,7 +620,7 @@
           ],
           "creates_calendar_event": false,
           "durable_provider_agent_created": false,
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+          "final_response": "Got it, integration risk sounds like the issue; an implementation specialist can review integration and security review. What time works for a quick operations fit review?",
           "lead_followup_state": {},
           "local_llm_calls_made": false,
           "opens_prod_102": false,
@@ -632,7 +632,7 @@
           "sends_email": false,
           "target_gap": "integration_risk",
           "transcript": "integration is a problem",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+          "tts_input_text": "Got it, integration risk sounds like the issue; an implementation specialist can review integration and security review. What time works for a quick operations fit review?",
           "voice_cloning_used": false,
           "writes_crm": false
         }
@@ -699,7 +699,7 @@
           ],
           "creates_calendar_event": false,
           "durable_provider_agent_created": false,
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+          "final_response": "Got it, visibility gap sounds like the issue; an implementation specialist can review visibility into workflow status. What time works for a quick operations fit review?",
           "lead_followup_state": {},
           "local_llm_calls_made": false,
           "opens_prod_102": false,
@@ -711,7 +711,7 @@
           "sends_email": false,
           "target_gap": "visibility_gap",
           "transcript": "visibility is a problem",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+          "tts_input_text": "Got it, visibility gap sounds like the issue; an implementation specialist can review visibility into workflow status. What time works for a quick operations fit review?",
           "voice_cloning_used": false,
           "writes_crm": false
         }

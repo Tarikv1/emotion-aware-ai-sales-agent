@@ -1310,11 +1310,11 @@
           "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "I am asking whether vehicle issue, repair timing, or warranty or estimate are worth a possible service advisor inspection review. Which part should I ask about first, if any?",
+          "final_response": "The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "I am asking whether vehicle issue, repair timing, or warranty or estimate are worth a possible service advisor inspection review. Which part should I ask about first, if any?",
+          "provider_rendered_text": "The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -1334,7 +1334,7 @@
           "send_info_state": null,
           "target_gap": null,
           "transcript": "I do not understand",
-          "tts_input_text": "I am asking whether vehicle issue, repair timing, or warranty or estimate are worth a possible service advisor inspection review. Which part should I ask about first, if any?"
+          "tts_input_text": "The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?"
         },
         {
           "call_control": "continue-call",
@@ -1444,11 +1444,11 @@
           "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "I am asking whether manual work, integration risk, or visibility gap are worth a possible operations fit review. Which part should I ask about first, if any?",
+          "final_response": "The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "I am asking whether manual work, integration risk, or visibility gap are worth a possible operations fit review. Which part should I ask about first, if any?",
+          "provider_rendered_text": "The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -1468,7 +1468,7 @@
           "send_info_state": null,
           "target_gap": null,
           "transcript": "I don't understand",
-          "tts_input_text": "I am asking whether manual work, integration risk, or visibility gap are worth a possible operations fit review. Which part should I ask about first, if any?"
+          "tts_input_text": "The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?"
         },
         {
           "call_control": "continue-call",
@@ -1476,11 +1476,11 @@
           "campaign_playbook_id": "synthetic-b2b-saas-regression-001-playbook",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "I am asking whether manual work, integration risk, or visibility gap are worth a possible operations fit review. Which part should I ask about first, if any?",
+          "final_response": "The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "I am asking whether manual work, integration risk, or visibility gap are worth a possible operations fit review. Which part should I ask about first, if any?",
+          "provider_rendered_text": "The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -1500,7 +1500,7 @@
           "send_info_state": null,
           "target_gap": null,
           "transcript": "what do you mean?",
-          "tts_input_text": "I am asking whether manual work, integration risk, or visibility gap are worth a possible operations fit review. Which part should I ask about first, if any?"
+          "tts_input_text": "The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?"
         }
       ],
       "insurance": [
@@ -1578,11 +1578,11 @@
           "campaign_playbook_id": "synthetic-insurance-regression-001-playbook",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "I am asking whether coverage fit, premium or budget, or renewal or timing are worth a possible licensed coverage review. Which part should I ask about first, if any?",
+          "final_response": "The quick check is whether any of these areas is worth a short licensed coverage review: coverage fit, premium or budget, or renewal or timing. If not, I can stop here; which part should I check first?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "I am asking whether coverage fit, premium or budget, or renewal or timing are worth a possible licensed coverage review. Which part should I ask about first, if any?",
+          "provider_rendered_text": "The quick check is whether any of these areas is worth a short licensed coverage review: coverage fit, premium or budget, or renewal or timing. If not, I can stop here; which part should I check first?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -1602,7 +1602,7 @@
           "send_info_state": null,
           "target_gap": null,
           "transcript": "I don't understand",
-          "tts_input_text": "I am asking whether coverage fit, premium or budget, or renewal or timing are worth a possible licensed coverage review. Which part should I ask about first, if any?"
+          "tts_input_text": "The quick check is whether any of these areas is worth a short licensed coverage review: coverage fit, premium or budget, or renewal or timing. If not, I can stop here; which part should I check first?"
         },
         {
           "call_control": "continue-call",
@@ -1610,11 +1610,11 @@
           "campaign_playbook_id": "synthetic-insurance-regression-001-playbook",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "I am asking whether coverage fit, premium or budget, or renewal or timing are worth a possible licensed coverage review. Which part should I ask about first, if any?",
+          "final_response": "The quick check is whether any of these areas is worth a short licensed coverage review: coverage fit, premium or budget, or renewal or timing. If not, I can stop here; which part should I check first?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "I am asking whether coverage fit, premium or budget, or renewal or timing are worth a possible licensed coverage review. Which part should I ask about first, if any?",
+          "provider_rendered_text": "The quick check is whether any of these areas is worth a short licensed coverage review: coverage fit, premium or budget, or renewal or timing. If not, I can stop here; which part should I check first?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -1634,7 +1634,7 @@
           "send_info_state": null,
           "target_gap": null,
           "transcript": "what are you asking?",
-          "tts_input_text": "I am asking whether coverage fit, premium or budget, or renewal or timing are worth a possible licensed coverage review. Which part should I ask about first, if any?"
+          "tts_input_text": "The quick check is whether any of these areas is worth a short licensed coverage review: coverage fit, premium or budget, or renewal or timing. If not, I can stop here; which part should I check first?"
         }
       ]
     },
@@ -1716,11 +1716,11 @@
           "confirmed_gaps": [
             "warranty_or_estimate"
           ],
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short service advisor inspection review; what time works for that review?",
+          "final_response": "Got it, warranty or estimate sounds like the issue. A service advisor can review warranty or estimate. What time works for a quick service advisor inspection review?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short service advisor inspection review; what time works for that review?",
+          "provider_rendered_text": "Got it, warranty or estimate sounds like the issue. A service advisor can review warranty or estimate. What time works for a quick service advisor inspection review?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -1740,7 +1740,7 @@
           "send_info_state": null,
           "target_gap": "warranty_or_estimate",
           "transcript": "warranty estimate is the problem",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short service advisor inspection review; what time works for that review?"
+          "tts_input_text": "Got it, warranty or estimate sounds like the issue. A service advisor can review warranty or estimate. What time works for a quick service advisor inspection review?"
         },
         {
           "call_control": "continue-call",
@@ -1854,11 +1854,11 @@
           "confirmed_gaps": [
             "specialist_review_needed"
           ],
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short specialist admin review; what time works for that review?",
+          "final_response": "Got it, specialist review needed sounds like the issue. A specialist review coordinator can review specialist review need. What time works for a quick specialist admin review?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short specialist admin review; what time works for that review?",
+          "provider_rendered_text": "Got it, specialist review needed sounds like the issue. A specialist review coordinator can review specialist review need. What time works for a quick specialist admin review?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -1878,7 +1878,7 @@
           "send_info_state": null,
           "target_gap": "specialist_review_needed",
           "transcript": "specialist review is needed",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short specialist admin review; what time works for that review?"
+          "tts_input_text": "Got it, specialist review needed sounds like the issue. A specialist review coordinator can review specialist review need. What time works for a quick specialist admin review?"
         },
         {
           "call_control": "continue-call",
@@ -1992,11 +1992,11 @@
           "confirmed_gaps": [
             "premium_or_budget"
           ],
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+          "final_response": "Got it, premium sounds like the issue. A licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+          "provider_rendered_text": "Got it, premium sounds like the issue. A licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -2016,7 +2016,7 @@
           "send_info_state": null,
           "target_gap": "premium_or_budget",
           "transcript": "premium is a problem",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?"
+          "tts_input_text": "Got it, premium sounds like the issue. A licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?"
         },
         {
           "call_control": "continue-call",
@@ -2130,11 +2130,11 @@
           "confirmed_gaps": [
             "renewal_or_cancellation"
           ],
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short membership account review; what time works for that review?",
+          "final_response": "Got it, renewal or cancellation sounds like the issue. A membership specialist can review renewal or cancellation terms. What time works for a quick membership account review?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short membership account review; what time works for that review?",
+          "provider_rendered_text": "Got it, renewal or cancellation sounds like the issue. A membership specialist can review renewal or cancellation terms. What time works for a quick membership account review?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -2154,7 +2154,7 @@
           "send_info_state": null,
           "target_gap": "renewal_or_cancellation",
           "transcript": "renewal is the issue",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short membership account review; what time works for that review?"
+          "tts_input_text": "Got it, renewal or cancellation sounds like the issue. A membership specialist can review renewal or cancellation terms. What time works for a quick membership account review?"
         },
         {
           "call_control": "continue-call",
@@ -2268,11 +2268,11 @@
           "confirmed_gaps": [
             "return_or_warranty"
           ],
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short product support review; what time works for that review?",
+          "final_response": "Got it, return or warranty sounds like the issue. A support sales specialist can review return or warranty policy. What time works for a quick product support review?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short product support review; what time works for that review?",
+          "provider_rendered_text": "Got it, return or warranty sounds like the issue. A support sales specialist can review return or warranty policy. What time works for a quick product support review?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -2292,7 +2292,7 @@
           "send_info_state": null,
           "target_gap": "return_or_warranty",
           "transcript": "return policy is the concern",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short product support review; what time works for that review?"
+          "tts_input_text": "Got it, return or warranty sounds like the issue. A support sales specialist can review return or warranty policy. What time works for a quick product support review?"
         },
         {
           "call_control": "continue-call",
@@ -2406,11 +2406,11 @@
           "confirmed_gaps": [
             "coverage_or_availability"
           ],
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short plan and coverage review; what time works for that review?",
+          "final_response": "Got it, coverage or availability sounds like the issue. A telecom plan specialist can review coverage and availability fit. What time works for a quick plan and coverage review?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short plan and coverage review; what time works for that review?",
+          "provider_rendered_text": "Got it, coverage or availability sounds like the issue. A telecom plan specialist can review coverage and availability fit. What time works for a quick plan and coverage review?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -2430,7 +2430,7 @@
           "send_info_state": null,
           "target_gap": "coverage_or_availability",
           "transcript": "coverage is the issue",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short plan and coverage review; what time works for that review?"
+          "tts_input_text": "Got it, coverage or availability sounds like the issue. A telecom plan specialist can review coverage and availability fit. What time works for a quick plan and coverage review?"
         },
         {
           "call_control": "continue-call",
@@ -2546,11 +2546,11 @@
           "confirmed_gaps": [
             "warranty_or_estimate"
           ],
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short service advisor inspection review; what time works for that review?",
+          "final_response": "Got it, warranty or estimate sounds like the issue. A service advisor can review warranty or estimate. What time works for a quick service advisor inspection review?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short service advisor inspection review; what time works for that review?",
+          "provider_rendered_text": "Got it, warranty or estimate sounds like the issue. A service advisor can review warranty or estimate. What time works for a quick service advisor inspection review?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -2570,7 +2570,7 @@
           "send_info_state": null,
           "target_gap": "warranty_or_estimate",
           "transcript": "warranty estimate is the problem",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short service advisor inspection review; what time works for that review?"
+          "tts_input_text": "Got it, warranty or estimate sounds like the issue. A service advisor can review warranty or estimate. What time works for a quick service advisor inspection review?"
         }
       ],
       "b2b_saas": [
@@ -2650,11 +2650,11 @@
           "confirmed_gaps": [
             "visibility_gap"
           ],
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+          "final_response": "Got it, visibility gap sounds like the issue. An implementation specialist can review visibility into workflow status. What time works for a quick operations fit review?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+          "provider_rendered_text": "Got it, visibility gap sounds like the issue. An implementation specialist can review visibility into workflow status. What time works for a quick operations fit review?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -2674,7 +2674,7 @@
           "send_info_state": null,
           "target_gap": "visibility_gap",
           "transcript": "visibility is the problem",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?"
+          "tts_input_text": "Got it, visibility gap sounds like the issue. An implementation specialist can review visibility into workflow status. What time works for a quick operations fit review?"
         }
       ],
       "healthcare_admin_or_medical_equipment": [
@@ -2754,11 +2754,11 @@
           "confirmed_gaps": [
             "specialist_review_needed"
           ],
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short specialist admin review; what time works for that review?",
+          "final_response": "Got it, specialist review needed sounds like the issue. A specialist review coordinator can review specialist review need. What time works for a quick specialist admin review?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short specialist admin review; what time works for that review?",
+          "provider_rendered_text": "Got it, specialist review needed sounds like the issue. A specialist review coordinator can review specialist review need. What time works for a quick specialist admin review?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -2778,7 +2778,7 @@
           "send_info_state": null,
           "target_gap": "specialist_review_needed",
           "transcript": "specialist review is needed",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short specialist admin review; what time works for that review?"
+          "tts_input_text": "Got it, specialist review needed sounds like the issue. A specialist review coordinator can review specialist review need. What time works for a quick specialist admin review?"
         }
       ],
       "home_services": [
@@ -2858,11 +2858,11 @@
           "confirmed_gaps": [
             "estimate_or_property_details"
           ],
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short service estimate review; what time works for that review?",
+          "final_response": "Got it, estimate or property details sounds like the issue. A service advisor can review estimate details and property context. What time works for a quick service estimate review?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short service estimate review; what time works for that review?",
+          "provider_rendered_text": "Got it, estimate or property details sounds like the issue. A service advisor can review estimate details and property context. What time works for a quick service estimate review?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -2882,7 +2882,7 @@
           "send_info_state": null,
           "target_gap": "estimate_or_property_details",
           "transcript": "estimate is unclear",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short service estimate review; what time works for that review?"
+          "tts_input_text": "Got it, estimate or property details sounds like the issue. A service advisor can review estimate details and property context. What time works for a quick service estimate review?"
         }
       ],
       "insurance": [
@@ -2962,11 +2962,11 @@
           "confirmed_gaps": [
             "premium_or_budget"
           ],
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+          "final_response": "Got it, premium sounds like the issue. A licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+          "provider_rendered_text": "Got it, premium sounds like the issue. A licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -2986,7 +2986,7 @@
           "send_info_state": null,
           "target_gap": "premium_or_budget",
           "transcript": "premium is a problem",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?"
+          "tts_input_text": "Got it, premium sounds like the issue. A licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?"
         }
       ],
       "membership_or_subscription": [
@@ -3066,11 +3066,11 @@
           "confirmed_gaps": [
             "renewal_or_cancellation"
           ],
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short membership account review; what time works for that review?",
+          "final_response": "Got it, renewal or cancellation sounds like the issue. A membership specialist can review renewal or cancellation terms. What time works for a quick membership account review?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short membership account review; what time works for that review?",
+          "provider_rendered_text": "Got it, renewal or cancellation sounds like the issue. A membership specialist can review renewal or cancellation terms. What time works for a quick membership account review?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -3090,7 +3090,7 @@
           "send_info_state": null,
           "target_gap": "renewal_or_cancellation",
           "transcript": "renewal is the issue",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short membership account review; what time works for that review?"
+          "tts_input_text": "Got it, renewal or cancellation sounds like the issue. A membership specialist can review renewal or cancellation terms. What time works for a quick membership account review?"
         }
       ],
       "retail_or_ecommerce_support_sales": [
@@ -3170,11 +3170,11 @@
           "confirmed_gaps": [
             "return_or_warranty"
           ],
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short product support review; what time works for that review?",
+          "final_response": "Got it, return or warranty sounds like the issue. A support sales specialist can review return or warranty policy. What time works for a quick product support review?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short product support review; what time works for that review?",
+          "provider_rendered_text": "Got it, return or warranty sounds like the issue. A support sales specialist can review return or warranty policy. What time works for a quick product support review?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -3194,7 +3194,7 @@
           "send_info_state": null,
           "target_gap": "return_or_warranty",
           "transcript": "return policy is the concern",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short product support review; what time works for that review?"
+          "tts_input_text": "Got it, return or warranty sounds like the issue. A support sales specialist can review return or warranty policy. What time works for a quick product support review?"
         }
       ],
       "telecom": [
@@ -3274,11 +3274,11 @@
           "confirmed_gaps": [
             "coverage_or_availability"
           ],
-          "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short plan and coverage review; what time works for that review?",
+          "final_response": "Got it, coverage or availability sounds like the issue. A telecom plan specialist can review coverage and availability fit. What time works for a quick plan and coverage review?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short plan and coverage review; what time works for that review?",
+          "provider_rendered_text": "Got it, coverage or availability sounds like the issue. A telecom plan specialist can review coverage and availability fit. What time works for a quick plan and coverage review?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -3298,7 +3298,7 @@
           "send_info_state": null,
           "target_gap": "coverage_or_availability",
           "transcript": "coverage is the issue",
-          "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short plan and coverage review; what time works for that review?"
+          "tts_input_text": "Got it, coverage or availability sounds like the issue. A telecom plan specialist can review coverage and availability fit. What time works for a quick plan and coverage review?"
         }
       ]
     },
@@ -4308,11 +4308,11 @@
           "campaign_playbook_id": "synthetic-automotive-service-regression-001-playbook",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "I am asking whether vehicle issue, repair timing, or warranty or estimate are worth a possible service advisor inspection review. Which part should I ask about first, if any?",
+          "final_response": "The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?",
           "handoff_target_state": null,
           "lead_followup_state": null,
           "outgoing_candidate_gaps": [],
-          "provider_rendered_text": "I am asking whether vehicle issue, repair timing, or warranty or estimate are worth a possible service advisor inspection review. Which part should I ask about first, if any?",
+          "provider_rendered_text": "The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?",
           "safety_flags": {
             "creates_calendar_event": false,
             "local_llm_calls_made": false,
@@ -4332,7 +4332,7 @@
           "send_info_state": null,
           "target_gap": null,
           "transcript": "I do not understand",
-          "tts_input_text": "I am asking whether vehicle issue, repair timing, or warranty or estimate are worth a possible service advisor inspection review. Which part should I ask about first, if any?"
+          "tts_input_text": "The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?"
         },
         {
           "call_control": "continue-call",

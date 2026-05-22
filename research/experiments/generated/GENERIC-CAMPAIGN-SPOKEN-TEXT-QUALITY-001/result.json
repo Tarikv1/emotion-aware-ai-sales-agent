@@ -36,13 +36,13 @@
     },
     {
       "call_control": "continue-call",
-      "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
-      "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+      "final_response": "Got it, visibility gap sounds like the issue; an implementation specialist can review visibility into workflow status. What time works for a quick operations fit review?",
+      "provider_rendered_text": "Got it, visibility gap sounds like the issue; an implementation specialist can review visibility into workflow status. What time works for a quick operations fit review?",
       "scenario_id": "pain_confirmed",
       "semantic": "pain_confirmed",
       "target_gap": "visibility_gap",
       "transcript": "visibility is the problem",
-      "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+      "tts_input_text": "Got it, visibility gap sounds like the issue; an implementation specialist can review visibility into workflow status. What time works for a quick operations fit review?",
       "vertical": "b2b_saas"
     },
     {
@@ -146,13 +146,13 @@
     },
     {
       "call_control": "continue-call",
-      "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
-      "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+      "final_response": "Got it, premium sounds like the issue; a licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
+      "provider_rendered_text": "Got it, premium sounds like the issue; a licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
       "scenario_id": "pain_confirmed",
       "semantic": "pain_confirmed",
       "target_gap": "premium_or_budget",
       "transcript": "premium is a problem",
-      "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+      "tts_input_text": "Got it, premium sounds like the issue; a licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
       "vertical": "insurance"
     },
     {
@@ -256,13 +256,13 @@
     },
     {
       "call_control": "continue-call",
-      "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short plan and coverage review; what time works for that review?",
-      "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short plan and coverage review; what time works for that review?",
+      "final_response": "Got it, coverage or availability sounds like the issue; a telecom plan specialist can review coverage and availability fit. What time works for a quick plan and coverage review?",
+      "provider_rendered_text": "Got it, coverage or availability sounds like the issue; a telecom plan specialist can review coverage and availability fit. What time works for a quick plan and coverage review?",
       "scenario_id": "pain_confirmed",
       "semantic": "pain_confirmed",
       "target_gap": "coverage_or_availability",
       "transcript": "coverage is the issue",
-      "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short plan and coverage review; what time works for that review?",
+      "tts_input_text": "Got it, coverage or availability sounds like the issue; a telecom plan specialist can review coverage and availability fit. What time works for a quick plan and coverage review?",
       "vertical": "telecom"
     },
     {
@@ -366,13 +366,13 @@
     },
     {
       "call_control": "continue-call",
-      "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short service estimate review; what time works for that review?",
-      "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short service estimate review; what time works for that review?",
+      "final_response": "Got it, estimate or property details sounds like the issue; a service advisor can review estimate details and property context. What time works for a quick service estimate review?",
+      "provider_rendered_text": "Got it, estimate or property details sounds like the issue; a service advisor can review estimate details and property context. What time works for a quick service estimate review?",
       "scenario_id": "pain_confirmed",
       "semantic": "pain_confirmed",
       "target_gap": "estimate_or_property_details",
       "transcript": "estimate is unclear",
-      "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short service estimate review; what time works for that review?",
+      "tts_input_text": "Got it, estimate or property details sounds like the issue; a service advisor can review estimate details and property context. What time works for a quick service estimate review?",
       "vertical": "home_services"
     },
     {
@@ -476,13 +476,13 @@
     },
     {
       "call_control": "continue-call",
-      "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short specialist admin review; what time works for that review?",
-      "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short specialist admin review; what time works for that review?",
+      "final_response": "Got it, specialist review needed sounds like the issue; a specialist review coordinator can review specialist review need. What time works for a quick specialist admin review?",
+      "provider_rendered_text": "Got it, specialist review needed sounds like the issue; a specialist review coordinator can review specialist review need. What time works for a quick specialist admin review?",
       "scenario_id": "pain_confirmed",
       "semantic": "pain_confirmed",
       "target_gap": "specialist_review_needed",
       "transcript": "specialist review is needed",
-      "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short specialist admin review; what time works for that review?",
+      "tts_input_text": "Got it, specialist review needed sounds like the issue; a specialist review coordinator can review specialist review need. What time works for a quick specialist admin review?",
       "vertical": "healthcare_admin_or_medical_equipment"
     },
     {
@@ -586,13 +586,13 @@
     },
     {
       "call_control": "continue-call",
-      "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short service advisor inspection review; what time works for that review?",
-      "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short service advisor inspection review; what time works for that review?",
+      "final_response": "Got it, warranty or estimate sounds like the issue; a service advisor can review warranty or estimate. What time works for a quick service advisor inspection review?",
+      "provider_rendered_text": "Got it, warranty or estimate sounds like the issue; a service advisor can review warranty or estimate. What time works for a quick service advisor inspection review?",
       "scenario_id": "pain_confirmed",
       "semantic": "pain_confirmed",
       "target_gap": "warranty_or_estimate",
       "transcript": "warranty estimate is the problem",
-      "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short service advisor inspection review; what time works for that review?",
+      "tts_input_text": "Got it, warranty or estimate sounds like the issue; a service advisor can review warranty or estimate. What time works for a quick service advisor inspection review?",
       "vertical": "automotive_service"
     },
     {
@@ -696,13 +696,13 @@
     },
     {
       "call_control": "continue-call",
-      "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short membership account review; what time works for that review?",
-      "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short membership account review; what time works for that review?",
+      "final_response": "Got it, renewal or cancellation sounds like the issue; a membership specialist can review renewal or cancellation terms. What time works for a quick membership account review?",
+      "provider_rendered_text": "Got it, renewal or cancellation sounds like the issue; a membership specialist can review renewal or cancellation terms. What time works for a quick membership account review?",
       "scenario_id": "pain_confirmed",
       "semantic": "pain_confirmed",
       "target_gap": "renewal_or_cancellation",
       "transcript": "renewal is the issue",
-      "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short membership account review; what time works for that review?",
+      "tts_input_text": "Got it, renewal or cancellation sounds like the issue; a membership specialist can review renewal or cancellation terms. What time works for a quick membership account review?",
       "vertical": "membership_or_subscription"
     },
     {
@@ -806,13 +806,13 @@
     },
     {
       "call_control": "continue-call",
-      "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short product support review; what time works for that review?",
-      "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short product support review; what time works for that review?",
+      "final_response": "Got it, return or warranty sounds like the issue; a support sales specialist can review return or warranty policy. What time works for a quick product support review?",
+      "provider_rendered_text": "Got it, return or warranty sounds like the issue; a support sales specialist can review return or warranty policy. What time works for a quick product support review?",
       "scenario_id": "pain_confirmed",
       "semantic": "pain_confirmed",
       "target_gap": "return_or_warranty",
       "transcript": "return policy is the concern",
-      "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short product support review; what time works for that review?",
+      "tts_input_text": "Got it, return or warranty sounds like the issue; a support sales specialist can review return or warranty policy. What time works for a quick product support review?",
       "vertical": "retail_or_ecommerce_support_sales"
     },
     {

@@ -2563,6 +2563,7 @@ def render_html(metadata: dict) -> str:
           body: JSON.stringify({{
             transcript: text,
             campaign_id: selectedCampaignConfigPath() ? null : campaign.value || metadata.default_campaign_id,
+            campaign_selector_mode: selectedCampaignTrace().campaign_selector_mode,
             campaign_config_path: selectedCampaignConfigPath() || null,
             stage: metadata.default_stage,
             input_type: inputTypeOverride,
@@ -2668,6 +2669,7 @@ def render_html(metadata: dict) -> str:
           error: "turn failed",
           error_type: error.name || "Error",
           message: error.message || String(error),
+          campaign_selector_mode: selectedCampaignTrace().campaign_selector_mode,
           campaign_config_path: selectedCampaignConfigPath() || null,
           route_signal_fallback_used: false,
           provider_calls_made: false,
@@ -2854,6 +2856,22 @@ def turn_runtime_error_payload(exc: Exception, campaign_config_path: str | Path 
     }
 
 
+def selected_campaign_config_path_from_payload(payload: dict, metadata: dict) -> str:
+    selector_mode = str(payload.get("campaign_selector_mode") or "").strip()
+    if selector_mode == "routesignal_live_demo":
+        return ""
+    if selector_mode == "generic_config":
+        selected_path = str(payload.get("campaign_config_path") or "").strip()
+        if not selected_path:
+            raise campaign_registry.CampaignConfigValidationError(
+                ["campaign_config_path is required when campaign_selector_mode is generic_config"]
+            )
+        return selected_path
+    if "campaign_config_path" in payload:
+        return str(payload.get("campaign_config_path") or "").strip()
+    return str(metadata.get("default_campaign_config_path") or "").strip()
+
+
 def safe_audio_path(requested: str, private_out: Path) -> Path:
     candidate = (ROOT / requested).resolve()
     allowed = private_out.resolve()
@@ -2935,8 +2953,9 @@ def make_handler(metadata: dict, cases_path: Path, private_out: Path):
                     return
                 session_id = str(payload.get("session_id") or "default-session")
                 session_state = sessions.setdefault(session_id, {"turns": []})
-                campaign_config_path = str(payload.get("campaign_config_path") or metadata.get("default_campaign_config_path") or "").strip()
+                campaign_config_path = ""
                 try:
+                    campaign_config_path = selected_campaign_config_path_from_payload(payload, metadata)
                     turn = build_browser_demo_turn_packet(
                         transcript=transcript,
                         campaign_id=str(payload.get("campaign_id") or metadata["default_campaign_id"]),
@@ -2973,7 +2992,7 @@ def make_handler(metadata: dict, cases_path: Path, private_out: Path):
             except Exception as exc:
                 selected_path = ""
                 try:
-                    selected_path = str((payload or {}).get("campaign_config_path") or metadata.get("default_campaign_config_path") or "").strip()
+                    selected_path = selected_campaign_config_path_from_payload(payload or {}, metadata)
                 except Exception:
                     selected_path = ""
                 self.send_json(turn_runtime_error_payload(exc, selected_path), status=500)

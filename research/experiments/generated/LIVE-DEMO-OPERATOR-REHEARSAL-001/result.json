@@ -90,7 +90,7 @@
           "manual_work"
         ],
         "creates_calendar_event": false,
-        "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+        "final_response": "Got it, manual work sounds like the issue; an implementation specialist can review manual workflow load. What time works for a quick operations fit review?",
         "lead_followup_state": {},
         "live_tts_used": false,
         "local_llm_calls_made": false,
@@ -113,7 +113,7 @@
         "sends_email": false,
         "target_gap": "manual_work",
         "transcript": "manual work is a problem",
-        "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+        "tts_input_text": "Got it, manual work sounds like the issue; an implementation specialist can review manual workflow load. What time works for a quick operations fit review?",
         "vertical_id": "b2b_saas",
         "writes_crm": false
       },
@@ -203,7 +203,7 @@
       "has_download_payload": true,
       "has_generic_dry_run_warning": true,
       "has_selector_metadata_panel": true,
-      "html_length": 60383,
+      "html_length": 60549,
       "metadata_generic_campaign_count": 8
     },
     "insurance_rehearsal": [
@@ -293,7 +293,7 @@
           "premium_or_budget"
         ],
         "creates_calendar_event": false,
-        "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+        "final_response": "Got it, premium sounds like the issue; a licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
         "lead_followup_state": {},
         "live_tts_used": false,
         "local_llm_calls_made": false,
@@ -316,7 +316,7 @@
         "sends_email": false,
         "target_gap": "premium_or_budget",
         "transcript": "premium is a problem",
-        "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+        "tts_input_text": "Got it, premium sounds like the issue; a licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
         "vertical_id": "insurance",
         "writes_crm": false
       },
@@ -390,7 +390,7 @@
         },
         "semantic": "appointment_time_given",
         "sends_email": false,
-        "target_gap": "coverage_fit",
+        "target_gap": null,
         "transcript": "tomorrow at 3 works",
         "tts_input_text": "Confirmed. I will note that time for the licensed coverage review. Goodbye.",
         "vertical_id": "insurance",
@@ -602,7 +602,7 @@
             "turn_index": 2
           },
           {
-            "agent_response": "Got it, that sounds like the part worth reviewing. The next step would be a short operations fit review; what time works for that review?",
+            "agent_response": "Got it, manual work sounds like the issue; an implementation specialist can review manual workflow load. What time works for a quick operations fit review?",
             "call_control": "continue-call",
             "campaign_selector": {
               "campaign_config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
@@ -764,7 +764,7 @@
             "turn_index": 2
           },
           {
-            "agent_response": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+            "agent_response": "Got it, premium sounds like the issue; a licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
             "call_control": "continue-call",
             "campaign_selector": {
               "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",

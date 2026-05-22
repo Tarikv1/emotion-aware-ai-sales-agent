@@ -1501,7 +1501,7 @@
             "integration_risk",
             "visibility_gap"
           ],
-          "candidate_response": "Got it, that sounds like the part worth reviewing. The next step would be a short human fit and technical review; what time works for that review?",
+          "candidate_response": "Got it, visibility gap sounds like the issue. A technical fit specialist can review visibility-gap review. What time works for a quick human fit and technical review?",
           "cleared_gaps": [],
           "confidence": 0.88,
           "confirmed_gaps": [
@@ -2281,7 +2281,7 @@
             "scheduling_urgency",
             "estimate_or_property_details"
           ],
-          "candidate_response": "Got it, that sounds like the part worth reviewing. The next step would be a short inspection or estimate review; what time works for that review?",
+          "candidate_response": "Got it, estimate or property details sounds like the issue. A qualified service coordinator can review estimate and property detail review. What time works for a quick inspection or estimate review?",
           "cleared_gaps": [],
           "confidence": 0.88,
           "confirmed_gaps": [
@@ -3061,7 +3061,7 @@
             "premium_or_budget",
             "renewal_or_timing"
           ],
-          "candidate_response": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+          "candidate_response": "Got it, premium sounds like the issue. A licensed insurance specialist can review premium and budget review. What time works for a quick licensed coverage review?",
           "cleared_gaps": [],
           "confidence": 0.88,
           "confirmed_gaps": [
@@ -3245,7 +3245,7 @@
             "plan_fit",
             "contract_or_switching"
           ],
-          "candidate_response": "Got it, that sounds like the part worth reviewing. The next step would be a short human plan and availability review; what time works for that review?",
+          "candidate_response": "Got it, coverage or availability sounds like the issue. A telecom account specialist can review coverage and availability review. What time works for a quick human plan and availability review?",
           "cleared_gaps": [],
           "confidence": 0.88,
           "confirmed_gaps": [

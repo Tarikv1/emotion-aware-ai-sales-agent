@@ -12,7 +12,7 @@
   "existing_private_audio_artifact": {
     "audio_file_created": true,
     "audio_output_path": "data\\private\\live-demo-001\\generic-campaigns\\audio\\RESP-003-synthetic-insurance-review-en-elevenlabs-3de21fed.mp3",
-    "audio_url": "data\\private\\live-demo-001\\generic-campaigns\\audio\\RESP-003-synthetic-insurance-review-en-elevenlabs-3de21fed.mp3",
+    "audio_url": "/audio?path=data/private/live-demo-001/generic-campaigns/audio/RESP-003-synthetic-insurance-review-en-elevenlabs-3de21fed.mp3",
     "campaign_id": "synthetic-insurance-review",
     "campaign_selector_mode": "generic_config",
     "content_type_guess": "audio/mpeg",
@@ -21,18 +21,18 @@
     "fallback_reason": null,
     "first_bytes": "49 44 33 04 00 00 00 00 00 23 54 53 53 45 00 00",
     "found": true,
-    "packet_path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260522-215913.json",
+    "packet_path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260522-222620.json",
     "private_root": "data/private/live-demo-001",
     "provider_calls_made": true,
     "response_content_type": "audio/mpeg",
     "signature": "mp3",
-    "size": 152182
+    "size": 156779
   },
   "existing_private_audio_serving": {
-    "body_length": 152182,
+    "body_length": 156779,
     "body_preview": "",
     "body_signature": "mp3",
-    "content_length_header": "152182",
+    "content_length_header": "156779",
     "content_type": "audio/mpeg",
     "status": 200
   },

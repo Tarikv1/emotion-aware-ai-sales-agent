@@ -78,10 +78,10 @@
         "confirmed_gaps": [
           "premium_or_budget"
         ],
-        "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+        "final_response": "Got it, premium sounds like the issue; a licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
         "handoff_target_state": {},
         "lead_followup_state": {},
-        "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+        "provider_rendered_text": "Got it, premium sounds like the issue; a licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
         "question_type": "",
         "scenario_id": "scenario-a-insurance-clear-confirm-send-info",
         "selected_action_source": "contextual_buyer_semantics",
@@ -89,7 +89,7 @@
         "send_info_state": {},
         "target_gap": "premium_or_budget",
         "transcript": "premium is a problem",
-        "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short licensed coverage review; what time works for that review?",
+        "tts_input_text": "Got it, premium sounds like the issue; a licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
         "turn_index": 4,
         "vertical": "insurance"
       },
@@ -347,10 +347,10 @@
         "confirmed_gaps": [
           "coverage_or_availability"
         ],
-        "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short plan and coverage review; what time works for that review?",
+        "final_response": "Got it, coverage or availability sounds like the issue; a telecom plan specialist can review coverage and availability fit. What time works for a quick plan and coverage review?",
         "handoff_target_state": {},
         "lead_followup_state": {},
-        "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short plan and coverage review; what time works for that review?",
+        "provider_rendered_text": "Got it, coverage or availability sounds like the issue; a telecom plan specialist can review coverage and availability fit. What time works for a quick plan and coverage review?",
         "question_type": "",
         "scenario_id": "scenario-b-telecom-possible-pain-clarify-callback",
         "selected_action_source": "contextual_buyer_semantics",
@@ -358,7 +358,7 @@
         "send_info_state": {},
         "target_gap": "coverage_or_availability",
         "transcript": "coverage is sometimes an issue",
-        "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short plan and coverage review; what time works for that review?",
+        "tts_input_text": "Got it, coverage or availability sounds like the issue; a telecom plan specialist can review coverage and availability fit. What time works for a quick plan and coverage review?",
         "turn_index": 3,
         "vertical": "telecom"
       },
@@ -368,10 +368,10 @@
         "confirmed_gaps": [
           "coverage_or_availability"
         ],
-        "final_response": "I am asking whether coverage or availability, plan fit, or contract or switching are worth a possible plan and coverage review. Which part should I ask about first, if any?",
+        "final_response": "The quick check is whether any of these areas is worth a short plan and coverage review: coverage or availability, plan fit, or contract or switching. If not, I can stop here; which part should I check first?",
         "handoff_target_state": {},
         "lead_followup_state": {},
-        "provider_rendered_text": "I am asking whether coverage or availability, plan fit, or contract or switching are worth a possible plan and coverage review. Which part should I ask about first, if any?",
+        "provider_rendered_text": "The quick check is whether any of these areas is worth a short plan and coverage review: coverage or availability, plan fit, or contract or switching. If not, I can stop here; which part should I check first?",
         "question_type": "",
         "scenario_id": "scenario-b-telecom-possible-pain-clarify-callback",
         "selected_action_source": "pre_speech_conversation_stability_guard",
@@ -379,7 +379,7 @@
         "send_info_state": {},
         "target_gap": null,
         "transcript": "what do you mean?",
-        "tts_input_text": "I am asking whether coverage or availability, plan fit, or contract or switching are worth a possible plan and coverage review. Which part should I ask about first, if any?",
+        "tts_input_text": "The quick check is whether any of these areas is worth a short plan and coverage review: coverage or availability, plan fit, or contract or switching. If not, I can stop here; which part should I check first?",
         "turn_index": 4,
         "vertical": "telecom"
       },
@@ -982,10 +982,10 @@
         "confirmed_gaps": [
           "return_or_warranty"
         ],
-        "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short product support review; what time works for that review?",
+        "final_response": "Got it, return or warranty sounds like the issue; a support sales specialist can review return or warranty policy. What time works for a quick product support review?",
         "handoff_target_state": {},
         "lead_followup_state": {},
-        "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short product support review; what time works for that review?",
+        "provider_rendered_text": "Got it, return or warranty sounds like the issue; a support sales specialist can review return or warranty policy. What time works for a quick product support review?",
         "question_type": "",
         "scenario_id": "scenario-f-retail-pain-price-guarantee-time",
         "selected_action_source": "contextual_buyer_semantics",
@@ -993,7 +993,7 @@
         "send_info_state": {},
         "target_gap": "return_or_warranty",
         "transcript": "return policy is the concern",
-        "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short product support review; what time works for that review?",
+        "tts_input_text": "Got it, return or warranty sounds like the issue; a support sales specialist can review return or warranty policy. What time works for a quick product support review?",
         "turn_index": 3,
         "vertical": "retail_or_ecommerce_support_sales"
       },
@@ -1139,10 +1139,10 @@
         "call_control": "continue-call",
         "cleared_gaps": [],
         "confirmed_gaps": [],
-        "final_response": "I am asking whether vehicle issue, repair timing, or warranty or estimate are worth a possible service advisor inspection review. Which part should I ask about first, if any?",
+        "final_response": "The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?",
         "handoff_target_state": {},
         "lead_followup_state": {},
-        "provider_rendered_text": "I am asking whether vehicle issue, repair timing, or warranty or estimate are worth a possible service advisor inspection review. Which part should I ask about first, if any?",
+        "provider_rendered_text": "The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?",
         "question_type": "",
         "scenario_id": "scenario-g-automotive-fallback-loop-resistance",
         "selected_action_source": "pre_speech_conversation_stability_guard",
@@ -1150,7 +1150,7 @@
         "send_info_state": {},
         "target_gap": null,
         "transcript": "I do not understand",
-        "tts_input_text": "I am asking whether vehicle issue, repair timing, or warranty or estimate are worth a possible service advisor inspection review. Which part should I ask about first, if any?",
+        "tts_input_text": "The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?",
         "turn_index": 3,
         "vertical": "automotive_service"
       },
@@ -1236,10 +1236,10 @@
         "confirmed_gaps": [
           "warranty_or_estimate"
         ],
-        "final_response": "Got it, that sounds like the part worth reviewing. The next step would be a short service advisor inspection review; what time works for that review?",
+        "final_response": "Got it, warranty or estimate sounds like the issue; a service advisor can review warranty or estimate. What time works for a quick service advisor inspection review?",
         "handoff_target_state": {},
         "lead_followup_state": {},
-        "provider_rendered_text": "Got it, that sounds like the part worth reviewing. The next step would be a short service advisor inspection review; what time works for that review?",
+        "provider_rendered_text": "Got it, warranty or estimate sounds like the issue; a service advisor can review warranty or estimate. What time works for a quick service advisor inspection review?",
         "question_type": "",
         "scenario_id": "scenario-g-automotive-fallback-loop-resistance",
         "selected_action_source": "contextual_buyer_semantics",
@@ -1247,7 +1247,7 @@
         "send_info_state": {},
         "target_gap": "warranty_or_estimate",
         "transcript": "warranty estimate is the problem",
-        "tts_input_text": "Got it, that sounds like the part worth reviewing. The next step would be a short service advisor inspection review; what time works for that review?",
+        "tts_input_text": "Got it, warranty or estimate sounds like the issue; a service advisor can review warranty or estimate. What time works for a quick service advisor inspection review?",
         "turn_index": 8,
         "vertical": "automotive_service"
       },
@@ -1257,10 +1257,10 @@
         "confirmed_gaps": [
           "warranty_or_estimate"
         ],
-        "final_response": "Got it, you already said warranty or estimate is the issue. The next step would be a short service advisor inspection review; what time works for that review?",
+        "final_response": "Got it, you already said warranty or estimate is the issue; a service advisor can review warranty or estimate. What time works for a quick service advisor inspection review?",
         "handoff_target_state": {},
         "lead_followup_state": {},
-        "provider_rendered_text": "Got it, you already said warranty or estimate is the issue. The next step would be a short service advisor inspection review; what time works for that review?",
+        "provider_rendered_text": "Got it, you already said warranty or estimate is the issue; a service advisor can review warranty or estimate. What time works for a quick service advisor inspection review?",
         "question_type": "",
         "scenario_id": "scenario-g-automotive-fallback-loop-resistance",
         "selected_action_source": "contextual_buyer_semantics",
@@ -1268,7 +1268,7 @@
         "send_info_state": {},
         "target_gap": "warranty_or_estimate",
         "transcript": "I already told you",
-        "tts_input_text": "Got it, you already said warranty or estimate is the issue. The next step would be a short service advisor inspection review; what time works for that review?",
+        "tts_input_text": "Got it, you already said warranty or estimate is the issue; a service advisor can review warranty or estimate. What time works for a quick service advisor inspection review?",
         "turn_index": 9,
         "vertical": "automotive_service"
       },

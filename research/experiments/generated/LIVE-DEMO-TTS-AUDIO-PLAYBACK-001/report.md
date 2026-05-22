@@ -1,10 +1,10 @@
 # LIVE-DEMO-TTS-AUDIO-PLAYBACK-001
 
 - Existing failed/live private artifact found: `true`
-- Packet path: `data/private/live-demo-001/LIVE-DEMO-001-turn-20260522-215913.json`
+- Packet path: `data/private/live-demo-001/LIVE-DEMO-001-turn-20260522-222620.json`
 - Audio output path: `data\private\live-demo-001\generic-campaigns\audio\RESP-003-synthetic-insurance-review-en-elevenlabs-3de21fed.mp3`
-- Audio URL: `data\private\live-demo-001\generic-campaigns\audio\RESP-003-synthetic-insurance-review-en-elevenlabs-3de21fed.mp3`
-- File size: `152182`
+- Audio URL: `/audio?path=data/private/live-demo-001/generic-campaigns/audio/RESP-003-synthetic-insurance-review-en-elevenlabs-3de21fed.mp3`
+- File size: `156779`
 - Extension: `.mp3`
 - Detected signature: `mp3`
 - Content type guess: `audio/mpeg`

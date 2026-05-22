@@ -894,7 +894,7 @@ def _confirmed_gaps_from_text(normalized: str, campaign: dict | None = None) -> 
         if not _evidence_matches_gap(normalized, gap_id, campaign, "evidence_negative")
         and (
             _evidence_matches_gap(normalized, gap_id, campaign, "evidence_positive")
-            or (_has_pain_signal(normalized) and _text_matches_gap(normalized, gap_id, campaign))
+            or (_has_gap_specific_pain_signal(normalized, gap_id, campaign) and _text_matches_gap(normalized, gap_id, campaign))
         )
     ]
     return _ordered_candidate_gaps(gaps, campaign)
@@ -1189,6 +1189,32 @@ def _is_unclear_possible_pain(normalized: str) -> bool:
             "not always",
         },
     )
+
+
+def _has_gap_specific_pain_signal(normalized: str, gap_id: str | None, campaign: dict | None) -> bool:
+    if not gap_id:
+        return False
+    if _has_pain_signal(normalized):
+        return True
+    if _is_routesignal_playbook(campaign):
+        return False
+    if str(gap_id) in {"repair_timing", "renewal_or_timing"}:
+        return _contains(
+            normalized,
+            {
+                "too long",
+                "pretty long",
+                "usually pretty long",
+                "takes long",
+                "takes too long",
+                "taking long",
+                "taking too long",
+                "long wait",
+                "long waits",
+                "long timing",
+            },
+        )
+    return False
 
 
 def _is_repeat_problem_reference(normalized: str) -> bool:
@@ -1549,11 +1575,155 @@ def _is_generic_product_detail_scope_question(normalized: str, campaign: dict | 
     )
 
 
-def _generic_product_detail_scope_response(language: str, normalized: str, campaign: dict | None) -> str:
+def _gap_short_focus(gap_id: str | None, campaign: dict | None) -> str:
+    if gap_id == "premium_or_budget":
+        return "premium"
+    if gap_id == "repair_timing":
+        return "repair timing"
+    return _customer_label(gap_id, campaign)
+
+
+def _generic_product_detail_scope_response(
+    language: str,
+    normalized: str,
+    campaign: dict | None,
+    *,
+    selected_gap: str | None = None,
+) -> str:
     if session_policy.is_generic_product_detail_limitation_ack(normalized):
         repeated = _contains(normalized, {"only a licensed", "only a license", "only licensed", "only license"})
+        if str((campaign or {}).get("vertical_id") or "") == "insurance":
+            focus = _gap_short_focus(selected_gap, campaign)
+            if repeated:
+                return (
+                    "Yes, that is right. I can explain the purpose of this call, but I can't give detailed policy "
+                    "or coverage advice. A licensed insurance specialist would handle that. "
+                    f"Since you mentioned {focus}, the review would focus there. I can note a time, or stop here."
+                )
+            return (
+                "Correct, I can't give detailed policy or coverage advice on this call. "
+                "This call only checks whether a licensed coverage review would be useful. "
+                f"Since you mentioned {focus}, the review would focus there. I can note a time, or stop here."
+            )
         return session_policy.generic_campaign_product_detail_limitation_text(language, campaign, repeated=repeated)
+    if str((campaign or {}).get("vertical_id") or "") == "insurance" and selected_gap:
+        focus = _gap_short_focus(selected_gap, campaign)
+        if _contains(normalized, {"i am asking the question", "i am asking what", "asking what your product"}):
+            return (
+                "I hear you. I can explain the purpose of this call, but not detailed policy or coverage advice. "
+                "This call only checks whether a licensed coverage review would be useful. "
+                f"Since you mentioned {focus}, the review would focus there. I can note a time, or stop here."
+            )
+        return (
+            "This is not a product-detail call. I can only check whether a short licensed coverage review is useful. "
+            f"Since you mentioned {focus}, the review would focus there."
+        )
     return session_policy.generic_campaign_product_detail_text(language, campaign)
+
+
+def _is_time_constrained_permission(normalized: str) -> bool:
+    return _contains(
+        normalized,
+        {
+            "make it quick",
+            "keep it quick",
+            "short minute",
+            "short minute make",
+            "one minute",
+            "quick minute",
+            "real quick",
+            "be quick",
+            "quickly",
+        },
+    )
+
+
+def _generic_quick_permission_response(campaign: dict | None) -> str:
+    labels = [_customer_label(gap, campaign) for gap in _core_diagnostic_gaps(campaign)]
+    return f"Sure, one quick check: is this mainly about {_join_or(labels)}?"
+
+
+def _is_tentative_gap_interest(normalized: str, campaign: dict | None) -> str | None:
+    if _is_routesignal_playbook(campaign) or not session_policy.is_generic_campaign_config(campaign):
+        return None
+    if not _contains(normalized, {"maybe", "possibly", "might be", "could be", "sort of"}):
+        return None
+    return _gap_from_text(normalized, campaign)
+
+
+def _tentative_gap_interest_response(gap_id: str | None, campaign: dict | None) -> str:
+    vertical = str((campaign or {}).get("vertical_id") or "")
+    if vertical == "insurance" and gap_id == "coverage_fit":
+        return (
+            "Maybe coverage fit - understood. I can't give policy advice here, but a licensed specialist can review "
+            "whether the coverage matches your situation. Should I note a callback time, or stop here?"
+        )
+    context = _campaign_context(campaign)
+    owner = session_policy.generic_campaign_role_phrase(str(context.get("human_followup_owner") or "qualified specialist"))
+    target = str(context.get("appointment_target") or "human review")
+    label = _customer_label(gap_id, campaign)
+    return f"Maybe {label} - understood. {session_policy.sentence_start(owner)} can review that in a short {target}. Should I note a callback time, or stop here?"
+
+
+def _is_generic_purpose_question(normalized: str) -> bool:
+    return _contains(
+        normalized,
+        {
+            "why are you asking",
+            "why are you asking for this",
+            "why do you ask",
+            "why do you need",
+            "why are you collecting",
+            "why did you ask",
+        },
+    )
+
+
+def _is_generic_explanation_acceptance(normalized: str, turns: list[dict[str, Any]]) -> bool:
+    if normalized not in {"yeah that would be good", "that would be good", "yes that would be good", "yeah please", "yes please"}:
+        return False
+    previous = session_policy.normalize_text(_previous_response(turns))
+    return _contains(previous, {"explain", "fair question", "because"})
+
+
+def _is_generic_contact_boundary_contradiction(normalized: str) -> bool:
+    return _contains(normalized, {"not the right contact", "why did you say", "why did you ask a question", "why did you say should i ask"})
+
+
+def _generic_purpose_response(gap_id: str | None, campaign: dict | None) -> str:
+    if str((campaign or {}).get("vertical_id") or "") == "automotive_service" and gap_id == "repair_timing":
+        return (
+            "Fair question - I'm asking because long repair timing is the part a service advisor can review. "
+            "I don't need more details here; I can note a callback time, or stop."
+        )
+    context = _campaign_context(campaign)
+    owner = session_policy.generic_campaign_role_phrase(str(context.get("human_followup_owner") or "qualified specialist"))
+    label = _customer_label(gap_id, campaign)
+    return f"Fair question - I'm asking because {label} is the part {owner} can review. I can note a callback time, or stop here."
+
+
+def _generic_explanation_acceptance_response(gap_id: str | None, campaign: dict | None) -> str:
+    if str((campaign or {}).get("vertical_id") or "") == "automotive_service" and gap_id == "repair_timing":
+        return (
+            "The reason is to see whether a service advisor should review the timing issue with you. "
+            "Since you said repair timing is long, that is enough context. Should I note a callback time, or stop here?"
+        )
+    context = _campaign_context(campaign)
+    owner = session_policy.generic_campaign_role_phrase(str(context.get("human_followup_owner") or "qualified specialist"))
+    label = _customer_label(gap_id, campaign)
+    return f"The reason is to see whether {owner} should review {label} with you. That is enough context. Should I note a callback time, or stop here?"
+
+
+def _generic_contact_boundary_repair_response(gap_id: str | None, campaign: dict | None) -> str:
+    if str((campaign or {}).get("vertical_id") or "") == "automotive_service" and gap_id == "repair_timing":
+        return (
+            "You're right - that wording was confusing. I can ask basic fit questions, but detailed service advice "
+            "should go to a service advisor. Since repair timing is the issue, I can note a callback time or stop here."
+        )
+    context = _campaign_context(campaign)
+    owner = session_policy.generic_campaign_role_phrase(str(context.get("human_followup_owner") or "qualified specialist"))
+    label = _customer_label(gap_id, campaign)
+    return f"You're right - that wording was confusing. I can ask basic fit questions, but detailed advice should go to {owner}. Since {label} is the issue, I can note a callback time or stop here."
 
 
 def _is_account_support_boundary_question(normalized: str) -> bool:
@@ -1814,16 +1984,18 @@ def _pain_confirmed_response(
     gap_label = "missed callbacks" if gap == "callbacks" else review_label
     bridge = _value_bridge(gap, campaign)
     if not _is_routesignal_playbook(campaign):
-        acknowledgement = (
-            f"Got it, you already said {gap_label} is the issue. "
-            if acknowledge_repeat
-            else "Got it, that sounds like the part worth reviewing. "
-        )
         context = _campaign_context(campaign)
         target = str(context.get("appointment_target") or "human review")
+        owner = session_policy.generic_campaign_role_phrase(str(context.get("human_followup_owner") or "qualified specialist"))
+        label = _gap_short_focus(gap, campaign)
+        acknowledgement = (
+            f"Got it, you already said {label} is the issue. "
+            if acknowledge_repeat
+            else f"Got it, {label} sounds like the issue. "
+        )
         return (
-            f"{acknowledgement.rstrip()} "
-            f"The next step would be a short {target}; what time works for that review?"
+            f"{acknowledgement.rstrip('. ')}; {owner} can review {review_label}. "
+            f"What time works for a quick {target}?"
         )
     if acknowledge_repeat and gap == "handoffs":
         acknowledgement = "You're right, you already said handoffs get messy. "
@@ -1951,6 +2123,96 @@ def classify_contextual_buyer_semantics(
             action_id="account_support_boundary",
             dialogue_focus="qualification",
         )
+
+    if not _is_routesignal_playbook(campaign) and session_policy.is_generic_campaign_config(campaign):
+        repair_gap = confirmed_gaps[0] if confirmed_gaps else active_gap
+        if _is_generic_contact_boundary_contradiction(normalized):
+            return _frame(
+                semantic="contact_boundary_contradiction_repair",
+                transcript=transcript,
+                normalized=normalized,
+                previous_question_type=previous_question_type,
+                previous_question_text=previous_question,
+                conversation_stage=stage,
+                active_gap=active_gap,
+                confirmed_gaps=confirmed_gaps,
+                cleared_gaps=cleared_gaps,
+                pending_callback=pending_callback,
+                pending_appointment=pending_appointment,
+                target_gap=repair_gap,
+                polarity="dialogue_repair",
+                confidence=0.88,
+                next_action_hint="repair_contact_boundary_continue",
+                must_not_do=["repeat right-contact fallback", "escalate without buyer request"],
+                candidate_response=_generic_contact_boundary_repair_response(repair_gap, campaign),
+                action_id="clarify_previous_question",
+                dialogue_focus="qualification",
+            )
+        if repair_gap and _is_generic_purpose_question(normalized):
+            return _frame(
+                semantic="purpose_clarification_after_confirmed_gap",
+                transcript=transcript,
+                normalized=normalized,
+                previous_question_type=previous_question_type,
+                previous_question_text=previous_question,
+                conversation_stage=stage,
+                active_gap=active_gap,
+                confirmed_gaps=confirmed_gaps,
+                cleared_gaps=cleared_gaps,
+                pending_callback=pending_callback,
+                pending_appointment=pending_appointment,
+                target_gap=repair_gap,
+                polarity="purpose_question",
+                confidence=0.9,
+                next_action_hint="explain_purpose_without_repeating_menu",
+                must_not_do=["repeat full diagnostic menu", "erase confirmed pain"],
+                candidate_response=_generic_purpose_response(repair_gap, campaign),
+                action_id="explain_relevance",
+                dialogue_focus="qualification",
+            )
+        if repair_gap and _is_generic_explanation_acceptance(normalized, turns):
+            return _frame(
+                semantic="purpose_explanation_accepted",
+                transcript=transcript,
+                normalized=normalized,
+                previous_question_type=previous_question_type,
+                previous_question_text=previous_question,
+                conversation_stage=stage,
+                active_gap=active_gap,
+                confirmed_gaps=confirmed_gaps,
+                cleared_gaps=cleared_gaps,
+                pending_callback=pending_callback,
+                pending_appointment=pending_appointment,
+                target_gap=repair_gap,
+                polarity="acknowledgement",
+                confidence=0.86,
+                next_action_hint="explain_reason_and_offer_callback_or_stop",
+                must_not_do=["ask another generic fit question", "erase confirmed pain"],
+                candidate_response=_generic_explanation_acceptance_response(repair_gap, campaign),
+                action_id="explain_relevance",
+                dialogue_focus="qualification",
+            )
+        if previous_question_type == "permission_check" and _is_time_constrained_permission(normalized):
+            return _frame(
+                semantic="time_constrained_permission",
+                transcript=transcript,
+                normalized=normalized,
+                previous_question_type=previous_question_type,
+                previous_question_text=previous_question,
+                conversation_stage=stage,
+                active_gap=active_gap,
+                confirmed_gaps=confirmed_gaps,
+                cleared_gaps=cleared_gaps,
+                pending_callback=pending_callback,
+                pending_appointment=pending_appointment,
+                polarity="permission_granted_with_time_constraint",
+                confidence=0.9,
+                next_action_hint="ask_one_short_diagnostic",
+                must_not_do=["repeat full diagnostic menu", "ask appointment"],
+                candidate_response=_generic_quick_permission_response(campaign),
+                action_id="continue_with_session_policy",
+                dialogue_focus="qualification",
+            )
 
     if _is_confusion(normalized):
         return _frame(
@@ -2558,6 +2820,30 @@ def classify_contextual_buyer_semantics(
             dialogue_focus=active_gap or "qualification",
         )
 
+    tentative_gap = _is_tentative_gap_interest(normalized, campaign)
+    if tentative_gap:
+        return _frame(
+            semantic="tentative_gap_interest",
+            transcript=transcript,
+            normalized=normalized,
+            previous_question_type=previous_question_type,
+            previous_question_text=previous_question,
+            conversation_stage=stage,
+            active_gap=active_gap,
+            confirmed_gaps=confirmed_gaps,
+            cleared_gaps=cleared_gaps,
+            pending_callback=pending_callback,
+            pending_appointment=pending_appointment,
+            target_gap=tentative_gap,
+            polarity="unclear_pain",
+            confidence=0.84,
+            next_action_hint="acknowledge_tentative_gap_and_offer_review_or_stop",
+            must_not_do=["give regulated advice", "transfer-or-escalate", "repeat full diagnostic menu"],
+            candidate_response=_tentative_gap_interest_response(tentative_gap, campaign),
+            action_id="continue_with_session_policy",
+            dialogue_focus="qualification",
+        )
+
     if _is_generic_product_detail_scope_question(normalized, campaign):
         selected_gap = (confirmed_gaps[0] if confirmed_gaps else None) or _gap_from_text(normalized, campaign) or active_gap
         semantic = (
@@ -2583,7 +2869,7 @@ def classify_contextual_buyer_semantics(
             confidence=0.9,
             next_action_hint="answer_scope_limit_continue",
             must_not_do=["give regulated product advice", "invent product details", "escalate without buyer request"],
-            candidate_response=_generic_product_detail_scope_response(language, normalized, campaign),
+            candidate_response=_generic_product_detail_scope_response(language, normalized, campaign, selected_gap=selected_gap),
             action_id="answer_product_detail_scope_limit",
             dialogue_focus="details",
         )
@@ -3326,7 +3612,7 @@ def classify_contextual_buyer_semantics(
             dialogue_focus="qualification",
         )
 
-    if active_gap and not current_clear_gaps and _has_pain_signal(normalized):
+    if active_gap and not current_clear_gaps and _has_gap_specific_pain_signal(normalized, active_gap, campaign):
         return _frame(
             semantic="pain_confirmed",
             transcript=transcript,
@@ -3494,7 +3780,7 @@ def classify_contextual_buyer_semantics(
         )
 
     selected_gap = _gap_from_text(normalized, campaign)
-    if selected_gap and _has_pain_signal(normalized):
+    if selected_gap and _has_gap_specific_pain_signal(normalized, selected_gap, campaign):
         return _frame(
             semantic="pain_confirmed",
             transcript=transcript,
