@@ -928,6 +928,626 @@ VALIDATOR_MATRIX = {
 }
 
 
+OBJECTION_BUYER_MOVES = [
+    "price_or_budget_objection",
+    "timing_objection",
+    "no_authority_or_needs_approval",
+    "already_has_provider",
+    "competitor_comparison",
+    "trust_or_skepticism",
+    "risk_or_liability_concern",
+    "no_clear_need",
+    "too_busy_now",
+    "send_info_first",
+    "wants_proof_or_case_study",
+    "procurement_or_legal_review",
+    "security_or_privacy_review",
+    "contract_or_terms_question",
+]
+
+IDENTITY_TRUST_PRIVACY_BUYER_MOVES = [
+    "who_are_you",
+    "how_did_you_get_my_number",
+    "are_you_ai_or_robot",
+    "is_this_recorded",
+    "privacy_data_use_question",
+    "permission_to_continue_denied",
+    "language_mismatch",
+    "abusive_or_hostile_buyer",
+    "sensitive_personal_data_disclosure",
+]
+
+APPOINTMENT_NEGOTIATION_BUYER_MOVES = [
+    "appointment_time_vague",
+    "appointment_time_conflict",
+    "buyer_requests_available_times",
+    "buyer_wants_email_before_booking",
+    "buyer_defers_to_later",
+    "buyer_accepts_callback_without_time",
+    "buyer_changes_time",
+    "buyer_confirms_time",
+    "buyer_declines_after_interest",
+]
+
+VALUE_DIFFERENTIATION_BUYER_MOVES = [
+    "why_should_i_care",
+    "what_makes_you_different",
+    "what_problem_do_you_solve",
+    "what_result_can_i_expect",
+    "is_this_worth_my_time",
+    "who_is_this_for",
+    "does_this_apply_to_us",
+]
+
+SOCIAL_CONVERSATION_BUYER_MOVES = [
+    "small_talk",
+    "humor_or_sarcasm",
+    "silence_or_backchannel",
+    "interruption_or_barge_in",
+    "buyer_talks_over_agent",
+    "repeat_last_answer",
+    "slow_down_or_speak_faster",
+    "pronunciation_or_name_correction",
+    "emotional_frustration",
+]
+
+
+RESPONSE_SHAPE_LIBRARY.update(
+    {
+        "answer_identity_then_permission": _shape(
+            "answer_identity_then_permission",
+            allowed_fact_slots=["caller_identity", "client_name", "product_or_offer_name", "objective", "language"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["invent identity", "claim human when automated"],
+            appointment_pressure_level="none",
+            example_outline=[
+                "answer who is calling using caller identity and allowed campaign facts",
+                "state the limited purpose of the call",
+                "ask permission to continue or offer to stop",
+            ],
+        ),
+        "answer_data_source_boundary": _shape(
+            "answer_data_source_boundary",
+            allowed_fact_slots=["caller_identity", "client_name", "allowed_claims", "blocked_claims", "language"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["invent lead source", "name private source without evidence"],
+            appointment_pressure_level="none",
+            example_outline=[
+                "answer that the agent cannot invent the data source",
+                "state only configured caller identity and allowed facts",
+                "offer to continue or stop",
+            ],
+        ),
+        "ai_disclosure_then_continue_or_stop": _shape(
+            "ai_disclosure_then_continue_or_stop",
+            allowed_fact_slots=["caller_identity", "client_name", "language"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["pretend to be human", "as an AI language model"],
+            appointment_pressure_level="none",
+            example_outline=[
+                "answer the automation question directly",
+                "do not claim to be human",
+                "ask whether the buyer wants to continue or stop",
+            ],
+        ),
+        "privacy_boundary_then_continue_or_stop": _shape(
+            "privacy_boundary_then_continue_or_stop",
+            allowed_fact_slots=["caller_identity", "client_name", "allowed_claims", "blocked_claims", "language"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["request sensitive personal data", "invent privacy policy"],
+            appointment_pressure_level="none",
+            example_outline=[
+                "acknowledge the privacy or recording question",
+                "answer only with configured facts and safe limitations",
+                "offer to continue or stop without collecting sensitive data",
+            ],
+        ),
+        "objection_acknowledge_answer_bridge": _shape(
+            "objection_acknowledge_answer_bridge",
+            allowed_fact_slots=["allowed_claims", "blocked_claims", "gap_label", "gap_review_focus", "appointment_target", "human_followup_owner"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["argue with buyer", "invent proof", "push appointment after no"],
+            appointment_pressure_level="low",
+            example_outline=[
+                "acknowledge the objection without arguing",
+                "answer with allowed facts or a safe boundary",
+                "bridge to one relevant diagnostic, review, or stop option",
+            ],
+        ),
+        "competitor_acknowledge_no_bashing": _shape(
+            "competitor_acknowledge_no_bashing",
+            allowed_fact_slots=["allowed_claims", "blocked_claims", "gap_label", "gap_review_focus"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["bash competitor", "invent comparison", "claim superiority without allowed facts"],
+            appointment_pressure_level="low",
+            example_outline=[
+                "acknowledge existing or compared provider",
+                "avoid negative competitor claims",
+                "ask whether one allowed fit area is still worth reviewing",
+            ],
+        ),
+        "price_boundary_without_quote": _shape(
+            "price_boundary_without_quote",
+            allowed_fact_slots=["allowed_claims", "blocked_claims", "appointment_target", "human_followup_owner", "gap_review_focus"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["exact quote", "invent discount", "guarantee savings"],
+            appointment_pressure_level="low",
+            example_outline=[
+                "acknowledge price or budget concern",
+                "state that exact pricing is not handled on this call unless explicitly allowed",
+                "offer the appropriate human review or stop",
+            ],
+        ),
+        "authority_map_to_right_person": _shape(
+            "authority_map_to_right_person",
+            allowed_fact_slots=["human_followup_owner", "appointment_target", "gap_label", "gap_review_focus"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["pressure non-owner", "treat approval as pain"],
+            appointment_pressure_level="none",
+            example_outline=[
+                "acknowledge the buyer is not the final authority",
+                "ask for the right person or a safe follow-up path",
+                "offer to stop if they cannot help",
+            ],
+        ),
+        "timing_deferral_callback_capture": _shape(
+            "timing_deferral_callback_capture",
+            allowed_fact_slots=["appointment_target", "human_followup_owner", "language"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["continue pitch after timing refusal", "invent callback time"],
+            appointment_pressure_level="low",
+            example_outline=[
+                "acknowledge timing is not good now",
+                "ask for a broad callback window or offer to stop",
+                "do not create a real calendar event",
+            ],
+        ),
+        "value_question_answer_with_allowed_facts": _shape(
+            "value_question_answer_with_allowed_facts",
+            allowed_fact_slots=["product_or_offer_name", "allowed_claims", "blocked_claims", "gap_label", "gap_review_focus", "gap_value_bridge"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["invent ROI", "invent guarantee", "invent compliance proof"],
+            appointment_pressure_level="low",
+            example_outline=[
+                "answer the value question using allowed facts only",
+                "tie the answer to one relevant problem area",
+                "ask one diagnostic or offer a review only if appropriate",
+            ],
+        ),
+        "proof_request_offer_summary_or_human_review": _shape(
+            "proof_request_offer_summary_or_human_review",
+            allowed_fact_slots=["allowed_claims", "blocked_claims", "human_followup_owner", "appointment_target", "gap_review_focus"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["invent case study", "send real email", "claim proof unavailable from config"],
+            appointment_pressure_level="low",
+            example_outline=[
+                "acknowledge request for proof or written material",
+                "offer only an allowed summary or human review path",
+                "capture safe contact or callback preference without sending email",
+            ],
+        ),
+        "appointment_time_clarification": _shape(
+            "appointment_time_clarification",
+            allowed_fact_slots=["appointment_target", "human_followup_owner", "language"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["treat vague time as scheduled", "create calendar event"],
+            appointment_pressure_level="direct",
+            example_outline=[
+                "acknowledge the vague or conflicting time",
+                "ask for the missing date or time component",
+                "do not confirm scheduling until usable",
+            ],
+        ),
+        "appointment_time_confirmation": _shape(
+            "appointment_time_confirmation",
+            allowed_fact_slots=["appointment_target", "human_followup_owner", "language"],
+            allowed_call_control=["continue-call", "schedule-and-end"],
+            appointment_pressure_level="direct",
+            example_outline=[
+                "confirm the usable callback or review time locally",
+                "state that the appropriate owner will follow up",
+                "do not claim real calendar, email, or CRM write",
+            ],
+        ),
+        "language_mismatch_repair": _shape(
+            "language_mismatch_repair",
+            allowed_fact_slots=["language", "caller_identity"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["continue in wrong language", "pressure confused buyer"],
+            appointment_pressure_level="none",
+            example_outline=[
+                "acknowledge language mismatch",
+                "offer slower wording, a repeat, or to stop",
+                "do not infer pain or appointment interest",
+            ],
+        ),
+        "hostile_buyer_deescalation": _shape(
+            "hostile_buyer_deescalation",
+            allowed_fact_slots=["language"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["argue with buyer", "mirror hostility", "continue after stop"],
+            allowed_call_control=["continue-call", "end-call"],
+            appointment_pressure_level="none",
+            example_outline=[
+                "acknowledge frustration briefly",
+                "lower intensity and offer to stop",
+                "continue only if buyer permits",
+            ],
+        ),
+        "speech_rate_adjustment": _shape(
+            "speech_rate_adjustment",
+            allowed_fact_slots=["language", "caller_identity"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["blame buyer", "ignore correction"],
+            appointment_pressure_level="none",
+            example_outline=[
+                "acknowledge the requested speaking or pronunciation adjustment",
+                "apply the adjustment in the next response",
+                "return to one clear next action",
+            ],
+        ),
+        "repeat_last_answer_shorter": _shape(
+            "repeat_last_answer_shorter",
+            allowed_fact_slots=["allowed_claims", "blocked_claims", "gap_label", "gap_review_focus", "appointment_target"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["change answer", "add new claims", "repeat long diagnostic menu"],
+            appointment_pressure_level="none",
+            example_outline=[
+                "acknowledge repeat request",
+                "repeat the last answer in shorter plain wording",
+                "ask one next question only if needed",
+            ],
+        ),
+        "social_smalltalk_bridge_back": _shape(
+            "social_smalltalk_bridge_back",
+            allowed_fact_slots=["caller_identity", "language"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["treat backchannel as pain", "linger on small talk"],
+            appointment_pressure_level="none",
+            example_outline=[
+                "acknowledge small talk or backchannel lightly",
+                "do not infer a sales signal",
+                "return to the current question or offer to stop",
+            ],
+        ),
+        "clarify_missing_time": _shape(
+            "clarify_missing_time",
+            allowed_fact_slots=["appointment_target", "human_followup_owner", "language"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["confirm without time", "invent time"],
+            appointment_pressure_level="direct",
+            example_outline=[
+                "acknowledge callback interest",
+                "ask for the missing day, time, or window",
+                "do not schedule until clear",
+            ],
+        ),
+        "offer_callback_window_without_calendar_claim": _shape(
+            "offer_callback_window_without_calendar_claim",
+            allowed_fact_slots=["appointment_target", "human_followup_owner", "language"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["claim calendar availability", "create calendar event"],
+            appointment_pressure_level="medium",
+            example_outline=[
+                "acknowledge request for available times",
+                "offer broad callback windows without claiming calendar access",
+                "ask buyer to choose or suggest a time",
+            ],
+        ),
+        "confirm_time_without_calendar_write": _shape(
+            "confirm_time_without_calendar_write",
+            allowed_fact_slots=["appointment_target", "human_followup_owner", "language"],
+            allowed_call_control=["continue-call", "schedule-and-end"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["claim real calendar write", "claim email sent", "claim CRM write"],
+            appointment_pressure_level="direct",
+            example_outline=[
+                "confirm the time locally",
+                "name the allowed follow-up owner or target",
+                "avoid claiming any external write occurred",
+            ],
+        ),
+        "defer_politely_preserve_interest": _shape(
+            "defer_politely_preserve_interest",
+            allowed_fact_slots=["appointment_target", "human_followup_owner", "gap_label", "gap_review_focus"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["pressure after deferral", "erase interest"],
+            appointment_pressure_level="low",
+            example_outline=[
+                "acknowledge the buyer wants to defer",
+                "preserve the stated area of interest",
+                "ask for a later window or close politely",
+            ],
+        ),
+        "close_after_decline": _shape(
+            "close_after_decline",
+            allowed_fact_slots=["language"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["push appointment after explicit no", "restart diagnostics"],
+            allowed_call_control=["end-call"],
+            appointment_pressure_level="none",
+            example_outline=[
+                "acknowledge the decline",
+                "do not ask another sales question",
+                "close politely",
+            ],
+        ),
+    }
+)
+
+
+EXPANDED_BUYER_MOVE_SPECS = [
+    ("price_or_budget_objection", "Buyer objects to price, budget, affordability, or asks about cost.", ["how much does it cost?", "too expensive", "we do not have budget"], "price_boundary_without_quote", ["diagnostic", "value_bridge", "scope_limit"], "preserve_context_answer_price_boundary", True, ["quote exact price", "invent discount", "guarantee savings"]),
+    ("timing_objection", "Buyer says the timing is bad or the initiative is not timely.", ["bad timing", "not this quarter", "call later"], "timing_deferral_callback_capture", ["permission", "diagnostic", "value_bridge", "callback_capture"], "preserve_interest_request_callback_window", False, ["continue pitch after bad timing", "erase interest"]),
+    ("no_authority_or_needs_approval", "Buyer says they need approval or are not the decision owner.", ["I need to ask my manager", "not my decision", "legal has to approve"], "authority_map_to_right_person", ["permission", "diagnostic", "handoff_right_person", "value_bridge"], "capture_authority_boundary_without_pressure", False, ["pressure non-owner", "treat as pain"]),
+    ("already_has_provider", "Buyer says an existing provider, vendor, advisor, or solution is already in place.", ["we already have a provider", "we use someone else", "that is covered"], "competitor_acknowledge_no_bashing", ["permission", "diagnostic", "value_bridge"], "preserve_context_do_not_create_fake_gap", False, ["bash provider", "invent competitor weakness"]),
+    ("competitor_comparison", "Buyer asks for comparison against another provider or option.", ["are you better than them?", "how do you compare?", "why switch?"], "competitor_acknowledge_no_bashing", ["diagnostic", "value_bridge", "scope_limit"], "answer_with_allowed_facts_only", True, ["bash competitor", "invent superiority"]),
+    ("trust_or_skepticism", "Buyer questions legitimacy, credibility, or whether the call is worth trusting.", ["is this legit?", "why should I trust this?", "sounds like a scam"], "objection_acknowledge_answer_bridge", ["opening", "permission", "diagnostic", "value_bridge"], "answer_trust_concern_without_invention", True, ["argue with buyer", "invent credentials"]),
+    ("risk_or_liability_concern", "Buyer raises risk, liability, compliance, warranty, claim, or responsibility concerns.", ["what if this goes wrong?", "who is liable?", "is there risk?"], "regulated_claim_boundary_no_advice", ["diagnostic", "scope_limit", "value_bridge"], "preserve_context_apply_claim_boundary", True, ["give legal advice", "invent liability promise"]),
+    ("no_clear_need", "Buyer says they do not see a problem or clear reason to continue.", ["I do not need this", "not seeing the need", "nothing to fix"], "objection_acknowledge_answer_bridge", ["permission", "diagnostic", "value_bridge"], "respect_no_need_allow_one_relevance_check", False, ["push appointment after no", "repeat menu"]),
+    ("too_busy_now", "Buyer is willing or neutral but too busy to continue right now.", ["too busy now", "in a meeting", "not a good time"], "timing_deferral_callback_capture", ["opening", "permission", "diagnostic"], "request_callback_or_close", False, ["continue pitch", "invent time"]),
+    ("send_info_first", "Buyer asks to receive information before deciding whether to talk or book.", ["send info first", "email me first", "send details before booking"], "send_info_contact_capture", ["permission", "diagnostic", "value_bridge", "send_info_capture"], "open_send_info_state_without_sending_email", False, ["send real email", "confirm booked"]),
+    ("wants_proof_or_case_study", "Buyer asks for proof, references, examples, or case-study evidence.", ["send me proof", "any case studies?", "show results"], "proof_request_offer_summary_or_human_review", ["diagnostic", "value_bridge", "scope_limit", "send_info_capture"], "answer_proof_request_with_allowed_facts_only", True, ["invent proof", "invent customer story"]),
+    ("procurement_or_legal_review", "Buyer says procurement, legal, or formal review is required.", ["procurement has to review", "legal needs to see it", "send terms"], "authority_map_to_right_person", ["diagnostic", "value_bridge", "handoff_right_person", "send_info_capture"], "capture_review_owner_or_stop", False, ["act as legal", "claim terms approval"]),
+    ("security_or_privacy_review", "Buyer asks about security, privacy review, or data handling obligations.", ["security needs to approve", "what about privacy?", "do you process data?"], "privacy_boundary_then_continue_or_stop", ["scope_limit", "value_bridge", "send_info_capture"], "answer_privacy_security_with_allowed_facts_only", True, ["invent security proof", "invent compliance claim"]),
+    ("contract_or_terms_question", "Buyer asks about contract terms, commitment, cancellation, or legal language.", ["what are the terms?", "is there a contract?", "can we cancel?"], "objection_acknowledge_answer_bridge", ["scope_limit", "value_bridge", "send_info_capture"], "answer_terms_boundary_with_allowed_facts_only", True, ["invent terms", "give legal advice"]),
+    ("who_are_you", "Buyer asks who is calling or who the agent represents.", ["who are you?", "who is this?", "where are you calling from?"], "answer_identity_then_permission", ["opening", "permission", "diagnostic"], "answer_identity_without_invention", True, ["invent identity", "hide caller identity"]),
+    ("how_did_you_get_my_number", "Buyer asks about contact source or why they were called.", ["how did you get my number?", "why do you have my contact?", "where did this lead come from?"], "answer_data_source_boundary", ["opening", "permission", "scope_limit"], "answer_data_source_boundary_without_invention", True, ["invent data source", "continue if stop requested"]),
+    ("are_you_ai_or_robot", "Buyer asks whether the caller is automated, AI, or a robot.", ["are you a robot?", "are you AI?", "is this automated?"], "ai_disclosure_then_continue_or_stop", ["opening", "permission", "scope_limit"], "disclose_automation_without_impersonation", True, ["claim human if automated", "use internal implementation terms"]),
+    ("is_this_recorded", "Buyer asks whether the call is recorded or monitored.", ["is this recorded?", "are you recording?", "is this monitored?"], "privacy_boundary_then_continue_or_stop", ["opening", "permission", "scope_limit"], "answer_recording_boundary_with_configured_facts_only", True, ["invent recording policy", "ignore consent"]),
+    ("privacy_data_use_question", "Buyer asks what is done with data or personal information.", ["what do you do with my data?", "how is my information used?", "what data do you keep?"], "privacy_boundary_then_continue_or_stop", ["opening", "permission", "scope_limit", "send_info_capture"], "answer_privacy_boundary_without_collecting_sensitive_data", True, ["invent privacy policy", "request sensitive data"]),
+    ("permission_to_continue_denied", "Buyer denies permission to continue.", ["no", "not interested", "do not continue"], "stop_close_politely", ["opening", "permission"], "preserve_terminal_stop_state", False, ["continue selling", "ask diagnostic"]),
+    ("language_mismatch", "Buyer says the current language is not workable or asks for another language.", ["I do not speak English well", "can you speak slower?", "not in this language"], "language_mismatch_repair", ["opening", "permission", "diagnostic"], "do_not_advance_until_language_repaired", True, ["continue in wrong language", "infer pain"]),
+    ("abusive_or_hostile_buyer", "Buyer is hostile, insulting, or verbally aggressive.", ["this is stupid", "leave me alone", "angry profanity"], "hostile_buyer_deescalation", ["opening", "permission", "diagnostic", "value_bridge", "scope_limit"], "deescalate_or_close_without_retaliation", False, ["argue", "mirror hostility"]),
+    ("sensitive_personal_data_disclosure", "Buyer volunteers sensitive personal, financial, medical, or credential-like data.", ["my password is", "my medical issue is", "my card number is"], "privacy_boundary_then_continue_or_stop", ["diagnostic", "scope_limit", "send_info_capture"], "do_not_store_or_request_sensitive_data", True, ["request sensitive personal data", "repeat sensitive data"]),
+    ("appointment_time_vague", "Buyer gives an incomplete appointment or callback time.", ["later tomorrow", "sometime next week", "afternoon works"], "appointment_time_clarification", ["appointment_progression", "callback_capture"], "request_missing_time_without_scheduling", False, ["confirm without time", "invent missing detail"]),
+    ("appointment_time_conflict", "Buyer rejects or conflicts with a proposed time.", ["not then", "that does not work", "I cannot do three"], "appointment_time_clarification", ["appointment_progression", "callback_capture"], "request_alternative_time", False, ["force same time", "end unless buyer stops"]),
+    ("buyer_requests_available_times", "Buyer asks what times are available.", ["what times do you have?", "can you send available times?", "when can they call?"], "offer_callback_window_without_calendar_claim", ["appointment_progression", "callback_capture"], "offer_broad_windows_without_calendar_claim", True, ["claim calendar access", "invent availability"]),
+    ("buyer_wants_email_before_booking", "Buyer wants written information before booking.", ["email me before booking", "send it then maybe", "details first"], "send_info_contact_capture", ["appointment_progression", "send_info_capture", "value_bridge"], "capture_send_info_preference_without_email_write", False, ["claim email sent", "force booking"]),
+    ("buyer_defers_to_later", "Buyer defers decision or conversation to a later time.", ["call me next week", "not now, later", "maybe later"], "defer_politely_preserve_interest", ["permission", "diagnostic", "value_bridge", "appointment_progression"], "preserve_interest_request_later_window", False, ["pressure now", "erase prior gap"]),
+    ("buyer_accepts_callback_without_time", "Buyer accepts follow-up but does not provide a usable time.", ["sure call me", "that would be good", "yes have them reach out"], "clarify_missing_time", ["value_bridge", "appointment_progression", "callback_capture"], "request_missing_time_if_followup_accepted", False, ["treat as scheduled", "invent time"]),
+    ("buyer_changes_time", "Buyer updates a previously mentioned callback or appointment time.", ["make it four instead", "actually Friday", "change that to morning"], "confirm_time_without_calendar_write", ["appointment_progression", "callback_capture"], "update_local_time_without_external_write", False, ["claim calendar changed", "ignore new time"]),
+    ("buyer_confirms_time", "Buyer confirms a clear proposed or captured callback time.", ["yes tomorrow at three", "that time works", "confirmed"], "confirm_time_without_calendar_write", ["appointment_progression", "callback_capture"], "confirm_time_without_external_write", False, ["claim calendar write", "restart diagnostics"]),
+    ("buyer_declines_after_interest", "Buyer declines after previously showing interest.", ["actually no", "never mind", "not interested anymore"], "close_after_decline", ["value_bridge", "appointment_progression", "callback_capture"], "close_after_decline_preserve_no_state", False, ["push appointment", "ask diagnostic"]),
+    ("why_should_i_care", "Buyer asks why the call matters to them.", ["why should I care?", "why does this matter?", "so what?"], "value_question_answer_with_allowed_facts", ["opening", "permission", "diagnostic", "value_bridge"], "answer_value_using_allowed_facts_only", True, ["invent ROI", "repeat menu"]),
+    ("what_makes_you_different", "Buyer asks about differentiation.", ["what makes you different?", "why you?", "what is special?"], "value_question_answer_with_allowed_facts", ["diagnostic", "value_bridge", "scope_limit"], "answer_differentiation_using_allowed_facts_only", True, ["invent superiority", "bash competitors"]),
+    ("what_problem_do_you_solve", "Buyer asks what problem the offer addresses.", ["what problem do you solve?", "what is this for?", "what do you help with?"], "value_question_answer_with_allowed_facts", ["opening", "permission", "diagnostic", "value_bridge"], "answer_problem_scope_with_allowed_facts", True, ["invent problem", "ask appointment before relevance"]),
+    ("what_result_can_i_expect", "Buyer asks about expected results or outcome.", ["what result can I expect?", "what will this do for me?", "what improvement?"], "value_question_answer_with_allowed_facts", ["diagnostic", "value_bridge", "scope_limit"], "answer_outcome_boundary_with_allowed_claims", True, ["guarantee result", "invent savings"]),
+    ("is_this_worth_my_time", "Buyer asks if continuing is worth their time.", ["is this worth my time?", "why stay on the phone?", "make it worth it"], "value_question_answer_with_allowed_facts", ["opening", "permission", "diagnostic"], "answer_time_value_then_one_question", True, ["overpitch", "invent claim"]),
+    ("who_is_this_for", "Buyer asks what buyer, role, or situation the offer is for.", ["who is this for?", "who uses this?", "is this for me?"], "value_question_answer_with_allowed_facts", ["opening", "permission", "diagnostic", "value_bridge"], "answer_target_scope_with_allowed_facts", True, ["invent segment", "pressure no-fit buyer"]),
+    ("does_this_apply_to_us", "Buyer asks whether the campaign is relevant to their situation.", ["does this apply to us?", "is this relevant for us?", "would this matter here?"], "value_question_answer_with_allowed_facts", ["permission", "diagnostic", "value_bridge"], "answer_relevance_then_one_diagnostic", True, ["claim fit without evidence", "repeat broad menu"]),
+    ("small_talk", "Buyer makes light social conversation unrelated to the sale.", ["how are you?", "busy day", "nice weather"], "social_smalltalk_bridge_back", ["opening", "permission", "diagnostic"], "acknowledge_without_changing_sales_memory", False, ["linger on small talk", "infer pain"]),
+    ("humor_or_sarcasm", "Buyer jokes or uses sarcasm.", ["sure, if it is free", "sounds thrilling", "funny comment"], "social_smalltalk_bridge_back", ["opening", "permission", "diagnostic", "value_bridge"], "acknowledge_tone_without_overreacting", False, ["argue with joke", "treat sarcasm as consent"]),
+    ("silence_or_backchannel", "Buyer gives silence, filler, or low-information backchannel.", ["hmm", "okay", "uh huh"], "social_smalltalk_bridge_back", ["opening", "permission", "diagnostic", "value_bridge"], "preserve_prior_context_request_one_clear_answer", False, ["classify as pain", "schedule from backchannel"]),
+    ("interruption_or_barge_in", "Buyer interrupts before the agent completes a point.", ["wait", "hold on", "let me stop you"], "speech_rate_adjustment", ["opening", "permission", "diagnostic", "value_bridge"], "stop_and_listen_preserve_context", True, ["talk over buyer", "ignore interruption"]),
+    ("buyer_talks_over_agent", "Buyer starts speaking over the agent or corrects the flow.", ["buyer overlaps", "let me talk", "you are talking over me"], "speech_rate_adjustment", ["opening", "permission", "diagnostic", "value_bridge"], "yield_turn_and_preserve_context", True, ["keep talking", "restart script"]),
+    ("repeat_last_answer", "Buyer asks the agent to repeat the last answer.", ["say that again", "repeat that", "what did you say?"], "repeat_last_answer_shorter", ["opening", "permission", "diagnostic", "value_bridge", "scope_limit"], "repeat_last_answer_without_new_claims", True, ["change answer", "add claims"]),
+    ("slow_down_or_speak_faster", "Buyer asks for a different speed or cadence.", ["slow down", "speak faster", "too fast"], "speech_rate_adjustment", ["opening", "permission", "diagnostic", "value_bridge"], "adjust_cadence_without_state_change", True, ["blame buyer", "ignore request"]),
+    ("pronunciation_or_name_correction", "Buyer corrects pronunciation, name, title, or identity wording.", ["that is not how you say my name", "call me Pat", "you said it wrong"], "speech_rate_adjustment", ["opening", "permission", "diagnostic"], "record_correction_without_repeating_sensitive_data", True, ["argue", "repeat incorrect name"]),
+    ("emotional_frustration", "Buyer expresses frustration without necessarily stopping the call.", ["this is annoying", "you keep asking the same thing", "I am frustrated"], "hostile_buyer_deescalation", ["opening", "permission", "diagnostic", "value_bridge", "scope_limit"], "deescalate_preserve_context_or_close", True, ["over-apologize in loop", "repeat same question"]),
+]
+
+for (
+    _move_id,
+    _description,
+    _examples,
+    _shape_id,
+    _allowed_stages,
+    _memory_policy,
+    _must_answer_direct_question,
+    _must_not_do,
+) in EXPANDED_BUYER_MOVE_SPECS:
+    BUYER_MOVE_TAXONOMY[_move_id] = _move(
+        _move_id,
+        description=_description,
+        examples=list(_examples),
+        expected_response_shape_id=_shape_id,
+        allowed_stages=list(_allowed_stages),
+        default_call_control_allowed=["continue-call", "end-call"] if _shape_id in {"close_after_decline", "hostile_buyer_deescalation"} else ["continue-call"],
+        memory_policy=_memory_policy,
+        must_acknowledge=True,
+        must_answer_direct_question=_must_answer_direct_question,
+        must_not_do=list(_must_not_do),
+    )
+
+
+for _move_id in ["permission_to_continue_denied", "buyer_declines_after_interest"]:
+    BUYER_MOVE_TAXONOMY[_move_id]["default_call_control_allowed"] = ["end-call"]
+
+for _move_id in ["buyer_confirms_time", "buyer_changes_time", "callback_time_provided"]:
+    if _move_id in BUYER_MOVE_TAXONOMY:
+        BUYER_MOVE_TAXONOMY[_move_id]["default_call_control_allowed"] = ["continue-call", "schedule-and-end"]
+
+
+def _append_unique(target: list[str], additions: list[str]) -> None:
+    for item in additions:
+        if item not in target:
+            target.append(item)
+
+
+_append_unique(CONVERSATION_STAGE_POLICY["opening"]["allowed_buyer_moves"], IDENTITY_TRUST_PRIVACY_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["permission"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["diagnostic"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["value_bridge"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["scope_limit"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["appointment_progression"]["allowed_buyer_moves"], APPOINTMENT_NEGOTIATION_BUYER_MOVES + OBJECTION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["callback_capture"]["allowed_buyer_moves"], APPOINTMENT_NEGOTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["send_info_capture"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["handoff_right_person"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["stop_close"]["allowed_buyer_moves"], ["permission_to_continue_denied", "buyer_declines_after_interest", "abusive_or_hostile_buyer"])
+
+
+def _repair_rule(
+    rule_id: str,
+    buyer_move_id: str,
+    *,
+    response_shape_id: str | None = None,
+    memory_policy: str | None = None,
+    call_control_constraints: list[str] | None = None,
+    forbidden_response_patterns: list[str] | None = None,
+    campaign_fact_slots_allowed: list[str] | None = None,
+) -> dict[str, Any]:
+    move = BUYER_MOVE_TAXONOMY[buyer_move_id]
+    shape_id = response_shape_id or str(move.get("expected_response_shape_id"))
+    shape = RESPONSE_SHAPE_LIBRARY[shape_id]
+    return {
+        "buyer_move_id": buyer_move_id,
+        "recognition_notes": list(move.get("examples") or []) + [str(move.get("description"))],
+        "response_shape_id": shape_id,
+        "memory_policy": memory_policy or str(move.get("memory_policy")),
+        "call_control_constraints": list(call_control_constraints or ["continue-call unless buyer stops", "forbid transfer-or-escalate unless explicitly required"]),
+        "forbidden_response_patterns": list(forbidden_response_patterns or move.get("must_not_do") or DEFAULT_FORBIDDEN_PATTERNS),
+        "campaign_fact_slots_allowed": list(campaign_fact_slots_allowed or shape.get("allowed_fact_slots") or []),
+    }
+
+
+for _move_id in (
+    OBJECTION_BUYER_MOVES
+    + IDENTITY_TRUST_PRIVACY_BUYER_MOVES
+    + APPOINTMENT_NEGOTIATION_BUYER_MOVES
+    + VALUE_DIFFERENTIATION_BUYER_MOVES
+    + SOCIAL_CONVERSATION_BUYER_MOVES
+):
+    UNIVERSAL_REPAIR_RULES[f"{_move_id}_rule"] = _repair_rule(f"{_move_id}_rule", _move_id)
+
+UNIVERSAL_REPAIR_RULES["permission_to_continue_denied_rule"]["call_control_constraints"] = ["end-call", "do not continue if consent is denied"]
+UNIVERSAL_REPAIR_RULES["buyer_declines_after_interest_rule"]["call_control_constraints"] = ["end-call", "do not push appointment after decline"]
+UNIVERSAL_REPAIR_RULES["buyer_confirms_time_rule"]["call_control_constraints"] = ["continue-call or schedule-and-end after usable time", "do not claim external scheduling write"]
+UNIVERSAL_REPAIR_RULES["buyer_changes_time_rule"]["call_control_constraints"] = ["continue-call or schedule-and-end after usable time", "do not claim calendar changed"]
+UNIVERSAL_REPAIR_RULES["are_you_ai_or_robot_rule"]["forbidden_response_patterns"] += ["claim human if automated"]
+UNIVERSAL_REPAIR_RULES["privacy_data_use_question_rule"]["forbidden_response_patterns"] += ["request sensitive personal data"]
+UNIVERSAL_REPAIR_RULES["sensitive_personal_data_disclosure_rule"]["forbidden_response_patterns"] += ["repeat sensitive data", "store sensitive data"]
+
+
+ASR_REPAIR_BOUNDARY["cases"].update(
+    {
+        "homophone_or_near_miss": {
+            "id": "homophone_or_near_miss",
+            "description": "Transcript contains a plausible homophone or near-miss that changes the domain meaning.",
+            "examples": ["repair timings misheard as repeal timings", "coverage fit misheard as cover age fit"],
+            "policy": "ask_repeat_for_asr_garble_or_confirm_term",
+        },
+        "non_english_or_mixed_language": {
+            "id": "non_english_or_mixed_language",
+            "description": "Transcript switches language or mixes languages enough to make routing unsafe.",
+            "examples": ["mixed-language answer after diagnostic question"],
+            "policy": "ask_repeat_for_asr_garble",
+        },
+        "transcript_contains_command_noise": {
+            "id": "transcript_contains_command_noise",
+            "description": "Transcript includes command words, device commands, or dictation artifacts.",
+            "examples": ["stop recording comma yes", "new line that would be good"],
+            "policy": "ask_repeat_for_asr_garble",
+        },
+        "transcript_contains_browser_noise": {
+            "id": "transcript_contains_browser_noise",
+            "description": "Transcript includes browser, microphone, or page-control noise.",
+            "examples": ["allow microphone", "click start button"],
+            "policy": "ask_repeat_for_asr_garble",
+        },
+        "transcript_has_wrong_named_entity": {
+            "id": "transcript_has_wrong_named_entity",
+            "description": "Transcript includes a named entity that conflicts with campaign or prior conversation context.",
+            "examples": ["wrong company or person name appears in transcript"],
+            "policy": "ask_repeat_for_asr_garble_or_confirm_term",
+        },
+        "ambiguous_yes_after_unanswered_question": {
+            "id": "ambiguous_yes_after_unanswered_question",
+            "description": "Yes-like answer follows a question that still had multiple possible meanings.",
+            "examples": ["yes after a two-part diagnostic"],
+            "policy": "ask_repeat_for_asr_garble_or_confirm_term",
+        },
+        "ambiguous_positive_after_explanation": {
+            "id": "ambiguous_positive_after_explanation",
+            "description": "Positive phrase after an explanation may mean understood, interested, or ready for callback.",
+            "examples": ["yeah that would be good misheard as unrelated phrase", "play a double be good"],
+            "policy": "ask_repeat_for_asr_garble_or_confirm_term",
+        },
+        "ambiguous_negative_after_multi_choice": {
+            "id": "ambiguous_negative_after_multi_choice",
+            "description": "Negative phrase after a multi-choice question does not identify which option is being rejected.",
+            "examples": ["no after several gap options"],
+            "policy": "ask_repeat_for_asr_garble_or_confirm_term",
+        },
+        "possible_time_misrecognition": {
+            "id": "possible_time_misrecognition",
+            "description": "Appointment or callback time text appears misrecognized or incomplete.",
+            "examples": ["tomorrow at three misheard as unrelated phrase", "free instead of three"],
+            "policy": "ask_repeat_for_asr_garble",
+        },
+        "possible_email_misrecognition": {
+            "id": "possible_email_misrecognition",
+            "description": "Email address or written contact detail is likely misrecognized.",
+            "examples": ["at symbol missing", "domain fragment unclear"],
+            "policy": "ask_repeat_for_asr_garble",
+        },
+        "possible_name_misrecognition": {
+            "id": "possible_name_misrecognition",
+            "description": "Person, company, or contact name may be misheard.",
+            "examples": ["name correction sounds inconsistent with prior context"],
+            "policy": "ask_repeat_for_asr_garble_or_confirm_term",
+        },
+    }
+)
+_append_unique(
+    ASR_REPAIR_BOUNDARY["expected_policy"]["required_behavior"],
+    ["confirm high-risk terms before routing", "do not blame ASR or the buyer"],
+)
+_append_unique(
+    ASR_REPAIR_BOUNDARY["expected_policy"]["forbidden_behavior"],
+    ["blame ASR", "blame buyer", "route ambiguous yes as appointment", "collect risky contact detail without confirmation"],
+)
+
+
+FORBIDDEN_CUSTOMER_FACING_PATTERNS.extend(
+    [
+        {
+            "id": "human_impersonation",
+            "phrases": ["pretending to be human", "claim human if automated"],
+            "reason": "Automation must not impersonate a human caller.",
+        },
+        {
+            "id": "external_action_claims",
+            "phrases": ["claiming real calendar/email/CRM action occurred", "claim calendar write", "claim email sent", "claim CRM write"],
+            "reason": "The runtime must not claim external writes unless an approved integration actually performed them.",
+        },
+        {
+            "id": "unsupported_result_claims",
+            "phrases": ["claiming product results without allowed claims", "invent ROI", "invent savings", "invent compliance proof"],
+            "reason": "Value claims must stay inside allowed claims.",
+        },
+        {
+            "id": "argument_or_blame",
+            "phrases": ["arguing with buyer", "blaming ASR or the buyer", "mirror hostility"],
+            "reason": "Conversation repair should reduce friction, not debate the buyer.",
+        },
+        {
+            "id": "model_or_internal_terms",
+            "phrases": ["as an AI language model", "using internal implementation terms", "internal route", "semantic classifier"],
+            "reason": "Customer-facing speech should not reveal implementation wording.",
+        },
+        {
+            "id": "looping_apology_or_diagnostic",
+            "phrases": ["over-apologizing in a loop", "asking the same diagnostic after direct answer", "repeat same non-answer"],
+            "reason": "Repair must acknowledge prior context and move forward or close.",
+        },
+        {
+            "id": "pressure_after_no",
+            "phrases": ["pushing appointment after explicit no", "continue selling after stop"],
+            "reason": "Explicit refusal must close or stop pressure.",
+        },
+        {
+            "id": "sensitive_data_collection",
+            "phrases": ["collecting unnecessary sensitive data", "request sensitive personal data", "repeat sensitive data"],
+            "reason": "Appointment setting must avoid unnecessary sensitive data collection.",
+        },
+    ]
+)
+
+_append_unique(
+    VALIDATOR_MATRIX["buyer_move_test_cases"],
+    [
+        "who are you?",
+        "are you a robot?",
+        "how did you get my number?",
+        "is this recorded?",
+        "what do you do with my data?",
+        "we already have a provider",
+        "how much does it cost?",
+        "send me proof",
+        "I need to ask my manager",
+        "call me next week",
+        "can you send available times?",
+        "what makes you different?",
+        "why should I care?",
+        "not interested",
+        "slow down",
+        "say that again",
+        "I don't speak English well",
+        "that's not how you say my name",
+        "you keep asking the same thing",
+    ],
+)
+
+
 def buyer_move(move_id: str) -> dict[str, Any]:
     return deepcopy(BUYER_MOVE_TAXONOMY.get(str(move_id)) or {})
 
