@@ -81,6 +81,28 @@ TIME_WORDS = {
 
 FRAGMENT_WORDS = {"a", "an", "the", "about", "of", "to", "for", "with", "and", "or", "but"}
 
+DIRECT_PRODUCT_VALUE_MOVES = {
+    "product_detail_question",
+    "what_problem_do_you_solve",
+    "why_should_i_care",
+    "what_makes_you_different",
+    "who_is_this_for",
+    "is_this_worth_my_time",
+    "scope_limit_question",
+}
+
+OBJECTION_MOVES = {
+    "price_or_budget_objection",
+    "already_has_provider",
+    "no_authority_or_needs_approval",
+    "wants_proof_or_case_study",
+    "timing_objection",
+    "no_clear_need",
+    "too_busy_now",
+}
+
+TIME_PRESSURE_MOVES = {"time_constrained_permission"}
+
 
 def _contains_any(normalized: str, phrases: set[str] | list[str] | tuple[str, ...]) -> bool:
     return any(phrase in normalized for phrase in phrases)
@@ -108,6 +130,112 @@ def _is_generic_campaign(campaign: dict | None) -> bool:
     if campaign_id in ROUTESIGNAL_CAMPAIGN_IDS:
         return False
     return bool(campaign.get("vertical_id") and isinstance(campaign.get("diagnostic_gaps"), dict))
+
+
+def _campaign_text(campaign: dict | None, *keys: str, default: str = "") -> str:
+    if not isinstance(campaign, dict):
+        return default
+    for key in keys:
+        value = campaign.get(key)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    return default
+
+
+def _nested_campaign_text(campaign: dict | None, parent: str, key: str, default: str = "") -> str:
+    value = (campaign or {}).get(parent) if isinstance(campaign, dict) else None
+    if isinstance(value, dict) and isinstance(value.get(key), str) and value.get(key, "").strip():
+        return str(value.get(key)).strip()
+    return default
+
+
+def _campaign_product_name(campaign: dict | None) -> str:
+    return _campaign_text(campaign, "product_or_offer_name", "product_name", default="this review")
+
+
+def _campaign_appointment_target(campaign: dict | None) -> str:
+    return _campaign_text(campaign, "appointment_target", "scheduling_goal", default="short review")
+
+
+def _campaign_owner(campaign: dict | None) -> str:
+    return _campaign_text(campaign, "human_followup_owner", "human_handoff_role", default="a human specialist")
+
+
+def _campaign_buyer_role(campaign: dict | None) -> str:
+    return _nested_campaign_text(campaign, "target_account_context", "buyer_role", "the person responsible for this area")
+
+
+def _string_items(value: Any) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, str):
+        return [value.strip()] if value.strip() else []
+    if isinstance(value, (list, tuple, set)):
+        return [str(item).strip() for item in value if str(item or "").strip()]
+    return [str(value).strip()] if str(value or "").strip() else []
+
+
+def _gap_records(campaign: dict | None) -> list[dict[str, Any]]:
+    if not isinstance(campaign, dict) or not isinstance(campaign.get("diagnostic_gaps"), dict):
+        return []
+    gaps = campaign.get("diagnostic_gaps") or {}
+    ordered_ids = _string_items(campaign.get("gap_order") or campaign.get("core_diagnostic_gaps"))
+    records: list[dict[str, Any]] = []
+    for gap_id in ordered_ids:
+        value = gaps.get(gap_id)
+        if isinstance(value, dict):
+            records.append(value)
+    if not records:
+        records = [value for value in gaps.values() if isinstance(value, dict)]
+    return records
+
+
+def _primary_gap_label(campaign: dict | None) -> str:
+    records = _gap_records(campaign)
+    if records:
+        label = str(records[0].get("label") or records[0].get("campaign_gap_id") or "").strip()
+        if label:
+            return label
+    if _campaign_product_name(campaign).lower().startswith("routesignal"):
+        return "follow-up gap"
+    return "the relevant issue"
+
+
+def _short_gap_pair(campaign: dict | None) -> str:
+    labels: list[str] = []
+    for record in _gap_records(campaign)[:2]:
+        label = str(record.get("label") or record.get("campaign_gap_id") or "").strip()
+        if label:
+            labels.append(label)
+    if len(labels) >= 2:
+        return f"{labels[0]} or {labels[1]}"
+    return _primary_gap_label(campaign)
+
+
+def _primary_gap_review_focus(campaign: dict | None) -> str:
+    records = _gap_records(campaign)
+    if records:
+        focus = str(records[0].get("review_focus") or records[0].get("definition") or "").strip()
+        if focus:
+            return focus
+    return _primary_gap_label(campaign)
+
+
+def _allowed_claim_summary(campaign: dict | None) -> str:
+    claims = _string_items((campaign or {}).get("allowed_claims") if isinstance(campaign, dict) else None)
+    if claims:
+        return claims[0].rstrip(".")
+    return f"can check whether {_primary_gap_label(campaign)} is worth a {_campaign_appointment_target(campaign)}"
+
+
+def _response_shape_category(buyer_move_id: str) -> str | None:
+    if buyer_move_id in DIRECT_PRODUCT_VALUE_MOVES:
+        return "direct_product_value_questions"
+    if buyer_move_id in OBJECTION_MOVES:
+        return "objections"
+    if buyer_move_id in TIME_PRESSURE_MOVES:
+        return "permission_time_pressure"
+    return None
 
 
 def _looks_like_time(normalized: str) -> bool:
@@ -560,6 +688,10 @@ def build_universal_conversation_policy_frame(
         "one_next_action_only": True,
         "enforcement_enabled": enforcement_enabled,
         "enforcement_reason": enforcement_reason,
+        "response_shape_enforcement_enabled": False,
+        "response_shape_enforcement_reason": "not_evaluated",
+        "response_shape_enforced_category": None,
+        "response_shape_candidate_source": None,
         "provider_calls_made": False,
         "local_llm_calls_made": False,
         "opens_prod_102": False,
@@ -586,4 +718,111 @@ def universal_asr_repair_continuity(frame: dict[str, Any]) -> dict[str, Any]:
         "dialogue_focus": "repair",
         "candidate_response": REPAIR_RESPONSE,
         "universal_policy_frame": dict(frame),
+    }
+
+
+def should_enforce_response_shape(
+    frame: dict[str, Any],
+    candidate_response: str | None = None,
+    campaign: dict | None = None,
+    context: dict | None = None,
+) -> bool:
+    del candidate_response
+    buyer_move_id = str((frame or {}).get("buyer_move_id") or "")
+    if _response_shape_category(buyer_move_id) is None:
+        return False
+    if (frame or {}).get("asr_repair_required"):
+        return False
+    if (frame or {}).get("recognition_confidence") != "high":
+        return False
+    if buyer_move_id == "price_or_budget_objection" and not _is_generic_campaign(campaign):
+        normalized = str(((frame or {}).get("detection") or {}).get("normalized_transcript") or "")
+        explicit_objection = _contains_any(normalized, {"too expensive", "no budget", "not in budget", "cost too much"})
+        direct_price_question = _contains_any(normalized, {"how much", "what does it cost", "what is the price", "talk about the price"})
+        if direct_price_question and not explicit_objection:
+            return False
+    if buyer_move_id == "is_this_worth_my_time" and not _is_generic_campaign(campaign):
+        turns = _turns((context or {}).get("session_state") if isinstance(context, dict) else None)
+        previous_focus = str(((turns[-1].get("continuity") or {}) if turns else {}).get("dialogue_focus") or "")
+        if previous_focus in {"price", "effort"}:
+            return False
+    return True
+
+
+def render_universal_response_outline(
+    frame: dict[str, Any],
+    campaign: dict | None,
+    session_state: dict | None = None,
+) -> str:
+    del session_state
+    buyer_move_id = str((frame or {}).get("buyer_move_id") or "")
+    product = _campaign_product_name(campaign)
+    target = _campaign_appointment_target(campaign)
+    owner = _campaign_owner(campaign)
+    buyer_role = _campaign_buyer_role(campaign)
+    primary_gap = _primary_gap_label(campaign)
+    review_focus = _primary_gap_review_focus(campaign)
+    allowed_summary = _allowed_claim_summary(campaign)
+
+    if buyer_move_id == "time_constrained_permission":
+        return f"Sure, I will keep it quick: is this mainly {_short_gap_pair(campaign)}?"
+
+    if buyer_move_id == "product_detail_question":
+        return f"The purpose of {product} is to check whether {review_focus} is worth a {target}. Should I keep it to that relevance check?"
+    if buyer_move_id == "what_problem_do_you_solve":
+        return f"It helps check whether {primary_gap} is the problem worth a {target}. Should I check that one issue?"
+    if buyer_move_id == "why_should_i_care":
+        return f"You should care only if {primary_gap} is relevant enough for a {target}. Should I check that one issue?"
+    if buyer_move_id == "what_makes_you_different":
+        return f"The useful difference I can state here is limited: {allowed_summary}. Should I keep this to one relevance check?"
+    if buyer_move_id == "who_is_this_for":
+        return f"It is for {buyer_role}. Should I check whether {primary_gap} applies?"
+    if buyer_move_id == "is_this_worth_my_time":
+        return f"It is worth your time only if {primary_gap} is relevant enough for a {target}. Should I check that?"
+    if buyer_move_id == "scope_limit_question":
+        return f"Correct, I can explain the purpose of the call, but detailed advice belongs with {owner}. This call only checks whether a {target} is useful. Should I check whether {primary_gap} is relevant, or stop here?"
+
+    if buyer_move_id == "already_has_provider":
+        return "Understood, if your current provider handles this, there may be no need. Should I check one narrow gap, or stop here?"
+    if buyer_move_id == "price_or_budget_objection":
+        return f"Fair, budget matters. I cannot quote or promise savings here; the useful check is whether {primary_gap} is worth a {target}. Should I check that, or stop here?"
+    if buyer_move_id == "no_authority_or_needs_approval":
+        return "Understood, if someone else approves it, the right next step is to involve that person. Should I note that, or stop here?"
+    if buyer_move_id == "wants_proof_or_case_study":
+        return "Fair, proof should come from approved material or a human follow-up, not a claim from this call. Should I capture where to send a summary, or stop here?"
+    if buyer_move_id == "timing_objection":
+        return "Understood, this week is not good. Should I stop here?"
+    if buyer_move_id == "no_clear_need":
+        return "Understood, if there is no current need, I can stop here. Should I stop?"
+    if buyer_move_id == "too_busy_now":
+        return "No problem, I will keep this short. Should I stop here?"
+
+    return "I hear you. Should I keep this to one relevance check, or stop here?"
+
+
+def universal_response_shape_continuity(
+    frame: dict[str, Any],
+    campaign: dict | None,
+    session_state: dict | None = None,
+) -> dict[str, Any] | None:
+    if not should_enforce_response_shape(frame, campaign=campaign, context={"session_state": session_state}):
+        return None
+    buyer_move_id = str((frame or {}).get("buyer_move_id") or "")
+    category = _response_shape_category(buyer_move_id) or "universal_response_shape"
+    enforced_frame = dict(frame)
+    enforced_frame.update(
+        {
+            "response_shape_enforcement_enabled": True,
+            "response_shape_enforcement_reason": f"{category}_high_confidence",
+            "response_shape_enforced_category": category,
+            "response_shape_candidate_source": "universal_response_shape",
+        }
+    )
+    return {
+        "applied": True,
+        "reason": "universal_response_shape_enforced",
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": category,
+        "candidate_response": render_universal_response_outline(enforced_frame, campaign, session_state),
+        "universal_policy_frame": enforced_frame,
     }

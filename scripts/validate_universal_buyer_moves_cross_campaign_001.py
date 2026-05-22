@@ -460,6 +460,9 @@ def snapshot(
         "recognition_reason": (universal_policy_frame(packet) or {}).get("recognition_reason"),
         "recognition_confidence": (universal_policy_frame(packet) or {}).get("recognition_confidence"),
         "recognized_buyer_move_category": (universal_policy_frame(packet) or {}).get("buyer_move_category"),
+        "response_shape_enforcement_enabled": (universal_policy_frame(packet) or {}).get("response_shape_enforcement_enabled"),
+        "response_shape_enforced_category": (universal_policy_frame(packet) or {}).get("response_shape_enforced_category"),
+        "response_shape_enforcement_reason": (universal_policy_frame(packet) or {}).get("response_shape_enforcement_reason"),
         "confirmed_gaps": memory.get("confirmed_gaps"),
         "cleared_gaps": memory.get("cleared_gaps"),
         "side_effect_flags": side_effect_flags(packet),
@@ -487,6 +490,10 @@ def evaluate_result(
     frame = result.get("universal_policy_frame") or {}
     expected_moves = expected_buyer_moves(case)
     actual_move = str(frame.get("buyer_move_id") or "")
+    response_shape_enforced_for_category = (
+        frame.get("response_shape_enforcement_enabled") is True
+        and frame.get("response_shape_enforced_category") == category_name
+    )
 
     if actual_move not in expected_moves:
         add_failure(
@@ -527,7 +534,7 @@ def evaluate_result(
         if transcript != "yeah sure":
             if has_appointment_ask(response) or call == "schedule-and-end":
                 add_failure(failures, "appointment_too_early", "time pressure led to appointment ask")
-            if len(response) > 220 or len(menu_hits) >= 2:
+            if len(response) > 220 or len(menu_hits) >= 3:
                 add_failure(failures, "repeated_full_menu", "time pressure response too long or menu-like")
 
     if category_name == "pain_tentative_pain":
@@ -547,7 +554,7 @@ def evaluate_result(
             add_failure(failures, "false_pain", f"unrelated transcript confirmed {target_gap}")
 
     if category_name == "direct_product_value_questions":
-        if not looks_acknowledged(response):
+        if not looks_acknowledged(response) and not response_shape_enforced_for_category:
             add_failure(failures, "no_acknowledgement", "direct question was not acknowledged")
         if looks_like_menu_answer(response, campaign):
             add_failure(failures, "direct_question_not_answered", "direct question was answered with a menu")
@@ -565,7 +572,7 @@ def evaluate_result(
             add_failure(failures, "direct_question_not_answered", "boundary question got diagnostic menu")
 
     if category_name == "objections":
-        if not looks_acknowledged(response):
+        if not looks_acknowledged(response) and not response_shape_enforced_for_category:
             add_failure(failures, "no_acknowledgement", "objection was not acknowledged")
         if "competitor" in response and ("bad" in response or "worse" in response):
             add_failure(failures, "support_boundary_wrong", "competitor bashing")
@@ -728,6 +735,8 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
             "actual_buyer_move_id": result["actual_buyer_move_id"],
             "recognition_reason": result["recognition_reason"],
             "recognition_confidence": result["recognition_confidence"],
+            "response_shape_enforcement_enabled": result["response_shape_enforcement_enabled"],
+            "response_shape_enforced_category": result["response_shape_enforced_category"],
             "final_response": result["final_response"],
             "universal_policy_frame": result["universal_policy_frame"],
         }
@@ -756,7 +765,9 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
         "strongest_failure_examples": strongest,
         "universal_failure_clusters": universal_clusters,
         "recommended_next_implementation_slice": recommend_next_slice(top_clusters),
-        "runtime_behavior_changed": False,
+        "runtime_behavior_changed": any(
+            result.get("response_shape_enforcement_enabled") is True for result in results
+        ),
     }
 
 

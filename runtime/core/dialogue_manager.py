@@ -599,6 +599,32 @@ def plan_dialogue_action(
             dialogue_reasoning=dialogue_reasoning or {},
         )
 
+    universal_response_shape_continuity = universal_policy_runtime.universal_response_shape_continuity(
+        universal_policy_frame,
+        campaign,
+        session_state=session_state,
+    )
+    if universal_response_shape_continuity:
+        enforced_policy_frame = dict(
+            universal_response_shape_continuity.get("universal_policy_frame") or universal_policy_frame
+        )
+        state_before = _state_from_inputs(
+            transcript=transcript,
+            session_state=session_state,
+            campaign=campaign,
+            quality_gate=quality_gate,
+            dialogue_reasoning=dialogue_reasoning,
+            contextual_semantics=contextual_semantics,
+            pragmatic_move=pragmatic_move,
+            universal_policy_frame=enforced_policy_frame,
+        )
+        return _action_from_continuity(
+            state_before=state_before,
+            continuity=universal_response_shape_continuity,
+            source="universal_response_shape",
+            dialogue_reasoning=dialogue_reasoning or {},
+        )
+
     semantic_continuity = contextual_buyer_semantics.continuity_from_semantic_frame(contextual_semantics)
     if semantic_continuity:
         return _action_from_continuity(
