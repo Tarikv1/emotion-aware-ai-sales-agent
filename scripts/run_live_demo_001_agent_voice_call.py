@@ -1339,6 +1339,7 @@ def build_turn_packet(
         session_state=session_state,
         transcript=transcript,
         final_response=str(guarded.get("final_response") or ""),
+        campaign=campaign,
     )
     updated_action, stability_guard = dialogue_manager.apply_stability_guard_if_needed(
         action=dialogue_action,
@@ -1357,6 +1358,7 @@ def build_turn_packet(
             session_state=session_state,
             transcript=transcript,
             final_response=str(guarded.get("final_response") or ""),
+            campaign=campaign,
         )
     guarded = dialogue_manager.apply_decision_override(guarded, dialogue_action)
     voice_packet = attach_runtime_voice_delivery(guarded, campaign, provider_key="elevenlabs")

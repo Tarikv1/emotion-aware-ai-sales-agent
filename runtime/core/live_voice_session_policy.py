@@ -9,6 +9,7 @@ AGENT_OPEN_TRANSCRIPT = "__agent_open__"
 CALLBACK_WORKFLOW_GAP = "callback_workflow_gap"
 CALLBACK_SCHEDULING_REQUEST = "callback_scheduling_request"
 CALLBACK_TIME_CONFIRMATION = "callback_time_confirmation"
+ROUTESIGNAL_CAMPAIGN_IDS = {"live-demo-001-routesignal", "campaign-prod-005-b2b-software"}
 
 
 def normalize_text(text: str) -> str:
@@ -165,7 +166,179 @@ def nested_campaign_value(campaign: dict | None, section: str, key: str, fallbac
     return value or fallback
 
 
+def is_generic_campaign_config(campaign: dict | None) -> bool:
+    if not isinstance(campaign, dict):
+        return False
+    campaign_id = str(campaign.get("campaign_id") or "")
+    if campaign_id in ROUTESIGNAL_CAMPAIGN_IDS:
+        return False
+    return bool(campaign.get("vertical_id") and isinstance(campaign.get("diagnostic_gaps"), dict) and campaign.get("diagnostic_gaps"))
+
+
+def generic_campaign_gap_clause(campaign: dict | None) -> str:
+    if not is_generic_campaign_config(campaign):
+        return "the relevant fit areas"
+    gaps = campaign.get("core_diagnostic_gaps") or list((campaign.get("diagnostic_gaps") or {}).keys())
+    labels: list[str] = []
+    for gap_id in gaps:
+        definition = (campaign.get("diagnostic_gaps") or {}).get(gap_id) or {}
+        label = str(definition.get("label") or gap_id).replace("_", " ").strip()
+        if label:
+            labels.append(label)
+    if not labels:
+        return "the relevant fit areas"
+    if len(labels) == 1:
+        return labels[0]
+    if len(labels) == 2:
+        return f"{labels[0]} or {labels[1]}"
+    return f"{', '.join(labels[:-1])}, or {labels[-1]}"
+
+
+def generic_campaign_role_phrase(role: str) -> str:
+    role = str(role or "").strip()
+    if not role:
+        return "a qualified specialist"
+    lowered = role.lower()
+    if lowered.startswith(("a ", "an ", "the ", "someone ", "somebody ", "your ")):
+        return role
+    article = "an" if lowered[:1] in {"a", "e", "i", "o", "u"} else "a"
+    return f"{article} {role}"
+
+
+def sentence_start(text: str) -> str:
+    text = str(text or "").strip()
+    return text[:1].upper() + text[1:] if text else text
+
+
+def generic_campaign_context(campaign: dict | None) -> dict[str, str]:
+    owner = campaign_value(campaign, "human_followup_owner", "qualified specialist")
+    owner_phrase = generic_campaign_role_phrase(owner)
+    return {
+        "client": campaign_value(campaign, "client_name", "the campaign team"),
+        "offer": campaign_value(campaign, "product_or_offer_name", campaign_value(campaign, "product_name", "this review")),
+        "owner": owner,
+        "owner_phrase": owner_phrase,
+        "owner_sentence": sentence_start(owner_phrase),
+        "target": campaign_value(campaign, "appointment_target", "human review"),
+        "gaps": generic_campaign_gap_clause(campaign),
+    }
+
+
+def generic_campaign_review_question(language: str, campaign: dict | None) -> str:
+    context = generic_campaign_context(campaign)
+    if language.startswith("de"):
+        return (
+            f"Die kurze Pruefung ist, ob {context['gaps']} eine {context['target']} "
+            f"mit {context['owner']} brauchen. Welchen Teil soll ich zuerst pruefen?"
+        )
+    return (
+        f"I am asking whether {context['gaps']} are worth a possible {context['target']}. "
+        "Which part should I ask about first, if any?"
+    )
+
+
+def generic_campaign_next_step_text(language: str, campaign: dict | None) -> str:
+    context = generic_campaign_context(campaign)
+    if language.startswith("de"):
+        return (
+            f"Der naechste Schritt ist nur eine sichere Pruefung: Wenn {context['gaps']} relevant sind, "
+            f"kann {context['owner']} eine kurze {context['target']} machen. Sonst stoppe ich hier."
+        )
+    return (
+        f"If {context['gaps']} are actually relevant, {context['owner_phrase']} can do a short {context['target']}. "
+        "If not, I can stop here; should I ask one quick fit question?"
+    )
+
+
+def generic_campaign_product_detail_text(language: str, campaign: dict | None) -> str:
+    context = generic_campaign_context(campaign)
+    if language.startswith("de"):
+        return (
+            f"Bei {context['offer']} sollte ich nur freigegebene Details nutzen. "
+            f"Hier pruefe ich zunaechst, ob {context['gaps']} eine {context['target']} brauchen."
+        )
+    return (
+        f"For {context['offer']}, I should stick to approved details. "
+        f"I am only checking whether {context['gaps']} should go to a short {context['target']}."
+    )
+
+
+def generic_campaign_price_text(language: str, campaign: dict | None) -> str:
+    context = generic_campaign_context(campaign)
+    if language.startswith("de"):
+        return (
+            f"Ich habe keinen freigegebenen Preis, den ich hier zitieren sollte. "
+            f"{context['owner']} sollte Kosten und Bedingungen bestaetigen; zuerst geht es darum, ob {context['gaps']} relevant sind."
+        )
+    return (
+        f"I do not have approved pricing to quote here. "
+        f"{context['owner_sentence']} should confirm cost and terms before any next step."
+    )
+
+
+def generic_campaign_claim_boundary_text(language: str, campaign: dict | None) -> str:
+    context = generic_campaign_context(campaign)
+    if language.startswith("de"):
+        return (
+            f"Das kann ich hier nicht verifizieren oder als Compliance-Aussage bestaetigen. "
+            f"{context['owner']} braucht verifizierte Details. Soll ich es bei {context['gaps']} belassen?"
+        )
+    return (
+        f"I cannot verify that or make a compliance claim here. {context['owner_sentence']} needs verified details first. "
+        f"Should I keep this to {context['gaps']}?"
+    )
+
+
+def generic_campaign_focus_text(
+    language: str,
+    focus: str,
+    campaign: dict | None,
+    *,
+    normalized: str = "",
+    persisted: bool = False,
+) -> str | None:
+    if not is_generic_campaign_config(campaign):
+        return None
+    if focus == "price":
+        return generic_campaign_price_text(language, campaign)
+    if focus in {"details", "product", "security"}:
+        if normalized_contains_any(normalized, {"guarantee", "guaranteed", "promise", "promised", "compliance", "compliant"}):
+            return generic_campaign_claim_boundary_text(language, campaign)
+        return generic_campaign_product_detail_text(language, campaign)
+    if focus in {"fit", "qualification", "provider_gap"}:
+        return generic_campaign_review_question(language, campaign)
+    if focus == "effort":
+        context = generic_campaign_context(campaign)
+        if language.startswith("de"):
+            return f"Der Aufwand lohnt nur, wenn {context['gaps']} wirklich relevant sind. Soll ich diesen Punkt pruefen oder hier stoppen?"
+        return f"This is only worth time when one of these areas is active: {context['gaps']}. Should I check one of them, or stop here?"
+    if focus == "timing":
+        if language.startswith("de"):
+            return "Kein Problem. Ohne konkrete Zeit bestaetige ich nichts; wir koennen es bei einer spaeteren menschlichen Pruefung belassen."
+        return "No problem. I will not schedule anything without a specific time; we can leave this for a later human review."
+    if focus == "terms":
+        context = generic_campaign_context(campaign)
+        if language.startswith("de"):
+            return f"Bedingungen sollten von {context['owner']} bestaetigt werden, bevor ich dazu etwas verspreche."
+        return f"Terms should be confirmed by {context['owner_phrase']} before I promise anything about them."
+    return generic_campaign_review_question(language, campaign)
+
+
 def sales_opening_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        client_name = campaign_value(campaign, "client_name", "the campaign team")
+        offer_name = campaign_value(campaign, "product_or_offer_name", campaign_value(campaign, "product_name", "this review"))
+        representative = nested_campaign_value(campaign, "caller_identity", "representative_name", "Maya")
+        appointment_target = campaign_value(campaign, "appointment_target", "human review")
+        if language.startswith("de"):
+            return (
+                f"Hallo, hier ist {representative} von {client_name} wegen {offer_name}. "
+                f"Ich pruefe, ob eine kurze {appointment_target} sinnvoll ist; haben Sie kurz Zeit?"
+            )
+        return (
+            f"Hi, this is {representative} calling from {client_name} about {offer_name}. "
+            f"I am checking whether a short {appointment_target} is needed; do you have a minute?"
+        )
     client_name = campaign_value(campaign, "client_name", "Northstar Workflow Labs")
     product_name = campaign_value(campaign, "product_name", "RouteSignal CRM")
     representative = nested_campaign_value(campaign, "caller_identity", "representative_name", "Maya")
@@ -223,6 +396,22 @@ def has_caller_identity_question(normalized: str) -> bool:
 
 
 def caller_identity_recall_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        client_name = campaign_value(campaign, "client_name", "the campaign team")
+        offer_name = campaign_value(campaign, "product_or_offer_name", campaign_value(campaign, "product_name", "this review"))
+        representative = nested_campaign_value(campaign, "caller_identity", "representative_name", "Maya")
+        owner = campaign_value(campaign, "human_followup_owner", "qualified specialist")
+        appointment_target = campaign_value(campaign, "appointment_target", "human review")
+        if language.startswith("de"):
+            return (
+                f"Ich bin {representative} von {client_name}. Es geht um {offer_name} "
+                f"und darum, ob eine kurze {appointment_target} mit {owner} sinnvoll waere."
+            )
+        return (
+            f"I am {representative} calling from {client_name} about {offer_name}. "
+            f"The reason is to see whether a short {appointment_target} with {owner} would be useful. "
+            "Should I restate the quick question?"
+        )
     client_name = campaign_value(campaign, "client_name", "Northstar Workflow Labs")
     product_name = campaign_value(campaign, "product_name", "RouteSignal CRM")
     representative = nested_campaign_value(campaign, "caller_identity", "representative_name", "Maya")
@@ -268,9 +457,12 @@ def callback_request_time_response_for_transcript(language: str, normalized: str
     return callback_request_time_response(language)
 
 
-def callback_time_confirmed_response(language: str) -> str:
+def callback_time_confirmed_response(language: str, campaign: dict | None = None) -> str:
     if language.startswith("de"):
         return "Bestaetigt. Ich notiere den Rueckruf so. Auf Wiederhoeren."
+    if is_generic_campaign_config(campaign):
+        context = generic_campaign_context(campaign)
+        return f"Confirmed. I will note that time for your {context['target']}. Goodbye."
     return "Confirmed. I will record that callback time for the specialist. Goodbye."
 
 
@@ -601,7 +793,10 @@ def is_buyer_expects_agent_to_lead(normalized: str) -> bool:
 
 
 def is_next_step_question(normalized: str) -> bool:
-    return normalized_contains_any(normalized, {"what is the next step", "what s the next step", "what next", "next step"})
+    return normalized_contains_any(
+        normalized,
+        {"what is the next step", "what s the next step", "what next", "next step", "what happens next"},
+    )
 
 
 def is_written_summary_request(normalized: str) -> bool:
@@ -771,25 +966,33 @@ def new_trial_request_clarification_response(language: str) -> str:
     return "I meant inbound demo or trial inquiries that need an owner and a follow-up step. Does that handoff ever get missed?"
 
 
-def buyer_no_question_response(language: str) -> str:
+def buyer_no_question_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        return generic_campaign_review_question(language, campaign)
     if language.startswith("de"):
         return "Stimmt, Sie haben keine Frage gestellt. Ich rufe wegen einer Sache an: gehen Demo-Nachfassaktionen bei Besitzer, Rueckruf oder Uebergabe verloren?"
     return "Fair, you did not ask a question. I called to check one thing: are demo leads getting assigned, reminded, and followed up, or are some slipping?"
 
 
-def value_relevance_response(language: str) -> str:
+def value_relevance_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        return generic_campaign_focus_text(language, "effort", campaign) or generic_campaign_review_question(language, campaign)
     if language.startswith("de"):
         return "Es zaehlt nur, wenn diese Luecke heute Zeit kostet: verpasste Rueckrufe, unklare Besitzer oder verlorene Uebergaben. Was kostet heute wirklich Zeit?"
     return "In plain terms, it matters only if that gap costs time today: missed callbacks, unclear owners, or lost handoffs. Which one costs time today?"
 
 
-def time_constrained_agenda_response(language: str) -> str:
+def time_constrained_agenda_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        return generic_campaign_review_question(language, campaign)
     if language.startswith("de"):
         return "Ich halte es bei einer Frage: gehen Demo-Nachfassaktionen bei Besitzer, Rueckruf-Erinnerung oder Uebergabe verloren?"
     return "I will keep it to one question: are inbound demo follow-ups missing owners, callback reminders, or handoffs?"
 
 
-def seller_agenda_recovered_response(language: str) -> str:
+def seller_agenda_recovered_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        return call_purpose_response(language, campaign)
     if language.startswith("de"):
         return "Fair. Ich pruefe einen Ablauf: verlieren Demo-Nachfassaktionen Besitzer, Rueckruf-Erinnerungen oder Uebergabestatus?"
     return (
@@ -798,7 +1001,21 @@ def seller_agenda_recovered_response(language: str) -> str:
     )
 
 
-def call_purpose_response(language: str) -> str:
+def call_purpose_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        client_name = campaign_value(campaign, "client_name", "the campaign team")
+        offer_name = campaign_value(campaign, "product_or_offer_name", campaign_value(campaign, "product_name", "this review"))
+        appointment_target = campaign_value(campaign, "appointment_target", "human review")
+        gaps = generic_campaign_gap_clause(campaign)
+        if language.startswith("de"):
+            return (
+                f"Ich rufe von {client_name} wegen {offer_name} an. "
+                f"Ich pruefe, ob {gaps} eine kurze {appointment_target} brauchen."
+            )
+        return (
+            f"I am calling from {client_name} about {offer_name}, and asking whether {gaps} are worth a short {appointment_target}. "
+            "If none of those apply, I can stop here."
+        )
     if language.startswith("de"):
         return "Ich rufe wegen Demo-Nachfassaktionen an: Besitzer, Rueckruf-Erinnerung und Uebergabestatus. Soll ich eine dieser Luecken pruefen?"
     return (
@@ -807,49 +1024,64 @@ def call_purpose_response(language: str) -> str:
     )
 
 
-def workflow_review_next_step_response(language: str) -> str:
+def workflow_review_next_step_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        return generic_campaign_next_step_text(language, campaign)
     if language.startswith("de"):
         return "Der naechste Schritt ist eine kurze Pruefung: Besitzer, Rueckruf-Erinnerung oder Uebergabe. Welche Luecke soll ich pruefen?"
     return "The quick check is one inbound demo follow-up gap. Should I check who gets the lead, the reminder, or the next reply?"
 
 
-def written_summary_response(language: str) -> str:
+def written_summary_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        context = generic_campaign_context(campaign)
+        return f"I can note a short summary for {context['offer']}. Should it focus on {context['gaps']}, or should I stop here?"
     if language.startswith("de"):
         return "Ich kann eine kurze Workflow-Zusammenfassung schicken: Besitzer, Rueckruf-Erinnerung und Uebergabestatus. Soll sie sich auf Rueckruf-Erinnerungen konzentrieren?"
     return "I can send a short workflow summary: who gets the demo lead, when the reminder happens, and whether the next reply happened. Should it focus on the callback gap you mentioned?"
 
 
-def workflow_review_scope_response(language: str) -> str:
+def workflow_review_scope_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        return generic_campaign_product_detail_text(language, campaign)
     if language.startswith("de"):
         return "Kurz heisst eine Workflow-Luecke, keine volle Demo: Besitzer, Rueckruf-Erinnerung oder Uebergabe. Welche soll ich pruefen?"
     return "Short means one inbound demo follow-up gap, not a full demo. Should I check who gets the lead, the reminder, or the next reply?"
 
 
-def time_waste_repair_response(language: str) -> str:
+def time_waste_repair_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        return generic_campaign_focus_text(language, "effort", campaign) or generic_campaign_review_question(language, campaign)
     if language.startswith("de"):
         return "Fair. Ich kann hier stoppen. Die kurze Pruefung ist, ob Demo-Nachfassaktionen Besitzer oder Rueckruf-Erinnerungen verlieren. Soll ich beenden?"
     return "Fair. I can stop here. The quick check is whether demo follow-ups lose owners or callback reminders. Should I end the call?"
 
 
-def uncertain_gap_response(language: str) -> str:
+def uncertain_gap_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        return generic_campaign_review_question(language, campaign)
     if language.startswith("de"):
         return "Kein Problem. Die kurze Pruefung ist einfacher: fehlt Demo-Nachfassaktionen manchmal Besitzer, Rueckruf-Erinnerung oder Uebergabe?"
     return "No problem. The quick check is simpler: do demo follow-ups ever miss an owner, callback reminder, or handoff?"
 
 
-def topic_confusion_response(language: str) -> str:
+def topic_confusion_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        return generic_campaign_review_question(language, campaign)
     if language.startswith("de"):
         return "Ich war nicht klar. RouteSignal betrifft Demo-Nachfassaktionen: Besitzer, Rueckruf-Erinnerung und Uebergabestatus. Soll ich stoppen?"
     return "I am not being clear. RouteSignal is for demo follow-up: getting leads assigned, reminded, and followed up. Should I keep it to callback reminders, or stop here?"
 
 
-def frustrated_confusion_response(language: str) -> str:
+def frustrated_confusion_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        return generic_campaign_review_question(language, campaign)
     if language.startswith("de"):
         return "Fair, ich habe den Faden verloren. Die kurze Pruefung ist Demo-Nachfassung: Besitzer, Rueckruf-Erinnerung oder Uebergabe. Soll ich stoppen?"
     return "Fair, I lost the thread. The quick check is demo follow-up owners, callback reminders, or handoffs. Should I stop?"
 
 
-def call_context_recovery_response(normalized: str, resolved_focus: str | None, language: str) -> dict | None:
+def call_context_recovery_response(normalized: str, resolved_focus: str | None, language: str, campaign: dict | None = None) -> dict | None:
     focus = resolved_focus or "qualification"
     checks = [
         (is_time_constrained_agenda_request, "time_constrained_agenda_answered", time_constrained_agenda_response),
@@ -866,11 +1098,15 @@ def call_context_recovery_response(normalized: str, resolved_focus: str | None, 
     for detector, reason, response_builder in checks:
         if detector(normalized):
             dialogue_focus = "qualification" if reason in {"call_purpose_explained", "seller_agenda_recovered"} else focus
+            try:
+                candidate_response = response_builder(language, campaign)
+            except TypeError:
+                candidate_response = response_builder(language)
             return {
                 "applied": True,
                 "reason": reason,
                 "dialogue_focus": dialogue_focus,
-                "candidate_response": response_builder(language),
+                "candidate_response": candidate_response,
             }
     return None
 
@@ -880,6 +1116,8 @@ def is_crm_replacement_question(normalized: str) -> bool:
 
 
 def public_crm_boundary_response(normalized: str, campaign: dict | None) -> str:
+    if is_generic_campaign_config(campaign):
+        return generic_campaign_product_detail_text(language=str((campaign or {}).get("language") or "en"), campaign=campaign)
     product_name = campaign_value(campaign, "product_name", "RouteSignal CRM")
     if is_crm_replacement_question(normalized):
         return (
@@ -950,7 +1188,7 @@ def structured_reasoning_continuity_response(
             "dialogue_focus": focus,
             "structured_reasoner_used": True,
             "dialogue_reasoning": dialogue_reasoning,
-            "candidate_response": clarify_previous_question_text(language, focus, previous_agent_question(turns)),
+            "candidate_response": clarify_previous_question_text(language, focus, previous_agent_question(turns), campaign),
         }
     return None
 
@@ -1114,7 +1352,10 @@ def dialogue_focus_from_turns(turns: list[dict]) -> str | None:
     return None
 
 
-def continuity_text(language: str, focus: str, *, persisted: bool = False) -> str:
+def continuity_text(language: str, focus: str, *, persisted: bool = False, campaign: dict | None = None) -> str:
+    generic = generic_campaign_focus_text(language, focus, campaign, persisted=persisted)
+    if generic:
+        return generic
     german = language.startswith("de")
     if focus == "price":
         if german:
@@ -1176,7 +1417,10 @@ def continuity_text(language: str, focus: str, *, persisted: bool = False) -> st
     return "I can answer that directly if you name the point: workflow, price, security, or callback timing."
 
 
-def focus_followup_text(language: str, focus: str, normalized: str) -> str:
+def focus_followup_text(language: str, focus: str, normalized: str, campaign: dict | None = None) -> str:
+    generic = generic_campaign_focus_text(language, focus, campaign, normalized=normalized)
+    if generic:
+        return generic
     german = language.startswith("de")
     asks_for_explanation = normalized_contains_any(
         normalized,
@@ -1248,7 +1492,7 @@ def focus_followup_text(language: str, focus: str, normalized: str) -> str:
             return continuity_text(language, "timing", persisted=True)
     if focus == "qualification":
         if is_value_relevance_question(normalized):
-            return value_relevance_response(language)
+            return value_relevance_response(language, campaign)
         if asks_for_explanation:
             if german:
                 return "Einfach gesagt: RouteSignal ist nur relevant, wenn Demo-Nachfassung rutscht: verpasste Rueckrufe, unklare Besitzer oder Uebergabestatus. Was davon passiert wirklich?"
@@ -1258,7 +1502,13 @@ def focus_followup_text(language: str, focus: str, normalized: str) -> str:
     return continuity_text(language, focus, persisted=True)
 
 
-def same_focus_progression_response(normalized: str, resolved_focus: str | None, language: str, turns: list[dict]) -> dict | None:
+def same_focus_progression_response(
+    normalized: str,
+    resolved_focus: str | None,
+    language: str,
+    turns: list[dict],
+    campaign: dict | None = None,
+) -> dict | None:
     if not resolved_focus:
         return None
     selected_focus = focus_from_transcript(normalized)
@@ -1295,12 +1545,15 @@ def same_focus_progression_response(normalized: str, resolved_focus: str | None,
                 language,
                 resolved_focus,
                 max(0, focus_turn_count(turns, resolved_focus) - 1),
+                campaign,
             ),
         }
     return None
 
 
-def modular_qualification_guidance_text(language: str, step: int) -> str:
+def modular_qualification_guidance_text(language: str, step: int, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        return generic_campaign_review_question(language, campaign)
     if language.startswith("de"):
         options = [
             "Die kurze Pruefung ist verpasste Nachverfolgung: Routing, Rueckrufe oder Uebergaben. Welche Luecke kostet heute die meiste Zeit?",
@@ -1319,10 +1572,19 @@ def modular_qualification_guidance_text(language: str, step: int) -> str:
     return options[step % len(options)]
 
 
-def progressive_focus_text(language: str, focus: str, normalized: str, step: int) -> str:
+def progressive_focus_text(
+    language: str,
+    focus: str,
+    normalized: str,
+    step: int,
+    campaign: dict | None = None,
+) -> str:
+    generic = generic_campaign_focus_text(language, focus, campaign, normalized=normalized)
+    if generic:
+        return generic
     german = language.startswith("de")
     if focus == "qualification":
-        return modular_qualification_guidance_text(language, step)
+        return modular_qualification_guidance_text(language, step, campaign)
     variants = {
         "price": [
             (
@@ -1485,7 +1747,12 @@ def is_all_clear_or_no_pain_reply(normalized: str) -> bool:
     )
 
 
-def clear_no_pain_response(language: str) -> str:
+def clear_no_pain_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        context = generic_campaign_context(campaign)
+        if language.startswith("de"):
+            return f"Verstanden. Wenn {context['gaps']} kein Thema sind, sollte ich keine Pruefung draengen. Soll ich hier stoppen?"
+        return f"Got it. If {context['gaps']} are not an issue, I should not push a review. Should I stop here?"
     if language.startswith("de"):
         return "Verstanden. Wenn die Nachverfolgung klar laeuft, sollte ich keine Pruefung draengen. Bevor ich auflege: Gibt es verpasste Rueckrufe, manuelle Nachverfolgung oder Uebergaben ueberhaupt, oder ist das fuer Sie nicht relevant?"
     return (
@@ -1495,7 +1762,13 @@ def clear_no_pain_response(language: str) -> str:
     )
 
 
-def exhausted_progression_options(language: str, focus: str) -> list[str]:
+def exhausted_progression_options(language: str, focus: str, campaign: dict | None = None) -> list[str]:
+    generic = generic_campaign_focus_text(language, focus, campaign)
+    if generic:
+        return [
+            generic,
+            generic_campaign_next_step_text(language, campaign),
+        ]
     if language.startswith("de"):
         return [
             "Dann ist der naechste sinnvolle Schritt eine kurze Zusammenfassung statt weiterer Wiederholung. Soll ich die offene Workflow-Luecke schriftlich festhalten?",
@@ -1539,15 +1812,35 @@ def exhausted_progression_options(language: str, focus: str) -> list[str]:
     ]
 
 
-def unique_progressive_focus_text(language: str, focus: str, normalized: str, step: int, seen: set[str]) -> str:
+def unique_progressive_focus_text(
+    language: str,
+    focus: str,
+    normalized: str,
+    step: int,
+    seen: set[str],
+    campaign: dict | None = None,
+) -> str:
+    if is_generic_campaign_config(campaign):
+        options = [
+            generic_campaign_focus_text(language, focus, campaign, normalized=normalized),
+            generic_campaign_review_question(language, campaign),
+            generic_campaign_next_step_text(language, campaign),
+            "I may not be the right contact for that question. Should I note a callback path, or stop here?"
+            if not language.startswith("de")
+            else "Dafuer bin ich wahrscheinlich nicht der richtige Kontakt. Soll ich einen Rueckruf notieren oder hier stoppen?",
+        ]
+        for candidate in options:
+            if candidate and candidate not in seen:
+                return candidate
+        return options[-1] or generic_campaign_review_question(language, campaign)
     for offset in range(8):
-        candidate = progressive_focus_text(language, focus, normalized, step + offset)
+        candidate = progressive_focus_text(language, focus, normalized, step + offset, campaign)
         if candidate not in seen:
             return candidate
-    for candidate in exhausted_progression_options(language, focus):
+    for candidate in exhausted_progression_options(language, focus, campaign):
         if candidate not in seen:
             return candidate
-    fallback = progressive_focus_text(language, focus, normalized, step)
+    fallback = progressive_focus_text(language, focus, normalized, step, campaign)
     suffix = (
         " The next concrete question is whether that is worth verified review."
         if not language.startswith("de")
@@ -1954,7 +2247,20 @@ def appointment_time_request_count(turns: list[dict]) -> int:
     )
 
 
-def appointment_lead_close_response(language: str, gap: str | None) -> str:
+def appointment_lead_close_response(language: str, gap: str | None, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        context = generic_campaign_context(campaign)
+        definition = ((campaign or {}).get("diagnostic_gaps") or {}).get(gap or "") or {}
+        gap_label = str(definition.get("review_focus") or definition.get("label") or "that area").replace("_", " ")
+        if language.startswith("de"):
+            return (
+                f"Der naechste Schritt waere eine kurze {context['target']}. "
+                f"{context['owner']} kann {gap_label} mit den Details pruefen; welche Zeit passt?"
+            )
+        return (
+            f"That sounds like the area to review, so the next step would be a short {context['target']}. "
+            f"{context['owner_sentence']} can review {gap_label} against the details; what time works?"
+        )
     if language.startswith("de"):
         return "Dann ist der naechste Schritt eine kurze Workflow-Pruefung mit jemandem von Northstar. Welche Zeit passt fuer einen kurzen Anruf?"
     gap_labels = {
@@ -2168,10 +2474,13 @@ def gap_progression_text(language: str, gap: str, step: int, seen: set[str] | No
     return options[step % len(options)] + " The next useful check is whether that gap is worth verified review."
 
 
-def proactive_guidance_text(language: str, focus: str, step: int) -> str:
+def proactive_guidance_text(language: str, focus: str, step: int, campaign: dict | None = None) -> str:
+    generic = generic_campaign_focus_text(language, focus, campaign)
+    if generic:
+        return generic
     german = language.startswith("de")
     if focus == "qualification":
-        return modular_qualification_guidance_text(language, step)
+        return modular_qualification_guidance_text(language, step, campaign)
     variants = {
         "price": [
             (
@@ -2270,12 +2579,27 @@ def proactive_guidance_text(language: str, focus: str, step: int) -> str:
     return options[min(step, len(options) - 1)]
 
 
-def duplicate_response_repair(transcript: str, session_state: dict | None, language: str, generated_response: str) -> dict:
+def duplicate_response_repair(
+    transcript: str,
+    session_state: dict | None,
+    language: str,
+    generated_response: str,
+    campaign: dict | None = None,
+) -> dict:
     turns = list((session_state or {}).get("turns") or [])
     response = generated_response.strip()
     if not response or response not in previous_responses(turns):
         return {"applied": False, "reason": "no_duplicate_response_detected"}
     normalized = normalize_text(transcript)
+    if is_generic_campaign_config(campaign) and (
+        is_tentative_permission_reply(normalized) or is_uncertain_qualification_reply(normalized)
+    ):
+        return {
+            "applied": True,
+            "reason": "generic_uncertainty_duplicate_repaired",
+            "dialogue_focus": "qualification",
+            "candidate_response": uncertain_qualification_response(language, campaign),
+        }
     if callback_semantic_from_transcript(normalized, session_state) == CALLBACK_SCHEDULING_REQUEST:
         return {
             "applied": True,
@@ -2296,6 +2620,7 @@ def duplicate_response_repair(transcript: str, session_state: dict | None, langu
                 normalized,
                 focus_turn_count(turns, focus),
                 previous_responses(turns),
+                campaign,
             ),
         }
     text = (
@@ -2425,7 +2750,66 @@ def plain_qualification_term_clarification_text(language: str, normalized: str) 
     return None
 
 
-def tentative_qualification_response(language: str) -> str:
+def generic_account_support_request(normalized: str) -> bool:
+    return normalized_contains_any(
+        normalized,
+        {
+            "password",
+            "reset password",
+            "account access",
+            "help with my account",
+            "help with my password",
+            "support ticket",
+            "handle my claim",
+            "help with my claim",
+            "claim status",
+            "change my plan",
+            "change the plan",
+            "check my warranty",
+            "warranty status",
+            "help with my order",
+            "where is my order",
+            "order status",
+            "cancel my account",
+            "cancel account",
+            "cancel my subscription",
+            "cancel subscription",
+        },
+    )
+
+
+def generic_account_support_boundary_text(language: str, campaign: dict | None) -> str:
+    if language.startswith("de"):
+        return "Dabei kann ich in diesem Anruf nicht helfen. Bitte nutzen Sie den zustaendigen Support; ich kann hier stoppen."
+    context = generic_campaign_context(campaign)
+    vertical = str((campaign or {}).get("vertical_id") or "")
+    if not is_generic_campaign_config(campaign):
+        return "I cannot help with password or account support on this call. I can keep this to the workflow review topic, or stop here."
+    if vertical == "insurance":
+        return "I cannot handle claim support on this call. Please use the authorized support path; I can keep this to the review topic, or stop here."
+    if vertical == "telecom":
+        return "I cannot change account plans on this call. Please use the authorized support path; I can keep this to the review topic, or stop here."
+    if vertical == "automotive_service":
+        return "I cannot check warranty support on this call. Please use the authorized support path; I can keep this to the review topic, or stop here."
+    if vertical == "membership_or_subscription":
+        return "I cannot cancel or change an account on this call. Please use authorized account support; I can stop here."
+    if vertical == "retail_or_ecommerce_support_sales":
+        return "I cannot handle order support on this call. Please use the support team for order details; I can stop here."
+    return (
+        "I cannot help with account support on this call. "
+        f"If useful, {context['owner_phrase']} can follow up separately, or I can stop here."
+    )
+
+
+def tentative_qualification_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        context = generic_campaign_context(campaign)
+        if language.startswith("de"):
+            return (
+                f"Kein Problem. Wenn {context['gaps']} nicht klar sind, "
+                "kann ich eine einfache Frage stellen oder hier stoppen."
+            )
+        return "No problem. Should I ask one simpler yes-or-no question, or stop here?"
     if language.startswith("de"):
         return "Kein Problem. Ich erklaere es kurz: Es geht darum, ob eine Demo-Anfrage schnell eine zustaendige Person und eine naechste Antwort bekommt."
     return (
@@ -2434,7 +2818,12 @@ def tentative_qualification_response(language: str) -> str:
     )
 
 
-def uncertain_qualification_response(language: str) -> str:
+def uncertain_qualification_response(language: str, campaign: dict | None = None) -> str:
+    if is_generic_campaign_config(campaign):
+        context = generic_campaign_context(campaign)
+        if language.startswith("de"):
+            return "Kein Problem. Wenn Sie nicht sicher sind, kann ich es klarer eingrenzen oder hier stoppen."
+        return "No problem. Should I simplify the question, or stop here?"
     if language.startswith("de"):
         return "Kein Problem. Starten wir einfacher: Wenn jemand eine Demo anfragt, wer stellt sicher, dass die naechste Antwort passiert?"
     return "No problem. Start with one simple case: when someone asks for a demo, who makes sure they get the next reply?"
@@ -2448,8 +2837,16 @@ def previous_agent_question(turns: list[dict]) -> str | None:
     return None
 
 
-def clarify_previous_question_text(language: str, focus: str, previous_question: str | None) -> str:
+def clarify_previous_question_text(
+    language: str,
+    focus: str,
+    previous_question: str | None,
+    campaign: dict | None = None,
+) -> str:
     del previous_question
+    generic = generic_campaign_focus_text(language, focus, campaign)
+    if generic:
+        return generic
     if language.startswith("de"):
         if focus == "price":
             return "Ich meinte: Der Preis zaehlt nur bei einer echten Ablauf-Luecke. Welche Luecke kostet Zeit: Rueckrufe, Routing oder Uebergaben?"
@@ -2483,8 +2880,18 @@ def is_ambiguous_negative_reply(normalized: str) -> bool:
     }
 
 
-def ambiguous_negative_clarification_text(language: str, focus: str, previous_question: str | None) -> str:
+def ambiguous_negative_clarification_text(
+    language: str,
+    focus: str,
+    previous_question: str | None,
+    campaign: dict | None = None,
+) -> str:
     del focus, previous_question
+    if is_generic_campaign_config(campaign):
+        context = generic_campaign_context(campaign)
+        if language.startswith("de"):
+            return f"Kein Problem. Meinen Sie, jetzt passt es nicht, oder sind {context['gaps']} kein Thema?"
+        return f"No problem. Do you mean now is not a good time, or that {context['gaps']} are not an issue?"
     if language.startswith("de"):
         return "Kein Problem. Meinen Sie, jetzt passt es nicht, oder sind verpasste Rueckrufe und Uebergaben kein Thema?"
     return "No problem. Do you mean now is not a good time, or that missed callbacks and handoffs are not an issue?"
@@ -2495,6 +2902,7 @@ def current_focus_followup_response(
     resolved_focus: str | None,
     language: str,
     turns: list[dict] | None = None,
+    campaign: dict | None = None,
 ) -> dict | None:
     if not resolved_focus:
         return None
@@ -2505,7 +2913,7 @@ def current_focus_followup_response(
             "applied": True,
             "reason": "clear_no_pain_acknowledged",
             "dialogue_focus": resolved_focus,
-            "candidate_response": clear_no_pain_response(language),
+            "candidate_response": clear_no_pain_response(language, campaign),
         }
     if resolved_focus == "qualification":
         term_clarification = plain_qualification_term_clarification_text(language, normalized)
@@ -2521,30 +2929,30 @@ def current_focus_followup_response(
                 "applied": True,
                 "reason": "plain_qualification_context_after_tentative_reply",
                 "dialogue_focus": "qualification",
-                "candidate_response": tentative_qualification_response(language),
+                "candidate_response": tentative_qualification_response(language, campaign),
             }
         if is_uncertain_qualification_reply(normalized):
             return {
                 "applied": True,
                 "reason": "plain_qualification_recovered_after_uncertainty",
                 "dialogue_focus": "qualification",
-                "candidate_response": uncertain_qualification_response(language),
+                "candidate_response": uncertain_qualification_response(language, campaign),
             }
     if prior_question and is_previous_question_clarification_request(normalized):
         return {
             "applied": True,
             "reason": "previous_question_clarified",
             "dialogue_focus": resolved_focus,
-            "candidate_response": clarify_previous_question_text(language, resolved_focus, prior_question),
+            "candidate_response": clarify_previous_question_text(language, resolved_focus, prior_question, campaign),
         }
     if prior_question and is_ambiguous_negative_reply(normalized):
         return {
             "applied": True,
             "reason": "ambiguous_negative_clarified",
             "dialogue_focus": resolved_focus,
-            "candidate_response": ambiguous_negative_clarification_text(language, resolved_focus, prior_question),
+            "candidate_response": ambiguous_negative_clarification_text(language, resolved_focus, prior_question, campaign),
         }
-    call_context_recovery = call_context_recovery_response(normalized, resolved_focus, language)
+    call_context_recovery = call_context_recovery_response(normalized, resolved_focus, language, campaign)
     if call_context_recovery:
         return call_context_recovery
     selected_gap = selected_sales_gap_from_transcript(normalized)
@@ -2578,6 +2986,7 @@ def current_focus_followup_response(
                 language,
                 resolved_focus,
                 max(0, focus_turn_count(turns, resolved_focus) - 1),
+                campaign,
             ),
         }
     continuation_signals = {
@@ -2621,14 +3030,14 @@ def current_focus_followup_response(
     }
     if not normalized_contains_any(normalized, continuation_signals):
         return None
-    progression = same_focus_progression_response(normalized, resolved_focus, language, turns)
+    progression = same_focus_progression_response(normalized, resolved_focus, language, turns, campaign)
     if progression:
         return progression
     return {
         "applied": True,
         "reason": f"resolved_{resolved_focus}_focus_followup",
         "dialogue_focus": resolved_focus,
-        "candidate_response": focus_followup_text(language, resolved_focus, normalized),
+        "candidate_response": focus_followup_text(language, resolved_focus, normalized, campaign),
     }
 
 
@@ -3056,12 +3465,15 @@ def response_echo_repair(
     response: str,
     memory: dict,
     turns: list[dict],
+    campaign: dict | None = None,
 ) -> str:
     normalized = normalize_text(transcript)
     callback_semantic = memory.get("callback_semantic")
     selected_gap = str(memory.get("selected_gap") or "")
     active_topic = str(memory.get("active_topic") or "") or dialogue_focus_from_turns(turns) or "qualification"
     if callback_semantic == CALLBACK_WORKFLOW_GAP:
+        if is_generic_campaign_config(campaign):
+            return generic_campaign_review_question(language, campaign)
         if is_callback_workflow_question(normalized):
             return callback_workflow_clarification_response(language)
         return gap_progression_text(
@@ -3071,10 +3483,13 @@ def response_echo_repair(
             previous_responses(turns) | {response},
         )
     if is_topic_confusion(normalized):
-        return topic_confusion_response(language)
+        return topic_confusion_response(language, campaign)
     if is_buyer_expects_agent_to_lead(normalized):
-        return seller_agenda_recovered_response(language)
+        return seller_agenda_recovered_response(language, campaign)
     if selected_gap:
+        if is_generic_campaign_config(campaign):
+            generic = generic_campaign_focus_text(language, active_topic, campaign, normalized=normalized)
+            return generic or generic_campaign_next_step_text(language, campaign)
         return gap_progression_text(
             language,
             selected_gap,
@@ -3088,15 +3503,26 @@ def response_echo_repair(
             normalized,
             focus_turn_count(turns, active_topic),
             previous_responses(turns) | {response},
+            campaign,
         )
-    return workflow_review_next_step_response(language)
+    return workflow_review_next_step_response(language, campaign)
 
 
-def repeated_question_repair(language: str, transcript: str, memory: dict, turns: list[dict], response: str) -> str:
+def repeated_question_repair(
+    language: str,
+    transcript: str,
+    memory: dict,
+    turns: list[dict],
+    response: str,
+    campaign: dict | None = None,
+) -> str:
     normalized = normalize_text(transcript)
     active_topic = str(memory.get("active_topic") or "") or dialogue_focus_from_turns(turns) or "qualification"
     selected_gap = str(memory.get("selected_gap") or "")
     if selected_gap and active_topic in {"qualification", "price", "fit", "details", "effort"}:
+        if is_generic_campaign_config(campaign):
+            generic = generic_campaign_focus_text(language, active_topic, campaign, normalized=normalized)
+            return generic or generic_campaign_next_step_text(language, campaign)
         return gap_progression_text(
             language,
             selected_gap,
@@ -3109,6 +3535,7 @@ def repeated_question_repair(language: str, transcript: str, memory: dict, turns
         normalized,
         focus_turn_count(turns, active_topic),
         previous_responses(turns) | {response},
+        campaign,
     )
 
 
@@ -3118,6 +3545,7 @@ def pre_speech_conversation_stability_guard(
     language: str,
     candidate_response: str,
     conversation_memory: dict | None = None,
+    campaign: dict | None = None,
 ) -> dict:
     turns = list((session_state or {}).get("turns") or [])
     response = candidate_response.strip()
@@ -3126,16 +3554,26 @@ def pre_speech_conversation_stability_guard(
     violations: list[str] = []
     repaired_response: str | None = None
 
+    if is_generic_campaign_config(campaign) and generic_account_support_request(normalized):
+        return {
+            "applied": True,
+            "reason": "generic_account_support_boundary",
+            "violations": ["account_support_request"],
+            "dialogue_focus": memory.get("active_topic") or "qualification",
+            "selected_gap": memory.get("selected_gap"),
+            "candidate_response": generic_account_support_boundary_text(language, campaign),
+        }
+
     if response in previous_responses(turns):
         violations.append("duplicate_final_response")
         if memory.get("callback_semantic") == CALLBACK_SCHEDULING_REQUEST:
             repaired_response = callback_request_time_response_for_transcript(language, normalized)
         else:
-            repaired_response = repeated_question_repair(language, transcript, memory, turns, response)
+            repaired_response = repeated_question_repair(language, transcript, memory, turns, response, campaign)
 
     if response_reopens_focus_menu(response) and (memory.get("selected_gap") or memory.get("active_topic")):
         violations.append("generic_menu_reopened_after_focus")
-        repaired_response = repeated_question_repair(language, transcript, memory, turns, response)
+        repaired_response = repeated_question_repair(language, transcript, memory, turns, response, campaign)
 
     if memory.get("callback_semantic") == CALLBACK_WORKFLOW_GAP and (
         "what time" in response.lower() or "note for the callback" in response.lower() or "callback time" in response.lower()
@@ -3143,17 +3581,17 @@ def pre_speech_conversation_stability_guard(
         "workflow review" in response.lower() and ("northstar" in response.lower() or "quick call" in response.lower())
     ):
         violations.append("workflow_callback_treated_as_scheduling")
-        repaired_response = response_echo_repair(transcript, language, response, memory, turns)
+        repaired_response = response_echo_repair(transcript, language, response, memory, turns, campaign)
 
     question_type = question_type_from_response(response)
     question_counts = dict(memory.get("asked_question_type_counts") or {})
     if question_type in {"generic_focus_menu", "callback_time"} and question_counts.get(question_type, 0) > 3:
         violations.append(f"repeated_{question_type}")
-        repaired_response = repeated_question_repair(language, transcript, memory, turns, response)
+        repaired_response = repeated_question_repair(language, transcript, memory, turns, response, campaign)
 
     if response_starts_with_customer_phrase(transcript, response):
         violations.append("leading_customer_echo")
-        repaired_response = response_echo_repair(transcript, language, response, memory, turns)
+        repaired_response = response_echo_repair(transcript, language, response, memory, turns, campaign)
 
     if is_previous_question_clarification_request(normalized) and not normalized_contains_any(
         normalize_text(response),
@@ -3172,7 +3610,12 @@ def pre_speech_conversation_stability_guard(
         },
     ):
         violations.append("failed_to_explain_previous_question")
-        repaired_response = clarify_previous_question_text(language, str(memory.get("active_topic") or "qualification"), previous_agent_question(turns))
+        repaired_response = clarify_previous_question_text(
+            language,
+            str(memory.get("active_topic") or "qualification"),
+            previous_agent_question(turns),
+            campaign,
+        )
 
     if not violations:
         return {
@@ -3183,7 +3626,7 @@ def pre_speech_conversation_stability_guard(
             "selected_gap": memory.get("selected_gap"),
         }
 
-    repaired_response = repaired_response or workflow_review_next_step_response(language)
+    repaired_response = repaired_response or workflow_review_next_step_response(language, campaign)
     if repaired_response == response and response in previous_responses(turns):
         repaired_response = unique_progressive_focus_text(
             language,
@@ -3191,6 +3634,7 @@ def pre_speech_conversation_stability_guard(
             normalized,
             focus_turn_count(turns, str(memory.get("active_topic") or "qualification")) + 1,
             previous_responses(turns) | {response},
+            campaign,
         )
     return {
         "applied": True,
@@ -3202,7 +3646,13 @@ def pre_speech_conversation_stability_guard(
     }
 
 
-def anti_loop_response(transcript: str, session_state: dict | None, language: str, generated_response: str) -> dict:
+def anti_loop_response(
+    transcript: str,
+    session_state: dict | None,
+    language: str,
+    generated_response: str,
+    campaign: dict | None = None,
+) -> dict:
     turns = list((session_state or {}).get("turns") or [])
     if not response_reopens_focus_menu(generated_response) or focus_menu_count(turns) == 0:
         return {"applied": False, "reason": "no_menu_loop_detected"}
@@ -3216,7 +3666,7 @@ def anti_loop_response(transcript: str, session_state: dict | None, language: st
             "applied": True,
             "reason": f"menu_loop_prevented_with_{focus}_focus",
             "dialogue_focus": focus,
-            "candidate_response": focus_followup_text(language, focus, normalized),
+            "candidate_response": focus_followup_text(language, focus, normalized, campaign),
         }
 
     text = (
@@ -3254,7 +3704,7 @@ def continuity_response(
             "dialogue_focus": "qualification",
             "candidate_response": sales_opening_response(language, campaign),
         }
-    early_call_context_recovery = call_context_recovery_response(normalized, resolved_focus, language)
+    early_call_context_recovery = call_context_recovery_response(normalized, resolved_focus, language, campaign)
     if early_call_context_recovery and str(early_call_context_recovery.get("reason") or "") in {
         "call_purpose_explained",
     }:
@@ -3309,7 +3759,7 @@ def continuity_response(
     )
     if structured_route:
         return structured_route
-    if is_starter_growth_plan_boundary_question(normalized):
+    if is_starter_growth_plan_boundary_question(normalized) and not is_generic_campaign_config(campaign):
         return {
             "applied": True,
             "reason": "plan_boundary",
@@ -3321,7 +3771,9 @@ def continuity_response(
             "applied": True,
             "reason": "explicit_price_question_answered",
             "dialogue_focus": "price",
-            "candidate_response": live_demo_price_answer(language),
+            "candidate_response": generic_campaign_price_text(language, campaign)
+            if is_generic_campaign_config(campaign)
+            else live_demo_price_answer(language),
         }
     if has_appointment_time_confirmation_signal(normalized, session_state):
         return {
@@ -3335,7 +3787,7 @@ def continuity_response(
             "applied": True,
             "reason": "callback_time_confirmed",
             "dialogue_focus": "timing",
-            "candidate_response": callback_time_confirmed_response(language),
+            "candidate_response": callback_time_confirmed_response(language, campaign),
         }
     pending_appointment_gap = pending_appointment_gap_from_turns(turns)
     if pending_appointment_gap and has_vague_appointment_time_signal(normalized):
@@ -3376,6 +3828,13 @@ def continuity_response(
             "candidate_response": appointment_value_clarification_response(language, pending_appointment_gap),
         }
     if is_callback_workflow_question(normalized):
+        if is_generic_campaign_config(campaign):
+            return {
+                "applied": True,
+                "reason": "generic_campaign_callback_question_repaired",
+                "dialogue_focus": resolved_focus or "qualification",
+                "candidate_response": generic_campaign_review_question(language, campaign),
+            }
         return {
             "applied": True,
             "reason": "callback_workflow_clarified",
@@ -3385,6 +3844,13 @@ def continuity_response(
             "candidate_response": callback_workflow_clarification_response(language),
         }
     if is_new_trial_request_clarification(normalized):
+        if is_generic_campaign_config(campaign):
+            return {
+                "applied": True,
+                "reason": "generic_campaign_trial_request_repaired",
+                "dialogue_focus": resolved_focus or "qualification",
+                "candidate_response": generic_campaign_review_question(language, campaign),
+            }
         return {
             "applied": True,
             "reason": "new_trial_request_clarified",
@@ -3396,14 +3862,14 @@ def continuity_response(
             "applied": True,
             "reason": "value_relevance_explained",
             "dialogue_focus": resolved_focus or "qualification",
-            "candidate_response": value_relevance_response(language),
+            "candidate_response": value_relevance_response(language, campaign),
         }
     if is_buyer_no_question_repair(normalized):
         return {
             "applied": True,
             "reason": "buyer_no_question_recovered",
             "dialogue_focus": resolved_focus or "qualification",
-            "candidate_response": buyer_no_question_response(language),
+            "candidate_response": buyer_no_question_response(language, campaign),
         }
     should_close, appointment_gap = should_offer_appointment_close(normalized, turns)
     if should_close:
@@ -3444,7 +3910,7 @@ def continuity_response(
                     previous_responses(turns),
                 ),
             }
-    call_context_recovery = call_context_recovery_response(normalized, resolved_focus, language)
+    call_context_recovery = call_context_recovery_response(normalized, resolved_focus, language, campaign)
     if call_context_recovery:
         return call_context_recovery
     if callback_semantic == CALLBACK_SCHEDULING_REQUEST:
@@ -3470,9 +3936,9 @@ def continuity_response(
             "applied": True,
             "reason": f"focus_shift_to_{selected_focus}_from_{resolved_focus}",
             "dialogue_focus": selected_focus,
-            "candidate_response": continuity_text(language, selected_focus),
+            "candidate_response": continuity_text(language, selected_focus, campaign=campaign),
         }
-    current_focus_followup = current_focus_followup_response(normalized, resolved_focus, language, turns)
+    current_focus_followup = current_focus_followup_response(normalized, resolved_focus, language, turns, campaign)
     if current_focus_followup:
         return current_focus_followup
     if resolved_focus == "price" and normalized_contains_any(
@@ -3483,7 +3949,7 @@ def continuity_response(
             "applied": True,
             "reason": "resolved_price_focus_persisted",
             "dialogue_focus": "price",
-            "candidate_response": continuity_text(language, "price", persisted=True),
+            "candidate_response": continuity_text(language, "price", persisted=True, campaign=campaign),
         }
     if resolved_focus == "fit" and normalized_contains_any(
         normalized,
@@ -3493,7 +3959,7 @@ def continuity_response(
             "applied": True,
             "reason": "resolved_fit_focus_persisted",
             "dialogue_focus": "fit",
-            "candidate_response": continuity_text(language, "fit", persisted=True),
+            "candidate_response": continuity_text(language, "fit", persisted=True, campaign=campaign),
         }
     if resolved_focus == "timing" and normalized_contains_any(
         normalized,
@@ -3503,7 +3969,7 @@ def continuity_response(
             "applied": True,
             "reason": "resolved_timing_focus_persisted",
             "dialogue_focus": "timing",
-            "candidate_response": continuity_text(language, "timing", persisted=True),
+            "candidate_response": continuity_text(language, "timing", persisted=True, campaign=campaign),
         }
     if resolved_focus == "effort" and normalized_contains_any(
         normalized,
@@ -3513,7 +3979,7 @@ def continuity_response(
             "applied": True,
             "reason": "resolved_effort_focus_persisted",
             "dialogue_focus": "effort",
-            "candidate_response": continuity_text(language, "effort", persisted=True),
+            "candidate_response": continuity_text(language, "effort", persisted=True, campaign=campaign),
         }
     if resolved_focus == "terms" and normalized_contains_any(
         normalized,
@@ -3523,7 +3989,7 @@ def continuity_response(
             "applied": True,
             "reason": "resolved_terms_focus_persisted",
             "dialogue_focus": "terms",
-            "candidate_response": continuity_text(language, "terms", persisted=True),
+            "candidate_response": continuity_text(language, "terms", persisted=True, campaign=campaign),
         }
     if resolved_focus == "details" and normalized_contains_any(
         normalized,
@@ -3533,7 +3999,7 @@ def continuity_response(
             "applied": True,
             "reason": "resolved_details_focus_persisted",
             "dialogue_focus": "details",
-            "candidate_response": continuity_text(language, "details", persisted=True),
+            "candidate_response": continuity_text(language, "details", persisted=True, campaign=campaign),
         }
 
     if selected_focus and response_asked_price_choice(previous_response) and selected_focus in {"price", "terms", "effort"}:
@@ -3541,14 +4007,14 @@ def continuity_response(
             "applied": True,
             "reason": f"short_answer_selected_{selected_focus}_after_price_prompt",
             "dialogue_focus": selected_focus,
-            "candidate_response": continuity_text(language, selected_focus),
+            "candidate_response": continuity_text(language, selected_focus, campaign=campaign),
         }
     if selected_focus and response_asked_main_focus_choice(previous_response):
         return {
             "applied": True,
             "reason": f"short_answer_selected_{selected_focus}_after_main_focus_prompt",
             "dialogue_focus": selected_focus,
-            "candidate_response": continuity_text(language, selected_focus),
+            "candidate_response": continuity_text(language, selected_focus, campaign=campaign),
         }
     if normalized in {"yes", "yeah", "yep", "sure", "ok", "okay"} and response_asked_main_focus_choice(previous_response):
         text = (
@@ -3569,7 +4035,7 @@ def continuity_response(
             "applied": True,
             "reason": "autonomy_followup_kept_low_pressure",
             "dialogue_focus": "timing",
-            "candidate_response": continuity_text(language, "timing"),
+            "candidate_response": continuity_text(language, "timing", campaign=campaign),
         }
     if previous_summary.get("sales_difficulty") == "existing-provider-gap" and normalized_contains_any(
         normalized,
@@ -3592,7 +4058,7 @@ def continuity_response(
             "applied": True,
             "reason": f"initial_{selected_focus}_focus_selected" if not turns else f"explicit_{selected_focus}_focus_selected",
             "dialogue_focus": selected_focus,
-            "candidate_response": continuity_text(language, selected_focus),
+            "candidate_response": continuity_text(language, selected_focus, campaign=campaign),
         }
 
     return {"applied": False, "reason": "no_session_continuity_match"}

@@ -203,7 +203,7 @@ def classify_pragmatic_move(
             campaign=campaign,
             dialogue_reasoning=dialogue_reasoning,
             target_focus="qualification",
-            candidate_response=session_policy.call_purpose_response(language),
+            candidate_response=session_policy.call_purpose_response(language, campaign),
         )
 
     if session_policy.is_buyer_no_question_repair(normalized) and not _contains(normalized, {"you called me", "you should ask"}):
@@ -401,7 +401,7 @@ def classify_pragmatic_move(
             dialogue_reasoning=dialogue_reasoning,
             selected_gap=appointment_gap,
             target_focus="timing",
-            candidate_response=session_policy.appointment_lead_close_response(language, appointment_gap),
+            candidate_response=session_policy.appointment_lead_close_response(language, appointment_gap, campaign),
         )
 
     selected_gap = session_policy.selected_sales_gap_from_transcript(normalized)
@@ -440,7 +440,7 @@ def classify_pragmatic_move(
             dialogue_reasoning=dialogue_reasoning,
             selected_gap=selected_gap,
             target_focus="timing",
-            candidate_response=session_policy.appointment_lead_close_response(language, selected_gap),
+            candidate_response=session_policy.appointment_lead_close_response(language, selected_gap, campaign),
         )
 
     return _no_match(
