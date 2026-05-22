@@ -5,6 +5,7 @@ from typing import Any
 from runtime.core import live_voice_session_policy as session_policy
 from runtime.core import contextual_buyer_semantics
 from runtime.core import dialogue_pragmatics
+from runtime.core import universal_conversation_policy_runtime as universal_policy_runtime
 from runtime.core.dialogue_reasoner import reason_about_turn, validate_reasoning_packet
 from runtime.speech.asr_quality_gate import repair_response_for_quality_gate
 
@@ -373,6 +374,7 @@ def _state_from_inputs(
     dialogue_reasoning: dict | None,
     contextual_semantics: dict | None,
     pragmatic_move: dict | None,
+    universal_policy_frame: dict | None = None,
 ) -> dict[str, Any]:
     turns = _turns(session_state)
     normalized = session_policy.normalize_text(transcript)
@@ -392,6 +394,7 @@ def _state_from_inputs(
         "dialogue_reasoning": dialogue_reasoning or {},
         "contextual_buyer_semantics": contextual_semantics or {},
         "pragmatic_move": pragmatic_move or {},
+        "universal_policy_frame": universal_policy_frame or {},
     }
 
 
@@ -505,30 +508,26 @@ def plan_dialogue_action(
     elif not quality_gate.get("accepted"):
         dialogue_reasoning = _fallback_reasoning(quality_gate)
 
-    contextual_semantics = contextual_buyer_semantics.classify_contextual_buyer_semantics(
-        transcript,
-        session_state,
-        campaign,
-        dialogue_reasoning=dialogue_reasoning,
-    )
-    pragmatic_move = dialogue_pragmatics.classify_pragmatic_move(
-        transcript,
-        session_state,
-        campaign,
-        dialogue_reasoning=dialogue_reasoning,
-    )
-
-    state_before = _state_from_inputs(
+    initial_policy_frame = universal_policy_runtime.build_universal_conversation_policy_frame(
         transcript=transcript,
         session_state=session_state,
         campaign=campaign,
         quality_gate=quality_gate,
-        dialogue_reasoning=dialogue_reasoning,
-        contextual_semantics=contextual_semantics,
-        pragmatic_move=pragmatic_move,
     )
-
     if _previous_call_control(turns) in TERMINAL_CALL_CONTROLS:
+        terminal_policy_frame = dict(initial_policy_frame)
+        terminal_policy_frame["enforcement_enabled"] = False
+        terminal_policy_frame["enforcement_reason"] = "terminal_call_control_preserved"
+        state_before = _state_from_inputs(
+            transcript=transcript,
+            session_state=session_state,
+            campaign=campaign,
+            quality_gate=quality_gate,
+            dialogue_reasoning=dialogue_reasoning,
+            contextual_semantics={},
+            pragmatic_move={},
+            universal_policy_frame=terminal_policy_frame,
+        )
         continuity = _terminal_continuity(language)
         action = _action_from_continuity(
             state_before=state_before,
@@ -541,6 +540,55 @@ def plan_dialogue_action(
         action["selected_action"]["call_control"] = "end-call"
         action["decision_override"] = DECISION_OVERRIDE_BY_ACTION["keep_call_closed"]
         return action
+    if initial_policy_frame.get("enforcement_enabled"):
+        state_before = _state_from_inputs(
+            transcript=transcript,
+            session_state=session_state,
+            campaign=campaign,
+            quality_gate=quality_gate,
+            dialogue_reasoning=dialogue_reasoning,
+            contextual_semantics={},
+            pragmatic_move={},
+            universal_policy_frame=initial_policy_frame,
+        )
+        return _action_from_continuity(
+            state_before=state_before,
+            continuity=universal_policy_runtime.universal_asr_repair_continuity(initial_policy_frame),
+            source="universal_conversation_policy",
+            dialogue_reasoning=dialogue_reasoning or {},
+        )
+
+    contextual_semantics = contextual_buyer_semantics.classify_contextual_buyer_semantics(
+        transcript,
+        session_state,
+        campaign,
+        dialogue_reasoning=dialogue_reasoning,
+    )
+    pragmatic_move = dialogue_pragmatics.classify_pragmatic_move(
+        transcript,
+        session_state,
+        campaign,
+        dialogue_reasoning=dialogue_reasoning,
+    )
+    universal_policy_frame = universal_policy_runtime.build_universal_conversation_policy_frame(
+        transcript=transcript,
+        session_state=session_state,
+        campaign=campaign,
+        quality_gate=quality_gate,
+        contextual_semantics=contextual_semantics,
+        pragmatic_move=pragmatic_move,
+    )
+
+    state_before = _state_from_inputs(
+        transcript=transcript,
+        session_state=session_state,
+        campaign=campaign,
+        quality_gate=quality_gate,
+        dialogue_reasoning=dialogue_reasoning,
+        contextual_semantics=contextual_semantics,
+        pragmatic_move=pragmatic_move,
+        universal_policy_frame=universal_policy_frame,
+    )
 
     if not quality_gate.get("accepted"):
         continuity = repair_response_for_quality_gate(language, quality_gate)
@@ -1049,6 +1097,7 @@ def finalize_trace(
         "selected_action": dict(action.get("selected_action") or {}),
         "pragmatic_move": dict((action.get("state_before") or {}).get("pragmatic_move") or {}),
         "contextual_buyer_semantics": dict((action.get("state_before") or {}).get("contextual_buyer_semantics") or {}),
+        "universal_policy_frame": dict((action.get("state_before") or {}).get("universal_policy_frame") or {}),
         "state_after": state_after,
         "final_response": final_response,
         "call_control": call_control,

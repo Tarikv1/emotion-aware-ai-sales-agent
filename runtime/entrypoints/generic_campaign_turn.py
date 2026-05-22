@@ -320,6 +320,7 @@ def build_generic_campaign_turn_packet(
         "demo_conversation_stability_guard": stability_guard,
         "dialogue_manager": dialogue_trace,
         "dialogue_pragmatics": dialogue_trace.get("pragmatic_move") or {},
+        "universal_policy_frame": dialogue_trace.get("universal_policy_frame") or {},
         "campaign_validation": validation,
         "packet": tts_packet,
         "summary": summary,

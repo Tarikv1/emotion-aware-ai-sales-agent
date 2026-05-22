@@ -1,0 +1,511 @@
+{
+  "checkpoint_id": "UNIVERSAL-CONVERSATION-POLICY-INTEGRATION-001",
+  "policy_runtime_id": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+  "scenarios": [
+    {
+      "call_control": "continue-call",
+      "campaign_config_path": null,
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
+      "campaign_selector_mode": "routesignal_live_demo",
+      "cleared_gaps": null,
+      "confirmed_gaps": null,
+      "final_response": "Got it, callbacks are clear. Should I check manual tracking or handoffs, or stop here?",
+      "label": "routesignal_preservation",
+      "semantic": "current_gap_clear",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "target_gap": "callbacks",
+      "universal_policy_frame": {
+        "allowed_call_controls": [
+          "continue-call"
+        ],
+        "allowed_fact_slots": [
+          "gap_label",
+          "core_diagnostic_gaps",
+          "diagnostic_gaps"
+        ],
+        "appointment_pressure_level": "none",
+        "asr_repair_required": false,
+        "buyer_move_id": "no_pain_clear",
+        "conversation_stage": "diagnostic",
+        "detection": {
+          "applied": false,
+          "normalized_transcript": "callbacks are fine",
+          "previous_question_type": "sales_progression_question",
+          "reason": "not_garbled"
+        },
+        "direct_question_required": false,
+        "enforcement_enabled": false,
+        "enforcement_reason": "no_asr_repair_required",
+        "forbidden_patterns": [
+          "internal policy wording",
+          "approved qualified reviewer path",
+          "repeated full diagnostic menu after direct answer",
+          "invented guarantee",
+          "invented coverage promise",
+          "invented refund promise",
+          "invented exact price",
+          "invented security proof",
+          "invented ROI or revenue claim",
+          "appointment ask before pain"
+        ],
+        "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
+        "local_llm_calls_made": false,
+        "memory_policy": "store_cleared_gap_preserve_confirmed_gaps",
+        "one_next_action_only": true,
+        "opens_prod_102": false,
+        "pragmatic_move_id": "no_pragmatic_repair",
+        "provider_calls_made": false,
+        "response_shape_id": "acknowledge_then_one_short_diagnostic",
+        "schema_version": 1,
+        "should_preserve_cleared_gaps": true,
+        "should_preserve_confirmed_gaps": true
+      }
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+      "campaign_id": "synthetic-insurance-review",
+      "campaign_playbook_id": "synthetic-insurance-review-playbook",
+      "campaign_selector_mode": "generic_config",
+      "cleared_gaps": null,
+      "confirmed_gaps": null,
+      "final_response": "I may have misheard that. Could you repeat it briefly?",
+      "label": "insurance_garble",
+      "semantic": null,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "target_gap": null,
+      "universal_policy_frame": {
+        "allowed_call_controls": [
+          "continue-call"
+        ],
+        "allowed_fact_slots": [
+          "language"
+        ],
+        "appointment_pressure_level": "none",
+        "asr_repair_required": true,
+        "buyer_move_id": "asr_garbled_or_low_confidence",
+        "conversation_stage": "diagnostic",
+        "detection": {
+          "applied": true,
+          "normalized_transcript": "play a double be good",
+          "previous_question_type": "gap_diagnostic",
+          "reason": "known_phonetic_nonsense"
+        },
+        "direct_question_required": false,
+        "enforcement_enabled": true,
+        "enforcement_reason": "known_phonetic_nonsense",
+        "forbidden_patterns": [
+          "internal policy wording",
+          "approved qualified reviewer path",
+          "repeated full diagnostic menu after direct answer",
+          "invented guarantee",
+          "invented coverage promise",
+          "invented refund promise",
+          "invented exact price",
+          "invented security proof",
+          "invented ROI or revenue claim",
+          "infer pain",
+          "capture appointment",
+          "diagnostic menu"
+        ],
+        "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
+        "local_llm_calls_made": false,
+        "memory_policy": "preserve_memory_do_not_advance_state",
+        "one_next_action_only": true,
+        "opens_prod_102": false,
+        "pragmatic_move_id": null,
+        "provider_calls_made": false,
+        "response_shape_id": "ask_repeat_for_asr_garble",
+        "schema_version": 1,
+        "should_preserve_cleared_gaps": true,
+        "should_preserve_confirmed_gaps": true
+      }
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_config_path": "runtime/campaigns/examples/synthetic-automotive-service-review.json",
+      "campaign_id": "synthetic-automotive-service-review",
+      "campaign_playbook_id": "synthetic-automotive-service-review-playbook",
+      "campaign_selector_mode": "generic_config",
+      "cleared_gaps": null,
+      "confirmed_gaps": null,
+      "final_response": "I may have misheard that. Could you repeat it briefly?",
+      "label": "automotive_near_miss",
+      "semantic": null,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "target_gap": null,
+      "universal_policy_frame": {
+        "allowed_call_controls": [
+          "continue-call"
+        ],
+        "allowed_fact_slots": [
+          "language"
+        ],
+        "appointment_pressure_level": "none",
+        "asr_repair_required": true,
+        "buyer_move_id": "asr_garbled_or_low_confidence",
+        "conversation_stage": "diagnostic",
+        "detection": {
+          "applied": true,
+          "normalized_transcript": "repeal timings are usually pretty long",
+          "previous_question_type": "gap_diagnostic",
+          "reason": "domain_near_miss"
+        },
+        "direct_question_required": false,
+        "enforcement_enabled": true,
+        "enforcement_reason": "domain_near_miss",
+        "forbidden_patterns": [
+          "internal policy wording",
+          "approved qualified reviewer path",
+          "repeated full diagnostic menu after direct answer",
+          "invented guarantee",
+          "invented coverage promise",
+          "invented refund promise",
+          "invented exact price",
+          "invented security proof",
+          "invented ROI or revenue claim",
+          "infer pain",
+          "capture appointment",
+          "diagnostic menu"
+        ],
+        "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
+        "local_llm_calls_made": false,
+        "memory_policy": "preserve_memory_do_not_advance_state",
+        "one_next_action_only": true,
+        "opens_prod_102": false,
+        "pragmatic_move_id": null,
+        "provider_calls_made": false,
+        "response_shape_id": "ask_repeat_for_asr_garble",
+        "schema_version": 1,
+        "should_preserve_cleared_gaps": true,
+        "should_preserve_confirmed_gaps": true
+      }
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_config_path": "runtime/campaigns/examples/synthetic-automotive-service-review.json",
+      "campaign_id": "synthetic-automotive-service-review",
+      "campaign_playbook_id": "synthetic-automotive-service-review-playbook",
+      "campaign_selector_mode": "generic_config",
+      "cleared_gaps": null,
+      "confirmed_gaps": [
+        "repair_timing"
+      ],
+      "final_response": "Got it, repair timing sounds like the issue; a service advisor can review repair timing and service scheduling. What time works for a quick service advisor inspection review?",
+      "label": "automotive_clean_pain",
+      "semantic": "pain_confirmed",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "target_gap": "repair_timing",
+      "universal_policy_frame": {
+        "allowed_call_controls": [
+          "continue-call"
+        ],
+        "allowed_fact_slots": [
+          "human_followup_owner",
+          "appointment_target",
+          "gap_label",
+          "gap_review_focus",
+          "gap_value_bridge"
+        ],
+        "appointment_pressure_level": "direct",
+        "asr_repair_required": false,
+        "buyer_move_id": "pain_confirmed",
+        "conversation_stage": "diagnostic",
+        "detection": {
+          "applied": false,
+          "normalized_transcript": "repair timings are usually pretty long",
+          "previous_question_type": "gap_diagnostic",
+          "reason": "not_garbled"
+        },
+        "direct_question_required": false,
+        "enforcement_enabled": false,
+        "enforcement_reason": "no_asr_repair_required",
+        "forbidden_patterns": [
+          "internal policy wording",
+          "approved qualified reviewer path",
+          "repeated full diagnostic menu after direct answer",
+          "invented guarantee",
+          "invented coverage promise",
+          "invented refund promise",
+          "invented exact price",
+          "invented security proof",
+          "invented ROI or revenue claim"
+        ],
+        "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
+        "local_llm_calls_made": false,
+        "memory_policy": "store_confirmed_gap_preserve_cleared_gaps",
+        "one_next_action_only": true,
+        "opens_prod_102": false,
+        "pragmatic_move_id": "no_pragmatic_repair",
+        "provider_calls_made": false,
+        "response_shape_id": "acknowledge_pain_bridge_to_appointment",
+        "schema_version": 1,
+        "should_preserve_cleared_gaps": true,
+        "should_preserve_confirmed_gaps": true
+      }
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_config_path": "runtime/campaigns/examples/synthetic-automotive-service-review.json",
+      "campaign_id": "synthetic-automotive-service-review",
+      "campaign_playbook_id": "synthetic-automotive-service-review-playbook",
+      "campaign_selector_mode": "generic_config",
+      "cleared_gaps": null,
+      "confirmed_gaps": [
+        "repair_timing"
+      ],
+      "final_response": "Fair question - I'm asking because long repair timing is the part a service advisor can review. I don't need more details here; I can note a callback time, or stop.",
+      "label": "automotive_challenge",
+      "semantic": "purpose_clarification_after_confirmed_gap",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "target_gap": "repair_timing",
+      "universal_policy_frame": {
+        "allowed_call_controls": [
+          "continue-call"
+        ],
+        "allowed_fact_slots": [
+          "human_followup_owner",
+          "appointment_target",
+          "gap_label",
+          "gap_review_focus"
+        ],
+        "appointment_pressure_level": "low",
+        "asr_repair_required": false,
+        "buyer_move_id": "why_are_you_asking",
+        "conversation_stage": "diagnostic",
+        "detection": {
+          "applied": false,
+          "normalized_transcript": "why are you asking for this information again",
+          "previous_question_type": "appointment_time",
+          "reason": "not_garbled"
+        },
+        "direct_question_required": true,
+        "enforcement_enabled": false,
+        "enforcement_reason": "no_asr_repair_required",
+        "forbidden_patterns": [
+          "internal policy wording",
+          "approved qualified reviewer path",
+          "repeated full diagnostic menu after direct answer",
+          "invented guarantee",
+          "invented coverage promise",
+          "invented refund promise",
+          "invented exact price",
+          "invented security proof",
+          "invented ROI or revenue claim",
+          "repeat diagnostic menu",
+          "erase confirmed gap"
+        ],
+        "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
+        "local_llm_calls_made": false,
+        "memory_policy": "preserve_existing_gap_context",
+        "one_next_action_only": true,
+        "opens_prod_102": false,
+        "pragmatic_move_id": "no_pragmatic_repair",
+        "provider_calls_made": false,
+        "response_shape_id": "explain_why_asking_preserve_context",
+        "schema_version": 1,
+        "should_preserve_cleared_gaps": true,
+        "should_preserve_confirmed_gaps": true
+      }
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+      "campaign_id": "synthetic-insurance-review",
+      "campaign_playbook_id": "synthetic-insurance-review-playbook",
+      "campaign_selector_mode": "generic_config",
+      "cleared_gaps": null,
+      "confirmed_gaps": null,
+      "final_response": "This is not a product-detail call. I can only check whether a short licensed coverage review is useful, mainly around premium or budget, coverage fit, or renewal or timing.",
+      "label": "product_detail",
+      "semantic": "product_detail_limit_question",
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "target_gap": null,
+      "universal_policy_frame": {
+        "allowed_call_controls": [
+          "continue-call"
+        ],
+        "allowed_fact_slots": [
+          "product_or_offer_name",
+          "human_followup_owner",
+          "appointment_target",
+          "allowed_claims",
+          "blocked_claims",
+          "gap_review_focus"
+        ],
+        "appointment_pressure_level": "low",
+        "asr_repair_required": false,
+        "buyer_move_id": "product_detail_question",
+        "conversation_stage": "diagnostic",
+        "detection": {
+          "applied": false,
+          "normalized_transcript": "what does your product do",
+          "previous_question_type": "gap_diagnostic",
+          "reason": "not_garbled"
+        },
+        "direct_question_required": true,
+        "enforcement_enabled": false,
+        "enforcement_reason": "no_asr_repair_required",
+        "forbidden_patterns": [
+          "internal policy wording",
+          "approved qualified reviewer path",
+          "repeated full diagnostic menu after direct answer",
+          "invented guarantee",
+          "invented coverage promise",
+          "invented refund promise",
+          "invented exact price",
+          "invented security proof",
+          "invented ROI or revenue claim",
+          "transfer-or-escalate",
+          "product advice beyond allowed claims"
+        ],
+        "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
+        "local_llm_calls_made": false,
+        "memory_policy": "preserve_existing_gap_context",
+        "one_next_action_only": true,
+        "opens_prod_102": false,
+        "pragmatic_move_id": "no_pragmatic_repair",
+        "provider_calls_made": false,
+        "response_shape_id": "answer_product_scope_limit_continue",
+        "schema_version": 1,
+        "should_preserve_cleared_gaps": true,
+        "should_preserve_confirmed_gaps": true
+      }
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
+      "campaign_id": "synthetic-insurance-review",
+      "campaign_playbook_id": "synthetic-insurance-review-playbook",
+      "campaign_selector_mode": "generic_config",
+      "cleared_gaps": null,
+      "confirmed_gaps": null,
+      "final_response": "I may have misheard that. Could you repeat it briefly?",
+      "label": "appointment_garble",
+      "semantic": null,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "target_gap": null,
+      "universal_policy_frame": {
+        "allowed_call_controls": [
+          "continue-call"
+        ],
+        "allowed_fact_slots": [
+          "language"
+        ],
+        "appointment_pressure_level": "none",
+        "asr_repair_required": true,
+        "buyer_move_id": "asr_garbled_or_low_confidence",
+        "conversation_stage": "appointment_progression",
+        "detection": {
+          "applied": true,
+          "normalized_transcript": "yadav would be good",
+          "previous_question_type": "appointment_time",
+          "reason": "known_phonetic_nonsense"
+        },
+        "direct_question_required": false,
+        "enforcement_enabled": true,
+        "enforcement_reason": "known_phonetic_nonsense",
+        "forbidden_patterns": [
+          "internal policy wording",
+          "approved qualified reviewer path",
+          "repeated full diagnostic menu after direct answer",
+          "invented guarantee",
+          "invented coverage promise",
+          "invented refund promise",
+          "invented exact price",
+          "invented security proof",
+          "invented ROI or revenue claim",
+          "infer pain",
+          "capture appointment",
+          "diagnostic menu"
+        ],
+        "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
+        "local_llm_calls_made": false,
+        "memory_policy": "preserve_memory_do_not_advance_state",
+        "one_next_action_only": true,
+        "opens_prod_102": false,
+        "pragmatic_move_id": null,
+        "provider_calls_made": false,
+        "response_shape_id": "ask_repeat_for_asr_garble",
+        "schema_version": 1,
+        "should_preserve_cleared_gaps": true,
+        "should_preserve_confirmed_gaps": true
+      }
+    }
+  ],
+  "side_effects": {
+    "creates_calendar_event": false,
+    "customer_audio_uploaded_to_python_server": false,
+    "customer_audio_uploaded_to_tts_provider": false,
+    "local_llm_calls_made": false,
+    "opens_prod_102": false,
+    "provider_calls_made": false,
+    "sends_email": false,
+    "writes_crm": false
+  },
+  "status": "passed"
+}

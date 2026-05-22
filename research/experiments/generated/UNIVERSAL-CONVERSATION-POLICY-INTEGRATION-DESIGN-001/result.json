@@ -1,0 +1,144 @@
+{
+  "checkpoint_id": "UNIVERSAL-CONVERSATION-POLICY-INTEGRATION-DESIGN-001",
+  "status": "pass",
+  "created_for_phase": "4E2A",
+  "runtime_behavior_changed": false,
+  "files_created": [
+    "research/experiments/generated/UNIVERSAL-CONVERSATION-POLICY-INTEGRATION-DESIGN-001/result.json",
+    "research/experiments/generated/UNIVERSAL-CONVERSATION-POLICY-INTEGRATION-DESIGN-001/report.md"
+  ],
+  "source_contract": {
+    "module": "runtime/core/universal_sales_conversation_knowledge.py",
+    "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
+    "schema_version": 1,
+    "buyer_move_count": 70,
+    "response_shape_count": 39,
+    "repair_rule_count": 60,
+    "asr_repair_case_count": 19
+  },
+  "files_inspected": [
+    "runtime/core/universal_sales_conversation_knowledge.py",
+    "runtime/core/dialogue_manager.py",
+    "runtime/core/contextual_buyer_semantics.py",
+    "runtime/core/live_voice_session_policy.py",
+    "runtime/core/dialogue_pragmatics.py",
+    "runtime/speech/asr_quality_gate.py",
+    "runtime/entrypoints/generic_campaign_turn.py",
+    "scripts/run_live_demo_001_agent_voice_call.py",
+    "scripts/validate_universal_sales_conversation_knowledge_001.py",
+    "research/experiments/generated/UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001A/result.json",
+    "research/experiments/generated/LIVE-DEMO-MANUAL-FEEDBACK-002/report.md",
+    "research/experiments/generated/GENERIC-CAMPAIGN-LONG-CONVERSATION-STRESS-001/report.md",
+    "research/experiments/generated/GENERIC-CAMPAIGN-RESPONSE-QUALITY-001/report.md"
+  ],
+  "current_runtime_flow_observed": [
+    "generic_campaign_turn evaluates evaluate_asr_quality before dialogue_manager.plan_dialogue_action",
+    "dialogue_manager.plan_dialogue_action currently builds contextual_buyer_semantics and dialogue_pragmatics before choosing continuity",
+    "plan_dialogue_action then prioritizes terminal call control, rejected ASR quality gate, contextual semantics, pragmatics, and live_voice_session_policy fallback",
+    "generic campaign entrypoint applies guarded response generation, anti-loop repair, duplicate repair, conversation memory, stability guard, decision override, and TTS attachment",
+    "browser demo path selects RouteSignal or generic config before calling the same RouteSignal/generic turn builders"
+  ],
+  "proposed_policy_frame": {
+    "name": "UniversalConversationPolicyFrame",
+    "fields": [
+      "schema_version",
+      "knowledge_id",
+      "buyer_move_id",
+      "response_shape_id",
+      "conversation_stage",
+      "allowed_fact_slots",
+      "forbidden_patterns",
+      "allowed_call_controls",
+      "memory_policy",
+      "appointment_pressure_level",
+      "direct_question_required",
+      "asr_repair_required",
+      "should_preserve_confirmed_gaps",
+      "should_preserve_cleared_gaps",
+      "one_next_action_only",
+      "provider_calls_made",
+      "local_llm_calls_made",
+      "opens_prod_102"
+    ],
+    "fixed_side_effect_values": {
+      "provider_calls_made": false,
+      "local_llm_calls_made": false,
+      "opens_prod_102": false
+    }
+  },
+  "integration_sequence": [
+    "Browser/server receives transcript and selected campaign mode.",
+    "Existing ASR quality gate runs.",
+    "Universal ASR repair check runs before buyer-move routing.",
+    "Existing contextual buyer semantics extracts buyer meaning and campaign gap evidence.",
+    "Universal policy maps buyer move plus conversation stage to response-shape constraints.",
+    "Dialogue manager chooses action while obeying universal call-control and response-shape constraints.",
+    "Existing live voice session policy renders text but must obey the selected response shape.",
+    "Existing duplicate, anti-loop, and stability guards remain safety nets."
+  ],
+  "universal_layer_owns": [
+    "buyer move taxonomy",
+    "response-shape constraints",
+    "ASR repair boundary decisions",
+    "allowed fact slot boundary",
+    "forbidden customer-facing pattern boundary",
+    "call-control constraints",
+    "memory preservation policy"
+  ],
+  "universal_layer_must_not_own": [
+    "campaign fact validation",
+    "campaign gap extraction",
+    "final customer prose generation",
+    "provider calls",
+    "TTS or ASR provider behavior",
+    "browser campaign selector",
+    "calendar, email, or CRM writes",
+    "RouteSignal product facts"
+  ],
+  "recommended_first_integration_slice": {
+    "slice": "generic-campaign universal ASR garble boundary with policy-frame trace",
+    "why": "It is the smallest behavior-changing slice that addresses observed ASR nonsense before semantic routing, prevents false pain or appointment capture, and leaves RouteSignal/default live-demo behavior untouched.",
+    "not_first": [
+      "Full product-detail universal handling is broader and touches regulated wording.",
+      "Full repeated diagnostic prevention crosses response rendering and stability guard behavior.",
+      "Full why/contradiction repair requires more semantic/pragmatic mapping and has higher RouteSignal regression risk."
+    ]
+  },
+  "feature_gating": {
+    "recommended_mode": "trace all policy frames, enforce first slice only for generic campaigns",
+    "trace_default": true,
+    "routesignal_enforcement_default": false,
+    "generic_enforcement_first_slice_default": true,
+    "rollback": "Disable universal_policy_enforcement while keeping policy_frame trace for diagnosis."
+  },
+  "validator_plan": {
+    "minimum_validator": "scripts/validate_universal_conversation_policy_integration_001.py",
+    "scenarios": [
+      "RouteSignal default still works: __agent_open__, yeah sure, callbacks are fine.",
+      "Generic insurance ASR garble: __agent_open__, yeah sure, play a double be good.",
+      "Generic automotive near-miss: __agent_open__, yes, repeal timings are usually pretty long.",
+      "Generic automotive clean pain: __agent_open__, yes, repair timings are usually pretty long.",
+      "Generic challenge: __agent_open__, yes, repair timings are usually pretty long, why are you asking for this information again.",
+      "Generic product-detail: __agent_open__, yes, what does your product do?",
+      "Generic appointment confirmation garble after callback time ask: yadav would be good."
+    ]
+  },
+  "risks": [
+    "A policy layer can become a second dialogue manager if it starts emitting final prose or choosing actions directly.",
+    "ASR near-miss mapping can overcorrect valid buyer language if the first slice does more than ask for confirmation.",
+    "RouteSignal regressions are likely if universal enforcement is enabled there before generic fixtures prove stable.",
+    "Repeated-menu prevention may conflict with existing stability guards unless the policy frame is recorded before the guards run."
+  ],
+  "side_effects": {
+    "provider_calls_made": false,
+    "live_tts_used": false,
+    "local_llm_calls_made": false,
+    "sends_email": false,
+    "creates_calendar_event": false,
+    "writes_crm": false,
+    "opens_prod_102": false,
+    "real_customer_data_used": false,
+    "private_transcript_content_copied": false
+  },
+  "recommended_next_phase": "4E2B: add UniversalConversationPolicyFrame trace and enforce generic-only ASR garble repair before contextual semantics, with RouteSignal enforcement disabled."
+}

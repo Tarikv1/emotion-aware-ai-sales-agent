@@ -1607,6 +1607,7 @@ def build_browser_demo_turn_packet(
         audio_file_created = bool(tts.get("audio_file_created") or summary.get("tts_audio_file_created"))
         turn["campaign_selector_mode"] = selector_mode
         turn["selected_campaign_config"] = selected_config
+        turn["universal_policy_frame"] = turn.get("universal_policy_frame") or manager.get("universal_policy_frame") or {}
         turn["provider_calls_made"] = bool(
             turn.get("provider_calls_made")
             or tts_provider_calls_made
@@ -2986,6 +2987,7 @@ def make_handler(metadata: dict, cases_path: Path, private_out: Path):
                         "conversation_memory": turn.get("demo_conversation_memory", {}),
                         "dialogue_manager": turn.get("dialogue_manager", {}),
                         "dialogue_pragmatics": turn.get("dialogue_pragmatics", {}),
+                        "universal_policy_frame": turn.get("universal_policy_frame", {}),
                     }
                 )
                 self.send_json(turn)

@@ -113,6 +113,18 @@
       ]
     },
     {
+      "path": "runtime/core/universal_conversation_policy_runtime.py",
+      "path_type": "file",
+      "tier": "core-runtime-behavior",
+      "runtime_role": "Runtime adapter that builds UniversalConversationPolicyFrame trace data from the declarative universal sales conversation knowledge contract and gates only generic-campaign ASR garble repair before contextual semantics can infer pain, appointment, or diagnostic state.",
+      "behavior_surface": [
+        "universal policy frame trace",
+        "generic campaign ASR garble repair",
+        "RouteSignal enforcement disablement",
+        "provider and LLM side-effect boundary"
+      ]
+    },
+    {
       "path": "runtime/core/vertical_sales_playbooks.py",
       "path_type": "file",
       "tier": "core-runtime-knowledge",
