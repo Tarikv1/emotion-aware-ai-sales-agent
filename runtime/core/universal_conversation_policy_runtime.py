@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import re
 from typing import Any
 
+from runtime.core import campaign_playbook_adapter
 from runtime.core import live_voice_session_policy as session_policy
 from runtime.core import universal_sales_conversation_knowledge as knowledge
 from runtime.speech.asr_quality_gate import normalize_transcript
@@ -235,6 +237,19 @@ def _campaign_text(campaign: dict | None, *keys: str, default: str = "") -> str:
         value = campaign.get(key)
         if isinstance(value, str) and value.strip():
             return value.strip()
+    context = campaign.get("campaign_context")
+    if isinstance(context, dict):
+        for key in keys:
+            value = context.get(key)
+            if isinstance(value, str) and value.strip():
+                return value.strip()
+    resolved = _resolved_campaign_playbook(campaign)
+    context = resolved.get("campaign_context") if isinstance(resolved, dict) else None
+    if isinstance(context, dict):
+        for key in keys:
+            value = context.get(key)
+            if isinstance(value, str) and value.strip():
+                return value.strip()
     return default
 
 
@@ -297,6 +312,16 @@ def _is_routesignal_campaign(campaign: dict | None) -> bool:
     return campaign_id in ROUTESIGNAL_CAMPAIGN_IDS or product.startswith("routesignal")
 
 
+def _resolved_campaign_playbook(campaign: dict | None) -> dict[str, Any]:
+    if not isinstance(campaign, dict):
+        return {}
+    try:
+        playbook = campaign_playbook_adapter.resolve_campaign_playbook(campaign)
+    except Exception:
+        return {}
+    return playbook if isinstance(playbook, dict) else {}
+
+
 def _string_items(value: Any) -> list[str]:
     if value is None:
         return []
@@ -307,19 +332,123 @@ def _string_items(value: Any) -> list[str]:
     return [str(value).strip()] if str(value or "").strip() else []
 
 
-def _gap_records(campaign: dict | None) -> list[dict[str, Any]]:
+def _gap_record_items(campaign: dict | None) -> list[tuple[str, dict[str, Any]]]:
     if not isinstance(campaign, dict) or not isinstance(campaign.get("diagnostic_gaps"), dict):
+        resolved = _resolved_campaign_playbook(campaign)
+        gaps = resolved.get("diagnostic_gaps") if isinstance(resolved, dict) else {}
+        ordered_ids = _string_items(resolved.get("gap_order") or resolved.get("core_diagnostic_gaps")) if isinstance(resolved, dict) else []
+    else:
+        gaps = campaign.get("diagnostic_gaps") or {}
+        ordered_ids = _string_items(campaign.get("gap_order") or campaign.get("core_diagnostic_gaps"))
+    if not isinstance(gaps, dict):
         return []
-    gaps = campaign.get("diagnostic_gaps") or {}
-    ordered_ids = _string_items(campaign.get("gap_order") or campaign.get("core_diagnostic_gaps"))
-    records: list[dict[str, Any]] = []
+    records: list[tuple[str, dict[str, Any]]] = []
     for gap_id in ordered_ids:
         value = gaps.get(gap_id)
         if isinstance(value, dict):
-            records.append(value)
+            records.append((str(gap_id), value))
     if not records:
-        records = [value for value in gaps.values() if isinstance(value, dict)]
+        records = [(str(gap_id), value) for gap_id, value in gaps.items() if isinstance(value, dict)]
     return records
+
+
+def _gap_records(campaign: dict | None) -> list[dict[str, Any]]:
+    return [record for _, record in _gap_record_items(campaign)]
+
+
+def _gap_text(record: dict[str, Any] | None, *keys: str) -> str:
+    if not isinstance(record, dict):
+        return ""
+    for key in keys:
+        value = record.get(key)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    return ""
+
+
+def _gap_record_by_id(campaign: dict | None, gap_id: str) -> dict[str, Any]:
+    for candidate_id, record in _gap_record_items(campaign):
+        if candidate_id == gap_id or str(record.get("campaign_gap_id") or "") == gap_id:
+            return record
+    return {}
+
+
+def _gap_customer_phrase(record: dict[str, Any] | None, gap_id: str = "") -> str:
+    phrase = _gap_text(record, "customer_facing_phrase", "customer_facing_gap_phrase")
+    if phrase:
+        return _plain_phrase(phrase).lower()
+    label = _gap_text(record, "label", "campaign_gap_id") or gap_id
+    return _human_gap_phrase(label)
+
+
+def _first_gap_customer_phrase(campaign: dict | None) -> str:
+    records = _gap_record_items(campaign)
+    if records:
+        gap_id, record = records[0]
+        return _gap_customer_phrase(record, gap_id)
+    return "the relevant issue"
+
+
+def _campaign_primary_customer_issue_phrase(campaign: dict | None) -> str:
+    phrase = _campaign_text(campaign, "primary_customer_issue_phrase", "primary_issue_phrase")
+    if phrase:
+        return _plain_phrase(phrase).lower()
+    return _first_gap_customer_phrase(campaign)
+
+
+def _campaign_short_relevance_question(campaign: dict | None) -> str:
+    return _campaign_text(campaign, "short_relevance_question", "rapport_bridge_question", "diagnostic_question_phrase")
+
+
+def _question_sentence(question: str) -> str:
+    cleaned = " ".join(str(question or "").split()).strip()
+    if not cleaned:
+        return ""
+    if cleaned[-1] not in ".?!":
+        cleaned = f"{cleaned}?"
+    return cleaned
+
+
+def _lower_initial(text: str) -> str:
+    cleaned = str(text or "").strip()
+    if not cleaned:
+        return cleaned
+    return cleaned[:1].lower() + cleaned[1:]
+
+
+def _gap_match_phrases(record: dict[str, Any]) -> list[str]:
+    phrases: list[str] = []
+    for key in (
+        "customer_facing_phrase",
+        "customer_facing_gap_phrase",
+        "label",
+        "campaign_gap_id",
+        "evidence_positive",
+        "evidence_negative",
+    ):
+        phrases.extend(_string_items(record.get(key)))
+    for phrase in _string_items(record.get("customer_language")):
+        if len(normalize_transcript(phrase).split()) > 1:
+            phrases.append(phrase)
+    return phrases
+
+
+def _normalized_phrase_in(normalized: str, phrase: str) -> bool:
+    cleaned = normalize_transcript(phrase)
+    if not cleaned:
+        return False
+    return re.search(rf"(?<![a-z0-9]){re.escape(cleaned)}(?![a-z0-9])", normalized) is not None
+
+
+def _transcript_matches_gap_record(normalized: str, record: dict[str, Any]) -> bool:
+    return any(_normalized_phrase_in(normalized, phrase) for phrase in _gap_match_phrases(record))
+
+
+def _pain_like_unsupported_phrase(normalized: str) -> bool:
+    return _contains_any(
+        normalized,
+        {"is a problem", "is the problem", "usually pretty long", "we need", "is unclear", "is the issue"},
+    )
 
 
 def _primary_gap_label(campaign: dict | None) -> str:
@@ -340,37 +469,20 @@ def _plain_phrase(value: str) -> str:
 
 def _human_gap_phrase(label: str) -> str:
     phrase = _plain_phrase(label).lower()
-    replacements = {
-        "callbacks": "callbacks",
-        "handoffs": "handoffs",
-        "follow-up gap": "inbound demo follow-up slipping",
-        "follow up gap": "inbound demo follow-up slipping",
-        "premium or budget": "premium pressure",
-        "coverage fit": "coverage fit",
-        "manual work": "manual work",
-        "integration risk": "integration",
-        "repair timing": "repair timing",
-        "scheduling urgency": "scheduling",
-        "service need": "service need",
-        "visibility gap": "visibility issue",
-    }
-    if phrase in replacements:
-        return replacements[phrase]
     if phrase.endswith(" gap"):
         return f"{phrase[:-4]} issue"
     return phrase
 
 
 def _primary_gap_phrase(campaign: dict | None) -> str:
-    return _human_gap_phrase(_primary_gap_label(campaign))
+    return _campaign_primary_customer_issue_phrase(campaign)
 
 
 def _secondary_gap_phrase(campaign: dict | None) -> str:
     records = _gap_records(campaign)
     if len(records) < 2:
         return ""
-    label = str(records[1].get("label") or records[1].get("campaign_gap_id") or "").strip()
-    phrase = _human_gap_phrase(label)
+    phrase = _gap_customer_phrase(records[1])
     return "" if phrase == _primary_gap_phrase(campaign) else phrase
 
 
@@ -409,10 +521,8 @@ def _prior_appointment_readiness(session_state: dict | None) -> str:
 
 def _short_gap_pair(campaign: dict | None) -> str:
     labels: list[str] = []
-    for record in _gap_records(campaign)[:2]:
-        label = str(record.get("label") or record.get("campaign_gap_id") or "").strip()
-        if label:
-            labels.append(_human_gap_phrase(label))
+    for gap_id, record in _gap_record_items(campaign)[:2]:
+        labels.append(_gap_customer_phrase(record, gap_id))
     if len(labels) >= 2:
         return f"{labels[0]} or {labels[1]}"
     return _primary_gap_phrase(campaign)
@@ -460,10 +570,12 @@ def _gerund_action(action: str) -> str:
 
 
 def _time_pressure_response(campaign: dict | None) -> str:
+    configured_question = _campaign_short_relevance_question(campaign)
+    if configured_question:
+        question = _lower_initial(_question_sentence(configured_question))
+        return f"Sure, one quick check: {question}"
     primary_gap = _sharp_diagnostic_gap_phrase(campaign)
-    if primary_gap == "inbound demo follow-up slipping":
-        question = "is inbound demo follow-up slipping right now?"
-    elif primary_gap.endswith("issue"):
+    if primary_gap.endswith("issue"):
         question = f"is {_area_phrase(primary_gap)} causing trouble right now?"
     elif primary_gap.endswith("need"):
         question = f"is {_area_phrase(primary_gap)} active right now?"
@@ -473,9 +585,10 @@ def _time_pressure_response(campaign: dict | None) -> str:
 
 
 def _permission_response(campaign: dict | None) -> str:
+    configured_question = _campaign_short_relevance_question(campaign)
+    if configured_question:
+        return f"Thanks. {_question_sentence(configured_question)}"
     primary_gap = _sharp_diagnostic_gap_phrase(campaign)
-    if primary_gap == "inbound demo follow-up slipping":
-        return "Thanks. Is inbound demo follow-up slipping right now?"
     if primary_gap.endswith("need"):
         return f"Thanks. Is {_area_phrase(primary_gap)} active right now?"
     return f"Thanks. Is {primary_gap} causing any issue right now?"
@@ -483,8 +596,6 @@ def _permission_response(campaign: dict | None) -> str:
 
 def _scope_relevance_clarification_response(campaign: dict | None) -> str:
     primary_gap = _sharp_diagnostic_gap_phrase(campaign)
-    if primary_gap == "inbound demo follow-up slipping":
-        return "That may be outside this call's scope. The quick check here is whether inbound demo follow-up is slipping now."
     if primary_gap.endswith("need"):
         return f"That may be outside this call's scope. The quick check here is whether {_area_phrase(primary_gap)} is active now."
     return f"That may be outside this call's scope. The quick check here is whether {primary_gap} is causing any issue now."
@@ -500,6 +611,9 @@ def _issue_check_question_for_phrase(phrase: str) -> str:
 
 
 def _primary_issue_check_question(campaign: dict | None) -> str:
+    configured_question = _campaign_short_relevance_question(campaign)
+    if configured_question:
+        return _lower_initial(_question_sentence(configured_question))
     return _issue_check_question_for_phrase(_sharp_diagnostic_gap_phrase(campaign))
 
 
@@ -528,24 +642,13 @@ def _impact_followup_question() -> str:
 
 
 def _sharp_diagnostic_gap_phrase(campaign: dict | None) -> str:
-    campaign_id = _campaign_id(campaign)
-    vertical = _campaign_vertical(campaign)
-    if _is_routesignal_campaign(campaign):
-        return "inbound demo follow-up slipping"
-    if campaign_id == "synthetic-insurance-review" or vertical == "insurance":
-        return "premium pressure"
-    if campaign_id == "synthetic-b2b-saas-operations" or vertical == "b2b_saas":
-        return "manual work"
-    if campaign_id == "synthetic-automotive-service-review" or vertical == "automotive_service":
-        return "repair timing"
-    if campaign_id == "synthetic-home-services-estimate" or vertical == "home_services":
-        return "service need"
-    return _primary_gap_phrase(campaign)
+    return _campaign_primary_customer_issue_phrase(campaign)
 
 
 def _campaign_purpose_phrase(campaign: dict | None) -> str:
-    if _is_routesignal_campaign(campaign):
-        return "inbound demo follow-up"
+    phrase = _campaign_text(campaign, "campaign_purpose_phrase")
+    if phrase:
+        return phrase
     return f"a short human review around {_area_phrase(_primary_gap_phrase(campaign))}"
 
 
@@ -564,11 +667,9 @@ def _memory_from_session(session_state: dict | None) -> dict[str, Any]:
 
 
 def _gap_phrase_for_id(campaign: dict | None, gap_id: str) -> str:
-    gaps = (campaign or {}).get("diagnostic_gaps") if isinstance(campaign, dict) else None
-    value = gaps.get(gap_id) if isinstance(gaps, dict) else None
-    if isinstance(value, dict):
-        label = str(value.get("label") or value.get("campaign_gap_id") or gap_id).strip()
-        return _human_gap_phrase(label)
+    value = _gap_record_by_id(campaign, gap_id)
+    if value:
+        return _gap_customer_phrase(value, gap_id)
     return _human_gap_phrase(gap_id)
 
 
@@ -629,85 +730,23 @@ def _prior_asr_repair_count(session_state: dict | None) -> int:
 
 
 def _gap_id_from_transcript(normalized: str, campaign: dict | None) -> str:
-    if _is_routesignal_campaign(campaign):
-        routesignal_candidates = [
-            ("callbacks", "callback callbacks call back"),
-            ("handoffs", "handoff handoffs"),
-            ("manual_tracking", "manual tracking"),
-        ]
-        for gap_id, words in routesignal_candidates:
-            if any(word in normalized for word in words.split()):
-                return gap_id
-        return ""
-    gaps = (campaign or {}).get("diagnostic_gaps") if isinstance(campaign, dict) else {}
-    if not isinstance(gaps, dict):
-        gaps = {}
-    candidates: list[tuple[str, str]] = [
-        ("premium_or_budget", "premium budget cost expensive"),
-        ("coverage_fit", "coverage covered fit policy"),
-        ("renewal_timing", "renewal timing"),
-        ("manual_work", "manual admin work"),
-        ("integration_risk", "integration integrate"),
-        ("visibility_gap", "visibility reporting"),
-        ("repair_timing", "repair timing timings delay long"),
-        ("vehicle_issue", "vehicle car issue"),
-        ("warranty_or_estimate", "warranty estimate"),
-        ("service_need", "service need active"),
-        ("scheduling_urgency", "scheduling schedule urgent"),
-        ("estimate_or_property_details", "estimate property quote"),
-        ("callbacks", "callback callbacks call back"),
-        ("handoffs", "handoff handoffs"),
-        ("manual_tracking", "manual tracking"),
-    ]
-    for gap_id, words in candidates:
-        if gap_id in gaps or _is_routesignal_campaign(campaign):
-            if any(word in normalized for word in words.split()):
-                return gap_id
-    return ""
-
-
-def _campaign_supported_gap_ids(campaign: dict | None) -> set[str]:
-    if _is_routesignal_campaign(campaign):
-        return {"callbacks", "handoffs", "manual_tracking"}
-    gaps = (campaign or {}).get("diagnostic_gaps") if isinstance(campaign, dict) else {}
-    return set(gaps.keys()) if isinstance(gaps, dict) else set()
-
-
-def _universal_gap_id_from_transcript(normalized: str) -> str:
-    candidates: list[tuple[str, tuple[str, ...]]] = [
-        ("premium_or_budget", ("premium", "budget")),
-        ("coverage_fit", ("coverage fit",)),
-        ("renewal_timing", ("renewal timing",)),
-        ("manual_work", ("manual work",)),
-        ("integration_risk", ("integration",)),
-        ("visibility_gap", ("visibility", "reporting")),
-        ("repair_timing", ("repair timing", "repair timings")),
-        ("vehicle_issue", ("vehicle issue", "car issue")),
-        ("warranty_or_estimate", ("warranty", "estimate")),
-        ("service_need", ("we need service", "service need", "active service")),
-        ("scheduling_urgency", ("scheduling", "schedule")),
-        ("callbacks", ("callback", "callbacks")),
-        ("handoffs", ("handoff", "handoffs")),
-        ("manual_tracking", ("manual tracking",)),
-    ]
-    for gap_id, markers in candidates:
-        if any(marker in normalized for marker in markers):
+    for gap_id, record in _gap_record_items(campaign):
+        if _transcript_matches_gap_record(normalized, record):
             return gap_id
     return ""
 
 
+def _campaign_supported_gap_ids(campaign: dict | None) -> set[str]:
+    return {gap_id for gap_id, _ in _gap_record_items(campaign)}
+
+
 def _unsupported_pain_phrase_gap_id(normalized: str, campaign: dict | None) -> str:
-    if not _contains_any(
-        normalized,
-        {"is a problem", "is the problem", "usually pretty long", "we need service", "is unclear", "is the issue"},
-    ):
+    if not _pain_like_unsupported_phrase(normalized):
         return ""
-    gap_id = _universal_gap_id_from_transcript(normalized)
-    if not gap_id:
-        return ""
+    gap_id = _gap_id_from_transcript(normalized, campaign)
     if gap_id in _campaign_supported_gap_ids(campaign):
         return ""
-    return gap_id
+    return "unsupported_pain_phrase"
 
 
 def contextual_pain_supported_by_campaign(
@@ -722,24 +761,18 @@ def contextual_pain_supported_by_campaign(
     target_gap = str((contextual_semantics or {}).get("target_gap") or "")
     if not target_gap:
         return False
+    supported_gap_ids = _campaign_supported_gap_ids(campaign)
+    if supported_gap_ids and target_gap not in supported_gap_ids:
+        return False
     normalized = normalize_transcript(transcript)
-    strong_gap_markers: dict[str, tuple[str, ...]] = {
-        "callbacks": ("callback", "callbacks"),
-        "handoffs": ("handoff", "handoffs"),
-        "manual_tracking": ("manual tracking",),
-        "premium_or_budget": ("premium", "budget"),
-        "coverage_fit": ("coverage fit",),
-        "manual_work": ("manual work",),
-        "integration_risk": ("integration",),
-        "repair_timing": ("repair timing", "repair timings"),
-        "service_need": ("need service", "service need", "active service"),
-        "scheduling_urgency": ("scheduling",),
-    }
-    for expected_gap, markers in strong_gap_markers.items():
-        if any(marker in normalized for marker in markers):
-            return target_gap == expected_gap
-    if _is_routesignal_campaign(campaign):
-        return target_gap in {"callbacks", "manual_tracking", "handoffs"}
+    matched_gap = _gap_id_from_transcript(normalized, campaign)
+    if matched_gap:
+        return target_gap == matched_gap
+    if _pain_like_unsupported_phrase(normalized) and not _contains_any(
+        normalized,
+        {"it is a problem", "it is the problem", "that is a problem", "that is the problem", "this is a problem", "this is the problem"},
+    ):
+        return False
     return True
 
 
@@ -854,6 +887,8 @@ def _pain_progression_metadata(
         target_gap = _pending_tentative_gap_id(session_state)
     if not target_gap:
         target_gap = _gap_id_from_transcript(normalized, campaign)
+    if buyer_move_id == "confusion_not_clear" and _unsupported_pain_phrase_gap_id(normalized, campaign):
+        target_gap = ""
     gap_phrase = _gap_phrase_for_id(campaign, target_gap) if target_gap else _sharp_diagnostic_gap_phrase(campaign)
     impact = _impact_signal_from_transcript(normalized)
     base = {
@@ -864,7 +899,7 @@ def _pain_progression_metadata(
         "next_best_sales_action": "none",
         "confirmed_gap_id": target_gap,
         "selected_gap": target_gap,
-        "confirmed_gap_phrase": gap_phrase,
+        "confirmed_gap_phrase": "" if not target_gap and buyer_move_id == "confusion_not_clear" else gap_phrase,
         "impact_signal_detected": bool(impact.get("detected")),
         "impact_signal_type": str(impact.get("type") or "none"),
     }
@@ -933,26 +968,20 @@ def _pain_progression_metadata(
     return base
 
 
-def _pain_implication_response(gap_phrase: str) -> str:
+def _pain_implication_response(gap_phrase: str, campaign: dict | None = None, gap_id: str = "") -> str:
     normalized_gap = _plain_phrase(gap_phrase).lower()
-    if normalized_gap == "manual work":
-        return "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?"
-    if normalized_gap == "premium pressure":
-        return "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?"
-    if normalized_gap == "coverage fit":
-        return "Got it, coverage fit is the concern. Is it active now, or more something you want checked later?"
-    if normalized_gap == "repair timing":
-        return "Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?"
-    if normalized_gap == "service need":
-        return "Got it, service need is the issue. Is it causing a real service issue now, or just a general question?"
-    if normalized_gap == "scheduling":
-        return "Got it, scheduling is the concern. Is it causing a real delay now, or just something to check later?"
-    if normalized_gap == "callbacks":
-        return "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?"
-    if normalized_gap == "handoffs":
-        return "Got it, handoffs are the concern. Is that causing missed ownership, or mostly extra tracking work?"
-    if normalized_gap == "inbound demo follow-up slipping":
-        return "Got it, follow-up slipping is the issue. Is that causing missed callbacks, or mostly extra tracking work?"
+    record = _gap_record_by_id(campaign, gap_id) if gap_id else {}
+    if not record:
+        for _, candidate in _gap_record_items(campaign):
+            if _gap_customer_phrase(candidate) == normalized_gap:
+                record = candidate
+                break
+    acknowledgement = _gap_text(record, "pain_acknowledgement_phrase")
+    impact_question = _gap_text(record, "impact_question_phrase")
+    if acknowledgement and impact_question:
+        return f"{acknowledgement.rstrip('.')} . {_question_sentence(impact_question)}".replace(" . ", ". ")
+    if impact_question:
+        return f"Got it, {_area_phrase(normalized_gap)} is the issue. {_question_sentence(impact_question)}"
     return f"Got it, {_area_phrase(normalized_gap)} is the issue. Is it causing a real impact now, or mostly a general concern?"
 
 
@@ -1978,7 +2007,7 @@ def render_universal_response_outline(
         gap_id = str((frame or {}).get("confirmed_gap_id") or (frame or {}).get("selected_gap") or "")
         if gap_id and gap_id in _string_items(_memory_from_session(session_state).get("confirmed_gaps")):
             return f"Right, {_area_phrase(gap_phrase)} is already noted. Is it creating a real impact now?"
-        return _pain_implication_response(gap_phrase)
+        return _pain_implication_response(gap_phrase, campaign=campaign, gap_id=gap_id)
     if buyer_move_id == "tentative_gap_interest":
         return _tentative_gap_response(_gap_phrase_from_frame_or_text(frame, campaign, session_state))
     if buyer_move_id == "implication_confirmed":
@@ -2009,11 +2038,9 @@ def render_universal_response_outline(
         return f"Got it. I'll note that time for {owner_role} to follow up."
 
     if buyer_move_id == "product_detail_question":
-        if _is_routesignal_campaign(campaign):
-            return (
-                "Sure. RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, "
-                "or handoffs. The quick check is whether that problem exists on your side."
-            )
+        configured_answer = _campaign_text(campaign, "product_detail_answer", "product_summary_phrase")
+        if configured_answer:
+            return f"Sure. {configured_answer}"
         return (
             f"Sure. This call is only to check whether a short human review is useful around {_area_phrase(primary_gap)}. "
             "The quick question is whether that area is causing friction now."

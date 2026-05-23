@@ -146,7 +146,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -228,12 +228,12 @@
           "campaign_id": "routesignal_live_demo",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-01-01-routesignal_live_demo-casual_small_talk",
-          "final_response": "I'm good, thanks. I'll keep this quick: is inbound demo follow-up slipping now?",
+          "final_response": "I'm good, thanks. I'll keep this quick: is inbound demo follow-up slipping right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 14,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -354,12 +354,12 @@
           "campaign_id": "routesignal_live_demo",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-01-01-routesignal_live_demo-casual_small_talk",
-          "final_response": "Okay, thanks. I'll keep this quick: is inbound demo follow-up slipping now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is inbound demo follow-up slipping right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -480,12 +480,12 @@
           "campaign_id": "routesignal_live_demo",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-01-01-routesignal_live_demo-casual_small_talk",
-          "final_response": "Okay, thanks. I'll keep this quick: is inbound demo follow-up slipping now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is inbound demo follow-up slipping right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -606,12 +606,12 @@
           "campaign_id": "routesignal_live_demo",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-01-01-routesignal_live_demo-casual_small_talk",
-          "final_response": "Okay, thanks. I'll keep this quick: is inbound demo follow-up slipping now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is inbound demo follow-up slipping right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -845,7 +845,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -927,12 +927,12 @@
           "campaign_id": "routesignal_live_demo",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-01-02-routesignal_live_demo-busy_distracted",
-          "final_response": "Understood. I'll keep it to one yes-or-no: is inbound demo follow-up slipping now?",
+          "final_response": "Understood. I'll keep it to one yes-or-no: is inbound demo follow-up slipping right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 16,
+          "response_word_count": 17,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -1699,7 +1699,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -2402,7 +2402,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -3124,7 +3124,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -3206,12 +3206,12 @@
           "campaign_id": "routesignal_live_demo",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-01-05-routesignal_live_demo-prior_bad_experience",
-          "final_response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is inbound demo follow-up slipping now?",
+          "final_response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is inbound demo follow-up slipping right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 26,
+          "response_word_count": 27,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -3470,12 +3470,12 @@
           "campaign_id": "routesignal_live_demo",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-01-05-routesignal_live_demo-prior_bad_experience",
-          "final_response": "Fair. Then I should be specific, not pitchy: is inbound demo follow-up slipping now?",
+          "final_response": "Fair. Then I should be specific, not pitchy: is inbound demo follow-up slipping right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 15,
+          "response_word_count": 16,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -3648,8 +3648,8 @@
             "buyer_move_category": "rapport_relevance_bridge",
             "buyer_move_id": "prior_bad_experience_context",
             "callback_capture_required": false,
-            "confirmed_gap_id": "callbacks",
-            "confirmed_gap_phrase": "callbacks",
+            "confirmed_gap_id": "",
+            "confirmed_gap_phrase": "inbound demo follow-up slipping",
             "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
@@ -3706,7 +3706,7 @@
             "safe_to_continue": true,
             "sales_progression_stage": "none",
             "schema_version": 1,
-            "selected_gap": "callbacks",
+            "selected_gap": "",
             "sensitive_context_detected": false,
             "serious_bad_timing_detected": false,
             "should_offer_later_or_stop": false,
@@ -3847,7 +3847,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -4671,7 +4671,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -5393,7 +5393,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -6115,7 +6115,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -6329,12 +6329,12 @@
           "campaign_id": "routesignal_live_demo",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-01-09-routesignal_live_demo-irrelevant_story_off_topic_ramble",
-          "final_response": "Understood. I won't pull this into the printer issue; the quick check here: is inbound demo follow-up slipping now?",
+          "final_response": "Understood. I won't pull this into the printer issue; the quick check here: is inbound demo follow-up slipping right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 20,
+          "response_word_count": 21,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -6461,12 +6461,12 @@
           "campaign_id": "routesignal_live_demo",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-01-09-routesignal_live_demo-irrelevant_story_off_topic_ramble",
-          "final_response": "Got it. That sounds separate from this call. The relevant check here: is inbound demo follow-up slipping now?",
+          "final_response": "Got it. That sounds separate from this call. The relevant check here: is inbound demo follow-up slipping right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 19,
+          "response_word_count": 20,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -6593,12 +6593,12 @@
           "campaign_id": "routesignal_live_demo",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-01-09-routesignal_live_demo-irrelevant_story_off_topic_ramble",
-          "final_response": "No problem. I won't make this a long call. The only relevant check: is inbound demo follow-up slipping now?",
+          "final_response": "No problem. I won't make this a long call. The only relevant check: is inbound demo follow-up slipping right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 20,
+          "response_word_count": 21,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -6837,7 +6837,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -7538,7 +7538,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -8259,7 +8259,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -8341,12 +8341,12 @@
           "campaign_id": "routesignal_live_demo",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-01-12-routesignal_live_demo-b2b_workplace_interruption",
-          "final_response": "Understood, I will keep it tight: is inbound demo follow-up slipping now?",
+          "final_response": "Understood, I will keep it tight: is inbound demo follow-up slipping right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -8783,8 +8783,8 @@
             "buyer_move_category": "rapport_relevance_bridge",
             "buyer_move_id": "workplace_interruption",
             "callback_capture_required": false,
-            "confirmed_gap_id": "callbacks",
-            "confirmed_gap_phrase": "callbacks",
+            "confirmed_gap_id": "",
+            "confirmed_gap_phrase": "inbound demo follow-up slipping",
             "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
@@ -8841,7 +8841,7 @@
             "safe_to_continue": false,
             "sales_progression_stage": "none",
             "schema_version": 1,
-            "selected_gap": "callbacks",
+            "selected_gap": "",
             "sensitive_context_detected": false,
             "serious_bad_timing_detected": false,
             "should_offer_later_or_stop": true,
@@ -8981,7 +8981,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -9063,12 +9063,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-01-synthetic-insurance-review-casual_small_talk",
-          "final_response": "I'm good, thanks. I'll keep this quick: is premium pressure causing an issue now?",
+          "final_response": "I'm good, thanks. I'll keep this quick: is premium pressure causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 14,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -9189,12 +9189,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-01-synthetic-insurance-review-casual_small_talk",
-          "final_response": "Okay, thanks. I'll keep this quick: is premium pressure causing an issue now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is premium pressure causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -9315,12 +9315,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-01-synthetic-insurance-review-casual_small_talk",
-          "final_response": "Okay, thanks. I'll keep this quick: is premium pressure causing an issue now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is premium pressure causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -9441,12 +9441,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-01-synthetic-insurance-review-casual_small_talk",
-          "final_response": "Okay, thanks. I'll keep this quick: is premium pressure causing an issue now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is premium pressure causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -9680,7 +9680,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -9762,12 +9762,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-02-synthetic-insurance-review-busy_distracted",
-          "final_response": "Understood. I'll keep it to one yes-or-no: is premium pressure causing an issue now?",
+          "final_response": "Understood. I'll keep it to one yes-or-no: is premium pressure causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 16,
+          "response_word_count": 17,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -10534,7 +10534,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -11237,7 +11237,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -11365,7 +11365,7 @@
             "buyer_move_category": "rapport_relevance_bridge",
             "buyer_move_id": "financial_stress_context",
             "callback_capture_required": false,
-            "confirmed_gap_id": "premium_or_budget",
+            "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
             "contact_capture_required": false,
             "conversation_stage": "diagnostic",
@@ -11423,7 +11423,7 @@
             "safe_to_continue": true,
             "sales_progression_stage": "none",
             "schema_version": 1,
-            "selected_gap": "premium_or_budget",
+            "selected_gap": "",
             "sensitive_context_detected": false,
             "serious_bad_timing_detected": false,
             "should_offer_later_or_stop": false,
@@ -11629,7 +11629,7 @@
             "buyer_move_category": "rapport_relevance_bridge",
             "buyer_move_id": "financial_stress_context",
             "callback_capture_required": false,
-            "confirmed_gap_id": "premium_or_budget",
+            "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
             "contact_capture_required": false,
             "conversation_stage": "diagnostic",
@@ -11687,7 +11687,7 @@
             "safe_to_continue": true,
             "sales_progression_stage": "none",
             "schema_version": 1,
-            "selected_gap": "premium_or_budget",
+            "selected_gap": "",
             "sensitive_context_detected": false,
             "serious_bad_timing_detected": false,
             "should_offer_later_or_stop": false,
@@ -11959,7 +11959,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -12041,12 +12041,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-05-synthetic-insurance-review-prior_bad_experience",
-          "final_response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is premium pressure causing an issue now?",
+          "final_response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is premium pressure causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 26,
+          "response_word_count": 27,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -12305,12 +12305,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-05-synthetic-insurance-review-prior_bad_experience",
-          "final_response": "Fair. Then I should be specific, not pitchy: is premium pressure causing an issue now?",
+          "final_response": "Fair. Then I should be specific, not pitchy: is premium pressure causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 15,
+          "response_word_count": 16,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -12682,7 +12682,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -13506,7 +13506,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -14228,7 +14228,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -14950,7 +14950,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -15164,12 +15164,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-09-synthetic-insurance-review-irrelevant_story_off_topic_ramble",
-          "final_response": "Understood. I won't pull this into the printer issue; the quick check here: is premium pressure causing an issue now?",
+          "final_response": "Understood. I won't pull this into the printer issue; the quick check here: is premium pressure causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 20,
+          "response_word_count": 21,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -15296,12 +15296,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-09-synthetic-insurance-review-irrelevant_story_off_topic_ramble",
-          "final_response": "Got it. That sounds separate from this call. The relevant check here: is premium pressure causing an issue now?",
+          "final_response": "Got it. That sounds separate from this call. The relevant check here: is premium pressure causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 19,
+          "response_word_count": 20,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -15428,12 +15428,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-09-synthetic-insurance-review-irrelevant_story_off_topic_ramble",
-          "final_response": "No problem. I won't make this a long call. The only relevant check: is premium pressure causing an issue now?",
+          "final_response": "No problem. I won't make this a long call. The only relevant check: is premium pressure causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 20,
+          "response_word_count": 21,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -15672,7 +15672,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -16373,7 +16373,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -17094,7 +17094,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -17176,12 +17176,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-12-synthetic-insurance-review-b2b_workplace_interruption",
-          "final_response": "Understood, I will keep it tight: is premium pressure causing an issue now?",
+          "final_response": "Understood, I will keep it tight: is premium pressure causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -17816,7 +17816,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -17898,12 +17898,12 @@
           "campaign_id": "synthetic-b2b-saas-operations",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-03-01-synthetic-b2b-saas-operations-casual_small_talk",
-          "final_response": "I'm good, thanks. I'll keep this quick: is manual work causing an issue now?",
+          "final_response": "I'm good, thanks. I'll keep this quick: is manual work causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 14,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -18024,12 +18024,12 @@
           "campaign_id": "synthetic-b2b-saas-operations",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-03-01-synthetic-b2b-saas-operations-casual_small_talk",
-          "final_response": "Okay, thanks. I'll keep this quick: is manual work causing an issue now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is manual work causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -18150,12 +18150,12 @@
           "campaign_id": "synthetic-b2b-saas-operations",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-03-01-synthetic-b2b-saas-operations-casual_small_talk",
-          "final_response": "Okay, thanks. I'll keep this quick: is manual work causing an issue now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is manual work causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -18276,12 +18276,12 @@
           "campaign_id": "synthetic-b2b-saas-operations",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-03-01-synthetic-b2b-saas-operations-casual_small_talk",
-          "final_response": "Okay, thanks. I'll keep this quick: is manual work causing an issue now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is manual work causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -18515,7 +18515,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -18597,12 +18597,12 @@
           "campaign_id": "synthetic-b2b-saas-operations",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-03-02-synthetic-b2b-saas-operations-busy_distracted",
-          "final_response": "Understood. I'll keep it to one yes-or-no: is manual work causing an issue now?",
+          "final_response": "Understood. I'll keep it to one yes-or-no: is manual work causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 16,
+          "response_word_count": 17,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -19369,7 +19369,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -20072,7 +20072,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -20794,7 +20794,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -20876,12 +20876,12 @@
           "campaign_id": "synthetic-b2b-saas-operations",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-03-05-synthetic-b2b-saas-operations-prior_bad_experience",
-          "final_response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is manual work causing an issue now?",
+          "final_response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is manual work causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 26,
+          "response_word_count": 27,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -21140,12 +21140,12 @@
           "campaign_id": "synthetic-b2b-saas-operations",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-03-05-synthetic-b2b-saas-operations-prior_bad_experience",
-          "final_response": "Fair. Then I should be specific, not pitchy: is manual work causing an issue now?",
+          "final_response": "Fair. Then I should be specific, not pitchy: is manual work causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 15,
+          "response_word_count": 16,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -21517,7 +21517,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -22341,7 +22341,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -23063,7 +23063,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -23785,7 +23785,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -23999,12 +23999,12 @@
           "campaign_id": "synthetic-b2b-saas-operations",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-03-09-synthetic-b2b-saas-operations-irrelevant_story_off_topic_ramble",
-          "final_response": "Understood. I won't pull this into the printer issue; the quick check here: is manual work causing an issue now?",
+          "final_response": "Understood. I won't pull this into the printer issue; the quick check here: is manual work causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 20,
+          "response_word_count": 21,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -24131,12 +24131,12 @@
           "campaign_id": "synthetic-b2b-saas-operations",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-03-09-synthetic-b2b-saas-operations-irrelevant_story_off_topic_ramble",
-          "final_response": "Got it. That sounds separate from this call. The relevant check here: is manual work causing an issue now?",
+          "final_response": "Got it. That sounds separate from this call. The relevant check here: is manual work causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 19,
+          "response_word_count": 20,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -24263,12 +24263,12 @@
           "campaign_id": "synthetic-b2b-saas-operations",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-03-09-synthetic-b2b-saas-operations-irrelevant_story_off_topic_ramble",
-          "final_response": "No problem. I won't make this a long call. The only relevant check: is manual work causing an issue now?",
+          "final_response": "No problem. I won't make this a long call. The only relevant check: is manual work causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 20,
+          "response_word_count": 21,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -24507,7 +24507,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -25208,7 +25208,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -25929,7 +25929,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -26011,12 +26011,12 @@
           "campaign_id": "synthetic-b2b-saas-operations",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-03-12-synthetic-b2b-saas-operations-b2b_workplace_interruption",
-          "final_response": "Understood, I will keep it tight: is manual work causing an issue now?",
+          "final_response": "Understood, I will keep it tight: is manual work causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -26651,7 +26651,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -26733,12 +26733,12 @@
           "campaign_id": "synthetic-automotive-service-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-04-01-synthetic-automotive-service-review-casual_small_talk",
-          "final_response": "I'm good, thanks. I'll keep this quick: is repair timing causing an issue now?",
+          "final_response": "I'm good, thanks. I'll keep this quick: is repair timing causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 14,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -26859,12 +26859,12 @@
           "campaign_id": "synthetic-automotive-service-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-04-01-synthetic-automotive-service-review-casual_small_talk",
-          "final_response": "Okay, thanks. I'll keep this quick: is repair timing causing an issue now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is repair timing causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -26985,12 +26985,12 @@
           "campaign_id": "synthetic-automotive-service-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-04-01-synthetic-automotive-service-review-casual_small_talk",
-          "final_response": "Okay, thanks. I'll keep this quick: is repair timing causing an issue now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is repair timing causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -27111,12 +27111,12 @@
           "campaign_id": "synthetic-automotive-service-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-04-01-synthetic-automotive-service-review-casual_small_talk",
-          "final_response": "Okay, thanks. I'll keep this quick: is repair timing causing an issue now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is repair timing causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -27350,7 +27350,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -27432,12 +27432,12 @@
           "campaign_id": "synthetic-automotive-service-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-04-02-synthetic-automotive-service-review-busy_distracted",
-          "final_response": "Understood. I'll keep it to one yes-or-no: is repair timing causing an issue now?",
+          "final_response": "Understood. I'll keep it to one yes-or-no: is repair timing causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 16,
+          "response_word_count": 17,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -28204,7 +28204,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -28907,7 +28907,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -29629,7 +29629,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -29711,12 +29711,12 @@
           "campaign_id": "synthetic-automotive-service-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-04-05-synthetic-automotive-service-review-prior_bad_experience",
-          "final_response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is repair timing causing an issue now?",
+          "final_response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is repair timing causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 26,
+          "response_word_count": 27,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -29975,12 +29975,12 @@
           "campaign_id": "synthetic-automotive-service-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-04-05-synthetic-automotive-service-review-prior_bad_experience",
-          "final_response": "Fair. Then I should be specific, not pitchy: is repair timing causing an issue now?",
+          "final_response": "Fair. Then I should be specific, not pitchy: is repair timing causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 15,
+          "response_word_count": 16,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -30352,7 +30352,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -31176,7 +31176,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -31898,7 +31898,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -32620,7 +32620,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -32834,12 +32834,12 @@
           "campaign_id": "synthetic-automotive-service-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-04-09-synthetic-automotive-service-review-irrelevant_story_off_topic_ramble",
-          "final_response": "Understood. I won't pull this into the printer issue; the quick check here: is repair timing causing an issue now?",
+          "final_response": "Understood. I won't pull this into the printer issue; the quick check here: is repair timing causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 20,
+          "response_word_count": 21,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -32966,12 +32966,12 @@
           "campaign_id": "synthetic-automotive-service-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-04-09-synthetic-automotive-service-review-irrelevant_story_off_topic_ramble",
-          "final_response": "Got it. That sounds separate from this call. The relevant check here: is repair timing causing an issue now?",
+          "final_response": "Got it. That sounds separate from this call. The relevant check here: is repair timing causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 19,
+          "response_word_count": 20,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -33098,12 +33098,12 @@
           "campaign_id": "synthetic-automotive-service-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-04-09-synthetic-automotive-service-review-irrelevant_story_off_topic_ramble",
-          "final_response": "No problem. I won't make this a long call. The only relevant check: is repair timing causing an issue now?",
+          "final_response": "No problem. I won't make this a long call. The only relevant check: is repair timing causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 20,
+          "response_word_count": 21,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -33144,7 +33144,7 @@
             "buyer_move_category": "rapport_relevance_bridge",
             "buyer_move_id": "irrelevant_off_topic_context",
             "callback_capture_required": false,
-            "confirmed_gap_id": "repair_timing",
+            "confirmed_gap_id": "",
             "confirmed_gap_phrase": "repair timing",
             "contact_capture_required": false,
             "conversation_stage": "diagnostic",
@@ -33202,7 +33202,7 @@
             "safe_to_continue": true,
             "sales_progression_stage": "none",
             "schema_version": 1,
-            "selected_gap": "repair_timing",
+            "selected_gap": "",
             "sensitive_context_detected": false,
             "serious_bad_timing_detected": false,
             "should_offer_later_or_stop": true,
@@ -33342,7 +33342,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -34043,7 +34043,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -34764,7 +34764,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -34846,12 +34846,12 @@
           "campaign_id": "synthetic-automotive-service-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-04-12-synthetic-automotive-service-review-b2b_workplace_interruption",
-          "final_response": "Understood, I will keep it tight: is repair timing causing an issue now?",
+          "final_response": "Understood, I will keep it tight: is repair timing causing any issue right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -35486,7 +35486,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -35568,12 +35568,12 @@
           "campaign_id": "synthetic-home-services-estimate",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-05-01-synthetic-home-services-estimate-casual_small_talk",
-          "final_response": "I'm good, thanks. I'll keep this quick: is the service need active now?",
+          "final_response": "I'm good, thanks. I'll keep this quick: is the service need active right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -35694,12 +35694,12 @@
           "campaign_id": "synthetic-home-services-estimate",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-05-01-synthetic-home-services-estimate-casual_small_talk",
-          "final_response": "Okay, thanks. I'll keep this quick: is the service need active now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is the service need active right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 12,
+          "response_word_count": 13,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -35820,12 +35820,12 @@
           "campaign_id": "synthetic-home-services-estimate",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-05-01-synthetic-home-services-estimate-casual_small_talk",
-          "final_response": "Okay, thanks. I'll keep this quick: is the service need active now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is the service need active right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 12,
+          "response_word_count": 13,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -35946,12 +35946,12 @@
           "campaign_id": "synthetic-home-services-estimate",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-05-01-synthetic-home-services-estimate-casual_small_talk",
-          "final_response": "Okay, thanks. I'll keep this quick: is the service need active now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is the service need active right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 12,
+          "response_word_count": 13,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -36185,7 +36185,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -36267,12 +36267,12 @@
           "campaign_id": "synthetic-home-services-estimate",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-05-02-synthetic-home-services-estimate-busy_distracted",
-          "final_response": "Understood. I'll keep it to one yes-or-no: is the service need active now?",
+          "final_response": "Understood. I'll keep it to one yes-or-no: is the service need active right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 15,
+          "response_word_count": 16,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -37039,7 +37039,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -37742,7 +37742,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -38464,7 +38464,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -38546,12 +38546,12 @@
           "campaign_id": "synthetic-home-services-estimate",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-05-05-synthetic-home-services-estimate-prior_bad_experience",
-          "final_response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is the service need active now?",
+          "final_response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is the service need active right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 25,
+          "response_word_count": 26,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -38810,12 +38810,12 @@
           "campaign_id": "synthetic-home-services-estimate",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-05-05-synthetic-home-services-estimate-prior_bad_experience",
-          "final_response": "Fair. Then I should be specific, not pitchy: is the service need active now?",
+          "final_response": "Fair. Then I should be specific, not pitchy: is the service need active right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 14,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -39187,7 +39187,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -39690,7 +39690,7 @@
             "buyer_move_category": "rapport_relevance_bridge",
             "buyer_move_id": "stakeholder_or_right_person_context",
             "callback_capture_required": false,
-            "confirmed_gap_id": "service_need",
+            "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
             "contact_capture_required": false,
             "conversation_stage": "diagnostic",
@@ -39745,7 +39745,7 @@
             "safe_to_continue": true,
             "sales_progression_stage": "none",
             "schema_version": 1,
-            "selected_gap": "service_need",
+            "selected_gap": "",
             "sensitive_context_detected": false,
             "serious_bad_timing_detected": false,
             "should_offer_later_or_stop": false,
@@ -40011,7 +40011,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -40733,7 +40733,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -41455,7 +41455,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -41669,12 +41669,12 @@
           "campaign_id": "synthetic-home-services-estimate",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-05-09-synthetic-home-services-estimate-irrelevant_story_off_topic_ramble",
-          "final_response": "Understood. I won't pull this into the printer issue; the quick check here: is the service need active now?",
+          "final_response": "Understood. I won't pull this into the printer issue; the quick check here: is the service need active right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 19,
+          "response_word_count": 20,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -41801,12 +41801,12 @@
           "campaign_id": "synthetic-home-services-estimate",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-05-09-synthetic-home-services-estimate-irrelevant_story_off_topic_ramble",
-          "final_response": "Got it. That sounds separate from this call. The relevant check here: is the service need active now?",
+          "final_response": "Got it. That sounds separate from this call. The relevant check here: is the service need active right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 18,
+          "response_word_count": 19,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -41933,12 +41933,12 @@
           "campaign_id": "synthetic-home-services-estimate",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-05-09-synthetic-home-services-estimate-irrelevant_story_off_topic_ramble",
-          "final_response": "No problem. I won't make this a long call. The only relevant check: is the service need active now?",
+          "final_response": "No problem. I won't make this a long call. The only relevant check: is the service need active right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 19,
+          "response_word_count": 20,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -42177,7 +42177,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -42878,7 +42878,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -43599,7 +43599,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -43681,12 +43681,12 @@
           "campaign_id": "synthetic-home-services-estimate",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-05-12-synthetic-home-services-estimate-b2b_workplace_interruption",
-          "final_response": "Understood, I will keep it tight: is the service need active now?",
+          "final_response": "Understood, I will keep it tight: is the service need active right now?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 12,
+          "response_word_count": 13,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -44201,7 +44201,7 @@
       ]
     }
   ],
-  "generated_at": "2026-05-23T15:08:21.120247+00:00",
+  "generated_at": "2026-05-23T15:59:45.934819+00:00",
   "most_concerning_conversations_by_mechanical_signals_only": [
     {
       "arc_type": "casual_small_talk",

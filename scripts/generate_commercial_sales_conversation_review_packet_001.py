@@ -682,6 +682,39 @@ def line_numbers_for(text: str, needle: str) -> list[int]:
     ]
 
 
+CUSTOMER_FACING_RUNTIME_FUNCTIONS = (
+    "_human_gap_phrase",
+    "_primary_gap_phrase",
+    "_sharp_diagnostic_gap_phrase",
+    "_campaign_purpose_phrase",
+    "_permission_response",
+    "_time_pressure_response",
+    "_scope_relevance_clarification_response",
+    "_pain_implication_response",
+    "_tentative_gap_response",
+    "render_universal_response_outline",
+)
+
+
+def function_source_with_start(source: str, name: str) -> tuple[str, int]:
+    match = re.search(rf"^def {re.escape(name)}\(.*?(?=^def |\Z)", source, flags=re.M | re.S)
+    if not match:
+        return "", 0
+    return match.group(0), source[: match.start()].count("\n") + 1
+
+
+def customer_facing_function_lines_for(source: str, needle: str) -> list[int]:
+    lines: list[int] = []
+    for function_name in CUSTOMER_FACING_RUNTIME_FUNCTIONS:
+        block, start_line = function_source_with_start(source, function_name)
+        if not block:
+            continue
+        for offset, line in enumerate(block.splitlines()):
+            if needle in line:
+                lines.append(start_line + offset)
+    return lines
+
+
 def universalization_drift_findings() -> list[dict[str, Any]]:
     source = UNIVERSAL_RUNTIME_PATH.read_text(encoding="utf-8")
     findings: list[dict[str, Any]] = []
@@ -765,7 +798,7 @@ def universalization_drift_findings() -> list[dict[str, Any]]:
     ]
     customer_phrase_lines: list[int] = []
     for needle in customer_phrase_needles:
-        customer_phrase_lines.extend(line_numbers_for(source, needle))
+        customer_phrase_lines.extend(customer_facing_function_lines_for(source, needle))
     if customer_phrase_lines:
         findings.append(
             {

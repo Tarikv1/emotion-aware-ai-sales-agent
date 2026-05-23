@@ -1,0 +1,176 @@
+{
+  "checkpoint_id": "UNIVERSALIZATION-DRIFT-CLEANUP-001",
+  "status": "pass",
+  "summary": {
+    "behavior_evidence": [
+      {
+        "campaign_id": "routesignal_live_demo",
+        "financial_stress_response": "I hear you. Costs are tight for a lot of people. I'm not here to add pressure; the useful check is whether inbound demo follow-up is already costing time or money.",
+        "hardship_call_control": "end-call",
+        "hardship_response": "I'm sorry to hear that. This is not the right time for this call. I'll stop here.",
+        "pain_response": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
+        "permission_response": "Thanks. Is inbound demo follow-up slipping right now?",
+        "side_effect_flags": {
+          "audio_file_created": false,
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "live_tts_used": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "tts_provider_calls_made": false,
+          "writes_crm": false
+        }
+      },
+      {
+        "campaign_id": "synthetic-insurance-review",
+        "financial_stress_response": "I hear you. Costs are tight for a lot of people. I'm not here to add pressure; the useful check is whether premium pressure is already costing time or money.",
+        "pain_response": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
+        "permission_response": "Thanks. Is premium pressure causing any issue right now?",
+        "sensitive_call_control": "end-call",
+        "sensitive_data_response": "Understood. Please don't share sensitive details on this call. This is not the right place for that information, so I'll stop here.",
+        "side_effect_flags": {
+          "audio_file_created": false,
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "live_tts_used": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "tts_provider_calls_made": false,
+          "writes_crm": false
+        }
+      },
+      {
+        "campaign_id": "synthetic-b2b-saas-operations",
+        "financial_stress_response": "I hear you. Costs are tight for a lot of people. I'm not here to add pressure; the useful check is whether manual work is already costing time or money.",
+        "pain_response": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
+        "permission_response": "Thanks. Is manual work causing any issue right now?",
+        "sensitive_call_control": "end-call",
+        "sensitive_data_response": "Understood. Please don't share sensitive details on this call. This is not the right place for that information, so I'll stop here.",
+        "side_effect_flags": {
+          "audio_file_created": false,
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "live_tts_used": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "tts_provider_calls_made": false,
+          "writes_crm": false
+        }
+      },
+      {
+        "campaign_id": "synthetic-automotive-service-review",
+        "financial_stress_response": "I hear you. Costs are tight for a lot of people. I'm not here to add pressure; the useful check is whether repair timing is already costing time or money.",
+        "pain_response": "Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?",
+        "permission_response": "Thanks. Is repair timing causing any issue right now?",
+        "sensitive_call_control": "end-call",
+        "sensitive_data_response": "Understood. Please don't share sensitive details on this call. This is not the right place for that information, so I'll stop here.",
+        "side_effect_flags": {
+          "audio_file_created": false,
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "live_tts_used": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "tts_provider_calls_made": false,
+          "writes_crm": false
+        }
+      },
+      {
+        "campaign_id": "synthetic-home-services-estimate",
+        "financial_stress_response": "I hear you. Costs are tight for a lot of people. I'm not here to add pressure; the useful check is whether the service need is already costing time or money.",
+        "pain_response": "Got it, service need is the issue. Is it causing a real service issue now, or just a general question?",
+        "permission_response": "Thanks. Is the service need active right now?",
+        "sensitive_call_control": "end-call",
+        "sensitive_data_response": "Understood. Please don't share sensitive details on this call. This is not the right place for that information, so I'll stop here.",
+        "side_effect_flags": {
+          "audio_file_created": false,
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "live_tts_used": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "tts_provider_calls_made": false,
+          "writes_crm": false
+        }
+      }
+    ],
+    "failure_count": 0,
+    "failure_examples": [],
+    "failure_types": {},
+    "review_packet_drift_summary": {
+      "active_udr_findings": [],
+      "all_findings": [
+        {
+          "classification": "acceptable_test_fixture_only",
+          "evidence": [],
+          "file": "runtime/core/universal_conversation_policy_runtime.py",
+          "id": "UDR-000",
+          "line_numbers": [],
+          "recommended_follow_up": "Re-run after next universal runtime behavior change.",
+          "risk": "None found by this limited scan.",
+          "title": "No fixture-specific universal runtime drift found by static scan."
+        }
+      ],
+      "checked": true
+    },
+    "side_effects": {
+      "audio_file_created": false,
+      "creates_calendar_event": false,
+      "customer_audio_uploaded_to_python_server": false,
+      "customer_audio_uploaded_to_tts_provider": false,
+      "live_tts_used": false,
+      "local_llm_calls_made": false,
+      "opens_prod_102": false,
+      "provider_calls_made": false,
+      "sends_email": false,
+      "tts_provider_calls_made": false,
+      "writes_crm": false
+    },
+    "static_checks": {
+      "customer_gap_wording_in_config_not_runtime": true,
+      "routesignal_wording_in_adapter_not_runtime": true,
+      "synthetic_campaign_id_branches_removed": true,
+      "vertical_to_phrase_branches_removed": true
+    },
+    "status": "pass",
+    "wording_source_fields": {
+      "campaign_level": [
+        "primary_customer_issue_phrase",
+        "short_relevance_question"
+      ],
+      "gap_level": [
+        "customer_facing_phrase",
+        "impact_question_phrase",
+        "pain_acknowledgement_phrase"
+      ],
+      "routesignal_adapter_context_fields": [
+        "allowed_claims",
+        "appointment_target",
+        "blocked_claims",
+        "campaign_purpose_phrase",
+        "client_name",
+        "human_followup_owner",
+        "objective",
+        "primary_customer_issue_phrase",
+        "product_detail_answer",
+        "product_or_offer_name",
+        "short_relevance_question"
+      ]
+    }
+  }
+}

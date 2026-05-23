@@ -15,6 +15,8 @@
   },
   "campaign_id": "synthetic-home-services-estimate",
   "client_name": "Synthetic Home Services",
+  "primary_customer_issue_phrase": "service need",
+  "short_relevance_question": "Is the service need active right now?",
   "core_diagnostic_gaps": [
     "service_need",
     "scheduling_urgency",
@@ -24,6 +26,7 @@
     "estimate_or_property_details": {
       "campaign_gap_id": "estimate_or_property_details",
       "causal_story": "If estimate or property details are unclear, a qualified human should review before price or scope is discussed.",
+      "customer_facing_phrase": "estimate or property details",
       "customer_language": [
         "estimate",
         "property details",
@@ -42,6 +45,8 @@
         "price is unclear"
       ],
       "label": "estimate or property details",
+      "impact_question_phrase": "Is the estimate or property detail creating a real blocker, or mostly a question for later?",
+      "pain_acknowledgement_phrase": "Got it, estimate details are the concern.",
       "next_gap_candidates": [
         "service_need",
         "scheduling_urgency"
@@ -60,6 +65,7 @@
     "scheduling_urgency": {
       "campaign_gap_id": "scheduling_urgency",
       "causal_story": "If scheduling urgency is unresolved, the buyer may need a clearer appointment window or inspection path.",
+      "customer_facing_phrase": "scheduling",
       "customer_language": [
         "scheduling",
         "schedule",
@@ -78,6 +84,8 @@
         "schedule is the issue"
       ],
       "label": "scheduling urgency",
+      "impact_question_phrase": "Is it causing a real delay now, or just something to check later?",
+      "pain_acknowledgement_phrase": "Got it, scheduling is the concern.",
       "next_gap_candidates": [
         "service_need",
         "estimate_or_property_details"
@@ -96,6 +104,7 @@
     "service_need": {
       "campaign_gap_id": "service_need",
       "causal_story": "If the service need is not understood, the buyer may need a qualified review before scope or next steps are promised.",
+      "customer_facing_phrase": "service need",
       "customer_language": [
         "service",
         "repair",
@@ -114,6 +123,8 @@
         "service is the issue"
       ],
       "label": "service need",
+      "impact_question_phrase": "Is it causing a real service issue now, or just a general question?",
+      "pain_acknowledgement_phrase": "Got it, service need is the issue.",
       "next_gap_candidates": [
         "scheduling_urgency",
         "estimate_or_property_details"

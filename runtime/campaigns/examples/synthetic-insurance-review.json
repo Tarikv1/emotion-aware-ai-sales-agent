@@ -16,6 +16,8 @@
   },
   "campaign_id": "synthetic-insurance-review",
   "client_name": "Synthetic Insurance Agency",
+  "primary_customer_issue_phrase": "premium pressure",
+  "short_relevance_question": "Is premium pressure causing any issue right now?",
   "core_diagnostic_gaps": [
     "premium_or_budget",
     "coverage_fit",
@@ -25,6 +27,7 @@
     "coverage_fit": {
       "campaign_gap_id": "coverage_fit",
       "causal_story": "If coverage fit is unclear, a licensed human should review policy details before any next step is promised.",
+      "customer_facing_phrase": "coverage fit",
       "customer_language": [
         "coverage fit",
         "coverage",
@@ -43,6 +46,8 @@
         "coverage is the issue"
       ],
       "label": "coverage fit",
+      "impact_question_phrase": "Is it active now, or more something you want checked later?",
+      "pain_acknowledgement_phrase": "Got it, coverage fit is the concern.",
       "next_gap_candidates": [
         "premium_or_budget",
         "renewal_or_timing"
@@ -61,6 +66,7 @@
     "premium_or_budget": {
       "campaign_gap_id": "premium_or_budget",
       "causal_story": "If premium pressure is unresolved, the buyer may need a licensed human to review options and constraints.",
+      "customer_facing_phrase": "premium pressure",
       "customer_language": [
         "premium",
         "budget",
@@ -79,6 +85,8 @@
         "premium is the problem"
       ],
       "label": "premium or budget",
+      "impact_question_phrase": "Is it creating a real budget concern, or more of a quick review question?",
+      "pain_acknowledgement_phrase": "Got it, premium pressure is the issue.",
       "next_gap_candidates": [
         "coverage_fit",
         "renewal_or_timing"
@@ -97,6 +105,7 @@
     "renewal_or_timing": {
       "campaign_gap_id": "renewal_or_timing",
       "causal_story": "If renewal timing is unclear, the buyer may miss the right review window or need help with next steps.",
+      "customer_facing_phrase": "renewal timing",
       "customer_language": [
         "renewal",
         "timing",
@@ -115,6 +124,8 @@
         "timing is a problem"
       ],
       "label": "renewal or timing",
+      "impact_question_phrase": "Is renewal timing creating real pressure now, or mostly a future review question?",
+      "pain_acknowledgement_phrase": "Got it, renewal timing is the issue.",
       "next_gap_candidates": [
         "premium_or_budget",
         "coverage_fit"

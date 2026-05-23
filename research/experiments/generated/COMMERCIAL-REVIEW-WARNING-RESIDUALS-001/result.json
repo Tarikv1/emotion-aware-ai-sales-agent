@@ -939,7 +939,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "product_detail_question_phrase",
-        "response": "Sure. This call is only to check whether a short human review is useful around the vehicle issue. The quick question is whether that area is causing friction now.",
+        "response": "Sure. This call is only to check whether a short human review is useful around repair timing. The quick question is whether that area is causing friction now.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -967,7 +967,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "why_should_i_care_phrase",
-        "response": "Fair question. Only if vehicle issue is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
+        "response": "Fair question. Only if repair timing is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {

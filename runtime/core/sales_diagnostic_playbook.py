@@ -26,12 +26,20 @@ PLAYBOOK: dict[str, Any] = {
         "product": "RouteSignal CRM",
         "human_followup_owner": "Northstar",
         "objective": "appointment_setting",
+        "primary_customer_issue_phrase": "inbound demo follow-up slipping",
+        "short_relevance_question": "Is inbound demo follow-up slipping right now?",
+        "campaign_purpose_phrase": "inbound demo follow-up",
+        "product_detail_answer": (
+            "RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, "
+            "or handoffs. The quick check is whether that problem exists on your side."
+        ),
         "forbidden": ["full_sale_close", "payment", "contract", "provider_call"],
     },
     "gaps": {
         "callbacks": {
             "customer_language": ["missed callbacks", "callbacks slipping", "forgotten follow-up calls"],
             "label": "callbacks",
+            "customer_facing_phrase": "callbacks",
             "definition": "Inbound demo leads need a follow-up callback or reminder and may wait too long.",
             "causal_story": "If callbacks are not owned and reminded, warm demo leads wait and trust drops before a human can respond.",
             "evidence_positive": [
@@ -54,6 +62,9 @@ PLAYBOOK: dict[str, Any] = {
                 "not missed",
             ],
             "diagnostic_questions": ["Do missed callbacks ever create issues, or are those clean today?"],
+            "diagnostic_question_phrase": "Do missed callbacks ever create issues, or are those clean today?",
+            "impact_question_phrase": "Is that causing missed follow-up, or mostly extra tracking work?",
+            "pain_acknowledgement_phrase": "Got it, callbacks are the issue.",
             "value_bridge": "RouteSignal helps demo leads stay assigned, reminded, and followed up before callback gaps turn into lost opportunities.",
             "review_focus": "missed callback reminders",
             "next_gap_candidates": ["manual_tracking", "handoffs"],
@@ -61,6 +72,7 @@ PLAYBOOK: dict[str, Any] = {
         "manual_tracking": {
             "customer_language": ["spreadsheet tracking", "manual lists", "copying notes", "manual reminders"],
             "label": "manual tracking",
+            "customer_facing_phrase": "manual tracking",
             "definition": "The team tracks follow-up in spreadsheets, shared inboxes, manual notes, or manual reminders.",
             "causal_story": "Manual tracking makes the next step depend on memory and hand copying, so follow-up can slow down or disappear.",
             "evidence_positive": [
@@ -81,6 +93,9 @@ PLAYBOOK: dict[str, Any] = {
                 "tracking is handled",
             ],
             "diagnostic_questions": ["Does manual tracking or spreadsheet follow-up ever cause missed next steps?"],
+            "diagnostic_question_phrase": "Does manual tracking or spreadsheet follow-up ever cause missed next steps?",
+            "impact_question_phrase": "Is that causing missed next steps, or mostly extra tracking work?",
+            "pain_acknowledgement_phrase": "Got it, manual tracking is the issue.",
             "value_bridge": "RouteSignal makes follow-up ownership and reminders visible without relying on scattered manual tracking.",
             "review_focus": "manual follow-up tracking",
             "next_gap_candidates": ["callbacks", "handoffs"],
@@ -88,6 +103,7 @@ PLAYBOOK: dict[str, Any] = {
         "handoffs": {
             "customer_language": ["handoffs get messy", "owner unclear", "lost between teams"],
             "label": "handoffs",
+            "customer_facing_phrase": "handoffs",
             "definition": "A lead moves between people or teams and the next owner or next reply becomes unclear.",
             "causal_story": "When handoffs are unclear, a demo lead can sit between teams even though everyone thinks someone else owns it.",
             "evidence_positive": [
@@ -107,6 +123,9 @@ PLAYBOOK: dict[str, Any] = {
                 "handoffs are clean",
             ],
             "diagnostic_questions": ["Do handoffs ever get messy, or is ownership clear today?"],
+            "diagnostic_question_phrase": "Do handoffs ever get messy, or is ownership clear today?",
+            "impact_question_phrase": "Is that causing missed ownership, or mostly extra tracking work?",
+            "pain_acknowledgement_phrase": "Got it, handoffs are the concern.",
             "value_bridge": "RouteSignal helps each demo lead keep a clear owner and next reply.",
             "review_focus": "handoff ownership",
             "next_gap_candidates": ["callbacks", "manual_tracking"],
@@ -114,6 +133,7 @@ PLAYBOOK: dict[str, Any] = {
         "routing": {
             "customer_language": ["lead routing unclear", "assignment delay", "wrong owner"],
             "label": "lead routing",
+            "customer_facing_phrase": "lead routing",
             "definition": "An inbound demo lead needs the right owner quickly.",
             "causal_story": "If assignment is delayed or unclear, follow-up starts late even when the lead is high intent.",
             "evidence_positive": [
@@ -126,6 +146,9 @@ PLAYBOOK: dict[str, Any] = {
             ],
             "evidence_negative": ["routing is fine", "assignment is fine", "owners are clear"],
             "diagnostic_questions": ["Does lead routing ever delay who owns the next reply?"],
+            "diagnostic_question_phrase": "Does lead routing ever delay who owns the next reply?",
+            "impact_question_phrase": "Is that causing delayed assignment, or mostly a general concern?",
+            "pain_acknowledgement_phrase": "Got it, lead routing is the issue.",
             "value_bridge": "RouteSignal helps each demo lead get a clear owner faster.",
             "review_focus": "lead assignment flow",
             "next_gap_candidates": ["callbacks", "handoffs"],
@@ -134,11 +157,15 @@ PLAYBOOK: dict[str, Any] = {
         "reminders": {
             "customer_language": ["missed reminders", "forgot to follow up", "manual reminders"],
             "label": "reminders",
+            "customer_facing_phrase": "reminders",
             "definition": "Follow-up needs reminders so tasks do not sit.",
             "causal_story": "Without clear reminders, a lead can wait even when the team knows follow-up is needed.",
             "evidence_positive": ["missed reminders", "reminders get missed", "forgot to follow up", "manual reminders"],
             "evidence_negative": ["reminders are fine", "reminders are handled", "reminders are clean"],
             "diagnostic_questions": ["Do follow-up reminders ever get missed, or is that handled?"],
+            "diagnostic_question_phrase": "Do follow-up reminders ever get missed, or is that handled?",
+            "impact_question_phrase": "Is that causing missed follow-up, or mostly a general reminder concern?",
+            "pain_acknowledgement_phrase": "Got it, reminders are the issue.",
             "value_bridge": "RouteSignal keeps reminder ownership visible around demo follow-up.",
             "review_focus": "follow-up reminder flow",
             "next_gap_candidates": ["callbacks", "manual_tracking"],
@@ -146,6 +173,7 @@ PLAYBOOK: dict[str, Any] = {
         "duplicates": {
             "customer_language": ["duplicate demo requests", "two people reply", "ownership split"],
             "label": "duplicate handling",
+            "customer_facing_phrase": "duplicate handling",
             "definition": "Duplicate demo leads split ownership or create confusion.",
             "causal_story": "Duplicate requests can make two people reply or make each person think the other owns the lead.",
             "evidence_positive": [
@@ -158,6 +186,9 @@ PLAYBOOK: dict[str, Any] = {
             ],
             "evidence_negative": ["duplicates are fine", "duplicates are handled", "duplicate handling is fine"],
             "diagnostic_questions": ["Do duplicate demo requests ever confuse ownership?"],
+            "diagnostic_question_phrase": "Do duplicate demo requests ever confuse ownership?",
+            "impact_question_phrase": "Is that causing ownership confusion, or mostly a general process concern?",
+            "pain_acknowledgement_phrase": "Got it, duplicate handling is the issue.",
             "value_bridge": "RouteSignal can review whether duplicate requests are creating ownership confusion.",
             "review_focus": "duplicate lead ownership",
             "next_gap_candidates": ["routing", "handoffs"],
@@ -165,6 +196,7 @@ PLAYBOOK: dict[str, Any] = {
         "visibility": {
             "customer_language": ["manager cannot see status", "hard to see who followed up", "no visibility"],
             "label": "manager visibility",
+            "customer_facing_phrase": "manager visibility",
             "definition": "A manager cannot quickly see which lead still needs follow-up.",
             "causal_story": "When status is not visible, managers ask around and issues surface only after follow-up is already late.",
             "evidence_positive": [
@@ -179,6 +211,9 @@ PLAYBOOK: dict[str, Any] = {
             ],
             "evidence_negative": ["visibility is fine", "manager visibility is fine", "status is visible"],
             "diagnostic_questions": ["Can managers see which demo leads still need follow-up?"],
+            "diagnostic_question_phrase": "Can managers see which demo leads still need follow-up?",
+            "impact_question_phrase": "Is that causing missed follow-up, or mostly extra status checking?",
+            "pain_acknowledgement_phrase": "Got it, manager visibility is the issue.",
             "value_bridge": "RouteSignal makes follow-up status and owner visibility easier to review.",
             "review_focus": "manager follow-up visibility",
             "next_gap_candidates": ["callbacks", "handoffs"],
@@ -186,6 +221,7 @@ PLAYBOOK: dict[str, Any] = {
         "right_person": {
             "customer_language": ["wrong person", "operations handles that", "Sarah handles that"],
             "label": "right person",
+            "customer_facing_phrase": "right person",
             "definition": "The current speaker is not the right owner for the workflow decision.",
             "causal_story": "If the call is with the wrong person, the useful outcome is a safe handoff target, not a product review pressure step.",
             "evidence_positive": [
@@ -199,6 +235,9 @@ PLAYBOOK: dict[str, Any] = {
             ],
             "evidence_negative": ["i handle that", "i am the right person"],
             "diagnostic_questions": ["Who is the right person or team for demo follow-up?"],
+            "diagnostic_question_phrase": "Who is the right person or team for demo follow-up?",
+            "impact_question_phrase": "Is the right-person issue blocking follow-up, or should I leave it here?",
+            "pain_acknowledgement_phrase": "Got it, right-person routing is the issue.",
             "value_bridge": "Northstar can follow up with the right person instead of pushing the wrong contact.",
             "review_focus": "right-person handoff",
             "next_gap_candidates": [],

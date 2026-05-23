@@ -16,6 +16,8 @@
   },
   "campaign_id": "synthetic-automotive-service-review",
   "client_name": "Synthetic Automotive Service",
+  "primary_customer_issue_phrase": "repair timing",
+  "short_relevance_question": "Is repair timing causing any issue right now?",
   "core_diagnostic_gaps": [
     "vehicle_issue",
     "repair_timing",
@@ -25,8 +27,10 @@
     "repair_timing": {
       "campaign_gap_id": "repair_timing",
       "causal_story": "If repair timing is unresolved, a service advisor may need to review urgency and appointment options.",
+      "customer_facing_phrase": "repair timing",
       "customer_language": [
         "repair timing",
+        "repair timings",
         "schedule",
         "urgent repair"
       ],
@@ -40,9 +44,12 @@
       ],
       "evidence_positive": [
         "repair timing is a problem",
+        "repair timings are usually pretty long",
         "schedule is the issue"
       ],
       "label": "repair timing",
+      "impact_question_phrase": "Is it causing delays someone should review, or mostly a general frustration?",
+      "pain_acknowledgement_phrase": "Got it, repair timing is the issue.",
       "next_gap_candidates": [
         "vehicle_issue",
         "warranty_or_estimate"
@@ -62,6 +69,7 @@
     "vehicle_issue": {
       "campaign_gap_id": "vehicle_issue",
       "causal_story": "If the vehicle issue is unclear, safety and repair details should be handled by service staff.",
+      "customer_facing_phrase": "vehicle issue",
       "customer_language": [
         "vehicle issue",
         "car problem",
@@ -80,6 +88,8 @@
         "inspection is needed"
       ],
       "label": "vehicle issue",
+      "impact_question_phrase": "Is the vehicle issue active now, or more something to have checked later?",
+      "pain_acknowledgement_phrase": "Got it, vehicle issue is the concern.",
       "next_gap_candidates": [
         "repair_timing",
         "warranty_or_estimate"
@@ -98,6 +108,7 @@
     "warranty_or_estimate": {
       "campaign_gap_id": "warranty_or_estimate",
       "causal_story": "If warranty or estimate expectations are unclear, advisor review is needed before claims or prices are discussed.",
+      "customer_facing_phrase": "warranty or estimate",
       "customer_language": [
         "warranty",
         "estimate",
@@ -116,6 +127,8 @@
         "estimate is unclear"
       ],
       "label": "warranty or estimate",
+      "impact_question_phrase": "Is warranty or estimate uncertainty creating a real blocker, or mostly a question for later?",
+      "pain_acknowledgement_phrase": "Got it, warranty or estimate is the concern.",
       "next_gap_candidates": [
         "vehicle_issue",
         "repair_timing"

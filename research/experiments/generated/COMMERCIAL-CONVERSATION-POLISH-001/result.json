@@ -158,7 +158,7 @@
         "buyer_move_id": "product_detail_question",
         "confirmed_gaps": [],
         "recognition_reason": "product_detail_question_phrase",
-        "response": "Sure. This call is only to check whether a short human review is useful around the vehicle issue. The quick question is whether that area is causing friction now.",
+        "response": "Sure. This call is only to check whether a short human review is useful around repair timing. The quick question is whether that area is causing friction now.",
         "response_shape_enforced_category": "direct_product_value_questions",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -183,7 +183,7 @@
         "buyer_move_id": "why_should_i_care",
         "confirmed_gaps": [],
         "recognition_reason": "why_should_i_care_phrase",
-        "response": "Fair question. Only if vehicle issue is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
+        "response": "Fair question. Only if repair timing is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
         "response_shape_enforced_category": "direct_product_value_questions",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -663,7 +663,7 @@
         "buyer_move_id": "slow_down_or_speak_faster",
         "confirmed_gaps": [],
         "recognition_reason": "speech_rate_request_phrase",
-        "response": "Sure, I'll slow down. I'm checking one thing: is inbound demo follow-up slipping now?",
+        "response": "Sure, I'll slow down. I'm checking one thing: is inbound demo follow-up slipping right now?",
         "response_shape_enforced_category": "social_conversation_management",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -715,7 +715,7 @@
         "buyer_move_id": "language_mismatch",
         "confirmed_gaps": [],
         "recognition_reason": "language_mismatch_phrase",
-        "response": "Understood. I'll use simple English. One question: is inbound demo follow-up slipping now?",
+        "response": "Understood. I'll use simple English. One question: is inbound demo follow-up slipping right now?",
         "response_shape_enforced_category": "social_conversation_management",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -740,7 +740,7 @@
         "buyer_move_id": "slow_down_or_speak_faster",
         "confirmed_gaps": [],
         "recognition_reason": "speech_rate_request_phrase",
-        "response": "Sure, I'll slow down. I'm checking one thing: is premium pressure causing an issue now?",
+        "response": "Sure, I'll slow down. I'm checking one thing: is premium pressure causing any issue right now?",
         "response_shape_enforced_category": "social_conversation_management",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -792,7 +792,7 @@
         "buyer_move_id": "language_mismatch",
         "confirmed_gaps": [],
         "recognition_reason": "language_mismatch_phrase",
-        "response": "Understood. I'll use simple English. One question: is premium pressure causing an issue now?",
+        "response": "Understood. I'll use simple English. One question: is premium pressure causing any issue right now?",
         "response_shape_enforced_category": "social_conversation_management",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -817,7 +817,7 @@
         "buyer_move_id": "slow_down_or_speak_faster",
         "confirmed_gaps": [],
         "recognition_reason": "speech_rate_request_phrase",
-        "response": "Sure, I'll slow down. I'm checking one thing: is manual work causing an issue now?",
+        "response": "Sure, I'll slow down. I'm checking one thing: is manual work causing any issue right now?",
         "response_shape_enforced_category": "social_conversation_management",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -869,7 +869,7 @@
         "buyer_move_id": "language_mismatch",
         "confirmed_gaps": [],
         "recognition_reason": "language_mismatch_phrase",
-        "response": "Understood. I'll use simple English. One question: is manual work causing an issue now?",
+        "response": "Understood. I'll use simple English. One question: is manual work causing any issue right now?",
         "response_shape_enforced_category": "social_conversation_management",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -894,7 +894,7 @@
         "buyer_move_id": "slow_down_or_speak_faster",
         "confirmed_gaps": [],
         "recognition_reason": "speech_rate_request_phrase",
-        "response": "Sure, I'll slow down. I'm checking one thing: is repair timing causing an issue now?",
+        "response": "Sure, I'll slow down. I'm checking one thing: is repair timing causing any issue right now?",
         "response_shape_enforced_category": "social_conversation_management",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -946,7 +946,7 @@
         "buyer_move_id": "language_mismatch",
         "confirmed_gaps": [],
         "recognition_reason": "language_mismatch_phrase",
-        "response": "Understood. I'll use simple English. One question: is repair timing causing an issue now?",
+        "response": "Understood. I'll use simple English. One question: is repair timing causing any issue right now?",
         "response_shape_enforced_category": "social_conversation_management",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -971,7 +971,7 @@
         "buyer_move_id": "slow_down_or_speak_faster",
         "confirmed_gaps": [],
         "recognition_reason": "speech_rate_request_phrase",
-        "response": "Sure, I'll slow down. I'm checking one thing: is the service need active now?",
+        "response": "Sure, I'll slow down. I'm checking one thing: is the service need active right now?",
         "response_shape_enforced_category": "social_conversation_management",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -1023,7 +1023,7 @@
         "buyer_move_id": "language_mismatch",
         "confirmed_gaps": [],
         "recognition_reason": "language_mismatch_phrase",
-        "response": "Understood. I'll use simple English. One question: is the service need active now?",
+        "response": "Understood. I'll use simple English. One question: is the service need active right now?",
         "response_shape_enforced_category": "social_conversation_management",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {

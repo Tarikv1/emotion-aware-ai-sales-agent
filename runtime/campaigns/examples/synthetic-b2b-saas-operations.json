@@ -16,6 +16,8 @@
   },
   "campaign_id": "synthetic-b2b-saas-operations",
   "client_name": "Synthetic SaaS Operations",
+  "primary_customer_issue_phrase": "manual work",
+  "short_relevance_question": "Is manual work causing any issue right now?",
   "core_diagnostic_gaps": [
     "manual_work",
     "integration_risk",
@@ -25,6 +27,7 @@
     "integration_risk": {
       "campaign_gap_id": "integration_risk",
       "causal_story": "If integration or security fit is uncertain, a technical human should review before any implementation claim is made.",
+      "customer_facing_phrase": "integration",
       "customer_language": [
         "integration",
         "security",
@@ -43,6 +46,8 @@
         "security is a concern"
       ],
       "label": "integration risk",
+      "impact_question_phrase": "Is integration creating a real blocker now, or more something to check later?",
+      "pain_acknowledgement_phrase": "Got it, integration is the concern.",
       "next_gap_candidates": [
         "manual_work",
         "visibility_gap"
@@ -61,6 +66,7 @@
     "manual_work": {
       "campaign_gap_id": "manual_work",
       "causal_story": "If manual work stays unresolved, the team may keep losing time to repeated operational steps.",
+      "customer_facing_phrase": "manual work",
       "customer_language": [
         "manual work",
         "manual workflow",
@@ -84,6 +90,8 @@
         "manual workflow is a problem"
       ],
       "label": "manual work",
+      "impact_question_phrase": "Is it mainly slowing the team down or creating extra admin?",
+      "pain_acknowledgement_phrase": "Got it, manual work is the issue.",
       "next_gap_candidates": [
         "integration_risk",
         "visibility_gap"
@@ -102,6 +110,7 @@
     "visibility_gap": {
       "campaign_gap_id": "visibility_gap",
       "causal_story": "If workflow status is hard to see, ownership and handoff decisions may stay unclear.",
+      "customer_facing_phrase": "visibility issue",
       "customer_language": [
         "visibility",
         "status",
@@ -120,6 +129,8 @@
         "visibility is the problem"
       ],
       "label": "visibility gap",
+      "impact_question_phrase": "Is visibility causing ownership confusion, or mostly a reporting concern?",
+      "pain_acknowledgement_phrase": "Got it, visibility is the issue.",
       "next_gap_candidates": [
         "manual_work",
         "integration_risk"

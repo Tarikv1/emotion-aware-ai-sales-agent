@@ -317,7 +317,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `who_are_you`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: are you a robot
-  - Agent: Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping now?
+  - Agent: Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `are_you_ai_or_robot`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -407,17 +407,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: slow down
-  - Agent: Sure, I'll slow down. I'm checking one thing: is inbound demo follow-up slipping now?
+  - Agent: Sure, I'll slow down. I'm checking one thing: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `slow_down_or_speak_faster`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: say that again
-  - Agent: Sure. Short version: I'm checking one thing: is inbound demo follow-up slipping now?
+  - Agent: Sure. Short version: I'm checking one thing: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `repeat_last_answer`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `4` buyer: I don't speak English well
-  - Agent: Understood. I'll use simple English. One question: is inbound demo follow-up slipping now?
+  - Agent: Understood. I'll use simple English. One question: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `language_mismatch`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -744,7 +744,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `who_are_you`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: are you a robot
-  - Agent: Yes, I'm an AI voice agent calling for Synthetic Insurance Agency. I'll keep it brief: is premium pressure causing an issue now?
+  - Agent: Yes, I'm an AI voice agent calling for Synthetic Insurance Agency. I'll keep it brief: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `are_you_ai_or_robot`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -834,17 +834,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: slow down
-  - Agent: Sure, I'll slow down. I'm checking one thing: is premium pressure causing an issue now?
+  - Agent: Sure, I'll slow down. I'm checking one thing: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `slow_down_or_speak_faster`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: say that again
-  - Agent: Sure. Short version: I'm checking one thing: is premium pressure causing an issue now?
+  - Agent: Sure. Short version: I'm checking one thing: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `repeat_last_answer`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `4` buyer: I don't speak English well
-  - Agent: Understood. I'll use simple English. One question: is premium pressure causing an issue now?
+  - Agent: Understood. I'll use simple English. One question: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `language_mismatch`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1041,7 +1041,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `tentative_gap_interest`; readiness: `low`; next action: `clarify_active_or_possible`
   - Warnings: `none`
 - Turn `4` buyer: it is active now
-  - Agent: Got it, integration is the issue. Is it causing a real impact now, or mostly a general concern?
+  - Agent: Got it, integration is the concern. Is integration creating a real blocker now, or more something to check later?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
@@ -1171,7 +1171,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `who_are_you`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: are you a robot
-  - Agent: Yes, I'm an AI voice agent calling for Synthetic SaaS Operations. I'll keep it brief: is manual work causing an issue now?
+  - Agent: Yes, I'm an AI voice agent calling for Synthetic SaaS Operations. I'll keep it brief: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `are_you_ai_or_robot`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1261,17 +1261,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: slow down
-  - Agent: Sure, I'll slow down. I'm checking one thing: is manual work causing an issue now?
+  - Agent: Sure, I'll slow down. I'm checking one thing: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `slow_down_or_speak_faster`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: say that again
-  - Agent: Sure. Short version: I'm checking one thing: is manual work causing an issue now?
+  - Agent: Sure. Short version: I'm checking one thing: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `repeat_last_answer`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `4` buyer: I don't speak English well
-  - Agent: Understood. I'll use simple English. One question: is manual work causing an issue now?
+  - Agent: Understood. I'll use simple English. One question: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `language_mismatch`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1503,12 +1503,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: what does your product do
-  - Agent: Sure. This call is only to check whether a short human review is useful around the vehicle issue. The quick question is whether that area is causing friction now.
+  - Agent: Sure. This call is only to check whether a short human review is useful around repair timing. The quick question is whether that area is causing friction now.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `product_detail_question`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: why should I care
-  - Agent: Fair question. Only if vehicle issue is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?
+  - Agent: Fair question. Only if repair timing is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_should_i_care`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1593,12 +1593,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: who are you
-  - Agent: Sure, I'm Maya calling on behalf of Synthetic Automotive Service about a short human review around the vehicle issue.
+  - Agent: Sure, I'm Maya calling on behalf of Synthetic Automotive Service about a short human review around repair timing.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `who_are_you`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: are you a robot
-  - Agent: Yes, I'm an AI voice agent calling for Synthetic Automotive Service. I'll keep it brief: is repair timing causing an issue now?
+  - Agent: Yes, I'm an AI voice agent calling for Synthetic Automotive Service. I'll keep it brief: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `are_you_ai_or_robot`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1688,17 +1688,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: slow down
-  - Agent: Sure, I'll slow down. I'm checking one thing: is repair timing causing an issue now?
+  - Agent: Sure, I'll slow down. I'm checking one thing: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `slow_down_or_speak_faster`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: say that again
-  - Agent: Sure. Short version: I'm checking one thing: is repair timing causing an issue now?
+  - Agent: Sure. Short version: I'm checking one thing: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `repeat_last_answer`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `4` buyer: I don't speak English well
-  - Agent: Understood. I'll use simple English. One question: is repair timing causing an issue now?
+  - Agent: Understood. I'll use simple English. One question: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `language_mismatch`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -2025,7 +2025,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `who_are_you`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: are you a robot
-  - Agent: Yes, I'm an AI voice agent calling for Synthetic Home Services. I'll keep it brief: is the service need active now?
+  - Agent: Yes, I'm an AI voice agent calling for Synthetic Home Services. I'll keep it brief: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `are_you_ai_or_robot`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -2115,17 +2115,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: slow down
-  - Agent: Sure, I'll slow down. I'm checking one thing: is the service need active now?
+  - Agent: Sure, I'll slow down. I'm checking one thing: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `slow_down_or_speak_faster`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: say that again
-  - Agent: Sure. Short version: I'm checking one thing: is the service need active now?
+  - Agent: Sure. Short version: I'm checking one thing: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `repeat_last_answer`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `4` buyer: I don't speak English well
-  - Agent: Understood. I'll use simple English. One question: is the service need active now?
+  - Agent: Understood. I'll use simple English. One question: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `language_mismatch`; readiness: `none`; next action: `none`
   - Warnings: `none`

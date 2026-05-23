@@ -185,7 +185,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "busy_or_distracted_phrase",
-        "response": "Understood. I'll keep it to one yes-or-no: is inbound demo follow-up slipping now?",
+        "response": "Understood. I'll keep it to one yes-or-no: is inbound demo follow-up slipping right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -308,7 +308,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "busy_or_distracted_phrase",
-        "response": "Understood. I'll keep it to one question: is inbound demo follow-up slipping now?",
+        "response": "Understood. I'll keep it to one question: is inbound demo follow-up slipping right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -472,7 +472,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "prior_bad_experience_or_distrust_phrase",
-        "response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is inbound demo follow-up slipping now?",
+        "response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is inbound demo follow-up slipping right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -923,7 +923,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Understood. I won't pull this into the printer issue; the quick check here: is inbound demo follow-up slipping now?",
+        "response": "Understood. I won't pull this into the printer issue; the quick check here: is inbound demo follow-up slipping right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -964,7 +964,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "No problem. I won't make this a long call. The only relevant check: is inbound demo follow-up slipping now?",
+        "response": "No problem. I won't make this a long call. The only relevant check: is inbound demo follow-up slipping right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -1292,7 +1292,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "busy_or_distracted_phrase",
-        "response": "Understood. I'll keep it to one yes-or-no: is premium pressure causing an issue now?",
+        "response": "Understood. I'll keep it to one yes-or-no: is premium pressure causing any issue right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -1415,7 +1415,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "busy_or_distracted_phrase",
-        "response": "Understood. I'll keep it to one question: is premium pressure causing an issue now?",
+        "response": "Understood. I'll keep it to one question: is premium pressure causing any issue right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -1579,7 +1579,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "prior_bad_experience_or_distrust_phrase",
-        "response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is premium pressure causing an issue now?",
+        "response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is premium pressure causing any issue right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2030,7 +2030,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Understood. I won't pull this into the printer issue; the quick check here: is premium pressure causing an issue now?",
+        "response": "Understood. I won't pull this into the printer issue; the quick check here: is premium pressure causing any issue right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2071,7 +2071,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "No problem. I won't make this a long call. The only relevant check: is premium pressure causing an issue now?",
+        "response": "No problem. I won't make this a long call. The only relevant check: is premium pressure causing any issue right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2399,7 +2399,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "busy_or_distracted_phrase",
-        "response": "Understood. I'll keep it to one yes-or-no: is manual work causing an issue now?",
+        "response": "Understood. I'll keep it to one yes-or-no: is manual work causing any issue right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2522,7 +2522,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "busy_or_distracted_phrase",
-        "response": "Understood. I'll keep it to one question: is manual work causing an issue now?",
+        "response": "Understood. I'll keep it to one question: is manual work causing any issue right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2686,7 +2686,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "prior_bad_experience_or_distrust_phrase",
-        "response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is manual work causing an issue now?",
+        "response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is manual work causing any issue right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3137,7 +3137,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Understood. I won't pull this into the printer issue; the quick check here: is manual work causing an issue now?",
+        "response": "Understood. I won't pull this into the printer issue; the quick check here: is manual work causing any issue right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3178,7 +3178,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "No problem. I won't make this a long call. The only relevant check: is manual work causing an issue now?",
+        "response": "No problem. I won't make this a long call. The only relevant check: is manual work causing any issue right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3506,7 +3506,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "busy_or_distracted_phrase",
-        "response": "Understood. I'll keep it to one yes-or-no: is repair timing causing an issue now?",
+        "response": "Understood. I'll keep it to one yes-or-no: is repair timing causing any issue right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3629,7 +3629,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "busy_or_distracted_phrase",
-        "response": "Understood. I'll keep it to one question: is repair timing causing an issue now?",
+        "response": "Understood. I'll keep it to one question: is repair timing causing any issue right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3793,7 +3793,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "prior_bad_experience_or_distrust_phrase",
-        "response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is repair timing causing an issue now?",
+        "response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is repair timing causing any issue right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4244,7 +4244,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Understood. I won't pull this into the printer issue; the quick check here: is repair timing causing an issue now?",
+        "response": "Understood. I won't pull this into the printer issue; the quick check here: is repair timing causing any issue right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4285,7 +4285,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "No problem. I won't make this a long call. The only relevant check: is repair timing causing an issue now?",
+        "response": "No problem. I won't make this a long call. The only relevant check: is repair timing causing any issue right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4613,7 +4613,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "busy_or_distracted_phrase",
-        "response": "Understood. I'll keep it to one yes-or-no: is the service need active now?",
+        "response": "Understood. I'll keep it to one yes-or-no: is the service need active right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4736,7 +4736,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "busy_or_distracted_phrase",
-        "response": "Understood. I'll keep it to one question: is the service need active now?",
+        "response": "Understood. I'll keep it to one question: is the service need active right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4900,7 +4900,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "prior_bad_experience_or_distrust_phrase",
-        "response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is the service need active now?",
+        "response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is the service need active right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -5351,7 +5351,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Understood. I won't pull this into the printer issue; the quick check here: is the service need active now?",
+        "response": "Understood. I won't pull this into the printer issue; the quick check here: is the service need active right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -5392,7 +5392,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "No problem. I won't make this a long call. The only relevant check: is the service need active now?",
+        "response": "No problem. I won't make this a long call. The only relevant check: is the service need active right now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {

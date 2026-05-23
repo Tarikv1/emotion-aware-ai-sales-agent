@@ -50,7 +50,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -588,7 +588,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -1239,7 +1239,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -1994,7 +1994,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -2641,7 +2641,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -3282,7 +3282,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -3820,7 +3820,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -4471,7 +4471,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -5226,7 +5226,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -5873,7 +5873,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -6472,7 +6472,7 @@
         "integration_risk"
       ],
       "failures": [],
-      "final_response": "Got it, integration is the issue. Is it causing a real impact now, or mostly a general concern?",
+      "final_response": "Got it, integration is the concern. Is integration creating a real blocker now, or more something to check later?",
       "passed": true,
       "scenario": "tentative_active_confirmation",
       "semantic": "no_contextual_semantic",
@@ -6514,7 +6514,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -6805,7 +6805,7 @@
           "confirmed_gaps": [
             "integration_risk"
           ],
-          "final_response": "Got it, integration is the issue. Is it causing a real impact now, or mostly a general concern?",
+          "final_response": "Got it, integration is the concern. Is integration creating a real blocker now, or more something to check later?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -7052,7 +7052,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -7343,7 +7343,7 @@
           "confirmed_gaps": [
             "integration_risk"
           ],
-          "final_response": "Got it, integration is the issue. Is it causing a real impact now, or mostly a general concern?",
+          "final_response": "Got it, integration is the concern. Is integration creating a real blocker now, or more something to check later?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -7703,7 +7703,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -7994,7 +7994,7 @@
           "confirmed_gaps": [
             "integration_risk"
           ],
-          "final_response": "Got it, integration is the issue. Is it causing a real impact now, or mostly a general concern?",
+          "final_response": "Got it, integration is the concern. Is integration creating a real blocker now, or more something to check later?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -8458,7 +8458,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -8749,7 +8749,7 @@
           "confirmed_gaps": [
             "integration_risk"
           ],
-          "final_response": "Got it, integration is the issue. Is it causing a real impact now, or mostly a general concern?",
+          "final_response": "Got it, integration is the concern. Is integration creating a real blocker now, or more something to check later?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -9105,7 +9105,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -9746,7 +9746,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -10284,7 +10284,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -10935,7 +10935,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -11690,7 +11690,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -12337,7 +12337,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -12978,7 +12978,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -13516,7 +13516,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -14167,7 +14167,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -14922,7 +14922,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -15569,7 +15569,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {

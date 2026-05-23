@@ -102,25 +102,25 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: how are you
-  - Agent: I'm good, thanks. I'll keep this quick: is inbound demo follow-up slipping now?
+  - Agent: I'm good, thanks. I'll keep this quick: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `3` buyer: busy day huh
-  - Agent: Okay, thanks. I'll keep this quick: is inbound demo follow-up slipping now?
+  - Agent: Okay, thanks. I'll keep this quick: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `4` buyer: haha okay
-  - Agent: Okay, thanks. I'll keep this quick: is inbound demo follow-up slipping now?
+  - Agent: Okay, thanks. I'll keep this quick: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `5` buyer: nice weather
-  - Agent: Okay, thanks. I'll keep this quick: is inbound demo follow-up slipping now?
+  - Agent: Okay, thanks. I'll keep this quick: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
@@ -147,7 +147,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: I'm cooking dinner
-  - Agent: Understood. I'll keep it to one yes-or-no: is inbound demo follow-up slipping now?
+  - Agent: Understood. I'll keep it to one yes-or-no: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `busy_or_distracted`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -289,7 +289,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: last company like this wasted my time
-  - Agent: Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is inbound demo follow-up slipping now?
+  - Agent: Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `prior_bad_experience_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -301,7 +301,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `4` buyer: salespeople always say that
-  - Agent: Fair. Then I should be specific, not pitchy: is inbound demo follow-up slipping now?
+  - Agent: Fair. Then I should be specific, not pitchy: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `prior_bad_experience_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -481,19 +481,19 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `3` buyer: we are also replacing the office printer
-  - Agent: Understood. I won't pull this into the printer issue; the quick check here: is inbound demo follow-up slipping now?
+  - Agent: Understood. I won't pull this into the printer issue; the quick check here: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `irrelevant_off_topic_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `4` buyer: our unrelated software keeps freezing
-  - Agent: Got it. That sounds separate from this call. The relevant check here: is inbound demo follow-up slipping now?
+  - Agent: Got it. That sounds separate from this call. The relevant check here: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `irrelevant_off_topic_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `5` buyer: anyway I have a long list of errands
-  - Agent: No problem. I won't make this a long call. The only relevant check: is inbound demo follow-up slipping now?
+  - Agent: No problem. I won't make this a long call. The only relevant check: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `irrelevant_off_topic_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -608,7 +608,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: I'm between meetings
-  - Agent: Understood, I will keep it tight: is inbound demo follow-up slipping now?
+  - Agent: Understood, I will keep it tight: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `workplace_interruption`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -653,25 +653,25 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: how are you
-  - Agent: I'm good, thanks. I'll keep this quick: is premium pressure causing an issue now?
+  - Agent: I'm good, thanks. I'll keep this quick: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `3` buyer: busy day huh
-  - Agent: Okay, thanks. I'll keep this quick: is premium pressure causing an issue now?
+  - Agent: Okay, thanks. I'll keep this quick: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `4` buyer: haha okay
-  - Agent: Okay, thanks. I'll keep this quick: is premium pressure causing an issue now?
+  - Agent: Okay, thanks. I'll keep this quick: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `5` buyer: nice weather
-  - Agent: Okay, thanks. I'll keep this quick: is premium pressure causing an issue now?
+  - Agent: Okay, thanks. I'll keep this quick: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
@@ -698,7 +698,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: I'm cooking dinner
-  - Agent: Understood. I'll keep it to one yes-or-no: is premium pressure causing an issue now?
+  - Agent: Understood. I'll keep it to one yes-or-no: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `busy_or_distracted`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -840,7 +840,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: last company like this wasted my time
-  - Agent: Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is premium pressure causing an issue now?
+  - Agent: Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `prior_bad_experience_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -852,7 +852,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `4` buyer: salespeople always say that
-  - Agent: Fair. Then I should be specific, not pitchy: is premium pressure causing an issue now?
+  - Agent: Fair. Then I should be specific, not pitchy: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `prior_bad_experience_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -1032,19 +1032,19 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `3` buyer: we are also replacing the office printer
-  - Agent: Understood. I won't pull this into the printer issue; the quick check here: is premium pressure causing an issue now?
+  - Agent: Understood. I won't pull this into the printer issue; the quick check here: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `irrelevant_off_topic_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `4` buyer: our unrelated software keeps freezing
-  - Agent: Got it. That sounds separate from this call. The relevant check here: is premium pressure causing an issue now?
+  - Agent: Got it. That sounds separate from this call. The relevant check here: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `irrelevant_off_topic_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `5` buyer: anyway I have a long list of errands
-  - Agent: No problem. I won't make this a long call. The only relevant check: is premium pressure causing an issue now?
+  - Agent: No problem. I won't make this a long call. The only relevant check: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `irrelevant_off_topic_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -1159,7 +1159,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: I'm between meetings
-  - Agent: Understood, I will keep it tight: is premium pressure causing an issue now?
+  - Agent: Understood, I will keep it tight: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `workplace_interruption`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -1204,25 +1204,25 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: how are you
-  - Agent: I'm good, thanks. I'll keep this quick: is manual work causing an issue now?
+  - Agent: I'm good, thanks. I'll keep this quick: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `3` buyer: busy day huh
-  - Agent: Okay, thanks. I'll keep this quick: is manual work causing an issue now?
+  - Agent: Okay, thanks. I'll keep this quick: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `4` buyer: haha okay
-  - Agent: Okay, thanks. I'll keep this quick: is manual work causing an issue now?
+  - Agent: Okay, thanks. I'll keep this quick: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `5` buyer: nice weather
-  - Agent: Okay, thanks. I'll keep this quick: is manual work causing an issue now?
+  - Agent: Okay, thanks. I'll keep this quick: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
@@ -1249,7 +1249,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: I'm cooking dinner
-  - Agent: Understood. I'll keep it to one yes-or-no: is manual work causing an issue now?
+  - Agent: Understood. I'll keep it to one yes-or-no: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `busy_or_distracted`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -1391,7 +1391,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: last company like this wasted my time
-  - Agent: Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is manual work causing an issue now?
+  - Agent: Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `prior_bad_experience_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -1403,7 +1403,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `4` buyer: salespeople always say that
-  - Agent: Fair. Then I should be specific, not pitchy: is manual work causing an issue now?
+  - Agent: Fair. Then I should be specific, not pitchy: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `prior_bad_experience_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -1583,19 +1583,19 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `3` buyer: we are also replacing the office printer
-  - Agent: Understood. I won't pull this into the printer issue; the quick check here: is manual work causing an issue now?
+  - Agent: Understood. I won't pull this into the printer issue; the quick check here: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `irrelevant_off_topic_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `4` buyer: our unrelated software keeps freezing
-  - Agent: Got it. That sounds separate from this call. The relevant check here: is manual work causing an issue now?
+  - Agent: Got it. That sounds separate from this call. The relevant check here: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `irrelevant_off_topic_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `5` buyer: anyway I have a long list of errands
-  - Agent: No problem. I won't make this a long call. The only relevant check: is manual work causing an issue now?
+  - Agent: No problem. I won't make this a long call. The only relevant check: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `irrelevant_off_topic_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -1710,7 +1710,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: I'm between meetings
-  - Agent: Understood, I will keep it tight: is manual work causing an issue now?
+  - Agent: Understood, I will keep it tight: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `workplace_interruption`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -1755,25 +1755,25 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: how are you
-  - Agent: I'm good, thanks. I'll keep this quick: is repair timing causing an issue now?
+  - Agent: I'm good, thanks. I'll keep this quick: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `3` buyer: busy day huh
-  - Agent: Okay, thanks. I'll keep this quick: is repair timing causing an issue now?
+  - Agent: Okay, thanks. I'll keep this quick: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `4` buyer: haha okay
-  - Agent: Okay, thanks. I'll keep this quick: is repair timing causing an issue now?
+  - Agent: Okay, thanks. I'll keep this quick: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `5` buyer: nice weather
-  - Agent: Okay, thanks. I'll keep this quick: is repair timing causing an issue now?
+  - Agent: Okay, thanks. I'll keep this quick: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
@@ -1800,7 +1800,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: I'm cooking dinner
-  - Agent: Understood. I'll keep it to one yes-or-no: is repair timing causing an issue now?
+  - Agent: Understood. I'll keep it to one yes-or-no: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `busy_or_distracted`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -1942,7 +1942,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: last company like this wasted my time
-  - Agent: Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is repair timing causing an issue now?
+  - Agent: Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `prior_bad_experience_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -1954,7 +1954,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `4` buyer: salespeople always say that
-  - Agent: Fair. Then I should be specific, not pitchy: is repair timing causing an issue now?
+  - Agent: Fair. Then I should be specific, not pitchy: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `prior_bad_experience_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -2134,19 +2134,19 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `3` buyer: we are also replacing the office printer
-  - Agent: Understood. I won't pull this into the printer issue; the quick check here: is repair timing causing an issue now?
+  - Agent: Understood. I won't pull this into the printer issue; the quick check here: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `irrelevant_off_topic_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `4` buyer: our unrelated software keeps freezing
-  - Agent: Got it. That sounds separate from this call. The relevant check here: is repair timing causing an issue now?
+  - Agent: Got it. That sounds separate from this call. The relevant check here: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `irrelevant_off_topic_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `5` buyer: anyway I have a long list of errands
-  - Agent: No problem. I won't make this a long call. The only relevant check: is repair timing causing an issue now?
+  - Agent: No problem. I won't make this a long call. The only relevant check: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `irrelevant_off_topic_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -2261,7 +2261,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: I'm between meetings
-  - Agent: Understood, I will keep it tight: is repair timing causing an issue now?
+  - Agent: Understood, I will keep it tight: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `workplace_interruption`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -2306,25 +2306,25 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: how are you
-  - Agent: I'm good, thanks. I'll keep this quick: is the service need active now?
+  - Agent: I'm good, thanks. I'll keep this quick: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `3` buyer: busy day huh
-  - Agent: Okay, thanks. I'll keep this quick: is the service need active now?
+  - Agent: Okay, thanks. I'll keep this quick: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `4` buyer: haha okay
-  - Agent: Okay, thanks. I'll keep this quick: is the service need active now?
+  - Agent: Okay, thanks. I'll keep this quick: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `5` buyer: nice weather
-  - Agent: Okay, thanks. I'll keep this quick: is the service need active now?
+  - Agent: Okay, thanks. I'll keep this quick: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `small_talk`; category: `social_conversation_management`; readiness: `none`
   - Warnings: `none`
@@ -2351,7 +2351,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: I'm cooking dinner
-  - Agent: Understood. I'll keep it to one yes-or-no: is the service need active now?
+  - Agent: Understood. I'll keep it to one yes-or-no: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `busy_or_distracted`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -2493,7 +2493,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: last company like this wasted my time
-  - Agent: Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is the service need active now?
+  - Agent: Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `prior_bad_experience_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -2505,7 +2505,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `4` buyer: salespeople always say that
-  - Agent: Fair. Then I should be specific, not pitchy: is the service need active now?
+  - Agent: Fair. Then I should be specific, not pitchy: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `prior_bad_experience_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -2685,19 +2685,19 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `3` buyer: we are also replacing the office printer
-  - Agent: Understood. I won't pull this into the printer issue; the quick check here: is the service need active now?
+  - Agent: Understood. I won't pull this into the printer issue; the quick check here: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `irrelevant_off_topic_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `4` buyer: our unrelated software keeps freezing
-  - Agent: Got it. That sounds separate from this call. The relevant check here: is the service need active now?
+  - Agent: Got it. That sounds separate from this call. The relevant check here: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `irrelevant_off_topic_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `5` buyer: anyway I have a long list of errands
-  - Agent: No problem. I won't make this a long call. The only relevant check: is the service need active now?
+  - Agent: No problem. I won't make this a long call. The only relevant check: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `irrelevant_off_topic_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -2812,7 +2812,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `2` buyer: I'm between meetings
-  - Agent: Understood, I will keep it tight: is the service need active now?
+  - Agent: Understood, I will keep it tight: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `workplace_interruption`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`

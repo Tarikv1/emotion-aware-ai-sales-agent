@@ -71,6 +71,10 @@ def _campaign_context() -> dict[str, Any]:
         "objective": str(source_context.get("objective") or "appointment_setting"),
         "human_followup_owner": str(source_context.get("human_followup_owner") or "Northstar"),
         "appointment_target": "short workflow review",
+        "primary_customer_issue_phrase": str(source_context.get("primary_customer_issue_phrase") or ""),
+        "short_relevance_question": str(source_context.get("short_relevance_question") or ""),
+        "campaign_purpose_phrase": str(source_context.get("campaign_purpose_phrase") or ""),
+        "product_detail_answer": str(source_context.get("product_detail_answer") or ""),
         "allowed_claims": [],
         "blocked_claims": list(source_context.get("forbidden") or []),
     }
@@ -114,9 +118,16 @@ def _adapt_generic_gap(gap_id: str, source: dict[str, Any], vertical_record: dic
         for pain_id in universal_pain_dimensions
         if pain_id in set(vertical_record.get("common_pain_dimensions") or [])
     ]
+    diagnostic_questions = _string_list(source.get("diagnostic_questions"))
     return {
         "campaign_gap_id": str(source.get("campaign_gap_id") or gap_id),
         "label": str(source.get("label") or gap_id),
+        "customer_facing_phrase": str(
+            source.get("customer_facing_phrase")
+            or source.get("customer_facing_gap_phrase")
+            or source.get("label")
+            or gap_id
+        ),
         "universal_pain_dimensions": universal_pain_dimensions,
         "qualification_dimensions": _string_list(source.get("qualification_dimensions")),
         "vertical_pain_dimensions": vertical_pain_dimensions,
@@ -125,8 +136,15 @@ def _adapt_generic_gap(gap_id: str, source: dict[str, Any], vertical_record: dic
         "customer_language": _string_list(source.get("customer_language")),
         "evidence_positive": _string_list(source.get("evidence_positive")),
         "evidence_negative": _string_list(source.get("evidence_negative")),
-        "diagnostic_questions": _string_list(source.get("diagnostic_questions")),
+        "diagnostic_questions": diagnostic_questions,
+        "diagnostic_question_phrase": str(
+            source.get("diagnostic_question_phrase")
+            or (diagnostic_questions[0] if diagnostic_questions else "")
+        ),
+        "impact_question_phrase": str(source.get("impact_question_phrase") or ""),
+        "pain_acknowledgement_phrase": str(source.get("pain_acknowledgement_phrase") or ""),
         "value_bridge": str(source.get("value_bridge") or ""),
+        "value_bridge_phrase": str(source.get("value_bridge_phrase") or source.get("value_bridge") or ""),
         "review_focus": source.get("review_focus"),
         "next_gap_candidates": _string_list(source.get("next_gap_candidates")),
     }
@@ -145,6 +163,7 @@ def _adapt_gap(gap_id: str) -> dict[str, Any]:
     return {
         "campaign_gap_id": gap_id,
         "label": str(source.get("label") or gap_id),
+        "customer_facing_phrase": str(source.get("customer_facing_phrase") or source.get("label") or gap_id),
         "universal_pain_dimensions": universal_pain_dimensions,
         "qualification_dimensions": list(mapping.get("qualification_dimensions") or []),
         "vertical_pain_dimensions": vertical_pain_dimensions,
@@ -154,7 +173,11 @@ def _adapt_gap(gap_id: str) -> dict[str, Any]:
         "evidence_positive": list(source.get("evidence_positive") or []),
         "evidence_negative": list(source.get("evidence_negative") or []),
         "diagnostic_questions": list(source.get("diagnostic_questions") or []),
+        "diagnostic_question_phrase": str(source.get("diagnostic_question_phrase") or routesignal_playbook.diagnostic_question(gap_id)),
+        "impact_question_phrase": str(source.get("impact_question_phrase") or ""),
+        "pain_acknowledgement_phrase": str(source.get("pain_acknowledgement_phrase") or ""),
         "value_bridge": str(source.get("value_bridge") or ""),
+        "value_bridge_phrase": str(source.get("value_bridge_phrase") or source.get("value_bridge") or ""),
         "review_focus": source.get("review_focus"),
         "next_gap_candidates": list(source.get("next_gap_candidates") or []),
     }
@@ -215,6 +238,10 @@ def _resolve_generic_campaign_playbook(campaign: dict[str, Any]) -> dict[str, An
         ),
         "client_name": str(campaign.get("client_name") or "Generic Campaign Client"),
         "objective": str(campaign.get("objective") or "appointment_setting"),
+        "primary_customer_issue_phrase": str(campaign.get("primary_customer_issue_phrase") or ""),
+        "short_relevance_question": str(campaign.get("short_relevance_question") or ""),
+        "campaign_purpose_phrase": str(campaign.get("campaign_purpose_phrase") or ""),
+        "product_detail_answer": str(campaign.get("product_detail_answer") or ""),
         "human_followup_owner": str(
             campaign.get("human_followup_owner")
             or campaign.get("human_handoff_role")

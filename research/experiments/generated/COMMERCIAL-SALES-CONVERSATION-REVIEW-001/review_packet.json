@@ -141,7 +141,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -830,7 +830,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -1519,7 +1519,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -2332,7 +2332,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -3151,7 +3151,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -3960,7 +3960,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -4161,13 +4161,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping now?",
+          "final_response": "Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 22,
+          "response_word_count": 23,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -4897,7 +4897,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -5706,7 +5706,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -5783,13 +5783,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure, I'll slow down. I'm checking one thing: is inbound demo follow-up slipping now?",
+          "final_response": "Sure, I'll slow down. I'm checking one thing: is inbound demo follow-up slipping right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 15,
+          "response_word_count": 16,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -5904,13 +5904,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure. Short version: I'm checking one thing: is inbound demo follow-up slipping now?",
+          "final_response": "Sure. Short version: I'm checking one thing: is inbound demo follow-up slipping right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 14,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -6029,13 +6029,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Understood. I'll use simple English. One question: is inbound demo follow-up slipping now?",
+          "final_response": "Understood. I'll use simple English. One question: is inbound demo follow-up slipping right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 14,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -6386,7 +6386,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -7065,7 +7065,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -7423,8 +7423,8 @@
             "buyer_move_category": "trust_identity_privacy_consent",
             "buyer_move_id": "stop_request",
             "callback_capture_required": false,
-            "confirmed_gap_id": "callbacks",
-            "confirmed_gap_phrase": "callbacks",
+            "confirmed_gap_id": "",
+            "confirmed_gap_phrase": "inbound demo follow-up slipping",
             "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
@@ -7479,7 +7479,7 @@
             "safe_to_continue": true,
             "sales_progression_stage": "none",
             "schema_version": 1,
-            "selected_gap": "callbacks",
+            "selected_gap": "",
             "sensitive_context_detected": false,
             "serious_bad_timing_detected": false,
             "should_offer_later_or_stop": false,
@@ -7617,7 +7617,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -8306,7 +8306,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -8995,7 +8995,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -9808,7 +9808,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -10627,7 +10627,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -10994,7 +10994,7 @@
             "buyer_move_category": "objections",
             "buyer_move_id": "price_or_budget_objection",
             "callback_capture_required": false,
-            "confirmed_gap_id": "premium_or_budget",
+            "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
             "contact_capture_required": false,
             "conversation_stage": "diagnostic",
@@ -11051,7 +11051,7 @@
             "safe_to_continue": true,
             "sales_progression_stage": "none",
             "schema_version": 1,
-            "selected_gap": "premium_or_budget",
+            "selected_gap": "",
             "sensitive_context_detected": false,
             "serious_bad_timing_detected": false,
             "should_offer_later_or_stop": false,
@@ -11436,7 +11436,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -11637,13 +11637,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Yes, I'm an AI voice agent calling for Synthetic Insurance Agency. I'll keep it brief: is premium pressure causing an issue now?",
+          "final_response": "Yes, I'm an AI voice agent calling for Synthetic Insurance Agency. I'll keep it brief: is premium pressure causing any issue right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 22,
+          "response_word_count": 23,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -12373,7 +12373,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -13182,7 +13182,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -13259,13 +13259,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure, I'll slow down. I'm checking one thing: is premium pressure causing an issue now?",
+          "final_response": "Sure, I'll slow down. I'm checking one thing: is premium pressure causing any issue right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 15,
+          "response_word_count": 16,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -13380,13 +13380,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure. Short version: I'm checking one thing: is premium pressure causing an issue now?",
+          "final_response": "Sure. Short version: I'm checking one thing: is premium pressure causing any issue right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 14,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -13505,13 +13505,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Understood. I'll use simple English. One question: is premium pressure causing an issue now?",
+          "final_response": "Understood. I'll use simple English. One question: is premium pressure causing any issue right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 14,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -13862,7 +13862,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -14541,7 +14541,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "premium pressure",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -15093,7 +15093,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -15782,7 +15782,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -16471,7 +16471,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -16795,13 +16795,13 @@
           "confirmed_gaps": [
             "integration_risk"
           ],
-          "final_response": "Got it, integration is the issue. Is it causing a real impact now, or mostly a general concern?",
+          "final_response": "Got it, integration is the concern. Is integration creating a real blocker now, or more something to check later?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_implication_question",
           "question_count": 1,
-          "response_word_count": 18,
+          "response_word_count": 19,
           "sales_progression_stage": "pain_confirmed_needs_implication",
           "selected_action": {
             "source": "universal_response_shape"
@@ -17284,7 +17284,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -18103,7 +18103,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -18912,7 +18912,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -19113,13 +19113,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Yes, I'm an AI voice agent calling for Synthetic SaaS Operations. I'll keep it brief: is manual work causing an issue now?",
+          "final_response": "Yes, I'm an AI voice agent calling for Synthetic SaaS Operations. I'll keep it brief: is manual work causing any issue right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 22,
+          "response_word_count": 23,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -19849,7 +19849,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -20658,7 +20658,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -20735,13 +20735,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure, I'll slow down. I'm checking one thing: is manual work causing an issue now?",
+          "final_response": "Sure, I'll slow down. I'm checking one thing: is manual work causing any issue right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 15,
+          "response_word_count": 16,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -20856,13 +20856,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure. Short version: I'm checking one thing: is manual work causing an issue now?",
+          "final_response": "Sure. Short version: I'm checking one thing: is manual work causing any issue right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 14,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -20981,13 +20981,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Understood. I'll use simple English. One question: is manual work causing an issue now?",
+          "final_response": "Understood. I'll use simple English. One question: is manual work causing any issue right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 14,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -21338,7 +21338,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -22017,7 +22017,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "manual work",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -22569,7 +22569,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -23258,7 +23258,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -23947,7 +23947,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -24760,7 +24760,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -24837,13 +24837,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure. This call is only to check whether a short human review is useful around the vehicle issue. The quick question is whether that area is causing friction now.",
+          "final_response": "Sure. This call is only to check whether a short human review is useful around repair timing. The quick question is whether that area is causing friction now.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 29,
+          "response_word_count": 28,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -24962,7 +24962,7 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Fair question. Only if vehicle issue is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
+          "final_response": "Fair question. Only if repair timing is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
@@ -25008,8 +25008,8 @@
             "buyer_move_category": "product_value_scope",
             "buyer_move_id": "why_should_i_care",
             "callback_capture_required": false,
-            "confirmed_gap_id": "vehicle_issue",
-            "confirmed_gap_phrase": "vehicle issue",
+            "confirmed_gap_id": "",
+            "confirmed_gap_phrase": "repair timing",
             "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
@@ -25065,7 +25065,7 @@
             "safe_to_continue": true,
             "sales_progression_stage": "none",
             "schema_version": 1,
-            "selected_gap": "vehicle_issue",
+            "selected_gap": "",
             "sensitive_context_detected": false,
             "serious_bad_timing_detected": false,
             "should_offer_later_or_stop": false,
@@ -25579,7 +25579,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -26388,7 +26388,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -26465,13 +26465,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure, I'm Maya calling on behalf of Synthetic Automotive Service about a short human review around the vehicle issue.",
+          "final_response": "Sure, I'm Maya calling on behalf of Synthetic Automotive Service about a short human review around repair timing.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 19,
+          "response_word_count": 18,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -26589,13 +26589,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Yes, I'm an AI voice agent calling for Synthetic Automotive Service. I'll keep it brief: is repair timing causing an issue now?",
+          "final_response": "Yes, I'm an AI voice agent calling for Synthetic Automotive Service. I'll keep it brief: is repair timing causing any issue right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 22,
+          "response_word_count": 23,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -27325,7 +27325,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -28134,7 +28134,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -28211,13 +28211,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure, I'll slow down. I'm checking one thing: is repair timing causing an issue now?",
+          "final_response": "Sure, I'll slow down. I'm checking one thing: is repair timing causing any issue right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 15,
+          "response_word_count": 16,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -28332,13 +28332,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure. Short version: I'm checking one thing: is repair timing causing an issue now?",
+          "final_response": "Sure. Short version: I'm checking one thing: is repair timing causing any issue right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 14,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -28457,13 +28457,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Understood. I'll use simple English. One question: is repair timing causing an issue now?",
+          "final_response": "Understood. I'll use simple English. One question: is repair timing causing any issue right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 14,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -28814,7 +28814,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -29493,7 +29493,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "repair timing",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -30045,7 +30045,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -30734,7 +30734,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -31423,7 +31423,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -32236,7 +32236,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -33055,7 +33055,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -33546,7 +33546,7 @@
             "buyer_move_category": "objections",
             "buyer_move_id": "no_authority_or_needs_approval",
             "callback_capture_required": false,
-            "confirmed_gap_id": "service_need",
+            "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
             "contact_capture_required": false,
             "conversation_stage": "diagnostic",
@@ -33602,7 +33602,7 @@
             "safe_to_continue": true,
             "sales_progression_stage": "none",
             "schema_version": 1,
-            "selected_gap": "service_need",
+            "selected_gap": "",
             "sensitive_context_detected": false,
             "serious_bad_timing_detected": false,
             "should_offer_later_or_stop": false,
@@ -33864,7 +33864,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -34065,13 +34065,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Yes, I'm an AI voice agent calling for Synthetic Home Services. I'll keep it brief: is the service need active now?",
+          "final_response": "Yes, I'm an AI voice agent calling for Synthetic Home Services. I'll keep it brief: is the service need active right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 21,
+          "response_word_count": 22,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -34801,7 +34801,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -35610,7 +35610,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -35687,13 +35687,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure, I'll slow down. I'm checking one thing: is the service need active now?",
+          "final_response": "Sure, I'll slow down. I'm checking one thing: is the service need active right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 14,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -35808,13 +35808,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure. Short version: I'm checking one thing: is the service need active now?",
+          "final_response": "Sure. Short version: I'm checking one thing: is the service need active right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -35933,13 +35933,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Understood. I'll use simple English. One question: is the service need active now?",
+          "final_response": "Understood. I'll use simple English. One question: is the service need active right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 13,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -36290,7 +36290,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -36969,7 +36969,7 @@
             "buyer_move_id": "confusion_not_clear",
             "callback_capture_required": false,
             "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "service need",
+            "confirmed_gap_phrase": "",
             "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
@@ -37403,7 +37403,7 @@
       ]
     }
   ],
-  "generated_at": "2026-05-23T15:06:52.648698+00:00",
+  "generated_at": "2026-05-23T15:59:45.414467+00:00",
   "mechanical_warning_counts": {},
   "most_concerning_conversations_by_mechanical_signals_only": [
     {
@@ -37543,128 +37543,14 @@
   "turn_count": 275,
   "universalization_drift_findings": [
     {
-      "classification": "actual_architecture_drift",
-      "evidence": [
-        "synthetic-insurance-review",
-        "synthetic-b2b-saas-operations",
-        "synthetic-automotive-service-review",
-        "synthetic-home-services-estimate"
-      ],
+      "classification": "acceptable_test_fixture_only",
+      "evidence": [],
       "file": "runtime/core/universal_conversation_policy_runtime.py",
-      "id": "UDR-001",
-      "line_numbers": [
-        535,
-        537,
-        539,
-        541
-      ],
-      "recommended_follow_up": "Move primary diagnostic phrase selection to campaign config/adapters.",
-      "risk": "Generic sales behavior can become coupled to fixture ids instead of campaign facts.",
-      "title": "Universal runtime branches on synthetic fixture campaign ids."
-    },
-    {
-      "classification": "temporary_bridge_should_move_to_campaign_config",
-      "evidence": [
-        "vertical == \"insurance\"",
-        "vertical == \"b2b_saas\"",
-        "vertical == \"automotive_service\"",
-        "vertical == \"home_services\""
-      ],
-      "file": "runtime/core/universal_conversation_policy_runtime.py",
-      "id": "UDR-002",
-      "line_numbers": [
-        535,
-        537,
-        539,
-        541
-      ],
-      "recommended_follow_up": "Use campaign fact slots such as core_diagnostic_gaps, gap_label, and gap_value_bridge.",
-      "risk": "A new campaign in the same vertical may inherit the wrong primary pain hypothesis.",
-      "title": "Universal runtime maps verticals directly to customer-facing gap phrases."
-    },
-    {
-      "classification": "temporary_bridge_should_move_to_campaign_config",
-      "evidence": [
-        "inbound demo follow-up slipping",
-        "callbacks are the issue",
-        "handoffs are the concern",
-        "follow-up slipping is the issue"
-      ],
-      "file": "runtime/core/universal_conversation_policy_runtime.py",
-      "id": "UDR-003",
-      "line_numbers": [
-        346,
-        347,
-        464,
-        465,
-        477,
-        478,
-        486,
-        534,
-        951,
-        953,
-        954,
-        955
-      ],
-      "recommended_follow_up": "Keep RouteSignal-specific wording in RouteSignal campaign/playbook facts.",
-      "risk": "RouteSignal preservation logic can leak into generic universal response shape code.",
-      "title": "RouteSignal-specific phrasing appears inside universal response rendering."
-    },
-    {
-      "classification": "temporary_bridge_should_move_to_campaign_config",
-      "evidence": [
-        "premium pressure",
-        "manual work",
-        "repair timing",
-        "service need",
-        "coverage fit",
-        "scheduling"
-      ],
-      "file": "runtime/core/universal_conversation_policy_runtime.py",
-      "id": "UDR-004",
-      "line_numbers": [
-        261,
-        348,
-        349,
-        350,
-        352,
-        353,
-        354,
-        454,
-        536,
-        538,
-        540,
-        542,
-        652,
-        655,
-        656,
-        679,
-        681,
-        684,
-        687,
-        688,
-        731,
-        732,
-        734,
-        735,
-        736,
-        938,
-        939,
-        940,
-        941,
-        942,
-        943,
-        944,
-        945,
-        946,
-        947,
-        948,
-        949,
-        1561
-      ],
-      "recommended_follow_up": "Expose the preferred customer-facing phrase per gap through campaign config.",
-      "risk": "Sales copy and primary pain language will require code changes instead of config changes.",
-      "title": "Customer-facing gap phrases are hardcoded in universal runtime helpers."
+      "id": "UDR-000",
+      "line_numbers": [],
+      "recommended_follow_up": "Re-run after next universal runtime behavior change.",
+      "risk": "None found by this limited scan.",
+      "title": "No fixture-specific universal runtime drift found by static scan."
     }
   ]
 }
