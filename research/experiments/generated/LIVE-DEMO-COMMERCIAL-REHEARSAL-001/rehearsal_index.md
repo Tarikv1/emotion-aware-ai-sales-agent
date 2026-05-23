@@ -3,424 +3,426 @@
 - Checkpoint: `LIVE-DEMO-COMMERCIAL-REHEARSAL-001`
 - Status: `ready_for_human_review`
 - Private input discovery count: `418`
+- Current-runtime-marked records: `0`
+- Unknown-version records: `418`
 - Rehearsal record count: `418`
 
 ## Records
-- `live-demo-commercial-rehearsal-001-0001`: campaign `campaign-prod-005-b2c-telecom`, turn `None`, flags `none`
-- `live-demo-commercial-rehearsal-001-0002`: campaign `campaign-prod-005-b2c-telecom`, turn `None`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0003`: campaign `campaign-prod-005-b2c-telecom`, turn `None`, flags `none`
-- `live-demo-commercial-rehearsal-001-0004`: campaign `campaign-prod-005-b2c-telecom`, turn `None`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0005`: campaign `campaign-prod-005-b2c-telecom`, turn `None`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0006`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0007`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0008`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0009`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0010`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0011`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0012`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0013`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0014`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0015`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0016`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0017`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0018`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0019`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0020`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0021`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0022`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0023`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0024`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0025`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0026`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0027`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0028`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0029`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0030`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0031`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0032`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0033`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0034`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0035`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0036`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0037`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0038`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0039`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0040`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0041`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0042`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0043`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0044`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0045`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0046`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0047`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0048`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0049`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0050`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0051`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0052`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `none`
-- `live-demo-commercial-rehearsal-001-0053`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0054`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `none`
-- `live-demo-commercial-rehearsal-001-0055`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0056`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0057`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0058`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0059`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0060`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0061`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0062`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0063`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0064`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0065`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0066`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0067`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0068`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0069`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0070`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0071`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0072`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0073`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0074`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0075`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0076`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0077`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0078`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0079`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0080`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0081`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0082`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0083`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0084`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0085`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0086`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0087`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0088`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0089`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0090`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0091`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0092`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0093`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0094`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0095`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0096`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0097`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0098`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0099`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0100`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0101`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0102`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0103`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0104`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `provider_audio_failed, audio_url_missing_when_provider_called`
-- `live-demo-commercial-rehearsal-001-0105`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0106`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0107`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0108`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0109`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0110`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0111`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0112`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0113`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0114`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0115`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0116`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `none`
-- `live-demo-commercial-rehearsal-001-0117`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `none`
-- `live-demo-commercial-rehearsal-001-0118`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0119`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0120`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0121`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0122`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0123`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0124`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0125`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0126`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0127`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0128`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0129`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0130`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0131`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `none`
-- `live-demo-commercial-rehearsal-001-0132`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `none`
-- `live-demo-commercial-rehearsal-001-0133`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0134`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0135`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0136`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0137`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0138`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0139`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0140`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0141`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0142`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0143`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0144`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0145`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0146`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0147`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0148`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0149`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0150`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0151`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `none`
-- `live-demo-commercial-rehearsal-001-0152`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0153`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0154`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0155`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0156`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0157`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0158`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0159`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0160`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0161`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0162`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0163`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0164`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0165`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0166`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0167`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0168`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0169`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0170`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0171`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0172`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0173`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0174`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0175`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0176`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0177`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0178`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0179`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0180`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0181`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0182`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0183`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0184`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0185`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0186`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0187`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0188`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0189`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0190`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0191`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0192`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0193`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0194`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0195`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0196`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0197`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0198`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0199`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0200`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0201`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0202`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0203`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0204`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0205`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `response_too_long_for_live_voice`
-- `live-demo-commercial-rehearsal-001-0206`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0207`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0208`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0209`: campaign `synthetic-insurance-review`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0210`: campaign `synthetic-insurance-review`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0211`: campaign `synthetic-insurance-review`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0212`: campaign `synthetic-insurance-review`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0213`: campaign `synthetic-insurance-review`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0214`: campaign `synthetic-insurance-review`, turn `6`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0215`: campaign `synthetic-insurance-review`, turn `7`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0216`: campaign `synthetic-insurance-review`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0217`: campaign `synthetic-automotive-service-review`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0218`: campaign `synthetic-healthcare-admin-review`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0219`: campaign `synthetic-insurance-review`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0220`: campaign `synthetic-insurance-review`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0221`: campaign `synthetic-insurance-review`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0222`: campaign `synthetic-insurance-review`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0223`: campaign `synthetic-insurance-review`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0224`: campaign `synthetic-insurance-review`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0225`: campaign `synthetic-insurance-review`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0226`: campaign `synthetic-insurance-review`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0227`: campaign `synthetic-insurance-review`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0228`: campaign `synthetic-insurance-review`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0229`: campaign `synthetic-insurance-review`, turn `3`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0230`: campaign `synthetic-insurance-review`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0231`: campaign `synthetic-insurance-review`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0232`: campaign `synthetic-insurance-review`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0233`: campaign `synthetic-automotive-service-review`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0234`: campaign `synthetic-automotive-service-review`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0235`: campaign `synthetic-automotive-service-review`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0236`: campaign `synthetic-automotive-service-review`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0237`: campaign `synthetic-automotive-service-review`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0238`: campaign `synthetic-automotive-service-review`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0239`: campaign `synthetic-automotive-service-review`, turn `7`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0240`: campaign `synthetic-automotive-service-review`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0241`: campaign `synthetic-insurance-review`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0242`: campaign `synthetic-insurance-review`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0243`: campaign `synthetic-insurance-review`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0244`: campaign `synthetic-insurance-review`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0245`: campaign `synthetic-insurance-review`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0246`: campaign `synthetic-insurance-review`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0247`: campaign `synthetic-insurance-review`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0248`: campaign `synthetic-insurance-review`, turn `6`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0249`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0250`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0251`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0252`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `response_too_long_for_live_voice`
-- `live-demo-commercial-rehearsal-001-0253`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0254`: campaign `synthetic-automotive-service-review`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0255`: campaign `synthetic-automotive-service-review`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0256`: campaign `synthetic-automotive-service-review`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0257`: campaign `synthetic-automotive-service-review`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0258`: campaign `synthetic-automotive-service-review`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0259`: campaign `synthetic-automotive-service-review`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0260`: campaign `synthetic-automotive-service-review`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0261`: campaign `synthetic-automotive-service-review`, turn `8`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0262`: campaign `campaign-prod-005-b2b-software`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0263`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0264`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0265`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0266`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0267`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0268`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0269`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0270`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0271`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `none`
-- `live-demo-commercial-rehearsal-001-0272`: campaign `campaign-prod-005-b2b-software`, turn `10`, flags `none`
-- `live-demo-commercial-rehearsal-001-0273`: campaign `campaign-prod-005-b2b-software`, turn `11`, flags `none`
-- `live-demo-commercial-rehearsal-001-0274`: campaign `campaign-prod-005-b2b-software`, turn `12`, flags `none`
-- `live-demo-commercial-rehearsal-001-0275`: campaign `campaign-prod-005-b2b-software`, turn `13`, flags `none`
-- `live-demo-commercial-rehearsal-001-0276`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0277`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0278`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0279`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0280`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0281`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0282`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0283`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0284`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0285`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0286`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `response_too_long_for_live_voice`
-- `live-demo-commercial-rehearsal-001-0287`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0288`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0289`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `none`
-- `live-demo-commercial-rehearsal-001-0290`: campaign `campaign-prod-005-b2b-software`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0291`: campaign `campaign-prod-005-b2b-software`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0292`: campaign `campaign-prod-005-b2b-software`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0293`: campaign `campaign-prod-005-b2b-software`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0294`: campaign `campaign-prod-005-b2b-software`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0295`: campaign `None`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0296`: campaign `campaign-prod-005-b2b-software`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0297`: campaign `campaign-prod-005-b2b-software`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0298`: campaign `campaign-prod-005-b2b-software`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0299`: campaign `None`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0300`: campaign `campaign-prod-005-b2b-software`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0301`: campaign `campaign-prod-005-b2b-software`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0302`: campaign `None`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0303`: campaign `campaign-prod-005-b2b-software`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0304`: campaign `campaign-prod-005-b2b-software`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0305`: campaign `None`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0306`: campaign `campaign-prod-005-b2b-software`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0307`: campaign `campaign-prod-005-b2b-software`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0308`: campaign `None`, turn `None`, flags `final_response_missing, tts_input_missing`
-- `live-demo-commercial-rehearsal-001-0309`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0310`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0311`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0312`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0313`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0314`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0315`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0316`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0317`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `repeated_response`
-- `live-demo-commercial-rehearsal-001-0318`: campaign `campaign-prod-005-b2b-software`, turn `10`, flags `none`
-- `live-demo-commercial-rehearsal-001-0319`: campaign `campaign-prod-005-b2b-software`, turn `11`, flags `none`
-- `live-demo-commercial-rehearsal-001-0320`: campaign `campaign-prod-005-b2b-software`, turn `12`, flags `none`
-- `live-demo-commercial-rehearsal-001-0321`: campaign `campaign-prod-005-b2b-software`, turn `13`, flags `none`
-- `live-demo-commercial-rehearsal-001-0322`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0323`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0324`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0325`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0326`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0327`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0328`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0329`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0330`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0331`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0332`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0333`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0334`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0335`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0336`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0337`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0338`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0339`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0340`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0341`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0342`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `none`
-- `live-demo-commercial-rehearsal-001-0343`: campaign `campaign-prod-005-b2b-software`, turn `10`, flags `none`
-- `live-demo-commercial-rehearsal-001-0344`: campaign `campaign-prod-005-b2b-software`, turn `11`, flags `none`
-- `live-demo-commercial-rehearsal-001-0345`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0346`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0347`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0348`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0349`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0350`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0351`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0352`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0353`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `none`
-- `live-demo-commercial-rehearsal-001-0354`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0355`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0356`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0357`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0358`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0359`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0360`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0361`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0362`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0363`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0364`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0365`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0366`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `none`
-- `live-demo-commercial-rehearsal-001-0367`: campaign `campaign-prod-005-b2b-software`, turn `10`, flags `none`
-- `live-demo-commercial-rehearsal-001-0368`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0369`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0370`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0371`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0372`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0373`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0374`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0375`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0376`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `none`
-- `live-demo-commercial-rehearsal-001-0377`: campaign `campaign-prod-005-b2b-software`, turn `10`, flags `none`
-- `live-demo-commercial-rehearsal-001-0378`: campaign `campaign-prod-005-b2b-software`, turn `11`, flags `none`
-- `live-demo-commercial-rehearsal-001-0379`: campaign `campaign-prod-005-b2b-software`, turn `12`, flags `none`
-- `live-demo-commercial-rehearsal-001-0380`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0381`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0382`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0383`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0384`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0385`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0386`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0387`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0388`: campaign `campaign-prod-005-b2b-software`, turn `9`, flags `none`
-- `live-demo-commercial-rehearsal-001-0389`: campaign `campaign-prod-005-b2b-software`, turn `10`, flags `none`
-- `live-demo-commercial-rehearsal-001-0390`: campaign `campaign-prod-005-b2b-software`, turn `11`, flags `none`
-- `live-demo-commercial-rehearsal-001-0391`: campaign `campaign-prod-005-b2b-software`, turn `12`, flags `none`
-- `live-demo-commercial-rehearsal-001-0392`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0393`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0394`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0395`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0396`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0397`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0398`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0399`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0400`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0401`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0402`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0403`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0404`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0405`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0406`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0407`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
-- `live-demo-commercial-rehearsal-001-0408`: campaign `campaign-prod-005-b2b-software`, turn `5`, flags `none`
-- `live-demo-commercial-rehearsal-001-0409`: campaign `campaign-prod-005-b2b-software`, turn `6`, flags `none`
-- `live-demo-commercial-rehearsal-001-0410`: campaign `campaign-prod-005-b2b-software`, turn `7`, flags `none`
-- `live-demo-commercial-rehearsal-001-0411`: campaign `campaign-prod-005-b2b-software`, turn `8`, flags `none`
-- `live-demo-commercial-rehearsal-001-0412`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0413`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0414`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `call_control_unexpected`
-- `live-demo-commercial-rehearsal-001-0415`: campaign `campaign-prod-005-b2b-software`, turn `1`, flags `none`
-- `live-demo-commercial-rehearsal-001-0416`: campaign `campaign-prod-005-b2b-software`, turn `2`, flags `none`
-- `live-demo-commercial-rehearsal-001-0417`: campaign `campaign-prod-005-b2b-software`, turn `3`, flags `none`
-- `live-demo-commercial-rehearsal-001-0418`: campaign `campaign-prod-005-b2b-software`, turn `4`, flags `none`
+- `live-demo-commercial-rehearsal-001-0001`: campaign `campaign-prod-005-b2c-telecom`, turn `None`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0002`: campaign `campaign-prod-005-b2c-telecom`, turn `None`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0003`: campaign `campaign-prod-005-b2c-telecom`, turn `None`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0004`: campaign `campaign-prod-005-b2c-telecom`, turn `None`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0005`: campaign `campaign-prod-005-b2c-telecom`, turn `None`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0006`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0007`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0008`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0009`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0010`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0011`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0012`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0013`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0014`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0015`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0016`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0017`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0018`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0019`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0020`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0021`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0022`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0023`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0024`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0025`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0026`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0027`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0028`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0029`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0030`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0031`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0032`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0033`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0034`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0035`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0036`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0037`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0038`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0039`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0040`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0041`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0042`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0043`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0044`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0045`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0046`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0047`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0048`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0049`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0050`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0051`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0052`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0053`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0054`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0055`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0056`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0057`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0058`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0059`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0060`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0061`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0062`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0063`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0064`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0065`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0066`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0067`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0068`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0069`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0070`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0071`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0072`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0073`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0074`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0075`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0076`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0077`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0078`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0079`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0080`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0081`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0082`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0083`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0084`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0085`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0086`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0087`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0088`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0089`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0090`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0091`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0092`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0093`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0094`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0095`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0096`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0097`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0098`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0099`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0100`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0101`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0102`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0103`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0104`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `provider_audio_failed, audio_url_missing_when_provider_called`
+- `live-demo-commercial-rehearsal-001-0105`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0106`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0107`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0108`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0109`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0110`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0111`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0112`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0113`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0114`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0115`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0116`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0117`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0118`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0119`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0120`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0121`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0122`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0123`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0124`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0125`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0126`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0127`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0128`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0129`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0130`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0131`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0132`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0133`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0134`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0135`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0136`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0137`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0138`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0139`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0140`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0141`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0142`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0143`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0144`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0145`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0146`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0147`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0148`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0149`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0150`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0151`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0152`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0153`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0154`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0155`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0156`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0157`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0158`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0159`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0160`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0161`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0162`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0163`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0164`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0165`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0166`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0167`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0168`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0169`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0170`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0171`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0172`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0173`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0174`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0175`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0176`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0177`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0178`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0179`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0180`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0181`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0182`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0183`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0184`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0185`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0186`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0187`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0188`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0189`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0190`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0191`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0192`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0193`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0194`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0195`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0196`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0197`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0198`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0199`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0200`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0201`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0202`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0203`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0204`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0205`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `response_too_long_for_live_voice`
+- `live-demo-commercial-rehearsal-001-0206`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0207`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0208`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0209`: campaign `synthetic-insurance-review`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0210`: campaign `synthetic-insurance-review`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0211`: campaign `synthetic-insurance-review`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0212`: campaign `synthetic-insurance-review`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0213`: campaign `synthetic-insurance-review`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0214`: campaign `synthetic-insurance-review`, turn `6`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0215`: campaign `synthetic-insurance-review`, turn `7`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0216`: campaign `synthetic-insurance-review`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0217`: campaign `synthetic-automotive-service-review`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0218`: campaign `synthetic-healthcare-admin-review`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0219`: campaign `synthetic-insurance-review`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0220`: campaign `synthetic-insurance-review`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0221`: campaign `synthetic-insurance-review`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0222`: campaign `synthetic-insurance-review`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0223`: campaign `synthetic-insurance-review`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0224`: campaign `synthetic-insurance-review`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0225`: campaign `synthetic-insurance-review`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0226`: campaign `synthetic-insurance-review`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0227`: campaign `synthetic-insurance-review`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0228`: campaign `synthetic-insurance-review`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0229`: campaign `synthetic-insurance-review`, turn `3`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0230`: campaign `synthetic-insurance-review`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0231`: campaign `synthetic-insurance-review`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0232`: campaign `synthetic-insurance-review`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0233`: campaign `synthetic-automotive-service-review`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0234`: campaign `synthetic-automotive-service-review`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0235`: campaign `synthetic-automotive-service-review`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0236`: campaign `synthetic-automotive-service-review`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0237`: campaign `synthetic-automotive-service-review`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0238`: campaign `synthetic-automotive-service-review`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0239`: campaign `synthetic-automotive-service-review`, turn `7`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0240`: campaign `synthetic-automotive-service-review`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0241`: campaign `synthetic-insurance-review`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0242`: campaign `synthetic-insurance-review`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0243`: campaign `synthetic-insurance-review`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0244`: campaign `synthetic-insurance-review`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0245`: campaign `synthetic-insurance-review`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0246`: campaign `synthetic-insurance-review`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0247`: campaign `synthetic-insurance-review`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0248`: campaign `synthetic-insurance-review`, turn `6`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0249`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0250`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0251`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0252`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `response_too_long_for_live_voice`
+- `live-demo-commercial-rehearsal-001-0253`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0254`: campaign `synthetic-automotive-service-review`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0255`: campaign `synthetic-automotive-service-review`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0256`: campaign `synthetic-automotive-service-review`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0257`: campaign `synthetic-automotive-service-review`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0258`: campaign `synthetic-automotive-service-review`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0259`: campaign `synthetic-automotive-service-review`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0260`: campaign `synthetic-automotive-service-review`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0261`: campaign `synthetic-automotive-service-review`, turn `8`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0262`: campaign `campaign-prod-005-b2b-software`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0263`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0264`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0265`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0266`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0267`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0268`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0269`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0270`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0271`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0272`: campaign `campaign-prod-005-b2b-software`, turn `10`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0273`: campaign `campaign-prod-005-b2b-software`, turn `11`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0274`: campaign `campaign-prod-005-b2b-software`, turn `12`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0275`: campaign `campaign-prod-005-b2b-software`, turn `13`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0276`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0277`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0278`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0279`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0280`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0281`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0282`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0283`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0284`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0285`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0286`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `response_too_long_for_live_voice`
+- `live-demo-commercial-rehearsal-001-0287`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0288`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0289`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0290`: campaign `campaign-prod-005-b2b-software`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0291`: campaign `campaign-prod-005-b2b-software`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0292`: campaign `campaign-prod-005-b2b-software`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0293`: campaign `campaign-prod-005-b2b-software`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0294`: campaign `campaign-prod-005-b2b-software`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0295`: campaign `None`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0296`: campaign `campaign-prod-005-b2b-software`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0297`: campaign `campaign-prod-005-b2b-software`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0298`: campaign `campaign-prod-005-b2b-software`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0299`: campaign `None`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0300`: campaign `campaign-prod-005-b2b-software`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0301`: campaign `campaign-prod-005-b2b-software`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0302`: campaign `None`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0303`: campaign `campaign-prod-005-b2b-software`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0304`: campaign `campaign-prod-005-b2b-software`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0305`: campaign `None`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0306`: campaign `campaign-prod-005-b2b-software`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0307`: campaign `campaign-prod-005-b2b-software`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0308`: campaign `None`, turn `None`, freshness `unknown_version_private_artifact`, flags `final_response_missing, tts_input_missing`
+- `live-demo-commercial-rehearsal-001-0309`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0310`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0311`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0312`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0313`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0314`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0315`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0316`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0317`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `repeated_response`
+- `live-demo-commercial-rehearsal-001-0318`: campaign `campaign-prod-005-b2b-software`, turn `10`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0319`: campaign `campaign-prod-005-b2b-software`, turn `11`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0320`: campaign `campaign-prod-005-b2b-software`, turn `12`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0321`: campaign `campaign-prod-005-b2b-software`, turn `13`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0322`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0323`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0324`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0325`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0326`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0327`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0328`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0329`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0330`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0331`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0332`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0333`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0334`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0335`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0336`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0337`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0338`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0339`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0340`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0341`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0342`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0343`: campaign `campaign-prod-005-b2b-software`, turn `10`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0344`: campaign `campaign-prod-005-b2b-software`, turn `11`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0345`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0346`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0347`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0348`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0349`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0350`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0351`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0352`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0353`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0354`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0355`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0356`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0357`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0358`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0359`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0360`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0361`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0362`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0363`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0364`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0365`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0366`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0367`: campaign `campaign-prod-005-b2b-software`, turn `10`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0368`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0369`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0370`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0371`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0372`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0373`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0374`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0375`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0376`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0377`: campaign `campaign-prod-005-b2b-software`, turn `10`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0378`: campaign `campaign-prod-005-b2b-software`, turn `11`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0379`: campaign `campaign-prod-005-b2b-software`, turn `12`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0380`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0381`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0382`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0383`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0384`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0385`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0386`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0387`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0388`: campaign `campaign-prod-005-b2b-software`, turn `9`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0389`: campaign `campaign-prod-005-b2b-software`, turn `10`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0390`: campaign `campaign-prod-005-b2b-software`, turn `11`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0391`: campaign `campaign-prod-005-b2b-software`, turn `12`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0392`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0393`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0394`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0395`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0396`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0397`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0398`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0399`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0400`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0401`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0402`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0403`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0404`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0405`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0406`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0407`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0408`: campaign `campaign-prod-005-b2b-software`, turn `5`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0409`: campaign `campaign-prod-005-b2b-software`, turn `6`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0410`: campaign `campaign-prod-005-b2b-software`, turn `7`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0411`: campaign `campaign-prod-005-b2b-software`, turn `8`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0412`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0413`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0414`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `call_control_unexpected`
+- `live-demo-commercial-rehearsal-001-0415`: campaign `campaign-prod-005-b2b-software`, turn `1`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0416`: campaign `campaign-prod-005-b2b-software`, turn `2`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0417`: campaign `campaign-prod-005-b2b-software`, turn `3`, freshness `unknown_version_private_artifact`, flags `none`
+- `live-demo-commercial-rehearsal-001-0418`: campaign `campaign-prod-005-b2b-software`, turn `4`, freshness `unknown_version_private_artifact`, flags `none`

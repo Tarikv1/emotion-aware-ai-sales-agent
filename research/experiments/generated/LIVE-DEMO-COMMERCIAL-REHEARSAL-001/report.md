@@ -8,6 +8,13 @@
 - Private JSON files discovered: `418`
 - Parsed rehearsal records: `418`
 - Unreadable private inputs: `0`
+- Current-runtime-marked records: `0`
+- Unknown-version records: `418`
+- Stale/legacy records: `0`
+- Current-only evidence available: `false`
+
+## Evidence Freshness Summary
+- `unknown_version_private_artifact`: `418`
 
 ## Rehearsal Record Count
 - Records available for human review: `418`
@@ -27,6 +34,11 @@
 - `repeated_response`: `28`
 - `response_too_long_for_live_voice`: `3`
 - `tts_input_missing`: `20`
+
+## Current-Only Filter
+- Default packet mode includes all archival private live-demo records.
+- Run `python scripts\generate_live_demo_commercial_rehearsal_packet_001.py --current-only` to include only records stamped with the current runtime metadata.
+- If current-runtime-marked records are `0`, current-only evidence is unavailable and a fresh rehearsal is needed.
 
 ## Top Concerning Rehearsal Records By Mechanical Signals Only
 - `live-demo-commercial-rehearsal-001-0104`: `2` flags (provider_audio_failed, audio_url_missing_when_provider_called)

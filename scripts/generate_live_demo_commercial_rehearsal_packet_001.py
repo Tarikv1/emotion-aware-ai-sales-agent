@@ -8,11 +8,13 @@ run TTS, invoke LLMs, send email, touch CRM, or open PROD-102.
 
 from __future__ import annotations
 
+import argparse
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 import hashlib
 import json
 import re
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -21,6 +23,8 @@ ROOT = Path(__file__).resolve().parents[1]
 CHECKPOINT_ID = "LIVE-DEMO-COMMERCIAL-REHEARSAL-001"
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
 PRIVATE_ROOT = ROOT / "data" / "private"
+RUNTIME_MANIFEST_PATH = ROOT / "runtime" / "runtime_manifest.json"
+UNIVERSAL_RUNTIME_PATH = ROOT / "runtime" / "core" / "universal_conversation_policy_runtime.py"
 
 PRIVATE_LIVE_DEMO_GLOBS = [
     "live-demo-001",
@@ -182,6 +186,60 @@ def sha256_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
+def git_head_short() -> tuple[str, str | None]:
+    try:
+        completed = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            timeout=2,
+            check=False,
+        )
+    except Exception as exc:  # noqa: BLE001 - evidence metadata must not fail generation.
+        return "git_unavailable", f"{type(exc).__name__}: {exc}"
+    value = completed.stdout.strip()
+    if completed.returncode != 0 or not value:
+        return "git_unavailable", completed.stderr.strip() or "git rev-parse failed"
+    return value, None
+
+
+def runtime_manifest_fingerprint() -> dict[str, Any]:
+    try:
+        raw = RUNTIME_MANIFEST_PATH.read_bytes()
+        parsed = json.loads(raw.decode("utf-8"))
+    except Exception as exc:  # noqa: BLE001 - evidence metadata must not fail generation.
+        return {
+            "runtime_manifest_hash": "unavailable",
+            "runtime_manifest_entry_count": None,
+            "runtime_manifest_unavailable_reason": f"{type(exc).__name__}: {exc}",
+        }
+    return {
+        "runtime_manifest_hash": sha256_bytes(raw),
+        "runtime_manifest_entry_count": len(parsed.get("runtime_entries") or []),
+        "runtime_manifest_unavailable_reason": None,
+    }
+
+
+def universal_policy_runtime_marker() -> str:
+    try:
+        source = UNIVERSAL_RUNTIME_PATH.read_text(encoding="utf-8")
+    except OSError:
+        return "unavailable"
+    match = re.search(r'POLICY_RUNTIME_ID\s*=\s*"([^"]+)"', source)
+    return match.group(1) if match else "unavailable"
+
+
+def current_runtime_reference() -> dict[str, Any]:
+    git_sha, git_reason = git_head_short()
+    return {
+        "git_head_short": git_sha,
+        "git_unavailable_reason": git_reason,
+        **runtime_manifest_fingerprint(),
+        "universal_policy_runtime_marker": universal_policy_runtime_marker(),
+    }
+
+
 def project_relative(path: Path) -> str:
     try:
         return str(path.resolve().relative_to(ROOT)).replace("\\", "/")
@@ -257,6 +315,57 @@ def load_private_json(path: Path) -> tuple[dict[str, Any] | None, str, str | Non
     return parsed, file_hash, None
 
 
+def iso_mtime(path: Path) -> str:
+    return datetime.fromtimestamp(path.stat().st_mtime, timezone.utc).isoformat()
+
+
+def packet_created_at(turn: dict[str, Any]) -> str | None:
+    for key in ("generated_at_utc", "generated_at", "created_at", "timestamp", "packet_created_at"):
+        value = turn.get(key)
+        if value:
+            return str(value)
+    runtime_metadata = turn.get("runtime_metadata") or {}
+    if isinstance(runtime_metadata, dict) and runtime_metadata.get("generated_at_utc"):
+        return str(runtime_metadata["generated_at_utc"])
+    return None
+
+
+def record_runtime_metadata(turn: dict[str, Any]) -> dict[str, Any]:
+    runtime_metadata = turn.get("runtime_metadata") or {}
+    if not isinstance(runtime_metadata, dict):
+        runtime_metadata = {}
+    return {
+        "git_head_short": turn.get("git_head_short") or runtime_metadata.get("git_head_short"),
+        "runtime_manifest_hash": turn.get("runtime_manifest_hash") or runtime_metadata.get("runtime_manifest_hash"),
+        "runtime_manifest_entry_count": turn.get("runtime_manifest_entry_count") or runtime_metadata.get("runtime_manifest_entry_count"),
+        "universal_policy_runtime_marker": turn.get("universal_policy_runtime_marker") or runtime_metadata.get("universal_policy_runtime_marker"),
+        "campaign_registry_schema_version": turn.get("campaign_registry_schema_version") or runtime_metadata.get("campaign_registry_schema_version"),
+        "generated_at_utc": turn.get("generated_at_utc") or runtime_metadata.get("generated_at_utc"),
+    }
+
+
+def freshness_classification(turn_metadata: dict[str, Any], current_reference: dict[str, Any]) -> tuple[str, bool, bool]:
+    marker_present = bool(
+        turn_metadata.get("git_head_short")
+        or turn_metadata.get("runtime_manifest_hash")
+        or turn_metadata.get("universal_policy_runtime_marker")
+    )
+    if not marker_present:
+        return "unknown_version_private_artifact", False, False
+    current_marker_present = (
+        turn_metadata.get("runtime_manifest_hash") == current_reference.get("runtime_manifest_hash")
+        and turn_metadata.get("universal_policy_runtime_marker") == current_reference.get("universal_policy_runtime_marker")
+    )
+    git_matches = (
+        turn_metadata.get("git_head_short")
+        and current_reference.get("git_head_short")
+        and turn_metadata.get("git_head_short") == current_reference.get("git_head_short")
+    )
+    if current_marker_present and git_matches:
+        return "current_runtime_marked", True, True
+    return "stale_pre_current_runtime_artifact", False, current_marker_present
+
+
 def transcript_metrics(turn: dict[str, Any]) -> dict[str, Any]:
     transcript = str(turn.get("transcript") or "")
     normalized = " ".join(transcript.split())
@@ -284,6 +393,7 @@ def select_universal_policy_frame(turn: dict[str, Any]) -> dict[str, Any]:
         "next_best_sales_action",
         "human_context_type",
         "rapport_response_shape_id",
+        "knowledge_id",
     ]
     return {key: frame.get(key) for key in allowed_keys if key in frame}
 
@@ -382,7 +492,14 @@ def mechanical_flags(turn: dict[str, Any], final_response: str, tts_input_text: 
     return sorted(set(flags), key=MECHANICAL_FLAGS.index)
 
 
-def record_from_turn(path: Path, turn: dict[str, Any], file_hash: str, seen_by_session: dict[str, set[str]], index: int) -> dict[str, Any]:
+def record_from_turn(
+    path: Path,
+    turn: dict[str, Any],
+    file_hash: str,
+    seen_by_session: dict[str, set[str]],
+    index: int,
+    current_reference: dict[str, Any],
+) -> dict[str, Any]:
     summary = turn.get("summary") or {}
     packet = turn.get("packet") or {}
     tts_delivery = packet.get("tts_delivery") if isinstance(packet, dict) else {}
@@ -399,11 +516,14 @@ def record_from_turn(path: Path, turn: dict[str, Any], file_hash: str, seen_by_s
     side_effects = observed_side_effect_flags(turn)
     selected_action = selected_action_summary(turn)
     universal_frame = select_universal_policy_frame(turn)
+    runtime_metadata = record_runtime_metadata(turn)
+    freshness, current_candidate, current_marker_present = freshness_classification(runtime_metadata, current_reference)
     record_id = f"live-demo-commercial-rehearsal-001-{index:04d}"
     return {
         "rehearsal_record_id": record_id,
         "checkpoint_id": CHECKPOINT_ID,
         "live_demo_id": turn.get("live_demo_id"),
+        "packet_created_at": packet_created_at(turn),
         "session_id_hash": sha256_text(session_id),
         "session_turn_index": turn.get("session_turn_index"),
         "campaign_id": turn.get("campaign_id"),
@@ -411,8 +531,18 @@ def record_from_turn(path: Path, turn: dict[str, Any], file_hash: str, seen_by_s
         "selected_campaign_metadata": selected_campaign_metadata(turn),
         "input_type": turn.get("input_type"),
         "mode": turn.get("mode"),
+        "private_source_file_mtime_utc": iso_mtime(path),
         "private_source_file_hash": file_hash,
         "private_source_file_relative_path": project_relative(path),
+        "git_commit": runtime_metadata.get("git_head_short"),
+        "runtime_manifest_hash": runtime_metadata.get("runtime_manifest_hash"),
+        "runtime_manifest_entry_count": runtime_metadata.get("runtime_manifest_entry_count"),
+        "runtime_checkpoint_id": turn.get("entrypoint_id") or turn.get("live_demo_id"),
+        "universal_policy_runtime_marker": runtime_metadata.get("universal_policy_runtime_marker"),
+        "campaign_registry_schema_version": runtime_metadata.get("campaign_registry_schema_version"),
+        "current_runtime_marker_present": current_marker_present,
+        "generator_seen_as_current_candidate": current_candidate,
+        "freshness_classification": freshness,
         **metrics,
         "final_response": final_response,
         "tts_input_text": tts_input_text,
@@ -423,6 +553,9 @@ def record_from_turn(path: Path, turn: dict[str, Any], file_hash: str, seen_by_s
         "target_gap": selected_action.get("target_gap") or universal_frame.get("target_gap"),
         "confirmed_gaps": universal_frame.get("confirmed_gaps") or nested_get(turn, "demo_conversation_memory", "active_gap_scope"),
         "universal_policy_frame_summary": universal_frame,
+        "universal_policy_knowledge_id": universal_frame.get("knowledge_id"),
+        "private_record_error_type": turn.get("error_type"),
+        "private_record_error": redact_public_text(turn.get("error") or turn.get("message") or ""),
         "asr_confidence": asr.get("confidence") if isinstance(asr, dict) else None,
         "asr_quality_gate": asr.get("quality_gate") if isinstance(asr, dict) else None,
         "audio_url_present": bool(turn.get("audio_url") or nested_get(packet, "tts_delivery", "audio_output_path")),
@@ -452,12 +585,13 @@ def record_from_turn(path: Path, turn: dict[str, Any], file_hash: str, seen_by_s
     }
 
 
-def build_packet() -> dict[str, Any]:
+def build_packet(current_only: bool = False) -> dict[str, Any]:
     files = discover_private_turn_files()
-    records: list[dict[str, Any]] = []
+    all_records: list[dict[str, Any]] = []
     unreadable: list[dict[str, str]] = []
     seen_hashes: set[str] = set()
     seen_by_session: dict[str, set[str]] = defaultdict(set)
+    current_reference = current_runtime_reference()
     for path in files:
         parsed, file_hash, error = load_private_json(path)
         if file_hash in seen_hashes:
@@ -472,22 +606,43 @@ def build_packet() -> dict[str, Any]:
                 }
             )
             continue
-        records.append(record_from_turn(path, parsed, file_hash, seen_by_session, len(records) + 1))
+        all_records.append(
+            record_from_turn(path, parsed, file_hash, seen_by_session, len(all_records) + 1, current_reference)
+        )
+    records = [
+        record
+        for record in all_records
+        if not current_only or record.get("freshness_classification") == "current_runtime_marked"
+    ]
     warning_counts = Counter()
     for record in records:
         warning_counts.update(record.get("mechanical_issue_flags") or [])
     campaigns = sorted({str(record.get("campaign_id") or "") for record in records if record.get("campaign_id")})
+    freshness_counts = Counter(str(record.get("freshness_classification") or "unknown") for record in all_records)
+    current_marked_count = freshness_counts.get("current_runtime_marked", 0)
+    unknown_version_count = freshness_counts.get("unknown_version_private_artifact", 0)
+    stale_version_count = freshness_counts.get("stale_pre_current_runtime_artifact", 0)
     packet_status = "ready_for_human_review" if records else "no_private_input_found"
+    if current_only and not records and all_records:
+        packet_status = "current_only_no_current_runtime_records"
     return {
         "checkpoint_id": CHECKPOINT_ID,
         "generated_at": utc_now(),
         "status": packet_status,
+        "current_only_mode": current_only,
+        "current_runtime_reference": current_reference,
         "private_input_discovery_count": len(files),
-        "private_turn_files_parsed": len(records),
+        "private_turn_files_parsed": len(all_records),
+        "records_included": len(records),
         "private_turn_files_unreadable": len(unreadable),
         "records": records,
         "unreadable_private_inputs": unreadable,
         "campaign_coverage_found": campaigns,
+        "freshness_counts": dict(sorted(freshness_counts.items())),
+        "current_runtime_marked_record_count": current_marked_count,
+        "unknown_version_record_count": unknown_version_count,
+        "stale_or_legacy_record_count": stale_version_count,
+        "current_only_evidence_available": current_marked_count > 0,
         "mechanical_issue_counts": dict(sorted(warning_counts.items())),
         "top_concerning_rehearsal_records_by_mechanical_signals_only": sorted(
             [
@@ -541,6 +696,8 @@ def render_index(packet: dict[str, Any]) -> str:
         f"- Checkpoint: `{CHECKPOINT_ID}`",
         f"- Status: `{packet['status']}`",
         f"- Private input discovery count: `{packet['private_input_discovery_count']}`",
+        f"- Current-runtime-marked records: `{packet['current_runtime_marked_record_count']}`",
+        f"- Unknown-version records: `{packet['unknown_version_record_count']}`",
         f"- Rehearsal record count: `{len(packet['records'])}`",
         "",
         "## Records",
@@ -550,7 +707,8 @@ def render_index(packet: dict[str, Any]) -> str:
     for record in packet["records"]:
         lines.append(
             f"- `{record['rehearsal_record_id']}`: campaign `{record.get('campaign_id')}`, "
-            f"turn `{record.get('session_turn_index')}`, flags `{', '.join(record.get('mechanical_issue_flags') or []) or 'none'}`"
+            f"turn `{record.get('session_turn_index')}`, freshness `{record.get('freshness_classification')}`, "
+            f"flags `{', '.join(record.get('mechanical_issue_flags') or []) or 'none'}`"
         )
     return "\n".join(lines) + "\n"
 
@@ -578,6 +736,13 @@ def render_report(packet: dict[str, Any], redaction: dict[str, Any]) -> str:
         f"- Private JSON files discovered: `{packet['private_input_discovery_count']}`",
         f"- Parsed rehearsal records: `{len(packet['records'])}`",
         f"- Unreadable private inputs: `{packet['private_turn_files_unreadable']}`",
+        f"- Current-runtime-marked records: `{packet['current_runtime_marked_record_count']}`",
+        f"- Unknown-version records: `{packet['unknown_version_record_count']}`",
+        f"- Stale/legacy records: `{packet['stale_or_legacy_record_count']}`",
+        f"- Current-only evidence available: `{str(packet['current_only_evidence_available']).lower()}`",
+        "",
+        "## Evidence Freshness Summary",
+        *(f"- `{key}`: `{value}`" for key, value in packet["freshness_counts"].items()),
         "",
         "## Rehearsal Record Count",
         f"- Records available for human review: `{len(packet['records'])}`",
@@ -587,6 +752,11 @@ def render_report(packet: dict[str, Any], redaction: dict[str, Any]) -> str:
         "",
         "## Mechanical Issue Counts",
         *(f"- `{key}`: `{value}`" for key, value in warning_counts.items()),
+        "",
+        "## Current-Only Filter",
+        "- Default packet mode includes all archival private live-demo records.",
+        "- Run `python scripts\\generate_live_demo_commercial_rehearsal_packet_001.py --current-only` to include only records stamped with the current runtime metadata.",
+        "- If current-runtime-marked records are `0`, current-only evidence is unavailable and a fresh rehearsal is needed.",
         "",
         "## Top Concerning Rehearsal Records By Mechanical Signals Only",
     ]
@@ -641,6 +811,8 @@ def render_packet_md(packet: dict[str, Any]) -> str:
         "## Rehearsal Index",
         f"- Status: `{packet['status']}`",
         f"- Private input discovery count: `{packet['private_input_discovery_count']}`",
+        f"- Current-runtime-marked records: `{packet['current_runtime_marked_record_count']}`",
+        f"- Unknown-version records: `{packet['unknown_version_record_count']}`",
         f"- Record count: `{len(packet['records'])}`",
         "",
         "## Records",
@@ -653,6 +825,8 @@ def render_packet_md(packet: dict[str, Any]) -> str:
                 f"### {record['rehearsal_record_id']}",
                 f"- Campaign: `{record.get('campaign_id')}`",
                 f"- Source file hash: `{record['private_source_file_hash']}`",
+                f"- Freshness: `{record.get('freshness_classification')}`",
+                f"- Source mtime UTC: `{record.get('private_source_file_mtime_utc')}`",
                 f"- Transcript hash: `{record['transcript_hash']}`",
                 f"- Transcript chars: `{record['transcript_char_count']}`",
                 f"- Call control: `{record.get('call_control')}`",
@@ -714,8 +888,13 @@ def write_outputs(packet: dict[str, Any]) -> dict[str, Any]:
     result = {
         "checkpoint_id": CHECKPOINT_ID,
         "status": packet["status"],
+        "current_only_mode": packet["current_only_mode"],
         "private_input_discovery_count": packet["private_input_discovery_count"],
         "rehearsal_record_count": len(packet["records"]),
+        "current_runtime_marked_record_count": packet["current_runtime_marked_record_count"],
+        "unknown_version_record_count": packet["unknown_version_record_count"],
+        "stale_or_legacy_record_count": packet["stale_or_legacy_record_count"],
+        "freshness_counts": packet["freshness_counts"],
         "campaign_coverage_found": packet["campaign_coverage_found"],
         "mechanical_issue_counts": packet["mechanical_issue_counts"],
         "side_effect_boundary": {
@@ -734,7 +913,10 @@ def write_outputs(packet: dict[str, Any]) -> dict[str, Any]:
 
 
 def main() -> None:
-    packet = build_packet()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--current-only", action="store_true", help="Include only private records stamped with current runtime metadata.")
+    args = parser.parse_args()
+    packet = build_packet(current_only=args.current_only)
     result = write_outputs(packet)
     print(json.dumps(result, indent=2, sort_keys=True))
 

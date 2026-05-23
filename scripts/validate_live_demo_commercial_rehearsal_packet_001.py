@@ -124,7 +124,8 @@ def validate() -> dict[str, Any]:
 
     private_input_count = int(packet.get("private_input_discovery_count") or 0)
     packet_status = str(packet.get("status") or "")
-    if private_input_count > 0 and not records:
+    current_only_mode = bool(packet.get("current_only_mode"))
+    if private_input_count > 0 and not records and not current_only_mode:
         add_failure(failures, "private inputs exist but packet has no records")
     if private_input_count == 0 and packet_status != "no_private_input_found":
         add_failure(failures, "packet with no private inputs must use status no_private_input_found")
@@ -146,6 +147,32 @@ def validate() -> dict[str, Any]:
             add_failure(failures, f"{record_id}: raw private transcript field present")
         if not record.get("transcript_hash") and private_input_count > 0:
             add_failure(failures, f"{record_id}: missing transcript hash")
+        for field in [
+            "private_source_file_mtime_utc",
+            "private_source_file_hash",
+            "freshness_classification",
+            "current_runtime_marker_present",
+            "generator_seen_as_current_candidate",
+        ]:
+            if field not in record:
+                add_failure(failures, f"{record_id}: missing freshness metadata field: {field}")
+        if record.get("freshness_classification") not in {
+            "current_runtime_marked",
+            "unknown_version_private_artifact",
+            "stale_pre_current_runtime_artifact",
+        }:
+            add_failure(failures, f"{record_id}: invalid freshness_classification")
+
+    for field in [
+        "current_runtime_reference",
+        "freshness_counts",
+        "current_runtime_marked_record_count",
+        "unknown_version_record_count",
+        "stale_or_legacy_record_count",
+        "current_only_evidence_available",
+    ]:
+        if field not in packet:
+            add_failure(failures, f"packet missing freshness summary field: {field}")
 
     packet_text = all_packet_text()
     if EMAIL_PATTERN.search(packet_text):
@@ -210,8 +237,12 @@ def validate() -> dict[str, Any]:
         "status": "passed" if not failures else "failed",
         "failures": failures,
         "packet_status": packet_status,
+        "current_only_mode": current_only_mode,
         "private_input_discovery_count": private_input_count,
         "rehearsal_record_count": len(records),
+        "current_runtime_marked_record_count": packet.get("current_runtime_marked_record_count"),
+        "unknown_version_record_count": packet.get("unknown_version_record_count"),
+        "freshness_counts": packet.get("freshness_counts") or {},
         "campaign_coverage_found": sorted({str(r.get("campaign_id") or "") for r in records if r.get("campaign_id")}),
         "mechanical_issue_counts": dict(sorted(warning_counts.items())),
         "side_effect_boundary": {

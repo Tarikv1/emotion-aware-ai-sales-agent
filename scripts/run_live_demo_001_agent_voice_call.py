@@ -2,10 +2,13 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
+import hashlib
 import html
 import json
 import os
 import re
+import subprocess
 import sys
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -26,6 +29,7 @@ from runtime.core.dialogue_reasoner import (  # noqa: E402
     build_reasoning_context,
 )
 from runtime.core import campaign_registry  # noqa: E402
+from runtime.core import universal_conversation_policy_runtime as universal_policy_runtime  # noqa: E402
 from runtime.core.dialogue_reasoner_async_enrichment import build_async_enrichment_request  # noqa: E402
 import runtime.core.dialogue_manager as dialogue_manager  # noqa: E402
 import runtime.core.live_voice_session_policy as session_policy  # noqa: E402
@@ -83,6 +87,68 @@ LIVE_TTS_ENV_KEYS = {
     "ELEVENLABS_VOICE_ID_EN",
     "ELEVENLABS_VOICE_ID_DE",
 }
+
+
+def git_head_short() -> tuple[str, str | None]:
+    try:
+        completed = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            timeout=2,
+            check=False,
+        )
+    except Exception as exc:  # noqa: BLE001 - diagnostic metadata must not fail the live demo.
+        return "git_unavailable", f"{type(exc).__name__}: {exc}"
+    value = completed.stdout.strip()
+    if completed.returncode != 0 or not value:
+        return "git_unavailable", (completed.stderr.strip() or "git rev-parse failed")
+    return value, None
+
+
+def runtime_manifest_fingerprint() -> dict:
+    manifest_path = ROOT / "runtime" / "runtime_manifest.json"
+    try:
+        raw = manifest_path.read_bytes()
+        parsed = json.loads(raw.decode("utf-8"))
+    except Exception as exc:  # noqa: BLE001 - passive metadata only.
+        return {
+            "runtime_manifest_hash": "unavailable",
+            "runtime_manifest_entry_count": None,
+            "runtime_manifest_unavailable_reason": f"{type(exc).__name__}: {exc}",
+        }
+    return {
+        "runtime_manifest_hash": hashlib.sha256(raw).hexdigest(),
+        "runtime_manifest_entry_count": len(parsed.get("runtime_entries") or []),
+        "runtime_manifest_unavailable_reason": None,
+    }
+
+
+def current_runtime_metadata() -> dict:
+    git_sha, git_reason = git_head_short()
+    manifest = runtime_manifest_fingerprint()
+    return {
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "git_head_short": git_sha,
+        "git_unavailable_reason": git_reason,
+        **manifest,
+        "universal_policy_runtime_marker": getattr(
+            universal_policy_runtime,
+            "POLICY_RUNTIME_ID",
+            "unknown",
+        ),
+        "universal_policy_schema_version": getattr(
+            universal_policy_runtime,
+            "SCHEMA_VERSION",
+            "unknown",
+        ),
+        "campaign_registry_schema_version": getattr(
+            campaign_registry,
+            "SCHEMA_VERSION",
+            "unknown",
+        ),
+    }
 LIVE_DEMO_B2B_FACT_OVERLAY = {
     "pricing_summary": "Starter is $29/month. Growth is $59/month.",
     "guided_option_plan_29_features": "lead capture and basic routing",
@@ -1532,8 +1598,16 @@ def build_turn_packet(
         customer_response_text=summary["final_response"],
         response_packet_id=f"{LIVE_DEMO_ID}:{session_id or 'no-session'}:{len((session_state or {}).get('turns') or []) + 1}",
     )
+    runtime_metadata = current_runtime_metadata()
     return {
         "live_demo_id": LIVE_DEMO_ID,
+        "generated_at_utc": runtime_metadata["generated_at_utc"],
+        "git_head_short": runtime_metadata["git_head_short"],
+        "runtime_manifest_hash": runtime_metadata["runtime_manifest_hash"],
+        "runtime_manifest_entry_count": runtime_metadata["runtime_manifest_entry_count"],
+        "universal_policy_runtime_marker": runtime_metadata["universal_policy_runtime_marker"],
+        "campaign_registry_schema_version": runtime_metadata["campaign_registry_schema_version"],
+        "runtime_metadata": runtime_metadata,
         "mode": "live-tts" if live_tts else "dry-run",
         "campaign_id": campaign_id,
         "session_id": session_id,
@@ -1625,6 +1699,14 @@ def build_browser_demo_turn_packet(
         turn["customer_audio_uploaded_to_tts_provider"] = bool(tts.get("customer_audio_uploaded"))
         turn["generic_selected_campaign_live_tts_allowed"] = bool(selected_config and selected_config.get("live_tts_enabled"))
         turn["live_tts_used"] = bool(tts_provider_calls_made and audio_file_created and turn.get("audio_url"))
+        runtime_metadata = turn.get("runtime_metadata") if isinstance(turn.get("runtime_metadata"), dict) else current_runtime_metadata()
+        turn["runtime_metadata"] = runtime_metadata
+        turn["generated_at_utc"] = turn.get("generated_at_utc") or runtime_metadata.get("generated_at_utc")
+        turn["git_head_short"] = turn.get("git_head_short") or runtime_metadata.get("git_head_short")
+        turn["runtime_manifest_hash"] = turn.get("runtime_manifest_hash") or runtime_metadata.get("runtime_manifest_hash")
+        turn["runtime_manifest_entry_count"] = turn.get("runtime_manifest_entry_count") or runtime_metadata.get("runtime_manifest_entry_count")
+        turn["universal_policy_runtime_marker"] = turn.get("universal_policy_runtime_marker") or runtime_metadata.get("universal_policy_runtime_marker")
+        turn["campaign_registry_schema_version"] = turn.get("campaign_registry_schema_version") or runtime_metadata.get("campaign_registry_schema_version")
         return turn
 
     selected_config_path = resolve_project_path(str(campaign_config_path)) if campaign_config_path else None
@@ -2800,10 +2882,18 @@ def persist_private_turn(private_out: Path, turn: dict) -> None:
 
 
 def campaign_selection_error_payload(exc: Exception, campaign_config_path: str | Path | None) -> dict:
+    runtime_metadata = current_runtime_metadata()
     return {
         "error": "invalid generic campaign config selection",
         "error_type": type(exc).__name__,
         "message": str(exc),
+        "generated_at_utc": runtime_metadata["generated_at_utc"],
+        "git_head_short": runtime_metadata["git_head_short"],
+        "runtime_manifest_hash": runtime_metadata["runtime_manifest_hash"],
+        "runtime_manifest_entry_count": runtime_metadata["runtime_manifest_entry_count"],
+        "universal_policy_runtime_marker": runtime_metadata["universal_policy_runtime_marker"],
+        "campaign_registry_schema_version": runtime_metadata["campaign_registry_schema_version"],
+        "runtime_metadata": runtime_metadata,
         "campaign_selector_mode": "generic_config",
         "campaign_config_path": project_relative_string(resolve_project_path(str(campaign_config_path))) if campaign_config_path else None,
         "selected_campaign_config": None,
@@ -2830,10 +2920,18 @@ def campaign_selection_error_payload(exc: Exception, campaign_config_path: str |
 
 def turn_runtime_error_payload(exc: Exception, campaign_config_path: str | Path | None) -> dict:
     selected_path = str(campaign_config_path or "").strip()
+    runtime_metadata = current_runtime_metadata()
     return {
         "error": "turn failed",
         "error_type": type(exc).__name__,
         "message": str(exc),
+        "generated_at_utc": runtime_metadata["generated_at_utc"],
+        "git_head_short": runtime_metadata["git_head_short"],
+        "runtime_manifest_hash": runtime_metadata["runtime_manifest_hash"],
+        "runtime_manifest_entry_count": runtime_metadata["runtime_manifest_entry_count"],
+        "universal_policy_runtime_marker": runtime_metadata["universal_policy_runtime_marker"],
+        "campaign_registry_schema_version": runtime_metadata["campaign_registry_schema_version"],
+        "runtime_metadata": runtime_metadata,
         "campaign_selector_mode": "generic_config" if selected_path else "routesignal_live_demo",
         "campaign_config_path": project_relative_string(resolve_project_path(selected_path)) if selected_path else None,
         "selected_campaign_config": None,

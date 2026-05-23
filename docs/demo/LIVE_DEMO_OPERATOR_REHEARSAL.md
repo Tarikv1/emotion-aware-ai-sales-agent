@@ -157,6 +157,50 @@ python scripts\validate_live_demo_commercial_rehearsal_packet_001.py
 
 The packet reads ignored private turn JSON under `data/private/live-demo-*`, hashes buyer transcript text, and writes public review artifacts under `research/experiments/generated/LIVE-DEMO-COMMERCIAL-REHEARSAL-001/`.
 
+## Generating Clean Current Evidence
+
+Use this when old private artifacts might pollute the review packet.
+
+1. Pull latest `main`.
+2. Start a fresh dry-run demo:
+
+```powershell
+python scripts\run_live_demo_001_agent_voice_call.py --force-key-missing
+```
+
+3. Run RouteSignal normal path:
+   - permission
+   - `callbacks are a problem`
+   - `it causes delays`
+   - `tomorrow at 3 works`
+4. Run generic insurance path:
+   - select synthetic insurance
+   - `what does your product do`
+   - `maybe coverage fit`
+   - `it is active now`
+   - `it wastes time`
+5. Run ASR stress path:
+   - `yeah that would be good`
+   - `okay that would be good`
+   - `call me tomorrow at 3`
+   - noisy or short repair phrases
+6. Run campaign selector switch path:
+   - RouteSignal
+   - synthetic insurance
+   - RouteSignal again
+7. Regenerate and validate the packet:
+
+```powershell
+python scripts\generate_live_demo_commercial_rehearsal_packet_001.py
+python scripts\audit_live_demo_rehearsal_failures_001.py
+python scripts\validate_live_demo_rehearsal_failure_triage_001.py
+python scripts\validate_live_demo_commercial_rehearsal_packet_001.py
+```
+
+8. Check `current_runtime_marked_record_count`. If it is `0`, the packet is still archival/unknown-version evidence, not current-runtime proof.
+
+Validators do not make provider calls. The operator may run live TTS manually outside validation only with the required consent gate.
+
 Recommended live commercial rehearsal scenarios:
 
 A. RouteSignal normal path
