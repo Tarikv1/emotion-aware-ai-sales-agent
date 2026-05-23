@@ -746,7 +746,7 @@
       ],
       "failures": [],
       "passed": true,
-      "recognition_confidence": "medium",
+      "recognition_confidence": "high",
       "recognition_reason": "clean_pain_phrase",
       "side_effect_flags": {
         "creates_calendar_event": false,
@@ -1532,7 +1532,7 @@
       ],
       "failures": [],
       "passed": true,
-      "recognition_confidence": "medium",
+      "recognition_confidence": "high",
       "recognition_reason": "clean_pain_phrase",
       "side_effect_flags": {
         "creates_calendar_event": false,
@@ -2318,7 +2318,7 @@
       ],
       "failures": [],
       "passed": true,
-      "recognition_confidence": "medium",
+      "recognition_confidence": "high",
       "recognition_reason": "clean_pain_phrase",
       "side_effect_flags": {
         "creates_calendar_event": false,
@@ -3104,7 +3104,7 @@
       ],
       "failures": [],
       "passed": true,
-      "recognition_confidence": "medium",
+      "recognition_confidence": "high",
       "recognition_reason": "clean_pain_phrase",
       "side_effect_flags": {
         "creates_calendar_event": false,

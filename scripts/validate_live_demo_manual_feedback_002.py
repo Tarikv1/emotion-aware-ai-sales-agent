@@ -324,7 +324,12 @@ def validate_insurance_feedback(failures: list[str], evidence: dict[str, Any]) -
     )
     assert_condition(failures, quick_snap["call_control"] == "continue-call", f"insurance quick call_control wrong: {quick_snap}")
     assert_condition(failures, "quick" in quick_snap["final_response"].lower() or "short" in quick_snap["final_response"].lower(), f"insurance quick did not acknowledge time: {quick_snap}")
-    assert_condition(failures, "premium" in quick_snap["final_response"].lower() and "coverage" in quick_snap["final_response"].lower(), f"insurance quick did not ask one concise fit question: {quick_snap}")
+    quick_response = quick_snap["final_response"].lower()
+    assert_condition(
+        failures,
+        "premium" in quick_response and quick_response.count("?") <= 1 and "coverage" not in quick_response,
+        f"insurance quick did not use one sharp diagnostic question: {quick_snap}",
+    )
     assert_clean_generic_response(failures, quick_snap, "insurance quick")
 
     maybe = build_sequence(INSURANCE_CONFIG, ["__agent_open__", "just a short minute make it quick", "maybe coverage fit"], "insurance-maybe-coverage")
@@ -333,7 +338,14 @@ def validate_insurance_feedback(failures: list[str], evidence: dict[str, Any]) -
     assert_condition(failures, maybe_snap["semantic"] in {"possible_pain_unclear", "tentative_gap_interest", "pain_possible_but_unclear"}, f"insurance maybe semantic wrong: {maybe_snap}")
     assert_condition(failures, maybe_snap["target_gap"] == "coverage_fit", f"insurance maybe target gap wrong: {maybe_snap}")
     assert_condition(failures, maybe_snap["call_control"] == "continue-call", f"insurance maybe should continue, not escalate: {maybe_snap}")
-    assert_condition(failures, "licensed" in maybe_snap["final_response"].lower() and ("callback" in maybe_snap["final_response"].lower() or "time" in maybe_snap["final_response"].lower()), f"insurance maybe response did not bridge safely: {maybe_snap}")
+    maybe_response = maybe_snap["final_response"].lower()
+    assert_condition(
+        failures,
+        "coverage" in maybe_response
+        and any(token in maybe_response for token in ["active", "possible", "later", "checked"])
+        and "callback" not in maybe_response,
+        f"insurance maybe response did not clarify active-vs-possible concern: {maybe_snap}",
+    )
     assert_clean_generic_response(failures, maybe_snap, "insurance maybe coverage")
 
     detail = build_sequence(
@@ -369,7 +381,14 @@ def validate_automotive_feedback(failures: list[str], evidence: dict[str, Any]) 
     assert_condition(failures, repair_snap["semantic"] == "pain_confirmed", f"automotive repair timing semantic wrong: {repair_snap}")
     assert_condition(failures, repair_snap["target_gap"] == "repair_timing", f"automotive repair timing target wrong: {repair_snap}")
     assert_condition(failures, "repair_timing" in repair_snap["confirmed_gaps"], f"automotive repair timing not confirmed: {repair_snap}")
-    assert_condition(failures, "service advisor" in repair_snap["final_response"].lower() and "time" in repair_snap["final_response"].lower(), f"automotive repair response did not move to advisor review: {repair_snap}")
+    repair_response = repair_snap["final_response"].lower()
+    assert_condition(
+        failures,
+        "repair timing" in repair_response
+        and any(token in repair_response for token in ["causing", "delays", "general frustration"])
+        and "callback" not in repair_response,
+        f"automotive repair response did not ask implication before advisor review: {repair_snap}",
+    )
     assert_clean_generic_response(failures, repair_snap, "automotive repair timing")
 
     why = build_sequence(

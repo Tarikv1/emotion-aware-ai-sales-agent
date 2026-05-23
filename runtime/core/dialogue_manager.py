@@ -564,6 +564,11 @@ def plan_dialogue_action(
         campaign,
         dialogue_reasoning=dialogue_reasoning,
     )
+    contextual_semantics = universal_policy_runtime.sanitize_contextual_semantics_for_universal_policy(
+        transcript=transcript,
+        campaign=campaign,
+        contextual_semantics=contextual_semantics,
+    )
     pragmatic_move = dialogue_pragmatics.classify_pragmatic_move(
         transcript,
         session_state,
@@ -1075,6 +1080,7 @@ def apply_stability_guard_if_needed(
         and universal_frame.get("response_shape_enforcement_enabled") is True
         and universal_category
         in {
+            "pain_progression",
             "trust_identity_privacy_consent",
             "confusion_challenge_repair",
             "scope_regulated_claim_boundaries",

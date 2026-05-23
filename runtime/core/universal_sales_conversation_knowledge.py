@@ -130,6 +130,18 @@ RESPONSE_SHAPE_LIBRARY: dict[str, dict[str, Any]] = {
             "ask for a time when appointment-setting is appropriate",
         ],
     ),
+    "acknowledge_pain_check_implication": _shape(
+        "acknowledge_pain_check_implication",
+        allowed_fact_slots=["human_followup_owner", "appointment_target", "gap_label", "gap_review_focus", "gap_value_bridge"],
+        forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["appointment ask before implication", "repeat full diagnostic menu"],
+        allowed_call_control=["continue-call"],
+        appointment_pressure_level="medium",
+        example_outline=[
+            "acknowledge the specific confirmed pain",
+            "preserve the confirmed gap",
+            "ask one implication or consequence question before requesting time",
+        ],
+    ),
     "acknowledge_tentative_gap_offer_review_or_stop": _shape(
         "acknowledge_tentative_gap_offer_review_or_stop",
         allowed_fact_slots=["human_followup_owner", "appointment_target", "gap_label", "gap_review_focus"],
@@ -139,6 +151,54 @@ RESPONSE_SHAPE_LIBRARY: dict[str, dict[str, Any]] = {
             "acknowledge uncertainty",
             "do not treat tentative language as confirmed pain",
             "offer review or stop",
+        ],
+    ),
+    "clarify_tentative_gap_active_or_possible": _shape(
+        "clarify_tentative_gap_active_or_possible",
+        allowed_fact_slots=["human_followup_owner", "appointment_target", "gap_label", "gap_review_focus"],
+        forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["confirm pain from maybe", "appointment ask", "transfer-or-escalate"],
+        allowed_call_control=["continue-call"],
+        appointment_pressure_level="low",
+        example_outline=[
+            "acknowledge the tentative gap",
+            "do not confirm pain yet",
+            "ask whether the concern is active now or only possible later",
+        ],
+    ),
+    "acknowledge_implication_bridge_to_callback": _shape(
+        "acknowledge_implication_bridge_to_callback",
+        allowed_fact_slots=["human_followup_owner", "appointment_target", "gap_label", "gap_review_focus", "gap_value_bridge"],
+        forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["invent ROI", "invent savings", "claim calendar action"],
+        allowed_call_control=["continue-call"],
+        appointment_pressure_level="direct",
+        example_outline=[
+            "acknowledge the consequence or impact",
+            "bridge to the configured human review",
+            "ask for a callback window without creating a real calendar event",
+        ],
+    ),
+    "acknowledge_weak_implication_reduce_pressure": _shape(
+        "acknowledge_weak_implication_reduce_pressure",
+        allowed_fact_slots=["human_followup_owner", "appointment_target", "gap_label"],
+        forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["appointment pressure", "push after minor impact"],
+        allowed_call_control=["continue-call", "end-call"],
+        appointment_pressure_level="none",
+        example_outline=[
+            "acknowledge the impact is minor or denied",
+            "reduce pressure",
+            "offer to leave the call there",
+        ],
+    ),
+    "clarify_unclear_implication": _shape(
+        "clarify_unclear_implication",
+        allowed_fact_slots=["gap_label", "gap_review_focus"],
+        forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["appointment ask before implication"],
+        allowed_call_control=["continue-call"],
+        appointment_pressure_level="low",
+        example_outline=[
+            "acknowledge uncertainty",
+            "ask one consequence clarification",
+            "avoid scheduling until implication is clear",
         ],
     ),
     "answer_product_scope_limit_continue": _shape(
@@ -327,19 +387,47 @@ BUYER_MOVE_TAXONOMY: dict[str, dict[str, Any]] = {
         "pain_confirmed",
         description="Buyer confirms a relevant problem, risk, cost, delay, friction, or gap.",
         examples=["that is a problem", "timing is usually long", "manual work is the issue"],
-        expected_response_shape_id="acknowledge_pain_bridge_to_appointment",
+        expected_response_shape_id="acknowledge_pain_check_implication",
         allowed_stages=["diagnostic", "value_bridge", "permission"],
         memory_policy="store_confirmed_gap_preserve_cleared_gaps",
-        must_not_do=["repeat full diagnostic menu", "invent outcome claim"],
+        must_not_do=["repeat full diagnostic menu", "invent outcome claim", "ask appointment before implication"],
     ),
     "tentative_gap_interest": _move(
         "tentative_gap_interest",
         description="Buyer gives a hedged or uncertain indication that a named gap may matter.",
         examples=["maybe coverage fit", "possibly timing", "could be integration"],
-        expected_response_shape_id="acknowledge_tentative_gap_offer_review_or_stop",
+        expected_response_shape_id="clarify_tentative_gap_active_or_possible",
         allowed_stages=["diagnostic", "value_bridge", "scope_limit"],
         memory_policy="store_tentative_gap_without_confirming_pain",
         must_not_do=["confirm pain from maybe", "transfer-or-escalate", "repeat full diagnostic menu"],
+    ),
+    "implication_confirmed": _move(
+        "implication_confirmed",
+        description="Buyer confirms the pain has a consequence, impact, delay, cost, risk, or follow-up quality effect.",
+        examples=["it causes delays", "it wastes time", "customers wait"],
+        expected_response_shape_id="acknowledge_implication_bridge_to_callback",
+        allowed_stages=["diagnostic", "value_bridge", "appointment_progression"],
+        memory_policy="preserve_confirmed_gap_mark_appointment_readiness",
+        must_not_do=["invent ROI", "invent savings", "claim calendar action"],
+    ),
+    "implication_weak_or_denied": _move(
+        "implication_weak_or_denied",
+        description="Buyer says the pain has weak, minor, denied, or low-urgency consequence.",
+        examples=["not really", "not much", "just annoying"],
+        expected_response_shape_id="acknowledge_weak_implication_reduce_pressure",
+        allowed_stages=["diagnostic", "value_bridge"],
+        default_call_control_allowed=["continue-call", "end-call"],
+        memory_policy="preserve_confirmed_gap_reduce_appointment_pressure",
+        must_not_do=["push appointment", "schedule anyway", "repeat diagnostic menu"],
+    ),
+    "implication_unclear": _move(
+        "implication_unclear",
+        description="Buyer gives an ambiguous consequence signal after pain is confirmed.",
+        examples=["maybe", "kind of", "I guess"],
+        expected_response_shape_id="clarify_unclear_implication",
+        allowed_stages=["diagnostic", "value_bridge"],
+        memory_policy="preserve_confirmed_gap_clarify_implication",
+        must_not_do=["schedule without implication", "infer impact too strongly"],
     ),
     "no_pain_clear": _move(
         "no_pain_clear",
@@ -991,6 +1079,15 @@ SOCIAL_CONVERSATION_BUYER_MOVES = [
     "emotional_frustration",
 ]
 
+PAIN_PROGRESSION_BUYER_MOVES = [
+    "permission_acknowledgement",
+    "pain_confirmed",
+    "tentative_gap_interest",
+    "implication_confirmed",
+    "implication_weak_or_denied",
+    "implication_unclear",
+]
+
 
 RESPONSE_SHAPE_LIBRARY.update(
     {
@@ -1344,11 +1441,11 @@ def _append_unique(target: list[str], additions: list[str]) -> None:
 
 
 _append_unique(CONVERSATION_STAGE_POLICY["opening"]["allowed_buyer_moves"], IDENTITY_TRUST_PRIVACY_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
-_append_unique(CONVERSATION_STAGE_POLICY["permission"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES)
-_append_unique(CONVERSATION_STAGE_POLICY["diagnostic"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
-_append_unique(CONVERSATION_STAGE_POLICY["value_bridge"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["permission"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + PAIN_PROGRESSION_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["diagnostic"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + PAIN_PROGRESSION_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["value_bridge"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + PAIN_PROGRESSION_BUYER_MOVES)
 _append_unique(CONVERSATION_STAGE_POLICY["scope_limit"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
-_append_unique(CONVERSATION_STAGE_POLICY["appointment_progression"]["allowed_buyer_moves"], APPOINTMENT_NEGOTIATION_BUYER_MOVES + OBJECTION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["appointment_progression"]["allowed_buyer_moves"], APPOINTMENT_NEGOTIATION_BUYER_MOVES + OBJECTION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + PAIN_PROGRESSION_BUYER_MOVES)
 _append_unique(CONVERSATION_STAGE_POLICY["callback_capture"]["allowed_buyer_moves"], APPOINTMENT_NEGOTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
 _append_unique(CONVERSATION_STAGE_POLICY["send_info_capture"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES)
 _append_unique(CONVERSATION_STAGE_POLICY["handoff_right_person"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
@@ -1385,6 +1482,7 @@ for _move_id in (
     + APPOINTMENT_NEGOTIATION_BUYER_MOVES
     + VALUE_DIFFERENTIATION_BUYER_MOVES
     + SOCIAL_CONVERSATION_BUYER_MOVES
+    + PAIN_PROGRESSION_BUYER_MOVES
 ):
     UNIVERSAL_REPAIR_RULES[f"{_move_id}_rule"] = _repair_rule(f"{_move_id}_rule", _move_id)
 

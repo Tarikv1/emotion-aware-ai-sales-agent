@@ -129,13 +129,13 @@
     },
     "id_counts": {
       "asr_cases": 19,
-      "buyer_moves": 70,
+      "buyer_moves": 73,
       "call_controls": 9,
       "campaign_fact_slots": 20,
       "conversation_stages": 10,
       "forbidden_customer_patterns": 14,
-      "repair_rules": 60,
-      "response_shapes": 39
+      "repair_rules": 66,
+      "response_shapes": 44
     },
     "identity": {
       "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -148,9 +148,9 @@
     "material_widening": {
       "actual": {
         "asr_cases": 19,
-        "buyer_moves": 70,
-        "repair_rules": 60,
-        "response_shapes": 39
+        "buyer_moves": 73,
+        "repair_rules": 66,
+        "response_shapes": 44
       },
       "category_counts": {
         "appointment_negotiation": 9,
@@ -170,11 +170,11 @@
     "module_validation": {
       "counts": {
         "asr_cases": 19,
-        "buyer_moves": 70,
+        "buyer_moves": 73,
         "campaign_fact_slots": 20,
         "conversation_stages": 10,
-        "repair_rules": 60,
-        "response_shapes": 39
+        "repair_rules": 66,
+        "response_shapes": 44
       },
       "creates_calendar_event": false,
       "declarative_only": true,
@@ -196,7 +196,7 @@
       "writes_crm": false
     },
     "repair_rule_coverage": {
-      "actual_rule_count": 60,
+      "actual_rule_count": 66,
       "required_rule_count": 60,
       "uncovered_expanded_moves": []
     },

@@ -9,7 +9,7 @@ Validated the first universal conversation policy runtime integration: policy-fr
 - automotive_near_miss: semantic=None target_gap=None call_control=continue-call enforcement=True buyer_move=asr_garbled_or_low_confidence
 - automotive_clean_pain: semantic=pain_confirmed target_gap=repair_timing call_control=continue-call enforcement=False buyer_move=pain_confirmed
 - automotive_challenge: semantic=purpose_clarification_after_confirmed_gap target_gap=repair_timing call_control=continue-call enforcement=False buyer_move=why_are_you_asking
-- product_detail: semantic=product_detail_limit_question target_gap=None call_control=continue-call enforcement=False buyer_move=product_detail_question
+- product_detail: semantic=product_detail_limit_question target_gap=premium_or_budget call_control=continue-call enforcement=False buyer_move=product_detail_question
 - appointment_garble: semantic=None target_gap=None call_control=continue-call enforcement=True buyer_move=asr_garbled_or_low_confidence
 
 ## Safety Boundary

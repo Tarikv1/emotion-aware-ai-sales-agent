@@ -237,8 +237,8 @@ def validate_routesignal_weak_replies(failures: list[str], evidence: dict[str, A
     okay = cases["okay"]["reply"]
     assert_condition(
         failures,
-        okay["continuity_reason"] == "contextual_permission_acknowledgement",
-        f"`okay` should use contextual permission continuity: {okay}",
+        okay["continuity_reason"] in {"contextual_permission_acknowledgement", "universal_response_shape_enforced"},
+        f"`okay` should use contextual or universal permission continuity: {okay}",
     )
     assert_condition(
         failures,

@@ -167,7 +167,13 @@ def assert_manual_pain(failures: list[str], packet: dict[str, Any], label: str) 
     assert_condition(failures, "manual_work" in set(snap["confirmed_gaps"]), f"{label}: manual_work not confirmed: {snap}")
     assert_condition(failures, "manual_work" not in set(snap["cleared_gaps"]), f"{label}: manual_work was incorrectly cleared: {snap}")
     response = normalize(snap["final_response"])
-    assert_condition(failures, "operations fit review" in response, f"{label}: response did not move toward operations fit review: {snap}")
+    assert_condition(
+        failures,
+        "manual work" in response
+        and any(token in response for token in ["slowing", "extra admin", "causing"])
+        and "operations fit review" not in response,
+        f"{label}: response did not ask implication before operations fit review: {snap}",
+    )
 
 
 def assert_manual_clear(failures: list[str], packet: dict[str, Any], label: str) -> None:

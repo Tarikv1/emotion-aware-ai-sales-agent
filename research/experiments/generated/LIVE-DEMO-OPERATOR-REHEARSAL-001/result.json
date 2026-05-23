@@ -51,7 +51,7 @@
         "cleared_gaps": [],
         "confirmed_gaps": [],
         "creates_calendar_event": false,
-        "final_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+        "final_response": "Thanks. Is manual work causing any issue right now?",
         "lead_followup_state": {},
         "live_tts_used": false,
         "local_llm_calls_made": false,
@@ -74,7 +74,7 @@
         "sends_email": false,
         "target_gap": null,
         "transcript": "yeah sure",
-        "tts_input_text": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+        "tts_input_text": "Thanks. Is manual work causing any issue right now?",
         "vertical_id": "b2b_saas",
         "writes_crm": false
       },
@@ -90,7 +90,7 @@
           "manual_work"
         ],
         "creates_calendar_event": false,
-        "final_response": "Got it, manual work sounds like the issue; an implementation specialist can review manual workflow load. What time works for a quick operations fit review?",
+        "final_response": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
         "lead_followup_state": {},
         "live_tts_used": false,
         "local_llm_calls_made": false,
@@ -113,7 +113,7 @@
         "sends_email": false,
         "target_gap": "manual_work",
         "transcript": "manual work is a problem",
-        "tts_input_text": "Got it, manual work sounds like the issue; an implementation specialist can review manual workflow load. What time works for a quick operations fit review?",
+        "tts_input_text": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
         "vertical_id": "b2b_saas",
         "writes_crm": false
       },
@@ -254,7 +254,7 @@
         "cleared_gaps": [],
         "confirmed_gaps": [],
         "creates_calendar_event": false,
-        "final_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
+        "final_response": "Thanks. Is premium pressure causing any issue right now?",
         "lead_followup_state": {},
         "live_tts_used": false,
         "local_llm_calls_made": false,
@@ -277,7 +277,7 @@
         "sends_email": false,
         "target_gap": null,
         "transcript": "yeah sure",
-        "tts_input_text": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
+        "tts_input_text": "Thanks. Is premium pressure causing any issue right now?",
         "vertical_id": "insurance",
         "writes_crm": false
       },
@@ -293,7 +293,7 @@
           "premium_or_budget"
         ],
         "creates_calendar_event": false,
-        "final_response": "Got it, premium sounds like the issue; a licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
+        "final_response": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
         "lead_followup_state": {},
         "live_tts_used": false,
         "local_llm_calls_made": false,
@@ -316,7 +316,7 @@
         "sends_email": false,
         "target_gap": "premium_or_budget",
         "transcript": "premium is a problem",
-        "tts_input_text": "Got it, premium sounds like the issue; a licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
+        "tts_input_text": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
         "vertical_id": "insurance",
         "writes_crm": false
       },
@@ -390,7 +390,7 @@
         },
         "semantic": "appointment_time_given",
         "sends_email": false,
-        "target_gap": null,
+        "target_gap": "premium_or_budget",
         "transcript": "tomorrow at 3 works",
         "tts_input_text": "Confirmed. I will note that time for the licensed coverage review. Goodbye.",
         "vertical_id": "insurance",
@@ -469,7 +469,7 @@
         "cleared_gaps": [],
         "confirmed_gaps": [],
         "creates_calendar_event": false,
-        "final_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "final_response": "Thanks. Is inbound demo follow-up slipping right now?",
         "lead_followup_state": {},
         "live_tts_used": false,
         "local_llm_calls_made": false,
@@ -482,7 +482,7 @@
         "sends_email": false,
         "target_gap": null,
         "transcript": "yeah sure",
-        "tts_input_text": "Thanks, well, <break time=\"0.24s\" /> quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "tts_input_text": "Thanks. Is inbound demo follow-up slipping right now?",
         "vertical_id": null,
         "writes_crm": false
       },
@@ -564,7 +564,7 @@
             "turn_index": 1
           },
           {
-            "agent_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+            "agent_response": "Thanks. Is manual work causing any issue right now?",
             "call_control": "continue-call",
             "campaign_selector": {
               "campaign_config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
@@ -602,7 +602,7 @@
             "turn_index": 2
           },
           {
-            "agent_response": "Got it, manual work sounds like the issue; an implementation specialist can review manual workflow load. What time works for a quick operations fit review?",
+            "agent_response": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
             "call_control": "continue-call",
             "campaign_selector": {
               "campaign_config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
@@ -726,7 +726,7 @@
             "turn_index": 1
           },
           {
-            "agent_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
+            "agent_response": "Thanks. Is premium pressure causing any issue right now?",
             "call_control": "continue-call",
             "campaign_selector": {
               "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
@@ -764,7 +764,7 @@
             "turn_index": 2
           },
           {
-            "agent_response": "Got it, premium sounds like the issue; a licensed insurance specialist can review premium and budget pressure. What time works for a quick licensed coverage review?",
+            "agent_response": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
             "call_control": "continue-call",
             "campaign_selector": {
               "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
@@ -878,7 +878,7 @@
             "turn_index": 1
           },
           {
-            "agent_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+            "agent_response": "Thanks. Is inbound demo follow-up slipping right now?",
             "call_control": "continue-call",
             "campaign_selector": {
               "campaign_config_path": null,
