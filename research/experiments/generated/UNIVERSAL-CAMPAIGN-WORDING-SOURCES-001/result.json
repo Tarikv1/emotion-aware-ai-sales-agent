@@ -1,0 +1,115 @@
+{
+  "checkpoint_id": "UNIVERSAL-CAMPAIGN-WORDING-SOURCES-001",
+  "status": "pass",
+  "summary": {
+    "behavior_evidence": [
+      {
+        "campaign_id": "routesignal_live_demo",
+        "pain_response": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
+        "permission_response": "Thanks. Is inbound demo follow-up slipping right now?",
+        "side_effect_flags": {
+          "audio_file_created": false,
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "live_tts_used": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "tts_provider_calls_made": false,
+          "writes_crm": false
+        }
+      },
+      {
+        "campaign_id": "synthetic-insurance-review",
+        "pain_response": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
+        "permission_response": "Thanks. Is premium pressure causing any issue right now?",
+        "side_effect_flags": {
+          "audio_file_created": false,
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "live_tts_used": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "tts_provider_calls_made": false,
+          "writes_crm": false
+        }
+      },
+      {
+        "campaign_id": "synthetic-b2b-saas-operations",
+        "pain_response": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
+        "permission_response": "Thanks. Is manual work causing any issue right now?",
+        "side_effect_flags": {
+          "audio_file_created": false,
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "live_tts_used": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "tts_provider_calls_made": false,
+          "writes_crm": false
+        }
+      },
+      {
+        "campaign_id": "synthetic-automotive-service-review",
+        "pain_response": "Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?",
+        "permission_response": "Thanks. Is repair timing causing any issue right now?",
+        "side_effect_flags": {
+          "audio_file_created": false,
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "live_tts_used": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "tts_provider_calls_made": false,
+          "writes_crm": false
+        }
+      },
+      {
+        "campaign_id": "synthetic-home-services-estimate",
+        "pain_response": "Got it, service need is the issue. Is it causing a real service issue now, or just a general question?",
+        "permission_response": "Thanks. Is the service need active right now?",
+        "side_effect_flags": {
+          "audio_file_created": false,
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "live_tts_used": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "tts_provider_calls_made": false,
+          "writes_crm": false
+        }
+      }
+    ],
+    "failure_count": 0,
+    "failure_examples": [],
+    "failure_types": {},
+    "side_effects": {
+      "audio_file_created": false,
+      "creates_calendar_event": false,
+      "customer_audio_uploaded_to_python_server": false,
+      "customer_audio_uploaded_to_tts_provider": false,
+      "live_tts_used": false,
+      "local_llm_calls_made": false,
+      "opens_prod_102": false,
+      "provider_calls_made": false,
+      "sends_email": false,
+      "tts_provider_calls_made": false,
+      "writes_crm": false
+    },
+    "status": "pass"
+  }
+}
