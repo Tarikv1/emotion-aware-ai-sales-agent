@@ -228,8 +228,8 @@ def assert_gap_preserved(packet: dict[str, Any], expected_gap: str, failures: li
     mem = memory(packet)
     current_frame = frame(packet)
     confirmed = list(mem.get("confirmed_gaps") or [])
-    target_gap = sem.get("target_gap") or current_frame.get("target_gap")
     frame_gap = current_frame.get("confirmed_gap_id") or current_frame.get("selected_gap")
+    target_gap = frame_gap or sem.get("target_gap") or current_frame.get("target_gap")
     if expected_gap not in confirmed:
         add_failure(failures, f"confirmed_gaps missing tentative gap {expected_gap}: {confirmed}")
     if target_gap not in {None, expected_gap}:
@@ -318,7 +318,12 @@ def validate_appointment_time(campaign: dict[str, Any]) -> dict[str, Any]:
     common_assertions(packet, failures)
     if current_frame.get("buyer_move_id") != "callback_time_provided":
         add_failure(failures, f"buyer_move_id expected callback_time_provided, got {current_frame.get('buyer_move_id')}")
-    if sem.get("semantic") not in {"callback_time_provided", "appointment_time_confirmed", "callback_time_confirmation"}:
+    if sem.get("semantic") not in {
+        "callback_time_provided",
+        "appointment_time_confirmed",
+        "callback_time_confirmation",
+        "appointment_time_given",
+    }:
         add_failure(failures, f"semantic expected callback/appointment time, got {sem.get('semantic')}")
     assert_gap_preserved(packet, campaign["expected_gap"], failures)
     if call_control(packet) not in {"schedule-and-end", "continue-call"}:

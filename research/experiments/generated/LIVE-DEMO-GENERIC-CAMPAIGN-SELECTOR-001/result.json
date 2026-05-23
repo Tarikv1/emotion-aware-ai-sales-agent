@@ -259,7 +259,7 @@
         ],
         "creates_calendar_event": false,
         "durable_provider_agent_created": false,
-        "final_response": "Confirmed. I will note that time for the licensed coverage review. Goodbye.",
+        "final_response": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
         "lead_followup_state": {
           "appointment": {
             "confirmation_text": "workflow review time captured",
@@ -308,7 +308,7 @@
         "sends_email": false,
         "target_gap": "premium_or_budget",
         "transcript": "tomorrow at 3 works",
-        "tts_input_text": "Confirmed. I will note that time for the licensed coverage review. Goodbye.",
+        "tts_input_text": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
         "voice_cloning_used": false,
         "writes_crm": false
       }

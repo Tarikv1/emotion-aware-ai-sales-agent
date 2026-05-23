@@ -1119,6 +1119,7 @@ def apply_stability_guard_if_needed(
             "confusion_challenge_repair",
             "scope_regulated_claim_boundaries",
             "social_conversation_management",
+            "appointment_callback_send_info",
         }
     ):
         return action, {

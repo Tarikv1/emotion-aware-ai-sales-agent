@@ -9,10 +9,10 @@ Status: red_findings
 - Buyer-move cases per campaign: 55
 - Total turns evaluated: 275
 - Recognition pass/fail: 275 / 0
-- Response pass/fail: 258 / 17
+- Response pass/fail: 266 / 9
 
 ## Pass/Fail Counts By Buyer-Move Category
-- appointment_callback_send_info: pass=22 fail=8
+- appointment_callback_send_info: pass=30 fail=0
 - asr_repair: pass=16 fail=9
 - confusion_challenge_repair: pass=30 fail=0
 - direct_product_value_questions: pass=30 fail=0
@@ -24,28 +24,25 @@ Status: red_findings
 - trust_identity_privacy_consent: pass=30 fail=0
 
 ## Top Failure Clusters
-- appointment_callback_send_info / repeated_full_menu: 8
 - asr_repair / repeated_full_menu: 8
 - asr_repair / asr_garble_not_repaired: 1
 
 ## Top Recognition Failures
 
 ## Top Response-Shape Failures
-- appointment_callback_send_info / repeated_full_menu: 8
 - asr_repair / repeated_full_menu: 8
 - asr_repair / asr_garble_not_repaired: 1
 
 ## Examples Of Strongest Failures
 - routesignal_live_demo | asr_repair | repeal timings are usually pretty long | asr_garble_not_repaired | recognized=asr_garbled_or_low_confidence | response='I can answer that directly if you name the point: workflow, price, security, or callback timing.'
-- synthetic-insurance-review | appointment_callback_send_info | can you send available times | repeated_full_menu | recognized=buyer_requests_available_times | response='The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?'
-- synthetic-insurance-review | appointment_callback_send_info | I need email first | repeated_full_menu | recognized=buyer_wants_email_before_booking | response='The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?'
-- synthetic-insurance-review | asr_repair | yeah that would be good | repeated_full_menu | recognized=appointment_interest | response='The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?'
+- synthetic-insurance-review | asr_repair | yeah that would be good | repeated_full_menu | recognized=permission_acknowledgement | response='The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?'
 - synthetic-insurance-review | asr_repair | repair timings are usually pretty long | repeated_full_menu | recognized=pain_confirmed | response='The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?'
-- synthetic-b2b-saas-operations | appointment_callback_send_info | can you send available times | repeated_full_menu | recognized=buyer_requests_available_times | response='The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?'
-- synthetic-b2b-saas-operations | appointment_callback_send_info | I need email first | repeated_full_menu | recognized=buyer_wants_email_before_booking | response='The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?'
-- synthetic-b2b-saas-operations | asr_repair | yeah that would be good | repeated_full_menu | recognized=appointment_interest | response='The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?'
+- synthetic-b2b-saas-operations | asr_repair | yeah that would be good | repeated_full_menu | recognized=permission_acknowledgement | response='The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?'
 - synthetic-b2b-saas-operations | asr_repair | repair timings are usually pretty long | repeated_full_menu | recognized=pain_confirmed | response='The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?'
-- synthetic-automotive-service-review | appointment_callback_send_info | can you send available times | repeated_full_menu | recognized=buyer_requests_available_times | response='The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?'
+- synthetic-automotive-service-review | asr_repair | yeah that would be good | repeated_full_menu | recognized=permission_acknowledgement | response='The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?'
+- synthetic-automotive-service-review | asr_repair | repair timings are usually pretty long | repeated_full_menu | recognized=pain_confirmed | response='The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?'
+- synthetic-home-services-estimate | asr_repair | yeah that would be good | repeated_full_menu | recognized=permission_acknowledgement | response='The quick check is whether any of these areas is worth a short inspection or estimate review: service need, scheduling urgency, or estimate or property details. If not, I can stop here; which part should I check first?'
+- synthetic-home-services-estimate | asr_repair | repair timings are usually pretty long | repeated_full_menu | recognized=pain_confirmed | response='The quick check is whether any of these areas is worth a short inspection or estimate review: service need, scheduling urgency, or estimate or property details. If not, I can stop here; which part should I check first?'
 
 ## Campaign-Specific Or Universal
 Failures appearing in three or more campaigns are treated as likely universal-policy/runtime gaps.

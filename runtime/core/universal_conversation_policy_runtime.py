@@ -155,6 +155,16 @@ SOCIAL_CONVERSATION_MANAGEMENT_MOVES = {
     "abusive_or_hostile_buyer",
 }
 
+NEXT_STEP_DISCIPLINE_MOVES = {
+    "send_info_request",
+    "callback_request",
+    "buyer_requests_available_times",
+    "buyer_wants_email_before_booking",
+    "buyer_defers_to_later",
+    "appointment_interest",
+    "callback_time_provided",
+}
+
 TERMINAL_RESPONSE_SHAPE_MOVES = {"permission_to_continue_denied", "stop_request"}
 
 
@@ -175,6 +185,22 @@ def _previous_agent_response(session_state: dict | None) -> str:
 
 def _previous_question_type(session_state: dict | None) -> str:
     return session_policy.question_type_from_response(_previous_agent_response(session_state))
+
+
+def _previous_response_asked_next_step_timing(session_state: dict | None) -> bool:
+    previous = normalize_transcript(_previous_agent_response(session_state))
+    return _contains_any(
+        previous,
+        {
+            "callback window",
+            "time window",
+            "day or time",
+            "what time",
+            "which day",
+            "preferred window",
+            "later window",
+        },
+    )
 
 
 def _is_generic_campaign(campaign: dict | None) -> bool:
@@ -354,6 +380,17 @@ def _agreement_verb(phrase: str) -> str:
     return "is"
 
 
+def _prior_appointment_readiness(session_state: dict | None) -> str:
+    order = {"none": 0, "low": 1, "medium": 2, "high": 3}
+    best = "none"
+    for turn in _turns(session_state):
+        frame = turn.get("universal_policy_frame") or ((turn.get("dialogue_manager") or {}).get("universal_policy_frame") or {})
+        readiness = str((frame or {}).get("appointment_readiness") or "none")
+        if order.get(readiness, 0) > order.get(best, 0):
+            best = readiness
+    return best
+
+
 def _short_gap_pair(campaign: dict | None) -> str:
     labels: list[str] = []
     for record in _gap_records(campaign)[:2]:
@@ -486,6 +523,19 @@ def _confirmed_gap_id(session_state: dict | None) -> str:
     confirmed = _string_items(memory.get("confirmed_gaps"))
     if confirmed:
         return confirmed[0]
+    return ""
+
+
+def _prior_universal_gap_id(session_state: dict | None) -> str:
+    for turn in reversed(_turns(session_state)):
+        frame = turn.get("universal_policy_frame") if isinstance(turn, dict) else None
+        if not isinstance(frame, dict):
+            frame = ((turn.get("dialogue_manager") or {}).get("universal_policy_frame") if isinstance(turn, dict) else None)
+        if not isinstance(frame, dict):
+            continue
+        gap = str(frame.get("confirmed_gap_id") or frame.get("selected_gap") or "").strip()
+        if gap and frame.get("buyer_move_id") in {"pain_confirmed", "tentative_gap_interest", "implication_confirmed"}:
+            return gap
     return ""
 
 
@@ -690,7 +740,10 @@ def _pain_progression_metadata(
     session_state: dict | None,
     contextual_semantics: dict | None,
 ) -> dict[str, Any]:
-    target_gap = str((contextual_semantics or {}).get("target_gap") or "") or _confirmed_gap_id(session_state)
+    if buyer_move_id in NEXT_STEP_DISCIPLINE_MOVES:
+        target_gap = _prior_universal_gap_id(session_state) or _confirmed_gap_id(session_state)
+    else:
+        target_gap = str((contextual_semantics or {}).get("target_gap") or "") or _confirmed_gap_id(session_state)
     if not target_gap and buyer_move_id in {"pain_confirmed", "implication_confirmed", "implication_weak_or_denied", "implication_unclear"}:
         target_gap = _pending_tentative_gap_id(session_state)
     if not target_gap:
@@ -752,6 +805,25 @@ def _pain_progression_metadata(
             implication_check_required=True,
             next_best_sales_action="clarify_implication",
         )
+    elif buyer_move_id in NEXT_STEP_DISCIPLINE_MOVES:
+        prior_readiness = _prior_appointment_readiness(session_state)
+        readiness = prior_readiness if prior_readiness in {"medium", "high"} else "none"
+        next_action_by_move = {
+            "send_info_request": "capture_send_info_contact",
+            "callback_request": "clarify_callback_window",
+            "buyer_requests_available_times": "offer_window_without_calendar_claim",
+            "buyer_wants_email_before_booking": "capture_email_before_booking",
+            "buyer_defers_to_later": "clarify_later_window" if readiness in {"medium", "high"} else "reduce_pressure",
+            "appointment_interest": "clarify_callback_window",
+            "callback_time_provided": "confirm_callback_time",
+        }
+        if buyer_move_id == "callback_time_provided" and target_gap and readiness == "none":
+            readiness = "high"
+        base.update(
+            sales_progression_stage="next_step_capture",
+            appointment_readiness=readiness,
+            next_best_sales_action=next_action_by_move.get(buyer_move_id, "capture_next_step"),
+        )
     return base
 
 
@@ -794,12 +866,14 @@ def _impact_confirmed_response(frame: dict[str, Any], campaign: dict | None) -> 
         "risk": "creating risk",
         "quality": "already becoming a real issue",
     }.get(signal_type, "already creating impact")
-    return f"If it is already {signal_phrase}, a short review with {owner_role} is probably the right next step. What time should I note for the callback?"
+    return f"If it is already {signal_phrase}, the next useful step is a short review with {owner_role}. What callback window should I note?"
 
 
 def _response_shape_category(buyer_move_id: str) -> str | None:
     if buyer_move_id in SOCIAL_CONVERSATION_MANAGEMENT_MOVES:
         return "social_conversation_management"
+    if buyer_move_id in NEXT_STEP_DISCIPLINE_MOVES:
+        return "appointment_callback_send_info"
     if buyer_move_id in DIRECT_PRODUCT_VALUE_MOVES:
         return "direct_product_value_questions"
     if buyer_move_id in OBJECTION_MOVES:
@@ -918,6 +992,8 @@ def _buyer_move_from_context(contextual_semantics: dict | None, transcript: str)
         return "no_pain_clear"
     if semantic in {"callback_time_confirmed", "appointment_time_confirmed"}:
         return "callback_time_provided"
+    if semantic == "purpose_explanation_accepted":
+        return "why_are_you_asking"
     if normalized in CLEAN_ACKNOWLEDGEMENTS:
         return "permission_acknowledgement"
     if "why" in normalized and "asking" in normalized:
@@ -1118,7 +1194,7 @@ def classify_universal_buyer_move_from_transcript(
         return _recognition("buyer_defers_to_later", reason="defer_to_later_phrase", confidence="high", category="appointment_callback_send_info")
     if _looks_like_time(normalized) and _contains_any(normalized, {"works", "work", "is good", "would be good"}):
         return _recognition("callback_time_provided", reason="time_phrase_with_acceptance", confidence="high", category="appointment_callback_send_info")
-    if "that would be good" in normalized:
+    if "that would be good" in normalized and _previous_response_asked_next_step_timing(session_state):
         return _recognition("appointment_interest", reason="clean_positive_after_progression", confidence="medium", category="appointment_callback_send_info")
 
     pending_tentative_gap = _pending_tentative_gap_id(session_state)
@@ -1369,6 +1445,29 @@ def build_universal_conversation_policy_frame(
     }
     frame.update(progression)
     frame.update(_social_repair_metadata(buyer_move_id))
+    if buyer_move_id in NEXT_STEP_DISCIPLINE_MOVES and frame.get("confirmed_gap_id"):
+        frame["should_preserve_confirmed_gaps"] = True
+        frame["should_preserve_cleared_gaps"] = True
+    if buyer_move_id in NEXT_STEP_DISCIPLINE_MOVES:
+        frame.update(
+            {
+                "next_step_discipline_required": True,
+                "callback_capture_required": buyer_move_id in {"callback_request", "appointment_interest"},
+                "contact_capture_required": buyer_move_id in {"send_info_request", "buyer_wants_email_before_booking"},
+                "should_preserve_appointment_readiness": frame.get("appointment_readiness") in {"medium", "high"},
+                "timing_specificity": "concrete" if buyer_move_id == "callback_time_provided" else "vague_or_missing",
+            }
+        )
+    else:
+        frame.update(
+            {
+                "next_step_discipline_required": False,
+                "callback_capture_required": False,
+                "contact_capture_required": False,
+                "should_preserve_appointment_readiness": False,
+                "timing_specificity": "none",
+            }
+        )
     return frame
 
 
@@ -1407,11 +1506,16 @@ def should_enforce_response_shape(
     if (frame or {}).get("asr_repair_required"):
         return False
     confidence = str((frame or {}).get("recognition_confidence") or "")
-    if confidence != "high" and buyer_move_id not in PAIN_PROGRESSION_MOVES | SOCIAL_CONVERSATION_MANAGEMENT_MOVES:
+    if (
+        confidence != "high"
+        and buyer_move_id not in PAIN_PROGRESSION_MOVES | SOCIAL_CONVERSATION_MANAGEMENT_MOVES | NEXT_STEP_DISCIPLINE_MOVES
+    ):
         return False
     if buyer_move_id in PAIN_PROGRESSION_MOVES and confidence not in {"high", "medium"}:
         return False
     if buyer_move_id in SOCIAL_CONVERSATION_MANAGEMENT_MOVES and confidence not in {"high", "medium"}:
+        return False
+    if buyer_move_id in NEXT_STEP_DISCIPLINE_MOVES and confidence not in {"high", "medium"}:
         return False
     if buyer_move_id == "confusion_not_clear" and _is_routesignal_campaign(campaign):
         normalized = str(((frame or {}).get("detection") or {}).get("normalized_transcript") or "")
@@ -1488,6 +1592,26 @@ def render_universal_response_outline(
         return "Understood. If it is only minor right now, I will not push a review. We can leave it there."
     if buyer_move_id == "implication_unclear":
         return "Understood. Is it creating a real impact now, or more of a possible concern?"
+    if buyer_move_id == "send_info_request":
+        if str((frame or {}).get("appointment_readiness") or "") in {"medium", "high"}:
+            return f"Sure. Since this already sounds worth review, I can note details for {owner_role}. What email or callback window should I use?"
+        return f"Sure. I can note a request for details. What email should {owner_role} use?"
+    if buyer_move_id == "callback_request":
+        if "next week" in normalized:
+            return "Sure. Next week works as a direction. Which day or time window should I note?"
+        return "Sure. What day or time window should I note?"
+    if buyer_move_id == "buyer_requests_available_times":
+        return f"I cannot send a live calendar from this call. I can note a preferred window for {owner_role}. What works?"
+    if buyer_move_id == "buyer_wants_email_before_booking":
+        return f"Sure. I can note that you want email first. What email should {owner_role} use?"
+    if buyer_move_id == "buyer_defers_to_later":
+        if str((frame or {}).get("appointment_readiness") or "") in {"medium", "high"}:
+            return "Understood. Timing is not right now. What later window should I note?"
+        return "Understood. I will not push it now."
+    if buyer_move_id == "appointment_interest":
+        return "Good. What day or time window should I note?"
+    if buyer_move_id == "callback_time_provided":
+        return f"Got it. I'll note that time for {owner_role} to follow up."
 
     if buyer_move_id == "product_detail_question":
         if _is_routesignal_campaign(campaign):
@@ -1588,7 +1712,16 @@ def universal_response_shape_continuity(
         return None
     buyer_move_id = str((frame or {}).get("buyer_move_id") or "")
     category = _response_shape_category(buyer_move_id) or "universal_response_shape"
-    action_id = "end_call_stop_request" if buyer_move_id in TERMINAL_RESPONSE_SHAPE_MOVES else "continue_with_session_policy"
+    if buyer_move_id in TERMINAL_RESPONSE_SHAPE_MOVES:
+        action_id = "end_call_stop_request"
+    elif buyer_move_id == "callback_time_provided":
+        action_id = "confirm_callback_and_end"
+    elif buyer_move_id in {"send_info_request", "buyer_wants_email_before_booking"}:
+        action_id = "request_send_info_contact"
+    elif buyer_move_id in {"callback_request", "buyer_requests_available_times", "buyer_defers_to_later", "appointment_interest"}:
+        action_id = "request_callback_time"
+    else:
+        action_id = "continue_with_session_policy"
     enforced_frame = dict(frame)
     enforced_frame.update(
         {

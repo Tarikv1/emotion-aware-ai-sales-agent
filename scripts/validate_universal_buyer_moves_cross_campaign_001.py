@@ -606,7 +606,11 @@ def evaluate_result(
     if category_name == "appointment_callback_send_info":
         if "tomorrow at 3" in transcript and call != "schedule-and-end":
             add_failure(failures, "wrong_call_control", "usable time did not schedule-and-end")
-        if "available times" in transcript and ("calendar" in response and "send" in response):
+        if (
+            "available times" in transcript
+            and ("calendar" in response and "send" in response)
+            and not any(boundary in response for boundary in ["cannot send", "can't send", "can not send", "do not have", "no live calendar"])
+        ):
             add_failure(failures, "side_effect_boundary_failure", "claimed calendar/email availability action")
         if "send me details" in transcript and not any(word in response for word in ["email", "contact", "send", "summary"]):
             add_failure(failures, "support_boundary_wrong", "send-info request did not open contact/summary path")

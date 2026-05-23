@@ -46,8 +46,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -78,6 +80,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -93,13 +96,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -134,8 +139,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "slow_down_or_speak_faster",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -167,6 +174,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "adjust_cadence_without_state_change",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -182,13 +190,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "speech_rate",
-            "speech_adjustment_requested": true
+            "speech_adjustment_requested": true,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -206,8 +216,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "slow_down_or_speak_faster",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "inbound demo follow-up slipping",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -239,6 +251,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "adjust_cadence_without_state_change",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -254,13 +267,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "speech_rate",
-        "speech_adjustment_requested": true
+        "speech_adjustment_requested": true,
+        "timing_specificity": "none"
       }
     },
     {
@@ -308,8 +323,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -340,6 +357,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -355,13 +373,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -399,8 +419,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "repeat_last_answer",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -433,6 +455,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "repeat_last_answer_without_new_claims",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -448,13 +471,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "repeat_or_rephrase",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -475,8 +500,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "repeat_last_answer",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "inbound demo follow-up slipping",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -509,6 +536,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "repeat_last_answer_without_new_claims",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -524,13 +552,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "repeat_or_rephrase",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -578,8 +608,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -610,6 +642,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -625,13 +658,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -666,8 +701,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "language_mismatch",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -699,6 +736,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_advance_until_language_repaired",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -714,13 +752,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": true,
             "social_repair_required": true,
             "social_repair_type": "language_simplification",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -738,8 +778,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "language_mismatch",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "inbound demo follow-up slipping",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -771,6 +813,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "do_not_advance_until_language_repaired",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -786,13 +829,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": true,
         "social_repair_required": true,
         "social_repair_type": "language_simplification",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -840,8 +885,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -872,6 +919,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -887,13 +935,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -928,8 +978,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "emotional_frustration",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -962,6 +1014,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "deescalate_preserve_context_or_close",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -977,13 +1030,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "friction_deescalation",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -1001,8 +1056,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "emotional_frustration",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "inbound demo follow-up slipping",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -1035,6 +1092,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "deescalate_preserve_context_or_close",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -1050,13 +1108,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "friction_deescalation",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -1106,8 +1166,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -1138,6 +1200,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -1153,13 +1216,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -1195,8 +1260,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "permission_time_pressure",
             "buyer_move_id": "permission_acknowledgement",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -1227,6 +1294,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_mark_pain_or_appointment",
             "next_best_sales_action": "ask_one_sharp_diagnostic",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -1242,13 +1310,15 @@
             "sales_progression_stage": "permission_diagnostic",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -1288,8 +1358,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "pain_tentative_pain",
             "buyer_move_id": "pain_confirmed",
+            "callback_capture_required": false,
             "confirmed_gap_id": "callbacks",
             "confirmed_gap_phrase": "callbacks",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -1321,6 +1393,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "store_confirmed_gap_preserve_cleared_gaps",
             "next_best_sales_action": "ask_implication_question",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -1336,13 +1409,15 @@
             "sales_progression_stage": "pain_confirmed_needs_implication",
             "schema_version": 1,
             "selected_gap": "callbacks",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -1379,8 +1454,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "slow_down_or_speak_faster",
+            "callback_capture_required": false,
             "confirmed_gap_id": "callbacks",
             "confirmed_gap_phrase": "callbacks",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -1412,6 +1489,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "adjust_cadence_without_state_change",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -1427,13 +1505,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "callbacks",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "speech_rate",
-            "speech_adjustment_requested": true
+            "speech_adjustment_requested": true,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -1451,8 +1531,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "slow_down_or_speak_faster",
+        "callback_capture_required": false,
         "confirmed_gap_id": "callbacks",
         "confirmed_gap_phrase": "callbacks",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -1484,6 +1566,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "adjust_cadence_without_state_change",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -1499,13 +1582,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "callbacks",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "speech_rate",
-        "speech_adjustment_requested": true
+        "speech_adjustment_requested": true,
+        "timing_specificity": "none"
       }
     },
     {
@@ -1555,8 +1640,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -1587,6 +1674,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -1602,13 +1690,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -1644,8 +1734,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "permission_time_pressure",
             "buyer_move_id": "permission_acknowledgement",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -1676,6 +1768,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_mark_pain_or_appointment",
             "next_best_sales_action": "ask_one_sharp_diagnostic",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -1691,13 +1784,15 @@
             "sales_progression_stage": "permission_diagnostic",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -1737,8 +1832,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "pain_tentative_pain",
             "buyer_move_id": "pain_confirmed",
+            "callback_capture_required": false,
             "confirmed_gap_id": "callbacks",
             "confirmed_gap_phrase": "callbacks",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -1770,6 +1867,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "store_confirmed_gap_preserve_cleared_gaps",
             "next_best_sales_action": "ask_implication_question",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -1785,13 +1883,15 @@
             "sales_progression_stage": "pain_confirmed_needs_implication",
             "schema_version": 1,
             "selected_gap": "callbacks",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -1829,8 +1929,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "confusion_challenge_repair",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "callbacks",
             "confirmed_gap_phrase": "callbacks",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -1861,6 +1963,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -1876,13 +1979,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "callbacks",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -1919,8 +2024,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "emotional_frustration",
+            "callback_capture_required": false,
             "confirmed_gap_id": "callbacks",
             "confirmed_gap_phrase": "callbacks",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -1953,6 +2060,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "deescalate_preserve_context_or_close",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -1968,13 +2076,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "callbacks",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "friction_deescalation",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -1992,8 +2102,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "emotional_frustration",
+        "callback_capture_required": false,
         "confirmed_gap_id": "callbacks",
         "confirmed_gap_phrase": "callbacks",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -2026,6 +2138,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "deescalate_preserve_context_or_close",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -2041,13 +2154,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "callbacks",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "friction_deescalation",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -2095,8 +2210,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -2127,6 +2244,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -2142,13 +2260,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -2183,8 +2303,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "small_talk",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -2216,6 +2338,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "acknowledge_without_changing_sales_memory",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -2231,13 +2354,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "light_bridge",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -2255,8 +2380,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "small_talk",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "inbound demo follow-up slipping",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -2288,6 +2415,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "acknowledge_without_changing_sales_memory",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -2303,13 +2431,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "light_bridge",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -2357,8 +2487,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -2389,6 +2521,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -2404,13 +2537,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -2445,8 +2580,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "slow_down_or_speak_faster",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -2478,6 +2615,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "adjust_cadence_without_state_change",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -2493,13 +2631,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "speech_rate",
-            "speech_adjustment_requested": true
+            "speech_adjustment_requested": true,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -2517,8 +2657,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "slow_down_or_speak_faster",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "premium pressure",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -2550,6 +2692,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "adjust_cadence_without_state_change",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -2565,13 +2708,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "speech_rate",
-        "speech_adjustment_requested": true
+        "speech_adjustment_requested": true,
+        "timing_specificity": "none"
       }
     },
     {
@@ -2619,8 +2764,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -2651,6 +2798,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -2666,13 +2814,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -2710,8 +2860,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "repeat_last_answer",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -2744,6 +2896,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "repeat_last_answer_without_new_claims",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -2759,13 +2912,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "repeat_or_rephrase",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -2786,8 +2941,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "repeat_last_answer",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "premium pressure",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -2820,6 +2977,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "repeat_last_answer_without_new_claims",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -2835,13 +2993,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "repeat_or_rephrase",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -2889,8 +3049,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -2921,6 +3083,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -2936,13 +3099,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -2977,8 +3142,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "language_mismatch",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -3010,6 +3177,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_advance_until_language_repaired",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -3025,13 +3193,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": true,
             "social_repair_required": true,
             "social_repair_type": "language_simplification",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -3049,8 +3219,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "language_mismatch",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "premium pressure",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -3082,6 +3254,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "do_not_advance_until_language_repaired",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -3097,13 +3270,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": true,
         "social_repair_required": true,
         "social_repair_type": "language_simplification",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -3151,8 +3326,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -3183,6 +3360,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -3198,13 +3376,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -3239,8 +3419,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "emotional_frustration",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -3273,6 +3455,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "deescalate_preserve_context_or_close",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -3288,13 +3471,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "friction_deescalation",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -3312,8 +3497,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "emotional_frustration",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "premium pressure",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -3346,6 +3533,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "deescalate_preserve_context_or_close",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -3361,13 +3549,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "friction_deescalation",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -3417,8 +3607,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -3449,6 +3641,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -3464,13 +3657,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -3506,8 +3701,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "permission_time_pressure",
             "buyer_move_id": "permission_acknowledgement",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -3538,6 +3735,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_mark_pain_or_appointment",
             "next_best_sales_action": "ask_one_sharp_diagnostic",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -3553,13 +3751,15 @@
             "sales_progression_stage": "permission_diagnostic",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -3599,8 +3799,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "pain_tentative_pain",
             "buyer_move_id": "pain_confirmed",
+            "callback_capture_required": false,
             "confirmed_gap_id": "premium_or_budget",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -3632,6 +3834,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "store_confirmed_gap_preserve_cleared_gaps",
             "next_best_sales_action": "ask_implication_question",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -3647,13 +3850,15 @@
             "sales_progression_stage": "pain_confirmed_needs_implication",
             "schema_version": 1,
             "selected_gap": "premium_or_budget",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -3690,8 +3895,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "slow_down_or_speak_faster",
+            "callback_capture_required": false,
             "confirmed_gap_id": "premium_or_budget",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -3723,6 +3930,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "adjust_cadence_without_state_change",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -3738,13 +3946,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "premium_or_budget",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "speech_rate",
-            "speech_adjustment_requested": true
+            "speech_adjustment_requested": true,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -3762,8 +3972,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "slow_down_or_speak_faster",
+        "callback_capture_required": false,
         "confirmed_gap_id": "premium_or_budget",
         "confirmed_gap_phrase": "premium pressure",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -3795,6 +4007,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "adjust_cadence_without_state_change",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -3810,13 +4023,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "premium_or_budget",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "speech_rate",
-        "speech_adjustment_requested": true
+        "speech_adjustment_requested": true,
+        "timing_specificity": "none"
       }
     },
     {
@@ -3866,8 +4081,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -3898,6 +4115,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -3913,13 +4131,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -3955,8 +4175,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "permission_time_pressure",
             "buyer_move_id": "permission_acknowledgement",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -3987,6 +4209,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_mark_pain_or_appointment",
             "next_best_sales_action": "ask_one_sharp_diagnostic",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -4002,13 +4225,15 @@
             "sales_progression_stage": "permission_diagnostic",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -4048,8 +4273,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "pain_tentative_pain",
             "buyer_move_id": "pain_confirmed",
+            "callback_capture_required": false,
             "confirmed_gap_id": "premium_or_budget",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -4081,6 +4308,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "store_confirmed_gap_preserve_cleared_gaps",
             "next_best_sales_action": "ask_implication_question",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -4096,13 +4324,15 @@
             "sales_progression_stage": "pain_confirmed_needs_implication",
             "schema_version": 1,
             "selected_gap": "premium_or_budget",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -4140,8 +4370,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "confusion_challenge_repair",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "premium_or_budget",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -4172,6 +4404,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -4187,13 +4420,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "premium_or_budget",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -4230,8 +4465,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "emotional_frustration",
+            "callback_capture_required": false,
             "confirmed_gap_id": "premium_or_budget",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -4264,6 +4501,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "deescalate_preserve_context_or_close",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -4279,13 +4517,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "premium_or_budget",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "friction_deescalation",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -4303,8 +4543,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "emotional_frustration",
+        "callback_capture_required": false,
         "confirmed_gap_id": "premium_or_budget",
         "confirmed_gap_phrase": "premium pressure",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -4337,6 +4579,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "deescalate_preserve_context_or_close",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -4352,13 +4595,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "premium_or_budget",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "friction_deescalation",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -4406,8 +4651,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -4438,6 +4685,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -4453,13 +4701,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -4494,8 +4744,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "small_talk",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "premium pressure",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -4527,6 +4779,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "acknowledge_without_changing_sales_memory",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -4542,13 +4795,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "light_bridge",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -4566,8 +4821,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "small_talk",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "premium pressure",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -4599,6 +4856,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "acknowledge_without_changing_sales_memory",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -4614,13 +4872,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "light_bridge",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -4668,8 +4928,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -4700,6 +4962,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -4715,13 +4978,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -4756,8 +5021,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "slow_down_or_speak_faster",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -4789,6 +5056,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "adjust_cadence_without_state_change",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -4804,13 +5072,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "speech_rate",
-            "speech_adjustment_requested": true
+            "speech_adjustment_requested": true,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -4828,8 +5098,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "slow_down_or_speak_faster",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "manual work",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -4861,6 +5133,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "adjust_cadence_without_state_change",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -4876,13 +5149,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "speech_rate",
-        "speech_adjustment_requested": true
+        "speech_adjustment_requested": true,
+        "timing_specificity": "none"
       }
     },
     {
@@ -4930,8 +5205,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -4962,6 +5239,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -4977,13 +5255,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -5021,8 +5301,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "repeat_last_answer",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -5055,6 +5337,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "repeat_last_answer_without_new_claims",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -5070,13 +5353,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "repeat_or_rephrase",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -5097,8 +5382,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "repeat_last_answer",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "manual work",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -5131,6 +5418,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "repeat_last_answer_without_new_claims",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -5146,13 +5434,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "repeat_or_rephrase",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -5200,8 +5490,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -5232,6 +5524,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -5247,13 +5540,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -5288,8 +5583,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "language_mismatch",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -5321,6 +5618,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_advance_until_language_repaired",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -5336,13 +5634,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": true,
             "social_repair_required": true,
             "social_repair_type": "language_simplification",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -5360,8 +5660,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "language_mismatch",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "manual work",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -5393,6 +5695,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "do_not_advance_until_language_repaired",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -5408,13 +5711,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": true,
         "social_repair_required": true,
         "social_repair_type": "language_simplification",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -5462,8 +5767,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -5494,6 +5801,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -5509,13 +5817,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -5550,8 +5860,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "emotional_frustration",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -5584,6 +5896,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "deescalate_preserve_context_or_close",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -5599,13 +5912,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "friction_deescalation",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -5623,8 +5938,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "emotional_frustration",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "manual work",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -5657,6 +5974,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "deescalate_preserve_context_or_close",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -5672,13 +5990,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "friction_deescalation",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -5728,8 +6048,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -5760,6 +6082,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -5775,13 +6098,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -5817,8 +6142,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "permission_time_pressure",
             "buyer_move_id": "permission_acknowledgement",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -5849,6 +6176,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_mark_pain_or_appointment",
             "next_best_sales_action": "ask_one_sharp_diagnostic",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -5864,13 +6192,15 @@
             "sales_progression_stage": "permission_diagnostic",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -5910,8 +6240,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "pain_tentative_pain",
             "buyer_move_id": "pain_confirmed",
+            "callback_capture_required": false,
             "confirmed_gap_id": "manual_work",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -5943,6 +6275,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "store_confirmed_gap_preserve_cleared_gaps",
             "next_best_sales_action": "ask_implication_question",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -5958,13 +6291,15 @@
             "sales_progression_stage": "pain_confirmed_needs_implication",
             "schema_version": 1,
             "selected_gap": "manual_work",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -6001,8 +6336,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "slow_down_or_speak_faster",
+            "callback_capture_required": false,
             "confirmed_gap_id": "manual_work",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -6034,6 +6371,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "adjust_cadence_without_state_change",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -6049,13 +6387,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "manual_work",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "speech_rate",
-            "speech_adjustment_requested": true
+            "speech_adjustment_requested": true,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -6073,8 +6413,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "slow_down_or_speak_faster",
+        "callback_capture_required": false,
         "confirmed_gap_id": "manual_work",
         "confirmed_gap_phrase": "manual work",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -6106,6 +6448,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "adjust_cadence_without_state_change",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -6121,13 +6464,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "manual_work",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "speech_rate",
-        "speech_adjustment_requested": true
+        "speech_adjustment_requested": true,
+        "timing_specificity": "none"
       }
     },
     {
@@ -6177,8 +6522,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -6209,6 +6556,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -6224,13 +6572,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -6266,8 +6616,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "permission_time_pressure",
             "buyer_move_id": "permission_acknowledgement",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -6298,6 +6650,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_mark_pain_or_appointment",
             "next_best_sales_action": "ask_one_sharp_diagnostic",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -6313,13 +6666,15 @@
             "sales_progression_stage": "permission_diagnostic",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -6359,8 +6714,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "pain_tentative_pain",
             "buyer_move_id": "pain_confirmed",
+            "callback_capture_required": false,
             "confirmed_gap_id": "manual_work",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -6392,6 +6749,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "store_confirmed_gap_preserve_cleared_gaps",
             "next_best_sales_action": "ask_implication_question",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -6407,13 +6765,15 @@
             "sales_progression_stage": "pain_confirmed_needs_implication",
             "schema_version": 1,
             "selected_gap": "manual_work",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -6451,8 +6811,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "confusion_challenge_repair",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "manual_work",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -6483,6 +6845,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -6498,13 +6861,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "manual_work",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -6541,8 +6906,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "emotional_frustration",
+            "callback_capture_required": false,
             "confirmed_gap_id": "manual_work",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -6575,6 +6942,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "deescalate_preserve_context_or_close",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -6590,13 +6958,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "manual_work",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "friction_deescalation",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -6614,8 +6984,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "emotional_frustration",
+        "callback_capture_required": false,
         "confirmed_gap_id": "manual_work",
         "confirmed_gap_phrase": "manual work",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -6648,6 +7020,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "deescalate_preserve_context_or_close",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -6663,13 +7036,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "manual_work",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "friction_deescalation",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -6717,8 +7092,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -6749,6 +7126,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -6764,13 +7142,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -6805,8 +7185,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "small_talk",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "manual work",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -6838,6 +7220,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "acknowledge_without_changing_sales_memory",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -6853,13 +7236,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "light_bridge",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -6877,8 +7262,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "small_talk",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "manual work",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -6910,6 +7297,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "acknowledge_without_changing_sales_memory",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -6925,13 +7313,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "light_bridge",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -6979,8 +7369,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -7011,6 +7403,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -7026,13 +7419,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -7067,8 +7462,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "slow_down_or_speak_faster",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -7100,6 +7497,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "adjust_cadence_without_state_change",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -7115,13 +7513,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "speech_rate",
-            "speech_adjustment_requested": true
+            "speech_adjustment_requested": true,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -7139,8 +7539,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "slow_down_or_speak_faster",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "repair timing",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -7172,6 +7574,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "adjust_cadence_without_state_change",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -7187,13 +7590,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "speech_rate",
-        "speech_adjustment_requested": true
+        "speech_adjustment_requested": true,
+        "timing_specificity": "none"
       }
     },
     {
@@ -7241,8 +7646,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -7273,6 +7680,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -7288,13 +7696,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -7332,8 +7742,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "repeat_last_answer",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -7366,6 +7778,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "repeat_last_answer_without_new_claims",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -7381,13 +7794,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "repeat_or_rephrase",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -7408,8 +7823,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "repeat_last_answer",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "repair timing",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -7442,6 +7859,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "repeat_last_answer_without_new_claims",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -7457,13 +7875,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "repeat_or_rephrase",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -7511,8 +7931,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -7543,6 +7965,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -7558,13 +7981,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -7599,8 +8024,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "language_mismatch",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -7632,6 +8059,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_advance_until_language_repaired",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -7647,13 +8075,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": true,
             "social_repair_required": true,
             "social_repair_type": "language_simplification",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -7671,8 +8101,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "language_mismatch",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "repair timing",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -7704,6 +8136,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "do_not_advance_until_language_repaired",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -7719,13 +8152,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": true,
         "social_repair_required": true,
         "social_repair_type": "language_simplification",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -7773,8 +8208,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -7805,6 +8242,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -7820,13 +8258,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -7861,8 +8301,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "emotional_frustration",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -7895,6 +8337,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "deescalate_preserve_context_or_close",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -7910,13 +8353,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "friction_deescalation",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -7934,8 +8379,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "emotional_frustration",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "repair timing",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -7968,6 +8415,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "deescalate_preserve_context_or_close",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -7983,13 +8431,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "friction_deescalation",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -8039,8 +8489,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -8071,6 +8523,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -8086,13 +8539,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -8128,8 +8583,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "permission_time_pressure",
             "buyer_move_id": "permission_acknowledgement",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -8160,6 +8617,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_mark_pain_or_appointment",
             "next_best_sales_action": "ask_one_sharp_diagnostic",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -8175,13 +8633,15 @@
             "sales_progression_stage": "permission_diagnostic",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -8221,8 +8681,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "pain_tentative_pain",
             "buyer_move_id": "pain_confirmed",
+            "callback_capture_required": false,
             "confirmed_gap_id": "repair_timing",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -8254,6 +8716,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "store_confirmed_gap_preserve_cleared_gaps",
             "next_best_sales_action": "ask_implication_question",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -8269,13 +8732,15 @@
             "sales_progression_stage": "pain_confirmed_needs_implication",
             "schema_version": 1,
             "selected_gap": "repair_timing",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -8312,8 +8777,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "slow_down_or_speak_faster",
+            "callback_capture_required": false,
             "confirmed_gap_id": "repair_timing",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -8345,6 +8812,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "adjust_cadence_without_state_change",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -8360,13 +8828,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "repair_timing",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "speech_rate",
-            "speech_adjustment_requested": true
+            "speech_adjustment_requested": true,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -8384,8 +8854,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "slow_down_or_speak_faster",
+        "callback_capture_required": false,
         "confirmed_gap_id": "repair_timing",
         "confirmed_gap_phrase": "repair timing",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -8417,6 +8889,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "adjust_cadence_without_state_change",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -8432,13 +8905,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "repair_timing",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "speech_rate",
-        "speech_adjustment_requested": true
+        "speech_adjustment_requested": true,
+        "timing_specificity": "none"
       }
     },
     {
@@ -8488,8 +8963,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -8520,6 +8997,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -8535,13 +9013,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -8577,8 +9057,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "permission_time_pressure",
             "buyer_move_id": "permission_acknowledgement",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -8609,6 +9091,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_mark_pain_or_appointment",
             "next_best_sales_action": "ask_one_sharp_diagnostic",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -8624,13 +9107,15 @@
             "sales_progression_stage": "permission_diagnostic",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -8670,8 +9155,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "pain_tentative_pain",
             "buyer_move_id": "pain_confirmed",
+            "callback_capture_required": false,
             "confirmed_gap_id": "repair_timing",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -8703,6 +9190,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "store_confirmed_gap_preserve_cleared_gaps",
             "next_best_sales_action": "ask_implication_question",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -8718,13 +9206,15 @@
             "sales_progression_stage": "pain_confirmed_needs_implication",
             "schema_version": 1,
             "selected_gap": "repair_timing",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -8762,8 +9252,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "confusion_challenge_repair",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "repair_timing",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -8794,6 +9286,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -8809,13 +9302,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "repair_timing",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -8852,8 +9347,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "emotional_frustration",
+            "callback_capture_required": false,
             "confirmed_gap_id": "repair_timing",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -8886,6 +9383,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "deescalate_preserve_context_or_close",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -8901,13 +9399,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "repair_timing",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "friction_deescalation",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -8925,8 +9425,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "emotional_frustration",
+        "callback_capture_required": false,
         "confirmed_gap_id": "repair_timing",
         "confirmed_gap_phrase": "repair timing",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -8959,6 +9461,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "deescalate_preserve_context_or_close",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -8974,13 +9477,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "repair_timing",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "friction_deescalation",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -9028,8 +9533,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -9060,6 +9567,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -9075,13 +9583,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -9116,8 +9626,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "small_talk",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "repair timing",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -9149,6 +9661,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "acknowledge_without_changing_sales_memory",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -9164,13 +9677,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "light_bridge",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -9188,8 +9703,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "small_talk",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "repair timing",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -9221,6 +9738,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "acknowledge_without_changing_sales_memory",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -9236,13 +9754,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "light_bridge",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -9290,8 +9810,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -9322,6 +9844,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -9337,13 +9860,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -9378,8 +9903,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "slow_down_or_speak_faster",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -9411,6 +9938,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "adjust_cadence_without_state_change",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -9426,13 +9954,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "speech_rate",
-            "speech_adjustment_requested": true
+            "speech_adjustment_requested": true,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -9450,8 +9980,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "slow_down_or_speak_faster",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "service need",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -9483,6 +10015,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "adjust_cadence_without_state_change",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -9498,13 +10031,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "speech_rate",
-        "speech_adjustment_requested": true
+        "speech_adjustment_requested": true,
+        "timing_specificity": "none"
       }
     },
     {
@@ -9552,8 +10087,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -9584,6 +10121,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -9599,13 +10137,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -9643,8 +10183,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "repeat_last_answer",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -9677,6 +10219,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "repeat_last_answer_without_new_claims",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -9692,13 +10235,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "repeat_or_rephrase",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -9719,8 +10264,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "repeat_last_answer",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "service need",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -9753,6 +10300,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "repeat_last_answer_without_new_claims",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -9768,13 +10316,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "repeat_or_rephrase",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -9822,8 +10372,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -9854,6 +10406,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -9869,13 +10422,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -9910,8 +10465,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "language_mismatch",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -9943,6 +10500,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_advance_until_language_repaired",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -9958,13 +10516,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": true,
             "social_repair_required": true,
             "social_repair_type": "language_simplification",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -9982,8 +10542,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "language_mismatch",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "service need",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -10015,6 +10577,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "do_not_advance_until_language_repaired",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -10030,13 +10593,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": true,
         "social_repair_required": true,
         "social_repair_type": "language_simplification",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -10084,8 +10649,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -10116,6 +10683,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -10131,13 +10699,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -10172,8 +10742,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "emotional_frustration",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -10206,6 +10778,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "deescalate_preserve_context_or_close",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -10221,13 +10794,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "friction_deescalation",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -10245,8 +10820,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "emotional_frustration",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "service need",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -10279,6 +10856,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "deescalate_preserve_context_or_close",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -10294,13 +10872,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "friction_deescalation",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -10350,8 +10930,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -10382,6 +10964,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -10397,13 +10980,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -10439,8 +11024,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "permission_time_pressure",
             "buyer_move_id": "permission_acknowledgement",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -10471,6 +11058,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_mark_pain_or_appointment",
             "next_best_sales_action": "ask_one_sharp_diagnostic",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -10486,13 +11074,15 @@
             "sales_progression_stage": "permission_diagnostic",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -10532,8 +11122,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "pain_tentative_pain",
             "buyer_move_id": "pain_confirmed",
+            "callback_capture_required": false,
             "confirmed_gap_id": "service_need",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -10565,6 +11157,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "store_confirmed_gap_preserve_cleared_gaps",
             "next_best_sales_action": "ask_implication_question",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -10580,13 +11173,15 @@
             "sales_progression_stage": "pain_confirmed_needs_implication",
             "schema_version": 1,
             "selected_gap": "service_need",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -10623,8 +11218,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "slow_down_or_speak_faster",
+            "callback_capture_required": false,
             "confirmed_gap_id": "service_need",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -10656,6 +11253,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "adjust_cadence_without_state_change",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -10671,13 +11269,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "service_need",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "speech_rate",
-            "speech_adjustment_requested": true
+            "speech_adjustment_requested": true,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -10695,8 +11295,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "slow_down_or_speak_faster",
+        "callback_capture_required": false,
         "confirmed_gap_id": "service_need",
         "confirmed_gap_phrase": "service need",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -10728,6 +11330,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "adjust_cadence_without_state_change",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -10743,13 +11346,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "service_need",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "speech_rate",
-        "speech_adjustment_requested": true
+        "speech_adjustment_requested": true,
+        "timing_specificity": "none"
       }
     },
     {
@@ -10799,8 +11404,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -10831,6 +11438,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -10846,13 +11454,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -10888,8 +11498,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "permission_time_pressure",
             "buyer_move_id": "permission_acknowledgement",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -10920,6 +11532,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_mark_pain_or_appointment",
             "next_best_sales_action": "ask_one_sharp_diagnostic",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -10935,13 +11548,15 @@
             "sales_progression_stage": "permission_diagnostic",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -10981,8 +11596,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "pain_tentative_pain",
             "buyer_move_id": "pain_confirmed",
+            "callback_capture_required": false,
             "confirmed_gap_id": "service_need",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -11014,6 +11631,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "store_confirmed_gap_preserve_cleared_gaps",
             "next_best_sales_action": "ask_implication_question",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": true,
@@ -11029,13 +11647,15 @@
             "sales_progression_stage": "pain_confirmed_needs_implication",
             "schema_version": 1,
             "selected_gap": "service_need",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -11073,8 +11693,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "confusion_challenge_repair",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "service_need",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -11105,6 +11727,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -11120,13 +11743,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "service_need",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -11163,8 +11788,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "emotional_frustration",
+            "callback_capture_required": false,
             "confirmed_gap_id": "service_need",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -11197,6 +11824,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "deescalate_preserve_context_or_close",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -11212,13 +11840,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "service_need",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": true,
             "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "friction_deescalation",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -11236,8 +11866,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "emotional_frustration",
+        "callback_capture_required": false,
         "confirmed_gap_id": "service_need",
         "confirmed_gap_phrase": "service need",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -11270,6 +11902,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "deescalate_preserve_context_or_close",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -11285,13 +11918,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "service_need",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "friction_deescalation",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     },
     {
@@ -11339,8 +11974,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "fallback",
             "buyer_move_id": "confusion_not_clear",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "opening",
             "detection": {
               "applied": false,
@@ -11371,6 +12008,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "do_not_change_gap_state_until_clarified",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -11386,13 +12024,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
             "social_repair_type": "none",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         },
         {
@@ -11427,8 +12067,10 @@
             "asr_repair_turn_count": 0,
             "buyer_move_category": "social_conversation_management",
             "buyer_move_id": "small_talk",
+            "callback_capture_required": false,
             "confirmed_gap_id": "",
             "confirmed_gap_phrase": "service need",
+            "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
               "applied": false,
@@ -11460,6 +12102,7 @@
             "local_llm_calls_made": false,
             "memory_policy": "acknowledge_without_changing_sales_memory",
             "next_best_sales_action": "none",
+            "next_step_discipline_required": false,
             "one_next_action_only": true,
             "opens_prod_102": false,
             "pain_development_required": false,
@@ -11475,13 +12118,15 @@
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "",
+            "should_preserve_appointment_readiness": false,
             "should_preserve_cleared_gaps": false,
             "should_preserve_confirmed_gaps": false,
             "should_preserve_previous_question": true,
             "simplified_language_required": false,
             "social_repair_required": true,
             "social_repair_type": "light_bridge",
-            "speech_adjustment_requested": false
+            "speech_adjustment_requested": false,
+            "timing_specificity": "none"
           }
         }
       ],
@@ -11499,8 +12144,10 @@
         "asr_repair_turn_count": 0,
         "buyer_move_category": "social_conversation_management",
         "buyer_move_id": "small_talk",
+        "callback_capture_required": false,
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "service need",
+        "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
@@ -11532,6 +12179,7 @@
         "local_llm_calls_made": false,
         "memory_policy": "acknowledge_without_changing_sales_memory",
         "next_best_sales_action": "none",
+        "next_step_discipline_required": false,
         "one_next_action_only": true,
         "opens_prod_102": false,
         "pain_development_required": false,
@@ -11547,13 +12195,15 @@
         "sales_progression_stage": "none",
         "schema_version": 1,
         "selected_gap": "",
+        "should_preserve_appointment_readiness": false,
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false,
         "should_preserve_previous_question": true,
         "simplified_language_required": false,
         "social_repair_required": true,
         "social_repair_type": "light_bridge",
-        "speech_adjustment_requested": false
+        "speech_adjustment_requested": false,
+        "timing_specificity": "none"
       }
     }
   ],

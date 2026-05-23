@@ -129,7 +129,7 @@
           "manual_work"
         ],
         "creates_calendar_event": false,
-        "final_response": "Confirmed. I will note that time for the operations fit review. Goodbye.",
+        "final_response": "Got it. I'll note that time for the implementation specialist to follow up.",
         "lead_followup_state": {
           "appointment": {
             "confirmation_text": "workflow review time captured",
@@ -189,7 +189,7 @@
         "sends_email": false,
         "target_gap": "manual_work",
         "transcript": "tomorrow at 3 works",
-        "tts_input_text": "Confirmed. I will note that time for the operations fit review. Goodbye.",
+        "tts_input_text": "Got it. I'll note that time for the implementation specialist to follow up.",
         "vertical_id": "b2b_saas",
         "writes_crm": false
       }
@@ -332,7 +332,7 @@
           "premium_or_budget"
         ],
         "creates_calendar_event": false,
-        "final_response": "Confirmed. I will note that time for the licensed coverage review. Goodbye.",
+        "final_response": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
         "lead_followup_state": {
           "appointment": {
             "confirmation_text": "workflow review time captured",
@@ -392,7 +392,7 @@
         "sends_email": false,
         "target_gap": "premium_or_budget",
         "transcript": "tomorrow at 3 works",
-        "tts_input_text": "Confirmed. I will note that time for the licensed coverage review. Goodbye.",
+        "tts_input_text": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
         "vertical_id": "insurance",
         "writes_crm": false
       }
@@ -640,7 +640,7 @@
             "turn_index": 3
           },
           {
-            "agent_response": "Confirmed. I will note that time for the operations fit review. Goodbye.",
+            "agent_response": "Got it. I'll note that time for the implementation specialist to follow up.",
             "call_control": "schedule-and-end",
             "campaign_selector": {
               "campaign_config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
@@ -802,7 +802,7 @@
             "turn_index": 3
           },
           {
-            "agent_response": "Confirmed. I will note that time for the licensed coverage review. Goodbye.",
+            "agent_response": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
             "call_control": "schedule-and-end",
             "campaign_selector": {
               "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",

@@ -84,7 +84,7 @@
             "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
             "creates_calendar_event": false,
             "durable_provider_agent_created": false,
-            "final_response": "Confirmed. I will note that time for the operations fit review. Goodbye.",
+            "final_response": "Got it. I'll note that time for the implementation specialist to follow up.",
             "lead_followup_state": {
               "appointment": {
                 "confirmation_text": "workflow review time captured",
@@ -133,7 +133,7 @@
             "sends_email": false,
             "target_gap": "manual_work",
             "transcript": "tomorrow at 3 works",
-            "tts_input_text": "Confirmed. I will note that time for the operations fit review. Goodbye.",
+            "tts_input_text": "Got it. I'll note that time for the implementation specialist to follow up.",
             "voice_cloning_used": false,
             "writes_crm": false
           }
@@ -220,7 +220,7 @@
             "campaign_playbook_id": "synthetic-home-services-estimate-playbook",
             "creates_calendar_event": false,
             "durable_provider_agent_created": false,
-            "final_response": "Confirmed. I will note that time for the inspection or estimate review. Goodbye.",
+            "final_response": "Got it. I'll note that time for the qualified service coordinator to follow up.",
             "lead_followup_state": {
               "appointment": {
                 "confirmation_text": "workflow review time captured",
@@ -269,7 +269,7 @@
             "sends_email": false,
             "target_gap": "estimate_or_property_details",
             "transcript": "tomorrow at 3 works",
-            "tts_input_text": "Confirmed. I will note that time for the inspection or estimate review. Goodbye.",
+            "tts_input_text": "Got it. I'll note that time for the qualified service coordinator to follow up.",
             "voice_cloning_used": false,
             "writes_crm": false
           }
@@ -356,7 +356,7 @@
             "campaign_playbook_id": "synthetic-insurance-review-playbook",
             "creates_calendar_event": false,
             "durable_provider_agent_created": false,
-            "final_response": "Confirmed. I will note that time for the licensed coverage review. Goodbye.",
+            "final_response": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
             "lead_followup_state": {
               "appointment": {
                 "confirmation_text": "workflow review time captured",
@@ -405,7 +405,7 @@
             "sends_email": false,
             "target_gap": "premium_or_budget",
             "transcript": "tomorrow at 3 works",
-            "tts_input_text": "Confirmed. I will note that time for the licensed coverage review. Goodbye.",
+            "tts_input_text": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
             "voice_cloning_used": false,
             "writes_crm": false
           }
@@ -492,7 +492,7 @@
             "campaign_playbook_id": "synthetic-telecom-plan-review-playbook",
             "creates_calendar_event": false,
             "durable_provider_agent_created": false,
-            "final_response": "Confirmed. I will note that time for the human plan and availability review. Goodbye.",
+            "final_response": "Got it. I'll note that time for the telecom account specialist to follow up.",
             "lead_followup_state": {
               "appointment": {
                 "confirmation_text": "workflow review time captured",
@@ -541,7 +541,7 @@
             "sends_email": false,
             "target_gap": "coverage_or_availability",
             "transcript": "tomorrow at 3 works",
-            "tts_input_text": "Confirmed. I will note that time for the human plan and availability review. Goodbye.",
+            "tts_input_text": "Got it. I'll note that time for the telecom account specialist to follow up.",
             "voice_cloning_used": false,
             "writes_crm": false
           }
