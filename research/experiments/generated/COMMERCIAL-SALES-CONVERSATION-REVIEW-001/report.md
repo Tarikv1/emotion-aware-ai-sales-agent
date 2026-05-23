@@ -28,7 +28,6 @@ Validated a dry-run commercial sales conversation packet for human review. Codex
 - `trust_challenge`
 
 ## 5. Mechanical Warning Counts
-- `appointment_not_asked_when_ready`: `30`
 - `no_acknowledgement`: `77`
 - `over_deferential_stop_offer`: `58`
 - `repeated_full_menu`: `6`
@@ -44,14 +43,14 @@ Validated a dry-run commercial sales conversation packet for human review. Codex
 - `commercial-sales-conversation-review-001-04-08-synthetic-automotive-service-review-social_conversation_management`: `0` warnings
 
 ## 7. Most Concerning Conversations By Mechanical Signals Only
-- `commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question`: `5` warnings; flags `appointment_not_asked_when_ready, no_acknowledgement, over_deferential_stop_offer`
-- `commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question`: `5` warnings; flags `appointment_not_asked_when_ready, no_acknowledgement, over_deferential_stop_offer`
-- `commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question`: `5` warnings; flags `appointment_not_asked_when_ready, no_acknowledgement, over_deferential_stop_offer`
-- `commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question`: `5` warnings; flags `appointment_not_asked_when_ready, no_acknowledgement, over_deferential_stop_offer`
+- `commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question`: `4` warnings; flags `no_acknowledgement, over_deferential_stop_offer`
+- `commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question`: `4` warnings; flags `no_acknowledgement, over_deferential_stop_offer`
+- `commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question`: `4` warnings; flags `no_acknowledgement, over_deferential_stop_offer`
+- `commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question`: `4` warnings; flags `no_acknowledgement, over_deferential_stop_offer`
 - `commercial-sales-conversation-review-001-01-06-routesignal_live_demo-trust_challenge`: `3` warnings; flags `no_acknowledgement, over_deferential_stop_offer`
 - `commercial-sales-conversation-review-001-01-10-routesignal_live_demo-no_fit_stop`: `3` warnings; flags `over_deferential_stop_offer`
-- `commercial-sales-conversation-review-001-02-04-synthetic-insurance-review-direct_question`: `3` warnings; flags `appointment_not_asked_when_ready, no_acknowledgement, over_deferential_stop_offer`
 - `commercial-sales-conversation-review-001-02-07-synthetic-insurance-review-confusion_loop_resistance`: `3` warnings; flags `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+- `commercial-sales-conversation-review-001-02-10-synthetic-insurance-review-no_fit_stop`: `3` warnings; flags `over_deferential_stop_offer`
 
 ## 8. Safety Boundary Summary
 - Provider calls made: `false`

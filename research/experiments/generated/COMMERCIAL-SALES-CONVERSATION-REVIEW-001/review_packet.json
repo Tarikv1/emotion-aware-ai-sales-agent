@@ -64,9 +64,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
+      "mechanical_warning_count": 1,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement"
       ],
       "notes_for_human_reviewer": [
@@ -555,9 +554,7 @@
           "final_response": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "appointment_not_asked_when_ready"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "confirm_callback_time",
           "question_count": 0,
           "response_word_count": 14,
@@ -1336,9 +1333,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
+      "mechanical_warning_count": 1,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement"
       ],
       "notes_for_human_reviewer": [
@@ -1938,9 +1934,7 @@
           "final_response": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "appointment_not_asked_when_ready"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "confirm_callback_time",
           "question_count": 0,
           "response_word_count": 14,
@@ -2085,9 +2079,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 5,
+      "mechanical_warning_count": 4,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement",
         "over_deferential_stop_offer"
       ],
@@ -2699,9 +2692,7 @@
           "final_response": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "appointment_not_asked_when_ready"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "confirm_callback_time",
           "question_count": 0,
           "response_word_count": 14,
@@ -6945,9 +6936,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
+      "mechanical_warning_count": 1,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement"
       ],
       "notes_for_human_reviewer": [
@@ -7436,9 +7426,7 @@
           "final_response": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "appointment_not_asked_when_ready"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "confirm_callback_time",
           "question_count": 0,
           "response_word_count": 14,
@@ -8217,9 +8205,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
+      "mechanical_warning_count": 1,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement"
       ],
       "notes_for_human_reviewer": [
@@ -8819,9 +8806,7 @@
           "final_response": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "appointment_not_asked_when_ready"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "confirm_callback_time",
           "question_count": 0,
           "response_word_count": 14,
@@ -8966,9 +8951,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
+      "mechanical_warning_count": 2,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement",
         "over_deferential_stop_offer"
       ],
@@ -9577,9 +9561,7 @@
           "final_response": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "appointment_not_asked_when_ready"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "confirm_callback_time",
           "question_count": 0,
           "response_word_count": 14,
@@ -13825,9 +13807,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
+      "mechanical_warning_count": 1,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement"
       ],
       "notes_for_human_reviewer": [
@@ -14316,9 +14297,7 @@
           "final_response": "Got it. I'll note that time for the implementation specialist to follow up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "appointment_not_asked_when_ready"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "confirm_callback_time",
           "question_count": 0,
           "response_word_count": 13,
@@ -15097,9 +15076,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
+      "mechanical_warning_count": 1,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement"
       ],
       "notes_for_human_reviewer": [
@@ -15699,9 +15677,7 @@
           "final_response": "Got it. I'll note that time for the implementation specialist to follow up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "appointment_not_asked_when_ready"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "confirm_callback_time",
           "question_count": 0,
           "response_word_count": 13,
@@ -15846,9 +15822,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 5,
+      "mechanical_warning_count": 4,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement",
         "over_deferential_stop_offer"
       ],
@@ -16460,9 +16435,7 @@
           "final_response": "Got it. I'll note that time for the implementation specialist to follow up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "appointment_not_asked_when_ready"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "confirm_callback_time",
           "question_count": 0,
           "response_word_count": 13,
@@ -20708,9 +20681,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
+      "mechanical_warning_count": 1,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement"
       ],
       "notes_for_human_reviewer": [
@@ -21199,9 +21171,7 @@
           "final_response": "Got it. I'll note that time for the service advisor to follow up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "appointment_not_asked_when_ready"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "confirm_callback_time",
           "question_count": 0,
           "response_word_count": 13,
@@ -21980,9 +21950,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
+      "mechanical_warning_count": 1,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement"
       ],
       "notes_for_human_reviewer": [
@@ -22582,9 +22551,7 @@
           "final_response": "Got it. I'll note that time for the service advisor to follow up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "appointment_not_asked_when_ready"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "confirm_callback_time",
           "question_count": 0,
           "response_word_count": 13,
@@ -22729,9 +22696,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 5,
+      "mechanical_warning_count": 4,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement",
         "over_deferential_stop_offer"
       ],
@@ -23343,9 +23309,7 @@
           "final_response": "Got it. I'll note that time for the service advisor to follow up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "appointment_not_asked_when_ready"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "confirm_callback_time",
           "question_count": 0,
           "response_word_count": 13,
@@ -27593,9 +27557,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
+      "mechanical_warning_count": 1,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement"
       ],
       "notes_for_human_reviewer": [
@@ -28084,9 +28047,7 @@
           "final_response": "Got it. I'll note that time for the qualified service coordinator to follow up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "appointment_not_asked_when_ready"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "confirm_callback_time",
           "question_count": 0,
           "response_word_count": 14,
@@ -28865,9 +28826,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
+      "mechanical_warning_count": 1,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement"
       ],
       "notes_for_human_reviewer": [
@@ -29467,9 +29427,7 @@
           "final_response": "Got it. I'll note that time for the qualified service coordinator to follow up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "appointment_not_asked_when_ready"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "confirm_callback_time",
           "question_count": 0,
           "response_word_count": 14,
@@ -29614,9 +29572,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 5,
+      "mechanical_warning_count": 4,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement",
         "over_deferential_stop_offer"
       ],
@@ -30228,9 +30185,7 @@
           "final_response": "Got it. I'll note that time for the qualified service coordinator to follow up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "appointment_not_asked_when_ready"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "confirm_callback_time",
           "question_count": 0,
           "response_word_count": 14,
@@ -34437,9 +34392,8 @@
       ]
     }
   ],
-  "generated_at": "2026-05-23T02:38:32.757272+00:00",
+  "generated_at": "2026-05-23T02:56:11.158254+00:00",
   "mechanical_warning_counts": {
-    "appointment_not_asked_when_ready": 30,
     "no_acknowledgement": 77,
     "over_deferential_stop_offer": 58,
     "repeated_full_menu": 6
@@ -34449,9 +34403,8 @@
       "arc_type": "direct_question",
       "campaign_id": "routesignal_live_demo",
       "conversation_id": "commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question",
-      "mechanical_warning_count": 5,
+      "mechanical_warning_count": 4,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement",
         "over_deferential_stop_offer"
       ]
@@ -34460,9 +34413,8 @@
       "arc_type": "direct_question",
       "campaign_id": "synthetic-b2b-saas-operations",
       "conversation_id": "commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question",
-      "mechanical_warning_count": 5,
+      "mechanical_warning_count": 4,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement",
         "over_deferential_stop_offer"
       ]
@@ -34471,9 +34423,8 @@
       "arc_type": "direct_question",
       "campaign_id": "synthetic-automotive-service-review",
       "conversation_id": "commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question",
-      "mechanical_warning_count": 5,
+      "mechanical_warning_count": 4,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement",
         "over_deferential_stop_offer"
       ]
@@ -34482,9 +34433,8 @@
       "arc_type": "direct_question",
       "campaign_id": "synthetic-home-services-estimate",
       "conversation_id": "commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question",
-      "mechanical_warning_count": 5,
+      "mechanical_warning_count": 4,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement",
         "over_deferential_stop_offer"
       ]
@@ -34509,17 +34459,6 @@
       ]
     },
     {
-      "arc_type": "direct_question",
-      "campaign_id": "synthetic-insurance-review",
-      "conversation_id": "commercial-sales-conversation-review-001-02-04-synthetic-insurance-review-direct_question",
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ]
-    },
-    {
       "arc_type": "confusion_loop_resistance",
       "campaign_id": "synthetic-insurance-review",
       "conversation_id": "commercial-sales-conversation-review-001-02-07-synthetic-insurance-review-confusion_loop_resistance",
@@ -34528,6 +34467,15 @@
         "no_acknowledgement",
         "over_deferential_stop_offer",
         "repeated_full_menu"
+      ]
+    },
+    {
+      "arc_type": "no_fit_stop",
+      "campaign_id": "synthetic-insurance-review",
+      "conversation_id": "commercial-sales-conversation-review-001-02-10-synthetic-insurance-review-no_fit_stop",
+      "mechanical_warning_count": 3,
+      "mechanical_warning_flags": [
+        "over_deferential_stop_offer"
       ]
     }
   ],

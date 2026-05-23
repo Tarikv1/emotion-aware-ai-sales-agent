@@ -1,0 +1,315 @@
+{
+  "checkpoint_id": "APPOINTMENT-READINESS-RESIDUAL-AUDIT-001",
+  "classification_basis": "legacy_residual_heuristic",
+  "classification_counts": {
+    "review_packet_warning_bug": 15
+  },
+  "classified_records": [
+    {
+      "appointment_readiness": "high",
+      "arc_type": "smooth_qualified_appointment",
+      "buyer_move_id": "callback_time_provided",
+      "buyer_utterance": "tomorrow at 3 works",
+      "call_control": "schedule-and-end",
+      "campaign_id": "routesignal_live_demo",
+      "classification": "review_packet_warning_bug",
+      "confirmed_gaps": [
+        "callbacks"
+      ],
+      "conversation_id": "commercial-sales-conversation-review-001-01-01-routesignal_live_demo-smooth_qualified_appointment",
+      "final_response": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
+      "next_best_sales_action": "confirm_callback_time",
+      "reason": "Concrete callback time was already captured; the old warning only checked for a new appointment ask.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 5
+    },
+    {
+      "appointment_readiness": "high",
+      "arc_type": "tentative_pain",
+      "buyer_move_id": "callback_time_provided",
+      "buyer_utterance": "tomorrow at 3 works",
+      "call_control": "schedule-and-end",
+      "campaign_id": "routesignal_live_demo",
+      "classification": "review_packet_warning_bug",
+      "confirmed_gaps": [
+        "handoffs"
+      ],
+      "conversation_id": "commercial-sales-conversation-review-001-01-03-routesignal_live_demo-tentative_pain",
+      "final_response": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
+      "next_best_sales_action": "confirm_callback_time",
+      "reason": "Concrete callback time was already captured; the old warning only checked for a new appointment ask.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 6
+    },
+    {
+      "appointment_readiness": "high",
+      "arc_type": "direct_question",
+      "buyer_move_id": "callback_time_provided",
+      "buyer_utterance": "tomorrow at 3 works",
+      "call_control": "schedule-and-end",
+      "campaign_id": "routesignal_live_demo",
+      "classification": "review_packet_warning_bug",
+      "confirmed_gaps": [
+        "callbacks"
+      ],
+      "conversation_id": "commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question",
+      "final_response": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
+      "next_best_sales_action": "confirm_callback_time",
+      "reason": "Concrete callback time was already captured; the old warning only checked for a new appointment ask.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 6
+    },
+    {
+      "appointment_readiness": "high",
+      "arc_type": "smooth_qualified_appointment",
+      "buyer_move_id": "callback_time_provided",
+      "buyer_utterance": "tomorrow at 3 works",
+      "call_control": "schedule-and-end",
+      "campaign_id": "synthetic-insurance-review",
+      "classification": "review_packet_warning_bug",
+      "confirmed_gaps": [
+        "premium_or_budget"
+      ],
+      "conversation_id": "commercial-sales-conversation-review-001-02-01-synthetic-insurance-review-smooth_qualified_appointment",
+      "final_response": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
+      "next_best_sales_action": "confirm_callback_time",
+      "reason": "Concrete callback time was already captured; the old warning only checked for a new appointment ask.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 5
+    },
+    {
+      "appointment_readiness": "high",
+      "arc_type": "tentative_pain",
+      "buyer_move_id": "callback_time_provided",
+      "buyer_utterance": "tomorrow at 3 works",
+      "call_control": "schedule-and-end",
+      "campaign_id": "synthetic-insurance-review",
+      "classification": "review_packet_warning_bug",
+      "confirmed_gaps": [
+        "coverage_fit"
+      ],
+      "conversation_id": "commercial-sales-conversation-review-001-02-03-synthetic-insurance-review-tentative_pain",
+      "final_response": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
+      "next_best_sales_action": "confirm_callback_time",
+      "reason": "Concrete callback time was already captured; the old warning only checked for a new appointment ask.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 6
+    },
+    {
+      "appointment_readiness": "high",
+      "arc_type": "direct_question",
+      "buyer_move_id": "callback_time_provided",
+      "buyer_utterance": "tomorrow at 3 works",
+      "call_control": "schedule-and-end",
+      "campaign_id": "synthetic-insurance-review",
+      "classification": "review_packet_warning_bug",
+      "confirmed_gaps": [
+        "premium_or_budget"
+      ],
+      "conversation_id": "commercial-sales-conversation-review-001-02-04-synthetic-insurance-review-direct_question",
+      "final_response": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
+      "next_best_sales_action": "confirm_callback_time",
+      "reason": "Concrete callback time was already captured; the old warning only checked for a new appointment ask.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 6
+    },
+    {
+      "appointment_readiness": "high",
+      "arc_type": "smooth_qualified_appointment",
+      "buyer_move_id": "callback_time_provided",
+      "buyer_utterance": "tomorrow at 3 works",
+      "call_control": "schedule-and-end",
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "classification": "review_packet_warning_bug",
+      "confirmed_gaps": [
+        "manual_work"
+      ],
+      "conversation_id": "commercial-sales-conversation-review-001-03-01-synthetic-b2b-saas-operations-smooth_qualified_appointment",
+      "final_response": "Got it. I'll note that time for the implementation specialist to follow up.",
+      "next_best_sales_action": "confirm_callback_time",
+      "reason": "Concrete callback time was already captured; the old warning only checked for a new appointment ask.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 5
+    },
+    {
+      "appointment_readiness": "high",
+      "arc_type": "tentative_pain",
+      "buyer_move_id": "callback_time_provided",
+      "buyer_utterance": "tomorrow at 3 works",
+      "call_control": "schedule-and-end",
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "classification": "review_packet_warning_bug",
+      "confirmed_gaps": [
+        "integration_risk"
+      ],
+      "conversation_id": "commercial-sales-conversation-review-001-03-03-synthetic-b2b-saas-operations-tentative_pain",
+      "final_response": "Got it. I'll note that time for the implementation specialist to follow up.",
+      "next_best_sales_action": "confirm_callback_time",
+      "reason": "Concrete callback time was already captured; the old warning only checked for a new appointment ask.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 6
+    },
+    {
+      "appointment_readiness": "high",
+      "arc_type": "direct_question",
+      "buyer_move_id": "callback_time_provided",
+      "buyer_utterance": "tomorrow at 3 works",
+      "call_control": "schedule-and-end",
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "classification": "review_packet_warning_bug",
+      "confirmed_gaps": [
+        "manual_work"
+      ],
+      "conversation_id": "commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question",
+      "final_response": "Got it. I'll note that time for the implementation specialist to follow up.",
+      "next_best_sales_action": "confirm_callback_time",
+      "reason": "Concrete callback time was already captured; the old warning only checked for a new appointment ask.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 6
+    },
+    {
+      "appointment_readiness": "high",
+      "arc_type": "smooth_qualified_appointment",
+      "buyer_move_id": "callback_time_provided",
+      "buyer_utterance": "tomorrow at 3 works",
+      "call_control": "schedule-and-end",
+      "campaign_id": "synthetic-automotive-service-review",
+      "classification": "review_packet_warning_bug",
+      "confirmed_gaps": [
+        "repair_timing"
+      ],
+      "conversation_id": "commercial-sales-conversation-review-001-04-01-synthetic-automotive-service-review-smooth_qualified_appointment",
+      "final_response": "Got it. I'll note that time for the service advisor to follow up.",
+      "next_best_sales_action": "confirm_callback_time",
+      "reason": "Concrete callback time was already captured; the old warning only checked for a new appointment ask.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 5
+    },
+    {
+      "appointment_readiness": "high",
+      "arc_type": "tentative_pain",
+      "buyer_move_id": "callback_time_provided",
+      "buyer_utterance": "tomorrow at 3 works",
+      "call_control": "schedule-and-end",
+      "campaign_id": "synthetic-automotive-service-review",
+      "classification": "review_packet_warning_bug",
+      "confirmed_gaps": [
+        "repair_timing"
+      ],
+      "conversation_id": "commercial-sales-conversation-review-001-04-03-synthetic-automotive-service-review-tentative_pain",
+      "final_response": "Got it. I'll note that time for the service advisor to follow up.",
+      "next_best_sales_action": "confirm_callback_time",
+      "reason": "Concrete callback time was already captured; the old warning only checked for a new appointment ask.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 6
+    },
+    {
+      "appointment_readiness": "high",
+      "arc_type": "direct_question",
+      "buyer_move_id": "callback_time_provided",
+      "buyer_utterance": "tomorrow at 3 works",
+      "call_control": "schedule-and-end",
+      "campaign_id": "synthetic-automotive-service-review",
+      "classification": "review_packet_warning_bug",
+      "confirmed_gaps": [
+        "repair_timing"
+      ],
+      "conversation_id": "commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question",
+      "final_response": "Got it. I'll note that time for the service advisor to follow up.",
+      "next_best_sales_action": "confirm_callback_time",
+      "reason": "Concrete callback time was already captured; the old warning only checked for a new appointment ask.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 6
+    },
+    {
+      "appointment_readiness": "high",
+      "arc_type": "smooth_qualified_appointment",
+      "buyer_move_id": "callback_time_provided",
+      "buyer_utterance": "tomorrow at 3 works",
+      "call_control": "schedule-and-end",
+      "campaign_id": "synthetic-home-services-estimate",
+      "classification": "review_packet_warning_bug",
+      "confirmed_gaps": [
+        "service_need"
+      ],
+      "conversation_id": "commercial-sales-conversation-review-001-05-01-synthetic-home-services-estimate-smooth_qualified_appointment",
+      "final_response": "Got it. I'll note that time for the qualified service coordinator to follow up.",
+      "next_best_sales_action": "confirm_callback_time",
+      "reason": "Concrete callback time was already captured; the old warning only checked for a new appointment ask.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 5
+    },
+    {
+      "appointment_readiness": "high",
+      "arc_type": "tentative_pain",
+      "buyer_move_id": "callback_time_provided",
+      "buyer_utterance": "tomorrow at 3 works",
+      "call_control": "schedule-and-end",
+      "campaign_id": "synthetic-home-services-estimate",
+      "classification": "review_packet_warning_bug",
+      "confirmed_gaps": [
+        "scheduling_urgency"
+      ],
+      "conversation_id": "commercial-sales-conversation-review-001-05-03-synthetic-home-services-estimate-tentative_pain",
+      "final_response": "Got it. I'll note that time for the qualified service coordinator to follow up.",
+      "next_best_sales_action": "confirm_callback_time",
+      "reason": "Concrete callback time was already captured; the old warning only checked for a new appointment ask.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 6
+    },
+    {
+      "appointment_readiness": "high",
+      "arc_type": "direct_question",
+      "buyer_move_id": "callback_time_provided",
+      "buyer_utterance": "tomorrow at 3 works",
+      "call_control": "schedule-and-end",
+      "campaign_id": "synthetic-home-services-estimate",
+      "classification": "review_packet_warning_bug",
+      "confirmed_gaps": [
+        "service_need"
+      ],
+      "conversation_id": "commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question",
+      "final_response": "Got it. I'll note that time for the qualified service coordinator to follow up.",
+      "next_best_sales_action": "confirm_callback_time",
+      "reason": "Concrete callback time was already captured; the old warning only checked for a new appointment ask.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 6
+    }
+  ],
+  "creates_calendar_event": false,
+  "current_flagged_conversation_count": 0,
+  "current_flagged_turn_count": 0,
+  "current_packet_warning_occurrences": 0,
+  "customer_audio_uploaded_to_python_server": false,
+  "customer_audio_uploaded_to_tts_provider": false,
+  "false_positive_count": 0,
+  "intentional_no_ask_count": 0,
+  "legacy_residual_conversation_count": 15,
+  "legacy_residual_turn_count": 15,
+  "legacy_residual_warning_occurrences": 30,
+  "live_tts_used": false,
+  "local_llm_calls_made": false,
+  "needs_human_sales_review_count": 0,
+  "opens_prod_102": false,
+  "provider_calls_made": false,
+  "recommended_patch_scope": "Fix review-packet warning logic for callback_time_provided turns; no runtime behavior patch is justified.",
+  "review_packet_warning_bug_count": 15,
+  "runtime_behavior_changed": false,
+  "sends_email": false,
+  "side_effects": {
+    "creates_calendar_event": false,
+    "customer_audio_uploaded_to_python_server": false,
+    "customer_audio_uploaded_to_tts_provider": false,
+    "live_tts_used": false,
+    "local_llm_calls_made": false,
+    "opens_prod_102": false,
+    "provider_calls_made": false,
+    "sends_email": false,
+    "writes_crm": false
+  },
+  "source_packet": "research\\experiments\\generated\\COMMERCIAL-SALES-CONVERSATION-REVIEW-001\\review_packet.json",
+  "state_preservation_bug_count": 0,
+  "true_missed_next_step_count": 0,
+  "weak_close_language_count": 0,
+  "writes_crm": false
+}

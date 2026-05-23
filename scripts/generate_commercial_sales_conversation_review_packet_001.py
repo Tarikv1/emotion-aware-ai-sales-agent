@@ -136,6 +136,17 @@ APPOINTMENT_ASK_PATTERNS = [
     "tomorrow at",
 ]
 
+NEXT_STEP_REQUEST_PATTERNS = [
+    *APPOINTMENT_ASK_PATTERNS,
+    "callback window",
+    "what email",
+    "email should",
+    "email or callback",
+    "preferred window",
+    "which day",
+    "what day or time",
+]
+
 DIRECT_QUESTION_HINTS = [
     "what does your product do",
     "why should i care",
@@ -431,6 +442,21 @@ def appointment_ask(text: str) -> bool:
     return contains_any(text, APPOINTMENT_ASK_PATTERNS)
 
 
+def next_step_requested_or_captured(text: str, frame: dict[str, Any]) -> bool:
+    buyer_move = str(frame.get("buyer_move_id") or "")
+    next_action = str(frame.get("next_best_sales_action") or "")
+    if contains_any(text, NEXT_STEP_REQUEST_PATTERNS):
+        return True
+    return buyer_move == "callback_time_provided" or next_action in {
+        "confirm_callback_time",
+        "capture_send_info_contact",
+        "capture_email_before_booking",
+        "clarify_callback_window",
+        "offer_window_without_calendar_claim",
+        "clarify_later_window",
+    }
+
+
 def mechanical_warning_flags(
     *,
     buyer_utterance: str,
@@ -460,7 +486,7 @@ def mechanical_warning_flags(
         warnings.append("appointment_too_early")
     if appointment_ask(response) and readiness in {"none", "low"} and "tomorrow at" not in buyer:
         warnings.append("appointment_too_early")
-    if readiness == "high" and not appointment_ask(response):
+    if readiness == "high" and not next_step_requested_or_captured(response, frame):
         warnings.append("appointment_not_asked_when_ready")
     if any(hint in buyer for hint in OBJECTION_HINTS) and not has_acknowledgement(response):
         warnings.append("weak_objection_reframe")

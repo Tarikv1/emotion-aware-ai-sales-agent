@@ -24,7 +24,6 @@
   "failures": [],
   "human_review_required_for_all": true,
   "mechanical_warning_counts": {
-    "appointment_not_asked_when_ready": 30,
     "no_acknowledgement": 77,
     "over_deferential_stop_offer": 58,
     "repeated_full_menu": 6
@@ -34,9 +33,8 @@
       "arc_type": "direct_question",
       "campaign_id": "routesignal_live_demo",
       "conversation_id": "commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question",
-      "mechanical_warning_count": 5,
+      "mechanical_warning_count": 4,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement",
         "over_deferential_stop_offer"
       ]
@@ -45,9 +43,8 @@
       "arc_type": "direct_question",
       "campaign_id": "synthetic-b2b-saas-operations",
       "conversation_id": "commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question",
-      "mechanical_warning_count": 5,
+      "mechanical_warning_count": 4,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement",
         "over_deferential_stop_offer"
       ]
@@ -56,9 +53,8 @@
       "arc_type": "direct_question",
       "campaign_id": "synthetic-automotive-service-review",
       "conversation_id": "commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question",
-      "mechanical_warning_count": 5,
+      "mechanical_warning_count": 4,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement",
         "over_deferential_stop_offer"
       ]
@@ -67,9 +63,8 @@
       "arc_type": "direct_question",
       "campaign_id": "synthetic-home-services-estimate",
       "conversation_id": "commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question",
-      "mechanical_warning_count": 5,
+      "mechanical_warning_count": 4,
       "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
         "no_acknowledgement",
         "over_deferential_stop_offer"
       ]
@@ -94,17 +89,6 @@
       ]
     },
     {
-      "arc_type": "direct_question",
-      "campaign_id": "synthetic-insurance-review",
-      "conversation_id": "commercial-sales-conversation-review-001-02-04-synthetic-insurance-review-direct_question",
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "appointment_not_asked_when_ready",
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ]
-    },
-    {
       "arc_type": "confusion_loop_resistance",
       "campaign_id": "synthetic-insurance-review",
       "conversation_id": "commercial-sales-conversation-review-001-02-07-synthetic-insurance-review-confusion_loop_resistance",
@@ -113,6 +97,15 @@
         "no_acknowledgement",
         "over_deferential_stop_offer",
         "repeated_full_menu"
+      ]
+    },
+    {
+      "arc_type": "no_fit_stop",
+      "campaign_id": "synthetic-insurance-review",
+      "conversation_id": "commercial-sales-conversation-review-001-02-10-synthetic-insurance-review-no_fit_stop",
+      "mechanical_warning_count": 3,
+      "mechanical_warning_flags": [
+        "over_deferential_stop_offer"
       ]
     }
   ],
