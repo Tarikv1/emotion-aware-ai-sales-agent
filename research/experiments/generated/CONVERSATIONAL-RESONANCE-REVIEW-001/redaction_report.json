@@ -1,0 +1,30 @@
+{
+  "checkpoint_id": "CONVERSATIONAL-RESONANCE-REVIEW-001",
+  "creates_calendar_event": false,
+  "customer_audio_uploaded_to_python_server": false,
+  "customer_audio_uploaded_to_tts_provider": false,
+  "live_tts_used": false,
+  "local_llm_calls_made": false,
+  "opens_prod_102": false,
+  "private_transcript_content_copied": false,
+  "provider_calls_made": false,
+  "raw_email_examples": [],
+  "raw_email_like_values_found": 0,
+  "real_customer_data_used": false,
+  "redactions_applied": [
+    "[REDACTED_MEDICAL_DETAIL]",
+    "[REDACTED_ACCOUNT_NUMBER]",
+    "[REDACTED_PERSONAL_ID]",
+    "[REDACTED_FAMILY_DETAIL]"
+  ],
+  "secret_examples": [],
+  "secret_like_values_found": 0,
+  "sends_email": false,
+  "sensitive_placeholders_present": {
+    "[REDACTED_ACCOUNT_NUMBER]": true,
+    "[REDACTED_FAMILY_DETAIL]": true,
+    "[REDACTED_MEDICAL_DETAIL]": true,
+    "[REDACTED_PERSONAL_ID]": true
+  },
+  "writes_crm": false
+}
