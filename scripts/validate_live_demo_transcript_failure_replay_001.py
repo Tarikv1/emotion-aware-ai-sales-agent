@@ -59,6 +59,32 @@ SIDE_EFFECT_KEYS = (
     "customer_audio_uploaded_to_tts_provider",
 )
 
+REPRODUCED_BEFORE_PATCH_SCENARIOS = {
+    "routesignal_permission_repeated_ack",
+    "routesignal_asr_near_miss_callbacks",
+    "routesignal_near_miss_then_impact",
+    "routesignal_vague_followup_little_bit",
+    "routesignal_why_care_challenge",
+    "insurance_false_assumption_correction",
+    "insurance_repeated_product_detail_challenge",
+    "telecom_vague_positive_after_prior_bad_experience",
+    "telecom_plan_fit_coverage_boundary",
+}
+
+PRESERVATION_SCENARIOS = {
+    "preserve_driving_stop",
+    "preserve_hospital_stop",
+    "preserve_direct_product_answer",
+    "preserve_ai_disclosure",
+    "preserve_callback_time_capture",
+}
+
+CLASSIFICATION_LABELS = (
+    "reproduced_before_patch_then_fixed",
+    "not_reproduced_on_current_runtime",
+    "preservation_check_passed",
+)
+
 
 def append_turn(state: dict[str, Any], packet: dict[str, Any]) -> None:
     state.setdefault("turns", []).append(
@@ -184,8 +210,12 @@ def summarize(packet: dict[str, Any], transcript: str) -> dict[str, Any]:
     }
 
 
-def classify(failures: list[str]) -> str:
-    return "current_runtime_defect_reproduced" if failures else "stale_or_not_reproduced"
+def classify(scenario: str, failures: list[str]) -> str:
+    if scenario in PRESERVATION_SCENARIOS:
+        return "preservation_check_passed" if not failures else "preservation_check_failed"
+    if scenario in REPRODUCED_BEFORE_PATCH_SCENARIOS:
+        return "reproduced_before_patch_then_fixed" if not failures else "reproduced_before_patch_still_failing"
+    return "not_reproduced_on_current_runtime"
 
 
 def scenario_permission_ack() -> dict[str, Any]:
@@ -199,7 +229,8 @@ def scenario_permission_ack() -> dict[str, Any]:
     add_failure(failures, fr.get("buyer_move_id") == "permission_acknowledgement", "permission acknowledgement not recognized")
     add_failure(failures, "inbound demo follow-up" in lower and ("slipping" in lower or "happening" in lower), "response did not ask sharp RouteSignal diagnostic")
     add_failure(failures, selected_source(last) != "pre_speech_conversation_stability_guard", "stability guard overrode permission path")
-    return {"scenario": "routesignal_permission_repeated_ack", "passed": not failures, "classification": classify(failures), "failures": failures, "packet": summarize(last, turns[-1])}
+    scenario = "routesignal_permission_repeated_ack"
+    return {"scenario": scenario, "passed": not failures, "classification": classify(scenario, failures), "failures": failures, "packet": summarize(last, turns[-1])}
 
 
 def scenario_asr_near_miss_callbacks() -> dict[str, Any]:
@@ -220,7 +251,8 @@ def scenario_asr_near_miss_callbacks() -> dict[str, Any]:
     add_failure(failures, acceptable_move, f"unexpected buyer_move_id {fr.get('buyer_move_id')!r}")
     add_failure(failures, acceptable_response, "response did not clarify or map callbacks near-miss")
     add_failure(failures, selected_source(last) != "pre_speech_conversation_stability_guard", "stability guard overrode ASR near-miss")
-    return {"scenario": "routesignal_asr_near_miss_callbacks", "passed": not failures, "classification": classify(failures), "failures": failures, "packet": summarize(last, turns[-1])}
+    scenario = "routesignal_asr_near_miss_callbacks"
+    return {"scenario": scenario, "passed": not failures, "classification": classify(scenario, failures), "failures": failures, "packet": summarize(last, turns[-1])}
 
 
 def scenario_near_miss_then_impact() -> dict[str, Any]:
@@ -235,7 +267,8 @@ def scenario_near_miss_then_impact() -> dict[str, Any]:
     add_failure(failures, "inbound demo follow-up slipping is causing any issue now" not in lower, "response reset to generic inbound demo question")
     add_failure(failures, "delay" in lower or "delays" in lower or fr.get("buyer_move_id") == "implication_confirmed", "response did not preserve impact")
     add_failure(failures, fr.get("appointment_readiness") in {"medium", "high"} or fr.get("buyer_move_id") in {"implication_confirmed", "pain_confirmed", "asr_near_miss_for_known_gap"}, "impact did not advance or preserve likely gap")
-    return {"scenario": "routesignal_near_miss_then_impact", "passed": not failures, "classification": classify(failures), "failures": failures, "packet": summarize(last, turns[-1])}
+    scenario = "routesignal_near_miss_then_impact"
+    return {"scenario": scenario, "passed": not failures, "classification": classify(scenario, failures), "failures": failures, "packet": summarize(last, turns[-1])}
 
 
 def scenario_vague_followup() -> dict[str, Any]:
@@ -247,7 +280,8 @@ def scenario_vague_followup() -> dict[str, Any]:
     lower = lower_response(last)
     add_failure(failures, "a little bit" in lower or "minor annoyance" in lower or "minor" in lower, "vague weak pain was not acknowledged")
     add_failure(failures, "name the point" not in lower, "vague weak pain routed to product detail point picker")
-    return {"scenario": "routesignal_vague_followup_little_bit", "passed": not failures, "classification": classify(failures), "failures": failures, "packet": summarize(last, turns[-1])}
+    scenario = "routesignal_vague_followup_little_bit"
+    return {"scenario": scenario, "passed": not failures, "classification": classify(scenario, failures), "failures": failures, "packet": summarize(last, turns[-1])}
 
 
 def scenario_why_care_challenge() -> dict[str, Any]:
@@ -260,7 +294,8 @@ def scenario_why_care_challenge() -> dict[str, Any]:
     add_failure(failures, frame(last).get("buyer_move_id") == "why_should_i_care", "why-care variant not recognized")
     add_failure(failures, "fair question" in lower and ("costing time" in lower or "delays" in lower or "missed replies" in lower), "why-care challenge not answered directly")
     add_failure(failures, "name the point" not in lower, "why-care routed to point picker")
-    return {"scenario": "routesignal_why_care_challenge", "passed": not failures, "classification": classify(failures), "failures": failures, "packet": summarize(last, turns[-1])}
+    scenario = "routesignal_why_care_challenge"
+    return {"scenario": scenario, "passed": not failures, "classification": classify(scenario, failures), "failures": failures, "packet": summarize(last, turns[-1])}
 
 
 def scenario_insurance_false_assumption() -> dict[str, Any]:
@@ -274,7 +309,8 @@ def scenario_insurance_false_assumption() -> dict[str, Any]:
     add_failure(failures, "should not assume" in lower or "won't assume" in lower, "false premium assumption not removed")
     add_failure(failures, "since you mentioned premium" not in lower, "continued false premium assumption")
     add_failure(failures, "licensed" in lower or "review" in lower, "scope not explained after correction")
-    return {"scenario": "insurance_false_assumption_correction", "passed": not failures, "classification": classify(failures), "failures": failures, "packet": summarize(last, turns[-1])}
+    scenario = "insurance_false_assumption_correction"
+    return {"scenario": scenario, "passed": not failures, "classification": classify(scenario, failures), "failures": failures, "packet": summarize(last, turns[-1])}
 
 
 def scenario_insurance_repeated_product_detail() -> dict[str, Any]:
@@ -293,7 +329,8 @@ def scenario_insurance_repeated_product_detail() -> dict[str, Any]:
     add_failure(failures, frame(last).get("buyer_move_id") == "scope_limit_question", "scope limit question not recognized")
     add_failure(failures, "high-level" in lower or "purpose of the call" in lower or "licensed" in lower, "capability boundary not answered directly")
     add_failure(failures, "which part should i check first" not in lower, "scope question reopened full menu")
-    return {"scenario": "insurance_repeated_product_detail_challenge", "passed": not failures, "classification": classify(failures), "failures": failures, "packet": summarize(last, turns[-1])}
+    scenario = "insurance_repeated_product_detail_challenge"
+    return {"scenario": scenario, "passed": not failures, "classification": classify(scenario, failures), "failures": failures, "packet": summarize(last, turns[-1])}
 
 
 def scenario_telecom_vague_positive_after_bad_experience() -> dict[str, Any]:
@@ -305,7 +342,8 @@ def scenario_telecom_vague_positive_after_bad_experience() -> dict[str, Any]:
     lower = lower_response(last)
     add_failure(failures, "one concrete check" in lower or ("plan fit" in lower and ("coverage" in lower or "availability" in lower)), "vague positive did not accept one-check frame")
     add_failure(failures, "contract or switching" not in lower, "vague positive reopened full telecom menu")
-    return {"scenario": "telecom_vague_positive_after_prior_bad_experience", "passed": not failures, "classification": classify(failures), "failures": failures, "packet": summarize(last, turns[-1])}
+    scenario = "telecom_vague_positive_after_prior_bad_experience"
+    return {"scenario": scenario, "passed": not failures, "classification": classify(scenario, failures), "failures": failures, "packet": summarize(last, turns[-1])}
 
 
 def scenario_telecom_plan_fit_boundary() -> dict[str, Any]:
@@ -325,7 +363,8 @@ def scenario_telecom_plan_fit_boundary() -> dict[str, Any]:
     add_failure(failures, "plan fit" in lower and ("availability" in lower or "coverage" in lower), "plan fit/coverage context not preserved")
     add_failure(failures, "is that what you want" in lower or "want them to check" in lower, "one review-confirmation question missing")
     add_failure(failures, call_control(last) != "transfer-or-escalate", "boundary escalated abruptly")
-    return {"scenario": "telecom_plan_fit_coverage_boundary", "passed": not failures, "classification": classify(failures), "failures": failures, "packet": summarize(last, turns[-1])}
+    scenario = "telecom_plan_fit_coverage_boundary"
+    return {"scenario": scenario, "passed": not failures, "classification": classify(scenario, failures), "failures": failures, "packet": summarize(last, turns[-1])}
 
 
 def preservation_scenarios() -> list[dict[str, Any]]:
@@ -343,7 +382,7 @@ def preservation_scenarios() -> list[dict[str, Any]]:
         failures: list[str] = []
         add_failure(failures, predicate(last), f"{label} did not preserve expected behavior")
         add_failure(failures, not any(side_effect_flags(last).values()), "side effects were not all false")
-        records.append({"scenario": label, "passed": not failures, "classification": classify(failures), "failures": failures, "packet": summarize(last, turns[-1])})
+        records.append({"scenario": label, "passed": not failures, "classification": classify(label, failures), "failures": failures, "packet": summarize(last, turns[-1])})
     return records
 
 
@@ -365,7 +404,11 @@ def run_matrix() -> list[dict[str, Any]]:
 def write_outputs(records: list[dict[str, Any]]) -> dict[str, Any]:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     failure_count = sum(1 for record in records if not record["passed"])
-    classification_counts = Counter(str(record.get("classification") or "") for record in records)
+    raw_classification_counts = Counter(str(record.get("classification") or "") for record in records)
+    classification_counts = {label: raw_classification_counts.get(label, 0) for label in CLASSIFICATION_LABELS}
+    for label, count in sorted(raw_classification_counts.items()):
+        if label not in classification_counts:
+            classification_counts[label] = count
     side_effects = {
         "provider_calls_made": False,
         "local_llm_calls_made": False,
@@ -382,7 +425,10 @@ def write_outputs(records: list[dict[str, Any]]) -> dict[str, Any]:
         "matrix_size": len(records),
         "pass_count": len(records) - failure_count,
         "failure_count": failure_count,
-        "classification_counts": dict(sorted(classification_counts.items())),
+        "classification_counts": classification_counts,
+        "runtime_behavior_changed": False,
+        "known_reproduced_before_patch_count": len(REPRODUCED_BEFORE_PATCH_SCENARIOS),
+        "preservation_check_count": len(PRESERVATION_SCENARIOS),
         "records": records,
         "side_effects": side_effects,
     }
@@ -394,9 +440,17 @@ def write_outputs(records: list[dict[str, Any]]) -> dict[str, Any]:
         f"- Matrix size: `{result['matrix_size']}`",
         f"- Pass count: `{result['pass_count']}`",
         f"- Failure count: `{result['failure_count']}`",
+        f"- Runtime behavior changed in this phase: `{str(result['runtime_behavior_changed']).lower()}`",
+        f"- Known reproduced-before-patch scenarios: `{result['known_reproduced_before_patch_count']}`",
+        f"- Preservation scenarios: `{result['preservation_check_count']}`",
         "",
         "## Classification Counts",
         *(f"- `{key}`: `{value}`" for key, value in result["classification_counts"].items()),
+        "",
+        "## Classification Meaning",
+        "- `reproduced_before_patch_then_fixed`: scenario failed during the 4F2A red replay and now passes on the current runtime.",
+        "- `not_reproduced_on_current_runtime`: scenario did not reproduce as a current runtime failure.",
+        "- `preservation_check_passed`: guard scenario for existing safe behavior; it was not one of the live transcript failures.",
         "",
         "## Scenario Results",
     ]

@@ -1,14 +1,18 @@
 {
   "checkpoint_id": "LIVE-DEMO-TRANSCRIPT-FAILURE-REPLAY-001",
   "classification_counts": {
-    "stale_or_not_reproduced": 14
+    "not_reproduced_on_current_runtime": 0,
+    "preservation_check_passed": 5,
+    "reproduced_before_patch_then_fixed": 9
   },
   "failure_count": 0,
+  "known_reproduced_before_patch_count": 9,
   "matrix_size": 14,
   "pass_count": 14,
+  "preservation_check_count": 5,
   "records": [
     {
-      "classification": "stale_or_not_reproduced",
+      "classification": "reproduced_before_patch_then_fixed",
       "failures": [],
       "packet": {
         "appointment_readiness": "none",
@@ -37,7 +41,7 @@
       "scenario": "routesignal_permission_repeated_ack"
     },
     {
-      "classification": "stale_or_not_reproduced",
+      "classification": "reproduced_before_patch_then_fixed",
       "failures": [],
       "packet": {
         "appointment_readiness": "medium",
@@ -66,7 +70,7 @@
       "scenario": "routesignal_asr_near_miss_callbacks"
     },
     {
-      "classification": "stale_or_not_reproduced",
+      "classification": "reproduced_before_patch_then_fixed",
       "failures": [],
       "packet": {
         "appointment_readiness": "high",
@@ -95,7 +99,7 @@
       "scenario": "routesignal_near_miss_then_impact"
     },
     {
-      "classification": "stale_or_not_reproduced",
+      "classification": "reproduced_before_patch_then_fixed",
       "failures": [],
       "packet": {
         "appointment_readiness": "medium",
@@ -124,7 +128,7 @@
       "scenario": "routesignal_vague_followup_little_bit"
     },
     {
-      "classification": "stale_or_not_reproduced",
+      "classification": "reproduced_before_patch_then_fixed",
       "failures": [],
       "packet": {
         "appointment_readiness": "none",
@@ -153,7 +157,7 @@
       "scenario": "routesignal_why_care_challenge"
     },
     {
-      "classification": "stale_or_not_reproduced",
+      "classification": "reproduced_before_patch_then_fixed",
       "failures": [],
       "packet": {
         "appointment_readiness": "none",
@@ -182,7 +186,7 @@
       "scenario": "insurance_false_assumption_correction"
     },
     {
-      "classification": "stale_or_not_reproduced",
+      "classification": "reproduced_before_patch_then_fixed",
       "failures": [],
       "packet": {
         "appointment_readiness": "none",
@@ -211,7 +215,7 @@
       "scenario": "insurance_repeated_product_detail_challenge"
     },
     {
-      "classification": "stale_or_not_reproduced",
+      "classification": "reproduced_before_patch_then_fixed",
       "failures": [],
       "packet": {
         "appointment_readiness": "none",
@@ -240,7 +244,7 @@
       "scenario": "telecom_vague_positive_after_prior_bad_experience"
     },
     {
-      "classification": "stale_or_not_reproduced",
+      "classification": "reproduced_before_patch_then_fixed",
       "failures": [],
       "packet": {
         "appointment_readiness": "none",
@@ -269,7 +273,7 @@
       "scenario": "telecom_plan_fit_coverage_boundary"
     },
     {
-      "classification": "stale_or_not_reproduced",
+      "classification": "preservation_check_passed",
       "failures": [],
       "packet": {
         "appointment_readiness": "none",
@@ -298,7 +302,7 @@
       "scenario": "preserve_driving_stop"
     },
     {
-      "classification": "stale_or_not_reproduced",
+      "classification": "preservation_check_passed",
       "failures": [],
       "packet": {
         "appointment_readiness": "none",
@@ -327,7 +331,7 @@
       "scenario": "preserve_hospital_stop"
     },
     {
-      "classification": "stale_or_not_reproduced",
+      "classification": "preservation_check_passed",
       "failures": [],
       "packet": {
         "appointment_readiness": "none",
@@ -356,7 +360,7 @@
       "scenario": "preserve_direct_product_answer"
     },
     {
-      "classification": "stale_or_not_reproduced",
+      "classification": "preservation_check_passed",
       "failures": [],
       "packet": {
         "appointment_readiness": "none",
@@ -385,7 +389,7 @@
       "scenario": "preserve_ai_disclosure"
     },
     {
-      "classification": "stale_or_not_reproduced",
+      "classification": "preservation_check_passed",
       "failures": [],
       "packet": {
         "appointment_readiness": "high",
@@ -414,6 +418,7 @@
       "scenario": "preserve_callback_time_capture"
     }
   ],
+  "runtime_behavior_changed": false,
   "side_effects": {
     "creates_calendar_event": false,
     "customer_audio_uploaded_to_python_server": false,

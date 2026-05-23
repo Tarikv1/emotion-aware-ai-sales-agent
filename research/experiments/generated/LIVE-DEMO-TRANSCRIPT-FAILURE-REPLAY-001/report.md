@@ -5,14 +5,24 @@
 - Matrix size: `14`
 - Pass count: `14`
 - Failure count: `0`
+- Runtime behavior changed in this phase: `false`
+- Known reproduced-before-patch scenarios: `9`
+- Preservation scenarios: `5`
 
 ## Classification Counts
-- `stale_or_not_reproduced`: `14`
+- `reproduced_before_patch_then_fixed`: `9`
+- `not_reproduced_on_current_runtime`: `0`
+- `preservation_check_passed`: `5`
+
+## Classification Meaning
+- `reproduced_before_patch_then_fixed`: scenario failed during the 4F2A red replay and now passes on the current runtime.
+- `not_reproduced_on_current_runtime`: scenario did not reproduce as a current runtime failure.
+- `preservation_check_passed`: guard scenario for existing safe behavior; it was not one of the live transcript failures.
 
 ## Scenario Results
 ### routesignal_permission_repeated_ack
 - Passed: `true`
-- Classification: `stale_or_not_reproduced`
+- Classification: `reproduced_before_patch_then_fixed`
 - Buyer move: `permission_acknowledgement`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
@@ -20,7 +30,7 @@
 
 ### routesignal_asr_near_miss_callbacks
 - Passed: `true`
-- Classification: `stale_or_not_reproduced`
+- Classification: `reproduced_before_patch_then_fixed`
 - Buyer move: `pain_confirmed`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
@@ -28,7 +38,7 @@
 
 ### routesignal_near_miss_then_impact
 - Passed: `true`
-- Classification: `stale_or_not_reproduced`
+- Classification: `reproduced_before_patch_then_fixed`
 - Buyer move: `implication_confirmed`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
@@ -36,7 +46,7 @@
 
 ### routesignal_vague_followup_little_bit
 - Passed: `true`
-- Classification: `stale_or_not_reproduced`
+- Classification: `reproduced_before_patch_then_fixed`
 - Buyer move: `implication_unclear`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
@@ -44,7 +54,7 @@
 
 ### routesignal_why_care_challenge
 - Passed: `true`
-- Classification: `stale_or_not_reproduced`
+- Classification: `reproduced_before_patch_then_fixed`
 - Buyer move: `why_should_i_care`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
@@ -52,7 +62,7 @@
 
 ### insurance_false_assumption_correction
 - Passed: `true`
-- Classification: `stale_or_not_reproduced`
+- Classification: `reproduced_before_patch_then_fixed`
 - Buyer move: `already_answered_challenge`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
@@ -60,7 +70,7 @@
 
 ### insurance_repeated_product_detail_challenge
 - Passed: `true`
-- Classification: `stale_or_not_reproduced`
+- Classification: `reproduced_before_patch_then_fixed`
 - Buyer move: `scope_limit_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
@@ -68,7 +78,7 @@
 
 ### telecom_vague_positive_after_prior_bad_experience
 - Passed: `true`
-- Classification: `stale_or_not_reproduced`
+- Classification: `reproduced_before_patch_then_fixed`
 - Buyer move: `why_are_you_asking`
 - Source: `contextual_buyer_semantics`
 - Call control: `continue-call`
@@ -76,7 +86,7 @@
 
 ### telecom_plan_fit_coverage_boundary
 - Passed: `true`
-- Classification: `stale_or_not_reproduced`
+- Classification: `reproduced_before_patch_then_fixed`
 - Buyer move: `scope_limit_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
@@ -84,7 +94,7 @@
 
 ### preserve_driving_stop
 - Passed: `true`
-- Classification: `stale_or_not_reproduced`
+- Classification: `preservation_check_passed`
 - Buyer move: `busy_or_distracted`
 - Source: `universal_response_shape`
 - Call control: `end-call`
@@ -92,7 +102,7 @@
 
 ### preserve_hospital_stop
 - Passed: `true`
-- Classification: `stale_or_not_reproduced`
+- Classification: `preservation_check_passed`
 - Buyer move: `serious_hardship_bad_timing`
 - Source: `universal_response_shape`
 - Call control: `end-call`
@@ -100,7 +110,7 @@
 
 ### preserve_direct_product_answer
 - Passed: `true`
-- Classification: `stale_or_not_reproduced`
+- Classification: `preservation_check_passed`
 - Buyer move: `product_detail_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
@@ -108,7 +118,7 @@
 
 ### preserve_ai_disclosure
 - Passed: `true`
-- Classification: `stale_or_not_reproduced`
+- Classification: `preservation_check_passed`
 - Buyer move: `are_you_ai_or_robot`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
@@ -116,7 +126,7 @@
 
 ### preserve_callback_time_capture
 - Passed: `true`
-- Classification: `stale_or_not_reproduced`
+- Classification: `preservation_check_passed`
 - Buyer move: `callback_time_provided`
 - Source: `universal_response_shape`
 - Call control: `schedule-and-end`
