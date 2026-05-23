@@ -24,9 +24,8 @@
   "failures": [],
   "human_review_required_for_all": true,
   "mechanical_warning_counts": {
-    "no_acknowledgement": 45,
-    "over_deferential_stop_offer": 48,
-    "repeated_full_menu": 6
+    "no_acknowledgement": 35,
+    "over_deferential_stop_offer": 40
   },
   "most_concerning_conversations_by_mechanical_signals_only": [
     {
@@ -46,17 +45,6 @@
       "mechanical_warning_count": 3,
       "mechanical_warning_flags": [
         "over_deferential_stop_offer"
-      ]
-    },
-    {
-      "arc_type": "confusion_loop_resistance",
-      "campaign_id": "synthetic-insurance-review",
-      "conversation_id": "commercial-sales-conversation-review-001-02-07-synthetic-insurance-review-confusion_loop_resistance",
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer",
-        "repeated_full_menu"
       ]
     },
     {
@@ -98,14 +86,22 @@
       ]
     },
     {
-      "arc_type": "confusion_loop_resistance",
+      "arc_type": "no_fit_stop",
       "campaign_id": "synthetic-automotive-service-review",
-      "conversation_id": "commercial-sales-conversation-review-001-04-07-synthetic-automotive-service-review-confusion_loop_resistance",
+      "conversation_id": "commercial-sales-conversation-review-001-04-10-synthetic-automotive-service-review-no_fit_stop",
+      "mechanical_warning_count": 3,
+      "mechanical_warning_flags": [
+        "over_deferential_stop_offer"
+      ]
+    },
+    {
+      "arc_type": "direct_question",
+      "campaign_id": "synthetic-home-services-estimate",
+      "conversation_id": "commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question",
       "mechanical_warning_count": 3,
       "mechanical_warning_flags": [
         "no_acknowledgement",
-        "over_deferential_stop_offer",
-        "repeated_full_menu"
+        "over_deferential_stop_offer"
       ]
     }
   ],
@@ -156,6 +152,12 @@
       "mechanical_warning_count": 0
     },
     {
+      "arc_type": "confusion_loop_resistance",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-07-routesignal_live_demo-confusion_loop_resistance",
+      "mechanical_warning_count": 0
+    },
+    {
       "arc_type": "social_conversation_management",
       "campaign_id": "routesignal_live_demo",
       "conversation_id": "commercial-sales-conversation-review-001-01-08-routesignal_live_demo-social_conversation_management",
@@ -172,12 +174,6 @@
       "campaign_id": "synthetic-insurance-review",
       "conversation_id": "commercial-sales-conversation-review-001-02-02-synthetic-insurance-review-time_pressure",
       "mechanical_warning_count": 0
-    },
-    {
-      "arc_type": "tentative_pain",
-      "campaign_id": "synthetic-insurance-review",
-      "conversation_id": "commercial-sales-conversation-review-001-02-03-synthetic-insurance-review-tentative_pain",
-      "mechanical_warning_count": 0
     }
   ],
   "turn_count": 275,
@@ -193,10 +189,10 @@
       "file": "runtime/core/universal_conversation_policy_runtime.py",
       "id": "UDR-001",
       "line_numbers": [
-        473,
-        475,
-        477,
-        479
+        483,
+        485,
+        487,
+        489
       ],
       "recommended_follow_up": "Move primary diagnostic phrase selection to campaign config/adapters.",
       "risk": "Generic sales behavior can become coupled to fixture ids instead of campaign facts.",
@@ -213,10 +209,10 @@
       "file": "runtime/core/universal_conversation_policy_runtime.py",
       "id": "UDR-002",
       "line_numbers": [
-        473,
-        475,
-        477,
-        479
+        483,
+        485,
+        487,
+        489
       ],
       "recommended_follow_up": "Use campaign fact slots such as core_diagnostic_gaps, gap_label, and gap_value_bridge.",
       "risk": "A new campaign in the same vertical may inherit the wrong primary pain hypothesis.",
@@ -233,17 +229,18 @@
       "file": "runtime/core/universal_conversation_policy_runtime.py",
       "id": "UDR-003",
       "line_numbers": [
-        330,
         331,
-        448,
+        332,
         449,
-        461,
+        450,
         462,
-        472,
-        845,
-        847,
-        848,
-        849
+        463,
+        471,
+        482,
+        899,
+        901,
+        902,
+        903
       ],
       "recommended_follow_up": "Keep RouteSignal-specific wording in RouteSignal campaign/playbook facts.",
       "risk": "RouteSignal preservation logic can leak into generic universal response shape code.",
@@ -262,39 +259,44 @@
       "file": "runtime/core/universal_conversation_policy_runtime.py",
       "id": "UDR-004",
       "line_numbers": [
-        245,
-        332,
+        246,
         333,
         334,
-        336,
+        335,
         337,
         338,
-        438,
-        474,
-        476,
-        478,
-        480,
-        590,
-        593,
-        594,
-        625,
-        626,
-        628,
+        339,
+        439,
+        484,
+        486,
+        488,
+        490,
+        600,
+        603,
+        604,
+        627,
         629,
-        630,
-        832,
-        833,
-        834,
-        835,
-        836,
-        837,
-        838,
-        839,
-        840,
-        841,
-        842,
-        843,
-        1287
+        632,
+        635,
+        636,
+        679,
+        680,
+        682,
+        683,
+        684,
+        886,
+        887,
+        888,
+        889,
+        890,
+        891,
+        892,
+        893,
+        894,
+        895,
+        896,
+        897,
+        1341
       ],
       "recommended_follow_up": "Expose the preferred customer-facing phrase per gap through campaign config.",
       "risk": "Sales copy and primary pain language will require code changes instead of config changes.",

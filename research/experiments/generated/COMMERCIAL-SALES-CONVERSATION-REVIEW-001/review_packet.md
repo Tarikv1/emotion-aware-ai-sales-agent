@@ -28,7 +28,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 | `commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question` | `routesignal_live_demo` | `direct_question` | 3 |
 | `commercial-sales-conversation-review-001-01-05-routesignal_live_demo-objection` | `routesignal_live_demo` | `objection` | 0 |
 | `commercial-sales-conversation-review-001-01-06-routesignal_live_demo-trust_challenge` | `routesignal_live_demo` | `trust_challenge` | 2 |
-| `commercial-sales-conversation-review-001-01-07-routesignal_live_demo-confusion_loop_resistance` | `routesignal_live_demo` | `confusion_loop_resistance` | 1 |
+| `commercial-sales-conversation-review-001-01-07-routesignal_live_demo-confusion_loop_resistance` | `routesignal_live_demo` | `confusion_loop_resistance` | 0 |
 | `commercial-sales-conversation-review-001-01-08-routesignal_live_demo-social_conversation_management` | `routesignal_live_demo` | `social_conversation_management` | 0 |
 | `commercial-sales-conversation-review-001-01-09-routesignal_live_demo-asr_garble` | `routesignal_live_demo` | `asr_garble` | 2 |
 | `commercial-sales-conversation-review-001-01-10-routesignal_live_demo-no_fit_stop` | `routesignal_live_demo` | `no_fit_stop` | 3 |
@@ -38,7 +38,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 | `commercial-sales-conversation-review-001-02-04-synthetic-insurance-review-direct_question` | `synthetic-insurance-review` | `direct_question` | 1 |
 | `commercial-sales-conversation-review-001-02-05-synthetic-insurance-review-objection` | `synthetic-insurance-review` | `objection` | 0 |
 | `commercial-sales-conversation-review-001-02-06-synthetic-insurance-review-trust_challenge` | `synthetic-insurance-review` | `trust_challenge` | 1 |
-| `commercial-sales-conversation-review-001-02-07-synthetic-insurance-review-confusion_loop_resistance` | `synthetic-insurance-review` | `confusion_loop_resistance` | 3 |
+| `commercial-sales-conversation-review-001-02-07-synthetic-insurance-review-confusion_loop_resistance` | `synthetic-insurance-review` | `confusion_loop_resistance` | 0 |
 | `commercial-sales-conversation-review-001-02-08-synthetic-insurance-review-social_conversation_management` | `synthetic-insurance-review` | `social_conversation_management` | 0 |
 | `commercial-sales-conversation-review-001-02-09-synthetic-insurance-review-asr_garble` | `synthetic-insurance-review` | `asr_garble` | 2 |
 | `commercial-sales-conversation-review-001-02-10-synthetic-insurance-review-no_fit_stop` | `synthetic-insurance-review` | `no_fit_stop` | 3 |
@@ -48,7 +48,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 | `commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question` | `synthetic-b2b-saas-operations` | `direct_question` | 3 |
 | `commercial-sales-conversation-review-001-03-05-synthetic-b2b-saas-operations-objection` | `synthetic-b2b-saas-operations` | `objection` | 0 |
 | `commercial-sales-conversation-review-001-03-06-synthetic-b2b-saas-operations-trust_challenge` | `synthetic-b2b-saas-operations` | `trust_challenge` | 2 |
-| `commercial-sales-conversation-review-001-03-07-synthetic-b2b-saas-operations-confusion_loop_resistance` | `synthetic-b2b-saas-operations` | `confusion_loop_resistance` | 2 |
+| `commercial-sales-conversation-review-001-03-07-synthetic-b2b-saas-operations-confusion_loop_resistance` | `synthetic-b2b-saas-operations` | `confusion_loop_resistance` | 0 |
 | `commercial-sales-conversation-review-001-03-08-synthetic-b2b-saas-operations-social_conversation_management` | `synthetic-b2b-saas-operations` | `social_conversation_management` | 0 |
 | `commercial-sales-conversation-review-001-03-09-synthetic-b2b-saas-operations-asr_garble` | `synthetic-b2b-saas-operations` | `asr_garble` | 2 |
 | `commercial-sales-conversation-review-001-03-10-synthetic-b2b-saas-operations-no_fit_stop` | `synthetic-b2b-saas-operations` | `no_fit_stop` | 3 |
@@ -58,7 +58,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 | `commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question` | `synthetic-automotive-service-review` | `direct_question` | 3 |
 | `commercial-sales-conversation-review-001-04-05-synthetic-automotive-service-review-objection` | `synthetic-automotive-service-review` | `objection` | 0 |
 | `commercial-sales-conversation-review-001-04-06-synthetic-automotive-service-review-trust_challenge` | `synthetic-automotive-service-review` | `trust_challenge` | 2 |
-| `commercial-sales-conversation-review-001-04-07-synthetic-automotive-service-review-confusion_loop_resistance` | `synthetic-automotive-service-review` | `confusion_loop_resistance` | 3 |
+| `commercial-sales-conversation-review-001-04-07-synthetic-automotive-service-review-confusion_loop_resistance` | `synthetic-automotive-service-review` | `confusion_loop_resistance` | 0 |
 | `commercial-sales-conversation-review-001-04-08-synthetic-automotive-service-review-social_conversation_management` | `synthetic-automotive-service-review` | `social_conversation_management` | 0 |
 | `commercial-sales-conversation-review-001-04-09-synthetic-automotive-service-review-asr_garble` | `synthetic-automotive-service-review` | `asr_garble` | 2 |
 | `commercial-sales-conversation-review-001-04-10-synthetic-automotive-service-review-no_fit_stop` | `synthetic-automotive-service-review` | `no_fit_stop` | 3 |
@@ -68,7 +68,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 | `commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question` | `synthetic-home-services-estimate` | `direct_question` | 3 |
 | `commercial-sales-conversation-review-001-05-05-synthetic-home-services-estimate-objection` | `synthetic-home-services-estimate` | `objection` | 0 |
 | `commercial-sales-conversation-review-001-05-06-synthetic-home-services-estimate-trust_challenge` | `synthetic-home-services-estimate` | `trust_challenge` | 2 |
-| `commercial-sales-conversation-review-001-05-07-synthetic-home-services-estimate-confusion_loop_resistance` | `synthetic-home-services-estimate` | `confusion_loop_resistance` | 3 |
+| `commercial-sales-conversation-review-001-05-07-synthetic-home-services-estimate-confusion_loop_resistance` | `synthetic-home-services-estimate` | `confusion_loop_resistance` | 0 |
 | `commercial-sales-conversation-review-001-05-08-synthetic-home-services-estimate-social_conversation_management` | `synthetic-home-services-estimate` | `social_conversation_management` | 0 |
 | `commercial-sales-conversation-review-001-05-09-synthetic-home-services-estimate-asr_garble` | `synthetic-home-services-estimate` | `asr_garble` | 2 |
 | `commercial-sales-conversation-review-001-05-10-synthetic-home-services-estimate-no_fit_stop` | `synthetic-home-services-estimate` | `no_fit_stop` | 3 |
@@ -349,7 +349,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `None`
 - Arc: `confusion_loop_resistance`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement`
+- Mechanical warnings: `none`
 
 #### Review Focus
 - Does it repair without repeating?
@@ -377,10 +377,10 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you already asked that
-  - Agent: Since missed callbacks are the gap, the useful next step is a short workflow review with someone from Northstar. Would a short workflow review be useful for this gap?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
-  - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement`
+  - Agent: You're right, you already answered that. I'll use callbacks and not ask it again.
+  - Source: `universal_response_shape`; call_control: `continue-call`
+  - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
+  - Warnings: `none`
 - Turn `6` buyer: you didn't answer my question
   - Agent: You're right, you already answered that. I'll use callbacks and not ask it again.
   - Source: `universal_response_shape`; call_control: `continue-call`
@@ -776,7 +776,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-insurance-review.json`
 - Arc: `confusion_loop_resistance`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+- Mechanical warnings: `none`
 
 #### Review Focus
 - Does it repair without repeating?
@@ -804,10 +804,10 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you already asked that
-  - Agent: The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
-  - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+  - Agent: You're right, you already answered that. I'll use premium pressure and not ask it again.
+  - Source: `universal_response_shape`; call_control: `continue-call`
+  - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
+  - Warnings: `none`
 - Turn `6` buyer: you didn't answer my question
   - Agent: You're right, you already answered that. I'll use premium pressure and not ask it again.
   - Source: `universal_response_shape`; call_control: `continue-call`
@@ -1203,7 +1203,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-b2b-saas-operations.json`
 - Arc: `confusion_loop_resistance`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `none`
 
 #### Review Focus
 - Does it repair without repeating?
@@ -1231,10 +1231,10 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you already asked that
-  - Agent: The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
-  - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer`
+  - Agent: You're right, you already answered that. I'll use manual work and not ask it again.
+  - Source: `universal_response_shape`; call_control: `continue-call`
+  - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
+  - Warnings: `none`
 - Turn `6` buyer: you didn't answer my question
   - Agent: You're right, you already answered that. I'll use manual work and not ask it again.
   - Source: `universal_response_shape`; call_control: `continue-call`
@@ -1630,7 +1630,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-automotive-service-review.json`
 - Arc: `confusion_loop_resistance`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+- Mechanical warnings: `none`
 
 #### Review Focus
 - Does it repair without repeating?
@@ -1658,10 +1658,10 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you already asked that
-  - Agent: The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
-  - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+  - Agent: You're right, you already answered that. I'll use repair timing and not ask it again.
+  - Source: `universal_response_shape`; call_control: `continue-call`
+  - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
+  - Warnings: `none`
 - Turn `6` buyer: you didn't answer my question
   - Agent: You're right, you already answered that. I'll use repair timing and not ask it again.
   - Source: `universal_response_shape`; call_control: `continue-call`
@@ -2057,7 +2057,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-home-services-estimate.json`
 - Arc: `confusion_loop_resistance`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+- Mechanical warnings: `none`
 
 #### Review Focus
 - Does it repair without repeating?
@@ -2085,10 +2085,10 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you already asked that
-  - Agent: The quick check is whether any of these areas is worth a short inspection or estimate review: service need, scheduling urgency, or estimate or property details. If not, I can stop here; which part should I check first?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
-  - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+  - Agent: You're right, you already answered that. I'll use the service need and not ask it again.
+  - Source: `universal_response_shape`; call_control: `continue-call`
+  - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
+  - Warnings: `none`
 - Turn `6` buyer: you didn't answer my question
   - Agent: You're right, you already answered that. I'll use the service need and not ask it again.
   - Source: `universal_response_shape`; call_control: `continue-call`

@@ -24,6 +24,7 @@ KNOWN_NONSENSE_PHRASES = {
 
 UNIVERSAL_ASR_REPAIR_REASONS = {
     "asr_quality_rejected",
+    "domain_near_miss",
     "empty_or_fragment",
     "high_risk_appointment_time_mismatch",
     "known_phonetic_nonsense",
@@ -465,6 +466,15 @@ def _permission_response(campaign: dict | None) -> str:
     return f"Thanks. Is {primary_gap} causing any issue right now?"
 
 
+def _scope_relevance_clarification_response(campaign: dict | None) -> str:
+    primary_gap = _sharp_diagnostic_gap_phrase(campaign)
+    if primary_gap == "inbound demo follow-up slipping":
+        return "That may be outside this call's scope. The quick check here is whether inbound demo follow-up is slipping now."
+    if primary_gap.endswith("need"):
+        return f"That may be outside this call's scope. The quick check here is whether {_area_phrase(primary_gap)} is active now."
+    return f"That may be outside this call's scope. The quick check here is whether {primary_gap} is causing any issue now."
+
+
 def _sharp_diagnostic_gap_phrase(campaign: dict | None) -> str:
     campaign_id = _campaign_id(campaign)
     vertical = _campaign_vertical(campaign)
@@ -602,6 +612,50 @@ def _gap_id_from_transcript(normalized: str, campaign: dict | None) -> str:
             if any(word in normalized for word in words.split()):
                 return gap_id
     return ""
+
+
+def _campaign_supported_gap_ids(campaign: dict | None) -> set[str]:
+    if _is_routesignal_campaign(campaign):
+        return {"callbacks", "handoffs", "manual_tracking"}
+    gaps = (campaign or {}).get("diagnostic_gaps") if isinstance(campaign, dict) else {}
+    return set(gaps.keys()) if isinstance(gaps, dict) else set()
+
+
+def _universal_gap_id_from_transcript(normalized: str) -> str:
+    candidates: list[tuple[str, tuple[str, ...]]] = [
+        ("premium_or_budget", ("premium", "budget")),
+        ("coverage_fit", ("coverage fit",)),
+        ("renewal_timing", ("renewal timing",)),
+        ("manual_work", ("manual work",)),
+        ("integration_risk", ("integration",)),
+        ("visibility_gap", ("visibility", "reporting")),
+        ("repair_timing", ("repair timing", "repair timings")),
+        ("vehicle_issue", ("vehicle issue", "car issue")),
+        ("warranty_or_estimate", ("warranty", "estimate")),
+        ("service_need", ("we need service", "service need", "active service")),
+        ("scheduling_urgency", ("scheduling", "schedule")),
+        ("callbacks", ("callback", "callbacks")),
+        ("handoffs", ("handoff", "handoffs")),
+        ("manual_tracking", ("manual tracking",)),
+    ]
+    for gap_id, markers in candidates:
+        if any(marker in normalized for marker in markers):
+            return gap_id
+    return ""
+
+
+def _unsupported_pain_phrase_gap_id(normalized: str, campaign: dict | None) -> str:
+    if not _contains_any(
+        normalized,
+        {"is a problem", "is the problem", "usually pretty long", "we need service", "is unclear", "is the issue"},
+    ):
+        return ""
+    gap_id = _universal_gap_id_from_transcript(normalized)
+    if not gap_id:
+        return ""
+    if gap_id in _campaign_supported_gap_ids(campaign):
+        return ""
+    return gap_id
 
 
 def contextual_pain_supported_by_campaign(
@@ -1269,7 +1323,7 @@ def classify_universal_buyer_move_from_transcript(
             confidence="high",
             category="confusion_challenge_repair",
         )
-    if _contains_any(normalized, {"already told you", "i told you", "keep asking the same"}):
+    if _contains_any(normalized, {"already told you", "i told you", "already asked that", "keep asking the same"}):
         return _recognition(
             "already_answered_challenge",
             reason="already_answered_challenge_phrase",
@@ -1287,6 +1341,13 @@ def classify_universal_buyer_move_from_transcript(
     if normalized.startswith("maybe ") or _contains_any(normalized, {"maybe coverage", "maybe integration", "maybe repair", "maybe scheduling", "maybe handoff"}):
         return _recognition("tentative_gap_interest", reason="tentative_gap_phrase", confidence="high", category="pain_tentative_pain")
     if "price" not in normalized and _contains_any(normalized, {"is a problem", "is the problem", "usually pretty long", "we need service", "is unclear", "is the issue"}):
+        if _unsupported_pain_phrase_gap_id(normalized, campaign):
+            return _recognition(
+                "confusion_not_clear",
+                reason="out_of_campaign_pain_phrase",
+                confidence="medium",
+                category="confusion_challenge_repair",
+            )
         return _recognition("pain_confirmed", reason="clean_pain_phrase", confidence="high", category="pain_tentative_pain")
 
     context_move = _buyer_move_from_context(contextual_semantics, transcript)
@@ -1506,8 +1567,13 @@ def should_enforce_response_shape(
     if (frame or {}).get("asr_repair_required"):
         return False
     confidence = str((frame or {}).get("recognition_confidence") or "")
+    out_of_campaign_pain = (
+        buyer_move_id == "confusion_not_clear"
+        and str((frame or {}).get("recognition_reason") or "") == "out_of_campaign_pain_phrase"
+    )
     if (
         confidence != "high"
+        and not out_of_campaign_pain
         and buyer_move_id not in PAIN_PROGRESSION_MOVES | SOCIAL_CONVERSATION_MANAGEMENT_MOVES | NEXT_STEP_DISCIPLINE_MOVES
     ):
         return False
@@ -1583,7 +1649,11 @@ def render_universal_response_outline(
     if buyer_move_id == "time_constrained_permission":
         return _time_pressure_response(campaign)
     if buyer_move_id == "pain_confirmed":
-        return _pain_implication_response(_gap_phrase_from_frame_or_text(frame, campaign, session_state))
+        gap_phrase = _gap_phrase_from_frame_or_text(frame, campaign, session_state)
+        gap_id = str((frame or {}).get("confirmed_gap_id") or (frame or {}).get("selected_gap") or "")
+        if gap_id and gap_id in _string_items(_memory_from_session(session_state).get("confirmed_gaps")):
+            return f"Right, {_area_phrase(gap_phrase)} is already noted. Is it creating a real impact now?"
+        return _pain_implication_response(gap_phrase)
     if buyer_move_id == "tentative_gap_interest":
         return _tentative_gap_response(_gap_phrase_from_frame_or_text(frame, campaign, session_state))
     if buyer_move_id == "implication_confirmed":
@@ -1648,6 +1718,8 @@ def render_universal_response_outline(
         return "Understood. I'll stop here. Goodbye."
 
     if buyer_move_id == "confusion_not_clear":
+        if str((frame or {}).get("recognition_reason") or "") == "out_of_campaign_pain_phrase":
+            return _scope_relevance_clarification_response(campaign)
         return f"I mean whether {_area_phrase(active_gap)} is actually happening. If not, there is no reason to continue."
     if buyer_move_id == "why_are_you_asking":
         return (

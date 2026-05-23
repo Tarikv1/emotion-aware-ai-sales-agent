@@ -457,7 +457,7 @@ def snapshot(
         "actual_call_control": call_control(packet),
         "final_response": final_response(packet),
         "universal_policy_frame": universal_policy_frame(packet),
-        "expected_buyer_move_ids": sorted(expected_buyer_moves(case)),
+        "expected_buyer_move_ids": sorted(expected_buyer_moves(case, campaign)),
         "actual_buyer_move_id": (universal_policy_frame(packet) or {}).get("buyer_move_id"),
         "recognition_reason": (universal_policy_frame(packet) or {}).get("recognition_reason"),
         "recognition_confidence": (universal_policy_frame(packet) or {}).get("recognition_confidence"),
@@ -472,8 +472,12 @@ def snapshot(
     }
 
 
-def expected_buyer_moves(case: dict[str, Any]) -> set[str]:
-    return set(EXPECTED_BUYER_MOVES_BY_TRANSCRIPT.get(str(case["transcript"]), {"confusion_not_clear"}))
+def expected_buyer_moves(case: dict[str, Any], campaign: dict[str, Any]) -> set[str]:
+    transcript = str(case["transcript"])
+    expected_gap_campaigns = EXPECTED_GAP_BY_TRANSCRIPT.get(transcript)
+    if expected_gap_campaigns and not transcript.lower().startswith("maybe ") and campaign["id"] not in expected_gap_campaigns:
+        return {"confusion_not_clear"}
+    return set(EXPECTED_BUYER_MOVES_BY_TRANSCRIPT.get(transcript, {"confusion_not_clear"}))
 
 
 def evaluate_result(
@@ -490,7 +494,7 @@ def evaluate_result(
     target_gap = str(result.get("actual_target_gap") or "")
     call = str(result.get("actual_call_control") or "")
     frame = result.get("universal_policy_frame") or {}
-    expected_moves = expected_buyer_moves(case)
+    expected_moves = expected_buyer_moves(case, campaign)
     actual_move = str(frame.get("buyer_move_id") or "")
     response_shape_enforced_for_category = (
         frame.get("response_shape_enforcement_enabled") is True

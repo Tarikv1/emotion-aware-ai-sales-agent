@@ -734,9 +734,9 @@
       "transcript": "yadav would be good"
     },
     {
-      "actual_buyer_move_id": "pain_confirmed",
+      "actual_buyer_move_id": "confusion_not_clear",
       "asr_repair_required": false,
-      "buyer_move_category": "pain_tentative_pain",
+      "buyer_move_category": "confusion_challenge_repair",
       "campaign": "routesignal_live_demo",
       "category": "asr_and_clean_controls",
       "enforcement_enabled": false,
@@ -746,8 +746,8 @@
       ],
       "failures": [],
       "passed": true,
-      "recognition_confidence": "high",
-      "recognition_reason": "clean_pain_phrase",
+      "recognition_confidence": "medium",
+      "recognition_reason": "out_of_campaign_pain_phrase",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -1520,9 +1520,9 @@
       "transcript": "yadav would be good"
     },
     {
-      "actual_buyer_move_id": "pain_confirmed",
+      "actual_buyer_move_id": "confusion_not_clear",
       "asr_repair_required": false,
-      "buyer_move_category": "pain_tentative_pain",
+      "buyer_move_category": "confusion_challenge_repair",
       "campaign": "synthetic-insurance-review",
       "category": "asr_and_clean_controls",
       "enforcement_enabled": false,
@@ -1532,8 +1532,8 @@
       ],
       "failures": [],
       "passed": true,
-      "recognition_confidence": "high",
-      "recognition_reason": "clean_pain_phrase",
+      "recognition_confidence": "medium",
+      "recognition_reason": "out_of_campaign_pain_phrase",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -2306,9 +2306,9 @@
       "transcript": "yadav would be good"
     },
     {
-      "actual_buyer_move_id": "pain_confirmed",
+      "actual_buyer_move_id": "confusion_not_clear",
       "asr_repair_required": false,
-      "buyer_move_category": "pain_tentative_pain",
+      "buyer_move_category": "confusion_challenge_repair",
       "campaign": "synthetic-b2b-saas-operations",
       "category": "asr_and_clean_controls",
       "enforcement_enabled": false,
@@ -2318,8 +2318,8 @@
       ],
       "failures": [],
       "passed": true,
-      "recognition_confidence": "high",
-      "recognition_reason": "clean_pain_phrase",
+      "recognition_confidence": "medium",
+      "recognition_reason": "out_of_campaign_pain_phrase",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,

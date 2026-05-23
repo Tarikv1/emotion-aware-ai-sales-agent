@@ -718,6 +718,22 @@ def apply_duplicate_repair_if_needed(
 ) -> dict[str, Any]:
     if _is_terminal_action(action):
         return action
+    selected = action.get("selected_action") or {}
+    universal_frame = (
+        (action.get("state_before") or {}).get("universal_policy_frame")
+        or (continuity(action).get("universal_policy_frame") if isinstance(continuity(action), dict) else {})
+        or {}
+    )
+    if (
+        selected.get("source") == "universal_conversation_policy"
+        and universal_frame.get("asr_repair_required") is True
+    ):
+        return action
+    if (
+        selected.get("source") == "universal_response_shape"
+        and universal_frame.get("response_shape_enforcement_enabled") is True
+    ):
+        return action
     repair = session_policy.duplicate_response_repair(
         transcript,
         session_state,

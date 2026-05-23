@@ -4418,14 +4418,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -4898,18 +4895,16 @@
           "confirmed_gaps": [
             "callbacks"
           ],
-          "final_response": "Since missed callbacks are the gap, the useful next step is a short workflow review with someone from Northstar. Would a short workflow review be useful for this gap?",
+          "final_response": "You're right, you already answered that. I'll use callbacks and not ask it again.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 1,
-          "response_word_count": 29,
+          "question_count": 0,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
-            "source": "pre_speech_conversation_stability_guard"
+            "source": "universal_response_shape"
           },
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -4933,15 +4928,15 @@
             ],
             "allowed_fact_slots": [
               "gap_label",
-              "gap_definition",
+              "gap_review_focus",
               "appointment_target"
             ],
-            "appointment_pressure_level": "none",
+            "appointment_pressure_level": "low",
             "appointment_readiness": "none",
             "asr_repair_required": false,
             "asr_repair_turn_count": 0,
-            "buyer_move_category": "fallback",
-            "buyer_move_id": "confusion_not_clear",
+            "buyer_move_category": "confusion_challenge_repair",
+            "buyer_move_id": "already_answered_challenge",
             "callback_capture_required": false,
             "confirmed_gap_id": "callbacks",
             "confirmed_gap_phrase": "callbacks",
@@ -4966,7 +4961,8 @@
               "invented exact price",
               "invented security proof",
               "invented ROI or revenue claim",
-              "appointment pressure while confused"
+              "ask the same answered diagnostic",
+              "erase prior answer"
             ],
             "friction_level": "none",
             "impact_signal_detected": false,
@@ -4974,7 +4970,7 @@
             "implication_check_required": false,
             "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
             "local_llm_calls_made": false,
-            "memory_policy": "do_not_change_gap_state_until_clarified",
+            "memory_policy": "preserve_and_restate_last_relevant_answer",
             "next_best_sales_action": "none",
             "next_step_discipline_required": false,
             "one_next_action_only": true,
@@ -4982,19 +4978,19 @@
             "pain_development_required": false,
             "pragmatic_move_id": "no_pragmatic_repair",
             "provider_calls_made": false,
-            "recognition_confidence": "low",
-            "recognition_reason": "fallback_no_universal_buyer_move_match",
-            "response_shape_candidate_source": null,
-            "response_shape_enforced_category": null,
-            "response_shape_enforcement_enabled": false,
-            "response_shape_enforcement_reason": "not_evaluated",
-            "response_shape_id": "confusion_explain_plainly",
+            "recognition_confidence": "high",
+            "recognition_reason": "already_answered_challenge_phrase",
+            "response_shape_candidate_source": "universal_response_shape",
+            "response_shape_enforced_category": "confusion_challenge_repair",
+            "response_shape_enforcement_enabled": true,
+            "response_shape_enforcement_reason": "confusion_challenge_repair_high_confidence",
+            "response_shape_id": "already_answered_preserve_gap",
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "callbacks",
             "should_preserve_appointment_readiness": false,
-            "should_preserve_cleared_gaps": false,
-            "should_preserve_confirmed_gaps": false,
+            "should_preserve_cleared_gaps": true,
+            "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
@@ -5061,7 +5057,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you didn t answer my question",
-              "previous_question_type": "appointment_time",
+              "previous_question_type": "none",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -11264,16 +11260,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer",
-        "repeated_full_menu"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -11746,20 +11737,16 @@
           "confirmed_gaps": [
             "premium_or_budget"
           ],
-          "final_response": "The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?",
+          "final_response": "You're right, you already answered that. I'll use premium pressure and not ask it again.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement",
-            "over_deferential_stop_offer",
-            "repeated_full_menu"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 1,
-          "response_word_count": 37,
+          "question_count": 0,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
-            "source": "pre_speech_conversation_stability_guard"
+            "source": "universal_response_shape"
           },
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -11783,15 +11770,15 @@
             ],
             "allowed_fact_slots": [
               "gap_label",
-              "gap_definition",
+              "gap_review_focus",
               "appointment_target"
             ],
-            "appointment_pressure_level": "none",
+            "appointment_pressure_level": "low",
             "appointment_readiness": "none",
             "asr_repair_required": false,
             "asr_repair_turn_count": 0,
-            "buyer_move_category": "fallback",
-            "buyer_move_id": "confusion_not_clear",
+            "buyer_move_category": "confusion_challenge_repair",
+            "buyer_move_id": "already_answered_challenge",
             "callback_capture_required": false,
             "confirmed_gap_id": "premium_or_budget",
             "confirmed_gap_phrase": "premium pressure",
@@ -11816,7 +11803,8 @@
               "invented exact price",
               "invented security proof",
               "invented ROI or revenue claim",
-              "appointment pressure while confused"
+              "ask the same answered diagnostic",
+              "erase prior answer"
             ],
             "friction_level": "none",
             "impact_signal_detected": false,
@@ -11824,7 +11812,7 @@
             "implication_check_required": false,
             "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
             "local_llm_calls_made": false,
-            "memory_policy": "do_not_change_gap_state_until_clarified",
+            "memory_policy": "preserve_and_restate_last_relevant_answer",
             "next_best_sales_action": "none",
             "next_step_discipline_required": false,
             "one_next_action_only": true,
@@ -11832,19 +11820,19 @@
             "pain_development_required": false,
             "pragmatic_move_id": "no_pragmatic_repair",
             "provider_calls_made": false,
-            "recognition_confidence": "low",
-            "recognition_reason": "fallback_no_universal_buyer_move_match",
-            "response_shape_candidate_source": null,
-            "response_shape_enforced_category": null,
-            "response_shape_enforcement_enabled": false,
-            "response_shape_enforcement_reason": "not_evaluated",
-            "response_shape_id": "confusion_explain_plainly",
+            "recognition_confidence": "high",
+            "recognition_reason": "already_answered_challenge_phrase",
+            "response_shape_candidate_source": "universal_response_shape",
+            "response_shape_enforced_category": "confusion_challenge_repair",
+            "response_shape_enforcement_enabled": true,
+            "response_shape_enforcement_reason": "confusion_challenge_repair_high_confidence",
+            "response_shape_id": "already_answered_preserve_gap",
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "premium_or_budget",
             "should_preserve_appointment_readiness": false,
-            "should_preserve_cleared_gaps": false,
-            "should_preserve_confirmed_gaps": false,
+            "should_preserve_cleared_gaps": true,
+            "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
@@ -11911,7 +11899,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you didn t answer my question",
-              "previous_question_type": "gap_diagnostic",
+              "previous_question_type": "none",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -18121,15 +18109,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -18602,19 +18586,16 @@
           "confirmed_gaps": [
             "manual_work"
           ],
-          "final_response": "The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?",
+          "final_response": "You're right, you already answered that. I'll use manual work and not ask it again.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement",
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 1,
-          "response_word_count": 35,
+          "question_count": 0,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
-            "source": "pre_speech_conversation_stability_guard"
+            "source": "universal_response_shape"
           },
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -18638,15 +18619,15 @@
             ],
             "allowed_fact_slots": [
               "gap_label",
-              "gap_definition",
+              "gap_review_focus",
               "appointment_target"
             ],
-            "appointment_pressure_level": "none",
+            "appointment_pressure_level": "low",
             "appointment_readiness": "none",
             "asr_repair_required": false,
             "asr_repair_turn_count": 0,
-            "buyer_move_category": "fallback",
-            "buyer_move_id": "confusion_not_clear",
+            "buyer_move_category": "confusion_challenge_repair",
+            "buyer_move_id": "already_answered_challenge",
             "callback_capture_required": false,
             "confirmed_gap_id": "manual_work",
             "confirmed_gap_phrase": "manual work",
@@ -18671,7 +18652,8 @@
               "invented exact price",
               "invented security proof",
               "invented ROI or revenue claim",
-              "appointment pressure while confused"
+              "ask the same answered diagnostic",
+              "erase prior answer"
             ],
             "friction_level": "none",
             "impact_signal_detected": false,
@@ -18679,7 +18661,7 @@
             "implication_check_required": false,
             "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
             "local_llm_calls_made": false,
-            "memory_policy": "do_not_change_gap_state_until_clarified",
+            "memory_policy": "preserve_and_restate_last_relevant_answer",
             "next_best_sales_action": "none",
             "next_step_discipline_required": false,
             "one_next_action_only": true,
@@ -18687,19 +18669,19 @@
             "pain_development_required": false,
             "pragmatic_move_id": "no_pragmatic_repair",
             "provider_calls_made": false,
-            "recognition_confidence": "low",
-            "recognition_reason": "fallback_no_universal_buyer_move_match",
-            "response_shape_candidate_source": null,
-            "response_shape_enforced_category": null,
-            "response_shape_enforcement_enabled": false,
-            "response_shape_enforcement_reason": "not_evaluated",
-            "response_shape_id": "confusion_explain_plainly",
+            "recognition_confidence": "high",
+            "recognition_reason": "already_answered_challenge_phrase",
+            "response_shape_candidate_source": "universal_response_shape",
+            "response_shape_enforced_category": "confusion_challenge_repair",
+            "response_shape_enforcement_enabled": true,
+            "response_shape_enforcement_reason": "confusion_challenge_repair_high_confidence",
+            "response_shape_id": "already_answered_preserve_gap",
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "manual_work",
             "should_preserve_appointment_readiness": false,
-            "should_preserve_cleared_gaps": false,
-            "should_preserve_confirmed_gaps": false,
+            "should_preserve_cleared_gaps": true,
+            "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
@@ -18766,7 +18748,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you didn t answer my question",
-              "previous_question_type": "gap_diagnostic",
+              "previous_question_type": "none",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -24976,16 +24958,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer",
-        "repeated_full_menu"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -25458,20 +25435,16 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?",
+          "final_response": "You're right, you already answered that. I'll use repair timing and not ask it again.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement",
-            "over_deferential_stop_offer",
-            "repeated_full_menu"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 1,
-          "response_word_count": 37,
+          "question_count": 0,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
-            "source": "pre_speech_conversation_stability_guard"
+            "source": "universal_response_shape"
           },
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -25495,15 +25468,15 @@
             ],
             "allowed_fact_slots": [
               "gap_label",
-              "gap_definition",
+              "gap_review_focus",
               "appointment_target"
             ],
-            "appointment_pressure_level": "none",
+            "appointment_pressure_level": "low",
             "appointment_readiness": "none",
             "asr_repair_required": false,
             "asr_repair_turn_count": 0,
-            "buyer_move_category": "fallback",
-            "buyer_move_id": "confusion_not_clear",
+            "buyer_move_category": "confusion_challenge_repair",
+            "buyer_move_id": "already_answered_challenge",
             "callback_capture_required": false,
             "confirmed_gap_id": "repair_timing",
             "confirmed_gap_phrase": "repair timing",
@@ -25528,7 +25501,8 @@
               "invented exact price",
               "invented security proof",
               "invented ROI or revenue claim",
-              "appointment pressure while confused"
+              "ask the same answered diagnostic",
+              "erase prior answer"
             ],
             "friction_level": "none",
             "impact_signal_detected": false,
@@ -25536,7 +25510,7 @@
             "implication_check_required": false,
             "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
             "local_llm_calls_made": false,
-            "memory_policy": "do_not_change_gap_state_until_clarified",
+            "memory_policy": "preserve_and_restate_last_relevant_answer",
             "next_best_sales_action": "none",
             "next_step_discipline_required": false,
             "one_next_action_only": true,
@@ -25544,19 +25518,19 @@
             "pain_development_required": false,
             "pragmatic_move_id": "no_pragmatic_repair",
             "provider_calls_made": false,
-            "recognition_confidence": "low",
-            "recognition_reason": "fallback_no_universal_buyer_move_match",
-            "response_shape_candidate_source": null,
-            "response_shape_enforced_category": null,
-            "response_shape_enforcement_enabled": false,
-            "response_shape_enforcement_reason": "not_evaluated",
-            "response_shape_id": "confusion_explain_plainly",
+            "recognition_confidence": "high",
+            "recognition_reason": "already_answered_challenge_phrase",
+            "response_shape_candidate_source": "universal_response_shape",
+            "response_shape_enforced_category": "confusion_challenge_repair",
+            "response_shape_enforcement_enabled": true,
+            "response_shape_enforcement_reason": "confusion_challenge_repair_high_confidence",
+            "response_shape_id": "already_answered_preserve_gap",
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "repair_timing",
             "should_preserve_appointment_readiness": false,
-            "should_preserve_cleared_gaps": false,
-            "should_preserve_confirmed_gaps": false,
+            "should_preserve_cleared_gaps": true,
+            "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
@@ -25623,7 +25597,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you didn t answer my question",
-              "previous_question_type": "gap_diagnostic",
+              "previous_question_type": "none",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -31833,16 +31807,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer",
-        "repeated_full_menu"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -32315,20 +32284,16 @@
           "confirmed_gaps": [
             "service_need"
           ],
-          "final_response": "The quick check is whether any of these areas is worth a short inspection or estimate review: service need, scheduling urgency, or estimate or property details. If not, I can stop here; which part should I check first?",
+          "final_response": "You're right, you already answered that. I'll use the service need and not ask it again.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement",
-            "over_deferential_stop_offer",
-            "repeated_full_menu"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 1,
-          "response_word_count": 38,
+          "question_count": 0,
+          "response_word_count": 16,
           "sales_progression_stage": "none",
           "selected_action": {
-            "source": "pre_speech_conversation_stability_guard"
+            "source": "universal_response_shape"
           },
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -32352,15 +32317,15 @@
             ],
             "allowed_fact_slots": [
               "gap_label",
-              "gap_definition",
+              "gap_review_focus",
               "appointment_target"
             ],
-            "appointment_pressure_level": "none",
+            "appointment_pressure_level": "low",
             "appointment_readiness": "none",
             "asr_repair_required": false,
             "asr_repair_turn_count": 0,
-            "buyer_move_category": "fallback",
-            "buyer_move_id": "confusion_not_clear",
+            "buyer_move_category": "confusion_challenge_repair",
+            "buyer_move_id": "already_answered_challenge",
             "callback_capture_required": false,
             "confirmed_gap_id": "service_need",
             "confirmed_gap_phrase": "service need",
@@ -32385,7 +32350,8 @@
               "invented exact price",
               "invented security proof",
               "invented ROI or revenue claim",
-              "appointment pressure while confused"
+              "ask the same answered diagnostic",
+              "erase prior answer"
             ],
             "friction_level": "none",
             "impact_signal_detected": false,
@@ -32393,7 +32359,7 @@
             "implication_check_required": false,
             "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
             "local_llm_calls_made": false,
-            "memory_policy": "do_not_change_gap_state_until_clarified",
+            "memory_policy": "preserve_and_restate_last_relevant_answer",
             "next_best_sales_action": "none",
             "next_step_discipline_required": false,
             "one_next_action_only": true,
@@ -32401,19 +32367,19 @@
             "pain_development_required": false,
             "pragmatic_move_id": "no_pragmatic_repair",
             "provider_calls_made": false,
-            "recognition_confidence": "low",
-            "recognition_reason": "fallback_no_universal_buyer_move_match",
-            "response_shape_candidate_source": null,
-            "response_shape_enforced_category": null,
-            "response_shape_enforcement_enabled": false,
-            "response_shape_enforcement_reason": "not_evaluated",
-            "response_shape_id": "confusion_explain_plainly",
+            "recognition_confidence": "high",
+            "recognition_reason": "already_answered_challenge_phrase",
+            "response_shape_candidate_source": "universal_response_shape",
+            "response_shape_enforced_category": "confusion_challenge_repair",
+            "response_shape_enforcement_enabled": true,
+            "response_shape_enforcement_reason": "confusion_challenge_repair_high_confidence",
+            "response_shape_id": "already_answered_preserve_gap",
             "sales_progression_stage": "none",
             "schema_version": 1,
             "selected_gap": "service_need",
             "should_preserve_appointment_readiness": false,
-            "should_preserve_cleared_gaps": false,
-            "should_preserve_confirmed_gaps": false,
+            "should_preserve_cleared_gaps": true,
+            "should_preserve_confirmed_gaps": true,
             "should_preserve_previous_question": false,
             "simplified_language_required": false,
             "social_repair_required": false,
@@ -32480,7 +32446,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you didn t answer my question",
-              "previous_question_type": "gap_diagnostic",
+              "previous_question_type": "none",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -34295,11 +34261,10 @@
       ]
     }
   ],
-  "generated_at": "2026-05-23T12:12:11.072798+00:00",
+  "generated_at": "2026-05-23T12:38:50.156875+00:00",
   "mechanical_warning_counts": {
-    "no_acknowledgement": 45,
-    "over_deferential_stop_offer": 48,
-    "repeated_full_menu": 6
+    "no_acknowledgement": 35,
+    "over_deferential_stop_offer": 40
   },
   "most_concerning_conversations_by_mechanical_signals_only": [
     {
@@ -34319,17 +34284,6 @@
       "mechanical_warning_count": 3,
       "mechanical_warning_flags": [
         "over_deferential_stop_offer"
-      ]
-    },
-    {
-      "arc_type": "confusion_loop_resistance",
-      "campaign_id": "synthetic-insurance-review",
-      "conversation_id": "commercial-sales-conversation-review-001-02-07-synthetic-insurance-review-confusion_loop_resistance",
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer",
-        "repeated_full_menu"
       ]
     },
     {
@@ -34371,14 +34325,22 @@
       ]
     },
     {
-      "arc_type": "confusion_loop_resistance",
+      "arc_type": "no_fit_stop",
       "campaign_id": "synthetic-automotive-service-review",
-      "conversation_id": "commercial-sales-conversation-review-001-04-07-synthetic-automotive-service-review-confusion_loop_resistance",
+      "conversation_id": "commercial-sales-conversation-review-001-04-10-synthetic-automotive-service-review-no_fit_stop",
+      "mechanical_warning_count": 3,
+      "mechanical_warning_flags": [
+        "over_deferential_stop_offer"
+      ]
+    },
+    {
+      "arc_type": "direct_question",
+      "campaign_id": "synthetic-home-services-estimate",
+      "conversation_id": "commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question",
       "mechanical_warning_count": 3,
       "mechanical_warning_flags": [
         "no_acknowledgement",
-        "over_deferential_stop_offer",
-        "repeated_full_menu"
+        "over_deferential_stop_offer"
       ]
     }
   ],
@@ -34435,6 +34397,12 @@
       "mechanical_warning_count": 0
     },
     {
+      "arc_type": "confusion_loop_resistance",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-07-routesignal_live_demo-confusion_loop_resistance",
+      "mechanical_warning_count": 0
+    },
+    {
       "arc_type": "social_conversation_management",
       "campaign_id": "routesignal_live_demo",
       "conversation_id": "commercial-sales-conversation-review-001-01-08-routesignal_live_demo-social_conversation_management",
@@ -34451,12 +34419,6 @@
       "campaign_id": "synthetic-insurance-review",
       "conversation_id": "commercial-sales-conversation-review-001-02-02-synthetic-insurance-review-time_pressure",
       "mechanical_warning_count": 0
-    },
-    {
-      "arc_type": "tentative_pain",
-      "campaign_id": "synthetic-insurance-review",
-      "conversation_id": "commercial-sales-conversation-review-001-02-03-synthetic-insurance-review-tentative_pain",
-      "mechanical_warning_count": 0
     }
   ],
   "turn_count": 275,
@@ -34472,10 +34434,10 @@
       "file": "runtime/core/universal_conversation_policy_runtime.py",
       "id": "UDR-001",
       "line_numbers": [
-        473,
-        475,
-        477,
-        479
+        483,
+        485,
+        487,
+        489
       ],
       "recommended_follow_up": "Move primary diagnostic phrase selection to campaign config/adapters.",
       "risk": "Generic sales behavior can become coupled to fixture ids instead of campaign facts.",
@@ -34492,10 +34454,10 @@
       "file": "runtime/core/universal_conversation_policy_runtime.py",
       "id": "UDR-002",
       "line_numbers": [
-        473,
-        475,
-        477,
-        479
+        483,
+        485,
+        487,
+        489
       ],
       "recommended_follow_up": "Use campaign fact slots such as core_diagnostic_gaps, gap_label, and gap_value_bridge.",
       "risk": "A new campaign in the same vertical may inherit the wrong primary pain hypothesis.",
@@ -34512,17 +34474,18 @@
       "file": "runtime/core/universal_conversation_policy_runtime.py",
       "id": "UDR-003",
       "line_numbers": [
-        330,
         331,
-        448,
+        332,
         449,
-        461,
+        450,
         462,
-        472,
-        845,
-        847,
-        848,
-        849
+        463,
+        471,
+        482,
+        899,
+        901,
+        902,
+        903
       ],
       "recommended_follow_up": "Keep RouteSignal-specific wording in RouteSignal campaign/playbook facts.",
       "risk": "RouteSignal preservation logic can leak into generic universal response shape code.",
@@ -34541,39 +34504,44 @@
       "file": "runtime/core/universal_conversation_policy_runtime.py",
       "id": "UDR-004",
       "line_numbers": [
-        245,
-        332,
+        246,
         333,
         334,
-        336,
+        335,
         337,
         338,
-        438,
-        474,
-        476,
-        478,
-        480,
-        590,
-        593,
-        594,
-        625,
-        626,
-        628,
+        339,
+        439,
+        484,
+        486,
+        488,
+        490,
+        600,
+        603,
+        604,
+        627,
         629,
-        630,
-        832,
-        833,
-        834,
-        835,
-        836,
-        837,
-        838,
-        839,
-        840,
-        841,
-        842,
-        843,
-        1287
+        632,
+        635,
+        636,
+        679,
+        680,
+        682,
+        683,
+        684,
+        886,
+        887,
+        888,
+        889,
+        890,
+        891,
+        892,
+        893,
+        894,
+        895,
+        896,
+        897,
+        1341
       ],
       "recommended_follow_up": "Expose the preferred customer-facing phrase per gap through campaign config.",
       "risk": "Sales copy and primary pain language will require code changes instead of config changes.",

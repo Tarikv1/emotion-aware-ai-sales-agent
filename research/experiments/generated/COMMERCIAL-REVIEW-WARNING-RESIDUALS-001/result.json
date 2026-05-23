@@ -1,0 +1,1522 @@
+{
+  "checkpoint_id": "COMMERCIAL-REVIEW-WARNING-RESIDUALS-001",
+  "results": [
+    {
+      "buyer_utterance": "repeal timings are usually pretty long",
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "asr_garbled_or_low_confidence",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "domain_near_miss",
+        "response": "I may have misheard that. Could you repeat it briefly?",
+        "selected_action_source": "universal_conversation_policy",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "asr_recognized_must_repair"
+    },
+    {
+      "buyer_utterance": "repeal timings are usually pretty long",
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "asr_garbled_or_low_confidence",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "domain_near_miss",
+        "response": "I may have misheard that. Could you repeat it briefly?",
+        "selected_action_source": "universal_conversation_policy",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "asr_recognized_must_repair"
+    },
+    {
+      "buyer_utterance": "repeal timings are usually pretty long",
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "asr_garbled_or_low_confidence",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "domain_near_miss",
+        "response": "I may have misheard that. Could you repeat it briefly?",
+        "selected_action_source": "universal_conversation_policy",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "asr_recognized_must_repair"
+    },
+    {
+      "buyer_utterance": "repeal timings are usually pretty long",
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "asr_garbled_or_low_confidence",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "domain_near_miss",
+        "response": "I may have misheard that. Could you repeat it briefly?",
+        "selected_action_source": "universal_conversation_policy",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "asr_recognized_must_repair"
+    },
+    {
+      "buyer_utterance": "yeah that would be good",
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "permission_acknowledgement",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "contextual_semantics_mapping",
+        "response": "Thanks. Is premium pressure causing any issue right now?",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "generic_positive_ack_no_menu"
+    },
+    {
+      "buyer_utterance": "yeah that would be good",
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "permission_acknowledgement",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "contextual_semantics_mapping",
+        "response": "Thanks. Is manual work causing any issue right now?",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "generic_positive_ack_no_menu"
+    },
+    {
+      "buyer_utterance": "yeah that would be good",
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "permission_acknowledgement",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "contextual_semantics_mapping",
+        "response": "Thanks. Is repair timing causing any issue right now?",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "generic_positive_ack_no_menu"
+    },
+    {
+      "buyer_utterance": "yeah that would be good",
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "permission_acknowledgement",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "contextual_semantics_mapping",
+        "response": "Thanks. Is the service need active right now?",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "generic_positive_ack_no_menu"
+    },
+    {
+      "buyer_utterance": "repair timings are usually pretty long",
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "confusion_not_clear",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "renewal_or_timing"
+        ],
+        "recognition_reason": "out_of_campaign_pain_phrase",
+        "response": "That may be outside this call's scope. The quick check here is whether premium pressure is causing any issue now.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "out_of_campaign_pain_phrase"
+    },
+    {
+      "buyer_utterance": "repair timings are usually pretty long",
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "confusion_not_clear",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "out_of_campaign_pain_phrase",
+        "response": "That may be outside this call's scope. The quick check here is whether manual work is causing any issue now.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "out_of_campaign_pain_phrase"
+    },
+    {
+      "buyer_utterance": "repair timings are usually pretty long",
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "confusion_not_clear",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "out_of_campaign_pain_phrase",
+        "response": "That may be outside this call's scope. The quick check here is whether the service need is active now.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "out_of_campaign_pain_phrase"
+    },
+    {
+      "buyer_utterance": "repair timings are usually pretty long",
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "medium",
+        "buyer_move_id": "pain_confirmed",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "repair_timing"
+        ],
+        "recognition_reason": "clean_pain_phrase",
+        "response": "Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "automotive_clean_pain_control"
+    },
+    {
+      "buyer_utterance": "not interested",
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "explicit_stop_or_refusal_phrase",
+        "response": "Understood. I'll stop here. Goodbye.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "no_fit_stop_classified"
+    },
+    {
+      "buyer_utterance": "I don't want to continue",
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "permission_to_continue_denied",
+        "call_control": "end-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "permission_to_continue_denied_phrase",
+        "response": "Understood. I'll stop here. Goodbye.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "no_fit_stop_classified"
+    },
+    {
+      "buyer_utterance": "stop calling",
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "explicit_stop_or_refusal_phrase",
+        "response": "Understood. I'll stop here. Goodbye.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "no_fit_stop_classified"
+    },
+    {
+      "buyer_utterance": "not interested",
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "explicit_stop_or_refusal_phrase",
+        "response": "Understood. I'll stop here. Goodbye.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "no_fit_stop_classified"
+    },
+    {
+      "buyer_utterance": "I don't want to continue",
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "permission_to_continue_denied",
+        "call_control": "end-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "permission_to_continue_denied_phrase",
+        "response": "Understood. I'll stop here. Goodbye.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "no_fit_stop_classified"
+    },
+    {
+      "buyer_utterance": "stop calling",
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "explicit_stop_or_refusal_phrase",
+        "response": "Understood. I'll stop here. Goodbye.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "no_fit_stop_classified"
+    },
+    {
+      "buyer_utterance": "not interested",
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "explicit_stop_or_refusal_phrase",
+        "response": "Understood. I'll stop here. Goodbye.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "no_fit_stop_classified"
+    },
+    {
+      "buyer_utterance": "I don't want to continue",
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "permission_to_continue_denied",
+        "call_control": "end-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "permission_to_continue_denied_phrase",
+        "response": "Understood. I'll stop here. Goodbye.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "no_fit_stop_classified"
+    },
+    {
+      "buyer_utterance": "stop calling",
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "explicit_stop_or_refusal_phrase",
+        "response": "Understood. I'll stop here. Goodbye.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "no_fit_stop_classified"
+    },
+    {
+      "buyer_utterance": "not interested",
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "explicit_stop_or_refusal_phrase",
+        "response": "Understood. I'll stop here. Goodbye.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "no_fit_stop_classified"
+    },
+    {
+      "buyer_utterance": "I don't want to continue",
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "permission_to_continue_denied",
+        "call_control": "end-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "permission_to_continue_denied_phrase",
+        "response": "Understood. I'll stop here. Goodbye.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "no_fit_stop_classified"
+    },
+    {
+      "buyer_utterance": "stop calling",
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "explicit_stop_or_refusal_phrase",
+        "response": "Understood. I'll stop here. Goodbye.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "no_fit_stop_classified"
+    },
+    {
+      "buyer_utterance": "not interested",
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "explicit_stop_or_refusal_phrase",
+        "response": "Understood. I'll stop here. Goodbye.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "no_fit_stop_classified"
+    },
+    {
+      "buyer_utterance": "I don't want to continue",
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "permission_to_continue_denied",
+        "call_control": "end-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "permission_to_continue_denied_phrase",
+        "response": "Understood. I'll stop here. Goodbye.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "no_fit_stop_classified"
+    },
+    {
+      "buyer_utterance": "stop calling",
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "explicit_stop_or_refusal_phrase",
+        "response": "Understood. I'll stop here. Goodbye.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "no_fit_stop_classified"
+    },
+    {
+      "buyer_utterance": "what does your product do",
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "product_detail_question",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "product_detail_question_phrase",
+        "response": "RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, or handoffs. The quick check is whether that problem exists on your side.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "direct_question_no_menu_loop_1"
+    },
+    {
+      "buyer_utterance": "why should I care",
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "why_should_i_care",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "why_should_i_care_phrase",
+        "response": "Only if inbound demo follow-up slipping is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "direct_question_no_menu_loop_2"
+    },
+    {
+      "buyer_utterance": "what does your product do",
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "product_detail_question",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "product_detail_question_phrase",
+        "response": "This call is only to check whether a short human review is useful around premium pressure. The quick question is whether that area is causing friction now.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "direct_question_no_menu_loop_1"
+    },
+    {
+      "buyer_utterance": "why should I care",
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "why_should_i_care",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "why_should_i_care_phrase",
+        "response": "Only if premium pressure is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "direct_question_no_menu_loop_2"
+    },
+    {
+      "buyer_utterance": "what does your product do",
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "product_detail_question",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "product_detail_question_phrase",
+        "response": "This call is only to check whether a short human review is useful around manual work. The quick question is whether that area is causing friction now.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "direct_question_no_menu_loop_1"
+    },
+    {
+      "buyer_utterance": "why should I care",
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "why_should_i_care",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "why_should_i_care_phrase",
+        "response": "Only if manual work is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "direct_question_no_menu_loop_2"
+    },
+    {
+      "buyer_utterance": "what does your product do",
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "product_detail_question",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "product_detail_question_phrase",
+        "response": "This call is only to check whether a short human review is useful around the vehicle issue. The quick question is whether that area is causing friction now.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "direct_question_no_menu_loop_1"
+    },
+    {
+      "buyer_utterance": "why should I care",
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "why_should_i_care",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "why_should_i_care_phrase",
+        "response": "Only if vehicle issue is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "direct_question_no_menu_loop_2"
+    },
+    {
+      "buyer_utterance": "what does your product do",
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "product_detail_question",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "product_detail_question_phrase",
+        "response": "This call is only to check whether a short human review is useful around the service need. The quick question is whether that area is causing friction now.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "direct_question_no_menu_loop_1"
+    },
+    {
+      "buyer_utterance": "why should I care",
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "why_should_i_care",
+        "call_control": "continue-call",
+        "confirmed_gaps": [],
+        "recognition_reason": "why_should_i_care_phrase",
+        "response": "Only if service need is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "direct_question_no_menu_loop_2"
+    },
+    {
+      "buyer_utterance": "what do you mean",
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "confusion_not_clear",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "callbacks"
+        ],
+        "recognition_reason": "confusion_or_clarification_phrase",
+        "response": "I mean whether callbacks is actually happening. If not, there is no reason to continue.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "confusion_loop_resistance"
+    },
+    {
+      "buyer_utterance": "you already asked that",
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "already_answered_challenge",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "callbacks"
+        ],
+        "recognition_reason": "already_answered_challenge_phrase",
+        "response": "You're right, you already answered that. I'll use callbacks and not ask it again.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "confusion_loop_resistance"
+    },
+    {
+      "buyer_utterance": "you didn't answer my question",
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "already_answered_challenge",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "callbacks"
+        ],
+        "recognition_reason": "did_not_answer_challenge_phrase",
+        "response": "You're right, you already answered that. I'll use callbacks and not ask it again.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "confusion_loop_resistance"
+    },
+    {
+      "buyer_utterance": "what do you mean",
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "confusion_not_clear",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "premium_or_budget"
+        ],
+        "recognition_reason": "confusion_or_clarification_phrase",
+        "response": "I mean whether premium pressure is actually happening. If not, there is no reason to continue.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "confusion_loop_resistance"
+    },
+    {
+      "buyer_utterance": "you already asked that",
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "already_answered_challenge",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "premium_or_budget"
+        ],
+        "recognition_reason": "already_answered_challenge_phrase",
+        "response": "You're right, you already answered that. I'll use premium pressure and not ask it again.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "confusion_loop_resistance"
+    },
+    {
+      "buyer_utterance": "you didn't answer my question",
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "already_answered_challenge",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "premium_or_budget"
+        ],
+        "recognition_reason": "did_not_answer_challenge_phrase",
+        "response": "You're right, you already answered that. I'll use premium pressure and not ask it again.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "confusion_loop_resistance"
+    },
+    {
+      "buyer_utterance": "what do you mean",
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "confusion_not_clear",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "manual_work"
+        ],
+        "recognition_reason": "confusion_or_clarification_phrase",
+        "response": "I mean whether manual work is actually happening. If not, there is no reason to continue.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "confusion_loop_resistance"
+    },
+    {
+      "buyer_utterance": "you already asked that",
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "already_answered_challenge",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "manual_work"
+        ],
+        "recognition_reason": "already_answered_challenge_phrase",
+        "response": "You're right, you already answered that. I'll use manual work and not ask it again.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "confusion_loop_resistance"
+    },
+    {
+      "buyer_utterance": "you didn't answer my question",
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "already_answered_challenge",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "manual_work"
+        ],
+        "recognition_reason": "did_not_answer_challenge_phrase",
+        "response": "You're right, you already answered that. I'll use manual work and not ask it again.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "confusion_loop_resistance"
+    },
+    {
+      "buyer_utterance": "what do you mean",
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "confusion_not_clear",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "repair_timing"
+        ],
+        "recognition_reason": "confusion_or_clarification_phrase",
+        "response": "I mean whether repair timing is actually happening. If not, there is no reason to continue.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "confusion_loop_resistance"
+    },
+    {
+      "buyer_utterance": "you already asked that",
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "already_answered_challenge",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "repair_timing"
+        ],
+        "recognition_reason": "already_answered_challenge_phrase",
+        "response": "You're right, you already answered that. I'll use repair timing and not ask it again.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "confusion_loop_resistance"
+    },
+    {
+      "buyer_utterance": "you didn't answer my question",
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "already_answered_challenge",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "repair_timing"
+        ],
+        "recognition_reason": "did_not_answer_challenge_phrase",
+        "response": "You're right, you already answered that. I'll use repair timing and not ask it again.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "confusion_loop_resistance"
+    },
+    {
+      "buyer_utterance": "what do you mean",
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "confusion_not_clear",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "service_need"
+        ],
+        "recognition_reason": "confusion_or_clarification_phrase",
+        "response": "I mean whether the service need is actually happening. If not, there is no reason to continue.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "confusion_loop_resistance"
+    },
+    {
+      "buyer_utterance": "you already asked that",
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "already_answered_challenge",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "service_need"
+        ],
+        "recognition_reason": "already_answered_challenge_phrase",
+        "response": "You're right, you already answered that. I'll use the service need and not ask it again.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "confusion_loop_resistance"
+    },
+    {
+      "buyer_utterance": "you didn't answer my question",
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "appointment_readiness": "none",
+        "buyer_move_id": "already_answered_challenge",
+        "call_control": "continue-call",
+        "confirmed_gaps": [
+          "service_need"
+        ],
+        "recognition_reason": "did_not_answer_challenge_phrase",
+        "response": "You're right, you already answered that. I'll use the service need and not ask it again.",
+        "selected_action_source": "universal_response_shape",
+        "semantic": null,
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "target_gap": null
+      },
+      "passed": true,
+      "scenario": "confusion_loop_resistance"
+    }
+  ],
+  "runtime_behavior_changed_scope": "ASR repair precedence, out-of-campaign pain clarification, and challenge loop repair only.",
+  "side_effects": {
+    "creates_calendar_event": false,
+    "customer_audio_uploaded_to_python_server": false,
+    "customer_audio_uploaded_to_tts_provider": false,
+    "local_llm_calls_made": false,
+    "opens_prod_102": false,
+    "provider_calls_made": false,
+    "sends_email": false,
+    "writes_crm": false
+  },
+  "status": "pass",
+  "summary": {
+    "audit_asr_residual_classification_counts": {},
+    "audit_commercial_warning_classification_counts": {
+      "no_acknowledgement / false_positive_warning": 22,
+      "over_deferential_stop_offer / intentional_no_fit_or_stop": 15,
+      "over_deferential_stop_offer / needs_human_sales_review": 10
+    },
+    "audit_true_asr_repair_defect_count": 0,
+    "audit_true_sales_defect_count": 0,
+    "failure_count": 0,
+    "failure_counts_by_scenario": {},
+    "pass_count": 52,
+    "scenario_count": 52,
+    "top_failures": {}
+  }
+}
