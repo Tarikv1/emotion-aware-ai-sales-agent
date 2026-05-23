@@ -463,6 +463,7 @@ def mechanical_warning_flags(
     response: str,
     frame: dict[str, Any],
     flags: dict[str, bool],
+    call_control: str = "",
 ) -> list[str]:
     warnings: list[str] = []
     buyer = buyer_utterance.lower()
@@ -476,7 +477,12 @@ def mechanical_warning_flags(
         warnings.append("internal_wording")
     if question_count(response) > 1:
         warnings.append("too_many_questions")
-    if buyer_utterance != "__agent_open__" and response and not has_acknowledgement(response):
+    if (
+        buyer_utterance != "__agent_open__"
+        and response
+        and buyer_move != "asr_garbled_or_low_confidence"
+        and not has_acknowledgement(response)
+    ):
         warnings.append("no_acknowledgement")
     if any(hint in buyer for hint in DIRECT_QUESTION_HINTS) and not response:
         warnings.append("direct_question_not_answered")
@@ -492,7 +498,8 @@ def mechanical_warning_flags(
         warnings.append("weak_objection_reframe")
     if buyer_move == "pain_confirmed" and "?" not in response:
         warnings.append("weak_pain_implication")
-    if "stop here" in lower or "leave it there" in lower:
+    terminal_stop = buyer_move in {"stop_request", "permission_to_continue_denied"} and call_control == "end-call"
+    if ("stop here" in lower or "leave it there" in lower) and not terminal_stop:
         warnings.append("over_deferential_stop_offer")
     if contains_any(lower, ROBOTIC_PATTERNS):
         warnings.append("robotic_phrase")
@@ -514,6 +521,7 @@ def turn_record(turn_index: int, buyer_utterance: str, packet: dict[str, Any]) -
         response=response,
         frame=frame,
         flags=flags,
+        call_control=str((packet.get("summary") or {}).get("call_control") or ""),
     )
     return {
         "turn_index": turn_index,

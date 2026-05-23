@@ -3548,15 +3548,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -3693,15 +3689,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "I'm Maya calling on behalf of Northstar Workflow Labs about inbound demo follow-up.",
+          "final_response": "Sure, I'm Maya calling on behalf of Northstar Workflow Labs about inbound demo follow-up.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 14,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -3807,15 +3801,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I can keep this short or stop here.",
+          "final_response": "Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 19,
+          "question_count": 1,
+          "response_word_count": 22,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -3930,7 +3922,7 @@
           "selected_action": {
             "source": "universal_response_shape"
           },
-          "semantic": "permission_acknowledgement",
+          "semantic": "social_acknowledgement",
           "side_effect_flags": {
             "audio_file_created": false,
             "creates_calendar_event": false,
@@ -3969,7 +3961,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "yeah sure",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "clean_acknowledgement"
             },
             "direct_question_required": false,
@@ -5766,14 +5758,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -6022,9 +6011,7 @@
           "final_response": "I may have misheard that. Could you repeat it briefly?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
           "response_word_count": 10,
@@ -6133,9 +6120,7 @@
           "final_response": "I still may not have caught that. Could you repeat it in a few words?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
           "response_word_count": 15,
@@ -6392,14 +6377,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -6539,9 +6521,7 @@
           "final_response": "Understood. I'll stop here. Goodbye.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
           "response_word_count": 5,
@@ -6649,9 +6629,7 @@
           "final_response": "Understood. I will stop here. Goodbye.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
           "response_word_count": 6,
@@ -6759,9 +6737,7 @@
           "final_response": "Understood. I will stop here. Goodbye.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
           "response_word_count": 6,
@@ -10388,14 +10364,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -10532,13 +10505,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "I'm Maya calling on behalf of Synthetic Insurance Agency about a short human review around premium pressure.",
+          "final_response": "Sure, I'm Maya calling on behalf of Synthetic Insurance Agency about a short human review around premium pressure.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 17,
+          "response_word_count": 18,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -10644,15 +10617,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Yes, I'm an AI voice agent calling for Synthetic Insurance Agency. I can keep this short or stop here.",
+          "final_response": "Yes, I'm an AI voice agent calling for Synthetic Insurance Agency. I'll keep it brief: is premium pressure causing an issue now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 19,
+          "question_count": 1,
+          "response_word_count": 22,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -10767,7 +10738,7 @@
           "selected_action": {
             "source": "universal_response_shape"
           },
-          "semantic": "permission_acknowledgement",
+          "semantic": "social_acknowledgement",
           "side_effect_flags": {
             "audio_file_created": false,
             "creates_calendar_event": false,
@@ -10806,7 +10777,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "yeah sure",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "clean_acknowledgement"
             },
             "direct_question_required": false,
@@ -12603,14 +12574,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -12859,9 +12827,7 @@
           "final_response": "I may have misheard that. Could you repeat it briefly?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
           "response_word_count": 10,
@@ -12970,9 +12936,7 @@
           "final_response": "I still may not have caught that. Could you repeat it in a few words?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
           "response_word_count": 15,
@@ -13229,14 +13193,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -13376,9 +13337,7 @@
           "final_response": "Understood. I'll stop here. Goodbye.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
           "response_word_count": 5,
@@ -13486,9 +13445,7 @@
           "final_response": "Understood. I will stop here. Goodbye.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
           "response_word_count": 6,
@@ -13596,9 +13553,7 @@
           "final_response": "Understood. I will stop here. Goodbye.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
           "response_word_count": 6,
@@ -17225,15 +17180,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -17370,15 +17321,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "I'm Maya calling on behalf of Synthetic SaaS Operations about a short human review around manual work.",
+          "final_response": "Sure, I'm Maya calling on behalf of Synthetic SaaS Operations about a short human review around manual work.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 17,
+          "response_word_count": 18,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -17484,15 +17433,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Yes, I'm an AI voice agent calling for Synthetic SaaS Operations. I can keep this short or stop here.",
+          "final_response": "Yes, I'm an AI voice agent calling for Synthetic SaaS Operations. I'll keep it brief: is manual work causing an issue now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 19,
+          "question_count": 1,
+          "response_word_count": 22,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -17607,7 +17554,7 @@
           "selected_action": {
             "source": "universal_response_shape"
           },
-          "semantic": "permission_acknowledgement",
+          "semantic": "social_acknowledgement",
           "side_effect_flags": {
             "audio_file_created": false,
             "creates_calendar_event": false,
@@ -17646,7 +17593,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "yeah sure",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "clean_acknowledgement"
             },
             "direct_question_required": false,
@@ -19443,14 +19390,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -19699,9 +19643,7 @@
           "final_response": "I may have misheard that. Could you repeat it briefly?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
           "response_word_count": 10,
@@ -19810,9 +19752,7 @@
           "final_response": "I still may not have caught that. Could you repeat it in a few words?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
           "response_word_count": 15,
@@ -20069,14 +20009,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -20216,9 +20153,7 @@
           "final_response": "Understood. I'll stop here. Goodbye.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
           "response_word_count": 5,
@@ -20326,9 +20261,7 @@
           "final_response": "Understood. I will stop here. Goodbye.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
           "response_word_count": 6,
@@ -20436,9 +20369,7 @@
           "final_response": "Understood. I will stop here. Goodbye.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
           "response_word_count": 6,
@@ -24065,15 +23996,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -24210,15 +24137,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "I'm Maya calling on behalf of Synthetic Automotive Service about a short human review around the vehicle issue.",
+          "final_response": "Sure, I'm Maya calling on behalf of Synthetic Automotive Service about a short human review around the vehicle issue.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 18,
+          "response_word_count": 19,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -24324,15 +24249,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Yes, I'm an AI voice agent calling for Synthetic Automotive Service. I can keep this short or stop here.",
+          "final_response": "Yes, I'm an AI voice agent calling for Synthetic Automotive Service. I'll keep it brief: is repair timing causing an issue now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 19,
+          "question_count": 1,
+          "response_word_count": 22,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -24447,7 +24370,7 @@
           "selected_action": {
             "source": "universal_response_shape"
           },
-          "semantic": "permission_acknowledgement",
+          "semantic": "social_acknowledgement",
           "side_effect_flags": {
             "audio_file_created": false,
             "creates_calendar_event": false,
@@ -24486,7 +24409,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "yeah sure",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "clean_acknowledgement"
             },
             "direct_question_required": false,
@@ -26283,14 +26206,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -26539,9 +26459,7 @@
           "final_response": "I may have misheard that. Could you repeat it briefly?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
           "response_word_count": 10,
@@ -26650,9 +26568,7 @@
           "final_response": "I still may not have caught that. Could you repeat it in a few words?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
           "response_word_count": 15,
@@ -26909,14 +26825,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -27056,9 +26969,7 @@
           "final_response": "Understood. I'll stop here. Goodbye.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
           "response_word_count": 5,
@@ -27166,9 +27077,7 @@
           "final_response": "Understood. I will stop here. Goodbye.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
           "response_word_count": 6,
@@ -27276,9 +27185,7 @@
           "final_response": "Understood. I will stop here. Goodbye.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
           "response_word_count": 6,
@@ -30905,15 +30812,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -31050,15 +30953,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "I'm Maya calling on behalf of Synthetic Home Services about a short human review around the service need.",
+          "final_response": "Sure, I'm Maya calling on behalf of Synthetic Home Services about a short human review around the service need.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 18,
+          "response_word_count": 19,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -31164,15 +31065,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Yes, I'm an AI voice agent calling for Synthetic Home Services. I can keep this short or stop here.",
+          "final_response": "Yes, I'm an AI voice agent calling for Synthetic Home Services. I'll keep it brief: is the service need active now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 19,
+          "question_count": 1,
+          "response_word_count": 21,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -31287,7 +31186,7 @@
           "selected_action": {
             "source": "universal_response_shape"
           },
-          "semantic": "permission_acknowledgement",
+          "semantic": "social_acknowledgement",
           "side_effect_flags": {
             "audio_file_created": false,
             "creates_calendar_event": false,
@@ -31326,7 +31225,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "yeah sure",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "clean_acknowledgement"
             },
             "direct_question_required": false,
@@ -33123,14 +33022,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -33379,9 +33275,7 @@
           "final_response": "I may have misheard that. Could you repeat it briefly?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
           "response_word_count": 10,
@@ -33490,9 +33384,7 @@
           "final_response": "I still may not have caught that. Could you repeat it in a few words?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
           "response_word_count": 15,
@@ -33749,14 +33641,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -33896,9 +33785,7 @@
           "final_response": "Understood. I'll stop here. Goodbye.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
           "response_word_count": 5,
@@ -34006,9 +33893,7 @@
           "final_response": "Understood. I will stop here. Goodbye.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
           "response_word_count": 6,
@@ -34116,9 +34001,7 @@
           "final_response": "Understood. I will stop here. Goodbye.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
           "response_word_count": 6,
@@ -34220,84 +34103,64 @@
       ]
     }
   ],
-  "generated_at": "2026-05-23T13:31:51.650763+00:00",
-  "mechanical_warning_counts": {
-    "no_acknowledgement": 23,
-    "over_deferential_stop_offer": 30
-  },
+  "generated_at": "2026-05-23T13:50:03.366661+00:00",
+  "mechanical_warning_counts": {},
   "most_concerning_conversations_by_mechanical_signals_only": [
     {
-      "arc_type": "no_fit_stop",
+      "arc_type": "smooth_qualified_appointment",
       "campaign_id": "routesignal_live_demo",
-      "conversation_id": "commercial-sales-conversation-review-001-01-10-routesignal_live_demo-no_fit_stop",
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ]
+      "conversation_id": "commercial-sales-conversation-review-001-01-01-routesignal_live_demo-smooth_qualified_appointment",
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": []
     },
     {
-      "arc_type": "no_fit_stop",
-      "campaign_id": "synthetic-insurance-review",
-      "conversation_id": "commercial-sales-conversation-review-001-02-10-synthetic-insurance-review-no_fit_stop",
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ]
+      "arc_type": "time_pressure",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-02-routesignal_live_demo-time_pressure",
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": []
     },
     {
-      "arc_type": "no_fit_stop",
-      "campaign_id": "synthetic-b2b-saas-operations",
-      "conversation_id": "commercial-sales-conversation-review-001-03-10-synthetic-b2b-saas-operations-no_fit_stop",
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ]
+      "arc_type": "tentative_pain",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-03-routesignal_live_demo-tentative_pain",
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": []
     },
     {
-      "arc_type": "no_fit_stop",
-      "campaign_id": "synthetic-automotive-service-review",
-      "conversation_id": "commercial-sales-conversation-review-001-04-10-synthetic-automotive-service-review-no_fit_stop",
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ]
+      "arc_type": "direct_question",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question",
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": []
     },
     {
-      "arc_type": "no_fit_stop",
-      "campaign_id": "synthetic-home-services-estimate",
-      "conversation_id": "commercial-sales-conversation-review-001-05-10-synthetic-home-services-estimate-no_fit_stop",
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ]
+      "arc_type": "objection",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-05-routesignal_live_demo-objection",
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": []
     },
     {
       "arc_type": "trust_challenge",
       "campaign_id": "routesignal_live_demo",
       "conversation_id": "commercial-sales-conversation-review-001-01-06-routesignal_live_demo-trust_challenge",
-      "mechanical_warning_count": 2,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ]
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": []
     },
     {
-      "arc_type": "asr_garble",
+      "arc_type": "confusion_loop_resistance",
       "campaign_id": "routesignal_live_demo",
-      "conversation_id": "commercial-sales-conversation-review-001-01-09-routesignal_live_demo-asr_garble",
-      "mechanical_warning_count": 2,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ]
+      "conversation_id": "commercial-sales-conversation-review-001-01-07-routesignal_live_demo-confusion_loop_resistance",
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": []
     },
     {
-      "arc_type": "asr_garble",
-      "campaign_id": "synthetic-insurance-review",
-      "conversation_id": "commercial-sales-conversation-review-001-02-09-synthetic-insurance-review-asr_garble",
-      "mechanical_warning_count": 2,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ]
+      "arc_type": "social_conversation_management",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-08-routesignal_live_demo-social_conversation_management",
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": []
     }
   ],
   "purpose": "Human-review packet for commercial sales conversation quality.",
@@ -34359,6 +34222,12 @@
       "mechanical_warning_count": 0
     },
     {
+      "arc_type": "trust_challenge",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-06-routesignal_live_demo-trust_challenge",
+      "mechanical_warning_count": 0
+    },
+    {
       "arc_type": "confusion_loop_resistance",
       "campaign_id": "routesignal_live_demo",
       "conversation_id": "commercial-sales-conversation-review-001-01-07-routesignal_live_demo-confusion_loop_resistance",
@@ -34368,12 +34237,6 @@
       "arc_type": "social_conversation_management",
       "campaign_id": "routesignal_live_demo",
       "conversation_id": "commercial-sales-conversation-review-001-01-08-routesignal_live_demo-social_conversation_management",
-      "mechanical_warning_count": 0
-    },
-    {
-      "arc_type": "smooth_qualified_appointment",
-      "campaign_id": "synthetic-insurance-review",
-      "conversation_id": "commercial-sales-conversation-review-001-02-01-synthetic-insurance-review-smooth_qualified_appointment",
       "mechanical_warning_count": 0
     }
   ],

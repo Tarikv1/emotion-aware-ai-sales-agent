@@ -1506,11 +1506,7 @@
   "status": "pass",
   "summary": {
     "audit_asr_residual_classification_counts": {},
-    "audit_commercial_warning_classification_counts": {
-      "no_acknowledgement / false_positive_warning": 14,
-      "over_deferential_stop_offer / intentional_no_fit_or_stop": 15,
-      "over_deferential_stop_offer / needs_human_sales_review": 5
-    },
+    "audit_commercial_warning_classification_counts": {},
     "audit_true_asr_repair_defect_count": 0,
     "audit_true_sales_defect_count": 0,
     "failure_count": 0,

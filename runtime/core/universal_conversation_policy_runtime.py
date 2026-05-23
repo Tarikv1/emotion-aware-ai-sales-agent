@@ -1741,9 +1741,9 @@ def render_universal_response_outline(
         return f"Fair question. It is worth time only if {primary_gap} is real enough to justify a short review. The useful check is whether it is showing up now."
 
     if buyer_move_id == "who_are_you":
-        return f"I'm {caller} calling on behalf of {client} about {_campaign_purpose_phrase(campaign)}."
+        return f"Sure, I'm {caller} calling on behalf of {client} about {_campaign_purpose_phrase(campaign)}."
     if buyer_move_id == "are_you_ai_or_robot":
-        return f"Yes, I'm an AI voice agent calling for {client}. I can keep this short or stop here."
+        return f"Yes, I'm an AI voice agent calling for {client}. I'll keep it brief: {_primary_issue_check_question(campaign)}"
     if buyer_move_id == "how_did_you_get_my_number":
         return "I do not have a reliable source note for that in this call, so I will not guess. I can stop here."
     if buyer_move_id == "is_this_recorded":

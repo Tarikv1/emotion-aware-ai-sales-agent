@@ -28,8 +28,7 @@ Validated a dry-run commercial sales conversation packet for human review. Codex
 - `trust_challenge`
 
 ## 5. Mechanical Warning Counts
-- `no_acknowledgement`: `23`
-- `over_deferential_stop_offer`: `30`
+- None recorded.
 
 ## 6. Strongest-Looking Conversations By Mechanical Signals Only
 - `commercial-sales-conversation-review-001-01-01-routesignal_live_demo-smooth_qualified_appointment`: `0` warnings
@@ -37,19 +36,19 @@ Validated a dry-run commercial sales conversation packet for human review. Codex
 - `commercial-sales-conversation-review-001-01-03-routesignal_live_demo-tentative_pain`: `0` warnings
 - `commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question`: `0` warnings
 - `commercial-sales-conversation-review-001-01-05-routesignal_live_demo-objection`: `0` warnings
+- `commercial-sales-conversation-review-001-01-06-routesignal_live_demo-trust_challenge`: `0` warnings
 - `commercial-sales-conversation-review-001-01-07-routesignal_live_demo-confusion_loop_resistance`: `0` warnings
 - `commercial-sales-conversation-review-001-01-08-routesignal_live_demo-social_conversation_management`: `0` warnings
-- `commercial-sales-conversation-review-001-02-01-synthetic-insurance-review-smooth_qualified_appointment`: `0` warnings
 
 ## 7. Most Concerning Conversations By Mechanical Signals Only
-- `commercial-sales-conversation-review-001-01-10-routesignal_live_demo-no_fit_stop`: `3` warnings; flags `over_deferential_stop_offer`
-- `commercial-sales-conversation-review-001-02-10-synthetic-insurance-review-no_fit_stop`: `3` warnings; flags `over_deferential_stop_offer`
-- `commercial-sales-conversation-review-001-03-10-synthetic-b2b-saas-operations-no_fit_stop`: `3` warnings; flags `over_deferential_stop_offer`
-- `commercial-sales-conversation-review-001-04-10-synthetic-automotive-service-review-no_fit_stop`: `3` warnings; flags `over_deferential_stop_offer`
-- `commercial-sales-conversation-review-001-05-10-synthetic-home-services-estimate-no_fit_stop`: `3` warnings; flags `over_deferential_stop_offer`
-- `commercial-sales-conversation-review-001-01-06-routesignal_live_demo-trust_challenge`: `2` warnings; flags `no_acknowledgement, over_deferential_stop_offer`
-- `commercial-sales-conversation-review-001-01-09-routesignal_live_demo-asr_garble`: `2` warnings; flags `no_acknowledgement`
-- `commercial-sales-conversation-review-001-02-09-synthetic-insurance-review-asr_garble`: `2` warnings; flags `no_acknowledgement`
+- `commercial-sales-conversation-review-001-01-01-routesignal_live_demo-smooth_qualified_appointment`: `0` warnings; flags `none`
+- `commercial-sales-conversation-review-001-01-02-routesignal_live_demo-time_pressure`: `0` warnings; flags `none`
+- `commercial-sales-conversation-review-001-01-03-routesignal_live_demo-tentative_pain`: `0` warnings; flags `none`
+- `commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question`: `0` warnings; flags `none`
+- `commercial-sales-conversation-review-001-01-05-routesignal_live_demo-objection`: `0` warnings; flags `none`
+- `commercial-sales-conversation-review-001-01-06-routesignal_live_demo-trust_challenge`: `0` warnings; flags `none`
+- `commercial-sales-conversation-review-001-01-07-routesignal_live_demo-confusion_loop_resistance`: `0` warnings; flags `none`
+- `commercial-sales-conversation-review-001-01-08-routesignal_live_demo-social_conversation_management`: `0` warnings; flags `none`
 
 ## 8. Safety Boundary Summary
 - Provider calls made: `false`

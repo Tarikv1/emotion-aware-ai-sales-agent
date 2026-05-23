@@ -1,0 +1,972 @@
+{
+  "checkpoint_id": "UNIVERSAL-TRUST-TRANSPARENCY-POLISH-001",
+  "results": [
+    {
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "identity_trust_privacy",
+        "buyer_move_id": "who_are_you",
+        "call_control": "continue-call",
+        "mechanical_warning_flags": [],
+        "response": "Sure, I'm Maya calling on behalf of Northstar Workflow Labs about inbound demo follow-up.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "who_are_you"
+    },
+    {
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "identity_trust_privacy",
+        "buyer_move_id": "are_you_ai_or_robot",
+        "call_control": "continue-call",
+        "mechanical_warning_flags": [],
+        "response": "Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping now?",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "ai_disclosure"
+    },
+    {
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "permission_time_pressure",
+        "buyer_move_id": "permission_acknowledgement",
+        "call_control": "continue-call",
+        "mechanical_warning_flags": [],
+        "response": "Thanks. Is inbound demo follow-up slipping right now?",
+        "response_shape_enforced_category": "pain_progression",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "ai_then_permission"
+    },
+    {
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "trust_identity_privacy_consent",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "mechanical_warning_flags": [],
+        "response": "Understood. I'll stop here. Goodbye.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "stop_not-interested"
+    },
+    {
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "trust_identity_privacy_consent",
+        "buyer_move_id": "permission_to_continue_denied",
+        "call_control": "end-call",
+        "mechanical_warning_flags": [],
+        "response": "Understood. I'll stop here. Goodbye.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "stop_i-don-t-want-to-continue"
+    },
+    {
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "trust_identity_privacy_consent",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "mechanical_warning_flags": [],
+        "response": "Understood. I'll stop here. Goodbye.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "stop_stop-calling"
+    },
+    {
+      "campaign": "routesignal_live_demo",
+      "failures": [],
+      "packets": [
+        {
+          "buyer_move_category": "asr_repair",
+          "buyer_move_id": "asr_garbled_or_low_confidence",
+          "call_control": "continue-call",
+          "mechanical_warning_flags": [],
+          "response": "I may have misheard that. Could you repeat it briefly?",
+          "response_shape_enforced_category": null,
+          "side_effect_flags": {
+            "creates_calendar_event": false,
+            "customer_audio_uploaded_to_python_server": false,
+            "customer_audio_uploaded_to_tts_provider": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          }
+        },
+        {
+          "buyer_move_category": "asr_repair",
+          "buyer_move_id": "asr_garbled_or_low_confidence",
+          "call_control": "continue-call",
+          "mechanical_warning_flags": [],
+          "response": "I still may not have caught that. Could you repeat it in a few words?",
+          "response_shape_enforced_category": null,
+          "side_effect_flags": {
+            "creates_calendar_event": false,
+            "customer_audio_uploaded_to_python_server": false,
+            "customer_audio_uploaded_to_tts_provider": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          }
+        }
+      ],
+      "passed": true,
+      "scenario": "asr_warning_calibration"
+    },
+    {
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "identity_trust_privacy",
+        "buyer_move_id": "who_are_you",
+        "call_control": "continue-call",
+        "mechanical_warning_flags": [],
+        "response": "Sure, I'm Maya calling on behalf of Synthetic Insurance Agency about a short human review around premium pressure.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "who_are_you"
+    },
+    {
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "identity_trust_privacy",
+        "buyer_move_id": "are_you_ai_or_robot",
+        "call_control": "continue-call",
+        "mechanical_warning_flags": [],
+        "response": "Yes, I'm an AI voice agent calling for Synthetic Insurance Agency. I'll keep it brief: is premium pressure causing an issue now?",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "ai_disclosure"
+    },
+    {
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "permission_time_pressure",
+        "buyer_move_id": "permission_acknowledgement",
+        "call_control": "continue-call",
+        "mechanical_warning_flags": [],
+        "response": "Thanks. Is premium pressure causing any issue right now?",
+        "response_shape_enforced_category": "pain_progression",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "ai_then_permission"
+    },
+    {
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "trust_identity_privacy_consent",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "mechanical_warning_flags": [],
+        "response": "Understood. I'll stop here. Goodbye.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "stop_not-interested"
+    },
+    {
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "trust_identity_privacy_consent",
+        "buyer_move_id": "permission_to_continue_denied",
+        "call_control": "end-call",
+        "mechanical_warning_flags": [],
+        "response": "Understood. I'll stop here. Goodbye.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "stop_i-don-t-want-to-continue"
+    },
+    {
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "trust_identity_privacy_consent",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "mechanical_warning_flags": [],
+        "response": "Understood. I'll stop here. Goodbye.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "stop_stop-calling"
+    },
+    {
+      "campaign": "synthetic-insurance-review",
+      "failures": [],
+      "packets": [
+        {
+          "buyer_move_category": "asr_repair",
+          "buyer_move_id": "asr_garbled_or_low_confidence",
+          "call_control": "continue-call",
+          "mechanical_warning_flags": [],
+          "response": "I may have misheard that. Could you repeat it briefly?",
+          "response_shape_enforced_category": null,
+          "side_effect_flags": {
+            "creates_calendar_event": false,
+            "customer_audio_uploaded_to_python_server": false,
+            "customer_audio_uploaded_to_tts_provider": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          }
+        },
+        {
+          "buyer_move_category": "asr_repair",
+          "buyer_move_id": "asr_garbled_or_low_confidence",
+          "call_control": "continue-call",
+          "mechanical_warning_flags": [],
+          "response": "I still may not have caught that. Could you repeat it in a few words?",
+          "response_shape_enforced_category": null,
+          "side_effect_flags": {
+            "creates_calendar_event": false,
+            "customer_audio_uploaded_to_python_server": false,
+            "customer_audio_uploaded_to_tts_provider": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          }
+        }
+      ],
+      "passed": true,
+      "scenario": "asr_warning_calibration"
+    },
+    {
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "identity_trust_privacy",
+        "buyer_move_id": "who_are_you",
+        "call_control": "continue-call",
+        "mechanical_warning_flags": [],
+        "response": "Sure, I'm Maya calling on behalf of Synthetic SaaS Operations about a short human review around manual work.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "who_are_you"
+    },
+    {
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "identity_trust_privacy",
+        "buyer_move_id": "are_you_ai_or_robot",
+        "call_control": "continue-call",
+        "mechanical_warning_flags": [],
+        "response": "Yes, I'm an AI voice agent calling for Synthetic SaaS Operations. I'll keep it brief: is manual work causing an issue now?",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "ai_disclosure"
+    },
+    {
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "permission_time_pressure",
+        "buyer_move_id": "permission_acknowledgement",
+        "call_control": "continue-call",
+        "mechanical_warning_flags": [],
+        "response": "Thanks. Is manual work causing any issue right now?",
+        "response_shape_enforced_category": "pain_progression",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "ai_then_permission"
+    },
+    {
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "trust_identity_privacy_consent",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "mechanical_warning_flags": [],
+        "response": "Understood. I'll stop here. Goodbye.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "stop_not-interested"
+    },
+    {
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "trust_identity_privacy_consent",
+        "buyer_move_id": "permission_to_continue_denied",
+        "call_control": "end-call",
+        "mechanical_warning_flags": [],
+        "response": "Understood. I'll stop here. Goodbye.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "stop_i-don-t-want-to-continue"
+    },
+    {
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "trust_identity_privacy_consent",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "mechanical_warning_flags": [],
+        "response": "Understood. I'll stop here. Goodbye.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "stop_stop-calling"
+    },
+    {
+      "campaign": "synthetic-b2b-saas-operations",
+      "failures": [],
+      "packets": [
+        {
+          "buyer_move_category": "asr_repair",
+          "buyer_move_id": "asr_garbled_or_low_confidence",
+          "call_control": "continue-call",
+          "mechanical_warning_flags": [],
+          "response": "I may have misheard that. Could you repeat it briefly?",
+          "response_shape_enforced_category": null,
+          "side_effect_flags": {
+            "creates_calendar_event": false,
+            "customer_audio_uploaded_to_python_server": false,
+            "customer_audio_uploaded_to_tts_provider": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          }
+        },
+        {
+          "buyer_move_category": "asr_repair",
+          "buyer_move_id": "asr_garbled_or_low_confidence",
+          "call_control": "continue-call",
+          "mechanical_warning_flags": [],
+          "response": "I still may not have caught that. Could you repeat it in a few words?",
+          "response_shape_enforced_category": null,
+          "side_effect_flags": {
+            "creates_calendar_event": false,
+            "customer_audio_uploaded_to_python_server": false,
+            "customer_audio_uploaded_to_tts_provider": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          }
+        }
+      ],
+      "passed": true,
+      "scenario": "asr_warning_calibration"
+    },
+    {
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "identity_trust_privacy",
+        "buyer_move_id": "who_are_you",
+        "call_control": "continue-call",
+        "mechanical_warning_flags": [],
+        "response": "Sure, I'm Maya calling on behalf of Synthetic Automotive Service about a short human review around the vehicle issue.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "who_are_you"
+    },
+    {
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "identity_trust_privacy",
+        "buyer_move_id": "are_you_ai_or_robot",
+        "call_control": "continue-call",
+        "mechanical_warning_flags": [],
+        "response": "Yes, I'm an AI voice agent calling for Synthetic Automotive Service. I'll keep it brief: is repair timing causing an issue now?",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "ai_disclosure"
+    },
+    {
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "permission_time_pressure",
+        "buyer_move_id": "permission_acknowledgement",
+        "call_control": "continue-call",
+        "mechanical_warning_flags": [],
+        "response": "Thanks. Is repair timing causing any issue right now?",
+        "response_shape_enforced_category": "pain_progression",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "ai_then_permission"
+    },
+    {
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "trust_identity_privacy_consent",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "mechanical_warning_flags": [],
+        "response": "Understood. I'll stop here. Goodbye.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "stop_not-interested"
+    },
+    {
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "trust_identity_privacy_consent",
+        "buyer_move_id": "permission_to_continue_denied",
+        "call_control": "end-call",
+        "mechanical_warning_flags": [],
+        "response": "Understood. I'll stop here. Goodbye.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "stop_i-don-t-want-to-continue"
+    },
+    {
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "trust_identity_privacy_consent",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "mechanical_warning_flags": [],
+        "response": "Understood. I'll stop here. Goodbye.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "stop_stop-calling"
+    },
+    {
+      "campaign": "synthetic-automotive-service-review",
+      "failures": [],
+      "packets": [
+        {
+          "buyer_move_category": "asr_repair",
+          "buyer_move_id": "asr_garbled_or_low_confidence",
+          "call_control": "continue-call",
+          "mechanical_warning_flags": [],
+          "response": "I may have misheard that. Could you repeat it briefly?",
+          "response_shape_enforced_category": null,
+          "side_effect_flags": {
+            "creates_calendar_event": false,
+            "customer_audio_uploaded_to_python_server": false,
+            "customer_audio_uploaded_to_tts_provider": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          }
+        },
+        {
+          "buyer_move_category": "asr_repair",
+          "buyer_move_id": "asr_garbled_or_low_confidence",
+          "call_control": "continue-call",
+          "mechanical_warning_flags": [],
+          "response": "I still may not have caught that. Could you repeat it in a few words?",
+          "response_shape_enforced_category": null,
+          "side_effect_flags": {
+            "creates_calendar_event": false,
+            "customer_audio_uploaded_to_python_server": false,
+            "customer_audio_uploaded_to_tts_provider": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          }
+        }
+      ],
+      "passed": true,
+      "scenario": "asr_warning_calibration"
+    },
+    {
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "identity_trust_privacy",
+        "buyer_move_id": "who_are_you",
+        "call_control": "continue-call",
+        "mechanical_warning_flags": [],
+        "response": "Sure, I'm Maya calling on behalf of Synthetic Home Services about a short human review around the service need.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "who_are_you"
+    },
+    {
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "identity_trust_privacy",
+        "buyer_move_id": "are_you_ai_or_robot",
+        "call_control": "continue-call",
+        "mechanical_warning_flags": [],
+        "response": "Yes, I'm an AI voice agent calling for Synthetic Home Services. I'll keep it brief: is the service need active now?",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "ai_disclosure"
+    },
+    {
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "permission_time_pressure",
+        "buyer_move_id": "permission_acknowledgement",
+        "call_control": "continue-call",
+        "mechanical_warning_flags": [],
+        "response": "Thanks. Is the service need active right now?",
+        "response_shape_enforced_category": "pain_progression",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "ai_then_permission"
+    },
+    {
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "trust_identity_privacy_consent",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "mechanical_warning_flags": [],
+        "response": "Understood. I'll stop here. Goodbye.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "stop_not-interested"
+    },
+    {
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "trust_identity_privacy_consent",
+        "buyer_move_id": "permission_to_continue_denied",
+        "call_control": "end-call",
+        "mechanical_warning_flags": [],
+        "response": "Understood. I'll stop here. Goodbye.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "stop_i-don-t-want-to-continue"
+    },
+    {
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packet": {
+        "buyer_move_category": "trust_identity_privacy_consent",
+        "buyer_move_id": "stop_request",
+        "call_control": "end-call",
+        "mechanical_warning_flags": [],
+        "response": "Understood. I'll stop here. Goodbye.",
+        "response_shape_enforced_category": "trust_identity_privacy_consent",
+        "side_effect_flags": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "local_llm_calls_made": false,
+          "opens_prod_102": false,
+          "provider_calls_made": false,
+          "sends_email": false,
+          "writes_crm": false
+        }
+      },
+      "passed": true,
+      "scenario": "stop_stop-calling"
+    },
+    {
+      "campaign": "synthetic-home-services-estimate",
+      "failures": [],
+      "packets": [
+        {
+          "buyer_move_category": "asr_repair",
+          "buyer_move_id": "asr_garbled_or_low_confidence",
+          "call_control": "continue-call",
+          "mechanical_warning_flags": [],
+          "response": "I may have misheard that. Could you repeat it briefly?",
+          "response_shape_enforced_category": null,
+          "side_effect_flags": {
+            "creates_calendar_event": false,
+            "customer_audio_uploaded_to_python_server": false,
+            "customer_audio_uploaded_to_tts_provider": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          }
+        },
+        {
+          "buyer_move_category": "asr_repair",
+          "buyer_move_id": "asr_garbled_or_low_confidence",
+          "call_control": "continue-call",
+          "mechanical_warning_flags": [],
+          "response": "I still may not have caught that. Could you repeat it in a few words?",
+          "response_shape_enforced_category": null,
+          "side_effect_flags": {
+            "creates_calendar_event": false,
+            "customer_audio_uploaded_to_python_server": false,
+            "customer_audio_uploaded_to_tts_provider": false,
+            "local_llm_calls_made": false,
+            "opens_prod_102": false,
+            "provider_calls_made": false,
+            "sends_email": false,
+            "writes_crm": false
+          }
+        }
+      ],
+      "passed": true,
+      "scenario": "asr_warning_calibration"
+    }
+  ],
+  "side_effects": {
+    "creates_calendar_event": false,
+    "customer_audio_uploaded_to_python_server": false,
+    "customer_audio_uploaded_to_tts_provider": false,
+    "local_llm_calls_made": false,
+    "opens_prod_102": false,
+    "provider_calls_made": false,
+    "sends_email": false,
+    "writes_crm": false
+  },
+  "status": "pass",
+  "summary": {
+    "by_scenario": {
+      "ai_disclosure:passed": 5,
+      "ai_then_permission:passed": 5,
+      "asr_warning_calibration:passed": 5,
+      "stop_i-don-t-want-to-continue:passed": 5,
+      "stop_not-interested:passed": 5,
+      "stop_stop-calling:passed": 5,
+      "who_are_you:passed": 5
+    },
+    "failure_count": 0,
+    "failure_examples": [],
+    "failure_types": {},
+    "matrix_size": 35,
+    "pass_count": 35
+  }
+}
