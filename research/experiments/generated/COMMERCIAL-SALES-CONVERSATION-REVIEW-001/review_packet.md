@@ -22,52 +22,52 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 ## Conversation Index
 | Conversation | Campaign | Arc | Warnings |
 | --- | --- | --- | ---: |
-| `commercial-sales-conversation-review-001-01-01-routesignal_live_demo-smooth_qualified_appointment` | `routesignal_live_demo` | `smooth_qualified_appointment` | 2 |
+| `commercial-sales-conversation-review-001-01-01-routesignal_live_demo-smooth_qualified_appointment` | `routesignal_live_demo` | `smooth_qualified_appointment` | 3 |
 | `commercial-sales-conversation-review-001-01-02-routesignal_live_demo-time_pressure` | `routesignal_live_demo` | `time_pressure` | 2 |
 | `commercial-sales-conversation-review-001-01-03-routesignal_live_demo-tentative_pain` | `routesignal_live_demo` | `tentative_pain` | 3 |
-| `commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question` | `routesignal_live_demo` | `direct_question` | 5 |
+| `commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question` | `routesignal_live_demo` | `direct_question` | 6 |
 | `commercial-sales-conversation-review-001-01-05-routesignal_live_demo-objection` | `routesignal_live_demo` | `objection` | 1 |
-| `commercial-sales-conversation-review-001-01-06-routesignal_live_demo-trust_challenge` | `routesignal_live_demo` | `trust_challenge` | 3 |
+| `commercial-sales-conversation-review-001-01-06-routesignal_live_demo-trust_challenge` | `routesignal_live_demo` | `trust_challenge` | 4 |
 | `commercial-sales-conversation-review-001-01-07-routesignal_live_demo-confusion_loop_resistance` | `routesignal_live_demo` | `confusion_loop_resistance` | 1 |
 | `commercial-sales-conversation-review-001-01-08-routesignal_live_demo-social_conversation_management` | `routesignal_live_demo` | `social_conversation_management` | 3 |
 | `commercial-sales-conversation-review-001-01-09-routesignal_live_demo-asr_garble` | `routesignal_live_demo` | `asr_garble` | 2 |
 | `commercial-sales-conversation-review-001-01-10-routesignal_live_demo-no_fit_stop` | `routesignal_live_demo` | `no_fit_stop` | 3 |
-| `commercial-sales-conversation-review-001-02-01-synthetic-insurance-review-smooth_qualified_appointment` | `synthetic-insurance-review` | `smooth_qualified_appointment` | 2 |
+| `commercial-sales-conversation-review-001-02-01-synthetic-insurance-review-smooth_qualified_appointment` | `synthetic-insurance-review` | `smooth_qualified_appointment` | 3 |
 | `commercial-sales-conversation-review-001-02-02-synthetic-insurance-review-time_pressure` | `synthetic-insurance-review` | `time_pressure` | 2 |
-| `commercial-sales-conversation-review-001-02-03-synthetic-insurance-review-tentative_pain` | `synthetic-insurance-review` | `tentative_pain` | 8 |
-| `commercial-sales-conversation-review-001-02-04-synthetic-insurance-review-direct_question` | `synthetic-insurance-review` | `direct_question` | 3 |
+| `commercial-sales-conversation-review-001-02-03-synthetic-insurance-review-tentative_pain` | `synthetic-insurance-review` | `tentative_pain` | 3 |
+| `commercial-sales-conversation-review-001-02-04-synthetic-insurance-review-direct_question` | `synthetic-insurance-review` | `direct_question` | 4 |
 | `commercial-sales-conversation-review-001-02-05-synthetic-insurance-review-objection` | `synthetic-insurance-review` | `objection` | 1 |
-| `commercial-sales-conversation-review-001-02-06-synthetic-insurance-review-trust_challenge` | `synthetic-insurance-review` | `trust_challenge` | 2 |
+| `commercial-sales-conversation-review-001-02-06-synthetic-insurance-review-trust_challenge` | `synthetic-insurance-review` | `trust_challenge` | 3 |
 | `commercial-sales-conversation-review-001-02-07-synthetic-insurance-review-confusion_loop_resistance` | `synthetic-insurance-review` | `confusion_loop_resistance` | 3 |
 | `commercial-sales-conversation-review-001-02-08-synthetic-insurance-review-social_conversation_management` | `synthetic-insurance-review` | `social_conversation_management` | 8 |
 | `commercial-sales-conversation-review-001-02-09-synthetic-insurance-review-asr_garble` | `synthetic-insurance-review` | `asr_garble` | 2 |
 | `commercial-sales-conversation-review-001-02-10-synthetic-insurance-review-no_fit_stop` | `synthetic-insurance-review` | `no_fit_stop` | 3 |
-| `commercial-sales-conversation-review-001-03-01-synthetic-b2b-saas-operations-smooth_qualified_appointment` | `synthetic-b2b-saas-operations` | `smooth_qualified_appointment` | 2 |
+| `commercial-sales-conversation-review-001-03-01-synthetic-b2b-saas-operations-smooth_qualified_appointment` | `synthetic-b2b-saas-operations` | `smooth_qualified_appointment` | 3 |
 | `commercial-sales-conversation-review-001-03-02-synthetic-b2b-saas-operations-time_pressure` | `synthetic-b2b-saas-operations` | `time_pressure` | 2 |
-| `commercial-sales-conversation-review-001-03-03-synthetic-b2b-saas-operations-tentative_pain` | `synthetic-b2b-saas-operations` | `tentative_pain` | 6 |
-| `commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question` | `synthetic-b2b-saas-operations` | `direct_question` | 5 |
+| `commercial-sales-conversation-review-001-03-03-synthetic-b2b-saas-operations-tentative_pain` | `synthetic-b2b-saas-operations` | `tentative_pain` | 3 |
+| `commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question` | `synthetic-b2b-saas-operations` | `direct_question` | 6 |
 | `commercial-sales-conversation-review-001-03-05-synthetic-b2b-saas-operations-objection` | `synthetic-b2b-saas-operations` | `objection` | 1 |
-| `commercial-sales-conversation-review-001-03-06-synthetic-b2b-saas-operations-trust_challenge` | `synthetic-b2b-saas-operations` | `trust_challenge` | 3 |
+| `commercial-sales-conversation-review-001-03-06-synthetic-b2b-saas-operations-trust_challenge` | `synthetic-b2b-saas-operations` | `trust_challenge` | 4 |
 | `commercial-sales-conversation-review-001-03-07-synthetic-b2b-saas-operations-confusion_loop_resistance` | `synthetic-b2b-saas-operations` | `confusion_loop_resistance` | 2 |
 | `commercial-sales-conversation-review-001-03-08-synthetic-b2b-saas-operations-social_conversation_management` | `synthetic-b2b-saas-operations` | `social_conversation_management` | 6 |
 | `commercial-sales-conversation-review-001-03-09-synthetic-b2b-saas-operations-asr_garble` | `synthetic-b2b-saas-operations` | `asr_garble` | 2 |
 | `commercial-sales-conversation-review-001-03-10-synthetic-b2b-saas-operations-no_fit_stop` | `synthetic-b2b-saas-operations` | `no_fit_stop` | 3 |
-| `commercial-sales-conversation-review-001-04-01-synthetic-automotive-service-review-smooth_qualified_appointment` | `synthetic-automotive-service-review` | `smooth_qualified_appointment` | 2 |
+| `commercial-sales-conversation-review-001-04-01-synthetic-automotive-service-review-smooth_qualified_appointment` | `synthetic-automotive-service-review` | `smooth_qualified_appointment` | 3 |
 | `commercial-sales-conversation-review-001-04-02-synthetic-automotive-service-review-time_pressure` | `synthetic-automotive-service-review` | `time_pressure` | 2 |
-| `commercial-sales-conversation-review-001-04-03-synthetic-automotive-service-review-tentative_pain` | `synthetic-automotive-service-review` | `tentative_pain` | 8 |
-| `commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question` | `synthetic-automotive-service-review` | `direct_question` | 5 |
+| `commercial-sales-conversation-review-001-04-03-synthetic-automotive-service-review-tentative_pain` | `synthetic-automotive-service-review` | `tentative_pain` | 3 |
+| `commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question` | `synthetic-automotive-service-review` | `direct_question` | 6 |
 | `commercial-sales-conversation-review-001-04-05-synthetic-automotive-service-review-objection` | `synthetic-automotive-service-review` | `objection` | 1 |
-| `commercial-sales-conversation-review-001-04-06-synthetic-automotive-service-review-trust_challenge` | `synthetic-automotive-service-review` | `trust_challenge` | 3 |
+| `commercial-sales-conversation-review-001-04-06-synthetic-automotive-service-review-trust_challenge` | `synthetic-automotive-service-review` | `trust_challenge` | 4 |
 | `commercial-sales-conversation-review-001-04-07-synthetic-automotive-service-review-confusion_loop_resistance` | `synthetic-automotive-service-review` | `confusion_loop_resistance` | 3 |
 | `commercial-sales-conversation-review-001-04-08-synthetic-automotive-service-review-social_conversation_management` | `synthetic-automotive-service-review` | `social_conversation_management` | 8 |
 | `commercial-sales-conversation-review-001-04-09-synthetic-automotive-service-review-asr_garble` | `synthetic-automotive-service-review` | `asr_garble` | 2 |
 | `commercial-sales-conversation-review-001-04-10-synthetic-automotive-service-review-no_fit_stop` | `synthetic-automotive-service-review` | `no_fit_stop` | 3 |
-| `commercial-sales-conversation-review-001-05-01-synthetic-home-services-estimate-smooth_qualified_appointment` | `synthetic-home-services-estimate` | `smooth_qualified_appointment` | 2 |
+| `commercial-sales-conversation-review-001-05-01-synthetic-home-services-estimate-smooth_qualified_appointment` | `synthetic-home-services-estimate` | `smooth_qualified_appointment` | 3 |
 | `commercial-sales-conversation-review-001-05-02-synthetic-home-services-estimate-time_pressure` | `synthetic-home-services-estimate` | `time_pressure` | 2 |
-| `commercial-sales-conversation-review-001-05-03-synthetic-home-services-estimate-tentative_pain` | `synthetic-home-services-estimate` | `tentative_pain` | 8 |
-| `commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question` | `synthetic-home-services-estimate` | `direct_question` | 5 |
+| `commercial-sales-conversation-review-001-05-03-synthetic-home-services-estimate-tentative_pain` | `synthetic-home-services-estimate` | `tentative_pain` | 3 |
+| `commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question` | `synthetic-home-services-estimate` | `direct_question` | 6 |
 | `commercial-sales-conversation-review-001-05-05-synthetic-home-services-estimate-objection` | `synthetic-home-services-estimate` | `objection` | 1 |
-| `commercial-sales-conversation-review-001-05-06-synthetic-home-services-estimate-trust_challenge` | `synthetic-home-services-estimate` | `trust_challenge` | 3 |
+| `commercial-sales-conversation-review-001-05-06-synthetic-home-services-estimate-trust_challenge` | `synthetic-home-services-estimate` | `trust_challenge` | 4 |
 | `commercial-sales-conversation-review-001-05-07-synthetic-home-services-estimate-confusion_loop_resistance` | `synthetic-home-services-estimate` | `confusion_loop_resistance` | 3 |
 | `commercial-sales-conversation-review-001-05-08-synthetic-home-services-estimate-social_conversation_management` | `synthetic-home-services-estimate` | `social_conversation_management` | 8 |
 | `commercial-sales-conversation-review-001-05-09-synthetic-home-services-estimate-asr_garble` | `synthetic-home-services-estimate` | `asr_garble` | 2 |
@@ -82,7 +82,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `None`
 - Arc: `smooth_qualified_appointment`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 
 #### Review Focus
 - Does the agent earn the appointment before asking?
@@ -106,12 +106,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `4` buyer: it causes delays
-  - Agent: If it is already causing delays, a short review with the verified implementation reviewer is probably the right next step. What callback window works?
+  - Agent: If it is already causing delays, a short review with the verified implementation reviewer is probably the right next step. What time should I note for the callback?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 - Turn `5` buyer: tomorrow at 3 works
-  - Agent: Confirmed. I will note that time for the workflow review. Goodbye.
+  - Agent: Confirmed. I will record that callback time for the specialist. Goodbye.
   - Source: `contextual_buyer_semantics`; call_control: `schedule-and-end`
   - Buyer move: `callback_time_provided`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
@@ -164,7 +164,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `None`
 - Arc: `tentative_pain`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 
 #### Review Focus
 - Does it avoid over-confirming weak pain?
@@ -187,18 +187,18 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `tentative_gap_interest`; readiness: `low`; next action: `clarify_active_or_possible`
   - Warnings: `none`
 - Turn `4` buyer: it is active now
-  - Agent: If owner, next callback, or manager visibility slips, a short workflow review has a reason. Which part breaks most often?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
-  - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement`
+  - Agent: Got it, handoffs are the concern. Is that causing missed ownership, or mostly extra tracking work?
+  - Source: `universal_response_shape`; call_control: `continue-call`
+  - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
+  - Warnings: `none`
 - Turn `5` buyer: it wastes time
-  - Agent: Then RouteSignal helps keep the next person and next follow-up visible so demo leads do not get lost. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
-  - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement`
+  - Agent: If it is already costing time, a short review with the verified implementation reviewer is probably the right next step. What time should I note for the callback?
+  - Source: `universal_response_shape`; call_control: `continue-call`
+  - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 - Turn `6` buyer: tomorrow at 3 works
-  - Agent: For handoffs, the value is handoff review: owner, next callback, and manager visibility stay together. I would keep the short workflow review to handoff misses. Would a short workflow review be useful for that gap?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
+  - Agent: Confirmed. I will record that callback time for the specialist. Goodbye.
+  - Source: `contextual_buyer_semantics`; call_control: `schedule-and-end`
   - Buyer move: `callback_time_provided`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
 
@@ -209,7 +209,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `None`
 - Arc: `direct_question`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement, over_deferential_stop_offer`
 
 #### Review Focus
 - Does it answer directly before selling?
@@ -237,12 +237,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `5` buyer: it causes delays
-  - Agent: If it is already causing delays, a short review with the verified implementation reviewer is probably the right next step. What callback window works?
+  - Agent: If it is already causing delays, a short review with the verified implementation reviewer is probably the right next step. What time should I note for the callback?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 - Turn `6` buyer: tomorrow at 3 works
-  - Agent: Confirmed. I will note that time for the workflow review. Goodbye.
+  - Agent: Confirmed. I will record that callback time for the specialist. Goodbye.
   - Source: `contextual_buyer_semantics`; call_control: `schedule-and-end`
   - Buyer move: `callback_time_provided`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
@@ -299,7 +299,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `None`
 - Arc: `trust_challenge`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement, over_deferential_stop_offer`
 
 #### Review Focus
 - Does transparency preserve trust?
@@ -337,10 +337,10 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `why_are_you_asking`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `7` buyer: it causes delays
-  - Agent: If it is already causing delays, a short review with the verified implementation reviewer is probably the right next step. What callback window works?
+  - Agent: If it is already causing delays, a short review with the verified implementation reviewer is probably the right next step. What time should I note for the callback?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 
 ### commercial-sales-conversation-review-001-01-07-routesignal_live_demo-confusion_loop_resistance
 
@@ -452,13 +452,13 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `permission_acknowledgement`; readiness: `none`; next action: `ask_one_sharp_diagnostic`
   - Warnings: `none`
 - Turn `3` buyer: play a double be good
-  - Agent: This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
+  - Agent: I may have misheard that. Could you repeat it briefly?
+  - Source: `universal_conversation_policy`; call_control: `continue-call`
   - Buyer move: `asr_garbled_or_low_confidence`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
 - Turn `4` buyer: yadav would be good
-  - Agent: If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied. Which part is harder today: seeing it, assigning the reply, or remembering the callback?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
+  - Agent: I still may not have caught that. Could you repeat it in a few words?
+  - Source: `universal_conversation_policy`; call_control: `continue-call`
   - Buyer move: `asr_garbled_or_low_confidence`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
 - Turn `5` buyer: callbacks are a problem
@@ -509,7 +509,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-insurance-review.json`
 - Arc: `smooth_qualified_appointment`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 
 #### Review Focus
 - Does the agent earn the appointment before asking?
@@ -533,12 +533,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `4` buyer: it causes delays
-  - Agent: If it is already causing delays, a short review with the licensed insurance specialist is probably the right next step. What callback window works?
+  - Agent: If it is already causing delays, a short review with the licensed insurance specialist is probably the right next step. What time should I note for the callback?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 - Turn `5` buyer: tomorrow at 3 works
-  - Agent: Confirmed. I will note that time for the licensed coverage review. Goodbye.
+  - Agent: Confirmed. I will note that time for your licensed coverage review. Goodbye.
   - Source: `contextual_buyer_semantics`; call_control: `schedule-and-end`
   - Buyer move: `callback_time_provided`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
@@ -591,7 +591,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-insurance-review.json`
 - Arc: `tentative_pain`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 
 #### Review Focus
 - Does it avoid over-confirming weak pain?
@@ -614,20 +614,20 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `tentative_gap_interest`; readiness: `low`; next action: `clarify_active_or_possible`
   - Warnings: `none`
 - Turn `4` buyer: it is active now
-  - Agent: The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
-  - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+  - Agent: Got it, coverage fit is the concern. Is it active now, or more something you want checked later?
+  - Source: `universal_response_shape`; call_control: `continue-call`
+  - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
+  - Warnings: `none`
 - Turn `5` buyer: it wastes time
-  - Agent: If premium or budget, coverage fit, or renewal or timing are actually relevant, a licensed insurance specialist can do a short licensed coverage review. If not, I can stop here; should I ask one quick fit question?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
-  - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+  - Agent: If it is already costing time, a short review with the licensed insurance specialist is probably the right next step. What time should I note for the callback?
+  - Source: `universal_response_shape`; call_control: `continue-call`
+  - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 - Turn `6` buyer: tomorrow at 3 works
-  - Agent: I may not be the right contact for that question. Should I note a callback path, or stop here?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
+  - Agent: Confirmed. I will note that time for your licensed coverage review. Goodbye.
+  - Source: `contextual_buyer_semantics`; call_control: `schedule-and-end`
   - Buyer move: `callback_time_provided`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer`
+  - Warnings: `no_acknowledgement`
 
 ### commercial-sales-conversation-review-001-02-04-synthetic-insurance-review-direct_question
 
@@ -636,7 +636,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-insurance-review.json`
 - Arc: `direct_question`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement, over_deferential_stop_offer`
 
 #### Review Focus
 - Does it answer directly before selling?
@@ -664,12 +664,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `5` buyer: it causes delays
-  - Agent: If it is already causing delays, a short review with the licensed insurance specialist is probably the right next step. What callback window works?
+  - Agent: If it is already causing delays, a short review with the licensed insurance specialist is probably the right next step. What time should I note for the callback?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 - Turn `6` buyer: tomorrow at 3 works
-  - Agent: Confirmed. I will note that time for the licensed coverage review. Goodbye.
+  - Agent: Confirmed. I will note that time for your licensed coverage review. Goodbye.
   - Source: `contextual_buyer_semantics`; call_control: `schedule-and-end`
   - Buyer move: `callback_time_provided`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
@@ -726,7 +726,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-insurance-review.json`
 - Arc: `trust_challenge`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement, over_deferential_stop_offer`
 
 #### Review Focus
 - Does transparency preserve trust?
@@ -764,10 +764,10 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `why_are_you_asking`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `7` buyer: it causes delays
-  - Agent: If it is already causing delays, a short review with the licensed insurance specialist is probably the right next step. What callback window works?
+  - Agent: If it is already causing delays, a short review with the licensed insurance specialist is probably the right next step. What time should I note for the callback?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 
 ### commercial-sales-conversation-review-001-02-07-synthetic-insurance-review-confusion_loop_resistance
 
@@ -884,8 +884,8 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `asr_garbled_or_low_confidence`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
 - Turn `4` buyer: yadav would be good
-  - Agent: I already answered that at a high level. Give me one concrete follow-up and I will answer that directly.
-  - Source: `duplicate_response_repair`; call_control: `continue-call`
+  - Agent: I still may not have caught that. Could you repeat it in a few words?
+  - Source: `universal_conversation_policy`; call_control: `continue-call`
   - Buyer move: `asr_garbled_or_low_confidence`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
 - Turn `5` buyer: premium is a problem
@@ -936,7 +936,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-b2b-saas-operations.json`
 - Arc: `smooth_qualified_appointment`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 
 #### Review Focus
 - Does the agent earn the appointment before asking?
@@ -960,12 +960,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `4` buyer: it causes delays
-  - Agent: If it is already causing delays, a short review with the implementation specialist is probably the right next step. What callback window works?
+  - Agent: If it is already causing delays, a short review with the implementation specialist is probably the right next step. What time should I note for the callback?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 - Turn `5` buyer: tomorrow at 3 works
-  - Agent: Confirmed. I will note that time for the operations fit review. Goodbye.
+  - Agent: Confirmed. I will note that time for your operations fit review. Goodbye.
   - Source: `contextual_buyer_semantics`; call_control: `schedule-and-end`
   - Buyer move: `callback_time_provided`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
@@ -1018,7 +1018,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-b2b-saas-operations.json`
 - Arc: `tentative_pain`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 
 #### Review Focus
 - Does it avoid over-confirming weak pain?
@@ -1041,20 +1041,20 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `tentative_gap_interest`; readiness: `low`; next action: `clarify_active_or_possible`
   - Warnings: `none`
 - Turn `4` buyer: it is active now
-  - Agent: The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
-  - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer`
+  - Agent: Got it, integration is the issue. Is it causing a real impact now, or mostly a general concern?
+  - Source: `universal_response_shape`; call_control: `continue-call`
+  - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
+  - Warnings: `none`
 - Turn `5` buyer: it wastes time
-  - Agent: If manual work, integration risk, or visibility gap are actually relevant, an implementation specialist can do a short operations fit review. If not, I can stop here; should I ask one quick fit question?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
-  - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer`
+  - Agent: If it is already costing time, a short review with the implementation specialist is probably the right next step. What time should I note for the callback?
+  - Source: `universal_response_shape`; call_control: `continue-call`
+  - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 - Turn `6` buyer: tomorrow at 3 works
-  - Agent: I may not be the right contact for that question. Should I note a callback path, or stop here?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
+  - Agent: Confirmed. I will note that time for your operations fit review. Goodbye.
+  - Source: `contextual_buyer_semantics`; call_control: `schedule-and-end`
   - Buyer move: `callback_time_provided`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer`
+  - Warnings: `no_acknowledgement`
 
 ### commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question
 
@@ -1063,7 +1063,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-b2b-saas-operations.json`
 - Arc: `direct_question`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement, over_deferential_stop_offer`
 
 #### Review Focus
 - Does it answer directly before selling?
@@ -1091,12 +1091,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `5` buyer: it causes delays
-  - Agent: If it is already causing delays, a short review with the implementation specialist is probably the right next step. What callback window works?
+  - Agent: If it is already causing delays, a short review with the implementation specialist is probably the right next step. What time should I note for the callback?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 - Turn `6` buyer: tomorrow at 3 works
-  - Agent: Confirmed. I will note that time for the operations fit review. Goodbye.
+  - Agent: Confirmed. I will note that time for your operations fit review. Goodbye.
   - Source: `contextual_buyer_semantics`; call_control: `schedule-and-end`
   - Buyer move: `callback_time_provided`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
@@ -1153,7 +1153,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-b2b-saas-operations.json`
 - Arc: `trust_challenge`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement, over_deferential_stop_offer`
 
 #### Review Focus
 - Does transparency preserve trust?
@@ -1191,10 +1191,10 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `why_are_you_asking`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `7` buyer: it causes delays
-  - Agent: If it is already causing delays, a short review with the implementation specialist is probably the right next step. What callback window works?
+  - Agent: If it is already causing delays, a short review with the implementation specialist is probably the right next step. What time should I note for the callback?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 
 ### commercial-sales-conversation-review-001-03-07-synthetic-b2b-saas-operations-confusion_loop_resistance
 
@@ -1311,8 +1311,8 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `asr_garbled_or_low_confidence`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
 - Turn `4` buyer: yadav would be good
-  - Agent: I already answered that at a high level. Give me one concrete follow-up and I will answer that directly.
-  - Source: `duplicate_response_repair`; call_control: `continue-call`
+  - Agent: I still may not have caught that. Could you repeat it in a few words?
+  - Source: `universal_conversation_policy`; call_control: `continue-call`
   - Buyer move: `asr_garbled_or_low_confidence`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
 - Turn `5` buyer: manual work is a problem
@@ -1363,7 +1363,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-automotive-service-review.json`
 - Arc: `smooth_qualified_appointment`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 
 #### Review Focus
 - Does the agent earn the appointment before asking?
@@ -1387,12 +1387,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `4` buyer: it causes delays
-  - Agent: If it is already causing delays, a short review with the service advisor is probably the right next step. What callback window works?
+  - Agent: If it is already causing delays, a short review with the service advisor is probably the right next step. What time should I note for the callback?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 - Turn `5` buyer: tomorrow at 3 works
-  - Agent: Confirmed. I will note that time for the service advisor inspection review. Goodbye.
+  - Agent: Confirmed. I will note that time for your service advisor inspection review. Goodbye.
   - Source: `contextual_buyer_semantics`; call_control: `schedule-and-end`
   - Buyer move: `callback_time_provided`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
@@ -1445,7 +1445,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-automotive-service-review.json`
 - Arc: `tentative_pain`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 
 #### Review Focus
 - Does it avoid over-confirming weak pain?
@@ -1468,20 +1468,20 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `tentative_gap_interest`; readiness: `low`; next action: `clarify_active_or_possible`
   - Warnings: `none`
 - Turn `4` buyer: it is active now
-  - Agent: The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
-  - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+  - Agent: Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?
+  - Source: `universal_response_shape`; call_control: `continue-call`
+  - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
+  - Warnings: `none`
 - Turn `5` buyer: it wastes time
-  - Agent: If vehicle issue, repair timing, or warranty or estimate are actually relevant, a service advisor can do a short service advisor inspection review. If not, I can stop here; should I ask one quick fit question?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
-  - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+  - Agent: If it is already costing time, a short review with the service advisor is probably the right next step. What time should I note for the callback?
+  - Source: `universal_response_shape`; call_control: `continue-call`
+  - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 - Turn `6` buyer: tomorrow at 3 works
-  - Agent: I may not be the right contact for that question. Should I note a callback path, or stop here?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
+  - Agent: Confirmed. I will note that time for your service advisor inspection review. Goodbye.
+  - Source: `contextual_buyer_semantics`; call_control: `schedule-and-end`
   - Buyer move: `callback_time_provided`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer`
+  - Warnings: `no_acknowledgement`
 
 ### commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question
 
@@ -1490,7 +1490,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-automotive-service-review.json`
 - Arc: `direct_question`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement, over_deferential_stop_offer`
 
 #### Review Focus
 - Does it answer directly before selling?
@@ -1518,12 +1518,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `5` buyer: it causes delays
-  - Agent: If it is already causing delays, a short review with the service advisor is probably the right next step. What callback window works?
+  - Agent: If it is already causing delays, a short review with the service advisor is probably the right next step. What time should I note for the callback?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 - Turn `6` buyer: tomorrow at 3 works
-  - Agent: Confirmed. I will note that time for the service advisor inspection review. Goodbye.
+  - Agent: Confirmed. I will note that time for your service advisor inspection review. Goodbye.
   - Source: `contextual_buyer_semantics`; call_control: `schedule-and-end`
   - Buyer move: `callback_time_provided`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
@@ -1580,7 +1580,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-automotive-service-review.json`
 - Arc: `trust_challenge`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement, over_deferential_stop_offer`
 
 #### Review Focus
 - Does transparency preserve trust?
@@ -1618,10 +1618,10 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `why_are_you_asking`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `7` buyer: it causes delays
-  - Agent: If it is already causing delays, a short review with the service advisor is probably the right next step. What callback window works?
+  - Agent: If it is already causing delays, a short review with the service advisor is probably the right next step. What time should I note for the callback?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 
 ### commercial-sales-conversation-review-001-04-07-synthetic-automotive-service-review-confusion_loop_resistance
 
@@ -1738,8 +1738,8 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `asr_garbled_or_low_confidence`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
 - Turn `4` buyer: yadav would be good
-  - Agent: I already answered that at a high level. Give me one concrete follow-up and I will answer that directly.
-  - Source: `duplicate_response_repair`; call_control: `continue-call`
+  - Agent: I still may not have caught that. Could you repeat it in a few words?
+  - Source: `universal_conversation_policy`; call_control: `continue-call`
   - Buyer move: `asr_garbled_or_low_confidence`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
 - Turn `5` buyer: repair timings are usually pretty long
@@ -1790,7 +1790,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-home-services-estimate.json`
 - Arc: `smooth_qualified_appointment`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 
 #### Review Focus
 - Does the agent earn the appointment before asking?
@@ -1814,12 +1814,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `4` buyer: it causes delays
-  - Agent: If it is already causing delays, a short review with the qualified service coordinator is probably the right next step. What callback window works?
+  - Agent: If it is already causing delays, a short review with the qualified service coordinator is probably the right next step. What time should I note for the callback?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 - Turn `5` buyer: tomorrow at 3 works
-  - Agent: Confirmed. I will note that time for the inspection or estimate review. Goodbye.
+  - Agent: Confirmed. I will note that time for your inspection or estimate review. Goodbye.
   - Source: `contextual_buyer_semantics`; call_control: `schedule-and-end`
   - Buyer move: `callback_time_provided`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
@@ -1872,7 +1872,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-home-services-estimate.json`
 - Arc: `tentative_pain`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 
 #### Review Focus
 - Does it avoid over-confirming weak pain?
@@ -1895,20 +1895,20 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `tentative_gap_interest`; readiness: `low`; next action: `clarify_active_or_possible`
   - Warnings: `none`
 - Turn `4` buyer: it is active now
-  - Agent: The quick check is whether any of these areas is worth a short inspection or estimate review: service need, scheduling urgency, or estimate or property details. If not, I can stop here; which part should I check first?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
-  - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+  - Agent: Got it, scheduling is the concern. Is it causing a real delay now, or just something to check later?
+  - Source: `universal_response_shape`; call_control: `continue-call`
+  - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
+  - Warnings: `none`
 - Turn `5` buyer: it wastes time
-  - Agent: If service need, scheduling urgency, or estimate or property details are actually relevant, a qualified service coordinator can do a short inspection or estimate review. If not, I can stop here; should I ask one quick fit question?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
-  - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
+  - Agent: If it is already costing time, a short review with the qualified service coordinator is probably the right next step. What time should I note for the callback?
+  - Source: `universal_response_shape`; call_control: `continue-call`
+  - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 - Turn `6` buyer: tomorrow at 3 works
-  - Agent: I may not be the right contact for that question. Should I note a callback path, or stop here?
-  - Source: `pre_speech_conversation_stability_guard`; call_control: `continue-call`
+  - Agent: Confirmed. I will note that time for your inspection or estimate review. Goodbye.
+  - Source: `contextual_buyer_semantics`; call_control: `schedule-and-end`
   - Buyer move: `callback_time_provided`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer`
+  - Warnings: `no_acknowledgement`
 
 ### commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question
 
@@ -1917,7 +1917,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-home-services-estimate.json`
 - Arc: `direct_question`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement, over_deferential_stop_offer`
 
 #### Review Focus
 - Does it answer directly before selling?
@@ -1945,12 +1945,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `5` buyer: it causes delays
-  - Agent: If it is already causing delays, a short review with the qualified service coordinator is probably the right next step. What callback window works?
+  - Agent: If it is already causing delays, a short review with the qualified service coordinator is probably the right next step. What time should I note for the callback?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 - Turn `6` buyer: tomorrow at 3 works
-  - Agent: Confirmed. I will note that time for the inspection or estimate review. Goodbye.
+  - Agent: Confirmed. I will note that time for your inspection or estimate review. Goodbye.
   - Source: `contextual_buyer_semantics`; call_control: `schedule-and-end`
   - Buyer move: `callback_time_provided`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
@@ -2007,7 +2007,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-home-services-estimate.json`
 - Arc: `trust_challenge`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `appointment_not_asked_when_ready, no_acknowledgement, over_deferential_stop_offer`
 
 #### Review Focus
 - Does transparency preserve trust?
@@ -2045,10 +2045,10 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `why_are_you_asking`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `7` buyer: it causes delays
-  - Agent: If it is already causing delays, a short review with the qualified service coordinator is probably the right next step. What callback window works?
+  - Agent: If it is already causing delays, a short review with the qualified service coordinator is probably the right next step. What time should I note for the callback?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `appointment_not_asked_when_ready, no_acknowledgement`
 
 ### commercial-sales-conversation-review-001-05-07-synthetic-home-services-estimate-confusion_loop_resistance
 
@@ -2165,8 +2165,8 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `asr_garbled_or_low_confidence`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
 - Turn `4` buyer: yadav would be good
-  - Agent: I already answered that at a high level. Give me one concrete follow-up and I will answer that directly.
-  - Source: `duplicate_response_repair`; call_control: `continue-call`
+  - Agent: I still may not have caught that. Could you repeat it in a few words?
+  - Source: `universal_conversation_policy`; call_control: `continue-call`
   - Buyer move: `asr_garbled_or_low_confidence`; readiness: `none`; next action: `none`
   - Warnings: `no_acknowledgement`
 - Turn `5` buyer: we need service

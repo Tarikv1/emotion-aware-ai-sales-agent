@@ -9,11 +9,11 @@ Status: red_findings
 - Buyer-move cases per campaign: 55
 - Total turns evaluated: 275
 - Recognition pass/fail: 275 / 0
-- Response pass/fail: 231 / 44
+- Response pass/fail: 233 / 42
 
 ## Pass/Fail Counts By Buyer-Move Category
 - appointment_callback_send_info: pass=22 fail=8
-- asr_repair: pass=14 fail=11
+- asr_repair: pass=16 fail=9
 - confusion_challenge_repair: pass=30 fail=0
 - direct_product_value_questions: pass=30 fail=0
 - objections: pass=35 fail=0
@@ -28,7 +28,7 @@ Status: red_findings
 - social_conversation_management / repeated_full_menu: 20
 - appointment_callback_send_info / repeated_full_menu: 8
 - asr_repair / repeated_full_menu: 8
-- asr_repair / asr_garble_not_repaired: 3
+- asr_repair / asr_garble_not_repaired: 1
 
 ## Top Recognition Failures
 
@@ -37,7 +37,7 @@ Status: red_findings
 - social_conversation_management / repeated_full_menu: 20
 - appointment_callback_send_info / repeated_full_menu: 8
 - asr_repair / repeated_full_menu: 8
-- asr_repair / asr_garble_not_repaired: 3
+- asr_repair / asr_garble_not_repaired: 1
 
 ## Examples Of Strongest Failures
 - routesignal_live_demo | social_conversation_management | slow down | no_acknowledgement | recognized=slow_down_or_speak_faster | response='I can answer that directly if you name the point: workflow, price, security, or callback timing.'
@@ -45,11 +45,11 @@ Status: red_findings
 - routesignal_live_demo | social_conversation_management | that's not how you say my name | no_acknowledgement | recognized=pronunciation_or_name_correction | response='I can answer that directly if you name the point: workflow, price, security, or callback timing.'
 - routesignal_live_demo | social_conversation_management | haha okay | no_acknowledgement | recognized=small_talk | response='I can answer that directly if you name the point: workflow, price, security, or callback timing.'
 - routesignal_live_demo | social_conversation_management | you're annoying | no_acknowledgement | recognized=emotional_frustration | response='I can answer that directly if you name the point: workflow, price, security, or callback timing.'
-- routesignal_live_demo | asr_repair | play a double be good | asr_garble_not_repaired | recognized=asr_garbled_or_low_confidence | response='I can answer that directly if you name the point: workflow, price, security, or callback timing.'
-- routesignal_live_demo | asr_repair | yadav would be good | asr_garble_not_repaired | recognized=asr_garbled_or_low_confidence | response='I can answer that directly if you name the point: workflow, price, security, or callback timing.'
 - routesignal_live_demo | asr_repair | repeal timings are usually pretty long | asr_garble_not_repaired | recognized=asr_garbled_or_low_confidence | response='I can answer that directly if you name the point: workflow, price, security, or callback timing.'
 - synthetic-insurance-review | appointment_callback_send_info | can you send available times | repeated_full_menu | recognized=buyer_requests_available_times | response='The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?'
 - synthetic-insurance-review | appointment_callback_send_info | I need email first | repeated_full_menu | recognized=buyer_wants_email_before_booking | response='The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?'
+- synthetic-insurance-review | social_conversation_management | slow down | repeated_full_menu, no_acknowledgement | recognized=slow_down_or_speak_faster | response='The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?'
+- synthetic-insurance-review | social_conversation_management | I don't speak English well | repeated_full_menu, no_acknowledgement | recognized=language_mismatch | response='The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?'
 
 ## Campaign-Specific Or Universal
 Failures appearing in three or more campaigns are treated as likely universal-policy/runtime gaps.

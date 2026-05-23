@@ -36,8 +36,10 @@
         "appointment_pressure_level": "none",
         "appointment_readiness": "none",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_tentative_pain",
         "buyer_move_id": "no_pain_clear",
+        "confirmed_gap_id": "callbacks",
         "confirmed_gap_phrase": "callbacks",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -82,6 +84,7 @@
         "response_shape_id": "acknowledge_then_one_short_diagnostic",
         "sales_progression_stage": "none",
         "schema_version": 1,
+        "selected_gap": "callbacks",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -118,8 +121,10 @@
         "appointment_pressure_level": "none",
         "appointment_readiness": "none",
         "asr_repair_required": true,
+        "asr_repair_turn_count": 1,
         "buyer_move_category": "asr_repair",
         "buyer_move_id": "asr_garbled_or_low_confidence",
+        "confirmed_gap_id": "",
         "confirmed_gap_phrase": "premium pressure",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -166,6 +171,7 @@
         "response_shape_id": "ask_repeat_for_asr_garble",
         "sales_progression_stage": "none",
         "schema_version": 1,
+        "selected_gap": "",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -202,8 +208,10 @@
         "appointment_pressure_level": "none",
         "appointment_readiness": "none",
         "asr_repair_required": true,
+        "asr_repair_turn_count": 1,
         "buyer_move_category": "asr_repair",
         "buyer_move_id": "asr_garbled_or_low_confidence",
+        "confirmed_gap_id": "repair_timing",
         "confirmed_gap_phrase": "repair timing",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -250,6 +258,7 @@
         "response_shape_id": "ask_repeat_for_asr_garble",
         "sales_progression_stage": "none",
         "schema_version": 1,
+        "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -292,8 +301,10 @@
         "appointment_pressure_level": "medium",
         "appointment_readiness": "medium",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_tentative_pain",
         "buyer_move_id": "pain_confirmed",
+        "confirmed_gap_id": "repair_timing",
         "confirmed_gap_phrase": "repair timing",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -339,6 +350,7 @@
         "response_shape_id": "acknowledge_pain_check_implication",
         "sales_progression_stage": "pain_confirmed_needs_implication",
         "schema_version": 1,
+        "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -380,8 +392,10 @@
         "appointment_pressure_level": "low",
         "appointment_readiness": "none",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "confusion_challenge_repair",
         "buyer_move_id": "why_are_you_asking",
+        "confirmed_gap_id": "repair_timing",
         "confirmed_gap_phrase": "repair timing",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -427,6 +441,7 @@
         "response_shape_id": "explain_why_asking_preserve_context",
         "sales_progression_stage": "none",
         "schema_version": 1,
+        "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -468,8 +483,10 @@
         "appointment_pressure_level": "low",
         "appointment_readiness": "none",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "product_value_scope",
         "buyer_move_id": "product_detail_question",
+        "confirmed_gap_id": "premium_or_budget",
         "confirmed_gap_phrase": "premium pressure",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -515,6 +532,7 @@
         "response_shape_id": "answer_product_scope_limit_continue",
         "sales_progression_stage": "none",
         "schema_version": 1,
+        "selected_gap": "premium_or_budget",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -551,8 +569,10 @@
         "appointment_pressure_level": "none",
         "appointment_readiness": "none",
         "asr_repair_required": true,
+        "asr_repair_turn_count": 1,
         "buyer_move_category": "asr_repair",
         "buyer_move_id": "asr_garbled_or_low_confidence",
+        "confirmed_gap_id": "premium_or_budget",
         "confirmed_gap_phrase": "premium pressure",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -599,6 +619,7 @@
         "response_shape_id": "ask_repeat_for_asr_garble",
         "sales_progression_stage": "none",
         "schema_version": 1,
+        "selected_gap": "premium_or_budget",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }

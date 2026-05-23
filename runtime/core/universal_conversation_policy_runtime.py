@@ -10,6 +10,7 @@ from runtime.speech.asr_quality_gate import normalize_transcript
 POLICY_RUNTIME_ID = "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001"
 SCHEMA_VERSION = 1
 REPAIR_RESPONSE = "I may have misheard that. Could you repeat it briefly?"
+REPEATED_REPAIR_RESPONSE = "I still may not have caught that. Could you repeat it in a few words?"
 
 ROUTESIGNAL_CAMPAIGN_IDS = {
     "live-demo-001-routesignal",
@@ -19,6 +20,13 @@ ROUTESIGNAL_CAMPAIGN_IDS = {
 KNOWN_NONSENSE_PHRASES = {
     "play a double be good",
     "yadav would be good",
+}
+
+UNIVERSAL_ASR_REPAIR_REASONS = {
+    "asr_quality_rejected",
+    "empty_or_fragment",
+    "high_risk_appointment_time_mismatch",
+    "known_phonetic_nonsense",
 }
 
 NEAR_MISS_PHRASES = {
@@ -462,6 +470,33 @@ def _confirmed_gap_id(session_state: dict | None) -> str:
     return ""
 
 
+def _pending_tentative_gap_id(session_state: dict | None) -> str:
+    memory = _memory_from_session(session_state)
+    pending = str(memory.get("tentative_gap") or memory.get("pending_tentative_gap") or "").strip()
+    if pending:
+        return pending
+    for turn in reversed(_turns(session_state)):
+        frame = turn.get("universal_policy_frame") if isinstance(turn, dict) else None
+        if not isinstance(frame, dict):
+            frame = ((turn.get("dialogue_manager") or {}).get("universal_policy_frame") if isinstance(turn, dict) else None)
+        if isinstance(frame, dict) and frame.get("buyer_move_id") == "tentative_gap_interest":
+            gap = str(frame.get("confirmed_gap_id") or frame.get("selected_gap") or "").strip()
+            if gap:
+                return gap
+    return ""
+
+
+def _prior_asr_repair_count(session_state: dict | None) -> int:
+    count = 0
+    for turn in _turns(session_state):
+        frame = turn.get("universal_policy_frame") if isinstance(turn, dict) else None
+        if not isinstance(frame, dict):
+            frame = ((turn.get("dialogue_manager") or {}).get("universal_policy_frame") if isinstance(turn, dict) else None)
+        if isinstance(frame, dict) and frame.get("asr_repair_required"):
+            count += 1
+    return count
+
+
 def _gap_id_from_transcript(normalized: str, campaign: dict | None) -> str:
     if _is_routesignal_campaign(campaign):
         routesignal_candidates = [
@@ -596,6 +631,38 @@ def _impact_signal_from_transcript(normalized: str) -> dict[str, Any]:
     return {"detected": False, "strength": "none", "type": "none"}
 
 
+def _is_tentative_gap_active_confirmation(normalized: str) -> bool:
+    if _contains_any(
+        normalized,
+        {
+            "not active",
+            "not happening",
+            "not a real issue",
+            "not a real problem",
+            "is not active",
+            "isn t active",
+        },
+    ):
+        return False
+    return normalized in {
+        "it is active now",
+        "yes it is active",
+        "that is active",
+        "it is happening",
+        "yes that is happening",
+        "it is a real issue",
+    } or _contains_any(
+        normalized,
+        {
+            "active now",
+            "is active",
+            "is happening",
+            "real issue",
+            "real problem",
+        },
+    )
+
+
 def _pain_progression_metadata(
     *,
     buyer_move_id: str,
@@ -605,6 +672,8 @@ def _pain_progression_metadata(
     contextual_semantics: dict | None,
 ) -> dict[str, Any]:
     target_gap = str((contextual_semantics or {}).get("target_gap") or "") or _confirmed_gap_id(session_state)
+    if not target_gap and buyer_move_id in {"pain_confirmed", "implication_confirmed", "implication_weak_or_denied", "implication_unclear"}:
+        target_gap = _pending_tentative_gap_id(session_state)
     if not target_gap:
         target_gap = _gap_id_from_transcript(normalized, campaign)
     gap_phrase = _gap_phrase_for_id(campaign, target_gap) if target_gap else _sharp_diagnostic_gap_phrase(campaign)
@@ -615,6 +684,8 @@ def _pain_progression_metadata(
         "pain_development_required": False,
         "implication_check_required": False,
         "next_best_sales_action": "none",
+        "confirmed_gap_id": target_gap,
+        "selected_gap": target_gap,
         "confirmed_gap_phrase": gap_phrase,
         "impact_signal_detected": bool(impact.get("detected")),
         "impact_signal_type": str(impact.get("type") or "none"),
@@ -704,7 +775,7 @@ def _impact_confirmed_response(frame: dict[str, Any], campaign: dict | None) -> 
         "risk": "creating risk",
         "quality": "already becoming a real issue",
     }.get(signal_type, "already creating impact")
-    return f"If it is already {signal_phrase}, a short review with {owner_role} is probably the right next step. What callback window works?"
+    return f"If it is already {signal_phrase}, a short review with {owner_role} is probably the right next step. What time should I note for the callback?"
 
 
 def _response_shape_category(buyer_move_id: str) -> str | None:
@@ -996,6 +1067,23 @@ def classify_universal_buyer_move_from_transcript(
     if "that would be good" in normalized:
         return _recognition("appointment_interest", reason="clean_positive_after_progression", confidence="medium", category="appointment_callback_send_info")
 
+    pending_tentative_gap = _pending_tentative_gap_id(session_state)
+    if pending_tentative_gap and _is_tentative_gap_active_confirmation(normalized):
+        return _recognition(
+            "pain_confirmed",
+            reason="tentative_gap_confirmed_active",
+            confidence="high",
+            category="pain_tentative_pain",
+        )
+
+    if _confirmed_gap_id(session_state) and _looks_like_time(normalized):
+        return _recognition(
+            "callback_time_provided",
+            reason="time_provided_after_confirmed_gap",
+            confidence="high",
+            category="appointment_callback_send_info",
+        )
+
     if _confirmed_gap_id(session_state):
         impact = _impact_signal_from_transcript(normalized)
         if impact.get("strength") == "confirmed":
@@ -1131,8 +1219,13 @@ def should_enforce_universal_asr_repair(
 ) -> bool:
     active_detection = detection or {}
     if frame:
-        active_detection = {"applied": bool(frame.get("asr_repair_required"))}
-    return bool(active_detection.get("applied") and _is_generic_campaign(campaign))
+        active_detection = dict(frame.get("detection") or {})
+        active_detection["applied"] = bool(frame.get("asr_repair_required"))
+    if not active_detection.get("applied"):
+        return False
+    if _is_generic_campaign(campaign):
+        return True
+    return str(active_detection.get("reason") or "") in UNIVERSAL_ASR_REPAIR_REASONS
 
 
 def build_universal_conversation_policy_frame(
@@ -1214,6 +1307,7 @@ def build_universal_conversation_policy_frame(
         "provider_calls_made": False,
         "local_llm_calls_made": False,
         "opens_prod_102": False,
+        "asr_repair_turn_count": _prior_asr_repair_count(session_state) + 1 if detection.get("applied") else 0,
         "detection": detection,
         "pragmatic_move_id": (pragmatic_move or {}).get("move_id"),
     }
@@ -1232,12 +1326,13 @@ def _enforcement_reason(enforcement_enabled: bool, detection: dict, campaign: di
 
 
 def universal_asr_repair_continuity(frame: dict[str, Any]) -> dict[str, Any]:
+    response = REPEATED_REPAIR_RESPONSE if int((frame or {}).get("asr_repair_turn_count") or 0) > 1 else REPAIR_RESPONSE
     return {
         "applied": True,
         "reason": "asr_fragment_repair",
         "action_id": "repair_asr_fragment",
         "dialogue_focus": "repair",
-        "candidate_response": REPAIR_RESPONSE,
+        "candidate_response": response,
         "universal_policy_frame": dict(frame),
     }
 

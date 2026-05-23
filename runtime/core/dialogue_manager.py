@@ -753,7 +753,10 @@ def build_conversation_memory(
         continuity(action),
     )
     semantic_frame = dict((action.get("state_before") or {}).get("contextual_buyer_semantics") or {})
+    universal_frame = dict((action.get("state_before") or {}).get("universal_policy_frame") or {})
     semantic = str(semantic_frame.get("semantic") or "")
+    universal_move = str(universal_frame.get("buyer_move_id") or "")
+    universal_gap = str(universal_frame.get("confirmed_gap_id") or universal_frame.get("selected_gap") or "").strip()
     target_gap = semantic_frame.get("target_gap")
     primary_gap = semantic_frame.get("primary_gap") or target_gap
     semantic_applied = bool(semantic_frame.get("applied"))
@@ -783,6 +786,26 @@ def build_conversation_memory(
             existing_confirmed.append(gap)
     if semantic in {"pain_confirmed", "mixed_gap_response"} and target_gap and target_gap not in existing_confirmed:
         existing_confirmed.append(str(target_gap))
+    if universal_move == "tentative_gap_interest" and universal_gap:
+        memory["tentative_gap"] = universal_gap
+        memory["pending_tentative_gap"] = universal_gap
+        memory["selected_gap"] = universal_gap
+        memory["active_topic"] = universal_gap
+        memory["last_customer_intent"] = "tentative_gap_interest"
+    if universal_move == "pain_confirmed" and universal_gap:
+        if universal_gap not in existing_confirmed:
+            existing_confirmed.append(universal_gap)
+        memory["selected_gap"] = universal_gap
+        memory["active_topic"] = universal_gap
+        memory["tentative_gap"] = None
+        memory["pending_tentative_gap"] = None
+        if universal_frame.get("recognition_reason") == "tentative_gap_confirmed_active":
+            memory["last_customer_intent"] = "tentative_gap_confirmed_active"
+    if universal_move in {"implication_confirmed", "implication_weak_or_denied", "implication_unclear", "callback_time_provided"} and universal_gap:
+        if universal_gap not in existing_confirmed:
+            existing_confirmed.append(universal_gap)
+        memory["selected_gap"] = universal_gap
+        memory["active_topic"] = universal_gap
     if semantic in {"current_gap_clear", "no_pain_for_specific_gap"} and target_gap and target_gap not in existing_cleared:
         existing_cleared.append(str(target_gap))
     if semantic in {"current_gap_clear", "no_pain_for_specific_gap", "multi_gap_clear", "all_clear_no_pain"}:
@@ -1075,6 +1098,17 @@ def apply_stability_guard_if_needed(
         or {}
     )
     universal_category = str(universal_frame.get("response_shape_enforced_category") or "")
+    if (
+        selected.get("source") == "universal_conversation_policy"
+        and universal_frame.get("asr_repair_required") is True
+    ):
+        return action, {
+            "applied": False,
+            "reason": "universal_asr_repair_stability_guard_skipped",
+            "violations": [],
+            "dialogue_focus": continuity(action).get("dialogue_focus"),
+            "selected_gap": continuity(action).get("selected_gap"),
+        }
     if (
         selected.get("source") == "universal_response_shape"
         and universal_frame.get("response_shape_enforcement_enabled") is True

@@ -159,10 +159,8 @@ def run_case(campaign: dict[str, Any], category: str, transcript: str, expected:
     if not policy_frame.get("buyer_move_category"):
         failures.append("missing buyer_move_category")
     if transcript in {"play a double be good", "yadav would be good"}:
-        if campaign["generic"] and policy_frame.get("enforcement_enabled") is not True:
-            failures.append("generic ASR garble enforcement not enabled")
-        if not campaign["generic"] and policy_frame.get("enforcement_enabled") is not False:
-            failures.append("RouteSignal ASR garble enforcement should remain disabled")
+        if policy_frame.get("enforcement_enabled") is not True:
+            failures.append("known ASR garble enforcement not enabled")
     if transcript in {"repair timings are usually pretty long", "yeah that would be good"}:
         if actual == "asr_garbled_or_low_confidence" or policy_frame.get("asr_repair_required"):
             failures.append("clean control was treated as ASR garble")

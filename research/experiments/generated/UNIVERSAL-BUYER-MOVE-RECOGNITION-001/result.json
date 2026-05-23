@@ -687,7 +687,7 @@
       "buyer_move_category": "asr_repair",
       "campaign": "routesignal_live_demo",
       "category": "asr_and_clean_controls",
-      "enforcement_enabled": false,
+      "enforcement_enabled": true,
       "expected_buyer_move_ids": [
         "asr_garbled_or_low_confidence"
       ],
@@ -713,7 +713,7 @@
       "buyer_move_category": "asr_repair",
       "campaign": "routesignal_live_demo",
       "category": "asr_and_clean_controls",
-      "enforcement_enabled": false,
+      "enforcement_enabled": true,
       "expected_buyer_move_ids": [
         "asr_garbled_or_low_confidence"
       ],

@@ -36,8 +36,10 @@
         "appointment_pressure_level": "none",
         "appointment_readiness": "none",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "permission_time_pressure",
         "buyer_move_id": "permission_acknowledgement",
+        "confirmed_gap_id": "",
         "confirmed_gap_phrase": "inbound demo follow-up slipping",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -82,6 +84,7 @@
         "response_shape_id": "acknowledge_then_one_short_diagnostic",
         "sales_progression_stage": "permission_diagnostic",
         "schema_version": 1,
+        "selected_gap": "",
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false
       }
@@ -124,8 +127,10 @@
         "appointment_pressure_level": "medium",
         "appointment_readiness": "medium",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_tentative_pain",
         "buyer_move_id": "pain_confirmed",
+        "confirmed_gap_id": "callbacks",
         "confirmed_gap_phrase": "callbacks",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -171,6 +176,7 @@
         "response_shape_id": "acknowledge_pain_check_implication",
         "sales_progression_stage": "pain_confirmed_needs_implication",
         "schema_version": 1,
+        "selected_gap": "callbacks",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -210,8 +216,10 @@
         "appointment_pressure_level": "low",
         "appointment_readiness": "low",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_tentative_pain",
         "buyer_move_id": "tentative_gap_interest",
+        "confirmed_gap_id": "handoffs",
         "confirmed_gap_phrase": "handoffs",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -258,6 +266,7 @@
         "response_shape_id": "clarify_tentative_gap_active_or_possible",
         "sales_progression_stage": "tentative_pain_needs_clarification",
         "schema_version": 1,
+        "selected_gap": "handoffs",
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false
       }
@@ -269,7 +278,7 @@
         "callbacks"
       ],
       "failures": [],
-      "final_response": "If it is already causing delays, a short review with the verified implementation reviewer is probably the right next step. What callback window works?",
+      "final_response": "If it is already causing delays, a short review with the verified implementation reviewer is probably the right next step. What time should I note for the callback?",
       "passed": true,
       "scenario": "impact_confirmed",
       "semantic": "pain_confirmed",
@@ -300,8 +309,10 @@
         "appointment_pressure_level": "direct",
         "appointment_readiness": "high",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_progression",
         "buyer_move_id": "implication_confirmed",
+        "confirmed_gap_id": "callbacks",
         "confirmed_gap_phrase": "callbacks",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -348,6 +359,7 @@
         "response_shape_id": "acknowledge_implication_bridge_to_callback",
         "sales_progression_stage": "implication_confirmed",
         "schema_version": 1,
+        "selected_gap": "callbacks",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -389,8 +401,10 @@
         "appointment_pressure_level": "none",
         "appointment_readiness": "low",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_progression",
         "buyer_move_id": "implication_weak_or_denied",
+        "confirmed_gap_id": "callbacks",
         "confirmed_gap_phrase": "callbacks",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -436,6 +450,7 @@
         "response_shape_id": "acknowledge_weak_implication_reduce_pressure",
         "sales_progression_stage": "implication_weak_or_denied",
         "schema_version": 1,
+        "selected_gap": "callbacks",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -447,10 +462,10 @@
         "callbacks"
       ],
       "failures": [],
-      "final_response": "Confirmed. I will note that time for the workflow review. Goodbye.",
+      "final_response": "Confirmed. I will record that callback time for the specialist. Goodbye.",
       "passed": true,
       "scenario": "appointment_time_after_readiness",
-      "semantic": "appointment_time_given",
+      "semantic": "callback_time_confirmation",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -462,7 +477,7 @@
         "writes_crm": false
       },
       "source": "contextual_buyer_semantics",
-      "target_gap": "callbacks",
+      "target_gap": null,
       "transcript": "tomorrow at 3 works",
       "universal_policy_frame": {
         "allowed_call_controls": [
@@ -477,14 +492,16 @@
         "appointment_pressure_level": "direct",
         "appointment_readiness": "none",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "appointment_callback_send_info",
         "buyer_move_id": "callback_time_provided",
+        "confirmed_gap_id": "callbacks",
         "confirmed_gap_phrase": "callbacks",
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
           "normalized_transcript": "tomorrow at 3 works",
-          "previous_question_type": "sales_progression_question",
+          "previous_question_type": "callback_time",
           "reason": "not_garbled"
         },
         "direct_question_required": false,
@@ -522,6 +539,7 @@
         "response_shape_id": "callback_time_capture",
         "sales_progression_stage": "none",
         "schema_version": 1,
+        "selected_gap": "callbacks",
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false
       }
@@ -560,8 +578,10 @@
         "appointment_pressure_level": "none",
         "appointment_readiness": "none",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "permission_time_pressure",
         "buyer_move_id": "permission_acknowledgement",
+        "confirmed_gap_id": "",
         "confirmed_gap_phrase": "premium pressure",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -606,6 +626,7 @@
         "response_shape_id": "acknowledge_then_one_short_diagnostic",
         "sales_progression_stage": "permission_diagnostic",
         "schema_version": 1,
+        "selected_gap": "",
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false
       }
@@ -648,8 +669,10 @@
         "appointment_pressure_level": "medium",
         "appointment_readiness": "medium",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_tentative_pain",
         "buyer_move_id": "pain_confirmed",
+        "confirmed_gap_id": "premium_or_budget",
         "confirmed_gap_phrase": "premium pressure",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -695,6 +718,7 @@
         "response_shape_id": "acknowledge_pain_check_implication",
         "sales_progression_stage": "pain_confirmed_needs_implication",
         "schema_version": 1,
+        "selected_gap": "premium_or_budget",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -734,8 +758,10 @@
         "appointment_pressure_level": "low",
         "appointment_readiness": "low",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_tentative_pain",
         "buyer_move_id": "tentative_gap_interest",
+        "confirmed_gap_id": "coverage_fit",
         "confirmed_gap_phrase": "coverage fit",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -782,6 +808,7 @@
         "response_shape_id": "clarify_tentative_gap_active_or_possible",
         "sales_progression_stage": "tentative_pain_needs_clarification",
         "schema_version": 1,
+        "selected_gap": "coverage_fit",
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false
       }
@@ -793,7 +820,7 @@
         "premium_or_budget"
       ],
       "failures": [],
-      "final_response": "If it is already causing delays, a short review with the licensed insurance specialist is probably the right next step. What callback window works?",
+      "final_response": "If it is already causing delays, a short review with the licensed insurance specialist is probably the right next step. What time should I note for the callback?",
       "passed": true,
       "scenario": "impact_confirmed",
       "semantic": "pain_confirmed",
@@ -824,8 +851,10 @@
         "appointment_pressure_level": "direct",
         "appointment_readiness": "high",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_progression",
         "buyer_move_id": "implication_confirmed",
+        "confirmed_gap_id": "premium_or_budget",
         "confirmed_gap_phrase": "premium pressure",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -872,6 +901,7 @@
         "response_shape_id": "acknowledge_implication_bridge_to_callback",
         "sales_progression_stage": "implication_confirmed",
         "schema_version": 1,
+        "selected_gap": "premium_or_budget",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -913,8 +943,10 @@
         "appointment_pressure_level": "none",
         "appointment_readiness": "low",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_progression",
         "buyer_move_id": "implication_weak_or_denied",
+        "confirmed_gap_id": "premium_or_budget",
         "confirmed_gap_phrase": "premium pressure",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -960,6 +992,7 @@
         "response_shape_id": "acknowledge_weak_implication_reduce_pressure",
         "sales_progression_stage": "implication_weak_or_denied",
         "schema_version": 1,
+        "selected_gap": "premium_or_budget",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -971,10 +1004,10 @@
         "premium_or_budget"
       ],
       "failures": [],
-      "final_response": "Confirmed. I will note that time for the licensed coverage review. Goodbye.",
+      "final_response": "Confirmed. I will note that time for your licensed coverage review. Goodbye.",
       "passed": true,
       "scenario": "appointment_time_after_readiness",
-      "semantic": "appointment_time_given",
+      "semantic": "callback_time_confirmation",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -986,7 +1019,7 @@
         "writes_crm": false
       },
       "source": "contextual_buyer_semantics",
-      "target_gap": "premium_or_budget",
+      "target_gap": null,
       "transcript": "tomorrow at 3 works",
       "universal_policy_frame": {
         "allowed_call_controls": [
@@ -1001,14 +1034,16 @@
         "appointment_pressure_level": "direct",
         "appointment_readiness": "none",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "appointment_callback_send_info",
         "buyer_move_id": "callback_time_provided",
+        "confirmed_gap_id": "premium_or_budget",
         "confirmed_gap_phrase": "premium pressure",
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
           "normalized_transcript": "tomorrow at 3 works",
-          "previous_question_type": "sales_progression_question",
+          "previous_question_type": "callback_time",
           "reason": "not_garbled"
         },
         "direct_question_required": false,
@@ -1046,6 +1081,7 @@
         "response_shape_id": "callback_time_capture",
         "sales_progression_stage": "none",
         "schema_version": 1,
+        "selected_gap": "premium_or_budget",
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false
       }
@@ -1084,8 +1120,10 @@
         "appointment_pressure_level": "none",
         "appointment_readiness": "none",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "permission_time_pressure",
         "buyer_move_id": "permission_acknowledgement",
+        "confirmed_gap_id": "",
         "confirmed_gap_phrase": "manual work",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -1130,6 +1168,7 @@
         "response_shape_id": "acknowledge_then_one_short_diagnostic",
         "sales_progression_stage": "permission_diagnostic",
         "schema_version": 1,
+        "selected_gap": "",
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false
       }
@@ -1172,8 +1211,10 @@
         "appointment_pressure_level": "medium",
         "appointment_readiness": "medium",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_tentative_pain",
         "buyer_move_id": "pain_confirmed",
+        "confirmed_gap_id": "manual_work",
         "confirmed_gap_phrase": "manual work",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -1219,6 +1260,7 @@
         "response_shape_id": "acknowledge_pain_check_implication",
         "sales_progression_stage": "pain_confirmed_needs_implication",
         "schema_version": 1,
+        "selected_gap": "manual_work",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -1258,8 +1300,10 @@
         "appointment_pressure_level": "low",
         "appointment_readiness": "low",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_tentative_pain",
         "buyer_move_id": "tentative_gap_interest",
+        "confirmed_gap_id": "integration_risk",
         "confirmed_gap_phrase": "integration",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -1306,6 +1350,7 @@
         "response_shape_id": "clarify_tentative_gap_active_or_possible",
         "sales_progression_stage": "tentative_pain_needs_clarification",
         "schema_version": 1,
+        "selected_gap": "integration_risk",
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false
       }
@@ -1317,7 +1362,7 @@
         "manual_work"
       ],
       "failures": [],
-      "final_response": "If it is already causing delays, a short review with the implementation specialist is probably the right next step. What callback window works?",
+      "final_response": "If it is already causing delays, a short review with the implementation specialist is probably the right next step. What time should I note for the callback?",
       "passed": true,
       "scenario": "impact_confirmed",
       "semantic": "pain_confirmed",
@@ -1348,8 +1393,10 @@
         "appointment_pressure_level": "direct",
         "appointment_readiness": "high",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_progression",
         "buyer_move_id": "implication_confirmed",
+        "confirmed_gap_id": "manual_work",
         "confirmed_gap_phrase": "manual work",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -1396,6 +1443,7 @@
         "response_shape_id": "acknowledge_implication_bridge_to_callback",
         "sales_progression_stage": "implication_confirmed",
         "schema_version": 1,
+        "selected_gap": "manual_work",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -1437,8 +1485,10 @@
         "appointment_pressure_level": "none",
         "appointment_readiness": "low",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_progression",
         "buyer_move_id": "implication_weak_or_denied",
+        "confirmed_gap_id": "manual_work",
         "confirmed_gap_phrase": "manual work",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -1484,6 +1534,7 @@
         "response_shape_id": "acknowledge_weak_implication_reduce_pressure",
         "sales_progression_stage": "implication_weak_or_denied",
         "schema_version": 1,
+        "selected_gap": "manual_work",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -1495,10 +1546,10 @@
         "manual_work"
       ],
       "failures": [],
-      "final_response": "Confirmed. I will note that time for the operations fit review. Goodbye.",
+      "final_response": "Confirmed. I will note that time for your operations fit review. Goodbye.",
       "passed": true,
       "scenario": "appointment_time_after_readiness",
-      "semantic": "appointment_time_given",
+      "semantic": "callback_time_confirmation",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -1510,7 +1561,7 @@
         "writes_crm": false
       },
       "source": "contextual_buyer_semantics",
-      "target_gap": "manual_work",
+      "target_gap": null,
       "transcript": "tomorrow at 3 works",
       "universal_policy_frame": {
         "allowed_call_controls": [
@@ -1525,14 +1576,16 @@
         "appointment_pressure_level": "direct",
         "appointment_readiness": "none",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "appointment_callback_send_info",
         "buyer_move_id": "callback_time_provided",
+        "confirmed_gap_id": "manual_work",
         "confirmed_gap_phrase": "manual work",
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
           "normalized_transcript": "tomorrow at 3 works",
-          "previous_question_type": "sales_progression_question",
+          "previous_question_type": "callback_time",
           "reason": "not_garbled"
         },
         "direct_question_required": false,
@@ -1570,6 +1623,7 @@
         "response_shape_id": "callback_time_capture",
         "sales_progression_stage": "none",
         "schema_version": 1,
+        "selected_gap": "manual_work",
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false
       }
@@ -1608,8 +1662,10 @@
         "appointment_pressure_level": "none",
         "appointment_readiness": "none",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "permission_time_pressure",
         "buyer_move_id": "permission_acknowledgement",
+        "confirmed_gap_id": "",
         "confirmed_gap_phrase": "repair timing",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -1654,6 +1710,7 @@
         "response_shape_id": "acknowledge_then_one_short_diagnostic",
         "sales_progression_stage": "permission_diagnostic",
         "schema_version": 1,
+        "selected_gap": "",
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false
       }
@@ -1696,8 +1753,10 @@
         "appointment_pressure_level": "medium",
         "appointment_readiness": "medium",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_tentative_pain",
         "buyer_move_id": "pain_confirmed",
+        "confirmed_gap_id": "repair_timing",
         "confirmed_gap_phrase": "repair timing",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -1743,6 +1802,7 @@
         "response_shape_id": "acknowledge_pain_check_implication",
         "sales_progression_stage": "pain_confirmed_needs_implication",
         "schema_version": 1,
+        "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -1782,8 +1842,10 @@
         "appointment_pressure_level": "low",
         "appointment_readiness": "low",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_tentative_pain",
         "buyer_move_id": "tentative_gap_interest",
+        "confirmed_gap_id": "repair_timing",
         "confirmed_gap_phrase": "repair timing",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -1830,6 +1892,7 @@
         "response_shape_id": "clarify_tentative_gap_active_or_possible",
         "sales_progression_stage": "tentative_pain_needs_clarification",
         "schema_version": 1,
+        "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false
       }
@@ -1841,7 +1904,7 @@
         "repair_timing"
       ],
       "failures": [],
-      "final_response": "If it is already causing delays, a short review with the service advisor is probably the right next step. What callback window works?",
+      "final_response": "If it is already causing delays, a short review with the service advisor is probably the right next step. What time should I note for the callback?",
       "passed": true,
       "scenario": "impact_confirmed",
       "semantic": "pain_confirmed",
@@ -1872,8 +1935,10 @@
         "appointment_pressure_level": "direct",
         "appointment_readiness": "high",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_progression",
         "buyer_move_id": "implication_confirmed",
+        "confirmed_gap_id": "repair_timing",
         "confirmed_gap_phrase": "repair timing",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -1920,6 +1985,7 @@
         "response_shape_id": "acknowledge_implication_bridge_to_callback",
         "sales_progression_stage": "implication_confirmed",
         "schema_version": 1,
+        "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -1961,8 +2027,10 @@
         "appointment_pressure_level": "none",
         "appointment_readiness": "low",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_progression",
         "buyer_move_id": "implication_weak_or_denied",
+        "confirmed_gap_id": "repair_timing",
         "confirmed_gap_phrase": "repair timing",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -2008,6 +2076,7 @@
         "response_shape_id": "acknowledge_weak_implication_reduce_pressure",
         "sales_progression_stage": "implication_weak_or_denied",
         "schema_version": 1,
+        "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -2019,10 +2088,10 @@
         "repair_timing"
       ],
       "failures": [],
-      "final_response": "Confirmed. I will note that time for the service advisor inspection review. Goodbye.",
+      "final_response": "Confirmed. I will note that time for your service advisor inspection review. Goodbye.",
       "passed": true,
       "scenario": "appointment_time_after_readiness",
-      "semantic": "appointment_time_given",
+      "semantic": "callback_time_confirmation",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -2034,7 +2103,7 @@
         "writes_crm": false
       },
       "source": "contextual_buyer_semantics",
-      "target_gap": "repair_timing",
+      "target_gap": null,
       "transcript": "tomorrow at 3 works",
       "universal_policy_frame": {
         "allowed_call_controls": [
@@ -2049,14 +2118,16 @@
         "appointment_pressure_level": "direct",
         "appointment_readiness": "none",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "appointment_callback_send_info",
         "buyer_move_id": "callback_time_provided",
+        "confirmed_gap_id": "repair_timing",
         "confirmed_gap_phrase": "repair timing",
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
           "normalized_transcript": "tomorrow at 3 works",
-          "previous_question_type": "sales_progression_question",
+          "previous_question_type": "callback_time",
           "reason": "not_garbled"
         },
         "direct_question_required": false,
@@ -2094,6 +2165,7 @@
         "response_shape_id": "callback_time_capture",
         "sales_progression_stage": "none",
         "schema_version": 1,
+        "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false
       }
@@ -2132,8 +2204,10 @@
         "appointment_pressure_level": "none",
         "appointment_readiness": "none",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "permission_time_pressure",
         "buyer_move_id": "permission_acknowledgement",
+        "confirmed_gap_id": "",
         "confirmed_gap_phrase": "service need",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -2178,6 +2252,7 @@
         "response_shape_id": "acknowledge_then_one_short_diagnostic",
         "sales_progression_stage": "permission_diagnostic",
         "schema_version": 1,
+        "selected_gap": "",
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false
       }
@@ -2220,8 +2295,10 @@
         "appointment_pressure_level": "medium",
         "appointment_readiness": "medium",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_tentative_pain",
         "buyer_move_id": "pain_confirmed",
+        "confirmed_gap_id": "service_need",
         "confirmed_gap_phrase": "service need",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -2267,6 +2344,7 @@
         "response_shape_id": "acknowledge_pain_check_implication",
         "sales_progression_stage": "pain_confirmed_needs_implication",
         "schema_version": 1,
+        "selected_gap": "service_need",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -2306,8 +2384,10 @@
         "appointment_pressure_level": "low",
         "appointment_readiness": "low",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_tentative_pain",
         "buyer_move_id": "tentative_gap_interest",
+        "confirmed_gap_id": "scheduling_urgency",
         "confirmed_gap_phrase": "scheduling",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -2354,6 +2434,7 @@
         "response_shape_id": "clarify_tentative_gap_active_or_possible",
         "sales_progression_stage": "tentative_pain_needs_clarification",
         "schema_version": 1,
+        "selected_gap": "scheduling_urgency",
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false
       }
@@ -2365,7 +2446,7 @@
         "service_need"
       ],
       "failures": [],
-      "final_response": "If it is already causing delays, a short review with the qualified service coordinator is probably the right next step. What callback window works?",
+      "final_response": "If it is already causing delays, a short review with the qualified service coordinator is probably the right next step. What time should I note for the callback?",
       "passed": true,
       "scenario": "impact_confirmed",
       "semantic": "pain_confirmed",
@@ -2396,8 +2477,10 @@
         "appointment_pressure_level": "direct",
         "appointment_readiness": "high",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_progression",
         "buyer_move_id": "implication_confirmed",
+        "confirmed_gap_id": "service_need",
         "confirmed_gap_phrase": "service need",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -2444,6 +2527,7 @@
         "response_shape_id": "acknowledge_implication_bridge_to_callback",
         "sales_progression_stage": "implication_confirmed",
         "schema_version": 1,
+        "selected_gap": "service_need",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -2485,8 +2569,10 @@
         "appointment_pressure_level": "none",
         "appointment_readiness": "low",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "pain_progression",
         "buyer_move_id": "implication_weak_or_denied",
+        "confirmed_gap_id": "service_need",
         "confirmed_gap_phrase": "service need",
         "conversation_stage": "diagnostic",
         "detection": {
@@ -2532,6 +2618,7 @@
         "response_shape_id": "acknowledge_weak_implication_reduce_pressure",
         "sales_progression_stage": "implication_weak_or_denied",
         "schema_version": 1,
+        "selected_gap": "service_need",
         "should_preserve_cleared_gaps": true,
         "should_preserve_confirmed_gaps": true
       }
@@ -2543,10 +2630,10 @@
         "service_need"
       ],
       "failures": [],
-      "final_response": "Confirmed. I will note that time for the inspection or estimate review. Goodbye.",
+      "final_response": "Confirmed. I will note that time for your inspection or estimate review. Goodbye.",
       "passed": true,
       "scenario": "appointment_time_after_readiness",
-      "semantic": "appointment_time_given",
+      "semantic": "callback_time_confirmation",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -2558,7 +2645,7 @@
         "writes_crm": false
       },
       "source": "contextual_buyer_semantics",
-      "target_gap": "service_need",
+      "target_gap": null,
       "transcript": "tomorrow at 3 works",
       "universal_policy_frame": {
         "allowed_call_controls": [
@@ -2573,14 +2660,16 @@
         "appointment_pressure_level": "direct",
         "appointment_readiness": "none",
         "asr_repair_required": false,
+        "asr_repair_turn_count": 0,
         "buyer_move_category": "appointment_callback_send_info",
         "buyer_move_id": "callback_time_provided",
+        "confirmed_gap_id": "service_need",
         "confirmed_gap_phrase": "service need",
         "conversation_stage": "diagnostic",
         "detection": {
           "applied": false,
           "normalized_transcript": "tomorrow at 3 works",
-          "previous_question_type": "sales_progression_question",
+          "previous_question_type": "callback_time",
           "reason": "not_garbled"
         },
         "direct_question_required": false,
@@ -2618,6 +2707,7 @@
         "response_shape_id": "callback_time_capture",
         "sales_progression_stage": "none",
         "schema_version": 1,
+        "selected_gap": "service_need",
         "should_preserve_cleared_gaps": false,
         "should_preserve_confirmed_gaps": false
       }
