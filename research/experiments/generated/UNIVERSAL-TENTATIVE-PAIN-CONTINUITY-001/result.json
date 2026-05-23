@@ -546,12 +546,12 @@
         "handoffs"
       ],
       "failures": [],
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
+      "final_response": "Got it. If handoffs is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
       "passed": true,
       "scenario": "tentative_impact_confirmation",
-      "semantic": "no_contextual_semantic",
+      "semantic": "pain_confirmed",
       "source": "universal_response_shape",
-      "target_gap": null,
+      "target_gap": "handoffs",
       "turns": [
         {
           "call_control": "continue-call",
@@ -990,8 +990,8 @@
           "confirmed_gaps": [
             "handoffs"
           ],
-          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
-          "semantic": "no_contextual_semantic",
+          "final_response": "Got it. If handoffs is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
+          "semantic": "pain_confirmed",
           "side_effect_flags": {
             "creates_calendar_event": false,
             "customer_audio_uploaded_to_python_server": false,
@@ -1003,7 +1003,7 @@
             "writes_crm": false
           },
           "source": "universal_response_shape",
-          "target_gap": null,
+          "target_gap": "handoffs",
           "transcript": "it wastes time",
           "universal_policy_frame": {
             "allowed_call_controls": [
@@ -1641,8 +1641,8 @@
           "confirmed_gaps": [
             "handoffs"
           ],
-          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
-          "semantic": "no_contextual_semantic",
+          "final_response": "Got it. If handoffs is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
+          "semantic": "pain_confirmed",
           "side_effect_flags": {
             "creates_calendar_event": false,
             "customer_audio_uploaded_to_python_server": false,
@@ -1654,7 +1654,7 @@
             "writes_crm": false
           },
           "source": "universal_response_shape",
-          "target_gap": null,
+          "target_gap": "handoffs",
           "transcript": "it wastes time",
           "universal_policy_frame": {
             "allowed_call_controls": [
@@ -3778,12 +3778,12 @@
         "coverage_fit"
       ],
       "failures": [],
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
+      "final_response": "Got it. If coverage fit is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
       "passed": true,
       "scenario": "tentative_impact_confirmation",
-      "semantic": "no_contextual_semantic",
+      "semantic": "pain_confirmed",
       "source": "universal_response_shape",
-      "target_gap": null,
+      "target_gap": "coverage_fit",
       "turns": [
         {
           "call_control": "continue-call",
@@ -4222,8 +4222,8 @@
           "confirmed_gaps": [
             "coverage_fit"
           ],
-          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
-          "semantic": "no_contextual_semantic",
+          "final_response": "Got it. If coverage fit is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
+          "semantic": "pain_confirmed",
           "side_effect_flags": {
             "creates_calendar_event": false,
             "customer_audio_uploaded_to_python_server": false,
@@ -4235,7 +4235,7 @@
             "writes_crm": false
           },
           "source": "universal_response_shape",
-          "target_gap": null,
+          "target_gap": "coverage_fit",
           "transcript": "it wastes time",
           "universal_policy_frame": {
             "allowed_call_controls": [
@@ -4434,7 +4434,7 @@
       "scenario": "tentative_appointment_time",
       "semantic": "appointment_time_given",
       "source": "universal_response_shape",
-      "target_gap": "premium_or_budget",
+      "target_gap": "coverage_fit",
       "turns": [
         {
           "call_control": "continue-call",
@@ -4873,8 +4873,8 @@
           "confirmed_gaps": [
             "coverage_fit"
           ],
-          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
-          "semantic": "no_contextual_semantic",
+          "final_response": "Got it. If coverage fit is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
+          "semantic": "pain_confirmed",
           "side_effect_flags": {
             "creates_calendar_event": false,
             "customer_audio_uploaded_to_python_server": false,
@@ -4886,7 +4886,7 @@
             "writes_crm": false
           },
           "source": "universal_response_shape",
-          "target_gap": null,
+          "target_gap": "coverage_fit",
           "transcript": "it wastes time",
           "universal_policy_frame": {
             "allowed_call_controls": [
@@ -4998,7 +4998,7 @@
             "writes_crm": false
           },
           "source": "universal_response_shape",
-          "target_gap": "premium_or_budget",
+          "target_gap": "coverage_fit",
           "transcript": "tomorrow at 3 works",
           "universal_policy_frame": {
             "allowed_call_controls": [
@@ -7010,12 +7010,12 @@
         "integration_risk"
       ],
       "failures": [],
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
+      "final_response": "Got it. If integration is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
       "passed": true,
       "scenario": "tentative_impact_confirmation",
-      "semantic": "no_contextual_semantic",
+      "semantic": "pain_confirmed",
       "source": "universal_response_shape",
-      "target_gap": null,
+      "target_gap": "integration_risk",
       "turns": [
         {
           "call_control": "continue-call",
@@ -7454,8 +7454,8 @@
           "confirmed_gaps": [
             "integration_risk"
           ],
-          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
-          "semantic": "no_contextual_semantic",
+          "final_response": "Got it. If integration is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
+          "semantic": "pain_confirmed",
           "side_effect_flags": {
             "creates_calendar_event": false,
             "customer_audio_uploaded_to_python_server": false,
@@ -7467,7 +7467,7 @@
             "writes_crm": false
           },
           "source": "universal_response_shape",
-          "target_gap": null,
+          "target_gap": "integration_risk",
           "transcript": "it wastes time",
           "universal_policy_frame": {
             "allowed_call_controls": [
@@ -8105,8 +8105,8 @@
           "confirmed_gaps": [
             "integration_risk"
           ],
-          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
-          "semantic": "no_contextual_semantic",
+          "final_response": "Got it. If integration is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
+          "semantic": "pain_confirmed",
           "side_effect_flags": {
             "creates_calendar_event": false,
             "customer_audio_uploaded_to_python_server": false,
@@ -8118,7 +8118,7 @@
             "writes_crm": false
           },
           "source": "universal_response_shape",
-          "target_gap": null,
+          "target_gap": "integration_risk",
           "transcript": "it wastes time",
           "universal_policy_frame": {
             "allowed_call_controls": [
@@ -10242,7 +10242,7 @@
         "repair_timing"
       ],
       "failures": [],
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
+      "final_response": "Got it. If repair timing is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
       "passed": true,
       "scenario": "tentative_impact_confirmation",
       "semantic": "no_contextual_semantic",
@@ -10686,7 +10686,7 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
+          "final_response": "Got it. If repair timing is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -11337,7 +11337,7 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
+          "final_response": "Got it. If repair timing is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -13474,12 +13474,12 @@
         "scheduling_urgency"
       ],
       "failures": [],
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
+      "final_response": "Got it. If scheduling is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
       "passed": true,
       "scenario": "tentative_impact_confirmation",
-      "semantic": "no_contextual_semantic",
+      "semantic": "pain_confirmed",
       "source": "universal_response_shape",
-      "target_gap": null,
+      "target_gap": "scheduling_urgency",
       "turns": [
         {
           "call_control": "continue-call",
@@ -13918,8 +13918,8 @@
           "confirmed_gaps": [
             "scheduling_urgency"
           ],
-          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
-          "semantic": "no_contextual_semantic",
+          "final_response": "Got it. If scheduling is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
+          "semantic": "pain_confirmed",
           "side_effect_flags": {
             "creates_calendar_event": false,
             "customer_audio_uploaded_to_python_server": false,
@@ -13931,7 +13931,7 @@
             "writes_crm": false
           },
           "source": "universal_response_shape",
-          "target_gap": null,
+          "target_gap": "scheduling_urgency",
           "transcript": "it wastes time",
           "universal_policy_frame": {
             "allowed_call_controls": [
@@ -14130,7 +14130,7 @@
       "scenario": "tentative_appointment_time",
       "semantic": "appointment_time_given",
       "source": "universal_response_shape",
-      "target_gap": "service_need",
+      "target_gap": "scheduling_urgency",
       "turns": [
         {
           "call_control": "continue-call",
@@ -14569,8 +14569,8 @@
           "confirmed_gaps": [
             "scheduling_urgency"
           ],
-          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
-          "semantic": "no_contextual_semantic",
+          "final_response": "Got it. If scheduling is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
+          "semantic": "pain_confirmed",
           "side_effect_flags": {
             "creates_calendar_event": false,
             "customer_audio_uploaded_to_python_server": false,
@@ -14582,7 +14582,7 @@
             "writes_crm": false
           },
           "source": "universal_response_shape",
-          "target_gap": null,
+          "target_gap": "scheduling_urgency",
           "transcript": "it wastes time",
           "universal_policy_frame": {
             "allowed_call_controls": [
@@ -14694,7 +14694,7 @@
             "writes_crm": false
           },
           "source": "universal_response_shape",
-          "target_gap": "service_need",
+          "target_gap": "scheduling_urgency",
           "transcript": "tomorrow at 3 works",
           "universal_policy_frame": {
             "allowed_call_controls": [

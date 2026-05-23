@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from difflib import SequenceMatcher
 from typing import Any
 
 from runtime.core import campaign_playbook_adapter
@@ -427,11 +428,30 @@ def _gap_match_phrases(record: dict[str, Any]) -> list[str]:
         "campaign_gap_id",
         "evidence_positive",
         "evidence_negative",
+        "diagnostic_question_phrase",
+        "impact_question_phrase",
+        "pain_acknowledgement_phrase",
+        "value_bridge",
     ):
         phrases.extend(_string_items(record.get(key)))
     for phrase in _string_items(record.get("customer_language")):
         if len(normalize_transcript(phrase).split()) > 1:
             phrases.append(phrase)
+    return phrases
+
+
+def _gap_near_match_phrases(record: dict[str, Any]) -> list[str]:
+    phrases: list[str] = []
+    for key in (
+        "customer_facing_phrase",
+        "customer_facing_gap_phrase",
+        "label",
+        "campaign_gap_id",
+        "evidence_positive",
+        "evidence_negative",
+    ):
+        phrases.extend(_string_items(record.get(key)))
+    phrases.extend(_string_items(record.get("customer_language")))
     return phrases
 
 
@@ -442,8 +462,75 @@ def _normalized_phrase_in(normalized: str, phrase: str) -> bool:
     return re.search(rf"(?<![a-z0-9]){re.escape(cleaned)}(?![a-z0-9])", normalized) is not None
 
 
+def _significant_gap_tokens(text: str) -> set[str]:
+    generic = {
+        "about",
+        "against",
+        "and",
+        "area",
+        "areas",
+        "call",
+        "check",
+        "fit",
+        "gap",
+        "issue",
+        "manual",
+        "or",
+        "problem",
+        "review",
+        "risk",
+        "scope",
+        "the",
+        "thing",
+        "timing",
+        "with",
+    }
+    return {token for token in normalize_transcript(text).split() if len(token) >= 4 and token not in generic}
+
+
+def _transcript_near_matches_gap_record(normalized: str, record: dict[str, Any]) -> bool:
+    tokens = normalized.split()
+    if not tokens:
+        return False
+    has_relevance_cue = _contains_any(
+        normalized,
+        {
+            "confusing",
+            "confused",
+            "unclear",
+            "not clear",
+            "thing",
+            "problem",
+            "issue",
+            "pressure",
+        },
+    )
+    normalized_token_set = set(tokens)
+    for phrase in _gap_near_match_phrases(record):
+        cleaned = normalize_transcript(phrase)
+        phrase_tokens = cleaned.split()
+        if not phrase_tokens:
+            continue
+        significant = _significant_gap_tokens(cleaned)
+        if not significant:
+            continue
+        if has_relevance_cue and (significant & normalized_token_set):
+            return True
+        if len(phrase_tokens) == 1:
+            continue
+        if len(phrase_tokens) <= len(tokens):
+            for start in range(0, len(tokens) - len(phrase_tokens) + 1):
+                window = " ".join(tokens[start : start + len(phrase_tokens)])
+                if SequenceMatcher(None, cleaned, window).ratio() >= 0.86:
+                    return True
+    return False
+
+
 def _transcript_matches_gap_record(normalized: str, record: dict[str, Any]) -> bool:
-    return any(_normalized_phrase_in(normalized, phrase) for phrase in _gap_match_phrases(record))
+    return any(_normalized_phrase_in(normalized, phrase) for phrase in _gap_match_phrases(record)) or _transcript_near_matches_gap_record(
+        normalized,
+        record,
+    )
 
 
 def _pain_like_unsupported_phrase(normalized: str) -> bool:
@@ -602,7 +689,15 @@ def _time_pressure_response(campaign: dict | None) -> str:
     return f"Sure, one quick check: {question}"
 
 
-def _permission_response(campaign: dict | None) -> str:
+def _permission_response(campaign: dict | None, session_state: dict | None = None) -> str:
+    memory = _memory_from_session(session_state)
+    pending_gap = str(memory.get("selected_gap") or memory.get("pending_tentative_gap") or "")
+    if str(memory.get("last_customer_intent") or "") == "prior_bad_experience_context" and pending_gap:
+        primary = _gap_phrase_for_id(campaign, pending_gap)
+        secondary = _secondary_gap_phrase(campaign)
+        if secondary and secondary != primary:
+            return f"Good. Then I'll keep it to one concrete check: is {primary} the issue, or is it more about {secondary}?"
+        return f"Good. Then I'll keep it to one concrete check: is {primary} causing an issue now?"
     configured_question = _campaign_short_relevance_question(campaign)
     if configured_question:
         return f"Thanks. {_question_sentence(configured_question)}"
@@ -752,6 +847,10 @@ def _gap_id_from_transcript(normalized: str, campaign: dict | None) -> str:
         if _transcript_matches_gap_record(normalized, record):
             return gap_id
     return ""
+
+
+def campaign_gap_id_for_phrase(campaign: dict | None, phrase: str) -> str:
+    return _gap_id_from_transcript(normalize_transcript(phrase), campaign)
 
 
 def _campaign_supported_gap_ids(campaign: dict | None) -> set[str]:
@@ -1011,6 +1110,7 @@ def _tentative_gap_response(gap_phrase: str) -> str:
 def _impact_confirmed_response(frame: dict[str, Any], campaign: dict | None) -> str:
     signal_type = str((frame or {}).get("impact_signal_type") or "quality")
     owner_role = _role_phrase(_campaign_owner(campaign))
+    gap_subject = _plain_phrase(_gap_phrase_from_frame_or_text(frame, campaign, None)).lower() or "the issue"
     signal_phrase = {
         "delay": "causing delays",
         "time": "costing time",
@@ -1019,7 +1119,9 @@ def _impact_confirmed_response(frame: dict[str, Any], campaign: dict | None) -> 
         "risk": "creating risk",
         "quality": "already becoming a real issue",
     }.get(signal_type, "already creating impact")
-    return f"Got it. If it is already {signal_phrase}, the next useful step is a short review with {owner_role}. What callback window works?"
+    if signal_phrase.startswith("already "):
+        return f"Got it. If {gap_subject} is {signal_phrase}, the next useful step is a short review with {owner_role}. What callback window works?"
+    return f"Got it. If {gap_subject} is already {signal_phrase}, the next useful step is a short review with {owner_role}. What callback window works?"
 
 
 def _response_shape_category(buyer_move_id: str) -> str | None:
@@ -2029,7 +2131,7 @@ def render_universal_response_outline(
         return "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check."
 
     if buyer_move_id == "permission_acknowledgement":
-        return _permission_response(campaign)
+        return _permission_response(campaign, session_state=session_state)
     if buyer_move_id == "time_constrained_permission":
         return _time_pressure_response(campaign)
     if buyer_move_id == "pain_confirmed":

@@ -205,7 +205,7 @@
             "playbook_review_focus": "estimate details and property context",
             "provider_agent_used": false,
             "provider_calls_made": false,
-            "semantic": "pain_confirmed",
+            "semantic": "gap_specific_unclear_context",
             "sends_email": false,
             "target_gap": "estimate_or_property_details",
             "transcript": "estimate is unclear",

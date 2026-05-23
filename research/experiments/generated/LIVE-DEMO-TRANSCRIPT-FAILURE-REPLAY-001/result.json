@@ -80,7 +80,7 @@
         "confirmed_gap_id": "callbacks",
         "confirmed_gap_phrase": "callbacks",
         "recognition_reason": "impact_signal_delay",
-        "response": "Got it. If it is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
+        "response": "Got it. If callbacks is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
         "response_shape_enforced_category": "pain_progression",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -251,7 +251,7 @@
         "buyer_move_category": "product_value_scope",
         "buyer_move_id": "scope_limit_question",
         "call_control": "continue-call",
-        "confirmed_gap_id": "",
+        "confirmed_gap_id": "plan_fit",
         "confirmed_gap_phrase": "plan fit",
         "recognition_reason": "configured_gap_scope_question",
         "response": "Correct. I can answer the high-level scope, but detailed advice belongs with the telecom account specialist. The telecom account specialist would need to review plan fit and coverage or availability. Is that what you want them to check?",

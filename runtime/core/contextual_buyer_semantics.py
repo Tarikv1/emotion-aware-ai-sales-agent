@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+from difflib import SequenceMatcher
 from typing import Any
 
 from runtime.core import campaign_playbook_adapter as diagnostic_playbook
@@ -136,11 +137,15 @@ def _normalized_gap_phrases(gap_id: str, campaign: dict | None, fields: list[str
     if fields is None:
         values: list[str] = [gap_id.replace("_", " "), str(definition.get("label") or "")]
         fields = [
+            "customer_facing_phrase",
             "customer_language",
             "evidence_positive",
             "evidence_negative",
             "diagnostic_questions",
+            "impact_question_phrase",
+            "pain_acknowledgement_phrase",
             "review_focus",
+            "value_bridge",
         ]
     else:
         values = []
@@ -163,8 +168,101 @@ def _matches_any_phrase(normalized: str, phrases: list[str]) -> bool:
     return any(phrase in normalized for phrase in phrases)
 
 
+def _normalized_gap_near_match_phrases(gap_id: str, campaign: dict | None) -> list[str]:
+    return _normalized_gap_phrases(
+        gap_id,
+        campaign,
+        [
+            "customer_facing_phrase",
+            "customer_language",
+            "evidence_positive",
+            "evidence_negative",
+            "label",
+            "campaign_gap_id",
+        ],
+    )
+
+
+def _normalized_gap_direct_match_phrases(gap_id: str, campaign: dict | None) -> list[str]:
+    return _normalized_gap_phrases(
+        gap_id,
+        campaign,
+        [
+            "customer_facing_phrase",
+            "evidence_positive",
+            "evidence_negative",
+            "label",
+            "campaign_gap_id",
+        ],
+    )
+
+
 def _text_matches_gap(normalized: str, gap_id: str, campaign: dict | None) -> bool:
-    return _matches_any_phrase(normalized, _normalized_gap_phrases(gap_id, campaign))
+    return _matches_any_phrase(normalized, _normalized_gap_direct_match_phrases(gap_id, campaign))
+
+
+def _significant_tokens(text: str) -> list[str]:
+    generic = {
+        "a",
+        "an",
+        "and",
+        "are",
+        "fit",
+        "for",
+        "gap",
+        "is",
+        "issue",
+        "manual",
+        "or",
+        "problem",
+        "review",
+        "risk",
+        "the",
+        "thing",
+        "timing",
+        "with",
+    }
+    return [token for token in session_policy.normalize_text(text).split() if len(token) >= 4 and token not in generic]
+
+
+def _near_miss_text_matches_gap(normalized: str, gap_id: str, campaign: dict | None) -> bool:
+    if _is_routesignal_playbook(campaign) or not session_policy.is_generic_campaign_config(campaign):
+        return False
+    if _text_matches_gap(normalized, gap_id, campaign):
+        return True
+    normalized_tokens = normalized.split()
+    if not normalized_tokens:
+        return False
+    has_relevance_cue = _contains(
+        normalized,
+        {
+            "confusing",
+            "confused",
+            "unclear",
+            "not clear",
+            "thing",
+            "problem",
+            "issue",
+            "pressure",
+        },
+    )
+    for phrase in _normalized_gap_near_match_phrases(gap_id, campaign):
+        phrase_tokens = phrase.split()
+        if not phrase_tokens:
+            continue
+        significant = set(_significant_tokens(phrase))
+        if not significant:
+            continue
+        if has_relevance_cue and significant & set(normalized_tokens):
+            return True
+        if len(phrase_tokens) == 1:
+            continue
+        if len(phrase_tokens) <= len(normalized_tokens):
+            for start in range(0, len(normalized_tokens) - len(phrase_tokens) + 1):
+                window = " ".join(normalized_tokens[start : start + len(phrase_tokens)])
+                if SequenceMatcher(None, phrase, window).ratio() >= 0.86:
+                    return True
+    return False
 
 
 def _evidence_matches_gap(normalized: str, gap_id: str, campaign: dict | None, field: str) -> bool:
@@ -486,8 +584,14 @@ def _gaps_from_text(text: str, campaign: dict | None = None) -> list[str]:
     normalized = session_policy.normalize_text(text)
     if not normalized:
         return []
+    exact = [gap_id for gap_id in _gap_order(campaign) if _text_matches_gap(normalized, gap_id, campaign)]
+    near = [
+        gap_id
+        for gap_id in _gap_order(campaign)
+        if gap_id not in exact and _near_miss_text_matches_gap(normalized, gap_id, campaign)
+    ]
     return _ordered_candidate_gaps(
-        [gap_id for gap_id in _gap_order(campaign) if _text_matches_gap(normalized, gap_id, campaign)],
+        exact + near,
         campaign,
     )
 
@@ -533,12 +637,19 @@ def _active_gap(
     contextual_reference = _is_contextual_gap_reference(normalized)
     if current_gap and not contextual_reference:
         return current_gap
+    supported = set(_supported_gap_ids(campaign))
+    for turn in reversed(turns):
+        memory = turn.get("conversation_memory") or {}
+        if not isinstance(memory, dict) or memory.get("last_customer_intent") != "prior_bad_experience_context":
+            continue
+        pending = str(memory.get("selected_gap") or memory.get("pending_tentative_gap") or "")
+        if pending and (not supported or pending in supported):
+            return pending
     if len(previous_candidate_gaps or []) > 1:
         return None
     previous_question_gaps = _gaps_from_text(previous_question or "", campaign)
     if len(previous_question_gaps) > 1:
         return None
-    supported = set(_supported_gap_ids(campaign))
     if len(previous_candidate_gaps or []) == 1:
         candidate = str((previous_candidate_gaps or [])[0])
         if not supported or candidate in supported:
@@ -1163,9 +1274,14 @@ def _has_pain_signal(normalized: str) -> bool:
             "struggling",
             "costs time",
             "cost time",
+            "waste time",
+            "wastes time",
+            "wasting time",
             "causes delays",
             "cause delays",
             "delay",
+            "slows down",
+            "slowing down",
             "occasional",
             "time to time",
             "sometimes",
@@ -1643,6 +1759,59 @@ def _generic_quick_permission_response(campaign: dict | None) -> str:
     return f"Sure, one quick check: is this mainly about {_join_or(labels)}?"
 
 
+def _is_gap_specific_unclear_context(normalized: str, gap_id: str | None, campaign: dict | None) -> bool:
+    if not gap_id or _is_routesignal_playbook(campaign):
+        return False
+    if not _near_miss_text_matches_gap(normalized, gap_id, campaign):
+        return False
+    return _contains(
+        normalized,
+        {
+            "confusing",
+            "confused",
+            "unclear",
+            "not clear",
+            "thing",
+        },
+    )
+
+
+def _gap_specific_unclear_response(gap_id: str | None, campaign: dict | None) -> str:
+    label = _customer_label(gap_id, campaign)
+    return f"Understood, {label} is the unclear part. Is it causing trouble now, or do you just want the scope clarified?"
+
+
+def _is_routesignal_scope_boundary_question(normalized: str) -> bool:
+    if not normalized.startswith(("can ", "could ", "do ", "does ", "is ", "are ", "will ", "what ")):
+        return False
+    return _contains(
+        normalized,
+        {
+            "coverage",
+            "what coverage",
+            "coverage i need",
+            "exactly what coverage",
+            "policy advice",
+            "legal advice",
+            "medical advice",
+            "diagnose",
+            "guarantee",
+        },
+    )
+
+
+def _routesignal_scope_boundary_response(normalized: str) -> str:
+    if _contains(normalized, {"coverage", "policy"}):
+        return (
+            "I can't give coverage advice on this call; that is outside this call's scope. "
+            "This call is about inbound demo follow-up, so the useful check is whether follow-up is slipping now."
+        )
+    return (
+        "I can't answer that kind of specialist question on this call. "
+        "The scope here is inbound demo follow-up: whether ownership, reminders, or handoffs are slipping."
+    )
+
+
 def _is_tentative_gap_interest(normalized: str, campaign: dict | None) -> str | None:
     if _is_routesignal_playbook(campaign) or not session_policy.is_generic_campaign_config(campaign):
         return None
@@ -2104,6 +2273,29 @@ def classify_contextual_buyer_semantics(
             dialogue_focus=active_gap or "qualification",
         )
 
+    if _is_routesignal_playbook(campaign) and _is_routesignal_scope_boundary_question(normalized):
+        return _frame(
+            semantic="route_signal_scope_boundary",
+            transcript=transcript,
+            normalized=normalized,
+            previous_question_type=previous_question_type,
+            previous_question_text=previous_question,
+            conversation_stage=stage,
+            active_gap=active_gap,
+            confirmed_gaps=confirmed_gaps,
+            cleared_gaps=cleared_gaps,
+            pending_callback=pending_callback,
+            pending_appointment=pending_appointment,
+            target_topic="scope_boundary",
+            polarity="out_of_scope",
+            confidence=0.9,
+            next_action_hint="answer_scope_boundary_continue",
+            must_not_do=["transfer-or-escalate", "use internal routing wording", "invent regulated advice"],
+            candidate_response=_routesignal_scope_boundary_response(normalized),
+            action_id="answer_product_detail_scope_limit",
+            dialogue_focus="details",
+        )
+
     if not _is_routesignal_playbook(campaign) and _is_account_support_boundary_question(normalized):
         return _frame(
             semantic="account_support_boundary",
@@ -2216,6 +2408,29 @@ def classify_contextual_buyer_semantics(
                 action_id="continue_with_session_policy",
                 dialogue_focus="qualification",
             )
+
+    if active_gap and _is_gap_specific_unclear_context(normalized, active_gap, campaign):
+        return _frame(
+            semantic="gap_specific_unclear_context",
+            transcript=transcript,
+            normalized=normalized,
+            previous_question_type=previous_question_type,
+            previous_question_text=previous_question,
+            conversation_stage=stage,
+            active_gap=active_gap,
+            confirmed_gaps=confirmed_gaps,
+            cleared_gaps=cleared_gaps,
+            pending_callback=pending_callback,
+            pending_appointment=pending_appointment,
+            target_gap=active_gap,
+            polarity="unclear_pain",
+            confidence=0.88,
+            next_action_hint="clarify_likely_configured_gap",
+            must_not_do=["repeat full diagnostic menu", "transfer-or-escalate", "claim pain before clarifying"],
+            candidate_response=_gap_specific_unclear_response(active_gap, campaign),
+            action_id="clarify_current_gap",
+            dialogue_focus="qualification",
+        )
 
     if _is_confusion(normalized):
         return _frame(

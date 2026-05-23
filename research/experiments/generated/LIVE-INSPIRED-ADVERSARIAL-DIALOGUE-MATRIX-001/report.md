@@ -5,7 +5,7 @@
 - Scenario count: `729`
 - Multi-turn conversations: `398`
 - Core gate failures: `0`
-- Exploratory red findings: `367`
+- Exploratory red findings: `352`
 
 ## Scenario Count
 - Total scenario runs: `729`
@@ -53,87 +53,71 @@
 - `why_human_review_challenge`: `24`
 
 ## Pass/Fail Counts
-- `passed`: `362`
-- `failed_or_red`: `367`
+- `passed`: `377`
+- `failed_or_red`: `352`
 - `core_gate_failures`: `0`
-- `exploratory_red_findings`: `367`
+- `exploratory_red_findings`: `352`
 
 ## Top Failure Clusters
-- `repeated_full_menu`: `277`
-- `out_of_scope_reset_after_relevant_context`: `23`
+- `repeated_full_menu`: `266`
 - `repeated_response`: `18`
-- `asr_near_miss_not_clarified`: `16`
+- `false_assumption_not_repaired`: `14`
+- `out_of_scope_reset_after_relevant_context`: `14`
 - `did_not_answer_direct_question`: `13`
-- `false_assumption_not_repaired`: `13`
+- `asr_near_miss_not_clarified`: `12`
 - `appointment_too_early`: `12`
 - `hostile_response_not_deescalated`: `12`
-- `internal_wording_leak`: `10`
-- `campaign_contamination`: `7`
+- `campaign_contamination`: `11`
+- `internal_wording_leak`: `6`
 - `too_long_for_live_voice`: `4`
 
 ## Failures By Scenario Family
 - `agent_looping_complaints`: `5`
-- `asr_near_miss_gap_phrases`: `21`
-- `asr_near_miss_invented_transcript_stress`: `10`
-- `buyer_correction_contradiction_stress`: `9`
+- `asr_near_miss_gap_phrases`: `10`
+- `asr_near_miss_invented_transcript_stress`: `8`
+- `buyer_correction_contradiction_stress`: `10`
 - `buyer_says_agent_is_wrong`: `24`
 - `callback_time_too_early_or_ambiguous`: `24`
-- `campaign_selector_wrong_campaign_contamination`: `13`
+- `campaign_selector_wrong_campaign_contamination`: `14`
 - `commercial_pressure_close_strength_stress`: `16`
-- `commercial_quality_stress`: `10`
+- `commercial_quality_stress`: `8`
 - `direct_product_value_challenge_loops`: `6`
 - `disallowed_persistence_after_stop`: `6`
 - `early_callback_premature_scheduling`: `6`
-- `false_assumption_correction`: `11`
+- `false_assumption_correction`: `7`
 - `hostile_challenging_buyer`: `21`
 - `human_context_interruption_pressure`: `6`
-- `impact_before_clean_pain`: `19`
+- `impact_before_clean_pain`: `16`
 - `long_conversation_state_drift`: `7`
 - `mixed_intent_buyer_turns`: `6`
-- `multi_campaign_contamination_stress`: `18`
+- `multi_campaign_contamination_stress`: `21`
 - `permission_weak_acknowledgement_variants`: `15`
 - `price_budget_affordability_stress`: `6`
 - `repeated_answer_variation_anti_loop`: `23`
 - `repeated_challenge_escalation`: `24`
-- `repeated_product_detail_scope_questions`: `21`
+- `repeated_product_detail_scope_questions`: `22`
 - `sales_realism_score_heuristics`: `12`
-- `scope_boundary_regulated_detail_stress`: `5`
+- `scope_boundary_regulated_detail_stress`: `6`
 - `vague_affirmative_after_context`: `12`
 - `why_human_review_challenge`: `11`
 
 ## Failures By Campaign
-- `routesignal_live_demo`: `59`
-- `synthetic-automotive-service-review`: `62`
-- `synthetic-b2b-saas-operations`: `61`
-- `synthetic-insurance-review`: `61`
-- `synthetic-membership-plan-review`: `58`
-- `synthetic-telecom-plan-review`: `66`
+- `routesignal_live_demo`: `57`
+- `synthetic-automotive-service-review`: `64`
+- `synthetic-b2b-saas-operations`: `58`
+- `synthetic-insurance-review`: `59`
+- `synthetic-membership-plan-review`: `54`
+- `synthetic-telecom-plan-review`: `60`
 
 ## Failures By Selected Action Source
-- `contextual_buyer_semantics`: `12`
+- `contextual_buyer_semantics`: `16`
 - `dialogue_pragmatics`: `6`
-- `live_voice_session_policy`: `36`
-- `pre_speech_conversation_stability_guard`: `233`
+- `live_voice_session_policy`: `37`
+- `pre_speech_conversation_stability_guard`: `223`
 - `terminal_call_control`: `6`
-- `universal_response_shape`: `74`
+- `universal_response_shape`: `64`
 
 ## Examples Of Worst Conversations
-### adv-asr-near-miss-gap-phrases-synthetic-insurance-review-04
-- Family: `asr_near_miss_gap_phrases`
-- Campaign: `synthetic-insurance-review`
-- Priority: `critical`
-- Flags: `asr_near_miss_not_clarified, internal_wording_leak, repeated_full_menu`
-- Buyer script: `['__agent_open__', 'yeah', 'coverage thing is confusing', 'it wastes time']`
-- Final response: The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?
-
-### adv-asr-near-miss-gap-phrases-synthetic-b2b-saas-operations-03
-- Family: `asr_near_miss_gap_phrases`
-- Campaign: `synthetic-b2b-saas-operations`
-- Priority: `critical`
-- Flags: `asr_near_miss_not_clarified, internal_wording_leak`
-- Buyer script: `['__agent_open__', 'yeah', 'integration thing is confusing']`
-- Final response: I should not guess on technical details. I can send this to implementation specialist.
-
 ### adv-multi-campaign-contamination-stress-routesignal_live_demo-02
 - Family: `multi_campaign_contamination_stress`
 - Campaign: `routesignal_live_demo`
@@ -182,37 +166,53 @@
 - Buyer script: `['__agent_open__', 'I need insurance coverage', 'why are you talking about something else']`
 - Final response: Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?
 
-### adv-scope-boundary-regulated-detail-stress-routesignal_live_demo-01
-- Family: `scope_boundary_regulated_detail_stress`
+### adv-direct-product-value-challenge-loops-routesignal_live_demo-02
+- Family: `direct_product_value_challenge_loops`
 - Campaign: `routesignal_live_demo`
-- Priority: `critical`
-- Flags: `internal_wording_leak`
-- Buyer script: `['__agent_open__', 'can you tell me exactly what coverage I need']`
-- Final response: I should not give coverage advice. I can route this to the approved qualified reviewer path.
+- Priority: `high`
+- Flags: `did_not_answer_direct_question, repeated_full_menu`
+- Buyer script: `['__agent_open__', 'what are you selling', 'explain it plainly', 'say it in one sentence']`
+- Final response: If callback reminders for demo follow-up sit in a spreadsheet, they can slip. Which part is more familiar: manual tracking or missed callbacks?
 
-### adv-scope-boundary-regulated-detail-stress-routesignal_live_demo-03
-- Family: `scope_boundary_regulated_detail_stress`
-- Campaign: `routesignal_live_demo`
-- Priority: `critical`
-- Flags: `internal_wording_leak`
-- Buyer script: `['__agent_open__', 'is coverage available at my address']`
-- Final response: I should not give coverage advice. I can route this to the approved qualified reviewer path.
+### adv-direct-product-value-challenge-loops-synthetic-automotive-service-review-02
+- Family: `direct_product_value_challenge_loops`
+- Campaign: `synthetic-automotive-service-review`
+- Priority: `high`
+- Flags: `did_not_answer_direct_question, repeated_full_menu`
+- Buyer script: `['__agent_open__', 'what are you selling', 'explain it plainly', 'say it in one sentence']`
+- Final response: I may not be the right contact for that question. Should I note a callback path, or stop here?
 
-### adv-asr-near-miss-gap-phrases-synthetic-b2b-saas-operations-04
-- Family: `asr_near_miss_gap_phrases`
+### adv-direct-product-value-challenge-loops-synthetic-b2b-saas-operations-02
+- Family: `direct_product_value_challenge_loops`
 - Campaign: `synthetic-b2b-saas-operations`
 - Priority: `high`
-- Flags: `asr_near_miss_not_clarified, out_of_scope_reset_after_relevant_context, repeated_full_menu`
-- Buyer script: `['__agent_open__', 'yeah', 'visibility thing is unclear', 'it wastes time']`
-- Final response: The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?
+- Flags: `did_not_answer_direct_question, repeated_full_menu`
+- Buyer script: `['__agent_open__', 'what are you selling', 'explain it plainly', 'say it in one sentence']`
+- Final response: I may not be the right contact for that question. Should I note a callback path, or stop here?
 
-### adv-asr-near-miss-gap-phrases-synthetic-insurance-review-02
-- Family: `asr_near_miss_gap_phrases`
+### adv-direct-product-value-challenge-loops-synthetic-insurance-review-02
+- Family: `direct_product_value_challenge_loops`
 - Campaign: `synthetic-insurance-review`
 - Priority: `high`
-- Flags: `asr_near_miss_not_clarified, out_of_scope_reset_after_relevant_context, repeated_full_menu`
-- Buyer script: `['__agent_open__', 'yeah', 'payment pressure is a problem', 'it wastes time']`
-- Final response: The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?
+- Flags: `did_not_answer_direct_question, repeated_full_menu`
+- Buyer script: `['__agent_open__', 'what are you selling', 'explain it plainly', 'say it in one sentence']`
+- Final response: I may not be the right contact for that question. Should I note a callback path, or stop here?
+
+### adv-direct-product-value-challenge-loops-synthetic-membership-plan-review-02
+- Family: `direct_product_value_challenge_loops`
+- Campaign: `synthetic-membership-plan-review`
+- Priority: `high`
+- Flags: `did_not_answer_direct_question, repeated_full_menu`
+- Buyer script: `['__agent_open__', 'what are you selling', 'explain it plainly', 'say it in one sentence']`
+- Final response: I may not be the right contact for that question. Should I note a callback path, or stop here?
+
+### adv-direct-product-value-challenge-loops-synthetic-telecom-plan-review-02
+- Family: `direct_product_value_challenge_loops`
+- Campaign: `synthetic-telecom-plan-review`
+- Priority: `high`
+- Flags: `did_not_answer_direct_question, repeated_full_menu`
+- Buyer script: `['__agent_open__', 'what are you selling', 'explain it plainly', 'say it in one sentence']`
+- Final response: I may not be the right contact for that question. Should I note a callback path, or stop here?
 
 ## Stability Guard Override Findings
 
@@ -233,14 +233,10 @@
 
 ## ASR Near-Miss Findings
 - `adv-asr-near-miss-gap-phrases-routesignal_live_demo-04`
-- `adv-asr-near-miss-gap-phrases-synthetic-insurance-review-02`
-- `adv-asr-near-miss-gap-phrases-synthetic-insurance-review-04`
 - `adv-asr-near-miss-gap-phrases-synthetic-telecom-plan-review-03`
-- `adv-asr-near-miss-gap-phrases-synthetic-telecom-plan-review-04`
 - `adv-asr-near-miss-gap-phrases-synthetic-membership-plan-review-01`
 - `adv-asr-near-miss-gap-phrases-synthetic-membership-plan-review-02`
 - `adv-asr-near-miss-gap-phrases-synthetic-b2b-saas-operations-03`
-- `adv-asr-near-miss-gap-phrases-synthetic-b2b-saas-operations-04`
 - `adv-asr-near-miss-invented-transcript-stress-routesignal_live_demo-01`
 - `adv-asr-near-miss-invented-transcript-stress-synthetic-insurance-review-01`
 - `adv-asr-near-miss-invented-transcript-stress-synthetic-telecom-plan-review-01`

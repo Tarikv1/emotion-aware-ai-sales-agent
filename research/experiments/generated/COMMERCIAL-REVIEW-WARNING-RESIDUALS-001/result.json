@@ -233,9 +233,7 @@
         "appointment_readiness": "none",
         "buyer_move_id": "confusion_not_clear",
         "call_control": "continue-call",
-        "confirmed_gaps": [
-          "renewal_or_timing"
-        ],
+        "confirmed_gaps": [],
         "recognition_reason": "out_of_campaign_pain_phrase",
         "response": "That may be outside this call's scope. The quick check here is whether premium pressure is causing any issue now.",
         "selected_action_source": "universal_response_shape",

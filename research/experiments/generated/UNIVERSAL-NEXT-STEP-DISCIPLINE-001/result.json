@@ -71,13 +71,13 @@
       "appointment_readiness": "high",
       "sales_progression_stage": "implication_confirmed",
       "next_best_sales_action": "ask_callback_window",
-      "target_gap": null,
+      "target_gap": "callbacks",
       "confirmed_gaps": [
         "callbacks"
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
+      "final_response": "Got it. If callbacks is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -1231,13 +1231,13 @@
       "appointment_readiness": "high",
       "sales_progression_stage": "implication_confirmed",
       "next_best_sales_action": "ask_callback_window",
-      "target_gap": null,
+      "target_gap": "premium_or_budget",
       "confirmed_gaps": [
         "premium_or_budget"
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
+      "final_response": "Got it. If premium pressure is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -2391,13 +2391,13 @@
       "appointment_readiness": "high",
       "sales_progression_stage": "implication_confirmed",
       "next_best_sales_action": "ask_callback_window",
-      "target_gap": null,
+      "target_gap": "manual_work",
       "confirmed_gaps": [
         "manual_work"
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
+      "final_response": "Got it. If manual work is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -3557,7 +3557,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
+      "final_response": "Got it. If repair timing is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -4711,13 +4711,13 @@
       "appointment_readiness": "high",
       "sales_progression_stage": "implication_confirmed",
       "next_best_sales_action": "ask_callback_window",
-      "target_gap": null,
+      "target_gap": "service_need",
       "confirmed_gaps": [
         "service_need"
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
+      "final_response": "Got it. If service need is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",

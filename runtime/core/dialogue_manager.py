@@ -72,6 +72,7 @@ TEMPLATE_BY_ACTION = {
     "recover_seller_agenda": "seller_agenda_recovery",
     "answer_crm_boundary_continue": "public_crm_boundary",
     "answer_product_detail_scope_limit": "session_policy_response",
+    "clarify_current_gap": "previous_question_clarification",
     "clarify_previous_question": "previous_question_clarification",
     "simplify_previous_question": "previous_question_simplification",
     "explain_term": "plain_term_explanation",
@@ -105,6 +106,7 @@ CALL_CONTROL_BY_ACTION = {
     "request_appointment_time": "continue-call",
     "answer_crm_boundary_continue": "continue-call",
     "answer_product_detail_scope_limit": "continue-call",
+    "clarify_current_gap": "continue-call",
     "recover_call_purpose": "continue-call",
     "recover_seller_agenda": "continue-call",
     "clarify_previous_question": "continue-call",
@@ -288,6 +290,14 @@ DECISION_OVERRIDE_BY_ACTION = {
         "interest_state": "maybe-interested",
         "selected_strategy": "consultative-question",
         "next_action": "answer-and-continue",
+        "call_control": "continue-call",
+    },
+    "clarify_current_gap": {
+        "sales_difficulty": "dialogue-repair",
+        "detected_emotion": "neutral",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "consultative-question",
+        "next_action": "clarify-current-gap",
         "call_control": "continue-call",
     },
     "recover_call_purpose": {
@@ -802,12 +812,26 @@ def build_conversation_memory(
             existing_confirmed.append(gap)
     if semantic in {"pain_confirmed", "mixed_gap_response"} and target_gap and target_gap not in existing_confirmed:
         existing_confirmed.append(str(target_gap))
+    if semantic == "gap_specific_unclear_context" and target_gap:
+        memory["selected_gap"] = target_gap
+        memory["active_topic"] = target_gap
+        memory["pending_tentative_gap"] = target_gap
     if universal_move == "tentative_gap_interest" and universal_gap:
         memory["tentative_gap"] = universal_gap
         memory["pending_tentative_gap"] = universal_gap
         memory["selected_gap"] = universal_gap
         memory["active_topic"] = universal_gap
         memory["last_customer_intent"] = "tentative_gap_interest"
+    if universal_move == "prior_bad_experience_context" and not universal_gap:
+        rapport_gap = universal_policy_runtime.campaign_gap_id_for_phrase(
+            campaign,
+            str(universal_frame.get("confirmed_gap_phrase") or ""),
+        )
+        if rapport_gap:
+            memory["selected_gap"] = rapport_gap
+            memory["active_topic"] = rapport_gap
+            memory["pending_tentative_gap"] = rapport_gap
+            memory["last_customer_intent"] = "prior_bad_experience_context"
     if universal_move == "pain_confirmed" and universal_gap:
         if universal_gap not in existing_confirmed:
             existing_confirmed.append(universal_gap)

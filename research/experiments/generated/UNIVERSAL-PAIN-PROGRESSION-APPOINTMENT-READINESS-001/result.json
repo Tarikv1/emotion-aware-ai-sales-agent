@@ -347,7 +347,7 @@
         "callbacks"
       ],
       "failures": [],
-      "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
+      "final_response": "Got it. If callbacks is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
       "passed": true,
       "scenario": "impact_confirmed",
       "semantic": "pain_confirmed",
@@ -1027,7 +1027,7 @@
         "premium_or_budget"
       ],
       "failures": [],
-      "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
+      "final_response": "Got it. If premium pressure is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
       "passed": true,
       "scenario": "impact_confirmed",
       "semantic": "pain_confirmed",
@@ -1707,7 +1707,7 @@
         "manual_work"
       ],
       "failures": [],
-      "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the implementation specialist. What callback window works?",
+      "final_response": "Got it. If manual work is already causing delays, the next useful step is a short review with the implementation specialist. What callback window works?",
       "passed": true,
       "scenario": "impact_confirmed",
       "semantic": "pain_confirmed",
@@ -2387,10 +2387,10 @@
         "repair_timing"
       ],
       "failures": [],
-      "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the service advisor. What callback window works?",
+      "final_response": "Got it. If repair timing is already causing delays, the next useful step is a short review with the service advisor. What callback window works?",
       "passed": true,
       "scenario": "impact_confirmed",
-      "semantic": "pain_confirmed",
+      "semantic": "no_contextual_semantic",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -2402,7 +2402,7 @@
         "writes_crm": false
       },
       "source": "universal_response_shape",
-      "target_gap": "repair_timing",
+      "target_gap": null,
       "transcript": "it causes delays",
       "universal_policy_frame": {
         "allowed_call_controls": [
@@ -3067,7 +3067,7 @@
         "service_need"
       ],
       "failures": [],
-      "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window works?",
+      "final_response": "Got it. If service need is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window works?",
       "passed": true,
       "scenario": "impact_confirmed",
       "semantic": "pain_confirmed",

@@ -42,7 +42,7 @@
 - Buyer move: `implication_confirmed`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Got it. If it is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?
+- Response: Got it. If callbacks is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?
 
 ### routesignal_vague_followup_little_bit
 - Passed: `true`

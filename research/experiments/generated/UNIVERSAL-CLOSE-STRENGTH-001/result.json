@@ -10,7 +10,7 @@
     },
     "high_readiness_close": {
       "campaign_id": "routesignal_live_demo",
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?"
+      "final_response": "Got it. If callbacks is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?"
     },
     "send_info_after_readiness": {
       "campaign_id": "routesignal_live_demo",
@@ -38,7 +38,7 @@
         "callbacks"
       ],
       "failures": [],
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
+      "final_response": "Got it. If callbacks is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "ask_callback_window",
       "scenario": "high_readiness_close",
@@ -617,7 +617,7 @@
         "premium_or_budget"
       ],
       "failures": [],
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
+      "final_response": "Got it. If premium pressure is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "ask_callback_window",
       "scenario": "high_readiness_close",
@@ -1196,7 +1196,7 @@
         "manual_work"
       ],
       "failures": [],
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
+      "final_response": "Got it. If manual work is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "ask_callback_window",
       "scenario": "high_readiness_close",
@@ -1775,7 +1775,7 @@
         "repair_timing"
       ],
       "failures": [],
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
+      "final_response": "Got it. If repair timing is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "ask_callback_window",
       "scenario": "high_readiness_close",
@@ -2354,7 +2354,7 @@
         "service_need"
       ],
       "failures": [],
-      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
+      "final_response": "Got it. If service need is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "ask_callback_window",
       "scenario": "high_readiness_close",
