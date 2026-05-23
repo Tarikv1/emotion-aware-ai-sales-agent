@@ -4,45 +4,21 @@
   "asr_residuals": [],
   "checkpoint_id": "COMMERCIAL-REVIEW-WARNING-RESIDUAL-AUDIT-001",
   "commercial_packet_warning_counts": {
-    "no_acknowledgement": 35,
-    "over_deferential_stop_offer": 40
+    "no_acknowledgement": 23,
+    "over_deferential_stop_offer": 30
   },
   "commercial_warning_classification_counts": {
-    "no_acknowledgement / false_positive_warning": 22,
+    "no_acknowledgement / false_positive_warning": 14,
     "over_deferential_stop_offer / intentional_no_fit_or_stop": 15,
-    "over_deferential_stop_offer / needs_human_sales_review": 10
+    "over_deferential_stop_offer / needs_human_sales_review": 5
   },
   "commercial_warning_classification_counts_by_class": {
-    "false_positive_warning": 22,
+    "false_positive_warning": 14,
     "intentional_no_fit_or_stop": 15,
-    "needs_human_sales_review": 10
+    "needs_human_sales_review": 5
   },
-  "commercial_warning_instance_count": 47,
+  "commercial_warning_instance_count": 34,
   "false_positive_or_intentional_examples": [
-    {
-      "arc_type": "direct_question",
-      "buyer_move_id": "product_detail_question",
-      "buyer_utterance": "what does your product do",
-      "campaign_id": "routesignal_live_demo",
-      "classification": "false_positive_warning",
-      "conversation_id": "commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question",
-      "final_response": "RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, or handoffs. The quick check is whether that problem exists on your side.",
-      "selected_action_source": "universal_response_shape",
-      "turn_index": 2,
-      "warning": "no_acknowledgement"
-    },
-    {
-      "arc_type": "direct_question",
-      "buyer_move_id": "why_should_i_care",
-      "buyer_utterance": "why should I care",
-      "campaign_id": "routesignal_live_demo",
-      "classification": "false_positive_warning",
-      "conversation_id": "commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question",
-      "final_response": "Only if inbound demo follow-up slipping is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
-      "selected_action_source": "universal_response_shape",
-      "turn_index": 3,
-      "warning": "no_acknowledgement"
-    },
     {
       "arc_type": "trust_challenge",
       "buyer_move_id": "who_are_you",
@@ -176,30 +152,6 @@
       "warning": "over_deferential_stop_offer"
     },
     {
-      "arc_type": "direct_question",
-      "buyer_move_id": "product_detail_question",
-      "buyer_utterance": "what does your product do",
-      "campaign_id": "synthetic-b2b-saas-operations",
-      "classification": "false_positive_warning",
-      "conversation_id": "commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question",
-      "final_response": "This call is only to check whether a short human review is useful around manual work. The quick question is whether that area is causing friction now.",
-      "selected_action_source": "universal_response_shape",
-      "turn_index": 2,
-      "warning": "no_acknowledgement"
-    },
-    {
-      "arc_type": "direct_question",
-      "buyer_move_id": "why_should_i_care",
-      "buyer_utterance": "why should I care",
-      "campaign_id": "synthetic-b2b-saas-operations",
-      "classification": "false_positive_warning",
-      "conversation_id": "commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question",
-      "final_response": "Only if manual work is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
-      "selected_action_source": "universal_response_shape",
-      "turn_index": 3,
-      "warning": "no_acknowledgement"
-    },
-    {
       "arc_type": "trust_challenge",
       "buyer_move_id": "who_are_you",
       "buyer_utterance": "who are you",
@@ -258,6 +210,54 @@
       "selected_action_source": "terminal_call_control",
       "turn_index": 3,
       "warning": "over_deferential_stop_offer"
+    },
+    {
+      "arc_type": "no_fit_stop",
+      "buyer_move_id": "stop_request",
+      "buyer_utterance": "stop calling",
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "classification": "intentional_no_fit_or_stop",
+      "conversation_id": "commercial-sales-conversation-review-001-03-10-synthetic-b2b-saas-operations-no_fit_stop",
+      "final_response": "Understood. I will stop here. Goodbye.",
+      "selected_action_source": "terminal_call_control",
+      "turn_index": 4,
+      "warning": "over_deferential_stop_offer"
+    },
+    {
+      "arc_type": "trust_challenge",
+      "buyer_move_id": "who_are_you",
+      "buyer_utterance": "who are you",
+      "campaign_id": "synthetic-automotive-service-review",
+      "classification": "false_positive_warning",
+      "conversation_id": "commercial-sales-conversation-review-001-04-06-synthetic-automotive-service-review-trust_challenge",
+      "final_response": "I'm Maya calling on behalf of Synthetic Automotive Service about a short human review around the vehicle issue.",
+      "selected_action_source": "universal_response_shape",
+      "turn_index": 2,
+      "warning": "no_acknowledgement"
+    },
+    {
+      "arc_type": "asr_garble",
+      "buyer_move_id": "asr_garbled_or_low_confidence",
+      "buyer_utterance": "play a double be good",
+      "campaign_id": "synthetic-automotive-service-review",
+      "classification": "false_positive_warning",
+      "conversation_id": "commercial-sales-conversation-review-001-04-09-synthetic-automotive-service-review-asr_garble",
+      "final_response": "I may have misheard that. Could you repeat it briefly?",
+      "selected_action_source": "universal_conversation_policy",
+      "turn_index": 3,
+      "warning": "no_acknowledgement"
+    },
+    {
+      "arc_type": "asr_garble",
+      "buyer_move_id": "asr_garbled_or_low_confidence",
+      "buyer_utterance": "yadav would be good",
+      "campaign_id": "synthetic-automotive-service-review",
+      "classification": "false_positive_warning",
+      "conversation_id": "commercial-sales-conversation-review-001-04-09-synthetic-automotive-service-review-asr_garble",
+      "final_response": "I still may not have caught that. Could you repeat it in a few words?",
+      "selected_action_source": "universal_conversation_policy",
+      "turn_index": 4,
+      "warning": "no_acknowledgement"
     }
   ],
   "recommended_patch_scope": [

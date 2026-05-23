@@ -902,7 +902,7 @@
         "product_detail_question"
       ],
       "failures": [],
-      "final_response": "RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, or handoffs. The quick check is whether that problem exists on your side.",
+      "final_response": "Sure. RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, or handoffs. The quick check is whether that problem exists on your side.",
       "passed": true,
       "previous_response": "Thanks. Is inbound demo follow-up slipping right now?",
       "recognition_confidence": "high",
@@ -1016,7 +1016,7 @@
         "what_problem_do_you_solve"
       ],
       "failures": [],
-      "final_response": "Mainly inbound demo follow-up slipping. If that is not happening, there is no reason to push a review.",
+      "final_response": "Fair question. Mainly inbound demo follow-up slipping: when it is costing time, creating delays, or hurting quality. The useful check is whether it is showing up now.",
       "passed": true,
       "previous_response": "Thanks. Is inbound demo follow-up slipping right now?",
       "recognition_confidence": "high",
@@ -1131,7 +1131,7 @@
         "why_should_i_care"
       ],
       "failures": [],
-      "final_response": "Only if inbound demo follow-up slipping is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
+      "final_response": "Fair question. Only if inbound demo follow-up slipping is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
       "passed": true,
       "previous_response": "Thanks. Is inbound demo follow-up slipping right now?",
       "recognition_confidence": "high",
@@ -1246,7 +1246,7 @@
         "what_makes_you_different"
       ],
       "failures": [],
-      "final_response": "I can speak only to this limited scope: RouteSignal CRM helps inbound sales teams capture, route, follow up, and review ownership of demo and contact-sales requests. Anything beyond that needs a human follow-up.",
+      "final_response": "Fair question. The useful difference here is narrow: RouteSignal CRM helps inbound sales teams capture, route, follow up, and review ownership of demo and contact-sales requests. More detail should come from a human follow-up.",
       "passed": true,
       "previous_response": "Thanks. Is inbound demo follow-up slipping right now?",
       "recognition_confidence": "high",
@@ -1361,7 +1361,7 @@
         "who_is_this_for"
       ],
       "failures": [],
-      "final_response": "It is for the person handling inbound demo follow-up. If that is not you, I can stop or note the right person.",
+      "final_response": "Fair question. It is for the person handling inbound demo follow-up. If that is not you, I can note the right person or keep this brief.",
       "passed": true,
       "previous_response": "Thanks. Is inbound demo follow-up slipping right now?",
       "recognition_confidence": "high",
@@ -1476,7 +1476,7 @@
         "is_this_worth_my_time"
       ],
       "failures": [],
-      "final_response": "Only if inbound demo follow-up slipping is real enough to justify a short review. If not, no pressure.",
+      "final_response": "Fair question. It is worth time only if inbound demo follow-up slipping is real enough to justify a short review. The useful check is whether it is showing up now.",
       "passed": true,
       "previous_response": "Thanks. Is inbound demo follow-up slipping right now?",
       "recognition_confidence": "high",
@@ -3622,7 +3622,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "I mean whether callbacks is actually happening. If not, there is no reason to continue.",
+      "final_response": "I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named callbacks, so I'm checking whether it is worth a short review. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
       "recognition_confidence": "high",
@@ -3732,7 +3732,7 @@
         "why_are_you_asking"
       ],
       "failures": [],
-      "final_response": "Fair question. I'm asking because the verified implementation reviewer can review callbacks if it is worth your time, not to collect extra details.",
+      "final_response": "Fair question. Because the verified implementation reviewer only needs to review this when there is real impact from callbacks, I'm asking about impact now, not collecting extra details.",
       "passed": true,
       "previous_response": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
       "recognition_confidence": "high",
@@ -3844,7 +3844,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right, you already answered that. I'll use callbacks and not ask it again.",
+      "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named callbacks, the only useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
       "recognition_confidence": "high",
@@ -3955,7 +3955,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right, you already answered that. I'll use callbacks and not ask it again.",
+      "final_response": "You're right, you already gave me that. I have callbacks noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
       "recognition_confidence": "high",
@@ -4179,7 +4179,7 @@
         "emotional_frustration"
       ],
       "failures": [],
-      "final_response": "You're right, you already answered that. I'll use callbacks and not ask it again.",
+      "final_response": "You're right, you already gave me that. I have callbacks noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
       "recognition_confidence": "high",
@@ -4958,7 +4958,7 @@
         "slow_down_or_speak_faster"
       ],
       "failures": [],
-      "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+      "final_response": "Sure, I'll slow down. I'm checking one thing: is inbound demo follow-up slipping now?",
       "passed": true,
       "previous_response": "Thanks. Is inbound demo follow-up slipping right now?",
       "recognition_confidence": "high",
@@ -5069,7 +5069,7 @@
         "repeat_or_rephrase_request"
       ],
       "failures": [],
-      "final_response": "Sure. Short version: this call checks whether inbound demo follow-up slipping is worth a quick human review.",
+      "final_response": "Sure. Short version: I'm checking one thing: is inbound demo follow-up slipping now?",
       "passed": true,
       "previous_response": "Thanks. Is inbound demo follow-up slipping right now?",
       "recognition_confidence": "high",
@@ -5183,7 +5183,7 @@
         "language_mismatch"
       ],
       "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+      "final_response": "Understood. I'll use simple English. One question: is inbound demo follow-up slipping now?",
       "passed": true,
       "previous_response": "Thanks. Is inbound demo follow-up slipping right now?",
       "recognition_confidence": "high",
@@ -5404,7 +5404,7 @@
         "small_talk"
       ],
       "failures": [],
-      "final_response": "Okay, thanks. I'll keep this quick: is that issue happening now?",
+      "final_response": "Okay, thanks. I'll keep this quick: is inbound demo follow-up slipping now?",
       "passed": true,
       "previous_response": "Thanks. Is inbound demo follow-up slipping right now?",
       "recognition_confidence": "medium",
@@ -7070,7 +7070,7 @@
         "product_detail_question"
       ],
       "failures": [],
-      "final_response": "This call is only to check whether a short human review is useful around premium pressure. The quick question is whether that area is causing friction now.",
+      "final_response": "Sure. This call is only to check whether a short human review is useful around premium pressure. The quick question is whether that area is causing friction now.",
       "passed": true,
       "previous_response": "Thanks. Is premium pressure causing any issue right now?",
       "recognition_confidence": "high",
@@ -7186,7 +7186,7 @@
         "what_problem_do_you_solve"
       ],
       "failures": [],
-      "final_response": "Mainly premium pressure. If that is not happening, there is no reason to push a review.",
+      "final_response": "Fair question. Mainly premium pressure: when it is costing time, creating delays, or hurting quality. The useful check is whether it is showing up now.",
       "passed": true,
       "previous_response": "Thanks. Is premium pressure causing any issue right now?",
       "recognition_confidence": "high",
@@ -7301,7 +7301,7 @@
         "why_should_i_care"
       ],
       "failures": [],
-      "final_response": "Only if premium pressure is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
+      "final_response": "Fair question. Only if premium pressure is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
       "passed": true,
       "previous_response": "Thanks. Is premium pressure causing any issue right now?",
       "recognition_confidence": "high",
@@ -7416,7 +7416,7 @@
         "what_makes_you_different"
       ],
       "failures": [],
-      "final_response": "I can speak only to this limited scope: collecting general review needs. Anything beyond that needs a human follow-up.",
+      "final_response": "Fair question. The useful difference here is narrow: collecting general review needs. More detail should come from a human follow-up.",
       "passed": true,
       "previous_response": "Thanks. Is premium pressure causing any issue right now?",
       "recognition_confidence": "high",
@@ -7531,7 +7531,7 @@
         "who_is_this_for"
       ],
       "failures": [],
-      "final_response": "It is for policy holder or authorized reviewer. If that is not you, I can stop or note the right person.",
+      "final_response": "Fair question. It is for policy holder or authorized reviewer. If that is not you, I can note the right person or keep this brief.",
       "passed": true,
       "previous_response": "Thanks. Is premium pressure causing any issue right now?",
       "recognition_confidence": "high",
@@ -7646,7 +7646,7 @@
         "is_this_worth_my_time"
       ],
       "failures": [],
-      "final_response": "Only if premium pressure is real enough to justify a short review. If not, no pressure.",
+      "final_response": "Fair question. It is worth time only if premium pressure is real enough to justify a short review. The useful check is whether it is showing up now.",
       "passed": true,
       "previous_response": "Thanks. Is premium pressure causing any issue right now?",
       "recognition_confidence": "high",
@@ -9794,7 +9794,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "I mean whether premium pressure is actually happening. If not, there is no reason to continue.",
+      "final_response": "I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named premium pressure, so I'm checking whether it is worth a short review. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
       "recognition_confidence": "high",
@@ -9906,7 +9906,7 @@
         "why_are_you_asking"
       ],
       "failures": [],
-      "final_response": "Fair question. I'm asking because the licensed insurance specialist can review premium pressure if it is worth your time, not to collect extra details.",
+      "final_response": "Fair question. Because the licensed insurance specialist only needs to review this when there is real impact from premium pressure, I'm asking about impact now, not collecting extra details.",
       "passed": true,
       "previous_response": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
       "recognition_confidence": "high",
@@ -10020,7 +10020,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right, you already answered that. I'll use premium pressure and not ask it again.",
+      "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named premium pressure, the only useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
       "recognition_confidence": "high",
@@ -10133,7 +10133,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right, you already answered that. I'll use premium pressure and not ask it again.",
+      "final_response": "You're right, you already gave me that. I have premium pressure noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
       "recognition_confidence": "high",
@@ -10361,7 +10361,7 @@
         "emotional_frustration"
       ],
       "failures": [],
-      "final_response": "You're right, you already answered that. I'll use premium pressure and not ask it again.",
+      "final_response": "You're right, you already gave me that. I have premium pressure noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
       "recognition_confidence": "high",
@@ -11152,7 +11152,7 @@
         "slow_down_or_speak_faster"
       ],
       "failures": [],
-      "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+      "final_response": "Sure, I'll slow down. I'm checking one thing: is premium pressure causing an issue now?",
       "passed": true,
       "previous_response": "Thanks. Is premium pressure causing any issue right now?",
       "recognition_confidence": "high",
@@ -11263,7 +11263,7 @@
         "repeat_or_rephrase_request"
       ],
       "failures": [],
-      "final_response": "Sure. Short version: this call checks whether premium pressure is worth a quick human review.",
+      "final_response": "Sure. Short version: I'm checking one thing: is premium pressure causing an issue now?",
       "passed": true,
       "previous_response": "Thanks. Is premium pressure causing any issue right now?",
       "recognition_confidence": "high",
@@ -11377,7 +11377,7 @@
         "language_mismatch"
       ],
       "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+      "final_response": "Understood. I'll use simple English. One question: is premium pressure causing an issue now?",
       "passed": true,
       "previous_response": "Thanks. Is premium pressure causing any issue right now?",
       "recognition_confidence": "high",
@@ -11598,7 +11598,7 @@
         "small_talk"
       ],
       "failures": [],
-      "final_response": "Okay, thanks. I'll keep this quick: is that issue happening now?",
+      "final_response": "Okay, thanks. I'll keep this quick: is premium pressure causing an issue now?",
       "passed": true,
       "previous_response": "Thanks. Is premium pressure causing any issue right now?",
       "recognition_confidence": "medium",
@@ -13267,7 +13267,7 @@
         "product_detail_question"
       ],
       "failures": [],
-      "final_response": "This call is only to check whether a short human review is useful around manual work. The quick question is whether that area is causing friction now.",
+      "final_response": "Sure. This call is only to check whether a short human review is useful around manual work. The quick question is whether that area is causing friction now.",
       "passed": true,
       "previous_response": "Thanks. Is manual work causing any issue right now?",
       "recognition_confidence": "high",
@@ -13383,7 +13383,7 @@
         "what_problem_do_you_solve"
       ],
       "failures": [],
-      "final_response": "Mainly manual work. If that is not happening, there is no reason to push a review.",
+      "final_response": "Fair question. Mainly manual work: when it is costing time, creating delays, or hurting quality. The useful check is whether it is showing up now.",
       "passed": true,
       "previous_response": "Thanks. Is manual work causing any issue right now?",
       "recognition_confidence": "high",
@@ -13498,7 +13498,7 @@
         "why_should_i_care"
       ],
       "failures": [],
-      "final_response": "Only if manual work is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
+      "final_response": "Fair question. Only if manual work is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
       "passed": true,
       "previous_response": "Thanks. Is manual work causing any issue right now?",
       "recognition_confidence": "high",
@@ -13613,7 +13613,7 @@
         "what_makes_you_different"
       ],
       "failures": [],
-      "final_response": "I can speak only to this limited scope: discussing workflow fit at a general level. Anything beyond that needs a human follow-up.",
+      "final_response": "Fair question. The useful difference here is narrow: discussing workflow fit at a general level. More detail should come from a human follow-up.",
       "passed": true,
       "previous_response": "Thanks. Is manual work causing any issue right now?",
       "recognition_confidence": "high",
@@ -13728,7 +13728,7 @@
         "who_is_this_for"
       ],
       "failures": [],
-      "final_response": "It is for operations owner or systems contact. If that is not you, I can stop or note the right person.",
+      "final_response": "Fair question. It is for operations owner or systems contact. If that is not you, I can note the right person or keep this brief.",
       "passed": true,
       "previous_response": "Thanks. Is manual work causing any issue right now?",
       "recognition_confidence": "high",
@@ -13843,7 +13843,7 @@
         "is_this_worth_my_time"
       ],
       "failures": [],
-      "final_response": "Only if manual work is real enough to justify a short review. If not, no pressure.",
+      "final_response": "Fair question. It is worth time only if manual work is real enough to justify a short review. The useful check is whether it is showing up now.",
       "passed": true,
       "previous_response": "Thanks. Is manual work causing any issue right now?",
       "recognition_confidence": "high",
@@ -15991,7 +15991,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "I mean whether manual work is actually happening. If not, there is no reason to continue.",
+      "final_response": "I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named manual work, so I'm checking whether it is worth a short review. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
       "recognition_confidence": "high",
@@ -16103,7 +16103,7 @@
         "why_are_you_asking"
       ],
       "failures": [],
-      "final_response": "Fair question. I'm asking because the implementation specialist can review manual work if it is worth your time, not to collect extra details.",
+      "final_response": "Fair question. Because the implementation specialist only needs to review this when there is real impact from manual work, I'm asking about impact now, not collecting extra details.",
       "passed": true,
       "previous_response": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
       "recognition_confidence": "high",
@@ -16217,7 +16217,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right, you already answered that. I'll use manual work and not ask it again.",
+      "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named manual work, the only useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
       "recognition_confidence": "high",
@@ -16330,7 +16330,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right, you already answered that. I'll use manual work and not ask it again.",
+      "final_response": "You're right, you already gave me that. I have manual work noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
       "recognition_confidence": "high",
@@ -16558,7 +16558,7 @@
         "emotional_frustration"
       ],
       "failures": [],
-      "final_response": "You're right, you already answered that. I'll use manual work and not ask it again.",
+      "final_response": "You're right, you already gave me that. I have manual work noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
       "recognition_confidence": "high",
@@ -17349,7 +17349,7 @@
         "slow_down_or_speak_faster"
       ],
       "failures": [],
-      "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+      "final_response": "Sure, I'll slow down. I'm checking one thing: is manual work causing an issue now?",
       "passed": true,
       "previous_response": "Thanks. Is manual work causing any issue right now?",
       "recognition_confidence": "high",
@@ -17460,7 +17460,7 @@
         "repeat_or_rephrase_request"
       ],
       "failures": [],
-      "final_response": "Sure. Short version: this call checks whether manual work is worth a quick human review.",
+      "final_response": "Sure. Short version: I'm checking one thing: is manual work causing an issue now?",
       "passed": true,
       "previous_response": "Thanks. Is manual work causing any issue right now?",
       "recognition_confidence": "high",
@@ -17574,7 +17574,7 @@
         "language_mismatch"
       ],
       "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+      "final_response": "Understood. I'll use simple English. One question: is manual work causing an issue now?",
       "passed": true,
       "previous_response": "Thanks. Is manual work causing any issue right now?",
       "recognition_confidence": "high",
@@ -17795,7 +17795,7 @@
         "small_talk"
       ],
       "failures": [],
-      "final_response": "Okay, thanks. I'll keep this quick: is that issue happening now?",
+      "final_response": "Okay, thanks. I'll keep this quick: is manual work causing an issue now?",
       "passed": true,
       "previous_response": "Thanks. Is manual work causing any issue right now?",
       "recognition_confidence": "medium",
@@ -19463,7 +19463,7 @@
         "product_detail_question"
       ],
       "failures": [],
-      "final_response": "This call is only to check whether a short human review is useful around the vehicle issue. The quick question is whether that area is causing friction now.",
+      "final_response": "Sure. This call is only to check whether a short human review is useful around the vehicle issue. The quick question is whether that area is causing friction now.",
       "passed": true,
       "previous_response": "Thanks. Is repair timing causing any issue right now?",
       "recognition_confidence": "high",
@@ -19579,7 +19579,7 @@
         "what_problem_do_you_solve"
       ],
       "failures": [],
-      "final_response": "Mainly vehicle issue. If that is not happening, there is no reason to push a review.",
+      "final_response": "Fair question. Mainly vehicle issue: when it is costing time, creating delays, or hurting quality. The useful check is whether it is showing up now.",
       "passed": true,
       "previous_response": "Thanks. Is repair timing causing any issue right now?",
       "recognition_confidence": "high",
@@ -19694,7 +19694,7 @@
         "why_should_i_care"
       ],
       "failures": [],
-      "final_response": "Only if vehicle issue is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
+      "final_response": "Fair question. Only if vehicle issue is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
       "passed": true,
       "previous_response": "Thanks. Is repair timing causing any issue right now?",
       "recognition_confidence": "high",
@@ -19809,7 +19809,7 @@
         "what_makes_you_different"
       ],
       "failures": [],
-      "final_response": "I can speak only to this limited scope: collecting vehicle issue and timing context. Anything beyond that needs a human follow-up.",
+      "final_response": "Fair question. The useful difference here is narrow: collecting vehicle issue and timing context. More detail should come from a human follow-up.",
       "passed": true,
       "previous_response": "Thanks. Is repair timing causing any issue right now?",
       "recognition_confidence": "high",
@@ -19924,7 +19924,7 @@
         "who_is_this_for"
       ],
       "failures": [],
-      "final_response": "It is for vehicle owner or authorized driver. If that is not you, I can stop or note the right person.",
+      "final_response": "Fair question. It is for vehicle owner or authorized driver. If that is not you, I can note the right person or keep this brief.",
       "passed": true,
       "previous_response": "Thanks. Is repair timing causing any issue right now?",
       "recognition_confidence": "high",
@@ -20039,7 +20039,7 @@
         "is_this_worth_my_time"
       ],
       "failures": [],
-      "final_response": "Only if vehicle issue is real enough to justify a short review. If not, no pressure.",
+      "final_response": "Fair question. It is worth time only if vehicle issue is real enough to justify a short review. The useful check is whether it is showing up now.",
       "passed": true,
       "previous_response": "Thanks. Is repair timing causing any issue right now?",
       "recognition_confidence": "high",
@@ -22187,7 +22187,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "I mean whether repair timing is actually happening. If not, there is no reason to continue.",
+      "final_response": "I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named repair timing, so I'm checking whether it is worth a short review. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?",
       "recognition_confidence": "high",
@@ -22299,7 +22299,7 @@
         "why_are_you_asking"
       ],
       "failures": [],
-      "final_response": "Fair question. I'm asking because the service advisor can review repair timing if it is worth your time, not to collect extra details.",
+      "final_response": "Fair question. Because the service advisor only needs to review this when there is real impact from repair timing, I'm asking about impact now, not collecting extra details.",
       "passed": true,
       "previous_response": "Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?",
       "recognition_confidence": "high",
@@ -22413,7 +22413,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right, you already answered that. I'll use repair timing and not ask it again.",
+      "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named repair timing, the only useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?",
       "recognition_confidence": "high",
@@ -22526,7 +22526,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right, you already answered that. I'll use repair timing and not ask it again.",
+      "final_response": "You're right, you already gave me that. I have repair timing noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?",
       "recognition_confidence": "high",
@@ -22754,7 +22754,7 @@
         "emotional_frustration"
       ],
       "failures": [],
-      "final_response": "You're right, you already answered that. I'll use repair timing and not ask it again.",
+      "final_response": "You're right, you already gave me that. I have repair timing noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?",
       "recognition_confidence": "high",
@@ -23545,7 +23545,7 @@
         "slow_down_or_speak_faster"
       ],
       "failures": [],
-      "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+      "final_response": "Sure, I'll slow down. I'm checking one thing: is repair timing causing an issue now?",
       "passed": true,
       "previous_response": "Thanks. Is repair timing causing any issue right now?",
       "recognition_confidence": "high",
@@ -23656,7 +23656,7 @@
         "repeat_or_rephrase_request"
       ],
       "failures": [],
-      "final_response": "Sure. Short version: this call checks whether the vehicle issue is worth a quick human review.",
+      "final_response": "Sure. Short version: I'm checking one thing: is repair timing causing an issue now?",
       "passed": true,
       "previous_response": "Thanks. Is repair timing causing any issue right now?",
       "recognition_confidence": "high",
@@ -23770,7 +23770,7 @@
         "language_mismatch"
       ],
       "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+      "final_response": "Understood. I'll use simple English. One question: is repair timing causing an issue now?",
       "passed": true,
       "previous_response": "Thanks. Is repair timing causing any issue right now?",
       "recognition_confidence": "high",
@@ -23991,7 +23991,7 @@
         "small_talk"
       ],
       "failures": [],
-      "final_response": "Okay, thanks. I'll keep this quick: is that issue happening now?",
+      "final_response": "Okay, thanks. I'll keep this quick: is repair timing causing an issue now?",
       "passed": true,
       "previous_response": "Thanks. Is repair timing causing any issue right now?",
       "recognition_confidence": "medium",
@@ -25657,7 +25657,7 @@
         "product_detail_question"
       ],
       "failures": [],
-      "final_response": "This call is only to check whether a short human review is useful around the service need. The quick question is whether that area is causing friction now.",
+      "final_response": "Sure. This call is only to check whether a short human review is useful around the service need. The quick question is whether that area is causing friction now.",
       "passed": true,
       "previous_response": "Thanks. Is the service need active right now?",
       "recognition_confidence": "high",
@@ -25773,7 +25773,7 @@
         "what_problem_do_you_solve"
       ],
       "failures": [],
-      "final_response": "Mainly service need. If that is not happening, there is no reason to push a review.",
+      "final_response": "Fair question. Mainly service need: when it is costing time, creating delays, or hurting quality. The useful check is whether it is showing up now.",
       "passed": true,
       "previous_response": "Thanks. Is the service need active right now?",
       "recognition_confidence": "high",
@@ -25888,7 +25888,7 @@
         "why_should_i_care"
       ],
       "failures": [],
-      "final_response": "Only if service need is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
+      "final_response": "Fair question. Only if service need is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
       "passed": true,
       "previous_response": "Thanks. Is the service need active right now?",
       "recognition_confidence": "high",
@@ -26003,7 +26003,7 @@
         "what_makes_you_different"
       ],
       "failures": [],
-      "final_response": "I can speak only to this limited scope: collecting scheduling and property context. Anything beyond that needs a human follow-up.",
+      "final_response": "Fair question. The useful difference here is narrow: collecting scheduling and property context. More detail should come from a human follow-up.",
       "passed": true,
       "previous_response": "Thanks. Is the service need active right now?",
       "recognition_confidence": "high",
@@ -26118,7 +26118,7 @@
         "who_is_this_for"
       ],
       "failures": [],
-      "final_response": "It is for homeowner or property contact. If that is not you, I can stop or note the right person.",
+      "final_response": "Fair question. It is for homeowner or property contact. If that is not you, I can note the right person or keep this brief.",
       "passed": true,
       "previous_response": "Thanks. Is the service need active right now?",
       "recognition_confidence": "high",
@@ -26233,7 +26233,7 @@
         "is_this_worth_my_time"
       ],
       "failures": [],
-      "final_response": "Only if service need is real enough to justify a short review. If not, no pressure.",
+      "final_response": "Fair question. It is worth time only if service need is real enough to justify a short review. The useful check is whether it is showing up now.",
       "passed": true,
       "previous_response": "Thanks. Is the service need active right now?",
       "recognition_confidence": "high",
@@ -28381,7 +28381,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "I mean whether the service need is actually happening. If not, there is no reason to continue.",
+      "final_response": "I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named the service need, so I'm checking whether it is worth a short review. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, service need is the issue. Is it causing a real service issue now, or just a general question?",
       "recognition_confidence": "high",
@@ -28493,7 +28493,7 @@
         "why_are_you_asking"
       ],
       "failures": [],
-      "final_response": "Fair question. I'm asking because the qualified service coordinator can review the service need if it is worth your time, not to collect extra details.",
+      "final_response": "Fair question. Because the qualified service coordinator only needs to review this when there is real impact from the service need, I'm asking about impact now, not collecting extra details.",
       "passed": true,
       "previous_response": "Got it, service need is the issue. Is it causing a real service issue now, or just a general question?",
       "recognition_confidence": "high",
@@ -28607,7 +28607,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right, you already answered that. I'll use the service need and not ask it again.",
+      "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named the service need, the only useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, service need is the issue. Is it causing a real service issue now, or just a general question?",
       "recognition_confidence": "high",
@@ -28720,7 +28720,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right, you already answered that. I'll use the service need and not ask it again.",
+      "final_response": "You're right, you already gave me that. I have the service need noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, service need is the issue. Is it causing a real service issue now, or just a general question?",
       "recognition_confidence": "high",
@@ -28948,7 +28948,7 @@
         "emotional_frustration"
       ],
       "failures": [],
-      "final_response": "You're right, you already answered that. I'll use the service need and not ask it again.",
+      "final_response": "You're right, you already gave me that. I have the service need noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, service need is the issue. Is it causing a real service issue now, or just a general question?",
       "recognition_confidence": "high",
@@ -29739,7 +29739,7 @@
         "slow_down_or_speak_faster"
       ],
       "failures": [],
-      "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+      "final_response": "Sure, I'll slow down. I'm checking one thing: is the service need active now?",
       "passed": true,
       "previous_response": "Thanks. Is the service need active right now?",
       "recognition_confidence": "high",
@@ -29850,7 +29850,7 @@
         "repeat_or_rephrase_request"
       ],
       "failures": [],
-      "final_response": "Sure. Short version: this call checks whether the service need is worth a quick human review.",
+      "final_response": "Sure. Short version: I'm checking one thing: is the service need active now?",
       "passed": true,
       "previous_response": "Thanks. Is the service need active right now?",
       "recognition_confidence": "high",
@@ -29964,7 +29964,7 @@
         "language_mismatch"
       ],
       "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+      "final_response": "Understood. I'll use simple English. One question: is the service need active now?",
       "passed": true,
       "previous_response": "Thanks. Is the service need active right now?",
       "recognition_confidence": "high",
@@ -30185,7 +30185,7 @@
         "small_talk"
       ],
       "failures": [],
-      "final_response": "Okay, thanks. I'll keep this quick: is that issue happening now?",
+      "final_response": "Okay, thanks. I'll keep this quick: is the service need active now?",
       "passed": true,
       "previous_response": "Thanks. Is the service need active right now?",
       "recognition_confidence": "medium",

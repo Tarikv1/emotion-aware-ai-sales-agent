@@ -6,7 +6,7 @@
       "campaign": "routesignal_live_demo",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+      "final_response": "Sure, I'll slow down. I'm checking one thing: is inbound demo follow-up slipping now?",
       "passed": true,
       "scenario": "slow_down",
       "semantic": "no_contextual_semantic",
@@ -110,7 +110,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+          "final_response": "Sure, I'll slow down. I'm checking one thing: is inbound demo follow-up slipping now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -283,7 +283,7 @@
       "campaign": "routesignal_live_demo",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Sure. Short version: this call checks whether inbound demo follow-up slipping is worth a quick human review.",
+      "final_response": "Sure. Short version: I'm checking one thing: is inbound demo follow-up slipping now?",
       "passed": true,
       "scenario": "repeat_last_answer",
       "semantic": "no_contextual_semantic",
@@ -387,7 +387,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Sure. Short version: this call checks whether inbound demo follow-up slipping is worth a quick human review.",
+          "final_response": "Sure. Short version: I'm checking one thing: is inbound demo follow-up slipping now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -568,7 +568,7 @@
       "campaign": "routesignal_live_demo",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+      "final_response": "Understood. I'll use simple English. One question: is inbound demo follow-up slipping now?",
       "passed": true,
       "scenario": "language_mismatch",
       "semantic": "no_contextual_semantic",
@@ -672,7 +672,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+          "final_response": "Understood. I'll use simple English. One question: is inbound demo follow-up slipping now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -1126,7 +1126,7 @@
         "callbacks"
       ],
       "failures": [],
-      "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+      "final_response": "Sure, I'll slow down. You named callbacks; I'm checking whether it is causing real impact.",
       "passed": true,
       "scenario": "social_after_pain",
       "semantic": "no_contextual_semantic",
@@ -1425,7 +1425,7 @@
           "confirmed_gaps": [
             "callbacks"
           ],
-          "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+          "final_response": "Sure, I'll slow down. You named callbacks; I'm checking whether it is causing real impact.",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -1899,7 +1899,7 @@
           "confirmed_gaps": [
             "callbacks"
           ],
-          "final_response": "I mean whether callbacks is actually happening. If not, there is no reason to continue.",
+          "final_response": "I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named callbacks, so I'm checking whether it is worth a short review. Is it causing delays or extra work?",
           "semantic": "previous_question_clarification",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -2032,7 +2032,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you re annoying",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -2110,7 +2110,7 @@
         "detection": {
           "applied": false,
           "normalized_transcript": "you re annoying",
-          "previous_question_type": "none",
+          "previous_question_type": "sales_progression_question",
           "reason": "not_garbled"
         },
         "direct_question_required": true,
@@ -2170,7 +2170,7 @@
       "campaign": "routesignal_live_demo",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Okay, thanks. I'll keep this quick: is that issue happening now?",
+      "final_response": "Okay, thanks. I'll keep this quick: is inbound demo follow-up slipping now?",
       "passed": true,
       "scenario": "small_talk_backchannel",
       "semantic": "no_contextual_semantic",
@@ -2274,7 +2274,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Okay, thanks. I'll keep this quick: is that issue happening now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is inbound demo follow-up slipping now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -2447,7 +2447,7 @@
       "campaign": "synthetic-insurance-review",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+      "final_response": "Sure, I'll slow down. I'm checking one thing: is premium pressure causing an issue now?",
       "passed": true,
       "scenario": "slow_down",
       "semantic": "no_contextual_semantic",
@@ -2551,7 +2551,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+          "final_response": "Sure, I'll slow down. I'm checking one thing: is premium pressure causing an issue now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -2724,7 +2724,7 @@
       "campaign": "synthetic-insurance-review",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Sure. Short version: this call checks whether premium pressure is worth a quick human review.",
+      "final_response": "Sure. Short version: I'm checking one thing: is premium pressure causing an issue now?",
       "passed": true,
       "scenario": "repeat_last_answer",
       "semantic": "no_contextual_semantic",
@@ -2828,7 +2828,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Sure. Short version: this call checks whether premium pressure is worth a quick human review.",
+          "final_response": "Sure. Short version: I'm checking one thing: is premium pressure causing an issue now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -3009,7 +3009,7 @@
       "campaign": "synthetic-insurance-review",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+      "final_response": "Understood. I'll use simple English. One question: is premium pressure causing an issue now?",
       "passed": true,
       "scenario": "language_mismatch",
       "semantic": "no_contextual_semantic",
@@ -3113,7 +3113,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+          "final_response": "Understood. I'll use simple English. One question: is premium pressure causing an issue now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -3567,7 +3567,7 @@
         "premium_or_budget"
       ],
       "failures": [],
-      "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+      "final_response": "Sure, I'll slow down. You named premium pressure; I'm checking whether it is causing real impact.",
       "passed": true,
       "scenario": "social_after_pain",
       "semantic": "no_contextual_semantic",
@@ -3866,7 +3866,7 @@
           "confirmed_gaps": [
             "premium_or_budget"
           ],
-          "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+          "final_response": "Sure, I'll slow down. You named premium pressure; I'm checking whether it is causing real impact.",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -4340,7 +4340,7 @@
           "confirmed_gaps": [
             "premium_or_budget"
           ],
-          "final_response": "I mean whether premium pressure is actually happening. If not, there is no reason to continue.",
+          "final_response": "I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named premium pressure, so I'm checking whether it is worth a short review. Is it causing delays or extra work?",
           "semantic": "previous_question_clarification",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -4473,7 +4473,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you re annoying",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -4551,7 +4551,7 @@
         "detection": {
           "applied": false,
           "normalized_transcript": "you re annoying",
-          "previous_question_type": "none",
+          "previous_question_type": "sales_progression_question",
           "reason": "not_garbled"
         },
         "direct_question_required": true,
@@ -4611,7 +4611,7 @@
       "campaign": "synthetic-insurance-review",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Okay, thanks. I'll keep this quick: is that issue happening now?",
+      "final_response": "Okay, thanks. I'll keep this quick: is premium pressure causing an issue now?",
       "passed": true,
       "scenario": "small_talk_backchannel",
       "semantic": "no_contextual_semantic",
@@ -4715,7 +4715,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Okay, thanks. I'll keep this quick: is that issue happening now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is premium pressure causing an issue now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -4888,7 +4888,7 @@
       "campaign": "synthetic-b2b-saas-operations",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+      "final_response": "Sure, I'll slow down. I'm checking one thing: is manual work causing an issue now?",
       "passed": true,
       "scenario": "slow_down",
       "semantic": "no_contextual_semantic",
@@ -4992,7 +4992,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+          "final_response": "Sure, I'll slow down. I'm checking one thing: is manual work causing an issue now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -5165,7 +5165,7 @@
       "campaign": "synthetic-b2b-saas-operations",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Sure. Short version: this call checks whether manual work is worth a quick human review.",
+      "final_response": "Sure. Short version: I'm checking one thing: is manual work causing an issue now?",
       "passed": true,
       "scenario": "repeat_last_answer",
       "semantic": "no_contextual_semantic",
@@ -5269,7 +5269,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Sure. Short version: this call checks whether manual work is worth a quick human review.",
+          "final_response": "Sure. Short version: I'm checking one thing: is manual work causing an issue now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -5450,7 +5450,7 @@
       "campaign": "synthetic-b2b-saas-operations",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+      "final_response": "Understood. I'll use simple English. One question: is manual work causing an issue now?",
       "passed": true,
       "scenario": "language_mismatch",
       "semantic": "no_contextual_semantic",
@@ -5554,7 +5554,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+          "final_response": "Understood. I'll use simple English. One question: is manual work causing an issue now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -6008,7 +6008,7 @@
         "manual_work"
       ],
       "failures": [],
-      "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+      "final_response": "Sure, I'll slow down. You named manual work; I'm checking whether it is causing real impact.",
       "passed": true,
       "scenario": "social_after_pain",
       "semantic": "no_contextual_semantic",
@@ -6307,7 +6307,7 @@
           "confirmed_gaps": [
             "manual_work"
           ],
-          "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+          "final_response": "Sure, I'll slow down. You named manual work; I'm checking whether it is causing real impact.",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -6781,7 +6781,7 @@
           "confirmed_gaps": [
             "manual_work"
           ],
-          "final_response": "I mean whether manual work is actually happening. If not, there is no reason to continue.",
+          "final_response": "I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named manual work, so I'm checking whether it is worth a short review. Is it causing delays or extra work?",
           "semantic": "previous_question_clarification",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -6914,7 +6914,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you re annoying",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -6992,7 +6992,7 @@
         "detection": {
           "applied": false,
           "normalized_transcript": "you re annoying",
-          "previous_question_type": "none",
+          "previous_question_type": "sales_progression_question",
           "reason": "not_garbled"
         },
         "direct_question_required": true,
@@ -7052,7 +7052,7 @@
       "campaign": "synthetic-b2b-saas-operations",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Okay, thanks. I'll keep this quick: is that issue happening now?",
+      "final_response": "Okay, thanks. I'll keep this quick: is manual work causing an issue now?",
       "passed": true,
       "scenario": "small_talk_backchannel",
       "semantic": "no_contextual_semantic",
@@ -7156,7 +7156,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Okay, thanks. I'll keep this quick: is that issue happening now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is manual work causing an issue now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -7329,7 +7329,7 @@
       "campaign": "synthetic-automotive-service-review",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+      "final_response": "Sure, I'll slow down. I'm checking one thing: is repair timing causing an issue now?",
       "passed": true,
       "scenario": "slow_down",
       "semantic": "no_contextual_semantic",
@@ -7433,7 +7433,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+          "final_response": "Sure, I'll slow down. I'm checking one thing: is repair timing causing an issue now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -7606,7 +7606,7 @@
       "campaign": "synthetic-automotive-service-review",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Sure. Short version: this call checks whether the vehicle issue is worth a quick human review.",
+      "final_response": "Sure. Short version: I'm checking one thing: is repair timing causing an issue now?",
       "passed": true,
       "scenario": "repeat_last_answer",
       "semantic": "no_contextual_semantic",
@@ -7710,7 +7710,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Sure. Short version: this call checks whether the vehicle issue is worth a quick human review.",
+          "final_response": "Sure. Short version: I'm checking one thing: is repair timing causing an issue now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -7891,7 +7891,7 @@
       "campaign": "synthetic-automotive-service-review",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+      "final_response": "Understood. I'll use simple English. One question: is repair timing causing an issue now?",
       "passed": true,
       "scenario": "language_mismatch",
       "semantic": "no_contextual_semantic",
@@ -7995,7 +7995,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+          "final_response": "Understood. I'll use simple English. One question: is repair timing causing an issue now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -8449,7 +8449,7 @@
         "repair_timing"
       ],
       "failures": [],
-      "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+      "final_response": "Sure, I'll slow down. You named repair timing; I'm checking whether it is causing real impact.",
       "passed": true,
       "scenario": "social_after_pain",
       "semantic": "no_contextual_semantic",
@@ -8748,7 +8748,7 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+          "final_response": "Sure, I'll slow down. You named repair timing; I'm checking whether it is causing real impact.",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -9222,7 +9222,7 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "I mean whether repair timing is actually happening. If not, there is no reason to continue.",
+          "final_response": "I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named repair timing, so I'm checking whether it is worth a short review. Is it causing delays or extra work?",
           "semantic": "previous_question_clarification",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -9355,7 +9355,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you re annoying",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -9433,7 +9433,7 @@
         "detection": {
           "applied": false,
           "normalized_transcript": "you re annoying",
-          "previous_question_type": "none",
+          "previous_question_type": "sales_progression_question",
           "reason": "not_garbled"
         },
         "direct_question_required": true,
@@ -9493,7 +9493,7 @@
       "campaign": "synthetic-automotive-service-review",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Okay, thanks. I'll keep this quick: is that issue happening now?",
+      "final_response": "Okay, thanks. I'll keep this quick: is repair timing causing an issue now?",
       "passed": true,
       "scenario": "small_talk_backchannel",
       "semantic": "no_contextual_semantic",
@@ -9597,7 +9597,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Okay, thanks. I'll keep this quick: is that issue happening now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is repair timing causing an issue now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -9770,7 +9770,7 @@
       "campaign": "synthetic-home-services-estimate",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+      "final_response": "Sure, I'll slow down. I'm checking one thing: is the service need active now?",
       "passed": true,
       "scenario": "slow_down",
       "semantic": "no_contextual_semantic",
@@ -9874,7 +9874,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+          "final_response": "Sure, I'll slow down. I'm checking one thing: is the service need active now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -10047,7 +10047,7 @@
       "campaign": "synthetic-home-services-estimate",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Sure. Short version: this call checks whether the service need is worth a quick human review.",
+      "final_response": "Sure. Short version: I'm checking one thing: is the service need active now?",
       "passed": true,
       "scenario": "repeat_last_answer",
       "semantic": "no_contextual_semantic",
@@ -10151,7 +10151,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Sure. Short version: this call checks whether the service need is worth a quick human review.",
+          "final_response": "Sure. Short version: I'm checking one thing: is the service need active now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -10332,7 +10332,7 @@
       "campaign": "synthetic-home-services-estimate",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+      "final_response": "Understood. I'll use simple English. One question: is the service need active now?",
       "passed": true,
       "scenario": "language_mismatch",
       "semantic": "no_contextual_semantic",
@@ -10436,7 +10436,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+          "final_response": "Understood. I'll use simple English. One question: is the service need active now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -10890,7 +10890,7 @@
         "service_need"
       ],
       "failures": [],
-      "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+      "final_response": "Sure, I'll slow down. You named the service need; I'm checking whether it is causing real impact.",
       "passed": true,
       "scenario": "social_after_pain",
       "semantic": "no_contextual_semantic",
@@ -11189,7 +11189,7 @@
           "confirmed_gaps": [
             "service_need"
           ],
-          "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+          "final_response": "Sure, I'll slow down. You named the service need; I'm checking whether it is causing real impact.",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -11663,7 +11663,7 @@
           "confirmed_gaps": [
             "service_need"
           ],
-          "final_response": "I mean whether the service need is actually happening. If not, there is no reason to continue.",
+          "final_response": "I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named the service need, so I'm checking whether it is worth a short review. Is it causing delays or extra work?",
           "semantic": "previous_question_clarification",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -11796,7 +11796,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you re annoying",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -11874,7 +11874,7 @@
         "detection": {
           "applied": false,
           "normalized_transcript": "you re annoying",
-          "previous_question_type": "none",
+          "previous_question_type": "sales_progression_question",
           "reason": "not_garbled"
         },
         "direct_question_required": true,
@@ -11934,7 +11934,7 @@
       "campaign": "synthetic-home-services-estimate",
       "confirmed_gaps": null,
       "failures": [],
-      "final_response": "Okay, thanks. I'll keep this quick: is that issue happening now?",
+      "final_response": "Okay, thanks. I'll keep this quick: is the service need active now?",
       "passed": true,
       "scenario": "small_talk_backchannel",
       "semantic": "no_contextual_semantic",
@@ -12038,7 +12038,7 @@
         {
           "call_control": "continue-call",
           "confirmed_gaps": null,
-          "final_response": "Okay, thanks. I'll keep this quick: is that issue happening now?",
+          "final_response": "Okay, thanks. I'll keep this quick: is the service need active now?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,

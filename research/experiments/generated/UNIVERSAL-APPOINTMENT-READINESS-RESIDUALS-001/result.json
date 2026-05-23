@@ -433,7 +433,7 @@
         "callbacks"
       ],
       "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+      "final_response": "Understood. I'll use simple English. You named callbacks; is it causing a real problem now?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "none",
       "scenario": "language_mismatch_not_flagged",
@@ -1054,7 +1054,7 @@
         "premium_or_budget"
       ],
       "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+      "final_response": "Understood. I'll use simple English. You named premium pressure; is it causing a real problem now?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "none",
       "scenario": "language_mismatch_not_flagged",
@@ -1675,7 +1675,7 @@
         "manual_work"
       ],
       "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+      "final_response": "Understood. I'll use simple English. You named manual work; is it causing a real problem now?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "none",
       "scenario": "language_mismatch_not_flagged",
@@ -2296,7 +2296,7 @@
         "repair_timing"
       ],
       "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+      "final_response": "Understood. I'll use simple English. You named repair timing; is it causing a real problem now?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "none",
       "scenario": "language_mismatch_not_flagged",
@@ -2917,7 +2917,7 @@
         "service_need"
       ],
       "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+      "final_response": "Understood. I'll use simple English. You named the service need; is it causing a real problem now?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "none",
       "scenario": "language_mismatch_not_flagged",

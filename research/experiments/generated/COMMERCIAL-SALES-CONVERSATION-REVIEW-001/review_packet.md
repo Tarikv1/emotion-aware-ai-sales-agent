@@ -25,7 +25,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 | `commercial-sales-conversation-review-001-01-01-routesignal_live_demo-smooth_qualified_appointment` | `routesignal_live_demo` | `smooth_qualified_appointment` | 0 |
 | `commercial-sales-conversation-review-001-01-02-routesignal_live_demo-time_pressure` | `routesignal_live_demo` | `time_pressure` | 0 |
 | `commercial-sales-conversation-review-001-01-03-routesignal_live_demo-tentative_pain` | `routesignal_live_demo` | `tentative_pain` | 0 |
-| `commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question` | `routesignal_live_demo` | `direct_question` | 3 |
+| `commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question` | `routesignal_live_demo` | `direct_question` | 0 |
 | `commercial-sales-conversation-review-001-01-05-routesignal_live_demo-objection` | `routesignal_live_demo` | `objection` | 0 |
 | `commercial-sales-conversation-review-001-01-06-routesignal_live_demo-trust_challenge` | `routesignal_live_demo` | `trust_challenge` | 2 |
 | `commercial-sales-conversation-review-001-01-07-routesignal_live_demo-confusion_loop_resistance` | `routesignal_live_demo` | `confusion_loop_resistance` | 0 |
@@ -35,7 +35,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 | `commercial-sales-conversation-review-001-02-01-synthetic-insurance-review-smooth_qualified_appointment` | `synthetic-insurance-review` | `smooth_qualified_appointment` | 0 |
 | `commercial-sales-conversation-review-001-02-02-synthetic-insurance-review-time_pressure` | `synthetic-insurance-review` | `time_pressure` | 0 |
 | `commercial-sales-conversation-review-001-02-03-synthetic-insurance-review-tentative_pain` | `synthetic-insurance-review` | `tentative_pain` | 0 |
-| `commercial-sales-conversation-review-001-02-04-synthetic-insurance-review-direct_question` | `synthetic-insurance-review` | `direct_question` | 1 |
+| `commercial-sales-conversation-review-001-02-04-synthetic-insurance-review-direct_question` | `synthetic-insurance-review` | `direct_question` | 0 |
 | `commercial-sales-conversation-review-001-02-05-synthetic-insurance-review-objection` | `synthetic-insurance-review` | `objection` | 0 |
 | `commercial-sales-conversation-review-001-02-06-synthetic-insurance-review-trust_challenge` | `synthetic-insurance-review` | `trust_challenge` | 1 |
 | `commercial-sales-conversation-review-001-02-07-synthetic-insurance-review-confusion_loop_resistance` | `synthetic-insurance-review` | `confusion_loop_resistance` | 0 |
@@ -45,7 +45,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 | `commercial-sales-conversation-review-001-03-01-synthetic-b2b-saas-operations-smooth_qualified_appointment` | `synthetic-b2b-saas-operations` | `smooth_qualified_appointment` | 0 |
 | `commercial-sales-conversation-review-001-03-02-synthetic-b2b-saas-operations-time_pressure` | `synthetic-b2b-saas-operations` | `time_pressure` | 0 |
 | `commercial-sales-conversation-review-001-03-03-synthetic-b2b-saas-operations-tentative_pain` | `synthetic-b2b-saas-operations` | `tentative_pain` | 0 |
-| `commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question` | `synthetic-b2b-saas-operations` | `direct_question` | 3 |
+| `commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question` | `synthetic-b2b-saas-operations` | `direct_question` | 0 |
 | `commercial-sales-conversation-review-001-03-05-synthetic-b2b-saas-operations-objection` | `synthetic-b2b-saas-operations` | `objection` | 0 |
 | `commercial-sales-conversation-review-001-03-06-synthetic-b2b-saas-operations-trust_challenge` | `synthetic-b2b-saas-operations` | `trust_challenge` | 2 |
 | `commercial-sales-conversation-review-001-03-07-synthetic-b2b-saas-operations-confusion_loop_resistance` | `synthetic-b2b-saas-operations` | `confusion_loop_resistance` | 0 |
@@ -55,7 +55,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 | `commercial-sales-conversation-review-001-04-01-synthetic-automotive-service-review-smooth_qualified_appointment` | `synthetic-automotive-service-review` | `smooth_qualified_appointment` | 0 |
 | `commercial-sales-conversation-review-001-04-02-synthetic-automotive-service-review-time_pressure` | `synthetic-automotive-service-review` | `time_pressure` | 0 |
 | `commercial-sales-conversation-review-001-04-03-synthetic-automotive-service-review-tentative_pain` | `synthetic-automotive-service-review` | `tentative_pain` | 0 |
-| `commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question` | `synthetic-automotive-service-review` | `direct_question` | 3 |
+| `commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question` | `synthetic-automotive-service-review` | `direct_question` | 0 |
 | `commercial-sales-conversation-review-001-04-05-synthetic-automotive-service-review-objection` | `synthetic-automotive-service-review` | `objection` | 0 |
 | `commercial-sales-conversation-review-001-04-06-synthetic-automotive-service-review-trust_challenge` | `synthetic-automotive-service-review` | `trust_challenge` | 2 |
 | `commercial-sales-conversation-review-001-04-07-synthetic-automotive-service-review-confusion_loop_resistance` | `synthetic-automotive-service-review` | `confusion_loop_resistance` | 0 |
@@ -65,7 +65,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 | `commercial-sales-conversation-review-001-05-01-synthetic-home-services-estimate-smooth_qualified_appointment` | `synthetic-home-services-estimate` | `smooth_qualified_appointment` | 0 |
 | `commercial-sales-conversation-review-001-05-02-synthetic-home-services-estimate-time_pressure` | `synthetic-home-services-estimate` | `time_pressure` | 0 |
 | `commercial-sales-conversation-review-001-05-03-synthetic-home-services-estimate-tentative_pain` | `synthetic-home-services-estimate` | `tentative_pain` | 0 |
-| `commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question` | `synthetic-home-services-estimate` | `direct_question` | 3 |
+| `commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question` | `synthetic-home-services-estimate` | `direct_question` | 0 |
 | `commercial-sales-conversation-review-001-05-05-synthetic-home-services-estimate-objection` | `synthetic-home-services-estimate` | `objection` | 0 |
 | `commercial-sales-conversation-review-001-05-06-synthetic-home-services-estimate-trust_challenge` | `synthetic-home-services-estimate` | `trust_challenge` | 2 |
 | `commercial-sales-conversation-review-001-05-07-synthetic-home-services-estimate-confusion_loop_resistance` | `synthetic-home-services-estimate` | `confusion_loop_resistance` | 0 |
@@ -209,7 +209,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `None`
 - Arc: `direct_question`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `none`
 
 #### Review Focus
 - Does it answer directly before selling?
@@ -222,15 +222,15 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: what does your product do
-  - Agent: RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, or handoffs. The quick check is whether that problem exists on your side.
+  - Agent: Sure. RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, or handoffs. The quick check is whether that problem exists on your side.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `product_detail_question`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `none`
 - Turn `3` buyer: why should I care
-  - Agent: Only if inbound demo follow-up slipping is costing time, money, risk, or follow-up quality. If it is not, we can stop here.
+  - Agent: Fair question. Only if inbound demo follow-up slipping is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_should_i_care`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer`
+  - Warnings: `none`
 - Turn `4` buyer: callbacks are a problem
   - Agent: Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?
   - Source: `universal_response_shape`; call_control: `continue-call`
@@ -332,7 +332,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `6` buyer: why are you asking
-  - Agent: Fair question. I'm asking because the verified implementation reviewer can review callbacks if it is worth your time, not to collect extra details.
+  - Agent: Fair question. Because the verified implementation reviewer only needs to review this when there is real impact from callbacks, I'm asking about impact now, not collecting extra details.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_are_you_asking`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -372,17 +372,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `4` buyer: what do you mean
-  - Agent: I mean whether callbacks is actually happening. If not, there is no reason to continue.
+  - Agent: I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named callbacks, so I'm checking whether it is worth a short review. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you already asked that
-  - Agent: You're right, you already answered that. I'll use callbacks and not ask it again.
+  - Agent: You're right, you already gave me that. I have callbacks noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `6` buyer: you didn't answer my question
-  - Agent: You're right, you already answered that. I'll use callbacks and not ask it again.
+  - Agent: You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named callbacks, the only useful follow-up is impact. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -407,17 +407,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: slow down
-  - Agent: Sure, I'll slow down. Short version: is that issue happening now?
+  - Agent: Sure, I'll slow down. I'm checking one thing: is inbound demo follow-up slipping now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `slow_down_or_speak_faster`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: say that again
-  - Agent: Sure. Short version: this call checks whether inbound demo follow-up slipping is worth a quick human review.
+  - Agent: Sure. Short version: I'm checking one thing: is inbound demo follow-up slipping now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `repeat_last_answer`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `4` buyer: I don't speak English well
-  - Agent: Understood. I'll use simple English. Is that issue happening now?
+  - Agent: Understood. I'll use simple English. One question: is inbound demo follow-up slipping now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `language_mismatch`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -636,7 +636,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-insurance-review.json`
 - Arc: `direct_question`
 - Requires human sales review: `true`
-- Mechanical warnings: `over_deferential_stop_offer`
+- Mechanical warnings: `none`
 
 #### Review Focus
 - Does it answer directly before selling?
@@ -649,15 +649,15 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: what does your product do
-  - Agent: This call is only to check whether a short human review is useful around premium pressure. The quick question is whether that area is causing friction now.
+  - Agent: Sure. This call is only to check whether a short human review is useful around premium pressure. The quick question is whether that area is causing friction now.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `product_detail_question`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: why should I care
-  - Agent: Only if premium pressure is costing time, money, risk, or follow-up quality. If it is not, we can stop here.
+  - Agent: Fair question. Only if premium pressure is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_should_i_care`; readiness: `none`; next action: `none`
-  - Warnings: `over_deferential_stop_offer`
+  - Warnings: `none`
 - Turn `4` buyer: premium is a problem
   - Agent: Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?
   - Source: `universal_response_shape`; call_control: `continue-call`
@@ -759,7 +759,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `6` buyer: why are you asking
-  - Agent: Fair question. I'm asking because the licensed insurance specialist can review premium pressure if it is worth your time, not to collect extra details.
+  - Agent: Fair question. Because the licensed insurance specialist only needs to review this when there is real impact from premium pressure, I'm asking about impact now, not collecting extra details.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_are_you_asking`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -799,17 +799,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `4` buyer: what do you mean
-  - Agent: I mean whether premium pressure is actually happening. If not, there is no reason to continue.
+  - Agent: I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named premium pressure, so I'm checking whether it is worth a short review. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you already asked that
-  - Agent: You're right, you already answered that. I'll use premium pressure and not ask it again.
+  - Agent: You're right, you already gave me that. I have premium pressure noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `6` buyer: you didn't answer my question
-  - Agent: You're right, you already answered that. I'll use premium pressure and not ask it again.
+  - Agent: You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named premium pressure, the only useful follow-up is impact. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -834,17 +834,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: slow down
-  - Agent: Sure, I'll slow down. Short version: is that issue happening now?
+  - Agent: Sure, I'll slow down. I'm checking one thing: is premium pressure causing an issue now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `slow_down_or_speak_faster`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: say that again
-  - Agent: Sure. Short version: this call checks whether premium pressure is worth a quick human review.
+  - Agent: Sure. Short version: I'm checking one thing: is premium pressure causing an issue now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `repeat_last_answer`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `4` buyer: I don't speak English well
-  - Agent: Understood. I'll use simple English. Is that issue happening now?
+  - Agent: Understood. I'll use simple English. One question: is premium pressure causing an issue now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `language_mismatch`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1063,7 +1063,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-b2b-saas-operations.json`
 - Arc: `direct_question`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `none`
 
 #### Review Focus
 - Does it answer directly before selling?
@@ -1076,15 +1076,15 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: what does your product do
-  - Agent: This call is only to check whether a short human review is useful around manual work. The quick question is whether that area is causing friction now.
+  - Agent: Sure. This call is only to check whether a short human review is useful around manual work. The quick question is whether that area is causing friction now.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `product_detail_question`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `none`
 - Turn `3` buyer: why should I care
-  - Agent: Only if manual work is costing time, money, risk, or follow-up quality. If it is not, we can stop here.
+  - Agent: Fair question. Only if manual work is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_should_i_care`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer`
+  - Warnings: `none`
 - Turn `4` buyer: manual work is a problem
   - Agent: Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?
   - Source: `universal_response_shape`; call_control: `continue-call`
@@ -1186,7 +1186,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `6` buyer: why are you asking
-  - Agent: Fair question. I'm asking because the implementation specialist can review manual work if it is worth your time, not to collect extra details.
+  - Agent: Fair question. Because the implementation specialist only needs to review this when there is real impact from manual work, I'm asking about impact now, not collecting extra details.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_are_you_asking`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1226,17 +1226,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `4` buyer: what do you mean
-  - Agent: I mean whether manual work is actually happening. If not, there is no reason to continue.
+  - Agent: I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named manual work, so I'm checking whether it is worth a short review. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you already asked that
-  - Agent: You're right, you already answered that. I'll use manual work and not ask it again.
+  - Agent: You're right, you already gave me that. I have manual work noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `6` buyer: you didn't answer my question
-  - Agent: You're right, you already answered that. I'll use manual work and not ask it again.
+  - Agent: You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named manual work, the only useful follow-up is impact. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1261,17 +1261,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: slow down
-  - Agent: Sure, I'll slow down. Short version: is that issue happening now?
+  - Agent: Sure, I'll slow down. I'm checking one thing: is manual work causing an issue now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `slow_down_or_speak_faster`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: say that again
-  - Agent: Sure. Short version: this call checks whether manual work is worth a quick human review.
+  - Agent: Sure. Short version: I'm checking one thing: is manual work causing an issue now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `repeat_last_answer`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `4` buyer: I don't speak English well
-  - Agent: Understood. I'll use simple English. Is that issue happening now?
+  - Agent: Understood. I'll use simple English. One question: is manual work causing an issue now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `language_mismatch`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1490,7 +1490,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-automotive-service-review.json`
 - Arc: `direct_question`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `none`
 
 #### Review Focus
 - Does it answer directly before selling?
@@ -1503,15 +1503,15 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: what does your product do
-  - Agent: This call is only to check whether a short human review is useful around the vehicle issue. The quick question is whether that area is causing friction now.
+  - Agent: Sure. This call is only to check whether a short human review is useful around the vehicle issue. The quick question is whether that area is causing friction now.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `product_detail_question`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `none`
 - Turn `3` buyer: why should I care
-  - Agent: Only if vehicle issue is costing time, money, risk, or follow-up quality. If it is not, we can stop here.
+  - Agent: Fair question. Only if vehicle issue is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_should_i_care`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer`
+  - Warnings: `none`
 - Turn `4` buyer: repair timings are usually pretty long
   - Agent: Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?
   - Source: `universal_response_shape`; call_control: `continue-call`
@@ -1613,7 +1613,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `6` buyer: why are you asking
-  - Agent: Fair question. I'm asking because the service advisor can review repair timing if it is worth your time, not to collect extra details.
+  - Agent: Fair question. Because the service advisor only needs to review this when there is real impact from repair timing, I'm asking about impact now, not collecting extra details.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_are_you_asking`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1653,17 +1653,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `4` buyer: what do you mean
-  - Agent: I mean whether repair timing is actually happening. If not, there is no reason to continue.
+  - Agent: I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named repair timing, so I'm checking whether it is worth a short review. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you already asked that
-  - Agent: You're right, you already answered that. I'll use repair timing and not ask it again.
+  - Agent: You're right, you already gave me that. I have repair timing noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `6` buyer: you didn't answer my question
-  - Agent: You're right, you already answered that. I'll use repair timing and not ask it again.
+  - Agent: You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named repair timing, the only useful follow-up is impact. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1688,17 +1688,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: slow down
-  - Agent: Sure, I'll slow down. Short version: is that issue happening now?
+  - Agent: Sure, I'll slow down. I'm checking one thing: is repair timing causing an issue now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `slow_down_or_speak_faster`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: say that again
-  - Agent: Sure. Short version: this call checks whether the vehicle issue is worth a quick human review.
+  - Agent: Sure. Short version: I'm checking one thing: is repair timing causing an issue now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `repeat_last_answer`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `4` buyer: I don't speak English well
-  - Agent: Understood. I'll use simple English. Is that issue happening now?
+  - Agent: Understood. I'll use simple English. One question: is repair timing causing an issue now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `language_mismatch`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1917,7 +1917,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 - Config path: `runtime/campaigns/examples/synthetic-home-services-estimate.json`
 - Arc: `direct_question`
 - Requires human sales review: `true`
-- Mechanical warnings: `no_acknowledgement, over_deferential_stop_offer`
+- Mechanical warnings: `none`
 
 #### Review Focus
 - Does it answer directly before selling?
@@ -1930,15 +1930,15 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: what does your product do
-  - Agent: This call is only to check whether a short human review is useful around the service need. The quick question is whether that area is causing friction now.
+  - Agent: Sure. This call is only to check whether a short human review is useful around the service need. The quick question is whether that area is causing friction now.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `product_detail_question`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement`
+  - Warnings: `none`
 - Turn `3` buyer: why should I care
-  - Agent: Only if service need is costing time, money, risk, or follow-up quality. If it is not, we can stop here.
+  - Agent: Fair question. Only if service need is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_should_i_care`; readiness: `none`; next action: `none`
-  - Warnings: `no_acknowledgement, over_deferential_stop_offer`
+  - Warnings: `none`
 - Turn `4` buyer: we need service
   - Agent: Got it, service need is the issue. Is it causing a real service issue now, or just a general question?
   - Source: `universal_response_shape`; call_control: `continue-call`
@@ -2040,7 +2040,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `6` buyer: why are you asking
-  - Agent: Fair question. I'm asking because the qualified service coordinator can review the service need if it is worth your time, not to collect extra details.
+  - Agent: Fair question. Because the qualified service coordinator only needs to review this when there is real impact from the service need, I'm asking about impact now, not collecting extra details.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_are_you_asking`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -2080,17 +2080,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `4` buyer: what do you mean
-  - Agent: I mean whether the service need is actually happening. If not, there is no reason to continue.
+  - Agent: I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named the service need, so I'm checking whether it is worth a short review. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you already asked that
-  - Agent: You're right, you already answered that. I'll use the service need and not ask it again.
+  - Agent: You're right, you already gave me that. I have the service need noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `6` buyer: you didn't answer my question
-  - Agent: You're right, you already answered that. I'll use the service need and not ask it again.
+  - Agent: You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named the service need, the only useful follow-up is impact. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -2115,17 +2115,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: slow down
-  - Agent: Sure, I'll slow down. Short version: is that issue happening now?
+  - Agent: Sure, I'll slow down. I'm checking one thing: is the service need active now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `slow_down_or_speak_faster`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: say that again
-  - Agent: Sure. Short version: this call checks whether the service need is worth a quick human review.
+  - Agent: Sure. Short version: I'm checking one thing: is the service need active now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `repeat_last_answer`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `4` buyer: I don't speak English well
-  - Agent: Understood. I'll use simple English. Is that issue happening now?
+  - Agent: Understood. I'll use simple English. One question: is the service need active now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `language_mismatch`; readiness: `none`; next action: `none`
   - Warnings: `none`

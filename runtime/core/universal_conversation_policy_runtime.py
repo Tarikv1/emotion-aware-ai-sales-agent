@@ -425,8 +425,8 @@ def _approved_scope_response(campaign: dict | None) -> str:
     if lowered.startswith("can "):
         action = claim[4:].strip()
         gerund = _gerund_action(action)
-        return f"I can speak only to this limited scope: {gerund}. Anything beyond that needs a human follow-up."
-    return f"I can speak only to this limited scope: {claim}. Anything beyond that needs a human follow-up."
+        return f"Fair question. The useful difference here is narrow: {gerund}. More detail should come from a human follow-up."
+    return f"Fair question. The useful difference here is narrow: {claim}. More detail should come from a human follow-up."
 
 
 def _gerund_action(action: str) -> str:
@@ -473,6 +473,27 @@ def _scope_relevance_clarification_response(campaign: dict | None) -> str:
     if primary_gap.endswith("need"):
         return f"That may be outside this call's scope. The quick check here is whether {_area_phrase(primary_gap)} is active now."
     return f"That may be outside this call's scope. The quick check here is whether {primary_gap} is causing any issue now."
+
+
+def _issue_check_question_for_phrase(phrase: str) -> str:
+    cleaned = _plain_phrase(phrase)
+    if cleaned.endswith("slipping"):
+        return f"is {cleaned} now?"
+    if cleaned.endswith("need"):
+        return f"is {_area_phrase(cleaned)} active now?"
+    return f"is {cleaned} causing an issue now?"
+
+
+def _primary_issue_check_question(campaign: dict | None) -> str:
+    return _issue_check_question_for_phrase(_sharp_diagnostic_gap_phrase(campaign))
+
+
+def _has_confirmed_gap(session_state: dict | None) -> bool:
+    return bool(_string_items(_memory_from_session(session_state).get("confirmed_gaps")))
+
+
+def _impact_followup_question() -> str:
+    return "Is it causing delays or extra work?"
 
 
 def _sharp_diagnostic_gap_phrase(campaign: dict | None) -> str:
@@ -1625,22 +1646,31 @@ def render_universal_response_outline(
     client = _campaign_client_name(campaign)
     caller = _campaign_caller_name(campaign)
     owner_role = _role_phrase(owner)
+    has_confirmed_gap = _has_confirmed_gap(session_state)
+    active_area = _area_phrase(active_gap)
 
     if buyer_move_id == "slow_down_or_speak_faster":
+        if has_confirmed_gap:
+            if _contains_any(normalized, {"speak faster", "too slow"}):
+                return f"Sure, I can move faster. You named {active_area}; I'm checking whether it is causing real impact."
+            return f"Sure, I'll slow down. You named {active_area}; I'm checking whether it is causing real impact."
         if _contains_any(normalized, {"speak faster", "too slow"}):
-            return "Sure, I can move faster. Short version: is that issue happening now?"
-        return "Sure, I'll slow down. Short version: is that issue happening now?"
+            return f"Sure, I can move faster. I'm checking one thing: {_primary_issue_check_question(campaign)}"
+        return f"Sure, I'll slow down. I'm checking one thing: {_primary_issue_check_question(campaign)}"
     if buyer_move_id in {"repeat_or_rephrase_request", "repeat_last_answer"}:
-        area = _area_phrase(active_gap)
-        return f"Sure. Short version: this call checks whether {area} {_agreement_verb(area)} worth a quick human review."
+        if has_confirmed_gap:
+            return f"Sure. Short version: you named {active_area}; I'm checking whether it is causing enough impact for a quick human review."
+        return f"Sure. Short version: I'm checking one thing: {_primary_issue_check_question(campaign)}"
     if buyer_move_id == "language_mismatch":
-        return "Understood. I'll use simple English. Is that issue happening now?"
+        if has_confirmed_gap:
+            return f"Understood. I'll use simple English. You named {active_area}; is it causing a real problem now?"
+        return f"Understood. I'll use simple English. One question: {_primary_issue_check_question(campaign)}"
     if buyer_move_id == "pronunciation_or_name_correction":
         return "Sorry about that. I'll use the correction. Should I continue with the quick check?"
     if buyer_move_id in {"small_talk", "silence_or_backchannel"}:
         if "how are you" in normalized:
-            return "I'm good, thanks. I'll keep this quick: is that issue happening now?"
-        return "Okay, thanks. I'll keep this quick: is that issue happening now?"
+            return f"I'm good, thanks. I'll keep this quick: {_primary_issue_check_question(campaign)}"
+        return f"Okay, thanks. I'll keep this quick: {_primary_issue_check_question(campaign)}"
     if buyer_move_id in {"emotional_frustration", "abusive_or_hostile_buyer"}:
         return "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check."
 
@@ -1686,23 +1716,29 @@ def render_universal_response_outline(
     if buyer_move_id == "product_detail_question":
         if _is_routesignal_campaign(campaign):
             return (
-                "RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, "
+                "Sure. RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, "
                 "or handoffs. The quick check is whether that problem exists on your side."
             )
         return (
-            f"This call is only to check whether a short human review is useful around {_area_phrase(primary_gap)}. "
+            f"Sure. This call is only to check whether a short human review is useful around {_area_phrase(primary_gap)}. "
             "The quick question is whether that area is causing friction now."
         )
     if buyer_move_id == "what_problem_do_you_solve":
-        return f"Mainly {primary_gap}. If that is not happening, there is no reason to push a review."
+        return (
+            f"Fair question. Mainly {primary_gap}: when it is costing time, creating delays, or hurting quality. "
+            "The useful check is whether it is showing up now."
+        )
     if buyer_move_id == "why_should_i_care":
-        return f"Only if {primary_gap} is costing time, money, risk, or follow-up quality. If it is not, we can stop here."
+        return (
+            f"Fair question. Only if {primary_gap} is costing time, creating delays, or hurting follow-up quality. "
+            "If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?"
+        )
     if buyer_move_id == "what_makes_you_different":
         return _approved_scope_response(campaign)
     if buyer_move_id == "who_is_this_for":
-        return f"It is for {buyer_role}. If that is not you, I can stop or note the right person."
+        return f"Fair question. It is for {buyer_role}. If that is not you, I can note the right person or keep this brief."
     if buyer_move_id == "is_this_worth_my_time":
-        return f"Only if {primary_gap} is real enough to justify a short review. If not, no pressure."
+        return f"Fair question. It is worth time only if {primary_gap} is real enough to justify a short review. The useful check is whether it is showing up now."
 
     if buyer_move_id == "who_are_you":
         return f"I'm {caller} calling on behalf of {client} about {_campaign_purpose_phrase(campaign)}."
@@ -1720,14 +1756,28 @@ def render_universal_response_outline(
     if buyer_move_id == "confusion_not_clear":
         if str((frame or {}).get("recognition_reason") or "") == "out_of_campaign_pain_phrase":
             return _scope_relevance_clarification_response(campaign)
-        return f"I mean whether {_area_phrase(active_gap)} is actually happening. If not, there is no reason to continue."
+        if has_confirmed_gap:
+            return (
+                f"I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. "
+                f"You already named {active_area}, so I'm checking whether it is worth a short review. {_impact_followup_question()}"
+            )
+        return f"I mean whether {_sharp_diagnostic_gap_phrase(campaign)} is happening and causing enough impact to review. Is it showing up now?"
     if buyer_move_id == "why_are_you_asking":
         return (
-            f"Fair question. I'm asking because {owner_role} can review {_area_phrase(active_gap)} "
-            "if it is worth your time, not to collect extra details."
+            f"Fair question. Because {owner_role} only needs to review this when there is real impact from {active_area}, "
+            "I'm asking about impact now, not collecting extra details."
         )
     if buyer_move_id == "already_answered_challenge":
-        return f"You're right, you already answered that. I'll use {_area_phrase(active_gap)} and not ask it again."
+        if str((frame or {}).get("recognition_reason") or "") == "did_not_answer_challenge_phrase":
+            return (
+                "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify "
+                f"a short human review. Since you already named {active_area}, the only useful follow-up is impact. "
+                f"{_impact_followup_question()}"
+            )
+        return (
+            f"You're right, you already gave me that. I have {active_area} noted; the useful follow-up is whether it is "
+            f"causing real impact. {_impact_followup_question()}"
+        )
     if buyer_move_id == "contradiction_challenge":
         return f"Fair point. I can ask basic fit questions, but detailed advice belongs with {owner_role}."
     if buyer_move_id == "scope_limit_question":

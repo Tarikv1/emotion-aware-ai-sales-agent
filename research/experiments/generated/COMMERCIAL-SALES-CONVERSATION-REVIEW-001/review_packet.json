@@ -2064,15 +2064,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -2209,15 +2205,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, or handoffs. The quick check is whether that problem exists on your side.",
+          "final_response": "Sure. RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, or handoffs. The quick check is whether that problem exists on your side.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 26,
+          "response_word_count": 27,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -2324,16 +2318,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Only if inbound demo follow-up slipping is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
+          "final_response": "Fair question. Only if inbound demo follow-up slipping is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement",
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 24,
+          "question_count": 1,
+          "response_word_count": 38,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -2495,7 +2486,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "callbacks are a problem",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": false,
@@ -4153,13 +4144,13 @@
           "confirmed_gaps": [
             "callbacks"
           ],
-          "final_response": "Fair question. I'm asking because the verified implementation reviewer can review callbacks if it is worth your time, not to collect extra details.",
+          "final_response": "Fair question. Because the verified implementation reviewer only needs to review this when there is real impact from callbacks, I'm asking about impact now, not collecting extra details.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 23,
+          "response_word_count": 28,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -4784,13 +4775,13 @@
           "confirmed_gaps": [
             "callbacks"
           ],
-          "final_response": "I mean whether callbacks is actually happening. If not, there is no reason to continue.",
+          "final_response": "I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named callbacks, so I'm checking whether it is worth a short review. Is it causing delays or extra work?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 15,
+          "question_count": 1,
+          "response_word_count": 38,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -4895,13 +4886,13 @@
           "confirmed_gaps": [
             "callbacks"
           ],
-          "final_response": "You're right, you already answered that. I'll use callbacks and not ask it again.",
+          "final_response": "You're right, you already gave me that. I have callbacks noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 14,
+          "question_count": 1,
+          "response_word_count": 29,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -4945,7 +4936,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you already asked that",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -5007,13 +4998,13 @@
           "confirmed_gaps": [
             "callbacks"
           ],
-          "final_response": "You're right, you already answered that. I'll use callbacks and not ask it again.",
+          "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named callbacks, the only useful follow-up is impact. Is it causing delays or extra work?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 14,
+          "question_count": 1,
+          "response_word_count": 39,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -5057,7 +5048,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you didn t answer my question",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -5296,13 +5287,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+          "final_response": "Sure, I'll slow down. I'm checking one thing: is inbound demo follow-up slipping now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 11,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -5405,13 +5396,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure. Short version: this call checks whether inbound demo follow-up slipping is worth a quick human review.",
+          "final_response": "Sure. Short version: I'm checking one thing: is inbound demo follow-up slipping now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 18,
+          "question_count": 1,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -5518,13 +5509,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+          "final_response": "Understood. I'll use simple English. One question: is inbound demo follow-up slipping now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 10,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -5567,7 +5558,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "i don t speak english well",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -8913,14 +8904,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -9057,13 +9045,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "This call is only to check whether a short human review is useful around premium pressure. The quick question is whether that area is causing friction now.",
+          "final_response": "Sure. This call is only to check whether a short human review is useful around premium pressure. The quick question is whether that area is causing friction now.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 27,
+          "response_word_count": 28,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -9170,15 +9158,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Only if premium pressure is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
+          "final_response": "Fair question. Only if premium pressure is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 21,
+          "question_count": 1,
+          "response_word_count": 35,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -9340,7 +9326,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "premium is a problem",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": false,
@@ -10995,13 +10981,13 @@
           "confirmed_gaps": [
             "premium_or_budget"
           ],
-          "final_response": "Fair question. I'm asking because the licensed insurance specialist can review premium pressure if it is worth your time, not to collect extra details.",
+          "final_response": "Fair question. Because the licensed insurance specialist only needs to review this when there is real impact from premium pressure, I'm asking about impact now, not collecting extra details.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 24,
+          "response_word_count": 29,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -11626,13 +11612,13 @@
           "confirmed_gaps": [
             "premium_or_budget"
           ],
-          "final_response": "I mean whether premium pressure is actually happening. If not, there is no reason to continue.",
+          "final_response": "I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named premium pressure, so I'm checking whether it is worth a short review. Is it causing delays or extra work?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 16,
+          "question_count": 1,
+          "response_word_count": 39,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -11737,13 +11723,13 @@
           "confirmed_gaps": [
             "premium_or_budget"
           ],
-          "final_response": "You're right, you already answered that. I'll use premium pressure and not ask it again.",
+          "final_response": "You're right, you already gave me that. I have premium pressure noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 15,
+          "question_count": 1,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -11787,7 +11773,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you already asked that",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -11849,13 +11835,13 @@
           "confirmed_gaps": [
             "premium_or_budget"
           ],
-          "final_response": "You're right, you already answered that. I'll use premium pressure and not ask it again.",
+          "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named premium pressure, the only useful follow-up is impact. Is it causing delays or extra work?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 15,
+          "question_count": 1,
+          "response_word_count": 40,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -11899,7 +11885,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you didn t answer my question",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -12138,13 +12124,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+          "final_response": "Sure, I'll slow down. I'm checking one thing: is premium pressure causing an issue now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 11,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -12247,13 +12233,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure. Short version: this call checks whether premium pressure is worth a quick human review.",
+          "final_response": "Sure. Short version: I'm checking one thing: is premium pressure causing an issue now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 15,
+          "question_count": 1,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -12360,13 +12346,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+          "final_response": "Understood. I'll use simple English. One question: is premium pressure causing an issue now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 10,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -12409,7 +12395,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "i don t speak english well",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -15755,15 +15741,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -15900,15 +15882,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "This call is only to check whether a short human review is useful around manual work. The quick question is whether that area is causing friction now.",
+          "final_response": "Sure. This call is only to check whether a short human review is useful around manual work. The quick question is whether that area is causing friction now.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 27,
+          "response_word_count": 28,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -16015,16 +15995,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Only if manual work is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
+          "final_response": "Fair question. Only if manual work is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement",
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 21,
+          "question_count": 1,
+          "response_word_count": 35,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -16186,7 +16163,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "manual work is a problem",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": false,
@@ -17844,13 +17821,13 @@
           "confirmed_gaps": [
             "manual_work"
           ],
-          "final_response": "Fair question. I'm asking because the implementation specialist can review manual work if it is worth your time, not to collect extra details.",
+          "final_response": "Fair question. Because the implementation specialist only needs to review this when there is real impact from manual work, I'm asking about impact now, not collecting extra details.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 23,
+          "response_word_count": 28,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -18475,13 +18452,13 @@
           "confirmed_gaps": [
             "manual_work"
           ],
-          "final_response": "I mean whether manual work is actually happening. If not, there is no reason to continue.",
+          "final_response": "I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named manual work, so I'm checking whether it is worth a short review. Is it causing delays or extra work?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 16,
+          "question_count": 1,
+          "response_word_count": 39,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -18586,13 +18563,13 @@
           "confirmed_gaps": [
             "manual_work"
           ],
-          "final_response": "You're right, you already answered that. I'll use manual work and not ask it again.",
+          "final_response": "You're right, you already gave me that. I have manual work noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 15,
+          "question_count": 1,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -18636,7 +18613,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you already asked that",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -18698,13 +18675,13 @@
           "confirmed_gaps": [
             "manual_work"
           ],
-          "final_response": "You're right, you already answered that. I'll use manual work and not ask it again.",
+          "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named manual work, the only useful follow-up is impact. Is it causing delays or extra work?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 15,
+          "question_count": 1,
+          "response_word_count": 40,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -18748,7 +18725,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you didn t answer my question",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -18987,13 +18964,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+          "final_response": "Sure, I'll slow down. I'm checking one thing: is manual work causing an issue now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 11,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -19096,13 +19073,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure. Short version: this call checks whether manual work is worth a quick human review.",
+          "final_response": "Sure. Short version: I'm checking one thing: is manual work causing an issue now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 15,
+          "question_count": 1,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -19209,13 +19186,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+          "final_response": "Understood. I'll use simple English. One question: is manual work causing an issue now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 10,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -19258,7 +19235,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "i don t speak english well",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -22604,15 +22581,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -22749,15 +22722,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "This call is only to check whether a short human review is useful around the vehicle issue. The quick question is whether that area is causing friction now.",
+          "final_response": "Sure. This call is only to check whether a short human review is useful around the vehicle issue. The quick question is whether that area is causing friction now.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 28,
+          "response_word_count": 29,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -22864,16 +22835,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Only if vehicle issue is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
+          "final_response": "Fair question. Only if vehicle issue is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement",
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 21,
+          "question_count": 1,
+          "response_word_count": 35,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -23035,7 +23003,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "repair timings are usually pretty long",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": false,
@@ -24693,13 +24661,13 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "Fair question. I'm asking because the service advisor can review repair timing if it is worth your time, not to collect extra details.",
+          "final_response": "Fair question. Because the service advisor only needs to review this when there is real impact from repair timing, I'm asking about impact now, not collecting extra details.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 23,
+          "response_word_count": 28,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -25324,13 +25292,13 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "I mean whether repair timing is actually happening. If not, there is no reason to continue.",
+          "final_response": "I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named repair timing, so I'm checking whether it is worth a short review. Is it causing delays or extra work?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 16,
+          "question_count": 1,
+          "response_word_count": 39,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -25435,13 +25403,13 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "You're right, you already answered that. I'll use repair timing and not ask it again.",
+          "final_response": "You're right, you already gave me that. I have repair timing noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 15,
+          "question_count": 1,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -25485,7 +25453,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you already asked that",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -25547,13 +25515,13 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "You're right, you already answered that. I'll use repair timing and not ask it again.",
+          "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named repair timing, the only useful follow-up is impact. Is it causing delays or extra work?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 15,
+          "question_count": 1,
+          "response_word_count": 40,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -25597,7 +25565,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you didn t answer my question",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -25836,13 +25804,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+          "final_response": "Sure, I'll slow down. I'm checking one thing: is repair timing causing an issue now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 11,
+          "response_word_count": 15,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -25945,13 +25913,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure. Short version: this call checks whether the vehicle issue is worth a quick human review.",
+          "final_response": "Sure. Short version: I'm checking one thing: is repair timing causing an issue now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 16,
+          "question_count": 1,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -26058,13 +26026,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+          "final_response": "Understood. I'll use simple English. One question: is repair timing causing an issue now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 10,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -26107,7 +26075,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "i don t speak english well",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -29453,15 +29421,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -29598,15 +29562,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "This call is only to check whether a short human review is useful around the service need. The quick question is whether that area is causing friction now.",
+          "final_response": "Sure. This call is only to check whether a short human review is useful around the service need. The quick question is whether that area is causing friction now.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 28,
+          "response_word_count": 29,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -29713,16 +29675,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Only if service need is costing time, money, risk, or follow-up quality. If it is not, we can stop here.",
+          "final_response": "Fair question. Only if service need is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
-          "mechanical_warning_flags": [
-            "no_acknowledgement",
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 21,
+          "question_count": 1,
+          "response_word_count": 35,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -29884,7 +29843,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "we need service",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": false,
@@ -31542,13 +31501,13 @@
           "confirmed_gaps": [
             "service_need"
           ],
-          "final_response": "Fair question. I'm asking because the qualified service coordinator can review the service need if it is worth your time, not to collect extra details.",
+          "final_response": "Fair question. Because the qualified service coordinator only needs to review this when there is real impact from the service need, I'm asking about impact now, not collecting extra details.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 25,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -32173,13 +32132,13 @@
           "confirmed_gaps": [
             "service_need"
           ],
-          "final_response": "I mean whether the service need is actually happening. If not, there is no reason to continue.",
+          "final_response": "I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. You already named the service need, so I'm checking whether it is worth a short review. Is it causing delays or extra work?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 17,
+          "question_count": 1,
+          "response_word_count": 40,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -32284,13 +32243,13 @@
           "confirmed_gaps": [
             "service_need"
           ],
-          "final_response": "You're right, you already answered that. I'll use the service need and not ask it again.",
+          "final_response": "You're right, you already gave me that. I have the service need noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 16,
+          "question_count": 1,
+          "response_word_count": 31,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -32334,7 +32293,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you already asked that",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -32396,13 +32355,13 @@
           "confirmed_gaps": [
             "service_need"
           ],
-          "final_response": "You're right, you already answered that. I'll use the service need and not ask it again.",
+          "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named the service need, the only useful follow-up is impact. Is it causing delays or extra work?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 16,
+          "question_count": 1,
+          "response_word_count": 41,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -32446,7 +32405,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "you didn t answer my question",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -32685,13 +32644,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure, I'll slow down. Short version: is that issue happening now?",
+          "final_response": "Sure, I'll slow down. I'm checking one thing: is the service need active now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 11,
+          "response_word_count": 14,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -32794,13 +32753,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Sure. Short version: this call checks whether the service need is worth a quick human review.",
+          "final_response": "Sure. Short version: I'm checking one thing: is the service need active now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
-          "question_count": 0,
-          "response_word_count": 16,
+          "question_count": 1,
+          "response_word_count": 13,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -32907,13 +32866,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Understood. I'll use simple English. Is that issue happening now?",
+          "final_response": "Understood. I'll use simple English. One question: is the service need active now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 10,
+          "response_word_count": 13,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -32956,7 +32915,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "i don t speak english well",
-              "previous_question_type": "none",
+              "previous_question_type": "sales_progression_question",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -34261,22 +34220,12 @@
       ]
     }
   ],
-  "generated_at": "2026-05-23T12:38:50.156875+00:00",
+  "generated_at": "2026-05-23T13:31:51.650763+00:00",
   "mechanical_warning_counts": {
-    "no_acknowledgement": 35,
-    "over_deferential_stop_offer": 40
+    "no_acknowledgement": 23,
+    "over_deferential_stop_offer": 30
   },
   "most_concerning_conversations_by_mechanical_signals_only": [
-    {
-      "arc_type": "direct_question",
-      "campaign_id": "routesignal_live_demo",
-      "conversation_id": "commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question",
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ]
-    },
     {
       "arc_type": "no_fit_stop",
       "campaign_id": "routesignal_live_demo",
@@ -34296,31 +34245,11 @@
       ]
     },
     {
-      "arc_type": "direct_question",
-      "campaign_id": "synthetic-b2b-saas-operations",
-      "conversation_id": "commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question",
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ]
-    },
-    {
       "arc_type": "no_fit_stop",
       "campaign_id": "synthetic-b2b-saas-operations",
       "conversation_id": "commercial-sales-conversation-review-001-03-10-synthetic-b2b-saas-operations-no_fit_stop",
       "mechanical_warning_count": 3,
       "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ]
-    },
-    {
-      "arc_type": "direct_question",
-      "campaign_id": "synthetic-automotive-service-review",
-      "conversation_id": "commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question",
-      "mechanical_warning_count": 3,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
         "over_deferential_stop_offer"
       ]
     },
@@ -34334,13 +34263,40 @@
       ]
     },
     {
-      "arc_type": "direct_question",
+      "arc_type": "no_fit_stop",
       "campaign_id": "synthetic-home-services-estimate",
-      "conversation_id": "commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question",
+      "conversation_id": "commercial-sales-conversation-review-001-05-10-synthetic-home-services-estimate-no_fit_stop",
       "mechanical_warning_count": 3,
+      "mechanical_warning_flags": [
+        "over_deferential_stop_offer"
+      ]
+    },
+    {
+      "arc_type": "trust_challenge",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-06-routesignal_live_demo-trust_challenge",
+      "mechanical_warning_count": 2,
       "mechanical_warning_flags": [
         "no_acknowledgement",
         "over_deferential_stop_offer"
+      ]
+    },
+    {
+      "arc_type": "asr_garble",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-09-routesignal_live_demo-asr_garble",
+      "mechanical_warning_count": 2,
+      "mechanical_warning_flags": [
+        "no_acknowledgement"
+      ]
+    },
+    {
+      "arc_type": "asr_garble",
+      "campaign_id": "synthetic-insurance-review",
+      "conversation_id": "commercial-sales-conversation-review-001-02-09-synthetic-insurance-review-asr_garble",
+      "mechanical_warning_count": 2,
+      "mechanical_warning_flags": [
+        "no_acknowledgement"
       ]
     }
   ],
@@ -34391,6 +34347,12 @@
       "mechanical_warning_count": 0
     },
     {
+      "arc_type": "direct_question",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question",
+      "mechanical_warning_count": 0
+    },
+    {
       "arc_type": "objection",
       "campaign_id": "routesignal_live_demo",
       "conversation_id": "commercial-sales-conversation-review-001-01-05-routesignal_live_demo-objection",
@@ -34413,12 +34375,6 @@
       "campaign_id": "synthetic-insurance-review",
       "conversation_id": "commercial-sales-conversation-review-001-02-01-synthetic-insurance-review-smooth_qualified_appointment",
       "mechanical_warning_count": 0
-    },
-    {
-      "arc_type": "time_pressure",
-      "campaign_id": "synthetic-insurance-review",
-      "conversation_id": "commercial-sales-conversation-review-001-02-02-synthetic-insurance-review-time_pressure",
-      "mechanical_warning_count": 0
     }
   ],
   "turn_count": 275,
@@ -34434,10 +34390,10 @@
       "file": "runtime/core/universal_conversation_policy_runtime.py",
       "id": "UDR-001",
       "line_numbers": [
-        483,
-        485,
-        487,
-        489
+        504,
+        506,
+        508,
+        510
       ],
       "recommended_follow_up": "Move primary diagnostic phrase selection to campaign config/adapters.",
       "risk": "Generic sales behavior can become coupled to fixture ids instead of campaign facts.",
@@ -34454,10 +34410,10 @@
       "file": "runtime/core/universal_conversation_policy_runtime.py",
       "id": "UDR-002",
       "line_numbers": [
-        483,
-        485,
-        487,
-        489
+        504,
+        506,
+        508,
+        510
       ],
       "recommended_follow_up": "Use campaign fact slots such as core_diagnostic_gaps, gap_label, and gap_value_bridge.",
       "risk": "A new campaign in the same vertical may inherit the wrong primary pain hypothesis.",
@@ -34481,11 +34437,11 @@
         462,
         463,
         471,
-        482,
-        899,
-        901,
-        902,
-        903
+        503,
+        920,
+        922,
+        923,
+        924
       ],
       "recommended_follow_up": "Keep RouteSignal-specific wording in RouteSignal campaign/playbook facts.",
       "risk": "RouteSignal preservation logic can leak into generic universal response shape code.",
@@ -34512,36 +34468,36 @@
         338,
         339,
         439,
-        484,
-        486,
-        488,
-        490,
-        600,
-        603,
-        604,
-        627,
-        629,
-        632,
-        635,
-        636,
-        679,
-        680,
-        682,
-        683,
-        684,
-        886,
-        887,
-        888,
-        889,
-        890,
-        891,
-        892,
-        893,
-        894,
-        895,
-        896,
-        897,
-        1341
+        505,
+        507,
+        509,
+        511,
+        621,
+        624,
+        625,
+        648,
+        650,
+        653,
+        656,
+        657,
+        700,
+        701,
+        703,
+        704,
+        705,
+        907,
+        908,
+        909,
+        910,
+        911,
+        912,
+        913,
+        914,
+        915,
+        916,
+        917,
+        918,
+        1362
       ],
       "recommended_follow_up": "Expose the preferred customer-facing phrase per gap through campaign config.",
       "risk": "Sales copy and primary pain language will require code changes instead of config changes.",

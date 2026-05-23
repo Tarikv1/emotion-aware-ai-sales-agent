@@ -409,7 +409,7 @@
       "confirmed_gaps": [
         "repair_timing"
       ],
-      "final_response": "Fair question. I'm asking because the service advisor can review repair timing if it is worth your time, not to collect extra details.",
+      "final_response": "Fair question. Because the service advisor only needs to review this when there is real impact from repair timing, I'm asking about impact now, not collecting extra details.",
       "label": "automotive_challenge",
       "semantic": "purpose_clarification_after_confirmed_gap",
       "side_effect_flags": {
@@ -509,7 +509,7 @@
       "campaign_selector_mode": "generic_config",
       "cleared_gaps": null,
       "confirmed_gaps": null,
-      "final_response": "This call is only to check whether a short human review is useful around premium pressure. The quick question is whether that area is causing friction now.",
+      "final_response": "Sure. This call is only to check whether a short human review is useful around premium pressure. The quick question is whether that area is causing friction now.",
       "label": "product_detail",
       "semantic": "product_detail_limit_question",
       "side_effect_flags": {
