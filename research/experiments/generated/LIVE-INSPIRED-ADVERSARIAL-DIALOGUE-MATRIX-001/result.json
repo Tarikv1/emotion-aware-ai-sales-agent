@@ -1,0 +1,567 @@
+{
+  "asr_near_miss_findings": [
+    "adv-asr-near-miss-gap-phrases-routesignal_live_demo-04",
+    "adv-asr-near-miss-gap-phrases-synthetic-insurance-review-02",
+    "adv-asr-near-miss-gap-phrases-synthetic-insurance-review-04",
+    "adv-asr-near-miss-gap-phrases-synthetic-telecom-plan-review-03",
+    "adv-asr-near-miss-gap-phrases-synthetic-telecom-plan-review-04",
+    "adv-asr-near-miss-gap-phrases-synthetic-membership-plan-review-01",
+    "adv-asr-near-miss-gap-phrases-synthetic-membership-plan-review-02",
+    "adv-asr-near-miss-gap-phrases-synthetic-b2b-saas-operations-03",
+    "adv-asr-near-miss-gap-phrases-synthetic-b2b-saas-operations-04",
+    "adv-asr-near-miss-invented-transcript-stress-routesignal_live_demo-01",
+    "adv-asr-near-miss-invented-transcript-stress-synthetic-insurance-review-01",
+    "adv-asr-near-miss-invented-transcript-stress-synthetic-telecom-plan-review-01",
+    "adv-asr-near-miss-invented-transcript-stress-synthetic-automotive-service-review-01",
+    "adv-asr-near-miss-invented-transcript-stress-synthetic-membership-plan-review-01",
+    "adv-asr-near-miss-invented-transcript-stress-synthetic-membership-plan-review-02",
+    "adv-asr-near-miss-invented-transcript-stress-synthetic-b2b-saas-operations-01"
+  ],
+  "campaign_counts": {
+    "routesignal_live_demo": 125,
+    "synthetic-automotive-service-review": 120,
+    "synthetic-b2b-saas-operations": 120,
+    "synthetic-insurance-review": 122,
+    "synthetic-membership-plan-review": 120,
+    "synthetic-telecom-plan-review": 122
+  },
+  "checkpoint_id": "LIVE-INSPIRED-ADVERSARIAL-DIALOGUE-MATRIX-001",
+  "core_gate_failure_count": 0,
+  "direct_question_challenge_findings": [
+    "adv-direct-product-value-challenge-loops-routesignal_live_demo-02",
+    "adv-direct-product-value-challenge-loops-synthetic-insurance-review-02",
+    "adv-direct-product-value-challenge-loops-synthetic-telecom-plan-review-02",
+    "adv-direct-product-value-challenge-loops-synthetic-automotive-service-review-02",
+    "adv-direct-product-value-challenge-loops-synthetic-membership-plan-review-02",
+    "adv-direct-product-value-challenge-loops-synthetic-b2b-saas-operations-02",
+    "adv-repeated-challenge-escalation-routesignal_live_demo-04",
+    "adv-why-human-review-challenge-routesignal_live_demo-04",
+    "adv-why-human-review-challenge-synthetic-insurance-review-01",
+    "adv-why-human-review-challenge-synthetic-telecom-plan-review-01",
+    "adv-why-human-review-challenge-synthetic-automotive-service-review-01",
+    "adv-why-human-review-challenge-synthetic-membership-plan-review-01",
+    "adv-why-human-review-challenge-synthetic-b2b-saas-operations-01"
+  ],
+  "explicit_stop_red_findings": [],
+  "failure_counts_by_campaign": {
+    "routesignal_live_demo": 59,
+    "synthetic-automotive-service-review": 62,
+    "synthetic-b2b-saas-operations": 61,
+    "synthetic-insurance-review": 61,
+    "synthetic-membership-plan-review": 58,
+    "synthetic-telecom-plan-review": 66
+  },
+  "failure_counts_by_family": {
+    "agent_looping_complaints": 5,
+    "asr_near_miss_gap_phrases": 21,
+    "asr_near_miss_invented_transcript_stress": 10,
+    "buyer_correction_contradiction_stress": 9,
+    "buyer_says_agent_is_wrong": 24,
+    "callback_time_too_early_or_ambiguous": 24,
+    "campaign_selector_wrong_campaign_contamination": 13,
+    "commercial_pressure_close_strength_stress": 16,
+    "commercial_quality_stress": 10,
+    "direct_product_value_challenge_loops": 6,
+    "disallowed_persistence_after_stop": 6,
+    "early_callback_premature_scheduling": 6,
+    "false_assumption_correction": 11,
+    "hostile_challenging_buyer": 21,
+    "human_context_interruption_pressure": 6,
+    "impact_before_clean_pain": 19,
+    "long_conversation_state_drift": 7,
+    "mixed_intent_buyer_turns": 6,
+    "multi_campaign_contamination_stress": 18,
+    "permission_weak_acknowledgement_variants": 15,
+    "price_budget_affordability_stress": 6,
+    "repeated_answer_variation_anti_loop": 23,
+    "repeated_challenge_escalation": 24,
+    "repeated_product_detail_scope_questions": 21,
+    "sales_realism_score_heuristics": 12,
+    "scope_boundary_regulated_detail_stress": 5,
+    "vague_affirmative_after_context": 12,
+    "why_human_review_challenge": 11
+  },
+  "failure_counts_by_selected_action_source": {
+    "contextual_buyer_semantics": 12,
+    "dialogue_pragmatics": 6,
+    "live_voice_session_policy": 36,
+    "pre_speech_conversation_stability_guard": 233,
+    "terminal_call_control": 6,
+    "universal_response_shape": 74
+  },
+  "false_assumption_clusters": [
+    "adv-false-assumption-correction-routesignal_live_demo-03",
+    "adv-false-assumption-correction-synthetic-insurance-review-03",
+    "adv-false-assumption-correction-synthetic-telecom-plan-review-03",
+    "adv-false-assumption-correction-synthetic-automotive-service-review-03",
+    "adv-false-assumption-correction-synthetic-membership-plan-review-03",
+    "adv-false-assumption-correction-synthetic-b2b-saas-operations-03",
+    "adv-buyer-correction-contradiction-stress-routesignal_live_demo-03",
+    "adv-buyer-correction-contradiction-stress-routesignal_live_demo-04",
+    "adv-buyer-correction-contradiction-stress-synthetic-insurance-review-03",
+    "adv-buyer-correction-contradiction-stress-synthetic-telecom-plan-review-03",
+    "adv-buyer-correction-contradiction-stress-synthetic-automotive-service-review-03",
+    "adv-buyer-correction-contradiction-stress-synthetic-membership-plan-review-03",
+    "adv-buyer-correction-contradiction-stress-synthetic-b2b-saas-operations-03"
+  ],
+  "family_counts": {
+    "agent_looping_complaints": 24,
+    "asr_near_miss_gap_phrases": 26,
+    "asr_near_miss_invented_transcript_stress": 24,
+    "buyer_correction_contradiction_stress": 24,
+    "buyer_says_agent_is_wrong": 24,
+    "callback_time_too_early_or_ambiguous": 24,
+    "campaign_selector_wrong_campaign_contamination": 24,
+    "commercial_pressure_close_strength_stress": 25,
+    "commercial_quality_stress": 24,
+    "direct_product_value_challenge_loops": 25,
+    "disallowed_persistence_after_stop": 24,
+    "early_callback_premature_scheduling": 24,
+    "false_assumption_correction": 25,
+    "hostile_challenging_buyer": 24,
+    "human_context_interruption_pressure": 24,
+    "human_context_sales_intent_hybrids": 24,
+    "impact_before_clean_pain": 24,
+    "long_conversation_state_drift": 24,
+    "mixed_intent_buyer_turns": 24,
+    "multi_campaign_contamination_stress": 24,
+    "permission_weak_acknowledgement_variants": 25,
+    "price_budget_affordability_stress": 24,
+    "repeated_answer_variation_anti_loop": 24,
+    "repeated_challenge_escalation": 24,
+    "repeated_product_detail_scope_questions": 25,
+    "sales_realism_score_heuristics": 24,
+    "scope_boundary_regulated_detail_stress": 25,
+    "stop_refusal_pressure_test": 24,
+    "vague_affirmative_after_context": 25,
+    "why_human_review_challenge": 24
+  },
+  "generated_at": "2026-05-23T20:59:38.527551+00:00",
+  "internal_wording_leaks": [
+    "adv-asr-near-miss-gap-phrases-synthetic-insurance-review-04",
+    "adv-asr-near-miss-gap-phrases-synthetic-b2b-saas-operations-03",
+    "adv-scope-boundary-regulated-detail-stress-routesignal_live_demo-01",
+    "adv-scope-boundary-regulated-detail-stress-routesignal_live_demo-03",
+    "adv-multi-campaign-contamination-stress-routesignal_live_demo-02",
+    "adv-multi-campaign-contamination-stress-synthetic-insurance-review-02",
+    "adv-multi-campaign-contamination-stress-synthetic-telecom-plan-review-02",
+    "adv-multi-campaign-contamination-stress-synthetic-automotive-service-review-02",
+    "adv-multi-campaign-contamination-stress-synthetic-membership-plan-review-02",
+    "adv-multi-campaign-contamination-stress-synthetic-b2b-saas-operations-02"
+  ],
+  "needs_human_review_examples": [
+    "core-routesignal-permission-repeated-ack",
+    "core-routesignal-asr-near-miss-callbacks",
+    "core-routesignal-near-miss-impact",
+    "core-routesignal-vague-followup",
+    "core-routesignal-why-care",
+    "core-insurance-false-assumption",
+    "core-insurance-product-detail-repeat",
+    "core-telecom-vague-positive-after-bad-experience",
+    "core-telecom-plan-fit-boundary",
+    "adv-permission-weak-acknowledgement-variants-routesignal_live_demo-01",
+    "adv-permission-weak-acknowledgement-variants-routesignal_live_demo-02",
+    "adv-permission-weak-acknowledgement-variants-routesignal_live_demo-03",
+    "adv-permission-weak-acknowledgement-variants-routesignal_live_demo-04",
+    "adv-permission-weak-acknowledgement-variants-synthetic-insurance-review-01",
+    "adv-permission-weak-acknowledgement-variants-synthetic-insurance-review-02",
+    "adv-permission-weak-acknowledgement-variants-synthetic-insurance-review-03",
+    "adv-permission-weak-acknowledgement-variants-synthetic-insurance-review-04",
+    "adv-permission-weak-acknowledgement-variants-synthetic-telecom-plan-review-01",
+    "adv-permission-weak-acknowledgement-variants-synthetic-telecom-plan-review-02",
+    "adv-permission-weak-acknowledgement-variants-synthetic-telecom-plan-review-03"
+  ],
+  "out_of_campaign_relevance_failures": [
+    "adv-campaign-selector-wrong-campaign-contamination-synthetic-insurance-review-03",
+    "adv-campaign-selector-wrong-campaign-contamination-synthetic-telecom-plan-review-03",
+    "adv-campaign-selector-wrong-campaign-contamination-synthetic-automotive-service-review-03",
+    "adv-campaign-selector-wrong-campaign-contamination-synthetic-membership-plan-review-03",
+    "adv-campaign-selector-wrong-campaign-contamination-synthetic-b2b-saas-operations-03",
+    "adv-multi-campaign-contamination-stress-synthetic-telecom-plan-review-03",
+    "adv-multi-campaign-contamination-stress-synthetic-b2b-saas-operations-03"
+  ],
+  "pass_fail_counts": {
+    "core_gate_failures": 0,
+    "exploratory_red_findings": 367,
+    "failed_or_red": 367,
+    "passed": 362
+  },
+  "recommendation": "needs human review and ranked follow-up patches",
+  "red_finding_count": 367,
+  "repeated_response_clusters": [
+    {
+      "response": "Understood. I will stop here. Goodbye.",
+      "scenario_count": 6
+    },
+    {
+      "response": "The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?",
+      "scenario_count": 2
+    },
+    {
+      "response": "The quick check is whether any of these areas is worth a short human plan and availability review: plan fit, coverage or availability, or contract or switching. If not, I can stop here; which part should I check first?",
+      "scenario_count": 2
+    },
+    {
+      "response": "The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?",
+      "scenario_count": 2
+    },
+    {
+      "response": "The quick check is whether any of these areas is worth a short account support or plan-fit review: plan fit, renewal or cancellation, or usage or value. If not, I can stop here; which part should I check first?",
+      "scenario_count": 2
+    },
+    {
+      "response": "The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?",
+      "scenario_count": 2
+    },
+    {
+      "response": "Sure. This call is only to check whether a short human review is useful around plan fit. The quick question is whether that area is causing friction now.",
+      "scenario_count": 2
+    },
+    {
+      "response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named plan fit, the only useful follow-up is impact. Is it causing delays or extra work?",
+      "scenario_count": 2
+    },
+    {
+      "response": "Sure. RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, or handoffs. The quick check is whether that problem exists on your side.",
+      "scenario_count": 1
+    },
+    {
+      "response": "Correct. I can explain the high-level purpose, but detailed advice belongs with the verified implementation reviewer. This call only checks whether a non-binding workflow review is worth it. Do you want me to check whether a review is useful?",
+      "scenario_count": 1
+    },
+    {
+      "response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named inbound demo follow-up slipping, the only useful follow-up is impact. Is it causing delays or extra work?",
+      "scenario_count": 1
+    },
+    {
+      "response": "Sure. This call is only to check whether a short human review is useful around premium pressure. The quick question is whether that area is causing friction now.",
+      "scenario_count": 1
+    }
+  ],
+  "runtime_behavior_changed": false,
+  "side_effect_boundary": {
+    "audio_file_created": false,
+    "creates_calendar_event": false,
+    "customer_audio_uploaded_to_python_server": false,
+    "customer_audio_uploaded_to_tts_provider": false,
+    "live_tts_used": false,
+    "local_llm_calls_made": false,
+    "opens_prod_102": false,
+    "provider_calls_made": false,
+    "sends_email": false,
+    "tts_provider_calls_made": false,
+    "writes_crm": false
+  },
+  "stability_guard_override_findings": [],
+  "status": "red_findings",
+  "summary": {
+    "campaign_coverage": [
+      "routesignal_live_demo",
+      "synthetic-automotive-service-review",
+      "synthetic-b2b-saas-operations",
+      "synthetic-insurance-review",
+      "synthetic-membership-plan-review",
+      "synthetic-telecom-plan-review"
+    ],
+    "core_gate_count": 9,
+    "core_gate_failure_count": 0,
+    "exploratory_count": 720,
+    "failure_count": 367,
+    "multi_turn_conversation_count": 398,
+    "pass_count": 362,
+    "red_finding_count": 367,
+    "scenario_count": 729,
+    "scenario_family_coverage": [
+      "agent_looping_complaints",
+      "asr_near_miss_gap_phrases",
+      "asr_near_miss_invented_transcript_stress",
+      "buyer_correction_contradiction_stress",
+      "buyer_says_agent_is_wrong",
+      "callback_time_too_early_or_ambiguous",
+      "campaign_selector_wrong_campaign_contamination",
+      "commercial_pressure_close_strength_stress",
+      "commercial_quality_stress",
+      "direct_product_value_challenge_loops",
+      "disallowed_persistence_after_stop",
+      "early_callback_premature_scheduling",
+      "false_assumption_correction",
+      "hostile_challenging_buyer",
+      "human_context_interruption_pressure",
+      "human_context_sales_intent_hybrids",
+      "impact_before_clean_pain",
+      "long_conversation_state_drift",
+      "mixed_intent_buyer_turns",
+      "multi_campaign_contamination_stress",
+      "permission_weak_acknowledgement_variants",
+      "price_budget_affordability_stress",
+      "repeated_answer_variation_anti_loop",
+      "repeated_challenge_escalation",
+      "repeated_product_detail_scope_questions",
+      "sales_realism_score_heuristics",
+      "scope_boundary_regulated_detail_stress",
+      "stop_refusal_pressure_test",
+      "vague_affirmative_after_context",
+      "why_human_review_challenge"
+    ]
+  },
+  "top_failure_clusters": [
+    {
+      "count": 277,
+      "flag": "repeated_full_menu"
+    },
+    {
+      "count": 23,
+      "flag": "out_of_scope_reset_after_relevant_context"
+    },
+    {
+      "count": 18,
+      "flag": "repeated_response"
+    },
+    {
+      "count": 16,
+      "flag": "asr_near_miss_not_clarified"
+    },
+    {
+      "count": 13,
+      "flag": "did_not_answer_direct_question"
+    },
+    {
+      "count": 13,
+      "flag": "false_assumption_not_repaired"
+    },
+    {
+      "count": 12,
+      "flag": "appointment_too_early"
+    },
+    {
+      "count": 12,
+      "flag": "hostile_response_not_deescalated"
+    },
+    {
+      "count": 10,
+      "flag": "internal_wording_leak"
+    },
+    {
+      "count": 7,
+      "flag": "campaign_contamination"
+    },
+    {
+      "count": 4,
+      "flag": "too_long_for_live_voice"
+    }
+  ],
+  "worst_conversations": [
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "yeah",
+        "coverage thing is confusing",
+        "it wastes time"
+      ],
+      "campaign_id": "synthetic-insurance-review",
+      "final_response": "The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?",
+      "mechanical_failure_flags": [
+        "asr_near_miss_not_clarified",
+        "internal_wording_leak",
+        "repeated_full_menu"
+      ],
+      "priority": "critical",
+      "scenario_family": "asr_near_miss_gap_phrases",
+      "scenario_id": "adv-asr-near-miss-gap-phrases-synthetic-insurance-review-04",
+      "selected_action_source": "pre_speech_conversation_stability_guard",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "yeah",
+        "integration thing is confusing"
+      ],
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "final_response": "I should not guess on technical details. I can send this to implementation specialist.",
+      "mechanical_failure_flags": [
+        "asr_near_miss_not_clarified",
+        "internal_wording_leak"
+      ],
+      "priority": "critical",
+      "scenario_family": "asr_near_miss_gap_phrases",
+      "scenario_id": "adv-asr-near-miss-gap-phrases-synthetic-b2b-saas-operations-03",
+      "selected_action_source": "live_voice_session_policy",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "I need insurance coverage",
+        "why are you talking about something else"
+      ],
+      "campaign_id": "routesignal_live_demo",
+      "final_response": "Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?",
+      "mechanical_failure_flags": [
+        "internal_wording_leak"
+      ],
+      "priority": "critical",
+      "scenario_family": "multi_campaign_contamination_stress",
+      "scenario_id": "adv-multi-campaign-contamination-stress-routesignal_live_demo-02",
+      "selected_action_source": "live_voice_session_policy",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "I need insurance coverage",
+        "why are you talking about something else"
+      ],
+      "campaign_id": "synthetic-automotive-service-review",
+      "final_response": "Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?",
+      "mechanical_failure_flags": [
+        "internal_wording_leak"
+      ],
+      "priority": "critical",
+      "scenario_family": "multi_campaign_contamination_stress",
+      "scenario_id": "adv-multi-campaign-contamination-stress-synthetic-automotive-service-review-02",
+      "selected_action_source": "live_voice_session_policy",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "I need insurance coverage",
+        "why are you talking about something else"
+      ],
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "final_response": "Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?",
+      "mechanical_failure_flags": [
+        "internal_wording_leak"
+      ],
+      "priority": "critical",
+      "scenario_family": "multi_campaign_contamination_stress",
+      "scenario_id": "adv-multi-campaign-contamination-stress-synthetic-b2b-saas-operations-02",
+      "selected_action_source": "live_voice_session_policy",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "I need insurance coverage",
+        "why are you talking about something else"
+      ],
+      "campaign_id": "synthetic-insurance-review",
+      "final_response": "Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?",
+      "mechanical_failure_flags": [
+        "internal_wording_leak"
+      ],
+      "priority": "critical",
+      "scenario_family": "multi_campaign_contamination_stress",
+      "scenario_id": "adv-multi-campaign-contamination-stress-synthetic-insurance-review-02",
+      "selected_action_source": "live_voice_session_policy",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "I need insurance coverage",
+        "why are you talking about something else"
+      ],
+      "campaign_id": "synthetic-membership-plan-review",
+      "final_response": "Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?",
+      "mechanical_failure_flags": [
+        "internal_wording_leak"
+      ],
+      "priority": "critical",
+      "scenario_family": "multi_campaign_contamination_stress",
+      "scenario_id": "adv-multi-campaign-contamination-stress-synthetic-membership-plan-review-02",
+      "selected_action_source": "live_voice_session_policy",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "I need insurance coverage",
+        "why are you talking about something else"
+      ],
+      "campaign_id": "synthetic-telecom-plan-review",
+      "final_response": "Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?",
+      "mechanical_failure_flags": [
+        "internal_wording_leak"
+      ],
+      "priority": "critical",
+      "scenario_family": "multi_campaign_contamination_stress",
+      "scenario_id": "adv-multi-campaign-contamination-stress-synthetic-telecom-plan-review-02",
+      "selected_action_source": "live_voice_session_policy",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "can you tell me exactly what coverage I need"
+      ],
+      "campaign_id": "routesignal_live_demo",
+      "final_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
+      "mechanical_failure_flags": [
+        "internal_wording_leak"
+      ],
+      "priority": "critical",
+      "scenario_family": "scope_boundary_regulated_detail_stress",
+      "scenario_id": "adv-scope-boundary-regulated-detail-stress-routesignal_live_demo-01",
+      "selected_action_source": "live_voice_session_policy",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "is coverage available at my address"
+      ],
+      "campaign_id": "routesignal_live_demo",
+      "final_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
+      "mechanical_failure_flags": [
+        "internal_wording_leak"
+      ],
+      "priority": "critical",
+      "scenario_family": "scope_boundary_regulated_detail_stress",
+      "scenario_id": "adv-scope-boundary-regulated-detail-stress-routesignal_live_demo-03",
+      "selected_action_source": "live_voice_session_policy",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "yeah",
+        "visibility thing is unclear",
+        "it wastes time"
+      ],
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "final_response": "The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?",
+      "mechanical_failure_flags": [
+        "asr_near_miss_not_clarified",
+        "out_of_scope_reset_after_relevant_context",
+        "repeated_full_menu"
+      ],
+      "priority": "high",
+      "scenario_family": "asr_near_miss_gap_phrases",
+      "scenario_id": "adv-asr-near-miss-gap-phrases-synthetic-b2b-saas-operations-04",
+      "selected_action_source": "pre_speech_conversation_stability_guard",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "yeah",
+        "payment pressure is a problem",
+        "it wastes time"
+      ],
+      "campaign_id": "synthetic-insurance-review",
+      "final_response": "The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?",
+      "mechanical_failure_flags": [
+        "asr_near_miss_not_clarified",
+        "out_of_scope_reset_after_relevant_context",
+        "repeated_full_menu"
+      ],
+      "priority": "high",
+      "scenario_family": "asr_near_miss_gap_phrases",
+      "scenario_id": "adv-asr-near-miss-gap-phrases-synthetic-insurance-review-02",
+      "selected_action_source": "pre_speech_conversation_stability_guard",
+      "tier": "exploratory_red_findings"
+    }
+  ]
+}

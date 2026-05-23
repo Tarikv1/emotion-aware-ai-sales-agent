@@ -14,7 +14,7 @@
   "raw_customer_audio_found": false,
   "raw_email_like_values_found": 0,
   "raw_private_transcript_text_included": false,
-  "records_redacted": 460,
+  "records_redacted": 0,
   "secret_like_values_found": 0,
   "transcript_hashing_algorithm": "sha256",
   "validator_creates_calendar_event": false,

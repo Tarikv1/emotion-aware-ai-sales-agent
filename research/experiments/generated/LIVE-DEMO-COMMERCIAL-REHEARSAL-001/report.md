@@ -1,12 +1,12 @@
 # LIVE-DEMO-COMMERCIAL-REHEARSAL-001 Report
 
 ## Summary
-- Status: `ready_for_human_review`
+- Status: `current_only_no_current_runtime_records`
 - This packet is generated from ignored local private live-demo artifacts and redacts buyer transcript text.
 
 ## Private Input Discovery Count
 - Private JSON files discovered: `460`
-- Parsed rehearsal records: `460`
+- Parsed rehearsal records: `0`
 - Unreadable private inputs: `0`
 - Current-runtime-marked records: `0`
 - Unknown-version records: `425`
@@ -18,25 +18,11 @@
 - `unknown_version_private_artifact`: `425`
 
 ## Rehearsal Record Count
-- Records available for human review: `460`
+- Records available for human review: `0`
 
 ## Campaign Coverage Found In Private Evidence
-- `campaign-prod-005-b2b-software`
-- `campaign-prod-005-b2c-telecom`
-- `synthetic-automotive-service-review`
-- `synthetic-healthcare-admin-review`
-- `synthetic-insurance-review`
-- `synthetic-membership-plan-review`
-- `synthetic-telecom-plan-review`
 
 ## Mechanical Issue Counts
-- `audio_url_missing_when_provider_called`: `1`
-- `call_control_unexpected`: `19`
-- `final_response_missing`: `27`
-- `provider_audio_failed`: `1`
-- `repeated_response`: `28`
-- `response_too_long_for_live_voice`: `3`
-- `tts_input_missing`: `27`
 
 ## Current-Only Filter
 - Default packet mode includes all archival private live-demo records.
@@ -44,18 +30,7 @@
 - If current-runtime-marked records are `0`, current-only evidence is unavailable and a fresh rehearsal is needed.
 
 ## Top Concerning Rehearsal Records By Mechanical Signals Only
-- `live-demo-commercial-rehearsal-001-0104`: `2` flags (provider_audio_failed, audio_url_missing_when_provider_called)
-- `live-demo-commercial-rehearsal-001-0297`: `2` flags (final_response_missing, tts_input_missing)
-- `live-demo-commercial-rehearsal-001-0325`: `2` flags (final_response_missing, tts_input_missing)
-- `live-demo-commercial-rehearsal-001-0326`: `2` flags (final_response_missing, tts_input_missing)
-- `live-demo-commercial-rehearsal-001-0327`: `2` flags (final_response_missing, tts_input_missing)
-- `live-demo-commercial-rehearsal-001-0328`: `2` flags (final_response_missing, tts_input_missing)
-- `live-demo-commercial-rehearsal-001-0329`: `2` flags (final_response_missing, tts_input_missing)
-- `live-demo-commercial-rehearsal-001-0330`: `2` flags (final_response_missing, tts_input_missing)
-- `live-demo-commercial-rehearsal-001-0331`: `2` flags (final_response_missing, tts_input_missing)
-- `live-demo-commercial-rehearsal-001-0332`: `2` flags (final_response_missing, tts_input_missing)
-- `live-demo-commercial-rehearsal-001-0333`: `2` flags (final_response_missing, tts_input_missing)
-- `live-demo-commercial-rehearsal-001-0334`: `2` flags (final_response_missing, tts_input_missing)
+- No mechanical issues were detected by this packet generator.
 
 ## Safety Boundary Summary
 - Generator provider calls made: `false`

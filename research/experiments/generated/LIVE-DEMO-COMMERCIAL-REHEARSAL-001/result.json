@@ -1,31 +1,15 @@
 {
-  "campaign_coverage_found": [
-    "campaign-prod-005-b2b-software",
-    "campaign-prod-005-b2c-telecom",
-    "synthetic-automotive-service-review",
-    "synthetic-healthcare-admin-review",
-    "synthetic-insurance-review",
-    "synthetic-membership-plan-review",
-    "synthetic-telecom-plan-review"
-  ],
+  "campaign_coverage_found": [],
   "checkpoint_id": "LIVE-DEMO-COMMERCIAL-REHEARSAL-001",
-  "current_only_mode": false,
+  "current_only_mode": true,
   "current_runtime_marked_record_count": 0,
   "freshness_counts": {
     "stale_pre_current_runtime_artifact": 35,
     "unknown_version_private_artifact": 425
   },
-  "mechanical_issue_counts": {
-    "audio_url_missing_when_provider_called": 1,
-    "call_control_unexpected": 19,
-    "final_response_missing": 27,
-    "provider_audio_failed": 1,
-    "repeated_response": 28,
-    "response_too_long_for_live_voice": 3,
-    "tts_input_missing": 27
-  },
+  "mechanical_issue_counts": {},
   "private_input_discovery_count": 460,
-  "rehearsal_record_count": 460,
+  "rehearsal_record_count": 0,
   "required_files": [
     "rehearsal_packet.md",
     "rehearsal_packet.json",
@@ -46,6 +30,6 @@
     "generator_writes_crm": false
   },
   "stale_or_legacy_record_count": 35,
-  "status": "ready_for_human_review",
+  "status": "current_only_no_current_runtime_records",
   "unknown_version_record_count": 425
 }
