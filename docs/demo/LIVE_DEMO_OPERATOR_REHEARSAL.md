@@ -146,6 +146,58 @@ The JSON export should include:
 
 Keep exported rehearsal transcripts local unless they contain only synthetic demo content.
 
+## Commercial Rehearsal Review Packet
+
+After a controlled local rehearsal, generate the redacted commercial evidence packet:
+
+```powershell
+python scripts\generate_live_demo_commercial_rehearsal_packet_001.py
+python scripts\validate_live_demo_commercial_rehearsal_packet_001.py
+```
+
+The packet reads ignored private turn JSON under `data/private/live-demo-*`, hashes buyer transcript text, and writes public review artifacts under `research/experiments/generated/LIVE-DEMO-COMMERCIAL-REHEARSAL-001/`.
+
+Recommended live commercial rehearsal scenarios:
+
+A. RouteSignal normal path
+- Start RouteSignal.
+- Permission.
+- `callbacks are a problem`
+- `it causes delays`
+- `tomorrow at 3 works`
+
+B. RouteSignal challenge path
+- `what does your product do`
+- `why should I care`
+- `are you a robot`
+- `who are you`
+
+C. Generic insurance product-detail path
+- Select synthetic insurance.
+- `what does your product do`
+- `so you cannot give me details?`
+- `maybe coverage fit`
+- `it is active now`
+- `it wastes time`
+
+D. Rapport/hardship path
+- `I'm driving`
+- `I just got out of the hospital`
+- `everything is expensive right now`
+- `last company like this wasted my time`
+
+E. ASR stress path
+- `yeah that would be good`
+- `okay that would be good`
+- `call me tomorrow at 3`
+- Say deliberately noisy or short phrases and check repair behavior.
+
+F. Campaign selector integrity
+- Start with RouteSignal selected.
+- Switch to generic insurance.
+- Switch back to RouteSignal.
+- Confirm campaign metadata and response content do not mix.
+
 ## Invalid Config Rehearsal
 
 If a selected generic config is invalid, the UI should:

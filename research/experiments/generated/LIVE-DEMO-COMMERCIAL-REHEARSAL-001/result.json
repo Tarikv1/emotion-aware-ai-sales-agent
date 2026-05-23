@@ -1,0 +1,41 @@
+{
+  "campaign_coverage_found": [
+    "campaign-prod-005-b2b-software",
+    "campaign-prod-005-b2c-telecom",
+    "synthetic-automotive-service-review",
+    "synthetic-healthcare-admin-review",
+    "synthetic-insurance-review"
+  ],
+  "checkpoint_id": "LIVE-DEMO-COMMERCIAL-REHEARSAL-001",
+  "mechanical_issue_counts": {
+    "audio_url_missing_when_provider_called": 1,
+    "call_control_unexpected": 18,
+    "final_response_missing": 20,
+    "provider_audio_failed": 1,
+    "repeated_response": 28,
+    "response_too_long_for_live_voice": 3,
+    "tts_input_missing": 20
+  },
+  "private_input_discovery_count": 418,
+  "rehearsal_record_count": 418,
+  "required_files": [
+    "rehearsal_packet.md",
+    "rehearsal_packet.json",
+    "rehearsal_packet.jsonl",
+    "rehearsal_index.md",
+    "rubric.md",
+    "redaction_report.json",
+    "result.json",
+    "report.md"
+  ],
+  "side_effect_boundary": {
+    "generator_creates_calendar_event": false,
+    "generator_live_tts_calls_made": false,
+    "generator_local_llm_calls_made": false,
+    "generator_opens_prod_102": false,
+    "generator_provider_calls_made": false,
+    "generator_sends_email": false,
+    "generator_writes_crm": false
+  },
+  "status": "ready_for_human_review"
+}
