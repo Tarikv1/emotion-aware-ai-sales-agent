@@ -1137,6 +1137,8 @@ def apply_stability_guard_if_needed(
             "social_conversation_management",
             "rapport_relevance_bridge",
             "appointment_callback_send_info",
+            "direct_product_value_questions",
+            "permission_time_pressure",
         }
     ):
         return action, {

@@ -204,6 +204,35 @@ def git_head_short() -> tuple[str, str | None]:
     return value, None
 
 
+def git_source_worktree_dirty() -> tuple[bool, list[str], str | None]:
+    try:
+        completed = subprocess.run(
+            [
+                "git",
+                "status",
+                "--porcelain",
+                "--",
+                "runtime",
+                "scripts/run_live_demo_001_agent_voice_call.py",
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            timeout=3,
+            check=False,
+        )
+    except Exception as exc:  # noqa: BLE001 - evidence metadata must not fail generation.
+        return False, [], f"{type(exc).__name__}: {exc}"
+    if completed.returncode != 0:
+        return False, [], completed.stderr.strip() or "git status failed"
+    dirty_paths: list[str] = []
+    for line in completed.stdout.splitlines():
+        path = line[3:].strip()
+        if path:
+            dirty_paths.append(path.replace("\\", "/"))
+    return bool(dirty_paths), dirty_paths, None
+
+
 def runtime_manifest_fingerprint() -> dict[str, Any]:
     try:
         raw = RUNTIME_MANIFEST_PATH.read_bytes()
@@ -232,9 +261,13 @@ def universal_policy_runtime_marker() -> str:
 
 def current_runtime_reference() -> dict[str, Any]:
     git_sha, git_reason = git_head_short()
+    source_dirty, source_dirty_paths, source_dirty_reason = git_source_worktree_dirty()
     return {
         "git_head_short": git_sha,
         "git_unavailable_reason": git_reason,
+        "source_worktree_dirty": source_dirty,
+        "source_worktree_dirty_paths": source_dirty_paths,
+        "source_worktree_dirty_unavailable_reason": source_dirty_reason,
         **runtime_manifest_fingerprint(),
         "universal_policy_runtime_marker": universal_policy_runtime_marker(),
     }
@@ -361,7 +394,7 @@ def freshness_classification(turn_metadata: dict[str, Any], current_reference: d
         and current_reference.get("git_head_short")
         and turn_metadata.get("git_head_short") == current_reference.get("git_head_short")
     )
-    if current_marker_present and git_matches:
+    if current_marker_present and git_matches and not current_reference.get("source_worktree_dirty"):
         return "current_runtime_marked", True, True
     return "stale_pre_current_runtime_artifact", False, current_marker_present
 

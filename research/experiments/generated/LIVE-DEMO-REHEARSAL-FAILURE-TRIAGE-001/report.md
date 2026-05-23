@@ -1,13 +1,14 @@
 # LIVE-DEMO-REHEARSAL-FAILURE-TRIAGE-001 Report
 
 ## Summary
-- Total rehearsal records: `418`
-- Flagged records: `70`
+- Total rehearsal records: `460`
+- Flagged records: `78`
 - Current-runtime-marked records: `0`
-- Unknown-version records: `418`
+- Unknown-version records: `425`
 
 ## Freshness Summary
-- `unknown_version_private_artifact`: `418`
+- `stale_pre_current_runtime_artifact`: `35`
+- `unknown_version_private_artifact`: `425`
 
 ## Current Runtime Defect Count
 - `current_live_runtime_defect`: `0`
@@ -21,16 +22,16 @@
 - `needs_human_review`: `0`
 - `provider_audio_artifact_issue`: `2`
 - `stale_pre_current_runtime_artifact`: `0`
-- `unknown_version_private_artifact`: `89`
+- `unknown_version_private_artifact`: `104`
 
 ## Mechanical Issue Counts
 - `audio_url_missing_when_provider_called`: `1`
-- `call_control_unexpected`: `18`
-- `final_response_missing`: `20`
+- `call_control_unexpected`: `19`
+- `final_response_missing`: `27`
 - `provider_audio_failed`: `1`
 - `repeated_response`: `28`
 - `response_too_long_for_live_voice`: `3`
-- `tts_input_missing`: `20`
+- `tts_input_missing`: `27`
 
 ## Provider Audio Issue Classification
 - Provider audio artifact issues: `2`
@@ -39,14 +40,16 @@
 - Incomplete or invalid private records: `0`
 
 ## Issue Counts By Freshness Classification
-- `unknown_version_private_artifact`: {'audio_url_missing_when_provider_called': 1, 'call_control_unexpected': 18, 'final_response_missing': 20, 'provider_audio_failed': 1, 'repeated_response': 28, 'response_too_long_for_live_voice': 3, 'tts_input_missing': 20}
+- `stale_pre_current_runtime_artifact`: {'call_control_unexpected': 1}
+- `unknown_version_private_artifact`: {'audio_url_missing_when_provider_called': 1, 'call_control_unexpected': 18, 'final_response_missing': 27, 'provider_audio_failed': 1, 'repeated_response': 28, 'response_too_long_for_live_voice': 3, 'tts_input_missing': 27}
 
 ## Issue Counts By Campaign
-- `campaign-prod-005-b2b-software`: {'audio_url_missing_when_provider_called': 1, 'call_control_unexpected': 16, 'final_response_missing': 15, 'provider_audio_failed': 1, 'repeated_response': 21, 'response_too_long_for_live_voice': 3, 'tts_input_missing': 15}
+- `campaign-prod-005-b2b-software`: {'audio_url_missing_when_provider_called': 1, 'call_control_unexpected': 16, 'final_response_missing': 17, 'provider_audio_failed': 1, 'repeated_response': 21, 'response_too_long_for_live_voice': 3, 'tts_input_missing': 17}
 - `campaign-prod-005-b2c-telecom`: {'repeated_response': 3}
 - `synthetic-automotive-service-review`: {'repeated_response': 2}
 - `synthetic-insurance-review`: {'call_control_unexpected': 2, 'repeated_response': 2}
-- `unknown`: {'final_response_missing': 5, 'tts_input_missing': 5}
+- `synthetic-telecom-plan-review`: {'call_control_unexpected': 1}
+- `unknown`: {'final_response_missing': 10, 'tts_input_missing': 10}
 
 ## Safety Boundary Summary
 - Future metadata probe provider calls made: `false`

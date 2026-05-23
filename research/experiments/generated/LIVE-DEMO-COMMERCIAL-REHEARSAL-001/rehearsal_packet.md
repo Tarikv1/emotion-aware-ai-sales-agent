@@ -5,10 +5,10 @@ Manual reviewers score live-call quality from 1 to 5 across ASR, turn-taking, TT
 
 ## Rehearsal Index
 - Status: `ready_for_human_review`
-- Private input discovery count: `418`
+- Private input discovery count: `460`
 - Current-runtime-marked records: `0`
-- Unknown-version records: `418`
-- Record count: `418`
+- Unknown-version records: `425`
+- Record count: `460`
 
 ## Records
 ### live-demo-commercial-rehearsal-001-0001
@@ -1291,4 +1291,4 @@ Final response:
 
 > I cannot claim that here. Use verified security material before any serious rollout discussion.
 
-_Packet contains 418 records; JSON/JSONL include the full set._
+_Packet contains 460 records; JSON/JSONL include the full set._

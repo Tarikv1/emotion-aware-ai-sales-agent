@@ -1759,7 +1759,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Correct. I can explain the purpose of the call, but detailed product or policy advice should come from the verified implementation reviewer. Since you mentioned inbound demo follow-up slipping, that is the basic focus; I can keep it there or stop.",
+      "final_response": "Correct. I can explain the high-level purpose, but detailed advice belongs with the verified implementation reviewer. This call only checks whether a non-binding workflow review is worth it. Do you want me to check whether a review is useful?",
       "passed": true,
       "previous_response": "Thanks. Is inbound demo follow-up slipping right now?",
       "recognition_confidence": "high",
@@ -8589,7 +8589,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Correct. I can explain the purpose of the call, but detailed product or policy advice should come from the licensed insurance specialist. Since you mentioned premium pressure, that is the basic focus; I can keep it there or stop.",
+      "final_response": "Correct. I can explain the high-level purpose, but detailed advice belongs with the licensed insurance specialist. This call only checks whether a licensed coverage review is worth it. Do you want me to check whether a review is useful?",
       "passed": true,
       "previous_response": "Thanks. Is premium pressure causing any issue right now?",
       "recognition_confidence": "high",
@@ -15446,7 +15446,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Correct. I can explain the purpose of the call, but detailed product or policy advice should come from the implementation specialist. Since you mentioned manual work, that is the basic focus; I can keep it there or stop.",
+      "final_response": "Correct. I can explain the high-level purpose, but detailed advice belongs with the implementation specialist. This call only checks whether an operations fit review is worth it. Do you want me to check whether a review is useful?",
       "passed": true,
       "previous_response": "Thanks. Is manual work causing any issue right now?",
       "recognition_confidence": "high",
@@ -22302,7 +22302,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Correct. I can explain the purpose of the call, but detailed product or policy advice should come from the service advisor. Since you mentioned repair timing, that is the basic focus; I can keep it there or stop.",
+      "final_response": "Correct. I can explain the high-level purpose, but detailed advice belongs with the service advisor. This call only checks whether a service advisor inspection review is worth it. Do you want me to check whether a review is useful?",
       "passed": true,
       "previous_response": "Thanks. Is repair timing causing any issue right now?",
       "recognition_confidence": "high",
@@ -29156,7 +29156,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Correct. I can explain the purpose of the call, but detailed product or policy advice should come from the qualified service coordinator. Since you mentioned the service need, that is the basic focus; I can keep it there or stop.",
+      "final_response": "Correct. I can explain the high-level purpose, but detailed advice belongs with the qualified service coordinator. This call only checks whether an inspection or estimate review is worth it. Do you want me to check whether a review is useful?",
       "passed": true,
       "previous_response": "Thanks. Is the service need active right now?",
       "recognition_confidence": "high",

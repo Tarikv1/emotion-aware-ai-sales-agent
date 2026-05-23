@@ -1680,10 +1680,10 @@ def _is_generic_purpose_question(normalized: str) -> bool:
 
 
 def _is_generic_explanation_acceptance(normalized: str, turns: list[dict[str, Any]]) -> bool:
-    if normalized not in {"yeah that would be good", "that would be good", "yes that would be good", "yeah please", "yes please"}:
+    if normalized not in {"yeah that would be good", "yeah that d be good", "that would be good", "that d be good", "yes that would be good", "yeah please", "yes please"}:
         return False
     previous = session_policy.normalize_text(_previous_response(turns))
-    return _contains(previous, {"explain", "fair question", "because"})
+    return _contains(previous, {"explain", "fair question", "because", "one concrete check", "useful check", "only whether"})
 
 
 def _is_generic_contact_boundary_contradiction(normalized: str) -> bool:
@@ -1710,6 +1710,9 @@ def _generic_explanation_acceptance_response(gap_id: str | None, campaign: dict 
         )
     context = _campaign_context(campaign)
     owner = session_policy.generic_campaign_role_phrase(str(context.get("human_followup_owner") or "qualified specialist"))
+    gap_pair = _join_or([_customer_label(gap, campaign) for gap in _gap_order(campaign)[:2]])
+    if str((campaign or {}).get("vertical_id") or "") == "telecom":
+        return f"Good. Then I'll keep it to one concrete check: is {gap_pair} the issue?"
     label = _customer_label(gap_id, campaign)
     return f"The reason is to see whether {owner} should review {label} with you. That is enough context. Should I note a callback time, or stop here?"
 

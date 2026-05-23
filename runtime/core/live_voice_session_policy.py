@@ -270,6 +270,7 @@ def is_generic_product_detail_limitation_ack(normalized: str) -> bool:
         normalized,
         {
             "cannot give me any details",
+            "can you not give me any details",
             "can t give me any details",
             "cant give me any details",
             "cannot give me details",

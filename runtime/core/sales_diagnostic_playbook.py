@@ -37,7 +37,7 @@ PLAYBOOK: dict[str, Any] = {
     },
     "gaps": {
         "callbacks": {
-            "customer_language": ["missed callbacks", "callbacks slipping", "forgotten follow-up calls"],
+            "customer_language": ["missed callbacks", "callbacks slipping", "forgotten follow-up calls", "call bags"],
             "label": "callbacks",
             "customer_facing_phrase": "callbacks",
             "definition": "Inbound demo leads need a follow-up callback or reminder and may wait too long.",
@@ -53,6 +53,7 @@ PLAYBOOK: dict[str, Any] = {
                 "forgot to call back",
                 "people wait",
                 "missed follow up call",
+                "call bags are a problem",
             ],
             "evidence_negative": [
                 "callbacks are fine",

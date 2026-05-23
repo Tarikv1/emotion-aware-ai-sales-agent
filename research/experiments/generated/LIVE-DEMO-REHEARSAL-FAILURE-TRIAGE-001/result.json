@@ -8,18 +8,19 @@
     "needs_human_review": 0,
     "provider_audio_artifact_issue": 2,
     "stale_pre_current_runtime_artifact": 0,
-    "unknown_version_private_artifact": 89
+    "unknown_version_private_artifact": 104
   },
   "current_live_runtime_defect_count": 0,
   "current_runtime_marked_record_count": 0,
-  "flagged_record_count": 70,
+  "flagged_record_count": 78,
   "freshness_counts": {
-    "unknown_version_private_artifact": 418
+    "stale_pre_current_runtime_artifact": 35,
+    "unknown_version_private_artifact": 425
   },
   "future_metadata_probe": {
     "campaign_registry_schema_version": 1,
-    "generated_at_utc": "2026-05-23T16:55:33.783142+00:00",
-    "git_head_short": "eb7aaf7",
+    "generated_at_utc": "2026-05-23T18:04:26.051774+00:00",
+    "git_head_short": "65d8e85",
     "live_tts_calls_made": false,
     "local_llm_calls_made": false,
     "metadata_available": true,
@@ -28,17 +29,17 @@
     "runtime_manifest_hash": "b0370cb94fe82889c95f7746f49400402d6d9830ad17c42687e3054f0bb8fcc8",
     "universal_policy_runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001"
   },
-  "generated_at": "2026-05-23T16:55:33.783365+00:00",
+  "generated_at": "2026-05-23T18:04:26.051967+00:00",
   "incomplete_or_invalid_private_record_count": 0,
   "issue_counts_by_campaign": {
     "campaign-prod-005-b2b-software": {
       "audio_url_missing_when_provider_called": 1,
       "call_control_unexpected": 16,
-      "final_response_missing": 15,
+      "final_response_missing": 17,
       "provider_audio_failed": 1,
       "repeated_response": 21,
       "response_too_long_for_live_voice": 3,
-      "tts_input_missing": 15
+      "tts_input_missing": 17
     },
     "campaign-prod-005-b2c-telecom": {
       "repeated_response": 3
@@ -50,38 +51,44 @@
       "call_control_unexpected": 2,
       "repeated_response": 2
     },
+    "synthetic-telecom-plan-review": {
+      "call_control_unexpected": 1
+    },
     "unknown": {
-      "final_response_missing": 5,
-      "tts_input_missing": 5
+      "final_response_missing": 10,
+      "tts_input_missing": 10
     }
   },
   "issue_counts_by_freshness_classification": {
+    "stale_pre_current_runtime_artifact": {
+      "call_control_unexpected": 1
+    },
     "unknown_version_private_artifact": {
       "audio_url_missing_when_provider_called": 1,
       "call_control_unexpected": 18,
-      "final_response_missing": 20,
+      "final_response_missing": 27,
       "provider_audio_failed": 1,
       "repeated_response": 28,
       "response_too_long_for_live_voice": 3,
-      "tts_input_missing": 20
+      "tts_input_missing": 27
     }
   },
   "mechanical_issue_counts": {
     "audio_url_missing_when_provider_called": 1,
-    "call_control_unexpected": 18,
-    "final_response_missing": 20,
+    "call_control_unexpected": 19,
+    "final_response_missing": 27,
     "provider_audio_failed": 1,
     "repeated_response": 28,
     "response_too_long_for_live_voice": 3,
-    "tts_input_missing": 20
+    "tts_input_missing": 27
   },
   "provider_audio_artifact_issue_count": 2,
   "records_requiring_human_review": 0,
   "side_effects_stayed_false": true,
   "source_packet_checkpoint_id": "LIVE-DEMO-COMMERCIAL-REHEARSAL-001",
-  "stale_or_legacy_record_count": 0,
+  "stale_or_legacy_record_count": 35,
   "status": "pass",
-  "total_record_count": 418,
+  "total_record_count": 460,
   "triaged_records": [
     {
       "campaign_id": "campaign-prod-005-b2c-telecom",
@@ -747,162 +754,18 @@
       "requires_human_sales_review": true
     },
     {
-      "campaign_id": "campaign-prod-005-b2b-software",
+      "campaign_id": "synthetic-telecom-plan-review",
       "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+        "call_control_unexpected": "call-control issue needs current runtime marker before attribution"
       },
       "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
+        "call_control_unexpected": "unknown_version_private_artifact"
       },
-      "freshness_classification": "unknown_version_private_artifact",
+      "freshness_classification": "stale_pre_current_runtime_artifact",
       "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0262",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": "campaign-prod-005-b2b-software",
-      "classification_reasons_by_flag": {
-        "response_too_long_for_live_voice": "voice-length issue requires current marked evidence before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "response_too_long_for_live_voice": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "response_too_long_for_live_voice"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0286",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": "campaign-prod-005-b2b-software",
-      "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
+        "call_control_unexpected"
       ],
       "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0290",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": "campaign-prod-005-b2b-software",
-      "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0291",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": "campaign-prod-005-b2b-software",
-      "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0292",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": "campaign-prod-005-b2b-software",
-      "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0293",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": "campaign-prod-005-b2b-software",
-      "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0294",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": null,
-      "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0295",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": "campaign-prod-005-b2b-software",
-      "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0296",
       "requires_human_sales_review": true
     },
     {
@@ -926,37 +789,16 @@
     {
       "campaign_id": "campaign-prod-005-b2b-software",
       "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+        "response_too_long_for_live_voice": "voice-length issue requires current marked evidence before runtime attribution"
       },
       "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
+        "response_too_long_for_live_voice": "unknown_version_private_artifact"
       },
       "freshness_classification": "unknown_version_private_artifact",
       "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
+        "response_too_long_for_live_voice"
       ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0298",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": null,
-      "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0299",
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0321",
       "requires_human_sales_review": true
     },
     {
@@ -974,7 +816,7 @@
         "final_response_missing",
         "tts_input_missing"
       ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0300",
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0325",
       "requires_human_sales_review": true
     },
     {
@@ -991,177 +833,6 @@
       "mechanical_issue_flags": [
         "final_response_missing",
         "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0301",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": null,
-      "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0302",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": "campaign-prod-005-b2b-software",
-      "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0303",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": "campaign-prod-005-b2b-software",
-      "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0304",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": null,
-      "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0305",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": "campaign-prod-005-b2b-software",
-      "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0306",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": "campaign-prod-005-b2b-software",
-      "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0307",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": null,
-      "classification_reasons_by_flag": {
-        "final_response_missing": "missing response needs a clean current run before runtime attribution",
-        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
-      },
-      "classifications_by_flag": {
-        "final_response_missing": "unknown_version_private_artifact",
-        "tts_input_missing": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "final_response_missing",
-        "tts_input_missing"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0308",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": "campaign-prod-005-b2b-software",
-      "classification_reasons_by_flag": {
-        "repeated_response": "record has no current runtime marker, so repeated response is not a current defect"
-      },
-      "classifications_by_flag": {
-        "repeated_response": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "repeated_response"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0315",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": "campaign-prod-005-b2b-software",
-      "classification_reasons_by_flag": {
-        "repeated_response": "record has no current runtime marker, so repeated response is not a current defect"
-      },
-      "classifications_by_flag": {
-        "repeated_response": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "repeated_response"
-      ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0317",
-      "requires_human_sales_review": true
-    },
-    {
-      "campaign_id": "campaign-prod-005-b2b-software",
-      "classification_reasons_by_flag": {
-        "call_control_unexpected": "call-control issue needs current runtime marker before attribution"
-      },
-      "classifications_by_flag": {
-        "call_control_unexpected": "unknown_version_private_artifact"
-      },
-      "freshness_classification": "unknown_version_private_artifact",
-      "mechanical_issue_flags": [
-        "call_control_unexpected"
       ],
       "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0326",
       "requires_human_sales_review": true
@@ -1169,16 +840,463 @@
     {
       "campaign_id": "campaign-prod-005-b2b-software",
       "classification_reasons_by_flag": {
-        "call_control_unexpected": "call-control issue needs current runtime marker before attribution"
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
       },
       "classifications_by_flag": {
-        "call_control_unexpected": "unknown_version_private_artifact"
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
       },
       "freshness_classification": "unknown_version_private_artifact",
       "mechanical_issue_flags": [
-        "call_control_unexpected"
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0327",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0328",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": null,
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0329",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": null,
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0330",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": null,
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0331",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0332",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0333",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": null,
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0334",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0335",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0336",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0337",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": null,
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0338",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0339",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0340",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": null,
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0341",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0342",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0343",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0344",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": null,
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0345",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0346",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0347",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": null,
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0348",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": null,
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
       ],
       "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0349",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": null,
+      "classification_reasons_by_flag": {
+        "final_response_missing": "missing response needs a clean current run before runtime attribution",
+        "tts_input_missing": "missing response needs a clean current run before runtime attribution"
+      },
+      "classifications_by_flag": {
+        "final_response_missing": "unknown_version_private_artifact",
+        "tts_input_missing": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "final_response_missing",
+        "tts_input_missing"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0350",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "repeated_response": "record has no current runtime marker, so repeated response is not a current defect"
+      },
+      "classifications_by_flag": {
+        "repeated_response": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "repeated_response"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0357",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "repeated_response": "record has no current runtime marker, so repeated response is not a current defect"
+      },
+      "classifications_by_flag": {
+        "repeated_response": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "repeated_response"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0359",
       "requires_human_sales_review": true
     },
     {
@@ -1193,11 +1311,41 @@
       "mechanical_issue_flags": [
         "call_control_unexpected"
       ],
-      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0414",
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0368",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "call_control_unexpected": "call-control issue needs current runtime marker before attribution"
+      },
+      "classifications_by_flag": {
+        "call_control_unexpected": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "call_control_unexpected"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0391",
+      "requires_human_sales_review": true
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons_by_flag": {
+        "call_control_unexpected": "call-control issue needs current runtime marker before attribution"
+      },
+      "classifications_by_flag": {
+        "call_control_unexpected": "unknown_version_private_artifact"
+      },
+      "freshness_classification": "unknown_version_private_artifact",
+      "mechanical_issue_flags": [
+        "call_control_unexpected"
+      ],
+      "rehearsal_record_id": "live-demo-commercial-rehearsal-001-0456",
       "requires_human_sales_review": true
     }
   ],
-  "unknown_version_count": 418,
+  "unknown_version_count": 425,
   "validator_creates_calendar_event": false,
   "validator_live_tts_calls_made": false,
   "validator_local_llm_calls_made": false,

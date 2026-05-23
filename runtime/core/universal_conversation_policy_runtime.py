@@ -41,6 +41,8 @@ CLEAN_ACKNOWLEDGEMENTS = {
     "yeah",
     "yes",
     "sure",
+    "sure sure",
+    "yeah yeah",
     "yeah sure",
     "yes sure",
     "that would be good",
@@ -528,6 +530,22 @@ def _short_gap_pair(campaign: dict | None) -> str:
     return _primary_gap_phrase(campaign)
 
 
+def _mentioned_gap_phrase(campaign: dict | None, normalized: str) -> str:
+    normalized_for_match = normalize_transcript(str(normalized or "").replace("plane fit", "plan fit"))
+    labels: list[str] = []
+    for gap_id, record in _gap_record_items(campaign):
+        phrases = _gap_match_phrases(record) + _string_items(record.get("customer_language"))
+        if any(_normalized_phrase_in(normalized_for_match, phrase) for phrase in phrases):
+            label = _gap_customer_phrase(record, gap_id)
+            if label and label not in labels:
+                labels.append(label)
+    if not labels:
+        return ""
+    if len(labels) == 1:
+        return labels[0]
+    return " and ".join(labels[:2])
+
+
 def _primary_gap_review_focus(campaign: dict | None) -> str:
     records = _gap_records(campaign)
     if records:
@@ -821,7 +839,7 @@ def _impact_signal_from_transcript(normalized: str) -> dict[str, Any]:
         },
     ):
         return {"detected": True, "strength": "weak_or_denied", "type": "weak_or_denied"}
-    if _contains_any(normalized, {"kind of", "sort of", "i guess", "maybe"}):
+    if _contains_any(normalized, {"kind of", "sort of", "i guess", "maybe", "little bit"}):
         return {"detected": True, "strength": "unclear", "type": "unclear"}
     if normalized in {"yes", "yeah", "yep", "correct", "right"}:
         return {"detected": True, "strength": "confirmed", "type": "quality"}
@@ -1424,9 +1442,21 @@ def classify_universal_buyer_move_from_transcript(
             "only a licensed",
             "only licensed",
             "not give me details",
+            "not give me any details",
+            "can you not give me any details",
+            "can you not give me details",
         },
     ):
         return _recognition("scope_limit_question", reason="scope_limit_question_phrase", confidence="high", category="product_value_scope")
+    if _contains_any(normalized, {"how about", "what about"}) and _mentioned_gap_phrase(campaign, normalized):
+        return _recognition("scope_limit_question", reason="configured_gap_scope_question", confidence="high", category="product_value_scope")
+    if _contains_any(normalized, {"did not mention", "didn t mention", "never mentioned", "i did not say", "i didn t say"}):
+        return _recognition(
+            "already_answered_challenge",
+            reason="false_assumption_correction_phrase",
+            confidence="high",
+            category="confusion_challenge_repair",
+        )
     if _contains_any(
         normalized,
         {
@@ -1452,7 +1482,7 @@ def classify_universal_buyer_move_from_transcript(
         return _recognition("product_detail_question", reason="product_detail_question_phrase", confidence="high", category="product_value_scope")
     if _contains_any(normalized, {"what problem do you solve", "what do you solve", "what do you help with", "what is this for"}):
         return _recognition("what_problem_do_you_solve", reason="problem_solved_question_phrase", confidence="high", category="product_value_scope")
-    if _contains_any(normalized, {"why should i care", "why would i care", "why care"}):
+    if _contains_any(normalized, {"why should i care", "why would i care", "why care", "what should i care"}):
         return _recognition("why_should_i_care", reason="why_should_i_care_phrase", confidence="high", category="product_value_scope")
     if _contains_any(normalized, {"what makes you different", "what is different", "why are you different"}):
         return _recognition("what_makes_you_different", reason="differentiation_question_phrase", confidence="high", category="product_value_scope")
@@ -2015,7 +2045,7 @@ def render_universal_response_outline(
     if buyer_move_id == "implication_weak_or_denied":
         return "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time."
     if buyer_move_id == "implication_unclear":
-        return "Understood. Is it creating a real impact now, or more of a possible concern?"
+        return "A little bit, understood. Is it active enough to review, or more of a minor annoyance?"
     if buyer_move_id == "send_info_request":
         if str((frame or {}).get("appointment_readiness") or "") in {"medium", "high"}:
             return f"Sure. Since this sounds worth a review, I can note it for {owner_role}. What email or callback window should they use?"
@@ -2090,6 +2120,12 @@ def render_universal_response_outline(
             "I'm asking about impact now, not collecting extra details."
         )
     if buyer_move_id == "already_answered_challenge":
+        if str((frame or {}).get("recognition_reason") or "") == "false_assumption_correction_phrase":
+            target = _campaign_appointment_target(campaign)
+            return (
+                f"You're right, you did not mention {_area_phrase(active_gap)}. I won't assume that. "
+                f"This call can only check whether {_with_indefinite_article(target)} is useful."
+            )
         if str((frame or {}).get("recognition_reason") or "") == "did_not_answer_challenge_phrase":
             return (
                 "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify "
@@ -2103,6 +2139,19 @@ def render_universal_response_outline(
     if buyer_move_id == "contradiction_challenge":
         return f"Fair point. I can ask basic fit questions, but detailed advice belongs with {owner_role}."
     if buyer_move_id == "scope_limit_question":
+        mentioned_focus = _mentioned_gap_phrase(campaign, normalized)
+        if mentioned_focus and _contains_any(normalized, {"how about", "what about"}):
+            return (
+                f"Correct. I can answer the high-level scope, but detailed advice belongs with {owner_role}. "
+                f"{session_policy.sentence_start(owner_role)} would need to review {mentioned_focus}. "
+                "Is that what you want them to check?"
+            )
+        if not has_confirmed_gap:
+            return (
+                f"Correct. I can explain the high-level purpose, but detailed advice belongs with {owner_role}. "
+                f"This call only checks whether {_with_indefinite_article(_campaign_appointment_target(campaign))} is worth it. "
+                "Do you want me to check whether a review is useful?"
+            )
         return (
             f"Correct. I can explain the purpose of the call, but detailed product or policy advice should come from {owner_role}. "
             f"Since you mentioned {_area_phrase(active_gap)}, that is the basic focus; I can keep it there or stop."
