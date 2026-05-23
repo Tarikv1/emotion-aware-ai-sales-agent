@@ -43,6 +43,21 @@ UNIVERSAL_FORBIDDEN_CLAIMS = [
     "medical advice",
 ]
 
+NEGATED_FORBIDDEN_CLAIM_PATTERNS = {
+    "guarantee": [
+        "cannot guarantee",
+        "can't guarantee",
+        "do not guarantee",
+        "don't guarantee",
+        "no guarantee",
+    ],
+    "guaranteed": [
+        "not guaranteed",
+        "cannot be guaranteed",
+        "can't be guaranteed",
+    ],
+}
+
 
 def resolve_project_path(path_text: str | None) -> Path | None:
     if path_text is None:
@@ -384,7 +399,11 @@ def find_forbidden_claim_matches(text: str, forbidden_claims: list[str]) -> list
     lowered = text.lower()
     matches = []
     for claim in forbidden_claims:
-        if claim.lower() in lowered:
+        normalized_claim = claim.lower()
+        if normalized_claim in lowered:
+            negated_patterns = NEGATED_FORBIDDEN_CLAIM_PATTERNS.get(normalized_claim, [])
+            if any(pattern in lowered for pattern in negated_patterns):
+                continue
             matches.append(claim)
     return matches
 

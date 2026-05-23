@@ -319,7 +319,7 @@
       "confirmed_gaps": [
         "repair_timing"
       ],
-      "final_response": "Fair question - I'm asking because long repair timing is the part a service advisor can review. I don't need more details here; I can note a callback time, or stop.",
+      "final_response": "Fair question. I'm asking because the service advisor can review repair timing if it is worth your time, not to collect extra details.",
       "label": "automotive_challenge",
       "semantic": "purpose_clarification_after_confirmed_gap",
       "side_effect_flags": {
@@ -379,10 +379,10 @@
         "provider_calls_made": false,
         "recognition_confidence": "high",
         "recognition_reason": "why_are_you_asking_phrase",
-        "response_shape_candidate_source": null,
-        "response_shape_enforced_category": null,
-        "response_shape_enforcement_enabled": false,
-        "response_shape_enforcement_reason": "not_evaluated",
+        "response_shape_candidate_source": "universal_response_shape",
+        "response_shape_enforced_category": "confusion_challenge_repair",
+        "response_shape_enforcement_enabled": true,
+        "response_shape_enforcement_reason": "confusion_challenge_repair_high_confidence",
         "response_shape_id": "explain_why_asking_preserve_context",
         "schema_version": 1,
         "should_preserve_cleared_gaps": true,

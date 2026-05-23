@@ -88,7 +88,6 @@ DIRECT_PRODUCT_VALUE_MOVES = {
     "what_makes_you_different",
     "who_is_this_for",
     "is_this_worth_my_time",
-    "scope_limit_question",
 }
 
 OBJECTION_MOVES = {
@@ -102,6 +101,32 @@ OBJECTION_MOVES = {
 }
 
 TIME_PRESSURE_MOVES = {"time_constrained_permission"}
+
+TRUST_IDENTITY_PRIVACY_MOVES = {
+    "who_are_you",
+    "are_you_ai_or_robot",
+    "how_did_you_get_my_number",
+    "is_this_recorded",
+    "privacy_data_use_question",
+    "permission_to_continue_denied",
+    "stop_request",
+}
+
+CHALLENGE_REPAIR_MOVES = {
+    "confusion_not_clear",
+    "why_are_you_asking",
+    "already_answered_challenge",
+    "contradiction_challenge",
+    "repeat_or_rephrase_request",
+    "repeat_last_answer",
+}
+
+REGULATED_SCOPE_BOUNDARY_MOVES = {
+    "scope_limit_question",
+    "regulated_claim_question",
+}
+
+TERMINAL_RESPONSE_SHAPE_MOVES = {"permission_to_continue_denied", "stop_request"}
 
 
 def _contains_any(normalized: str, phrases: set[str] | list[str] | tuple[str, ...]) -> bool:
@@ -161,8 +186,30 @@ def _campaign_owner(campaign: dict | None) -> str:
     return _campaign_text(campaign, "human_followup_owner", "human_handoff_role", default="a human specialist")
 
 
+def _role_phrase(role: str) -> str:
+    cleaned = _plain_phrase(role).strip()
+    if not cleaned:
+        return "the specialist"
+    if cleaned.lower().startswith(("a ", "an ", "the ")):
+        return cleaned
+    return f"the {cleaned}"
+
+
 def _campaign_buyer_role(campaign: dict | None) -> str:
     return _nested_campaign_text(campaign, "target_account_context", "buyer_role", "the person responsible for this area")
+
+
+def _campaign_client_name(campaign: dict | None) -> str:
+    return _campaign_text(campaign, "client_name", default=_campaign_product_name(campaign))
+
+
+def _campaign_caller_name(campaign: dict | None) -> str:
+    identity = (campaign or {}).get("caller_identity") if isinstance(campaign, dict) else None
+    if isinstance(identity, dict):
+        name = identity.get("representative_name")
+        if isinstance(name, str) and name.strip():
+            return name.strip()
+    return "Maya"
 
 
 def _is_routesignal_campaign(campaign: dict | None) -> bool:
@@ -288,8 +335,8 @@ def _approved_scope_response(campaign: dict | None) -> str:
     if lowered.startswith("can "):
         action = claim[4:].strip()
         gerund = _gerund_action(action)
-        return f"The approved scope here is {gerund}. I will not claim more than that on this call."
-    return f"The approved scope here is {claim}. I will not claim more than that on this call."
+        return f"I can speak only to this limited scope: {gerund}. Anything beyond that needs a human follow-up."
+    return f"I can speak only to this limited scope: {claim}. Anything beyond that needs a human follow-up."
 
 
 def _gerund_action(action: str) -> str:
@@ -326,6 +373,43 @@ def _time_pressure_response(campaign: dict | None) -> str:
     return f"Sure, one quick check: {question}"
 
 
+def _campaign_purpose_phrase(campaign: dict | None) -> str:
+    if _is_routesignal_campaign(campaign):
+        return "inbound demo follow-up"
+    return f"a short human review around {_area_phrase(_primary_gap_phrase(campaign))}"
+
+
+def _memory_from_session(session_state: dict | None) -> dict[str, Any]:
+    if not isinstance(session_state, dict):
+        return {}
+    memory = session_state.get("conversation_memory")
+    if isinstance(memory, dict):
+        return memory
+    turns = _turns(session_state)
+    for turn in reversed(turns):
+        memory = turn.get("conversation_memory") if isinstance(turn, dict) else None
+        if isinstance(memory, dict):
+            return memory
+    return {}
+
+
+def _gap_phrase_for_id(campaign: dict | None, gap_id: str) -> str:
+    gaps = (campaign or {}).get("diagnostic_gaps") if isinstance(campaign, dict) else None
+    value = gaps.get(gap_id) if isinstance(gaps, dict) else None
+    if isinstance(value, dict):
+        label = str(value.get("label") or value.get("campaign_gap_id") or gap_id).strip()
+        return _human_gap_phrase(label)
+    return _human_gap_phrase(gap_id)
+
+
+def _active_gap_phrase(campaign: dict | None, session_state: dict | None) -> str:
+    memory = _memory_from_session(session_state)
+    confirmed = _string_items(memory.get("confirmed_gaps"))
+    if confirmed:
+        return _gap_phrase_for_id(campaign, confirmed[0])
+    return _primary_gap_phrase(campaign)
+
+
 def _response_shape_category(buyer_move_id: str) -> str | None:
     if buyer_move_id in DIRECT_PRODUCT_VALUE_MOVES:
         return "direct_product_value_questions"
@@ -333,6 +417,12 @@ def _response_shape_category(buyer_move_id: str) -> str | None:
         return "objections"
     if buyer_move_id in TIME_PRESSURE_MOVES:
         return "permission_time_pressure"
+    if buyer_move_id in TRUST_IDENTITY_PRIVACY_MOVES:
+        return "trust_identity_privacy_consent"
+    if buyer_move_id in CHALLENGE_REPAIR_MOVES:
+        return "confusion_challenge_repair"
+    if buyer_move_id in REGULATED_SCOPE_BOUNDARY_MOVES:
+        return "scope_regulated_claim_boundaries"
     return None
 
 
@@ -833,6 +923,20 @@ def should_enforce_response_shape(
         return False
     if (frame or {}).get("recognition_confidence") != "high":
         return False
+    if buyer_move_id == "confusion_not_clear" and _is_routesignal_campaign(campaign):
+        normalized = str(((frame or {}).get("detection") or {}).get("normalized_transcript") or "")
+        if str((frame or {}).get("pragmatic_move_id") or "") == "term_meaning_question" or _contains_any(
+            normalized,
+            {
+                "what do you mean by",
+                "what this means for us",
+                "i didn't ask a question",
+                "i didn t ask a question",
+                "i don't know what",
+                "i don t know what",
+            },
+        ):
+            return False
     if buyer_move_id == "price_or_budget_objection" and not _is_generic_campaign(campaign):
         normalized = str(((frame or {}).get("detection") or {}).get("normalized_transcript") or "")
         explicit_objection = _contains_any(normalized, {"too expensive", "no budget", "not in budget", "cost too much"})
@@ -852,13 +956,15 @@ def render_universal_response_outline(
     campaign: dict | None,
     session_state: dict | None = None,
 ) -> str:
-    del session_state
     buyer_move_id = str((frame or {}).get("buyer_move_id") or "")
-    target = _campaign_appointment_target(campaign)
-    article_target = _with_indefinite_article(target)
+    normalized = str(((frame or {}).get("detection") or {}).get("normalized_transcript") or "")
     owner = _campaign_owner(campaign)
     buyer_role = _campaign_buyer_role(campaign)
     primary_gap = _primary_gap_phrase(campaign)
+    active_gap = _active_gap_phrase(campaign, session_state)
+    client = _campaign_client_name(campaign)
+    caller = _campaign_caller_name(campaign)
+    owner_role = _role_phrase(owner)
 
     if buyer_move_id == "time_constrained_permission":
         return _time_pressure_response(campaign)
@@ -883,12 +989,49 @@ def render_universal_response_outline(
         return f"It is for {buyer_role}. If that is not you, I can stop or note the right person."
     if buyer_move_id == "is_this_worth_my_time":
         return f"Only if {primary_gap} is real enough to justify a short review. If not, no pressure."
+
+    if buyer_move_id == "who_are_you":
+        return f"I'm {caller} calling on behalf of {client} about {_campaign_purpose_phrase(campaign)}."
+    if buyer_move_id == "are_you_ai_or_robot":
+        return f"Yes, I'm an AI voice agent calling for {client}. I can keep this short or stop here."
+    if buyer_move_id == "how_did_you_get_my_number":
+        return "I do not have a reliable source note for that in this call, so I will not guess. I can stop here."
+    if buyer_move_id == "is_this_recorded":
+        return "I do not have a verified recording notice to give here. I can continue only with the call purpose, or stop."
+    if buyer_move_id == "privacy_data_use_question":
+        return "I can only use what you say here to handle this call flow. I will not ask for sensitive personal details."
+    if buyer_move_id in TERMINAL_RESPONSE_SHAPE_MOVES:
+        return "Understood. I'll stop here. Goodbye."
+
+    if buyer_move_id == "confusion_not_clear":
+        return f"I mean whether {_area_phrase(active_gap)} is actually happening. If not, there is no reason to continue."
+    if buyer_move_id == "why_are_you_asking":
+        return (
+            f"Fair question. I'm asking because {owner_role} can review {_area_phrase(active_gap)} "
+            "if it is worth your time, not to collect extra details."
+        )
+    if buyer_move_id == "already_answered_challenge":
+        return f"You're right, you already answered that. I'll use {_area_phrase(active_gap)} and not ask it again."
+    if buyer_move_id == "contradiction_challenge":
+        return f"Fair point. I can ask basic fit questions, but detailed advice belongs with {owner_role}."
+    if buyer_move_id in {"repeat_or_rephrase_request", "repeat_last_answer"}:
+        return f"Sure. The short version: this call checks whether {_area_phrase(active_gap)} is worth a short human review."
+
     if buyer_move_id == "scope_limit_question":
         return (
-            f"Correct. I can explain the purpose of this call, but detailed policy or product advice belongs with {owner}. "
-            f"Since you mentioned {primary_gap}, this only checks whether {article_target} is useful. "
-            "I can note a time, or leave it there."
+            f"Correct. I can explain the purpose of the call, but detailed product or policy advice should come from {owner_role}. "
+            f"Since you mentioned {_area_phrase(active_gap)}, that is the basic focus; I can keep it there or stop."
         )
+    if buyer_move_id == "regulated_claim_question":
+        if "guarantee" in normalized:
+            return f"No, I cannot guarantee that on this call. That depends on details {owner_role} would need to review."
+        if "exact price" in normalized or "exact quote" in normalized:
+            return f"I cannot give an exact price on this call. That depends on details {owner_role} would need to review."
+        if "covered" in normalized or "coverage" in normalized:
+            return f"I cannot confirm coverage on this call. {owner_role} would need to review the details."
+        if "promise" in normalized:
+            return "No, I cannot promise a result. I can only check whether a review is worth setting up."
+        return f"I cannot confirm that on this call. {owner} would need to review the details."
 
     if buyer_move_id == "already_has_provider":
         return (
@@ -907,8 +1050,7 @@ def render_universal_response_outline(
         )
     if buyer_move_id == "wants_proof_or_case_study":
         return (
-            "Fair. I will not invent proof on this call. I can only note a request for approved material or a "
-            "human follow-up."
+            "Fair. Proof needs to come from approved material or a human follow-up. I can note that request."
         )
     if buyer_move_id == "timing_objection":
         return "Understood. Timing is not right this week. We can leave it here or note a later callback."
@@ -929,6 +1071,7 @@ def universal_response_shape_continuity(
         return None
     buyer_move_id = str((frame or {}).get("buyer_move_id") or "")
     category = _response_shape_category(buyer_move_id) or "universal_response_shape"
+    action_id = "end_call_stop_request" if buyer_move_id in TERMINAL_RESPONSE_SHAPE_MOVES else "continue_with_session_policy"
     enforced_frame = dict(frame)
     enforced_frame.update(
         {
@@ -941,7 +1084,7 @@ def universal_response_shape_continuity(
     return {
         "applied": True,
         "reason": "universal_response_shape_enforced",
-        "action_id": "continue_with_session_policy",
+        "action_id": action_id,
         "dialogue_focus": category,
         "candidate_response": render_universal_response_outline(enforced_frame, campaign, session_state),
         "universal_policy_frame": enforced_frame,

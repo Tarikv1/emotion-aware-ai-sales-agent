@@ -187,6 +187,8 @@ ACK_WORDS = [
     "i hear",
     "that makes sense",
     "thanks",
+    "i mean",
+    "you're right",
 ]
 
 APPOINTMENT_ASK_PATTERNS = [

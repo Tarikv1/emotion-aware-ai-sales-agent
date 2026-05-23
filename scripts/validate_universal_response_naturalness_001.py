@@ -38,6 +38,8 @@ MECHANICAL_PATTERNS = {
     "review review": "duplicated review wording",
     "follow-up gap": "awkward gap wording",
     "can discuss workflow fit at a general level": "raw allowed-claim wording",
+    "approved scope here": "policy-like approved-scope wording",
+    "i will not invent proof": "defensive proof wording",
     "around vehicle issue": "missing article before vehicle issue",
     "around service need": "missing article before service need",
     "issue causing any issue": "duplicated issue wording",
@@ -128,7 +130,7 @@ def quality_failures(row: dict[str, Any]) -> list[dict[str, str]]:
             failures.append({"type": "direct_answer_weak", "detail": "problem-solved answer not direct"})
         if transcript == "why should i care" and "only if" not in lowered:
             failures.append({"type": "direct_answer_weak", "detail": "why-care answer not direct"})
-        if transcript == "what makes you different" and "approved scope" not in lowered:
+        if transcript == "what makes you different" and not ("limited scope" in lowered or "useful difference" in lowered):
             failures.append({"type": "direct_answer_weak", "detail": "differentiation answer not bounded"})
     if category == "objections":
         if not any(token in lowered for token in ("understood", "fair", "no problem")):
