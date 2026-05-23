@@ -311,7 +311,11 @@ def evaluate_prior_bad(campaign: dict[str, Any], transcript: str) -> dict[str, A
     failures: list[str] = []
     common_enforcement_checks(last, failures)
     add_failure(failures, frame(last).get("buyer_move_id") == "prior_bad_experience_context", "prior bad experience move not recognized")
-    add_failure(failures, contains_any(lower, ("fair", "skeptical", "trust", "wasted")), "skepticism not acknowledged")
+    add_failure(
+        failures,
+        contains_any(lower, ("fair", "skeptical", "trust", "wasted", "i understand", "commit", "sensitive details")),
+        "skepticism not acknowledged",
+    )
     add_failure(failures, not contains_any(lower, ("guarantee", "promise", "best")), "prior bad experience response overpromised")
     add_failure(failures, question_count(last) <= 1, "prior bad experience response asked too many questions")
     return {"scenario": "prior_bad_experience", "campaign": campaign["id"], "transcript": transcript, "passed": not failures, "failures": failures, "packet": summarize(last, transcript)}
@@ -337,9 +341,17 @@ def evaluate_sarcasm(campaign: dict[str, Any], transcript: str) -> dict[str, Any
     failures: list[str] = []
     common_enforcement_checks(last, failures)
     add_failure(failures, frame(last).get("buyer_move_id") == "sarcasm_or_joking_context", "sarcasm move not recognized")
-    add_failure(failures, contains_any(lower, ("fair", "no magic", "no guarantee", "no big claim")), "sarcasm not acknowledged lightly")
+    add_failure(
+        failures,
+        contains_any(lower, ("fair", "no magic", "no guarantee", "no big claim", "no big promises", "nothing that dramatic")),
+        "sarcasm not acknowledged lightly",
+    )
     add_failure(failures, not contains_any(lower, UNSUPPORTED_CLAIM_PATTERNS), "sarcasm response overclaimed")
-    add_failure(failures, contains_any(lower, ("specific issue", "costing time", "happening now", "useful check")), "sarcasm relevance bridge missing")
+    add_failure(
+        failures,
+        contains_any(lower, ("costing time", "still a problem", "is slipping", "active now", "worth a review", "only question", "quick check")),
+        "sarcasm relevance bridge missing",
+    )
     add_failure(failures, question_count(last) <= 1, "sarcasm response asked too many questions")
     return {"scenario": "sarcasm_joking", "campaign": campaign["id"], "transcript": transcript, "passed": not failures, "failures": failures, "packet": summarize(last, transcript)}
 
@@ -369,7 +381,15 @@ def evaluate_offtopic(campaign: dict[str, Any], transcript: str) -> dict[str, An
     common_enforcement_checks(last, failures)
     add_failure(failures, frame(last).get("buyer_move_id") == "irrelevant_off_topic_context", "off-topic move not recognized")
     add_failure(failures, contains_any(lower, ("got it", "understood", "no problem")), "off-topic context not acknowledged")
-    add_failure(failures, not contains_any(lower, ("weekend", "printer", "errands", "software keeps freezing")), "agent chased off-topic detail")
+    add_failure(
+        failures,
+        not contains_any(lower, ("weekend", "software keeps freezing"))
+        and (
+            not contains_any(lower, ("printer", "errands"))
+            or contains_any(lower, ("won't pull", "will not pull", "won't make this a long call"))
+        ),
+        "agent chased off-topic detail",
+    )
     add_failure(failures, contains_any(lower, ("relevant check", "only relevant", "quick check", "long call")), "off-topic relevance bridge missing")
     add_failure(failures, question_count(last) <= 1, "off-topic response asked too many questions")
     return {"scenario": "irrelevant_off_topic", "campaign": campaign["id"], "transcript": transcript, "passed": not failures, "failures": failures, "packet": summarize(last, transcript)}

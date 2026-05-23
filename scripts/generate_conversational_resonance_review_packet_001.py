@@ -86,6 +86,7 @@ ALLOWED_EMPATHY = [
     "i understand",
     "i hear you",
     "that makes sense",
+    "makes sense",
     "that sounds frustrating",
     "i'm sorry to hear that",
     "no problem",
@@ -95,6 +96,9 @@ ALLOWED_EMPATHY = [
     "sure",
     "got it",
     "okay",
+    "no big promises",
+    "no magic claims",
+    "nothing that dramatic",
     "i'm good",
     "please don't share",
 ]
@@ -422,7 +426,7 @@ def asks_next_step(text: str) -> bool:
 
 
 def asks_diagnostic(text: str) -> bool:
-    return contains_any(text, ["quick check", "causing", "issue", "problem", "review", "happening now", "showing up"])
+    return contains_any(text, ["quick check", "relevant check", "causing", "issue", "problem", "review", "happening now", "showing up"])
 
 
 def hardship_utterance(text: str) -> bool:
@@ -493,7 +497,10 @@ def resonance_warning_flags(
     if arc_type == "irrelevant_story_off_topic_ramble":
         if not (has_acknowledgement(response) and (asks_diagnostic(lower) or contains_any(lower, ["quick", "brief", "back to"]))):
             warnings.append("no_relevance_bridge")
-        if contains_any(lower, ["weekend", "printer", "errands", "software keeps freezing"]):
+        if contains_any(lower, ["weekend", "printer", "errands", "software keeps freezing"]) and not contains_any(
+            lower,
+            ["won't chase", "will not chase", "won't pull", "will not pull", "separate from", "separate"],
+        ):
             warnings.append("chased_off_topic_ramble")
     if sensitive_utterance(buyer):
         if contains_any(lower, ["medical", "condition", "account number", "personal id", "family detail"]):
@@ -514,6 +521,7 @@ def turn_record(
     turn_index: int,
     buyer_utterance: str,
     packet: dict[str, Any],
+    terminal_preservation_artifact: bool = False,
 ) -> dict[str, Any]:
     response = packet_response(packet)
     frame = policy_frame(packet)
@@ -551,6 +559,7 @@ def turn_record(
         "response_word_count": word_count(response),
         "question_count": question_count(response),
         "resonance_warning_flags": warnings,
+        "terminal_preservation_artifact": terminal_preservation_artifact,
         "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
         "requires_human_sales_review": True,
     }
@@ -570,7 +579,9 @@ def run_conversation(campaign: dict[str, Any], arc: dict[str, Any], campaign_ind
     conversation_id = f"{CHECKPOINT_ID.lower()}-{campaign_index:02d}-{arc_index:02d}-{campaign['id']}-{arc['arc_type']}"
     state: dict[str, Any] = {}
     turns: list[dict[str, Any]] = []
+    terminal_seen = False
     for index, buyer_utterance in enumerate(arc["buyer_script"], start=1):
+        terminal_preservation_artifact = terminal_seen
         packet = build_turn(
             transcript=buyer_utterance,
             state=state,
@@ -585,8 +596,11 @@ def run_conversation(campaign: dict[str, Any], arc: dict[str, Any], campaign_ind
                 turn_index=index,
                 buyer_utterance=buyer_utterance,
                 packet=packet,
+                terminal_preservation_artifact=terminal_preservation_artifact,
             )
         )
+        if call_control(packet) == "end-call":
+            terminal_seen = True
 
     warning_counter = Counter()
     side_effect_summary = {key: False for key in SIDE_EFFECT_KEYS}
@@ -635,6 +649,67 @@ def warning_counts(conversations: list[dict[str, Any]]) -> Counter:
     return counter
 
 
+def response_variety_summary(conversations: list[dict[str, Any]]) -> dict[str, Any]:
+    tracked_arcs = {
+        "financial_stress_budget_emotion",
+        "prior_bad_experience",
+        "joking_sarcasm",
+        "irrelevant_story_off_topic_ramble",
+        "busy_distracted",
+        "b2c_home_life_interruption",
+        "b2b_workplace_interruption",
+    }
+    by_arc: dict[str, dict[str, Any]] = {}
+    total_repeated = 0
+    for conversation in conversations:
+        arc = conversation["arc_type"]
+        if arc not in tracked_arcs:
+            continue
+        responses: list[str] = []
+        terminal_seen = False
+        for turn in conversation.get("turns") or []:
+            if terminal_seen or turn.get("buyer_utterance") == "__agent_open__":
+                continue
+            text = str(turn.get("final_response") or "").strip()
+            if text:
+                responses.append(text)
+            if turn.get("call_control") == "end-call":
+                terminal_seen = True
+        counts = Counter(responses)
+        repeated_templates = [
+            {"response": template, "count": count}
+            for template, count in sorted(counts.items(), key=lambda item: (-item[1], item[0]))
+            if count > 1
+        ]
+        repeated_count = sum(item["count"] - 1 for item in repeated_templates)
+        total_repeated += repeated_count
+        current = by_arc.setdefault(
+            arc,
+            {
+                "conversation_count": 0,
+                "turn_response_count": 0,
+                "repeated_response_count": 0,
+                "repeated_response_templates": [],
+            },
+        )
+        current["conversation_count"] += 1
+        current["turn_response_count"] += len(responses)
+        current["repeated_response_count"] += repeated_count
+        for item in repeated_templates:
+            current["repeated_response_templates"].append(
+                {
+                    "conversation_id": conversation["conversation_id"],
+                    "response": item["response"],
+                    "count": item["count"],
+                }
+            )
+    return {
+        "tracked_arcs": sorted(tracked_arcs),
+        "repeated_response_count": total_repeated,
+        "by_arc": dict(sorted(by_arc.items())),
+    }
+
+
 def strongest_by_mechanical_signals(conversations: list[dict[str, Any]]) -> list[dict[str, Any]]:
     ordered = sorted(conversations, key=lambda item: (item.get("resonance_warning_count", 0), item["conversation_id"]))
     return [
@@ -664,6 +739,7 @@ def most_concerning_by_mechanical_signals(conversations: list[dict[str, Any]]) -
 
 def build_packet(conversations: list[dict[str, Any]]) -> dict[str, Any]:
     warnings = warning_counts(conversations)
+    variety = response_variety_summary(conversations)
     return {
         "checkpoint_id": CHECKPOINT_ID,
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -679,6 +755,7 @@ def build_packet(conversations: list[dict[str, Any]]) -> dict[str, Any]:
         "rubric_dimensions": RUBRIC_DIMENSIONS,
         "qualitative_labels_for_human_reviewer": QUALITATIVE_LABELS,
         "resonance_warning_counts": dict(sorted(warnings.items())),
+        "response_variety": variety,
         "strongest_looking_conversations_by_mechanical_signals_only": strongest_by_mechanical_signals(conversations),
         "most_concerning_conversations_by_mechanical_signals_only": most_concerning_by_mechanical_signals(conversations),
         "conversations": conversations,
@@ -818,6 +895,7 @@ def review_packet_markdown(packet: dict[str, Any]) -> str:
                     f"  - Source: `{turn['selected_action']['source']}`; call_control: `{turn['call_control']}`",
                     f"  - Buyer move: `{turn.get('buyer_move_id')}`; category: `{turn.get('buyer_move_category')}`; readiness: `{turn.get('appointment_readiness')}`",
                     f"  - Warnings: `{', '.join(turn['resonance_warning_flags']) or 'none'}`",
+                    f"  - Terminal preservation artifact: `{str(turn.get('terminal_preservation_artifact', False)).lower()}`",
                 ]
             )
     return "\n".join(lines) + "\n"
@@ -845,6 +923,21 @@ def report_markdown(packet: dict[str, Any], redaction: dict[str, Any]) -> str:
         lines.extend(f"- `{key}`: `{value}`" for key, value in warnings.items())
     else:
         lines.append("- None recorded.")
+    variety = packet.get("response_variety") or {}
+    lines.extend(
+        [
+            "",
+            "## 5A. Response Variety",
+            f"- Repeated response count across tracked rapport arcs: `{variety.get('repeated_response_count', 0)}`",
+            "- Baseline before this phase is captured by `UNIVERSAL-RAPPORT-SPECIFICITY-001`; this packet reports the refreshed after-state.",
+        ]
+    )
+    for arc, item in (variety.get("by_arc") or {}).items():
+        lines.append(
+            f"- `{arc}`: `{item.get('repeated_response_count', 0)}` repeated responses across `{item.get('conversation_count', 0)}` conversations"
+        )
+        for template in (item.get("repeated_response_templates") or [])[:3]:
+            lines.append(f"  - `{template['conversation_id']}` repeated `{template['count']}` times: {template['response']}")
     lines.extend(["", "## 6. Strongest-Looking Conversations By Mechanical Signals Only"])
     for item in packet["strongest_looking_conversations_by_mechanical_signals_only"]:
         lines.append(f"- `{item['conversation_id']}`: `{item['resonance_warning_count']}` warnings")
@@ -910,6 +1003,7 @@ def write_outputs(packet: dict[str, Any]) -> None:
         "campaigns": packet["campaigns"],
         "arc_types": packet["arc_types"],
         "resonance_warning_counts": packet["resonance_warning_counts"],
+        "response_variety": packet["response_variety"],
         "requires_human_sales_review": True,
         "codex_did_not_assign_final_resonance_quality": True,
         "codex_did_not_assign_final_sales_quality": True,

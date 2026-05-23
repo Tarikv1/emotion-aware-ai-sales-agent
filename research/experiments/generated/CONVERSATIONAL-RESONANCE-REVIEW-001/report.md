@@ -31,6 +31,17 @@ Generated a dry-run conversational resonance packet for human review. The packet
 ## 5. Resonance Warning Counts
 - None recorded.
 
+## 5A. Response Variety
+- Repeated response count across tracked rapport arcs: `0`
+- Baseline before this phase is captured by `UNIVERSAL-RAPPORT-SPECIFICITY-001`; this packet reports the refreshed after-state.
+- `b2b_workplace_interruption`: `0` repeated responses across `5` conversations
+- `b2c_home_life_interruption`: `0` repeated responses across `5` conversations
+- `busy_distracted`: `0` repeated responses across `5` conversations
+- `financial_stress_budget_emotion`: `0` repeated responses across `5` conversations
+- `irrelevant_story_off_topic_ramble`: `0` repeated responses across `5` conversations
+- `joking_sarcasm`: `0` repeated responses across `5` conversations
+- `prior_bad_experience`: `0` repeated responses across `5` conversations
+
 ## 6. Strongest-Looking Conversations By Mechanical Signals Only
 - `conversational-resonance-review-001-01-01-routesignal_live_demo-casual_small_talk`: `0` warnings
 - `conversational-resonance-review-001-01-02-routesignal_live_demo-busy_distracted`: `0` warnings

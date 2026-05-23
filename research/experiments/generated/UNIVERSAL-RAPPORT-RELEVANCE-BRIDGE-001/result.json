@@ -185,7 +185,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "busy_or_distracted_phrase",
-        "response": "Understood, bad time. I can keep it to one yes-or-no: is inbound demo follow-up slipping now?",
+        "response": "Understood. I'll keep it to one yes-or-no: is inbound demo follow-up slipping now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -254,20 +254,20 @@
         "buyer_move_category": "rapport_relevance_bridge",
         "buyer_move_id": "home_life_interruption",
         "buyer_utterance": "my kids are screaming",
-        "call_control": "continue-call",
-        "question_count": 1,
+        "call_control": "end-call",
+        "question_count": 0,
         "rapport_fields": {
           "emotional_temperature": "mild",
           "human_context_type": "home_life_interruption",
           "rapport_repair_required": true,
-          "safe_to_continue": true,
+          "safe_to_continue": false,
           "sensitive_context_detected": false,
           "serious_bad_timing_detected": false,
           "should_stop_for_hardship": false,
           "stakeholder_routing_required": false
         },
         "recognition_reason": "home_life_interruption_phrase",
-        "response": "No problem. Sounds like a bad moment. I can keep it to one quick yes-or-no: is inbound demo follow-up slipping now?",
+        "response": "No problem. Sounds like a bad moment with the kids. I'll stop here.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -349,7 +349,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "financial_stress_phrase",
-        "response": "I hear you. Budget pressure matters. I'm not here to push another cost; the useful check is whether this issue is already costing time or money.",
+        "response": "I hear you. Costs are tight for a lot of people. I'm not here to add pressure; the useful check is whether inbound demo follow-up is already costing time or money.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -390,7 +390,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "financial_stress_phrase",
-        "response": "I hear you. Budget pressure matters. I'm not here to push another cost; the useful check is whether this issue is already costing time or money.",
+        "response": "Understood. Budget pressure matters. I won't push a review unless inbound demo follow-up is already costing time or creating risk.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -431,7 +431,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "financial_stress_phrase",
-        "response": "I hear you. Budget pressure matters. I'm not here to push another cost; the useful check is whether this issue is already costing time or money.",
+        "response": "I hear you. Then I should not push anything. The only useful question is whether inbound demo follow-up is already costing more than it should.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -460,7 +460,7 @@
         "buyer_move_id": "prior_bad_experience_context",
         "buyer_utterance": "last company like this wasted my time",
         "call_control": "continue-call",
-        "question_count": 0,
+        "question_count": 1,
         "rapport_fields": {
           "emotional_temperature": "mild",
           "human_context_type": "prior_bad_experience",
@@ -472,7 +472,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "prior_bad_experience_or_distrust_phrase",
-        "response": "Fair. I would be skeptical too if that happened. I'm not asking you to commit to anything; I'm only checking whether this specific issue is still happening.",
+        "response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is inbound demo follow-up slipping now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -513,7 +513,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "prior_bad_experience_or_distrust_phrase",
-        "response": "Fair. I would be skeptical too if that happened. I'm not asking you to commit to anything; I'm only checking whether this specific issue is still happening.",
+        "response": "I understand. You do not need to share sensitive details or commit to anything here. The useful check is whether inbound demo follow-up is slipping now.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -677,7 +677,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "sarcasm_or_joking_phrase",
-        "response": "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now.",
+        "response": "No big promises from me. I'm only checking whether inbound demo follow-up is costing time.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -718,7 +718,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "sarcasm_or_joking_phrase",
-        "response": "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now.",
+        "response": "No magic claims. Just a quick check on whether inbound demo follow-up is slipping now.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -759,7 +759,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "sarcasm_or_joking_phrase",
-        "response": "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now.",
+        "response": "Fair concern. I won't overstate it; the only question is whether inbound demo follow-up is slipping now.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -882,7 +882,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now.",
+        "response": "Got it. I won't chase the story; the relevant check is whether inbound demo follow-up is slipping now.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -911,7 +911,7 @@
         "buyer_move_id": "irrelevant_off_topic_context",
         "buyer_utterance": "we are replacing the office printer",
         "call_control": "continue-call",
-        "question_count": 0,
+        "question_count": 1,
         "rapport_fields": {
           "emotional_temperature": "none",
           "human_context_type": "irrelevant_off_topic",
@@ -923,7 +923,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now.",
+        "response": "Understood. I won't pull this into the printer issue; the quick check here: is inbound demo follow-up slipping now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -952,7 +952,7 @@
         "buyer_move_id": "irrelevant_off_topic_context",
         "buyer_utterance": "anyway I have a long list of errands",
         "call_control": "continue-call",
-        "question_count": 0,
+        "question_count": 1,
         "rapport_fields": {
           "emotional_temperature": "none",
           "human_context_type": "irrelevant_off_topic",
@@ -964,7 +964,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now.",
+        "response": "No problem. I won't make this a long call. The only relevant check: is inbound demo follow-up slipping now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -1292,7 +1292,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "busy_or_distracted_phrase",
-        "response": "Understood, bad time. I can keep it to one yes-or-no: is premium pressure causing an issue now?",
+        "response": "Understood. I'll keep it to one yes-or-no: is premium pressure causing an issue now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -1361,20 +1361,20 @@
         "buyer_move_category": "rapport_relevance_bridge",
         "buyer_move_id": "home_life_interruption",
         "buyer_utterance": "my kids are screaming",
-        "call_control": "continue-call",
-        "question_count": 1,
+        "call_control": "end-call",
+        "question_count": 0,
         "rapport_fields": {
           "emotional_temperature": "mild",
           "human_context_type": "home_life_interruption",
           "rapport_repair_required": true,
-          "safe_to_continue": true,
+          "safe_to_continue": false,
           "sensitive_context_detected": false,
           "serious_bad_timing_detected": false,
           "should_stop_for_hardship": false,
           "stakeholder_routing_required": false
         },
         "recognition_reason": "home_life_interruption_phrase",
-        "response": "No problem. Sounds like a bad moment. I can keep it to one quick yes-or-no: is premium pressure causing an issue now?",
+        "response": "No problem. Sounds like a bad moment with the kids. I'll stop here.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -1456,7 +1456,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "financial_stress_phrase",
-        "response": "I hear you. Budget pressure matters. I'm not here to push another cost; the useful check is whether this issue is already costing time or money.",
+        "response": "I hear you. Costs are tight for a lot of people. I'm not here to add pressure; the useful check is whether premium pressure is already costing time or money.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -1497,7 +1497,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "financial_stress_phrase",
-        "response": "I hear you. Budget pressure matters. I'm not here to push another cost; the useful check is whether this issue is already costing time or money.",
+        "response": "Understood. Budget pressure matters. I won't push a review unless premium pressure is already costing time or creating risk.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -1538,7 +1538,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "financial_stress_phrase",
-        "response": "I hear you. Budget pressure matters. I'm not here to push another cost; the useful check is whether this issue is already costing time or money.",
+        "response": "I hear you. Then I should not push anything. The only useful question is whether premium pressure is already costing more than it should.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -1567,7 +1567,7 @@
         "buyer_move_id": "prior_bad_experience_context",
         "buyer_utterance": "last company like this wasted my time",
         "call_control": "continue-call",
-        "question_count": 0,
+        "question_count": 1,
         "rapport_fields": {
           "emotional_temperature": "mild",
           "human_context_type": "prior_bad_experience",
@@ -1579,7 +1579,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "prior_bad_experience_or_distrust_phrase",
-        "response": "Fair. I would be skeptical too if that happened. I'm not asking you to commit to anything; I'm only checking whether this specific issue is still happening.",
+        "response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is premium pressure causing an issue now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -1620,7 +1620,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "prior_bad_experience_or_distrust_phrase",
-        "response": "Fair. I would be skeptical too if that happened. I'm not asking you to commit to anything; I'm only checking whether this specific issue is still happening.",
+        "response": "I understand. You do not need to share sensitive details or commit to anything here. The useful check is whether premium pressure is still a problem.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -1784,7 +1784,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "sarcasm_or_joking_phrase",
-        "response": "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now.",
+        "response": "No big promises from me. I'm only checking whether premium pressure is costing time.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -1825,7 +1825,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "sarcasm_or_joking_phrase",
-        "response": "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now.",
+        "response": "No magic claims. Just a quick check on whether premium pressure is still a problem.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -1866,7 +1866,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "sarcasm_or_joking_phrase",
-        "response": "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now.",
+        "response": "Fair concern. I won't overstate it; the only question is whether premium pressure is still a problem.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -1989,7 +1989,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now.",
+        "response": "Got it. I won't chase the story; the relevant check is whether premium pressure is still a problem.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2018,7 +2018,7 @@
         "buyer_move_id": "irrelevant_off_topic_context",
         "buyer_utterance": "we are replacing the office printer",
         "call_control": "continue-call",
-        "question_count": 0,
+        "question_count": 1,
         "rapport_fields": {
           "emotional_temperature": "none",
           "human_context_type": "irrelevant_off_topic",
@@ -2030,7 +2030,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now.",
+        "response": "Understood. I won't pull this into the printer issue; the quick check here: is premium pressure causing an issue now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2059,7 +2059,7 @@
         "buyer_move_id": "irrelevant_off_topic_context",
         "buyer_utterance": "anyway I have a long list of errands",
         "call_control": "continue-call",
-        "question_count": 0,
+        "question_count": 1,
         "rapport_fields": {
           "emotional_temperature": "none",
           "human_context_type": "irrelevant_off_topic",
@@ -2071,7 +2071,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now.",
+        "response": "No problem. I won't make this a long call. The only relevant check: is premium pressure causing an issue now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2399,7 +2399,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "busy_or_distracted_phrase",
-        "response": "Understood, bad time. I can keep it to one yes-or-no: is manual work causing an issue now?",
+        "response": "Understood. I'll keep it to one yes-or-no: is manual work causing an issue now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2468,20 +2468,20 @@
         "buyer_move_category": "rapport_relevance_bridge",
         "buyer_move_id": "home_life_interruption",
         "buyer_utterance": "my kids are screaming",
-        "call_control": "continue-call",
-        "question_count": 1,
+        "call_control": "end-call",
+        "question_count": 0,
         "rapport_fields": {
           "emotional_temperature": "mild",
           "human_context_type": "home_life_interruption",
           "rapport_repair_required": true,
-          "safe_to_continue": true,
+          "safe_to_continue": false,
           "sensitive_context_detected": false,
           "serious_bad_timing_detected": false,
           "should_stop_for_hardship": false,
           "stakeholder_routing_required": false
         },
         "recognition_reason": "home_life_interruption_phrase",
-        "response": "No problem. Sounds like a bad moment. I can keep it to one quick yes-or-no: is manual work causing an issue now?",
+        "response": "No problem. Sounds like a bad moment with the kids. I'll stop here.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2563,7 +2563,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "financial_stress_phrase",
-        "response": "I hear you. Budget pressure matters. I'm not here to push another cost; the useful check is whether this issue is already costing time or money.",
+        "response": "I hear you. Costs are tight for a lot of people. I'm not here to add pressure; the useful check is whether manual work is already costing time or money.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2604,7 +2604,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "financial_stress_phrase",
-        "response": "I hear you. Budget pressure matters. I'm not here to push another cost; the useful check is whether this issue is already costing time or money.",
+        "response": "Understood. Budget pressure matters. I won't push a review unless manual work is already costing time or creating risk.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2645,7 +2645,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "financial_stress_phrase",
-        "response": "I hear you. Budget pressure matters. I'm not here to push another cost; the useful check is whether this issue is already costing time or money.",
+        "response": "I hear you. Then I should not push anything. The only useful question is whether manual work is already costing more than it should.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2674,7 +2674,7 @@
         "buyer_move_id": "prior_bad_experience_context",
         "buyer_utterance": "last company like this wasted my time",
         "call_control": "continue-call",
-        "question_count": 0,
+        "question_count": 1,
         "rapport_fields": {
           "emotional_temperature": "mild",
           "human_context_type": "prior_bad_experience",
@@ -2686,7 +2686,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "prior_bad_experience_or_distrust_phrase",
-        "response": "Fair. I would be skeptical too if that happened. I'm not asking you to commit to anything; I'm only checking whether this specific issue is still happening.",
+        "response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is manual work causing an issue now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2727,7 +2727,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "prior_bad_experience_or_distrust_phrase",
-        "response": "Fair. I would be skeptical too if that happened. I'm not asking you to commit to anything; I'm only checking whether this specific issue is still happening.",
+        "response": "I understand. You do not need to share sensitive details or commit to anything here. The useful check is whether manual work is still a problem.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2891,7 +2891,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "sarcasm_or_joking_phrase",
-        "response": "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now.",
+        "response": "No big promises from me. I'm only checking whether manual work is costing time.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2932,7 +2932,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "sarcasm_or_joking_phrase",
-        "response": "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now.",
+        "response": "No magic claims. Just a quick check on whether manual work is still a problem.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -2973,7 +2973,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "sarcasm_or_joking_phrase",
-        "response": "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now.",
+        "response": "Fair concern. I won't overstate it; the only question is whether manual work is still a problem.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3096,7 +3096,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now.",
+        "response": "Got it. I won't chase the story; the relevant check is whether manual work is still a problem.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3125,7 +3125,7 @@
         "buyer_move_id": "irrelevant_off_topic_context",
         "buyer_utterance": "we are replacing the office printer",
         "call_control": "continue-call",
-        "question_count": 0,
+        "question_count": 1,
         "rapport_fields": {
           "emotional_temperature": "none",
           "human_context_type": "irrelevant_off_topic",
@@ -3137,7 +3137,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now.",
+        "response": "Understood. I won't pull this into the printer issue; the quick check here: is manual work causing an issue now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3166,7 +3166,7 @@
         "buyer_move_id": "irrelevant_off_topic_context",
         "buyer_utterance": "anyway I have a long list of errands",
         "call_control": "continue-call",
-        "question_count": 0,
+        "question_count": 1,
         "rapport_fields": {
           "emotional_temperature": "none",
           "human_context_type": "irrelevant_off_topic",
@@ -3178,7 +3178,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now.",
+        "response": "No problem. I won't make this a long call. The only relevant check: is manual work causing an issue now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3506,7 +3506,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "busy_or_distracted_phrase",
-        "response": "Understood, bad time. I can keep it to one yes-or-no: is repair timing causing an issue now?",
+        "response": "Understood. I'll keep it to one yes-or-no: is repair timing causing an issue now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3575,20 +3575,20 @@
         "buyer_move_category": "rapport_relevance_bridge",
         "buyer_move_id": "home_life_interruption",
         "buyer_utterance": "my kids are screaming",
-        "call_control": "continue-call",
-        "question_count": 1,
+        "call_control": "end-call",
+        "question_count": 0,
         "rapport_fields": {
           "emotional_temperature": "mild",
           "human_context_type": "home_life_interruption",
           "rapport_repair_required": true,
-          "safe_to_continue": true,
+          "safe_to_continue": false,
           "sensitive_context_detected": false,
           "serious_bad_timing_detected": false,
           "should_stop_for_hardship": false,
           "stakeholder_routing_required": false
         },
         "recognition_reason": "home_life_interruption_phrase",
-        "response": "No problem. Sounds like a bad moment. I can keep it to one quick yes-or-no: is repair timing causing an issue now?",
+        "response": "No problem. Sounds like a bad moment with the kids. I'll stop here.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3670,7 +3670,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "financial_stress_phrase",
-        "response": "I hear you. Budget pressure matters. I'm not here to push another cost; the useful check is whether this issue is already costing time or money.",
+        "response": "I hear you. Costs are tight for a lot of people. I'm not here to add pressure; the useful check is whether repair timing is already costing time or money.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3711,7 +3711,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "financial_stress_phrase",
-        "response": "I hear you. Budget pressure matters. I'm not here to push another cost; the useful check is whether this issue is already costing time or money.",
+        "response": "Understood. Budget pressure matters. I won't push a review unless repair timing is already costing time or creating risk.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3752,7 +3752,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "financial_stress_phrase",
-        "response": "I hear you. Budget pressure matters. I'm not here to push another cost; the useful check is whether this issue is already costing time or money.",
+        "response": "I hear you. Then I should not push anything. The only useful question is whether repair timing is already costing more than it should.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3781,7 +3781,7 @@
         "buyer_move_id": "prior_bad_experience_context",
         "buyer_utterance": "last company like this wasted my time",
         "call_control": "continue-call",
-        "question_count": 0,
+        "question_count": 1,
         "rapport_fields": {
           "emotional_temperature": "mild",
           "human_context_type": "prior_bad_experience",
@@ -3793,7 +3793,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "prior_bad_experience_or_distrust_phrase",
-        "response": "Fair. I would be skeptical too if that happened. I'm not asking you to commit to anything; I'm only checking whether this specific issue is still happening.",
+        "response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is repair timing causing an issue now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3834,7 +3834,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "prior_bad_experience_or_distrust_phrase",
-        "response": "Fair. I would be skeptical too if that happened. I'm not asking you to commit to anything; I'm only checking whether this specific issue is still happening.",
+        "response": "I understand. You do not need to share sensitive details or commit to anything here. The useful check is whether repair timing is still a problem.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -3998,7 +3998,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "sarcasm_or_joking_phrase",
-        "response": "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now.",
+        "response": "No big promises from me. I'm only checking whether repair timing is costing time.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4039,7 +4039,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "sarcasm_or_joking_phrase",
-        "response": "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now.",
+        "response": "No magic claims. Just a quick check on whether repair timing is still a problem.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4080,7 +4080,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "sarcasm_or_joking_phrase",
-        "response": "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now.",
+        "response": "Fair concern. I won't overstate it; the only question is whether repair timing is still a problem.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4203,7 +4203,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now.",
+        "response": "Got it. I won't chase the story; the relevant check is whether repair timing is still a problem.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4232,7 +4232,7 @@
         "buyer_move_id": "irrelevant_off_topic_context",
         "buyer_utterance": "we are replacing the office printer",
         "call_control": "continue-call",
-        "question_count": 0,
+        "question_count": 1,
         "rapport_fields": {
           "emotional_temperature": "none",
           "human_context_type": "irrelevant_off_topic",
@@ -4244,7 +4244,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now.",
+        "response": "Understood. I won't pull this into the printer issue; the quick check here: is repair timing causing an issue now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4273,7 +4273,7 @@
         "buyer_move_id": "irrelevant_off_topic_context",
         "buyer_utterance": "anyway I have a long list of errands",
         "call_control": "continue-call",
-        "question_count": 0,
+        "question_count": 1,
         "rapport_fields": {
           "emotional_temperature": "none",
           "human_context_type": "irrelevant_off_topic",
@@ -4285,7 +4285,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now.",
+        "response": "No problem. I won't make this a long call. The only relevant check: is repair timing causing an issue now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4613,7 +4613,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "busy_or_distracted_phrase",
-        "response": "Understood, bad time. I can keep it to one yes-or-no: is the service need active now?",
+        "response": "Understood. I'll keep it to one yes-or-no: is the service need active now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4682,20 +4682,20 @@
         "buyer_move_category": "rapport_relevance_bridge",
         "buyer_move_id": "home_life_interruption",
         "buyer_utterance": "my kids are screaming",
-        "call_control": "continue-call",
-        "question_count": 1,
+        "call_control": "end-call",
+        "question_count": 0,
         "rapport_fields": {
           "emotional_temperature": "mild",
           "human_context_type": "home_life_interruption",
           "rapport_repair_required": true,
-          "safe_to_continue": true,
+          "safe_to_continue": false,
           "sensitive_context_detected": false,
           "serious_bad_timing_detected": false,
           "should_stop_for_hardship": false,
           "stakeholder_routing_required": false
         },
         "recognition_reason": "home_life_interruption_phrase",
-        "response": "No problem. Sounds like a bad moment. I can keep it to one quick yes-or-no: is the service need active now?",
+        "response": "No problem. Sounds like a bad moment with the kids. I'll stop here.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4777,7 +4777,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "financial_stress_phrase",
-        "response": "I hear you. Budget pressure matters. I'm not here to push another cost; the useful check is whether this issue is already costing time or money.",
+        "response": "I hear you. Costs are tight for a lot of people. I'm not here to add pressure; the useful check is whether the service need is already costing time or money.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4818,7 +4818,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "financial_stress_phrase",
-        "response": "I hear you. Budget pressure matters. I'm not here to push another cost; the useful check is whether this issue is already costing time or money.",
+        "response": "Understood. Budget pressure matters. I won't push a review unless the service need is already costing time or creating risk.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4859,7 +4859,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "financial_stress_phrase",
-        "response": "I hear you. Budget pressure matters. I'm not here to push another cost; the useful check is whether this issue is already costing time or money.",
+        "response": "I hear you. Then I should not push anything. The only useful question is whether the service need is already costing more than it should.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4888,7 +4888,7 @@
         "buyer_move_id": "prior_bad_experience_context",
         "buyer_utterance": "last company like this wasted my time",
         "call_control": "continue-call",
-        "question_count": 0,
+        "question_count": 1,
         "rapport_fields": {
           "emotional_temperature": "mild",
           "human_context_type": "prior_bad_experience",
@@ -4900,7 +4900,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "prior_bad_experience_or_distrust_phrase",
-        "response": "Fair. I would be skeptical too if that happened. I'm not asking you to commit to anything; I'm only checking whether this specific issue is still happening.",
+        "response": "Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: is the service need active now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -4941,7 +4941,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "prior_bad_experience_or_distrust_phrase",
-        "response": "Fair. I would be skeptical too if that happened. I'm not asking you to commit to anything; I'm only checking whether this specific issue is still happening.",
+        "response": "I understand. You do not need to share sensitive details or commit to anything here. The useful check is whether the service need is active now.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -5105,7 +5105,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "sarcasm_or_joking_phrase",
-        "response": "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now.",
+        "response": "No big promises from me. I'm only checking whether the service need is costing time.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -5146,7 +5146,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "sarcasm_or_joking_phrase",
-        "response": "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now.",
+        "response": "No magic claims. Just a quick check on whether the service need is active now.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -5187,7 +5187,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "sarcasm_or_joking_phrase",
-        "response": "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now.",
+        "response": "Fair concern. I won't overstate it; the only question is whether the service need is active now.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -5310,7 +5310,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now.",
+        "response": "Got it. I won't chase the story; the relevant check is whether the service need is active now.",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -5339,7 +5339,7 @@
         "buyer_move_id": "irrelevant_off_topic_context",
         "buyer_utterance": "we are replacing the office printer",
         "call_control": "continue-call",
-        "question_count": 0,
+        "question_count": 1,
         "rapport_fields": {
           "emotional_temperature": "none",
           "human_context_type": "irrelevant_off_topic",
@@ -5351,7 +5351,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now.",
+        "response": "Understood. I won't pull this into the printer issue; the quick check here: is the service need active now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -5380,7 +5380,7 @@
         "buyer_move_id": "irrelevant_off_topic_context",
         "buyer_utterance": "anyway I have a long list of errands",
         "call_control": "continue-call",
-        "question_count": 0,
+        "question_count": 1,
         "rapport_fields": {
           "emotional_temperature": "none",
           "human_context_type": "irrelevant_off_topic",
@@ -5392,7 +5392,7 @@
           "stakeholder_routing_required": false
         },
         "recognition_reason": "irrelevant_off_topic_phrase",
-        "response": "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now.",
+        "response": "No problem. I won't make this a long call. The only relevant check: is the service need active now?",
         "response_shape_enforced_category": "rapport_relevance_bridge",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {

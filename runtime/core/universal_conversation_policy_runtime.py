@@ -503,6 +503,22 @@ def _primary_issue_check_question(campaign: dict | None) -> str:
     return _issue_check_question_for_phrase(_sharp_diagnostic_gap_phrase(campaign))
 
 
+def _primary_issue_subject_phrase(campaign: dict | None) -> str:
+    phrase = _plain_phrase(_sharp_diagnostic_gap_phrase(campaign))
+    if phrase.endswith(" slipping"):
+        phrase = phrase[: -len(" slipping")]
+    return _area_phrase(phrase)
+
+
+def _primary_issue_problem_clause(campaign: dict | None) -> str:
+    phrase = _plain_phrase(_sharp_diagnostic_gap_phrase(campaign))
+    if phrase.endswith(" slipping"):
+        return f"{phrase[: -len(' slipping')]} is slipping now"
+    if phrase.endswith("need"):
+        return f"{_area_phrase(phrase)} is active now"
+    return f"{_area_phrase(phrase)} is still a problem"
+
+
 def _has_confirmed_gap(session_state: dict | None) -> bool:
     return bool(_string_items(_memory_from_session(session_state).get("confirmed_gaps")))
 
@@ -1048,13 +1064,14 @@ def _rapport_repair_metadata(buyer_move_id: str, normalized: str) -> dict[str, A
         human_context_type = "busy_or_distracted"
         emotional_temperature = "mild"
         should_offer_later_or_stop = True
-        if "driving" in normalized:
+        if _contains_any(normalized, {"driving", "in a meeting"}):
             safe_to_continue = False
         response_shape_id = "busy_context_one_question_or_stop"
     elif buyer_move_id == "home_life_interruption":
         human_context_type = "home_life_interruption"
         emotional_temperature = "mild"
         should_offer_later_or_stop = True
+        safe_to_continue = False
         response_shape_id = "home_interruption_one_question_or_stop"
     elif buyer_move_id == "workplace_interruption":
         human_context_type = "workplace_interruption"
@@ -1834,6 +1851,9 @@ def render_universal_response_outline(
     owner_role = _role_phrase(owner)
     has_confirmed_gap = _has_confirmed_gap(session_state)
     active_area = _area_phrase(active_gap)
+    primary_issue_subject = _primary_issue_subject_phrase(campaign)
+    primary_issue_clause = _primary_issue_problem_clause(campaign)
+    primary_issue_question = _primary_issue_check_question(campaign)
 
     if buyer_move_id == "serious_hardship_bad_timing":
         return "I'm sorry to hear that. This is not the right time for this call. I'll stop here."
@@ -1842,24 +1862,57 @@ def render_universal_response_outline(
     if buyer_move_id == "busy_or_distracted":
         if "driving" in normalized:
             return "No problem. I do not want to distract you while driving. I'll stop here."
+        if "in a meeting" in normalized:
+            return "Understood, bad time. I will not pull you out of the meeting. I'll stop here."
         if "ten seconds" in normalized:
-            return f"Understood. I'll keep it to one question: {_primary_issue_check_question(campaign)}"
-        return f"Understood, bad time. I can keep it to one yes-or-no: {_primary_issue_check_question(campaign)}"
+            return f"Understood. I'll keep it to one question: {primary_issue_question}"
+        if "cooking" in normalized:
+            return f"Understood. I'll keep it to one yes-or-no: {primary_issue_question}"
+        return f"Understood, bad time. I can keep it to one yes-or-no: {primary_issue_question}"
     if buyer_move_id == "home_life_interruption":
-        return f"No problem. Sounds like a bad moment. I can keep it to one quick yes-or-no: {_primary_issue_check_question(campaign)}"
+        if "kids are screaming" in normalized:
+            return "No problem. Sounds like a bad moment with the kids. I'll stop here."
+        if "baby crying" in normalized:
+            return "No problem. The baby needs you. I'll stop here."
+        if _contains_any(normalized, {"doorbell", "someone is at the door"}):
+            return "No problem. Handle the door; I'll stop here."
+        if "groceries" in normalized:
+            return "No problem. I will not keep you while your hands are full. I'll stop here."
+        return "No problem. Sounds like a bad moment. I'll stop here."
     if buyer_move_id == "workplace_interruption":
         if _contains_any(normalized, {"incident response", "another call", "boss just walked in"}):
             return "Understood, bad timing. I will not pull you away from that. I'll stop here."
-        return f"Understood, I will keep it tight: {_primary_issue_check_question(campaign)}"
+        return f"Understood, I will keep it tight: {primary_issue_question}"
     if buyer_move_id == "financial_stress_context":
+        if "everything is expensive" in normalized:
+            return (
+                "I hear you. Costs are tight for a lot of people. I'm not here to add pressure; "
+                f"the useful check is whether {primary_issue_subject} is already costing time or money."
+            )
+        if "worried about money" in normalized:
+            return (
+                "Understood. Budget pressure matters. I won't push a review unless "
+                f"{primary_issue_subject} is already costing time or creating risk."
+            )
+        if "cutting costs" in normalized:
+            return (
+                "Makes sense. If cutting costs is the priority, the only reason to continue is if "
+                f"{primary_issue_subject} is already wasting time."
+            )
         return (
-            "I hear you. Budget pressure matters. I'm not here to push another cost; "
-            "the useful check is whether this issue is already costing time or money."
+            "I hear you. Then I should not push anything. The only useful question is whether "
+            f"{primary_issue_subject} is already costing more than it should."
         )
     if buyer_move_id == "prior_bad_experience_context":
+        if "wasted my time" in normalized:
+            return f"Fair. If someone wasted your time before, I would be cautious too. I'll keep this to one concrete check: {primary_issue_question}"
+        if "got burned" in normalized:
+            return f"That makes sense. I'm not asking for trust upfront; only whether {primary_issue_clause}."
+        if "salespeople always say" in normalized:
+            return f"Fair. Then I should be specific, not pitchy: {primary_issue_question}"
         return (
-            "Fair. I would be skeptical too if that happened. I'm not asking you to commit to anything; "
-            "I'm only checking whether this specific issue is still happening."
+            "I understand. You do not need to share sensitive details or commit to anything here. "
+            f"The useful check is whether {primary_issue_clause}."
         )
     if buyer_move_id == "stakeholder_or_right_person_context":
         if _contains_any(normalized, {"manager", "legal"}):
@@ -1869,13 +1922,27 @@ def render_universal_response_outline(
             )
         return "Got it, sounds like they may be the better person. Should I note them as the right contact, or leave it here?"
     if buyer_move_id == "sarcasm_or_joking_context":
-        return "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now."
+        if "make me rich" in normalized:
+            return f"No big promises from me. I'm only checking whether {primary_issue_subject} is costing time."
+        if "magic solution" in normalized:
+            return f"No magic claims. Just a quick check on whether {primary_issue_clause}."
+        if "fix my whole life" in normalized:
+            return f"No, nothing that dramatic. Just checking whether {primary_issue_subject} is worth a review."
+        return f"Fair concern. I won't overstate it; the only question is whether {primary_issue_clause}."
     if buyer_move_id == "emotional_venting_context":
         if "nobody ever follows up" in normalized:
             return "That sounds frustrating. If nobody follows up, that may be exactly the issue. Is it causing missed replies or delays?"
         return "That sounds frustrating. Is it causing delays or extra work now?"
     if buyer_move_id == "irrelevant_off_topic_context":
-        return "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now."
+        if "weekend fixing my fence" in normalized:
+            return f"Got it. I won't chase the story; the relevant check is whether {primary_issue_clause}."
+        if "office printer" in normalized:
+            return f"Understood. I won't pull this into the printer issue; the quick check here: {primary_issue_question}"
+        if "unrelated software" in normalized:
+            return f"Got it. That sounds separate from this call. The relevant check here: {primary_issue_question}"
+        if "errands" in normalized:
+            return f"No problem. I won't make this a long call. The only relevant check: {primary_issue_question}"
+        return f"Got it. I won't pull this into a long call; the relevant check: {primary_issue_question}"
 
     if buyer_move_id == "slow_down_or_speak_faster":
         if has_confirmed_gap:

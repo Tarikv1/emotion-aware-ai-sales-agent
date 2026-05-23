@@ -56,6 +56,62 @@
   },
   "requires_human_sales_review": true,
   "resonance_warning_counts": {},
+  "response_variety": {
+    "by_arc": {
+      "b2b_workplace_interruption": {
+        "conversation_count": 5,
+        "repeated_response_count": 0,
+        "repeated_response_templates": [],
+        "turn_response_count": 10
+      },
+      "b2c_home_life_interruption": {
+        "conversation_count": 5,
+        "repeated_response_count": 0,
+        "repeated_response_templates": [],
+        "turn_response_count": 5
+      },
+      "busy_distracted": {
+        "conversation_count": 5,
+        "repeated_response_count": 0,
+        "repeated_response_templates": [],
+        "turn_response_count": 10
+      },
+      "financial_stress_budget_emotion": {
+        "conversation_count": 5,
+        "repeated_response_count": 0,
+        "repeated_response_templates": [],
+        "turn_response_count": 20
+      },
+      "irrelevant_story_off_topic_ramble": {
+        "conversation_count": 5,
+        "repeated_response_count": 0,
+        "repeated_response_templates": [],
+        "turn_response_count": 20
+      },
+      "joking_sarcasm": {
+        "conversation_count": 5,
+        "repeated_response_count": 0,
+        "repeated_response_templates": [],
+        "turn_response_count": 20
+      },
+      "prior_bad_experience": {
+        "conversation_count": 5,
+        "repeated_response_count": 0,
+        "repeated_response_templates": [],
+        "turn_response_count": 20
+      }
+    },
+    "repeated_response_count": 0,
+    "tracked_arcs": [
+      "b2b_workplace_interruption",
+      "b2c_home_life_interruption",
+      "busy_distracted",
+      "financial_stress_budget_emotion",
+      "irrelevant_story_off_topic_ramble",
+      "joking_sarcasm",
+      "prior_bad_experience"
+    ]
+  },
   "runtime_behavior_changed": false,
   "side_effect_flags_all_false": true,
   "status": "generated",
