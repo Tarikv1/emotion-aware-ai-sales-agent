@@ -64,14 +64,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -434,12 +431,10 @@
           "confirmed_gaps": [
             "callbacks"
           ],
-          "final_response": "If it is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window should I note?",
+          "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "delay",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 25,
@@ -698,14 +693,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -1068,15 +1060,13 @@
           "confirmed_gaps": [
             "callbacks"
           ],
-          "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+          "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
           "impact_signal_detected": true,
           "impact_signal_type": "weak_or_denied",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "reduce_pressure_or_close",
           "question_count": 0,
-          "response_word_count": 19,
+          "response_word_count": 23,
           "sales_progression_stage": "implication_weak_or_denied",
           "selected_action": {
             "source": "universal_response_shape"
@@ -1333,14 +1323,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -1814,12 +1801,10 @@
           "confirmed_gaps": [
             "handoffs"
           ],
-          "final_response": "If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window should I note?",
+          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "time",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 25,
@@ -2079,7 +2064,7 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 4,
+      "mechanical_warning_count": 3,
       "mechanical_warning_flags": [
         "no_acknowledgement",
         "over_deferential_stop_offer"
@@ -2572,12 +2557,10 @@
           "confirmed_gaps": [
             "callbacks"
           ],
-          "final_response": "If it is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window should I note?",
+          "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "delay",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 25,
@@ -3574,7 +3557,7 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
+      "mechanical_warning_count": 2,
       "mechanical_warning_flags": [
         "no_acknowledgement",
         "over_deferential_stop_offer"
@@ -4283,12 +4266,10 @@
           "confirmed_gaps": [
             "callbacks"
           ],
-          "final_response": "If it is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window should I note?",
+          "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "delay",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 25,
@@ -6936,14 +6917,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -7306,12 +7284,10 @@
           "confirmed_gaps": [
             "premium_or_budget"
           ],
-          "final_response": "If it is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window should I note?",
+          "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "delay",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 25,
@@ -7570,14 +7546,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -7940,15 +7913,13 @@
           "confirmed_gaps": [
             "premium_or_budget"
           ],
-          "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+          "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
           "impact_signal_detected": true,
           "impact_signal_type": "weak_or_denied",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "reduce_pressure_or_close",
           "question_count": 0,
-          "response_word_count": 19,
+          "response_word_count": 23,
           "sales_progression_stage": "implication_weak_or_denied",
           "selected_action": {
             "source": "universal_response_shape"
@@ -8205,14 +8176,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -8686,12 +8654,10 @@
           "confirmed_gaps": [
             "coverage_fit"
           ],
-          "final_response": "If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window should I note?",
+          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "time",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 25,
@@ -8951,9 +8917,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
+      "mechanical_warning_count": 1,
       "mechanical_warning_flags": [
-        "no_acknowledgement",
         "over_deferential_stop_offer"
       ],
       "notes_for_human_reviewer": [
@@ -9441,12 +9406,10 @@
           "confirmed_gaps": [
             "premium_or_budget"
           ],
-          "final_response": "If it is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window should I note?",
+          "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "delay",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 25,
@@ -10443,9 +10406,8 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 2,
+      "mechanical_warning_count": 1,
       "mechanical_warning_flags": [
-        "no_acknowledgement",
         "over_deferential_stop_offer"
       ],
       "notes_for_human_reviewer": [
@@ -11150,12 +11112,10 @@
           "confirmed_gaps": [
             "premium_or_budget"
           ],
-          "final_response": "If it is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window should I note?",
+          "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "delay",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 25,
@@ -13807,14 +13767,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -14177,12 +14134,10 @@
           "confirmed_gaps": [
             "manual_work"
           ],
-          "final_response": "If it is already causing delays, the next useful step is a short review with the implementation specialist. What callback window should I note?",
+          "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the implementation specialist. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "delay",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 24,
@@ -14441,14 +14396,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -14811,15 +14763,13 @@
           "confirmed_gaps": [
             "manual_work"
           ],
-          "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+          "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
           "impact_signal_detected": true,
           "impact_signal_type": "weak_or_denied",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "reduce_pressure_or_close",
           "question_count": 0,
-          "response_word_count": 19,
+          "response_word_count": 23,
           "sales_progression_stage": "implication_weak_or_denied",
           "selected_action": {
             "source": "universal_response_shape"
@@ -15076,14 +15026,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -15557,12 +15504,10 @@
           "confirmed_gaps": [
             "integration_risk"
           ],
-          "final_response": "If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window should I note?",
+          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "time",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 24,
@@ -15822,7 +15767,7 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 4,
+      "mechanical_warning_count": 3,
       "mechanical_warning_flags": [
         "no_acknowledgement",
         "over_deferential_stop_offer"
@@ -16315,12 +16260,10 @@
           "confirmed_gaps": [
             "manual_work"
           ],
-          "final_response": "If it is already causing delays, the next useful step is a short review with the implementation specialist. What callback window should I note?",
+          "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the implementation specialist. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "delay",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 24,
@@ -17317,7 +17260,7 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
+      "mechanical_warning_count": 2,
       "mechanical_warning_flags": [
         "no_acknowledgement",
         "over_deferential_stop_offer"
@@ -18026,12 +17969,10 @@
           "confirmed_gaps": [
             "manual_work"
           ],
-          "final_response": "If it is already causing delays, the next useful step is a short review with the implementation specialist. What callback window should I note?",
+          "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the implementation specialist. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "delay",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 24,
@@ -20681,14 +20622,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -21051,12 +20989,10 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "If it is already causing delays, the next useful step is a short review with the service advisor. What callback window should I note?",
+          "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the service advisor. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "delay",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 24,
@@ -21315,14 +21251,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -21685,15 +21618,13 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+          "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
           "impact_signal_detected": true,
           "impact_signal_type": "weak_or_denied",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "reduce_pressure_or_close",
           "question_count": 0,
-          "response_word_count": 19,
+          "response_word_count": 23,
           "sales_progression_stage": "implication_weak_or_denied",
           "selected_action": {
             "source": "universal_response_shape"
@@ -21950,14 +21881,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -22431,12 +22359,10 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "If it is already costing time, the next useful step is a short review with the service advisor. What callback window should I note?",
+          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "time",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 24,
@@ -22696,7 +22622,7 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 4,
+      "mechanical_warning_count": 3,
       "mechanical_warning_flags": [
         "no_acknowledgement",
         "over_deferential_stop_offer"
@@ -23189,12 +23115,10 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "If it is already causing delays, the next useful step is a short review with the service advisor. What callback window should I note?",
+          "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the service advisor. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "delay",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 24,
@@ -24191,7 +24115,7 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
+      "mechanical_warning_count": 2,
       "mechanical_warning_flags": [
         "no_acknowledgement",
         "over_deferential_stop_offer"
@@ -24900,12 +24824,10 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "If it is already causing delays, the next useful step is a short review with the service advisor. What callback window should I note?",
+          "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the service advisor. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "delay",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 24,
@@ -27557,14 +27479,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -27927,12 +27846,10 @@
           "confirmed_gaps": [
             "service_need"
           ],
-          "final_response": "If it is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window should I note?",
+          "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "delay",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 25,
@@ -28191,14 +28108,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "over_deferential_stop_offer"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -28561,15 +28475,13 @@
           "confirmed_gaps": [
             "service_need"
           ],
-          "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+          "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
           "impact_signal_detected": true,
           "impact_signal_type": "weak_or_denied",
-          "mechanical_warning_flags": [
-            "over_deferential_stop_offer"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "reduce_pressure_or_close",
           "question_count": 0,
-          "response_word_count": 19,
+          "response_word_count": 23,
           "sales_progression_stage": "implication_weak_or_denied",
           "selected_action": {
             "source": "universal_response_shape"
@@ -28826,14 +28738,11 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 1,
-      "mechanical_warning_flags": [
-        "no_acknowledgement"
-      ],
+      "mechanical_warning_count": 0,
+      "mechanical_warning_flags": [],
       "notes_for_human_reviewer": [
         "Human reviewer should score commercial usefulness from the full turn sequence.",
-        "Mechanical warnings are heuristics only and are not final pass/fail labels.",
-        "Review the mechanical warning flags before scoring."
+        "Mechanical warnings are heuristics only and are not final pass/fail labels."
       ],
       "requires_human_sales_review": true,
       "review_focus": [
@@ -29307,12 +29216,10 @@
           "confirmed_gaps": [
             "scheduling_urgency"
           ],
-          "final_response": "If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window should I note?",
+          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "time",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 25,
@@ -29572,7 +29479,7 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 4,
+      "mechanical_warning_count": 3,
       "mechanical_warning_flags": [
         "no_acknowledgement",
         "over_deferential_stop_offer"
@@ -30065,12 +29972,10 @@
           "confirmed_gaps": [
             "service_need"
           ],
-          "final_response": "If it is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window should I note?",
+          "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "delay",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 25,
@@ -31067,7 +30972,7 @@
         "reviewer_notes": null,
         "scale": "1-5"
       },
-      "mechanical_warning_count": 3,
+      "mechanical_warning_count": 2,
       "mechanical_warning_flags": [
         "no_acknowledgement",
         "over_deferential_stop_offer"
@@ -31776,12 +31681,10 @@
           "confirmed_gaps": [
             "service_need"
           ],
-          "final_response": "If it is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window should I note?",
+          "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window works?",
           "impact_signal_detected": true,
           "impact_signal_type": "delay",
-          "mechanical_warning_flags": [
-            "no_acknowledgement"
-          ],
+          "mechanical_warning_flags": [],
           "next_best_sales_action": "ask_callback_window",
           "question_count": 1,
           "response_word_count": 25,
@@ -34392,10 +34295,10 @@
       ]
     }
   ],
-  "generated_at": "2026-05-23T02:56:11.158254+00:00",
+  "generated_at": "2026-05-23T12:12:11.072798+00:00",
   "mechanical_warning_counts": {
-    "no_acknowledgement": 77,
-    "over_deferential_stop_offer": 58,
+    "no_acknowledgement": 45,
+    "over_deferential_stop_offer": 48,
     "repeated_full_menu": 6
   },
   "most_concerning_conversations_by_mechanical_signals_only": [
@@ -34403,46 +34306,6 @@
       "arc_type": "direct_question",
       "campaign_id": "routesignal_live_demo",
       "conversation_id": "commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question",
-      "mechanical_warning_count": 4,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ]
-    },
-    {
-      "arc_type": "direct_question",
-      "campaign_id": "synthetic-b2b-saas-operations",
-      "conversation_id": "commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question",
-      "mechanical_warning_count": 4,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ]
-    },
-    {
-      "arc_type": "direct_question",
-      "campaign_id": "synthetic-automotive-service-review",
-      "conversation_id": "commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question",
-      "mechanical_warning_count": 4,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ]
-    },
-    {
-      "arc_type": "direct_question",
-      "campaign_id": "synthetic-home-services-estimate",
-      "conversation_id": "commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question",
-      "mechanical_warning_count": 4,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ]
-    },
-    {
-      "arc_type": "trust_challenge",
-      "campaign_id": "routesignal_live_demo",
-      "conversation_id": "commercial-sales-conversation-review-001-01-06-routesignal_live_demo-trust_challenge",
       "mechanical_warning_count": 3,
       "mechanical_warning_flags": [
         "no_acknowledgement",
@@ -34477,6 +34340,46 @@
       "mechanical_warning_flags": [
         "over_deferential_stop_offer"
       ]
+    },
+    {
+      "arc_type": "direct_question",
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "conversation_id": "commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question",
+      "mechanical_warning_count": 3,
+      "mechanical_warning_flags": [
+        "no_acknowledgement",
+        "over_deferential_stop_offer"
+      ]
+    },
+    {
+      "arc_type": "no_fit_stop",
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "conversation_id": "commercial-sales-conversation-review-001-03-10-synthetic-b2b-saas-operations-no_fit_stop",
+      "mechanical_warning_count": 3,
+      "mechanical_warning_flags": [
+        "over_deferential_stop_offer"
+      ]
+    },
+    {
+      "arc_type": "direct_question",
+      "campaign_id": "synthetic-automotive-service-review",
+      "conversation_id": "commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question",
+      "mechanical_warning_count": 3,
+      "mechanical_warning_flags": [
+        "no_acknowledgement",
+        "over_deferential_stop_offer"
+      ]
+    },
+    {
+      "arc_type": "confusion_loop_resistance",
+      "campaign_id": "synthetic-automotive-service-review",
+      "conversation_id": "commercial-sales-conversation-review-001-04-07-synthetic-automotive-service-review-confusion_loop_resistance",
+      "mechanical_warning_count": 3,
+      "mechanical_warning_flags": [
+        "no_acknowledgement",
+        "over_deferential_stop_offer",
+        "repeated_full_menu"
+      ]
     }
   ],
   "purpose": "Human-review packet for commercial sales conversation quality.",
@@ -34508,6 +34411,24 @@
   "runtime_behavior_changed": false,
   "strongest_looking_conversations_by_mechanical_signals_only": [
     {
+      "arc_type": "smooth_qualified_appointment",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-01-routesignal_live_demo-smooth_qualified_appointment",
+      "mechanical_warning_count": 0
+    },
+    {
+      "arc_type": "time_pressure",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-02-routesignal_live_demo-time_pressure",
+      "mechanical_warning_count": 0
+    },
+    {
+      "arc_type": "tentative_pain",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-03-routesignal_live_demo-tentative_pain",
+      "mechanical_warning_count": 0
+    },
+    {
       "arc_type": "objection",
       "campaign_id": "routesignal_live_demo",
       "conversation_id": "commercial-sales-conversation-review-001-01-05-routesignal_live_demo-objection",
@@ -34520,39 +34441,21 @@
       "mechanical_warning_count": 0
     },
     {
-      "arc_type": "objection",
+      "arc_type": "smooth_qualified_appointment",
       "campaign_id": "synthetic-insurance-review",
-      "conversation_id": "commercial-sales-conversation-review-001-02-05-synthetic-insurance-review-objection",
+      "conversation_id": "commercial-sales-conversation-review-001-02-01-synthetic-insurance-review-smooth_qualified_appointment",
       "mechanical_warning_count": 0
     },
     {
-      "arc_type": "social_conversation_management",
+      "arc_type": "time_pressure",
       "campaign_id": "synthetic-insurance-review",
-      "conversation_id": "commercial-sales-conversation-review-001-02-08-synthetic-insurance-review-social_conversation_management",
+      "conversation_id": "commercial-sales-conversation-review-001-02-02-synthetic-insurance-review-time_pressure",
       "mechanical_warning_count": 0
     },
     {
-      "arc_type": "objection",
-      "campaign_id": "synthetic-b2b-saas-operations",
-      "conversation_id": "commercial-sales-conversation-review-001-03-05-synthetic-b2b-saas-operations-objection",
-      "mechanical_warning_count": 0
-    },
-    {
-      "arc_type": "social_conversation_management",
-      "campaign_id": "synthetic-b2b-saas-operations",
-      "conversation_id": "commercial-sales-conversation-review-001-03-08-synthetic-b2b-saas-operations-social_conversation_management",
-      "mechanical_warning_count": 0
-    },
-    {
-      "arc_type": "objection",
-      "campaign_id": "synthetic-automotive-service-review",
-      "conversation_id": "commercial-sales-conversation-review-001-04-05-synthetic-automotive-service-review-objection",
-      "mechanical_warning_count": 0
-    },
-    {
-      "arc_type": "social_conversation_management",
-      "campaign_id": "synthetic-automotive-service-review",
-      "conversation_id": "commercial-sales-conversation-review-001-04-08-synthetic-automotive-service-review-social_conversation_management",
+      "arc_type": "tentative_pain",
+      "campaign_id": "synthetic-insurance-review",
+      "conversation_id": "commercial-sales-conversation-review-001-02-03-synthetic-insurance-review-tentative_pain",
       "mechanical_warning_count": 0
     }
   ],

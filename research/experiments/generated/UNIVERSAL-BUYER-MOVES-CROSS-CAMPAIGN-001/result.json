@@ -4299,7 +4299,7 @@
         "send_info_request"
       ],
       "failures": [],
-      "final_response": "Sure. Since this already sounds worth review, I can note details for the verified implementation reviewer. What email or callback window should I use?",
+      "final_response": "Sure. Since this sounds worth a review, I can note it for the verified implementation reviewer. What email or callback window should they use?",
       "passed": true,
       "previous_response": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
       "recognition_confidence": "high",
@@ -10497,7 +10497,7 @@
         "send_info_request"
       ],
       "failures": [],
-      "final_response": "Sure. Since this already sounds worth review, I can note details for the licensed insurance specialist. What email or callback window should I use?",
+      "final_response": "Sure. Since this sounds worth a review, I can note it for the licensed insurance specialist. What email or callback window should they use?",
       "passed": true,
       "previous_response": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
       "recognition_confidence": "high",
@@ -16713,7 +16713,7 @@
         "send_info_request"
       ],
       "failures": [],
-      "final_response": "Sure. Since this already sounds worth review, I can note details for the implementation specialist. What email or callback window should I use?",
+      "final_response": "Sure. Since this sounds worth a review, I can note it for the implementation specialist. What email or callback window should they use?",
       "passed": true,
       "previous_response": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
       "recognition_confidence": "high",
@@ -22928,7 +22928,7 @@
         "send_info_request"
       ],
       "failures": [],
-      "final_response": "Sure. Since this already sounds worth review, I can note details for the service advisor. What email or callback window should I use?",
+      "final_response": "Sure. Since this sounds worth a review, I can note it for the service advisor. What email or callback window should they use?",
       "passed": true,
       "previous_response": "Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?",
       "recognition_confidence": "high",
@@ -29141,7 +29141,7 @@
         "send_info_request"
       ],
       "failures": [],
-      "final_response": "Sure. Since this already sounds worth review, I can note details for the qualified service coordinator. What email or callback window should I use?",
+      "final_response": "Sure. Since this sounds worth a review, I can note it for the qualified service coordinator. What email or callback window should they use?",
       "passed": true,
       "previous_response": "Got it, service need is the issue. Is it causing a real service issue now, or just a general question?",
       "recognition_confidence": "high",

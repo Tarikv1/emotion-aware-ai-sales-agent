@@ -1,5 +1,27 @@
 {
-  "checkpoint_id": "UNIVERSAL-APPOINTMENT-READINESS-RESIDUALS-001",
+  "before_after_examples": {
+    "concrete_time_preservation": {
+      "campaign_id": "routesignal_live_demo",
+      "final_response": "Got it. I'll note that time for the verified implementation reviewer to follow up."
+    },
+    "frustration_preservation": {
+      "campaign_id": "routesignal_live_demo",
+      "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check."
+    },
+    "high_readiness_close": {
+      "campaign_id": "routesignal_live_demo",
+      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?"
+    },
+    "send_info_after_readiness": {
+      "campaign_id": "routesignal_live_demo",
+      "final_response": "Sure. Since this sounds worth a review, I can note it for the verified implementation reviewer. What email or callback window should they use?"
+    },
+    "weak_impact_exit": {
+      "campaign_id": "routesignal_live_demo",
+      "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time."
+    }
+  },
+  "checkpoint_id": "UNIVERSAL-CLOSE-STRENGTH-001",
   "creates_calendar_event": false,
   "live_tts_used": false,
   "local_llm_calls_made": false,
@@ -19,7 +41,7 @@
       "final_response": "Got it. If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "ask_callback_window",
-      "scenario": "readiness_should_ask_next_step",
+      "scenario": "high_readiness_close",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -125,7 +147,7 @@
       "final_response": "Sure. Since this sounds worth a review, I can note it for the verified implementation reviewer. What email or callback window should they use?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "capture_send_info_contact",
-      "scenario": "readiness_send_info_contact_path",
+      "scenario": "send_info_after_readiness",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -229,7 +251,7 @@
       "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "reduce_pressure_or_close",
-      "scenario": "weak_impact_not_flagged",
+      "scenario": "weak_impact_exit",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -333,7 +355,7 @@
       "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "none",
-      "scenario": "frustration_not_flagged",
+      "scenario": "frustration_preservation",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -424,108 +446,6 @@
       }
     },
     {
-      "appointment_readiness": "none",
-      "buyer_move_id": "language_mismatch",
-      "buyer_utterance": "I don't speak English well",
-      "call_control": "continue-call",
-      "campaign_id": "routesignal_live_demo",
-      "confirmed_gaps": [
-        "callbacks"
-      ],
-      "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
-      "mechanical_warning_flags": [],
-      "next_best_sales_action": "none",
-      "scenario": "language_mismatch_not_flagged",
-      "side_effect_flags": {
-        "creates_calendar_event": false,
-        "customer_audio_uploaded_to_python_server": false,
-        "customer_audio_uploaded_to_tts_provider": false,
-        "local_llm_calls_made": false,
-        "opens_prod_102": false,
-        "provider_calls_made": false,
-        "sends_email": false,
-        "writes_crm": false
-      },
-      "source": "universal_response_shape",
-      "status": "pass",
-      "universal_policy_frame": {
-        "allowed_call_controls": [
-          "continue-call"
-        ],
-        "allowed_fact_slots": [
-          "language",
-          "caller_identity"
-        ],
-        "appointment_pressure_level": "none",
-        "appointment_readiness": "none",
-        "asr_repair_required": false,
-        "asr_repair_turn_count": 0,
-        "buyer_move_category": "social_conversation_management",
-        "buyer_move_id": "language_mismatch",
-        "callback_capture_required": false,
-        "confirmed_gap_id": "callbacks",
-        "confirmed_gap_phrase": "callbacks",
-        "contact_capture_required": false,
-        "conversation_stage": "diagnostic",
-        "detection": {
-          "applied": false,
-          "normalized_transcript": "i don t speak english well",
-          "previous_question_type": "sales_progression_question",
-          "reason": "not_garbled"
-        },
-        "direct_question_required": true,
-        "enforcement_enabled": false,
-        "enforcement_reason": "no_asr_repair_required",
-        "forbidden_patterns": [
-          "internal policy wording",
-          "approved qualified reviewer path",
-          "repeated full diagnostic menu after direct answer",
-          "invented guarantee",
-          "invented coverage promise",
-          "invented refund promise",
-          "invented exact price",
-          "invented security proof",
-          "invented ROI or revenue claim",
-          "continue in wrong language",
-          "pressure confused buyer"
-        ],
-        "friction_level": "mild",
-        "impact_signal_detected": false,
-        "impact_signal_type": "none",
-        "implication_check_required": false,
-        "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
-        "local_llm_calls_made": false,
-        "memory_policy": "do_not_advance_until_language_repaired",
-        "next_best_sales_action": "none",
-        "next_step_discipline_required": false,
-        "one_next_action_only": true,
-        "opens_prod_102": false,
-        "pain_development_required": false,
-        "pragmatic_move_id": "no_pragmatic_repair",
-        "provider_calls_made": false,
-        "recognition_confidence": "high",
-        "recognition_reason": "language_mismatch_phrase",
-        "response_shape_candidate_source": "universal_response_shape",
-        "response_shape_enforced_category": "social_conversation_management",
-        "response_shape_enforcement_enabled": true,
-        "response_shape_enforcement_reason": "social_conversation_management_high_confidence",
-        "response_shape_id": "language_mismatch_repair",
-        "sales_progression_stage": "none",
-        "schema_version": 1,
-        "selected_gap": "callbacks",
-        "should_preserve_appointment_readiness": false,
-        "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false,
-        "should_preserve_previous_question": true,
-        "simplified_language_required": true,
-        "social_repair_required": true,
-        "social_repair_type": "language_simplification",
-        "speech_adjustment_requested": false,
-        "timing_specificity": "none"
-      }
-    },
-    {
       "appointment_readiness": "high",
       "buyer_move_id": "callback_time_provided",
       "buyer_utterance": "tomorrow at 3 works",
@@ -538,7 +458,7 @@
       "final_response": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "confirm_callback_time",
-      "scenario": "concrete_time_closes_or_captures",
+      "scenario": "concrete_time_preservation",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -640,7 +560,7 @@
       "final_response": "Got it. If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "ask_callback_window",
-      "scenario": "readiness_should_ask_next_step",
+      "scenario": "high_readiness_close",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -746,7 +666,7 @@
       "final_response": "Sure. Since this sounds worth a review, I can note it for the licensed insurance specialist. What email or callback window should they use?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "capture_send_info_contact",
-      "scenario": "readiness_send_info_contact_path",
+      "scenario": "send_info_after_readiness",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -850,7 +770,7 @@
       "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "reduce_pressure_or_close",
-      "scenario": "weak_impact_not_flagged",
+      "scenario": "weak_impact_exit",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -954,7 +874,7 @@
       "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "none",
-      "scenario": "frustration_not_flagged",
+      "scenario": "frustration_preservation",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -1045,108 +965,6 @@
       }
     },
     {
-      "appointment_readiness": "none",
-      "buyer_move_id": "language_mismatch",
-      "buyer_utterance": "I don't speak English well",
-      "call_control": "continue-call",
-      "campaign_id": "synthetic-insurance-review",
-      "confirmed_gaps": [
-        "premium_or_budget"
-      ],
-      "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
-      "mechanical_warning_flags": [],
-      "next_best_sales_action": "none",
-      "scenario": "language_mismatch_not_flagged",
-      "side_effect_flags": {
-        "creates_calendar_event": false,
-        "customer_audio_uploaded_to_python_server": false,
-        "customer_audio_uploaded_to_tts_provider": false,
-        "local_llm_calls_made": false,
-        "opens_prod_102": false,
-        "provider_calls_made": false,
-        "sends_email": false,
-        "writes_crm": false
-      },
-      "source": "universal_response_shape",
-      "status": "pass",
-      "universal_policy_frame": {
-        "allowed_call_controls": [
-          "continue-call"
-        ],
-        "allowed_fact_slots": [
-          "language",
-          "caller_identity"
-        ],
-        "appointment_pressure_level": "none",
-        "appointment_readiness": "none",
-        "asr_repair_required": false,
-        "asr_repair_turn_count": 0,
-        "buyer_move_category": "social_conversation_management",
-        "buyer_move_id": "language_mismatch",
-        "callback_capture_required": false,
-        "confirmed_gap_id": "premium_or_budget",
-        "confirmed_gap_phrase": "premium pressure",
-        "contact_capture_required": false,
-        "conversation_stage": "diagnostic",
-        "detection": {
-          "applied": false,
-          "normalized_transcript": "i don t speak english well",
-          "previous_question_type": "sales_progression_question",
-          "reason": "not_garbled"
-        },
-        "direct_question_required": true,
-        "enforcement_enabled": false,
-        "enforcement_reason": "no_asr_repair_required",
-        "forbidden_patterns": [
-          "internal policy wording",
-          "approved qualified reviewer path",
-          "repeated full diagnostic menu after direct answer",
-          "invented guarantee",
-          "invented coverage promise",
-          "invented refund promise",
-          "invented exact price",
-          "invented security proof",
-          "invented ROI or revenue claim",
-          "continue in wrong language",
-          "pressure confused buyer"
-        ],
-        "friction_level": "mild",
-        "impact_signal_detected": false,
-        "impact_signal_type": "none",
-        "implication_check_required": false,
-        "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
-        "local_llm_calls_made": false,
-        "memory_policy": "do_not_advance_until_language_repaired",
-        "next_best_sales_action": "none",
-        "next_step_discipline_required": false,
-        "one_next_action_only": true,
-        "opens_prod_102": false,
-        "pain_development_required": false,
-        "pragmatic_move_id": "no_pragmatic_repair",
-        "provider_calls_made": false,
-        "recognition_confidence": "high",
-        "recognition_reason": "language_mismatch_phrase",
-        "response_shape_candidate_source": "universal_response_shape",
-        "response_shape_enforced_category": "social_conversation_management",
-        "response_shape_enforcement_enabled": true,
-        "response_shape_enforcement_reason": "social_conversation_management_high_confidence",
-        "response_shape_id": "language_mismatch_repair",
-        "sales_progression_stage": "none",
-        "schema_version": 1,
-        "selected_gap": "premium_or_budget",
-        "should_preserve_appointment_readiness": false,
-        "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false,
-        "should_preserve_previous_question": true,
-        "simplified_language_required": true,
-        "social_repair_required": true,
-        "social_repair_type": "language_simplification",
-        "speech_adjustment_requested": false,
-        "timing_specificity": "none"
-      }
-    },
-    {
       "appointment_readiness": "high",
       "buyer_move_id": "callback_time_provided",
       "buyer_utterance": "tomorrow at 3 works",
@@ -1159,7 +977,7 @@
       "final_response": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "confirm_callback_time",
-      "scenario": "concrete_time_closes_or_captures",
+      "scenario": "concrete_time_preservation",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -1261,7 +1079,7 @@
       "final_response": "Got it. If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "ask_callback_window",
-      "scenario": "readiness_should_ask_next_step",
+      "scenario": "high_readiness_close",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -1367,7 +1185,7 @@
       "final_response": "Sure. Since this sounds worth a review, I can note it for the implementation specialist. What email or callback window should they use?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "capture_send_info_contact",
-      "scenario": "readiness_send_info_contact_path",
+      "scenario": "send_info_after_readiness",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -1471,7 +1289,7 @@
       "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "reduce_pressure_or_close",
-      "scenario": "weak_impact_not_flagged",
+      "scenario": "weak_impact_exit",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -1575,7 +1393,7 @@
       "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "none",
-      "scenario": "frustration_not_flagged",
+      "scenario": "frustration_preservation",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -1666,108 +1484,6 @@
       }
     },
     {
-      "appointment_readiness": "none",
-      "buyer_move_id": "language_mismatch",
-      "buyer_utterance": "I don't speak English well",
-      "call_control": "continue-call",
-      "campaign_id": "synthetic-b2b-saas-operations",
-      "confirmed_gaps": [
-        "manual_work"
-      ],
-      "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
-      "mechanical_warning_flags": [],
-      "next_best_sales_action": "none",
-      "scenario": "language_mismatch_not_flagged",
-      "side_effect_flags": {
-        "creates_calendar_event": false,
-        "customer_audio_uploaded_to_python_server": false,
-        "customer_audio_uploaded_to_tts_provider": false,
-        "local_llm_calls_made": false,
-        "opens_prod_102": false,
-        "provider_calls_made": false,
-        "sends_email": false,
-        "writes_crm": false
-      },
-      "source": "universal_response_shape",
-      "status": "pass",
-      "universal_policy_frame": {
-        "allowed_call_controls": [
-          "continue-call"
-        ],
-        "allowed_fact_slots": [
-          "language",
-          "caller_identity"
-        ],
-        "appointment_pressure_level": "none",
-        "appointment_readiness": "none",
-        "asr_repair_required": false,
-        "asr_repair_turn_count": 0,
-        "buyer_move_category": "social_conversation_management",
-        "buyer_move_id": "language_mismatch",
-        "callback_capture_required": false,
-        "confirmed_gap_id": "manual_work",
-        "confirmed_gap_phrase": "manual work",
-        "contact_capture_required": false,
-        "conversation_stage": "diagnostic",
-        "detection": {
-          "applied": false,
-          "normalized_transcript": "i don t speak english well",
-          "previous_question_type": "sales_progression_question",
-          "reason": "not_garbled"
-        },
-        "direct_question_required": true,
-        "enforcement_enabled": false,
-        "enforcement_reason": "no_asr_repair_required",
-        "forbidden_patterns": [
-          "internal policy wording",
-          "approved qualified reviewer path",
-          "repeated full diagnostic menu after direct answer",
-          "invented guarantee",
-          "invented coverage promise",
-          "invented refund promise",
-          "invented exact price",
-          "invented security proof",
-          "invented ROI or revenue claim",
-          "continue in wrong language",
-          "pressure confused buyer"
-        ],
-        "friction_level": "mild",
-        "impact_signal_detected": false,
-        "impact_signal_type": "none",
-        "implication_check_required": false,
-        "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
-        "local_llm_calls_made": false,
-        "memory_policy": "do_not_advance_until_language_repaired",
-        "next_best_sales_action": "none",
-        "next_step_discipline_required": false,
-        "one_next_action_only": true,
-        "opens_prod_102": false,
-        "pain_development_required": false,
-        "pragmatic_move_id": "no_pragmatic_repair",
-        "provider_calls_made": false,
-        "recognition_confidence": "high",
-        "recognition_reason": "language_mismatch_phrase",
-        "response_shape_candidate_source": "universal_response_shape",
-        "response_shape_enforced_category": "social_conversation_management",
-        "response_shape_enforcement_enabled": true,
-        "response_shape_enforcement_reason": "social_conversation_management_high_confidence",
-        "response_shape_id": "language_mismatch_repair",
-        "sales_progression_stage": "none",
-        "schema_version": 1,
-        "selected_gap": "manual_work",
-        "should_preserve_appointment_readiness": false,
-        "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false,
-        "should_preserve_previous_question": true,
-        "simplified_language_required": true,
-        "social_repair_required": true,
-        "social_repair_type": "language_simplification",
-        "speech_adjustment_requested": false,
-        "timing_specificity": "none"
-      }
-    },
-    {
       "appointment_readiness": "high",
       "buyer_move_id": "callback_time_provided",
       "buyer_utterance": "tomorrow at 3 works",
@@ -1780,7 +1496,7 @@
       "final_response": "Got it. I'll note that time for the implementation specialist to follow up.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "confirm_callback_time",
-      "scenario": "concrete_time_closes_or_captures",
+      "scenario": "concrete_time_preservation",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -1882,7 +1598,7 @@
       "final_response": "Got it. If it is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "ask_callback_window",
-      "scenario": "readiness_should_ask_next_step",
+      "scenario": "high_readiness_close",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -1988,7 +1704,7 @@
       "final_response": "Sure. Since this sounds worth a review, I can note it for the service advisor. What email or callback window should they use?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "capture_send_info_contact",
-      "scenario": "readiness_send_info_contact_path",
+      "scenario": "send_info_after_readiness",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -2092,7 +1808,7 @@
       "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "reduce_pressure_or_close",
-      "scenario": "weak_impact_not_flagged",
+      "scenario": "weak_impact_exit",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -2196,7 +1912,7 @@
       "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "none",
-      "scenario": "frustration_not_flagged",
+      "scenario": "frustration_preservation",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -2287,108 +2003,6 @@
       }
     },
     {
-      "appointment_readiness": "none",
-      "buyer_move_id": "language_mismatch",
-      "buyer_utterance": "I don't speak English well",
-      "call_control": "continue-call",
-      "campaign_id": "synthetic-automotive-service-review",
-      "confirmed_gaps": [
-        "repair_timing"
-      ],
-      "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
-      "mechanical_warning_flags": [],
-      "next_best_sales_action": "none",
-      "scenario": "language_mismatch_not_flagged",
-      "side_effect_flags": {
-        "creates_calendar_event": false,
-        "customer_audio_uploaded_to_python_server": false,
-        "customer_audio_uploaded_to_tts_provider": false,
-        "local_llm_calls_made": false,
-        "opens_prod_102": false,
-        "provider_calls_made": false,
-        "sends_email": false,
-        "writes_crm": false
-      },
-      "source": "universal_response_shape",
-      "status": "pass",
-      "universal_policy_frame": {
-        "allowed_call_controls": [
-          "continue-call"
-        ],
-        "allowed_fact_slots": [
-          "language",
-          "caller_identity"
-        ],
-        "appointment_pressure_level": "none",
-        "appointment_readiness": "none",
-        "asr_repair_required": false,
-        "asr_repair_turn_count": 0,
-        "buyer_move_category": "social_conversation_management",
-        "buyer_move_id": "language_mismatch",
-        "callback_capture_required": false,
-        "confirmed_gap_id": "repair_timing",
-        "confirmed_gap_phrase": "repair timing",
-        "contact_capture_required": false,
-        "conversation_stage": "diagnostic",
-        "detection": {
-          "applied": false,
-          "normalized_transcript": "i don t speak english well",
-          "previous_question_type": "sales_progression_question",
-          "reason": "not_garbled"
-        },
-        "direct_question_required": true,
-        "enforcement_enabled": false,
-        "enforcement_reason": "no_asr_repair_required",
-        "forbidden_patterns": [
-          "internal policy wording",
-          "approved qualified reviewer path",
-          "repeated full diagnostic menu after direct answer",
-          "invented guarantee",
-          "invented coverage promise",
-          "invented refund promise",
-          "invented exact price",
-          "invented security proof",
-          "invented ROI or revenue claim",
-          "continue in wrong language",
-          "pressure confused buyer"
-        ],
-        "friction_level": "mild",
-        "impact_signal_detected": false,
-        "impact_signal_type": "none",
-        "implication_check_required": false,
-        "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
-        "local_llm_calls_made": false,
-        "memory_policy": "do_not_advance_until_language_repaired",
-        "next_best_sales_action": "none",
-        "next_step_discipline_required": false,
-        "one_next_action_only": true,
-        "opens_prod_102": false,
-        "pain_development_required": false,
-        "pragmatic_move_id": "no_pragmatic_repair",
-        "provider_calls_made": false,
-        "recognition_confidence": "high",
-        "recognition_reason": "language_mismatch_phrase",
-        "response_shape_candidate_source": "universal_response_shape",
-        "response_shape_enforced_category": "social_conversation_management",
-        "response_shape_enforcement_enabled": true,
-        "response_shape_enforcement_reason": "social_conversation_management_high_confidence",
-        "response_shape_id": "language_mismatch_repair",
-        "sales_progression_stage": "none",
-        "schema_version": 1,
-        "selected_gap": "repair_timing",
-        "should_preserve_appointment_readiness": false,
-        "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false,
-        "should_preserve_previous_question": true,
-        "simplified_language_required": true,
-        "social_repair_required": true,
-        "social_repair_type": "language_simplification",
-        "speech_adjustment_requested": false,
-        "timing_specificity": "none"
-      }
-    },
-    {
       "appointment_readiness": "high",
       "buyer_move_id": "callback_time_provided",
       "buyer_utterance": "tomorrow at 3 works",
@@ -2401,7 +2015,7 @@
       "final_response": "Got it. I'll note that time for the service advisor to follow up.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "confirm_callback_time",
-      "scenario": "concrete_time_closes_or_captures",
+      "scenario": "concrete_time_preservation",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -2503,7 +2117,7 @@
       "final_response": "Got it. If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "ask_callback_window",
-      "scenario": "readiness_should_ask_next_step",
+      "scenario": "high_readiness_close",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -2609,7 +2223,7 @@
       "final_response": "Sure. Since this sounds worth a review, I can note it for the qualified service coordinator. What email or callback window should they use?",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "capture_send_info_contact",
-      "scenario": "readiness_send_info_contact_path",
+      "scenario": "send_info_after_readiness",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -2713,7 +2327,7 @@
       "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "reduce_pressure_or_close",
-      "scenario": "weak_impact_not_flagged",
+      "scenario": "weak_impact_exit",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -2817,7 +2431,7 @@
       "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "none",
-      "scenario": "frustration_not_flagged",
+      "scenario": "frustration_preservation",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -2908,108 +2522,6 @@
       }
     },
     {
-      "appointment_readiness": "none",
-      "buyer_move_id": "language_mismatch",
-      "buyer_utterance": "I don't speak English well",
-      "call_control": "continue-call",
-      "campaign_id": "synthetic-home-services-estimate",
-      "confirmed_gaps": [
-        "service_need"
-      ],
-      "failures": [],
-      "final_response": "Understood. I'll use simple English. Is that issue happening now?",
-      "mechanical_warning_flags": [],
-      "next_best_sales_action": "none",
-      "scenario": "language_mismatch_not_flagged",
-      "side_effect_flags": {
-        "creates_calendar_event": false,
-        "customer_audio_uploaded_to_python_server": false,
-        "customer_audio_uploaded_to_tts_provider": false,
-        "local_llm_calls_made": false,
-        "opens_prod_102": false,
-        "provider_calls_made": false,
-        "sends_email": false,
-        "writes_crm": false
-      },
-      "source": "universal_response_shape",
-      "status": "pass",
-      "universal_policy_frame": {
-        "allowed_call_controls": [
-          "continue-call"
-        ],
-        "allowed_fact_slots": [
-          "language",
-          "caller_identity"
-        ],
-        "appointment_pressure_level": "none",
-        "appointment_readiness": "none",
-        "asr_repair_required": false,
-        "asr_repair_turn_count": 0,
-        "buyer_move_category": "social_conversation_management",
-        "buyer_move_id": "language_mismatch",
-        "callback_capture_required": false,
-        "confirmed_gap_id": "service_need",
-        "confirmed_gap_phrase": "service need",
-        "contact_capture_required": false,
-        "conversation_stage": "diagnostic",
-        "detection": {
-          "applied": false,
-          "normalized_transcript": "i don t speak english well",
-          "previous_question_type": "sales_progression_question",
-          "reason": "not_garbled"
-        },
-        "direct_question_required": true,
-        "enforcement_enabled": false,
-        "enforcement_reason": "no_asr_repair_required",
-        "forbidden_patterns": [
-          "internal policy wording",
-          "approved qualified reviewer path",
-          "repeated full diagnostic menu after direct answer",
-          "invented guarantee",
-          "invented coverage promise",
-          "invented refund promise",
-          "invented exact price",
-          "invented security proof",
-          "invented ROI or revenue claim",
-          "continue in wrong language",
-          "pressure confused buyer"
-        ],
-        "friction_level": "mild",
-        "impact_signal_detected": false,
-        "impact_signal_type": "none",
-        "implication_check_required": false,
-        "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
-        "local_llm_calls_made": false,
-        "memory_policy": "do_not_advance_until_language_repaired",
-        "next_best_sales_action": "none",
-        "next_step_discipline_required": false,
-        "one_next_action_only": true,
-        "opens_prod_102": false,
-        "pain_development_required": false,
-        "pragmatic_move_id": "no_pragmatic_repair",
-        "provider_calls_made": false,
-        "recognition_confidence": "high",
-        "recognition_reason": "language_mismatch_phrase",
-        "response_shape_candidate_source": "universal_response_shape",
-        "response_shape_enforced_category": "social_conversation_management",
-        "response_shape_enforcement_enabled": true,
-        "response_shape_enforcement_reason": "social_conversation_management_high_confidence",
-        "response_shape_id": "language_mismatch_repair",
-        "sales_progression_stage": "none",
-        "schema_version": 1,
-        "selected_gap": "service_need",
-        "should_preserve_appointment_readiness": false,
-        "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false,
-        "should_preserve_previous_question": true,
-        "simplified_language_required": true,
-        "social_repair_required": true,
-        "social_repair_type": "language_simplification",
-        "speech_adjustment_requested": false,
-        "timing_specificity": "none"
-      }
-    },
-    {
       "appointment_readiness": "high",
       "buyer_move_id": "callback_time_provided",
       "buyer_utterance": "tomorrow at 3 works",
@@ -3022,7 +2534,7 @@
       "final_response": "Got it. I'll note that time for the qualified service coordinator to follow up.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "confirm_callback_time",
-      "scenario": "concrete_time_closes_or_captures",
+      "scenario": "concrete_time_preservation",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -3127,27 +2639,23 @@
   "status": "pass",
   "summary": {
     "by_scenario": {
-      "concrete_time_closes_or_captures": {
+      "concrete_time_preservation": {
         "failed": 0,
         "passed": 5
       },
-      "frustration_not_flagged": {
+      "frustration_preservation": {
         "failed": 0,
         "passed": 5
       },
-      "language_mismatch_not_flagged": {
+      "high_readiness_close": {
         "failed": 0,
         "passed": 5
       },
-      "readiness_send_info_contact_path": {
+      "send_info_after_readiness": {
         "failed": 0,
         "passed": 5
       },
-      "readiness_should_ask_next_step": {
-        "failed": 0,
-        "passed": 5
-      },
-      "weak_impact_not_flagged": {
+      "weak_impact_exit": {
         "failed": 0,
         "passed": 5
       }
@@ -3155,9 +2663,9 @@
     "failure_count": 0,
     "failure_examples": [],
     "failure_types": {},
-    "matrix_size": 30,
+    "matrix_size": 25,
     "mechanical_warning_counts": {},
-    "pass_count": 30
+    "pass_count": 25
   },
   "writes_crm": false
 }

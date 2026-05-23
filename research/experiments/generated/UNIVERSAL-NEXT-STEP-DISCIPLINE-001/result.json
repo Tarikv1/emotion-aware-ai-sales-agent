@@ -77,7 +77,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window should I note?",
+      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -287,7 +287,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Sure. Since this already sounds worth review, I can note details for the verified implementation reviewer. What email or callback window should I use?",
+      "final_response": "Sure. Since this sounds worth a review, I can note it for the verified implementation reviewer. What email or callback window should they use?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -1117,7 +1117,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window should I note?",
+      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -1327,7 +1327,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Sure. Since this already sounds worth review, I can note details for the licensed insurance specialist. What email or callback window should I use?",
+      "final_response": "Sure. Since this sounds worth a review, I can note it for the licensed insurance specialist. What email or callback window should they use?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -2157,7 +2157,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window should I note?",
+      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -2367,7 +2367,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Sure. Since this already sounds worth review, I can note details for the implementation specialist. What email or callback window should I use?",
+      "final_response": "Sure. Since this sounds worth a review, I can note it for the implementation specialist. What email or callback window should they use?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -3197,7 +3197,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "If it is already costing time, the next useful step is a short review with the service advisor. What callback window should I note?",
+      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -3407,7 +3407,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Sure. Since this already sounds worth review, I can note details for the service advisor. What email or callback window should I use?",
+      "final_response": "Sure. Since this sounds worth a review, I can note it for the service advisor. What email or callback window should they use?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -4237,7 +4237,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window should I note?",
+      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -4447,7 +4447,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Sure. Since this already sounds worth review, I can note details for the qualified service coordinator. What email or callback window should I use?",
+      "final_response": "Sure. Since this sounds worth a review, I can note it for the qualified service coordinator. What email or callback window should they use?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",

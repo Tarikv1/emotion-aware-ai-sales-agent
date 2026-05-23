@@ -311,7 +311,7 @@
         "callbacks"
       ],
       "failures": [],
-      "final_response": "If it is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window should I note?",
+      "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
       "passed": true,
       "scenario": "impact_confirmed",
       "semantic": "pain_confirmed",
@@ -415,7 +415,7 @@
         "callbacks"
       ],
       "failures": [],
-      "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+      "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
       "passed": true,
       "scenario": "impact_weak_or_denied",
       "semantic": "no_contextual_semantic",
@@ -919,7 +919,7 @@
         "premium_or_budget"
       ],
       "failures": [],
-      "final_response": "If it is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window should I note?",
+      "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
       "passed": true,
       "scenario": "impact_confirmed",
       "semantic": "pain_confirmed",
@@ -1023,7 +1023,7 @@
         "premium_or_budget"
       ],
       "failures": [],
-      "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+      "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
       "passed": true,
       "scenario": "impact_weak_or_denied",
       "semantic": "no_contextual_semantic",
@@ -1527,7 +1527,7 @@
         "manual_work"
       ],
       "failures": [],
-      "final_response": "If it is already causing delays, the next useful step is a short review with the implementation specialist. What callback window should I note?",
+      "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the implementation specialist. What callback window works?",
       "passed": true,
       "scenario": "impact_confirmed",
       "semantic": "pain_confirmed",
@@ -1631,7 +1631,7 @@
         "manual_work"
       ],
       "failures": [],
-      "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+      "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
       "passed": true,
       "scenario": "impact_weak_or_denied",
       "semantic": "no_contextual_semantic",
@@ -2135,7 +2135,7 @@
         "repair_timing"
       ],
       "failures": [],
-      "final_response": "If it is already causing delays, the next useful step is a short review with the service advisor. What callback window should I note?",
+      "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the service advisor. What callback window works?",
       "passed": true,
       "scenario": "impact_confirmed",
       "semantic": "pain_confirmed",
@@ -2239,7 +2239,7 @@
         "repair_timing"
       ],
       "failures": [],
-      "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+      "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
       "passed": true,
       "scenario": "impact_weak_or_denied",
       "semantic": "no_contextual_semantic",
@@ -2743,7 +2743,7 @@
         "service_need"
       ],
       "failures": [],
-      "final_response": "If it is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window should I note?",
+      "final_response": "Got it. If it is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window works?",
       "passed": true,
       "scenario": "impact_confirmed",
       "semantic": "pain_confirmed",
@@ -2847,7 +2847,7 @@
         "service_need"
       ],
       "failures": [],
-      "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+      "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
       "passed": true,
       "scenario": "impact_weak_or_denied",
       "semantic": "no_contextual_semantic",

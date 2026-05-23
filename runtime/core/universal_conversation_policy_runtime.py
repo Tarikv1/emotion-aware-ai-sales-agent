@@ -866,7 +866,7 @@ def _impact_confirmed_response(frame: dict[str, Any], campaign: dict | None) -> 
         "risk": "creating risk",
         "quality": "already becoming a real issue",
     }.get(signal_type, "already creating impact")
-    return f"If it is already {signal_phrase}, the next useful step is a short review with {owner_role}. What callback window should I note?"
+    return f"Got it. If it is already {signal_phrase}, the next useful step is a short review with {owner_role}. What callback window works?"
 
 
 def _response_shape_category(buyer_move_id: str) -> str | None:
@@ -1589,12 +1589,12 @@ def render_universal_response_outline(
     if buyer_move_id == "implication_confirmed":
         return _impact_confirmed_response(frame, campaign)
     if buyer_move_id == "implication_weak_or_denied":
-        return "Understood. If it is only minor right now, I will not push a review. We can leave it there."
+        return "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time."
     if buyer_move_id == "implication_unclear":
         return "Understood. Is it creating a real impact now, or more of a possible concern?"
     if buyer_move_id == "send_info_request":
         if str((frame or {}).get("appointment_readiness") or "") in {"medium", "high"}:
-            return f"Sure. Since this already sounds worth review, I can note details for {owner_role}. What email or callback window should I use?"
+            return f"Sure. Since this sounds worth a review, I can note it for {owner_role}. What email or callback window should they use?"
         return f"Sure. I can note a request for details. What email should {owner_role} use?"
     if buyer_move_id == "callback_request":
         if "next week" in normalized:

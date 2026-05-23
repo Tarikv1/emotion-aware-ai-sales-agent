@@ -28,29 +28,29 @@ Validated a dry-run commercial sales conversation packet for human review. Codex
 - `trust_challenge`
 
 ## 5. Mechanical Warning Counts
-- `no_acknowledgement`: `77`
-- `over_deferential_stop_offer`: `58`
+- `no_acknowledgement`: `45`
+- `over_deferential_stop_offer`: `48`
 - `repeated_full_menu`: `6`
 
 ## 6. Strongest-Looking Conversations By Mechanical Signals Only
+- `commercial-sales-conversation-review-001-01-01-routesignal_live_demo-smooth_qualified_appointment`: `0` warnings
+- `commercial-sales-conversation-review-001-01-02-routesignal_live_demo-time_pressure`: `0` warnings
+- `commercial-sales-conversation-review-001-01-03-routesignal_live_demo-tentative_pain`: `0` warnings
 - `commercial-sales-conversation-review-001-01-05-routesignal_live_demo-objection`: `0` warnings
 - `commercial-sales-conversation-review-001-01-08-routesignal_live_demo-social_conversation_management`: `0` warnings
-- `commercial-sales-conversation-review-001-02-05-synthetic-insurance-review-objection`: `0` warnings
-- `commercial-sales-conversation-review-001-02-08-synthetic-insurance-review-social_conversation_management`: `0` warnings
-- `commercial-sales-conversation-review-001-03-05-synthetic-b2b-saas-operations-objection`: `0` warnings
-- `commercial-sales-conversation-review-001-03-08-synthetic-b2b-saas-operations-social_conversation_management`: `0` warnings
-- `commercial-sales-conversation-review-001-04-05-synthetic-automotive-service-review-objection`: `0` warnings
-- `commercial-sales-conversation-review-001-04-08-synthetic-automotive-service-review-social_conversation_management`: `0` warnings
+- `commercial-sales-conversation-review-001-02-01-synthetic-insurance-review-smooth_qualified_appointment`: `0` warnings
+- `commercial-sales-conversation-review-001-02-02-synthetic-insurance-review-time_pressure`: `0` warnings
+- `commercial-sales-conversation-review-001-02-03-synthetic-insurance-review-tentative_pain`: `0` warnings
 
 ## 7. Most Concerning Conversations By Mechanical Signals Only
-- `commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question`: `4` warnings; flags `no_acknowledgement, over_deferential_stop_offer`
-- `commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question`: `4` warnings; flags `no_acknowledgement, over_deferential_stop_offer`
-- `commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question`: `4` warnings; flags `no_acknowledgement, over_deferential_stop_offer`
-- `commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question`: `4` warnings; flags `no_acknowledgement, over_deferential_stop_offer`
-- `commercial-sales-conversation-review-001-01-06-routesignal_live_demo-trust_challenge`: `3` warnings; flags `no_acknowledgement, over_deferential_stop_offer`
+- `commercial-sales-conversation-review-001-01-04-routesignal_live_demo-direct_question`: `3` warnings; flags `no_acknowledgement, over_deferential_stop_offer`
 - `commercial-sales-conversation-review-001-01-10-routesignal_live_demo-no_fit_stop`: `3` warnings; flags `over_deferential_stop_offer`
 - `commercial-sales-conversation-review-001-02-07-synthetic-insurance-review-confusion_loop_resistance`: `3` warnings; flags `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
 - `commercial-sales-conversation-review-001-02-10-synthetic-insurance-review-no_fit_stop`: `3` warnings; flags `over_deferential_stop_offer`
+- `commercial-sales-conversation-review-001-03-04-synthetic-b2b-saas-operations-direct_question`: `3` warnings; flags `no_acknowledgement, over_deferential_stop_offer`
+- `commercial-sales-conversation-review-001-03-10-synthetic-b2b-saas-operations-no_fit_stop`: `3` warnings; flags `over_deferential_stop_offer`
+- `commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question`: `3` warnings; flags `no_acknowledgement, over_deferential_stop_offer`
+- `commercial-sales-conversation-review-001-04-07-synthetic-automotive-service-review-confusion_loop_resistance`: `3` warnings; flags `no_acknowledgement, over_deferential_stop_offer, repeated_full_menu`
 
 ## 8. Safety Boundary Summary
 - Provider calls made: `false`

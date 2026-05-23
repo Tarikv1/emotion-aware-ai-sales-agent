@@ -14,8 +14,7 @@
 - `weak_impact_not_flagged`: `5` passed / `0` failed
 
 ## Mechanical Warning Counts
-- `no_acknowledgement`: `5`
-- `over_deferential_stop_offer`: `5`
+- None
 
 ## Failure Types
 - None

@@ -486,7 +486,7 @@
         "handoffs"
       ],
       "failures": [],
-      "final_response": "If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window should I note?",
+      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
       "passed": true,
       "scenario": "tentative_impact_confirmation",
       "semantic": "no_contextual_semantic",
@@ -882,7 +882,7 @@
           "confirmed_gaps": [
             "handoffs"
           ],
-          "final_response": "If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window should I note?",
+          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -1461,7 +1461,7 @@
           "confirmed_gaps": [
             "handoffs"
           ],
-          "final_response": "If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window should I note?",
+          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -1736,7 +1736,7 @@
         "handoffs"
       ],
       "failures": [],
-      "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+      "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
       "passed": true,
       "scenario": "tentative_weak_impact",
       "semantic": "no_contextual_semantic",
@@ -2132,7 +2132,7 @@
           "confirmed_gaps": [
             "handoffs"
           ],
-          "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+          "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -3358,7 +3358,7 @@
         "coverage_fit"
       ],
       "failures": [],
-      "final_response": "If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window should I note?",
+      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
       "passed": true,
       "scenario": "tentative_impact_confirmation",
       "semantic": "no_contextual_semantic",
@@ -3754,7 +3754,7 @@
           "confirmed_gaps": [
             "coverage_fit"
           ],
-          "final_response": "If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window should I note?",
+          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -4333,7 +4333,7 @@
           "confirmed_gaps": [
             "coverage_fit"
           ],
-          "final_response": "If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window should I note?",
+          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -4608,7 +4608,7 @@
         "coverage_fit"
       ],
       "failures": [],
-      "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+      "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
       "passed": true,
       "scenario": "tentative_weak_impact",
       "semantic": "no_contextual_semantic",
@@ -5004,7 +5004,7 @@
           "confirmed_gaps": [
             "coverage_fit"
           ],
-          "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+          "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -6230,7 +6230,7 @@
         "integration_risk"
       ],
       "failures": [],
-      "final_response": "If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window should I note?",
+      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
       "passed": true,
       "scenario": "tentative_impact_confirmation",
       "semantic": "no_contextual_semantic",
@@ -6626,7 +6626,7 @@
           "confirmed_gaps": [
             "integration_risk"
           ],
-          "final_response": "If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window should I note?",
+          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -7205,7 +7205,7 @@
           "confirmed_gaps": [
             "integration_risk"
           ],
-          "final_response": "If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window should I note?",
+          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -7480,7 +7480,7 @@
         "integration_risk"
       ],
       "failures": [],
-      "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+      "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
       "passed": true,
       "scenario": "tentative_weak_impact",
       "semantic": "no_contextual_semantic",
@@ -7876,7 +7876,7 @@
           "confirmed_gaps": [
             "integration_risk"
           ],
-          "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+          "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -9102,7 +9102,7 @@
         "repair_timing"
       ],
       "failures": [],
-      "final_response": "If it is already costing time, the next useful step is a short review with the service advisor. What callback window should I note?",
+      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
       "passed": true,
       "scenario": "tentative_impact_confirmation",
       "semantic": "no_contextual_semantic",
@@ -9498,7 +9498,7 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "If it is already costing time, the next useful step is a short review with the service advisor. What callback window should I note?",
+          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -10077,7 +10077,7 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "If it is already costing time, the next useful step is a short review with the service advisor. What callback window should I note?",
+          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the service advisor. What callback window works?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -10352,7 +10352,7 @@
         "repair_timing"
       ],
       "failures": [],
-      "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+      "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
       "passed": true,
       "scenario": "tentative_weak_impact",
       "semantic": "no_contextual_semantic",
@@ -10748,7 +10748,7 @@
           "confirmed_gaps": [
             "repair_timing"
           ],
-          "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+          "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -11974,7 +11974,7 @@
         "scheduling_urgency"
       ],
       "failures": [],
-      "final_response": "If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window should I note?",
+      "final_response": "Got it. If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
       "passed": true,
       "scenario": "tentative_impact_confirmation",
       "semantic": "no_contextual_semantic",
@@ -12370,7 +12370,7 @@
           "confirmed_gaps": [
             "scheduling_urgency"
           ],
-          "final_response": "If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window should I note?",
+          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -12949,7 +12949,7 @@
           "confirmed_gaps": [
             "scheduling_urgency"
           ],
-          "final_response": "If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window should I note?",
+          "final_response": "Got it. If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
@@ -13224,7 +13224,7 @@
         "scheduling_urgency"
       ],
       "failures": [],
-      "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+      "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
       "passed": true,
       "scenario": "tentative_weak_impact",
       "semantic": "no_contextual_semantic",
@@ -13620,7 +13620,7 @@
           "confirmed_gaps": [
             "scheduling_urgency"
           ],
-          "final_response": "Understood. If it is only minor right now, I will not push a review. We can leave it there.",
+          "final_response": "Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
             "creates_calendar_event": false,
