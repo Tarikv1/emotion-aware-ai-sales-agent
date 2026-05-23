@@ -1079,6 +1079,20 @@ SOCIAL_CONVERSATION_BUYER_MOVES = [
     "emotional_frustration",
 ]
 
+RAPPORT_RELEVANCE_BUYER_MOVES = [
+    "busy_or_distracted",
+    "serious_hardship_bad_timing",
+    "financial_stress_context",
+    "prior_bad_experience_context",
+    "stakeholder_or_right_person_context",
+    "sarcasm_or_joking_context",
+    "emotional_venting_context",
+    "irrelevant_off_topic_context",
+    "sensitive_personal_data_disclosure",
+    "home_life_interruption",
+    "workplace_interruption",
+]
+
 PAIN_PROGRESSION_BUYER_MOVES = [
     "permission_acknowledgement",
     "pain_confirmed",
@@ -1133,6 +1147,40 @@ RESPONSE_SHAPE_LIBRARY.update(
                 "acknowledge the privacy or recording question",
                 "answer only with configured facts and safe limitations",
                 "offer to continue or stop without collecting sensitive data",
+            ],
+        ),
+        "rapport_context_bridge": _shape(
+            "rapport_context_bridge",
+            allowed_fact_slots=["gap_label", "gap_review_focus", "appointment_target", "human_followup_owner", "language"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + [
+                "ignore human context",
+                "continue sales during serious hardship",
+                "repeat diagnostic menu",
+                "probe personal details",
+            ],
+            allowed_call_control=["continue-call", "end-call"],
+            appointment_pressure_level="none",
+            example_outline=[
+                "briefly acknowledge the human context",
+                "decide whether continuing is appropriate",
+                "bridge back with one relevance check or close cleanly",
+            ],
+        ),
+        "rapport_terminal_close": _shape(
+            "rapport_terminal_close",
+            allowed_fact_slots=["language"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + [
+                "continue selling",
+                "ask diagnostic",
+                "collect sensitive details",
+                "claim escalation without configuration",
+            ],
+            allowed_call_control=["end-call"],
+            appointment_pressure_level="none",
+            example_outline=[
+                "acknowledge the serious context",
+                "state the call should not continue",
+                "close without a next question",
             ],
         ),
         "objection_acknowledge_answer_bridge": _shape(
@@ -1366,6 +1414,16 @@ EXPANDED_BUYER_MOVE_SPECS = [
     ("procurement_or_legal_review", "Buyer says procurement, legal, or formal review is required.", ["procurement has to review", "legal needs to see it", "send terms"], "authority_map_to_right_person", ["diagnostic", "value_bridge", "handoff_right_person", "send_info_capture"], "capture_review_owner_or_stop", False, ["act as legal", "claim terms approval"]),
     ("security_or_privacy_review", "Buyer asks about security, privacy review, or data handling obligations.", ["security needs to approve", "what about privacy?", "do you process data?"], "privacy_boundary_then_continue_or_stop", ["scope_limit", "value_bridge", "send_info_capture"], "answer_privacy_security_with_allowed_facts_only", True, ["invent security proof", "invent compliance claim"]),
     ("contract_or_terms_question", "Buyer asks about contract terms, commitment, cancellation, or legal language.", ["what are the terms?", "is there a contract?", "can we cancel?"], "objection_acknowledge_answer_bridge", ["scope_limit", "value_bridge", "send_info_capture"], "answer_terms_boundary_with_allowed_facts_only", True, ["invent terms", "give legal advice"]),
+    ("busy_or_distracted", "Buyer gives a busy, distracted, or limited-attention context.", ["I am cooking dinner", "I am driving", "I only have ten seconds"], "rapport_context_bridge", ["opening", "permission", "diagnostic", "value_bridge"], "acknowledge_context_one_question_or_stop", True, ["use full diagnostic menu", "ignore distraction"]),
+    ("serious_hardship_bad_timing", "Buyer names serious hardship or a clearly bad time for a sales call.", ["I just got out of the hospital", "I am dealing with a funeral", "family emergency"], "rapport_terminal_close", ["opening", "permission", "diagnostic", "value_bridge"], "close_without_sales_continuation", True, ["continue selling", "ask diagnostic"]),
+    ("financial_stress_context", "Buyer expresses personal or business budget stress, cost anxiety, or affordability pressure.", ["everything is expensive", "I am worried about money", "we are cutting costs"], "rapport_context_bridge", ["opening", "permission", "diagnostic", "value_bridge"], "acknowledge_budget_pressure_without_claims", True, ["promise savings", "push appointment"]),
+    ("prior_bad_experience_context", "Buyer references distrust, a previous bad experience, or skepticism about sales calls.", ["last company wasted my time", "I got burned", "I do not trust these calls"], "rapport_context_bridge", ["opening", "permission", "diagnostic", "value_bridge"], "acknowledge_skepticism_bridge_to_specific_issue", True, ["argue", "overpromise"]),
+    ("stakeholder_or_right_person_context", "Buyer says another person, stakeholder, manager, legal, or family member handles the topic.", ["my husband handles this", "my manager handles this", "legal needs to approve"], "right_person_capture", ["opening", "permission", "diagnostic", "value_bridge", "handoff_right_person"], "route_to_right_person_without_fake_action", True, ["pressure wrong person", "claim email sent"]),
+    ("sarcasm_or_joking_context", "Buyer uses joking or sarcastic framing around claims or outcomes.", ["are you going to make me rich", "magic solution", "sounds too good to be true"], "rapport_context_bridge", ["opening", "permission", "diagnostic", "value_bridge"], "acknowledge_sarcasm_without_overclaiming", True, ["overclaim", "argue with sarcasm"]),
+    ("emotional_venting_context", "Buyer vents frustration about a relevant or adjacent process without explicitly stopping the call.", ["nobody ever follows up", "I am sick of this process", "this has been annoying for months"], "rapport_context_bridge", ["opening", "permission", "diagnostic", "value_bridge"], "acknowledge_venting_then_one_relevance_check", True, ["fake empathy", "repeat diagnostic menu"]),
+    ("irrelevant_off_topic_context", "Buyer gives off-topic context or a ramble unrelated to the campaign purpose.", ["weekend fixing my fence", "office printer", "long list of errands"], "rapport_context_bridge", ["opening", "permission", "diagnostic"], "acknowledge_without_chasing_story", True, ["chase ramble", "ignore context"]),
+    ("home_life_interruption", "Buyer has a home-life interruption such as children, doorbell, or groceries.", ["baby crying", "doorbell ringing", "groceries in my hands"], "rapport_context_bridge", ["opening", "permission", "diagnostic"], "acknowledge_interruption_one_question_or_stop", True, ["ignore interruption", "use full diagnostic menu"]),
+    ("workplace_interruption", "Buyer is interrupted by workplace context such as meetings, another call, manager, or incident response.", ["between meetings", "boss walked in", "incident response"], "rapport_context_bridge", ["opening", "permission", "diagnostic", "value_bridge"], "acknowledge_work_context_one_question_or_stop", True, ["ignore interruption", "pressure during incident"]),
     ("who_are_you", "Buyer asks who is calling or who the agent represents.", ["who are you?", "who is this?", "where are you calling from?"], "answer_identity_then_permission", ["opening", "permission", "diagnostic"], "answer_identity_without_invention", True, ["invent identity", "hide caller identity"]),
     ("how_did_you_get_my_number", "Buyer asks about contact source or why they were called.", ["how did you get my number?", "why do you have my contact?", "where did this lead come from?"], "answer_data_source_boundary", ["opening", "permission", "scope_limit"], "answer_data_source_boundary_without_invention", True, ["invent data source", "continue if stop requested"]),
     ("are_you_ai_or_robot", "Buyer asks whether the caller is automated, AI, or a robot.", ["are you a robot?", "are you AI?", "is this automated?"], "ai_disclosure_then_continue_or_stop", ["opening", "permission", "scope_limit"], "disclose_automation_without_impersonation", True, ["claim human if automated", "use internal implementation terms"]),
@@ -1374,7 +1432,7 @@ EXPANDED_BUYER_MOVE_SPECS = [
     ("permission_to_continue_denied", "Buyer denies permission to continue.", ["no", "not interested", "do not continue"], "stop_close_politely", ["opening", "permission"], "preserve_terminal_stop_state", False, ["continue selling", "ask diagnostic"]),
     ("language_mismatch", "Buyer says the current language is not workable or asks for another language.", ["I do not speak English well", "can you speak slower?", "not in this language"], "language_mismatch_repair", ["opening", "permission", "diagnostic"], "do_not_advance_until_language_repaired", True, ["continue in wrong language", "infer pain"]),
     ("abusive_or_hostile_buyer", "Buyer is hostile, insulting, or verbally aggressive.", ["this is stupid", "leave me alone", "angry profanity"], "hostile_buyer_deescalation", ["opening", "permission", "diagnostic", "value_bridge", "scope_limit"], "deescalate_or_close_without_retaliation", False, ["argue", "mirror hostility"]),
-    ("sensitive_personal_data_disclosure", "Buyer volunteers sensitive personal, financial, medical, or credential-like data.", ["my password is", "my medical issue is", "my card number is"], "privacy_boundary_then_continue_or_stop", ["diagnostic", "scope_limit", "send_info_capture"], "do_not_store_or_request_sensitive_data", True, ["request sensitive personal data", "repeat sensitive data"]),
+    ("sensitive_personal_data_disclosure", "Buyer volunteers sensitive personal, financial, medical, or credential-like data.", ["my password is", "my medical issue is", "my card number is"], "rapport_terminal_close", ["opening", "permission", "diagnostic", "scope_limit", "send_info_capture"], "do_not_store_or_request_sensitive_data", True, ["request sensitive personal data", "repeat sensitive data"]),
     ("appointment_time_vague", "Buyer gives an incomplete appointment or callback time.", ["later tomorrow", "sometime next week", "afternoon works"], "appointment_time_clarification", ["appointment_progression", "callback_capture"], "request_missing_time_without_scheduling", False, ["confirm without time", "invent missing detail"]),
     ("appointment_time_conflict", "Buyer rejects or conflicts with a proposed time.", ["not then", "that does not work", "I cannot do three"], "appointment_time_clarification", ["appointment_progression", "callback_capture"], "request_alternative_time", False, ["force same time", "end unless buyer stops"]),
     ("buyer_requests_available_times", "Buyer asks what times are available.", ["what times do you have?", "can you send available times?", "when can they call?"], "offer_callback_window_without_calendar_claim", ["appointment_progression", "callback_capture"], "offer_broad_windows_without_calendar_claim", True, ["claim calendar access", "invent availability"]),
@@ -1440,15 +1498,15 @@ def _append_unique(target: list[str], additions: list[str]) -> None:
             target.append(item)
 
 
-_append_unique(CONVERSATION_STAGE_POLICY["opening"]["allowed_buyer_moves"], IDENTITY_TRUST_PRIVACY_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
-_append_unique(CONVERSATION_STAGE_POLICY["permission"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + PAIN_PROGRESSION_BUYER_MOVES)
-_append_unique(CONVERSATION_STAGE_POLICY["diagnostic"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + PAIN_PROGRESSION_BUYER_MOVES)
-_append_unique(CONVERSATION_STAGE_POLICY["value_bridge"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + PAIN_PROGRESSION_BUYER_MOVES)
-_append_unique(CONVERSATION_STAGE_POLICY["scope_limit"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
-_append_unique(CONVERSATION_STAGE_POLICY["appointment_progression"]["allowed_buyer_moves"], APPOINTMENT_NEGOTIATION_BUYER_MOVES + OBJECTION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + PAIN_PROGRESSION_BUYER_MOVES)
-_append_unique(CONVERSATION_STAGE_POLICY["callback_capture"]["allowed_buyer_moves"], APPOINTMENT_NEGOTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
-_append_unique(CONVERSATION_STAGE_POLICY["send_info_capture"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES)
-_append_unique(CONVERSATION_STAGE_POLICY["handoff_right_person"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["opening"]["allowed_buyer_moves"], IDENTITY_TRUST_PRIVACY_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + RAPPORT_RELEVANCE_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["permission"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + PAIN_PROGRESSION_BUYER_MOVES + RAPPORT_RELEVANCE_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["diagnostic"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + PAIN_PROGRESSION_BUYER_MOVES + RAPPORT_RELEVANCE_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["value_bridge"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + PAIN_PROGRESSION_BUYER_MOVES + RAPPORT_RELEVANCE_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["scope_limit"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + RAPPORT_RELEVANCE_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["appointment_progression"]["allowed_buyer_moves"], APPOINTMENT_NEGOTIATION_BUYER_MOVES + OBJECTION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + PAIN_PROGRESSION_BUYER_MOVES + RAPPORT_RELEVANCE_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["callback_capture"]["allowed_buyer_moves"], APPOINTMENT_NEGOTIATION_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + RAPPORT_RELEVANCE_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["send_info_capture"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + APPOINTMENT_NEGOTIATION_BUYER_MOVES + VALUE_DIFFERENTIATION_BUYER_MOVES + RAPPORT_RELEVANCE_BUYER_MOVES)
+_append_unique(CONVERSATION_STAGE_POLICY["handoff_right_person"]["allowed_buyer_moves"], OBJECTION_BUYER_MOVES + IDENTITY_TRUST_PRIVACY_BUYER_MOVES + SOCIAL_CONVERSATION_BUYER_MOVES + RAPPORT_RELEVANCE_BUYER_MOVES)
 _append_unique(CONVERSATION_STAGE_POLICY["stop_close"]["allowed_buyer_moves"], ["permission_to_continue_denied", "buyer_declines_after_interest", "abusive_or_hostile_buyer"])
 
 
@@ -1482,6 +1540,7 @@ for _move_id in (
     + APPOINTMENT_NEGOTIATION_BUYER_MOVES
     + VALUE_DIFFERENTIATION_BUYER_MOVES
     + SOCIAL_CONVERSATION_BUYER_MOVES
+    + RAPPORT_RELEVANCE_BUYER_MOVES
     + PAIN_PROGRESSION_BUYER_MOVES
 ):
     UNIVERSAL_REPAIR_RULES[f"{_move_id}_rule"] = _repair_rule(f"{_move_id}_rule", _move_id)

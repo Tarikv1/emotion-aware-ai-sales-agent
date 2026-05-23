@@ -21,13 +21,13 @@ Failure count: 0
 
 {
   "asr_cases": 19,
-  "buyer_moves": 73,
+  "buyer_moves": 83,
   "call_controls": 9,
   "campaign_fact_slots": 20,
   "conversation_stages": 10,
   "forbidden_customer_patterns": 14,
-  "repair_rules": 66,
-  "response_shapes": 44
+  "repair_rules": 76,
+  "response_shapes": 46
 }
 
 ## Failures

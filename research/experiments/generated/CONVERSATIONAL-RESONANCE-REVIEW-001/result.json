@@ -55,18 +55,7 @@
     "writes_crm": false
   },
   "requires_human_sales_review": true,
-  "resonance_warning_counts": {
-    "asked_personal_probe": 4,
-    "collected_sensitive_detail": 10,
-    "continued_sales_during_hardship": 23,
-    "failed_to_stop_on_serious_bad_timing": 5,
-    "fake_callback_or_calendar_claim": 24,
-    "full_sales_menu_after_social_context": 105,
-    "ignored_human_context": 297,
-    "no_relevance_bridge": 30,
-    "pushy_after_financial_stress": 3,
-    "wrong_person_not_handled": 27
-  },
+  "resonance_warning_counts": {},
   "runtime_behavior_changed": false,
   "side_effect_flags_all_false": true,
   "status": "generated",

@@ -1135,6 +1135,7 @@ def apply_stability_guard_if_needed(
             "confusion_challenge_repair",
             "scope_regulated_claim_boundaries",
             "social_conversation_management",
+            "rapport_relevance_bridge",
             "appointment_callback_send_info",
         }
     ):

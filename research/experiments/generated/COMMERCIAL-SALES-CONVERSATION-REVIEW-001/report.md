@@ -65,19 +65,19 @@ Validated a dry-run commercial sales conversation packet for human review. Codex
 
 ## Universalization Drift Risks
 - `UDR-001` `actual_architecture_drift`: Universal runtime branches on synthetic fixture campaign ids.
-  - File: `runtime/core/universal_conversation_policy_runtime.py` lines `504, 506, 508, 510`
+  - File: `runtime/core/universal_conversation_policy_runtime.py` lines `519, 521, 523, 525`
   - Risk: Generic sales behavior can become coupled to fixture ids instead of campaign facts.
   - Follow-up: Move primary diagnostic phrase selection to campaign config/adapters.
 - `UDR-002` `temporary_bridge_should_move_to_campaign_config`: Universal runtime maps verticals directly to customer-facing gap phrases.
-  - File: `runtime/core/universal_conversation_policy_runtime.py` lines `504, 506, 508, 510`
+  - File: `runtime/core/universal_conversation_policy_runtime.py` lines `519, 521, 523, 525`
   - Risk: A new campaign in the same vertical may inherit the wrong primary pain hypothesis.
   - Follow-up: Use campaign fact slots such as core_diagnostic_gaps, gap_label, and gap_value_bridge.
 - `UDR-003` `temporary_bridge_should_move_to_campaign_config`: RouteSignal-specific phrasing appears inside universal response rendering.
-  - File: `runtime/core/universal_conversation_policy_runtime.py` lines `331, 332, 449, 450, 462, 463, 471, 503, 920, 922, 923, 924`
+  - File: `runtime/core/universal_conversation_policy_runtime.py` lines `346, 347, 464, 465, 477, 478, 486, 518, 935, 937, 938, 939`
   - Risk: RouteSignal preservation logic can leak into generic universal response shape code.
   - Follow-up: Keep RouteSignal-specific wording in RouteSignal campaign/playbook facts.
 - `UDR-004` `temporary_bridge_should_move_to_campaign_config`: Customer-facing gap phrases are hardcoded in universal runtime helpers.
-  - File: `runtime/core/universal_conversation_policy_runtime.py` lines `246, 333, 334, 335, 337, 338, 339, 439, 505, 507, 509, 511, 621, 624, 625, 648, 650, 653, 656, 657, 700, 701, 703, 704, 705, 907, 908, 909, 910, 911, 912, 913, 914, 915, 916, 917, 918, 1362`
+  - File: `runtime/core/universal_conversation_policy_runtime.py` lines `261, 348, 349, 350, 352, 353, 354, 454, 520, 522, 524, 526, 636, 639, 640, 663, 665, 668, 671, 672, 715, 716, 718, 719, 720, 922, 923, 924, 925, 926, 927, 928, 929, 930, 931, 932, 933, 1544`
   - Risk: Sales copy and primary pain language will require code changes instead of config changes.
   - Follow-up: Expose the preferred customer-facing phrase per gap through campaign config.
 

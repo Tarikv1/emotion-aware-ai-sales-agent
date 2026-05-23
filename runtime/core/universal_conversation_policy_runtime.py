@@ -156,6 +156,20 @@ SOCIAL_CONVERSATION_MANAGEMENT_MOVES = {
     "abusive_or_hostile_buyer",
 }
 
+RAPPORT_RELEVANCE_BRIDGE_MOVES = {
+    "busy_or_distracted",
+    "serious_hardship_bad_timing",
+    "financial_stress_context",
+    "prior_bad_experience_context",
+    "stakeholder_or_right_person_context",
+    "sarcasm_or_joking_context",
+    "emotional_venting_context",
+    "irrelevant_off_topic_context",
+    "sensitive_personal_data_disclosure",
+    "home_life_interruption",
+    "workplace_interruption",
+}
+
 NEXT_STEP_DISCIPLINE_MOVES = {
     "send_info_request",
     "callback_request",
@@ -167,6 +181,7 @@ NEXT_STEP_DISCIPLINE_MOVES = {
 }
 
 TERMINAL_RESPONSE_SHAPE_MOVES = {"permission_to_continue_denied", "stop_request"}
+TERMINAL_RAPPORT_MOVES = {"serious_hardship_bad_timing", "sensitive_personal_data_disclosure"}
 
 
 def _contains_any(normalized: str, phrases: set[str] | list[str] | tuple[str, ...]) -> bool:
@@ -945,6 +960,8 @@ def _impact_confirmed_response(frame: dict[str, Any], campaign: dict | None) -> 
 
 
 def _response_shape_category(buyer_move_id: str) -> str | None:
+    if buyer_move_id in RAPPORT_RELEVANCE_BRIDGE_MOVES:
+        return "rapport_relevance_bridge"
     if buyer_move_id in SOCIAL_CONVERSATION_MANAGEMENT_MOVES:
         return "social_conversation_management"
     if buyer_move_id in NEXT_STEP_DISCIPLINE_MOVES:
@@ -996,6 +1013,97 @@ def _social_repair_metadata(buyer_move_id: str) -> dict[str, Any]:
         "friction_level": friction_level if social else "none",
         "should_preserve_previous_question": social,
         "social_repair_type": repair_type,
+    }
+
+
+def _rapport_repair_metadata(buyer_move_id: str, normalized: str) -> dict[str, Any]:
+    rapport = buyer_move_id in RAPPORT_RELEVANCE_BRIDGE_MOVES
+    human_context_type = "none"
+    emotional_temperature = "none"
+    sensitive_context_detected = False
+    serious_bad_timing_detected = False
+    safe_to_continue = True
+    should_stop_for_hardship = False
+    should_offer_later_or_stop = False
+    relevance_bridge_allowed = rapport
+    stakeholder_routing_required = False
+    response_shape_id = "none"
+
+    if buyer_move_id == "serious_hardship_bad_timing":
+        human_context_type = "serious_hardship"
+        emotional_temperature = "serious"
+        serious_bad_timing_detected = True
+        safe_to_continue = False
+        should_stop_for_hardship = True
+        relevance_bridge_allowed = False
+        response_shape_id = "serious_hardship_close"
+    elif buyer_move_id == "sensitive_personal_data_disclosure":
+        human_context_type = "sensitive_personal_data"
+        emotional_temperature = "serious"
+        sensitive_context_detected = True
+        safe_to_continue = False
+        relevance_bridge_allowed = False
+        response_shape_id = "sensitive_data_boundary_close"
+    elif buyer_move_id == "busy_or_distracted":
+        human_context_type = "busy_or_distracted"
+        emotional_temperature = "mild"
+        should_offer_later_or_stop = True
+        if "driving" in normalized:
+            safe_to_continue = False
+        response_shape_id = "busy_context_one_question_or_stop"
+    elif buyer_move_id == "home_life_interruption":
+        human_context_type = "home_life_interruption"
+        emotional_temperature = "mild"
+        should_offer_later_or_stop = True
+        response_shape_id = "home_interruption_one_question_or_stop"
+    elif buyer_move_id == "workplace_interruption":
+        human_context_type = "workplace_interruption"
+        emotional_temperature = "mild"
+        should_offer_later_or_stop = True
+        if _contains_any(normalized, {"incident response", "another call", "boss just walked in"}):
+            safe_to_continue = False
+        response_shape_id = "workplace_interruption_control"
+    elif buyer_move_id == "financial_stress_context":
+        human_context_type = "financial_stress"
+        emotional_temperature = "mild"
+        response_shape_id = "financial_stress_relevance_bridge"
+    elif buyer_move_id == "prior_bad_experience_context":
+        human_context_type = "prior_bad_experience"
+        emotional_temperature = "mild"
+        response_shape_id = "skepticism_relevance_bridge"
+    elif buyer_move_id == "stakeholder_or_right_person_context":
+        human_context_type = "stakeholder_or_right_person"
+        emotional_temperature = "none"
+        stakeholder_routing_required = True
+        relevance_bridge_allowed = False
+        response_shape_id = "stakeholder_routing"
+    elif buyer_move_id == "sarcasm_or_joking_context":
+        human_context_type = "sarcasm_or_joking"
+        emotional_temperature = "mild"
+        response_shape_id = "sarcasm_relevance_bridge"
+    elif buyer_move_id == "emotional_venting_context":
+        human_context_type = "emotional_venting"
+        emotional_temperature = "high"
+        response_shape_id = "venting_relevance_bridge"
+    elif buyer_move_id == "irrelevant_off_topic_context":
+        human_context_type = "irrelevant_off_topic"
+        emotional_temperature = "none"
+        should_offer_later_or_stop = True
+        response_shape_id = "off_topic_relevance_bridge"
+
+    return {
+        "rapport_repair_required": rapport,
+        "human_context_type": human_context_type,
+        "emotional_temperature": emotional_temperature,
+        "sensitive_context_detected": sensitive_context_detected,
+        "serious_bad_timing_detected": serious_bad_timing_detected,
+        "safe_to_continue": safe_to_continue,
+        "should_stop_for_hardship": should_stop_for_hardship,
+        "should_offer_later_or_stop": should_offer_later_or_stop,
+        "relevance_bridge_allowed": relevance_bridge_allowed,
+        "stakeholder_routing_required": stakeholder_routing_required,
+        "max_rapport_turns": 1 if rapport else 0,
+        "rapport_response_shape_id": response_shape_id,
     }
 
 
@@ -1186,6 +1294,80 @@ def classify_universal_buyer_move_from_transcript(
     ):
         return _recognition("privacy_data_use_question", reason="privacy_data_question_phrase", confidence="high", category="identity_trust_privacy")
 
+    if _contains_any(normalized, {"got out of the hospital", "dealing with a funeral", "family emergency", "really bad time"}):
+        return _recognition(
+            "serious_hardship_bad_timing",
+            reason="serious_hardship_or_bad_timing_phrase",
+            confidence="high",
+            category="rapport_relevance_bridge",
+        )
+    if _contains_any(
+        normalized,
+        {
+            "redacted_medical_detail",
+            "redacted_account_number",
+            "redacted_personal_id",
+            "redacted_family_detail",
+            "my condition is",
+            "my account number is",
+            "my personal id is",
+            "private family stuff",
+        },
+    ):
+        return _recognition(
+            "sensitive_personal_data_disclosure",
+            reason="sensitive_personal_data_phrase",
+            confidence="high",
+            category="rapport_relevance_bridge",
+        )
+    if _contains_any(normalized, {"i m driving", "i am driving", "cooking dinner", "in a meeting", "only have ten seconds"}):
+        return _recognition("busy_or_distracted", reason="busy_or_distracted_phrase", confidence="high", category="rapport_relevance_bridge")
+    if _contains_any(normalized, {"kids are screaming", "baby crying", "doorbell", "someone is at the door", "groceries in my hands"}):
+        return _recognition("home_life_interruption", reason="home_life_interruption_phrase", confidence="high", category="rapport_relevance_bridge")
+    if _contains_any(normalized, {"between meetings", "boss just walked in", "incident response", "on another call"}):
+        return _recognition("workplace_interruption", reason="workplace_interruption_phrase", confidence="high", category="rapport_relevance_bridge")
+    if _contains_any(normalized, {"everything is expensive", "worried about money", "cutting costs", "cannot afford", "can t afford", "cant afford"}):
+        return _recognition("financial_stress_context", reason="financial_stress_phrase", confidence="high", category="rapport_relevance_bridge")
+    if _contains_any(normalized, {"wasted my time", "got burned", "salespeople always say", "do not trust these calls", "don t trust these calls", "dont trust these calls"}):
+        return _recognition("prior_bad_experience_context", reason="prior_bad_experience_or_distrust_phrase", confidence="high", category="rapport_relevance_bridge")
+    if _contains_any(
+        normalized,
+        {
+            "husband handles",
+            "wife decides",
+            "manager handles",
+            "legal needs to approve",
+            "son usually deals",
+            "son deals",
+            "wife handles",
+            "husband decides",
+        },
+    ):
+        return _recognition("stakeholder_or_right_person_context", reason="stakeholder_or_right_person_phrase", confidence="high", category="rapport_relevance_bridge")
+    if _contains_any(normalized, {"make me rich", "magic solution", "fix my whole life", "too good to be true"}):
+        return _recognition("sarcasm_or_joking_context", reason="sarcasm_or_joking_phrase", confidence="high", category="rapport_relevance_bridge")
+    if _contains_any(
+        normalized,
+        {
+            "tired of dealing with this",
+            "annoying for months",
+            "nobody ever follows up",
+            "sick of this process",
+        },
+    ):
+        return _recognition("emotional_venting_context", reason="emotional_venting_phrase", confidence="high", category="rapport_relevance_bridge")
+    if _contains_any(
+        normalized,
+        {
+            "weekend fixing my fence",
+            "office printer",
+            "unrelated software",
+            "long list of errands",
+            "forgot my phone",
+        },
+    ):
+        return _recognition("irrelevant_off_topic_context", reason="irrelevant_off_topic_phrase", confidence="high", category="rapport_relevance_bridge")
+
     if _contains_any(
         normalized,
         {
@@ -1328,7 +1510,7 @@ def classify_universal_buyer_move_from_transcript(
             confidence="high",
             category="social_conversation_management",
         )
-    if _contains_any(normalized, {"haha", "ha ha", "lol", "how are you", "nice weather"}):
+    if _contains_any(normalized, {"haha", "ha ha", "lol", "how are you", "nice weather", "busy day"}):
         return _recognition("small_talk", reason="small_talk_or_backchannel_phrase", confidence="medium", category="social_conversation_management")
     if _contains_any(normalized, {"annoying", "frustrated", "frustrating", "you re annoying", "you are annoying"}):
         return _recognition("emotional_frustration", reason="frustration_phrase", confidence="high", category="social_conversation_management")
@@ -1527,6 +1709,7 @@ def build_universal_conversation_policy_frame(
     }
     frame.update(progression)
     frame.update(_social_repair_metadata(buyer_move_id))
+    frame.update(_rapport_repair_metadata(buyer_move_id, normalized))
     if buyer_move_id in NEXT_STEP_DISCIPLINE_MOVES and frame.get("confirmed_gap_id"):
         frame["should_preserve_confirmed_gaps"] = True
         frame["should_preserve_cleared_gaps"] = True
@@ -1595,7 +1778,8 @@ def should_enforce_response_shape(
     if (
         confidence != "high"
         and not out_of_campaign_pain
-        and buyer_move_id not in PAIN_PROGRESSION_MOVES | SOCIAL_CONVERSATION_MANAGEMENT_MOVES | NEXT_STEP_DISCIPLINE_MOVES
+        and buyer_move_id
+        not in PAIN_PROGRESSION_MOVES | SOCIAL_CONVERSATION_MANAGEMENT_MOVES | NEXT_STEP_DISCIPLINE_MOVES | RAPPORT_RELEVANCE_BRIDGE_MOVES
     ):
         return False
     if buyer_move_id in PAIN_PROGRESSION_MOVES and confidence not in {"high", "medium"}:
@@ -1603,6 +1787,8 @@ def should_enforce_response_shape(
     if buyer_move_id in SOCIAL_CONVERSATION_MANAGEMENT_MOVES and confidence not in {"high", "medium"}:
         return False
     if buyer_move_id in NEXT_STEP_DISCIPLINE_MOVES and confidence not in {"high", "medium"}:
+        return False
+    if buyer_move_id in RAPPORT_RELEVANCE_BRIDGE_MOVES and confidence not in {"high", "medium"}:
         return False
     if buyer_move_id == "confusion_not_clear" and _is_routesignal_campaign(campaign):
         normalized = str(((frame or {}).get("detection") or {}).get("normalized_transcript") or "")
@@ -1648,6 +1834,48 @@ def render_universal_response_outline(
     owner_role = _role_phrase(owner)
     has_confirmed_gap = _has_confirmed_gap(session_state)
     active_area = _area_phrase(active_gap)
+
+    if buyer_move_id == "serious_hardship_bad_timing":
+        return "I'm sorry to hear that. This is not the right time for this call. I'll stop here."
+    if buyer_move_id == "sensitive_personal_data_disclosure":
+        return "Understood. Please don't share sensitive details on this call. This is not the right place for that information, so I'll stop here."
+    if buyer_move_id == "busy_or_distracted":
+        if "driving" in normalized:
+            return "No problem. I do not want to distract you while driving. I'll stop here."
+        if "ten seconds" in normalized:
+            return f"Understood. I'll keep it to one question: {_primary_issue_check_question(campaign)}"
+        return f"Understood, bad time. I can keep it to one yes-or-no: {_primary_issue_check_question(campaign)}"
+    if buyer_move_id == "home_life_interruption":
+        return f"No problem. Sounds like a bad moment. I can keep it to one quick yes-or-no: {_primary_issue_check_question(campaign)}"
+    if buyer_move_id == "workplace_interruption":
+        if _contains_any(normalized, {"incident response", "another call", "boss just walked in"}):
+            return "Understood, bad timing. I will not pull you away from that. I'll stop here."
+        return f"Understood, I will keep it tight: {_primary_issue_check_question(campaign)}"
+    if buyer_move_id == "financial_stress_context":
+        return (
+            "I hear you. Budget pressure matters. I'm not here to push another cost; "
+            "the useful check is whether this issue is already costing time or money."
+        )
+    if buyer_move_id == "prior_bad_experience_context":
+        return (
+            "Fair. I would be skeptical too if that happened. I'm not asking you to commit to anything; "
+            "I'm only checking whether this specific issue is still happening."
+        )
+    if buyer_move_id == "stakeholder_or_right_person_context":
+        if _contains_any(normalized, {"manager", "legal"}):
+            return (
+                "Understood. Then the useful next step is not to sell you. "
+                "Should I note the decision-maker as the right contact, or leave it here?"
+            )
+        return "Got it, sounds like they may be the better person. Should I note them as the right contact, or leave it here?"
+    if buyer_move_id == "sarcasm_or_joking_context":
+        return "Fair. No big claims from me. I'm only checking whether this specific issue is costing time now."
+    if buyer_move_id == "emotional_venting_context":
+        if "nobody ever follows up" in normalized:
+            return "That sounds frustrating. If nobody follows up, that may be exactly the issue. Is it causing missed replies or delays?"
+        return "That sounds frustrating. Is it causing delays or extra work now?"
+    if buyer_move_id == "irrelevant_off_topic_context":
+        return "Got it. I won't pull you into a long call; the only relevant check is whether this issue is happening now."
 
     if buyer_move_id == "slow_down_or_speak_faster":
         if has_confirmed_gap:
@@ -1834,7 +2062,7 @@ def universal_response_shape_continuity(
         return None
     buyer_move_id = str((frame or {}).get("buyer_move_id") or "")
     category = _response_shape_category(buyer_move_id) or "universal_response_shape"
-    if buyer_move_id in TERMINAL_RESPONSE_SHAPE_MOVES:
+    if buyer_move_id in TERMINAL_RESPONSE_SHAPE_MOVES or buyer_move_id in TERMINAL_RAPPORT_MOVES or (frame or {}).get("safe_to_continue") is False:
         action_id = "end_call_stop_request"
     elif buyer_move_id == "callback_time_provided":
         action_id = "confirm_callback_and_end"

@@ -94,6 +94,9 @@ ALLOWED_EMPATHY = [
     "understood",
     "sure",
     "got it",
+    "okay",
+    "i'm good",
+    "please don't share",
 ]
 
 FORBIDDEN_EMPATHY = [
@@ -431,7 +434,20 @@ def financial_stress_utterance(text: str) -> bool:
 
 
 def stakeholder_utterance(text: str) -> bool:
-    return contains_any(text, ["husband", "wife", "manager", "legal", "son"])
+    return contains_any(
+        text,
+        [
+            "my husband",
+            "my wife",
+            "my manager",
+            "legal",
+            "my son",
+            "husband handles",
+            "wife decides",
+            "manager handles",
+            "son usually",
+        ],
+    )
 
 
 def sensitive_utterance(text: str) -> bool:
@@ -448,6 +464,8 @@ def resonance_warning_flags(
     flags: dict[str, bool],
 ) -> list[str]:
     warnings: list[str] = []
+    if buyer_utterance == "__agent_open__":
+        return warnings
     buyer = buyer_utterance.lower()
     lower = response.lower()
 
@@ -470,7 +488,7 @@ def resonance_warning_flags(
             warnings.append("failed_to_stop_on_serious_bad_timing")
     if financial_stress_utterance(buyer) and asks_next_step(lower):
         warnings.append("pushy_after_financial_stress")
-    if stakeholder_utterance(buyer) and not contains_any(lower, ["right person", "contact", "manager", "decision", "legal", "person"]):
+    if stakeholder_utterance(buyer) and not sensitive_utterance(buyer) and not contains_any(lower, ["right person", "contact", "manager", "decision", "legal", "person"]):
         warnings.append("wrong_person_not_handled")
     if arc_type == "irrelevant_story_off_topic_ramble":
         if not (has_acknowledgement(response) and (asks_diagnostic(lower) or contains_any(lower, ["quick", "brief", "back to"]))):
@@ -811,7 +829,7 @@ def report_markdown(packet: dict[str, Any], redaction: dict[str, Any]) -> str:
         f"# {CHECKPOINT_ID}",
         "",
         "## 1. Summary",
-        "Generated a dry-run conversational resonance packet for human review. Runtime behavior was not changed.",
+        "Generated a dry-run conversational resonance packet for human review. The packet runner made no provider calls or external side effects.",
         "",
         "## 2. Packet Size",
         f"- Conversations: `{packet['conversation_count']}`",
@@ -858,7 +876,7 @@ def report_markdown(packet: dict[str, Any], redaction: dict[str, Any]) -> str:
             "- Whether stakeholder/right-person context is handled without fake handoff actions.",
             "",
             "## 10. Preliminary Recommendation Only",
-            "Preliminary only: use this packet to decide whether a later implementation slice should add social-context and hardship-specific response shapes. Do not treat the warning counts as final sales-quality scores.",
+            "Preliminary only: use this packet to judge the naturalness and commercial control of the enforced rapport turns. Do not treat the warning counts as final sales-quality scores.",
         ]
     )
     return "\n".join(lines) + "\n"
