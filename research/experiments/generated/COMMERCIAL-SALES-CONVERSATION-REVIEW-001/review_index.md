@@ -14,7 +14,7 @@
 | `commercial-sales-conversation-review-001-01-05-routesignal_live_demo-objection` | `routesignal_live_demo` | `objection` | 6 | 1 |
 | `commercial-sales-conversation-review-001-01-06-routesignal_live_demo-trust_challenge` | `routesignal_live_demo` | `trust_challenge` | 7 | 4 |
 | `commercial-sales-conversation-review-001-01-07-routesignal_live_demo-confusion_loop_resistance` | `routesignal_live_demo` | `confusion_loop_resistance` | 6 | 1 |
-| `commercial-sales-conversation-review-001-01-08-routesignal_live_demo-social_conversation_management` | `routesignal_live_demo` | `social_conversation_management` | 5 | 3 |
+| `commercial-sales-conversation-review-001-01-08-routesignal_live_demo-social_conversation_management` | `routesignal_live_demo` | `social_conversation_management` | 5 | 0 |
 | `commercial-sales-conversation-review-001-01-09-routesignal_live_demo-asr_garble` | `routesignal_live_demo` | `asr_garble` | 5 | 2 |
 | `commercial-sales-conversation-review-001-01-10-routesignal_live_demo-no_fit_stop` | `routesignal_live_demo` | `no_fit_stop` | 4 | 3 |
 | `commercial-sales-conversation-review-001-02-01-synthetic-insurance-review-smooth_qualified_appointment` | `synthetic-insurance-review` | `smooth_qualified_appointment` | 5 | 3 |
@@ -24,7 +24,7 @@
 | `commercial-sales-conversation-review-001-02-05-synthetic-insurance-review-objection` | `synthetic-insurance-review` | `objection` | 6 | 1 |
 | `commercial-sales-conversation-review-001-02-06-synthetic-insurance-review-trust_challenge` | `synthetic-insurance-review` | `trust_challenge` | 7 | 3 |
 | `commercial-sales-conversation-review-001-02-07-synthetic-insurance-review-confusion_loop_resistance` | `synthetic-insurance-review` | `confusion_loop_resistance` | 6 | 3 |
-| `commercial-sales-conversation-review-001-02-08-synthetic-insurance-review-social_conversation_management` | `synthetic-insurance-review` | `social_conversation_management` | 5 | 8 |
+| `commercial-sales-conversation-review-001-02-08-synthetic-insurance-review-social_conversation_management` | `synthetic-insurance-review` | `social_conversation_management` | 5 | 0 |
 | `commercial-sales-conversation-review-001-02-09-synthetic-insurance-review-asr_garble` | `synthetic-insurance-review` | `asr_garble` | 5 | 2 |
 | `commercial-sales-conversation-review-001-02-10-synthetic-insurance-review-no_fit_stop` | `synthetic-insurance-review` | `no_fit_stop` | 4 | 3 |
 | `commercial-sales-conversation-review-001-03-01-synthetic-b2b-saas-operations-smooth_qualified_appointment` | `synthetic-b2b-saas-operations` | `smooth_qualified_appointment` | 5 | 3 |
@@ -34,7 +34,7 @@
 | `commercial-sales-conversation-review-001-03-05-synthetic-b2b-saas-operations-objection` | `synthetic-b2b-saas-operations` | `objection` | 6 | 1 |
 | `commercial-sales-conversation-review-001-03-06-synthetic-b2b-saas-operations-trust_challenge` | `synthetic-b2b-saas-operations` | `trust_challenge` | 7 | 4 |
 | `commercial-sales-conversation-review-001-03-07-synthetic-b2b-saas-operations-confusion_loop_resistance` | `synthetic-b2b-saas-operations` | `confusion_loop_resistance` | 6 | 2 |
-| `commercial-sales-conversation-review-001-03-08-synthetic-b2b-saas-operations-social_conversation_management` | `synthetic-b2b-saas-operations` | `social_conversation_management` | 5 | 6 |
+| `commercial-sales-conversation-review-001-03-08-synthetic-b2b-saas-operations-social_conversation_management` | `synthetic-b2b-saas-operations` | `social_conversation_management` | 5 | 0 |
 | `commercial-sales-conversation-review-001-03-09-synthetic-b2b-saas-operations-asr_garble` | `synthetic-b2b-saas-operations` | `asr_garble` | 5 | 2 |
 | `commercial-sales-conversation-review-001-03-10-synthetic-b2b-saas-operations-no_fit_stop` | `synthetic-b2b-saas-operations` | `no_fit_stop` | 4 | 3 |
 | `commercial-sales-conversation-review-001-04-01-synthetic-automotive-service-review-smooth_qualified_appointment` | `synthetic-automotive-service-review` | `smooth_qualified_appointment` | 5 | 3 |
@@ -44,7 +44,7 @@
 | `commercial-sales-conversation-review-001-04-05-synthetic-automotive-service-review-objection` | `synthetic-automotive-service-review` | `objection` | 6 | 1 |
 | `commercial-sales-conversation-review-001-04-06-synthetic-automotive-service-review-trust_challenge` | `synthetic-automotive-service-review` | `trust_challenge` | 7 | 4 |
 | `commercial-sales-conversation-review-001-04-07-synthetic-automotive-service-review-confusion_loop_resistance` | `synthetic-automotive-service-review` | `confusion_loop_resistance` | 6 | 3 |
-| `commercial-sales-conversation-review-001-04-08-synthetic-automotive-service-review-social_conversation_management` | `synthetic-automotive-service-review` | `social_conversation_management` | 5 | 8 |
+| `commercial-sales-conversation-review-001-04-08-synthetic-automotive-service-review-social_conversation_management` | `synthetic-automotive-service-review` | `social_conversation_management` | 5 | 0 |
 | `commercial-sales-conversation-review-001-04-09-synthetic-automotive-service-review-asr_garble` | `synthetic-automotive-service-review` | `asr_garble` | 5 | 2 |
 | `commercial-sales-conversation-review-001-04-10-synthetic-automotive-service-review-no_fit_stop` | `synthetic-automotive-service-review` | `no_fit_stop` | 4 | 3 |
 | `commercial-sales-conversation-review-001-05-01-synthetic-home-services-estimate-smooth_qualified_appointment` | `synthetic-home-services-estimate` | `smooth_qualified_appointment` | 5 | 3 |
@@ -54,6 +54,6 @@
 | `commercial-sales-conversation-review-001-05-05-synthetic-home-services-estimate-objection` | `synthetic-home-services-estimate` | `objection` | 6 | 1 |
 | `commercial-sales-conversation-review-001-05-06-synthetic-home-services-estimate-trust_challenge` | `synthetic-home-services-estimate` | `trust_challenge` | 7 | 4 |
 | `commercial-sales-conversation-review-001-05-07-synthetic-home-services-estimate-confusion_loop_resistance` | `synthetic-home-services-estimate` | `confusion_loop_resistance` | 6 | 3 |
-| `commercial-sales-conversation-review-001-05-08-synthetic-home-services-estimate-social_conversation_management` | `synthetic-home-services-estimate` | `social_conversation_management` | 5 | 8 |
+| `commercial-sales-conversation-review-001-05-08-synthetic-home-services-estimate-social_conversation_management` | `synthetic-home-services-estimate` | `social_conversation_management` | 5 | 0 |
 | `commercial-sales-conversation-review-001-05-09-synthetic-home-services-estimate-asr_garble` | `synthetic-home-services-estimate` | `asr_garble` | 5 | 2 |
 | `commercial-sales-conversation-review-001-05-10-synthetic-home-services-estimate-no_fit_stop` | `synthetic-home-services-estimate` | `no_fit_stop` | 4 | 3 |

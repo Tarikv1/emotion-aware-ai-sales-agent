@@ -1118,6 +1118,7 @@ def apply_stability_guard_if_needed(
             "trust_identity_privacy_consent",
             "confusion_challenge_repair",
             "scope_regulated_claim_boundaries",
+            "social_conversation_management",
         }
     ):
         return action, {

@@ -143,6 +143,18 @@ REGULATED_SCOPE_BOUNDARY_MOVES = {
     "regulated_claim_question",
 }
 
+SOCIAL_CONVERSATION_MANAGEMENT_MOVES = {
+    "slow_down_or_speak_faster",
+    "repeat_last_answer",
+    "repeat_or_rephrase_request",
+    "language_mismatch",
+    "pronunciation_or_name_correction",
+    "small_talk",
+    "silence_or_backchannel",
+    "emotional_frustration",
+    "abusive_or_hostile_buyer",
+}
+
 TERMINAL_RESPONSE_SHAPE_MOVES = {"permission_to_continue_denied", "stop_request"}
 
 
@@ -333,6 +345,13 @@ def _area_phrase(phrase: str) -> str:
     if cleaned.endswith("issue") or cleaned.endswith("need"):
         return f"the {cleaned}"
     return cleaned
+
+
+def _agreement_verb(phrase: str) -> str:
+    cleaned = _plain_phrase(phrase).lower()
+    if cleaned.endswith("s") and not cleaned.endswith("ss"):
+        return "are"
+    return "is"
 
 
 def _short_gap_pair(campaign: dict | None) -> str:
@@ -779,6 +798,8 @@ def _impact_confirmed_response(frame: dict[str, Any], campaign: dict | None) -> 
 
 
 def _response_shape_category(buyer_move_id: str) -> str | None:
+    if buyer_move_id in SOCIAL_CONVERSATION_MANAGEMENT_MOVES:
+        return "social_conversation_management"
     if buyer_move_id in DIRECT_PRODUCT_VALUE_MOVES:
         return "direct_product_value_questions"
     if buyer_move_id in OBJECTION_MOVES:
@@ -794,6 +815,39 @@ def _response_shape_category(buyer_move_id: str) -> str | None:
     if buyer_move_id in REGULATED_SCOPE_BOUNDARY_MOVES:
         return "scope_regulated_claim_boundaries"
     return None
+
+
+def _social_repair_metadata(buyer_move_id: str) -> dict[str, Any]:
+    social = buyer_move_id in SOCIAL_CONVERSATION_MANAGEMENT_MOVES
+    if buyer_move_id == "slow_down_or_speak_faster":
+        repair_type = "speech_rate"
+        friction_level = "mild"
+    elif buyer_move_id == "language_mismatch":
+        repair_type = "language_simplification"
+        friction_level = "mild"
+    elif buyer_move_id in {"emotional_frustration", "abusive_or_hostile_buyer"}:
+        repair_type = "friction_deescalation"
+        friction_level = "high"
+    elif buyer_move_id in {"repeat_last_answer", "repeat_or_rephrase_request"}:
+        repair_type = "repeat_or_rephrase"
+        friction_level = "mild"
+    elif buyer_move_id == "pronunciation_or_name_correction":
+        repair_type = "pronunciation_correction"
+        friction_level = "mild"
+    elif buyer_move_id in {"small_talk", "silence_or_backchannel"}:
+        repair_type = "light_bridge"
+        friction_level = "none"
+    else:
+        repair_type = "none"
+        friction_level = "none"
+    return {
+        "social_repair_required": social,
+        "speech_adjustment_requested": buyer_move_id == "slow_down_or_speak_faster",
+        "simplified_language_required": buyer_move_id == "language_mismatch",
+        "friction_level": friction_level if social else "none",
+        "should_preserve_previous_question": social,
+        "social_repair_type": repair_type,
+    }
 
 
 def _looks_like_time(normalized: str) -> bool:
@@ -1114,7 +1168,9 @@ def classify_universal_buyer_move_from_transcript(
         return _recognition("repeat_last_answer", reason="repeat_last_answer_phrase", confidence="high", category="social_conversation_management")
     if _contains_any(normalized, {"don t speak english", "dont speak english", "do not speak english", "english well", "different language"}):
         return _recognition("language_mismatch", reason="language_mismatch_phrase", confidence="high", category="social_conversation_management")
-    if _contains_any(normalized, {"not how you say my name", "that s not how you say my name", "you said my name wrong", "call me"}):
+    if _contains_any(normalized, {"not how you say my name", "that s not how you say my name", "you said my name wrong"}) or (
+        "call me" in normalized and not _looks_like_time(normalized)
+    ):
         return _recognition(
             "pronunciation_or_name_correction",
             reason="name_or_pronunciation_correction_phrase",
@@ -1312,6 +1368,7 @@ def build_universal_conversation_policy_frame(
         "pragmatic_move_id": (pragmatic_move or {}).get("move_id"),
     }
     frame.update(progression)
+    frame.update(_social_repair_metadata(buyer_move_id))
     return frame
 
 
@@ -1350,9 +1407,11 @@ def should_enforce_response_shape(
     if (frame or {}).get("asr_repair_required"):
         return False
     confidence = str((frame or {}).get("recognition_confidence") or "")
-    if confidence != "high" and buyer_move_id not in PAIN_PROGRESSION_MOVES:
+    if confidence != "high" and buyer_move_id not in PAIN_PROGRESSION_MOVES | SOCIAL_CONVERSATION_MANAGEMENT_MOVES:
         return False
     if buyer_move_id in PAIN_PROGRESSION_MOVES and confidence not in {"high", "medium"}:
+        return False
+    if buyer_move_id in SOCIAL_CONVERSATION_MANAGEMENT_MOVES and confidence not in {"high", "medium"}:
         return False
     if buyer_move_id == "confusion_not_clear" and _is_routesignal_campaign(campaign):
         normalized = str(((frame or {}).get("detection") or {}).get("normalized_transcript") or "")
@@ -1396,6 +1455,24 @@ def render_universal_response_outline(
     client = _campaign_client_name(campaign)
     caller = _campaign_caller_name(campaign)
     owner_role = _role_phrase(owner)
+
+    if buyer_move_id == "slow_down_or_speak_faster":
+        if _contains_any(normalized, {"speak faster", "too slow"}):
+            return "Sure, I can move faster. Short version: is that issue happening now?"
+        return "Sure, I'll slow down. Short version: is that issue happening now?"
+    if buyer_move_id in {"repeat_or_rephrase_request", "repeat_last_answer"}:
+        area = _area_phrase(active_gap)
+        return f"Sure. Short version: this call checks whether {area} {_agreement_verb(area)} worth a quick human review."
+    if buyer_move_id == "language_mismatch":
+        return "Understood. I'll use simple English. Is that issue happening now?"
+    if buyer_move_id == "pronunciation_or_name_correction":
+        return "Sorry about that. I'll use the correction. Should I continue with the quick check?"
+    if buyer_move_id in {"small_talk", "silence_or_backchannel"}:
+        if "how are you" in normalized:
+            return "I'm good, thanks. I'll keep this quick: is that issue happening now?"
+        return "Okay, thanks. I'll keep this quick: is that issue happening now?"
+    if buyer_move_id in {"emotional_frustration", "abusive_or_hostile_buyer"}:
+        return "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check."
 
     if buyer_move_id == "permission_acknowledgement":
         return _permission_response(campaign)
@@ -1457,9 +1534,6 @@ def render_universal_response_outline(
         return f"You're right, you already answered that. I'll use {_area_phrase(active_gap)} and not ask it again."
     if buyer_move_id == "contradiction_challenge":
         return f"Fair point. I can ask basic fit questions, but detailed advice belongs with {owner_role}."
-    if buyer_move_id in {"repeat_or_rephrase_request", "repeat_last_answer"}:
-        return f"Sure. The short version: this call checks whether {_area_phrase(active_gap)} is worth a short human review."
-
     if buyer_move_id == "scope_limit_question":
         return (
             f"Correct. I can explain the purpose of the call, but detailed product or policy advice should come from {owner_role}. "

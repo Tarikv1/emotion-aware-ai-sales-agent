@@ -25,44 +25,11 @@
   "human_review_required_for_all": true,
   "mechanical_warning_counts": {
     "appointment_not_asked_when_ready": 40,
-    "no_acknowledgement": 132,
-    "over_deferential_stop_offer": 74,
-    "repeated_full_menu": 15
+    "no_acknowledgement": 112,
+    "over_deferential_stop_offer": 58,
+    "repeated_full_menu": 6
   },
   "most_concerning_conversations_by_mechanical_signals_only": [
-    {
-      "arc_type": "social_conversation_management",
-      "campaign_id": "synthetic-insurance-review",
-      "conversation_id": "commercial-sales-conversation-review-001-02-08-synthetic-insurance-review-social_conversation_management",
-      "mechanical_warning_count": 8,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer",
-        "repeated_full_menu"
-      ]
-    },
-    {
-      "arc_type": "social_conversation_management",
-      "campaign_id": "synthetic-automotive-service-review",
-      "conversation_id": "commercial-sales-conversation-review-001-04-08-synthetic-automotive-service-review-social_conversation_management",
-      "mechanical_warning_count": 8,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer",
-        "repeated_full_menu"
-      ]
-    },
-    {
-      "arc_type": "social_conversation_management",
-      "campaign_id": "synthetic-home-services-estimate",
-      "conversation_id": "commercial-sales-conversation-review-001-05-08-synthetic-home-services-estimate-social_conversation_management",
-      "mechanical_warning_count": 8,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer",
-        "repeated_full_menu"
-      ]
-    },
     {
       "arc_type": "direct_question",
       "campaign_id": "routesignal_live_demo",
@@ -86,16 +53,6 @@
       ]
     },
     {
-      "arc_type": "social_conversation_management",
-      "campaign_id": "synthetic-b2b-saas-operations",
-      "conversation_id": "commercial-sales-conversation-review-001-03-08-synthetic-b2b-saas-operations-social_conversation_management",
-      "mechanical_warning_count": 6,
-      "mechanical_warning_flags": [
-        "no_acknowledgement",
-        "over_deferential_stop_offer"
-      ]
-    },
-    {
       "arc_type": "direct_question",
       "campaign_id": "synthetic-automotive-service-review",
       "conversation_id": "commercial-sales-conversation-review-001-04-04-synthetic-automotive-service-review-direct_question",
@@ -111,6 +68,50 @@
       "campaign_id": "synthetic-home-services-estimate",
       "conversation_id": "commercial-sales-conversation-review-001-05-04-synthetic-home-services-estimate-direct_question",
       "mechanical_warning_count": 6,
+      "mechanical_warning_flags": [
+        "appointment_not_asked_when_ready",
+        "no_acknowledgement",
+        "over_deferential_stop_offer"
+      ]
+    },
+    {
+      "arc_type": "trust_challenge",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-06-routesignal_live_demo-trust_challenge",
+      "mechanical_warning_count": 4,
+      "mechanical_warning_flags": [
+        "appointment_not_asked_when_ready",
+        "no_acknowledgement",
+        "over_deferential_stop_offer"
+      ]
+    },
+    {
+      "arc_type": "direct_question",
+      "campaign_id": "synthetic-insurance-review",
+      "conversation_id": "commercial-sales-conversation-review-001-02-04-synthetic-insurance-review-direct_question",
+      "mechanical_warning_count": 4,
+      "mechanical_warning_flags": [
+        "appointment_not_asked_when_ready",
+        "no_acknowledgement",
+        "over_deferential_stop_offer"
+      ]
+    },
+    {
+      "arc_type": "trust_challenge",
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "conversation_id": "commercial-sales-conversation-review-001-03-06-synthetic-b2b-saas-operations-trust_challenge",
+      "mechanical_warning_count": 4,
+      "mechanical_warning_flags": [
+        "appointment_not_asked_when_ready",
+        "no_acknowledgement",
+        "over_deferential_stop_offer"
+      ]
+    },
+    {
+      "arc_type": "trust_challenge",
+      "campaign_id": "synthetic-automotive-service-review",
+      "conversation_id": "commercial-sales-conversation-review-001-04-06-synthetic-automotive-service-review-trust_challenge",
+      "mechanical_warning_count": 4,
       "mechanical_warning_flags": [
         "appointment_not_asked_when_ready",
         "no_acknowledgement",
@@ -141,6 +142,36 @@
   "status": "passed",
   "strongest_looking_conversations_by_mechanical_signals_only": [
     {
+      "arc_type": "social_conversation_management",
+      "campaign_id": "routesignal_live_demo",
+      "conversation_id": "commercial-sales-conversation-review-001-01-08-routesignal_live_demo-social_conversation_management",
+      "mechanical_warning_count": 0
+    },
+    {
+      "arc_type": "social_conversation_management",
+      "campaign_id": "synthetic-insurance-review",
+      "conversation_id": "commercial-sales-conversation-review-001-02-08-synthetic-insurance-review-social_conversation_management",
+      "mechanical_warning_count": 0
+    },
+    {
+      "arc_type": "social_conversation_management",
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "conversation_id": "commercial-sales-conversation-review-001-03-08-synthetic-b2b-saas-operations-social_conversation_management",
+      "mechanical_warning_count": 0
+    },
+    {
+      "arc_type": "social_conversation_management",
+      "campaign_id": "synthetic-automotive-service-review",
+      "conversation_id": "commercial-sales-conversation-review-001-04-08-synthetic-automotive-service-review-social_conversation_management",
+      "mechanical_warning_count": 0
+    },
+    {
+      "arc_type": "social_conversation_management",
+      "campaign_id": "synthetic-home-services-estimate",
+      "conversation_id": "commercial-sales-conversation-review-001-05-08-synthetic-home-services-estimate-social_conversation_management",
+      "mechanical_warning_count": 0
+    },
+    {
       "arc_type": "objection",
       "campaign_id": "routesignal_live_demo",
       "conversation_id": "commercial-sales-conversation-review-001-01-05-routesignal_live_demo-objection",
@@ -157,36 +188,6 @@
       "campaign_id": "synthetic-insurance-review",
       "conversation_id": "commercial-sales-conversation-review-001-02-05-synthetic-insurance-review-objection",
       "mechanical_warning_count": 1
-    },
-    {
-      "arc_type": "objection",
-      "campaign_id": "synthetic-b2b-saas-operations",
-      "conversation_id": "commercial-sales-conversation-review-001-03-05-synthetic-b2b-saas-operations-objection",
-      "mechanical_warning_count": 1
-    },
-    {
-      "arc_type": "objection",
-      "campaign_id": "synthetic-automotive-service-review",
-      "conversation_id": "commercial-sales-conversation-review-001-04-05-synthetic-automotive-service-review-objection",
-      "mechanical_warning_count": 1
-    },
-    {
-      "arc_type": "objection",
-      "campaign_id": "synthetic-home-services-estimate",
-      "conversation_id": "commercial-sales-conversation-review-001-05-05-synthetic-home-services-estimate-objection",
-      "mechanical_warning_count": 1
-    },
-    {
-      "arc_type": "time_pressure",
-      "campaign_id": "routesignal_live_demo",
-      "conversation_id": "commercial-sales-conversation-review-001-01-02-routesignal_live_demo-time_pressure",
-      "mechanical_warning_count": 2
-    },
-    {
-      "arc_type": "asr_garble",
-      "campaign_id": "routesignal_live_demo",
-      "conversation_id": "commercial-sales-conversation-review-001-01-09-routesignal_live_demo-asr_garble",
-      "mechanical_warning_count": 2
     }
   ],
   "turn_count": 275,
@@ -202,10 +203,10 @@
       "file": "runtime/core/universal_conversation_policy_runtime.py",
       "id": "UDR-001",
       "line_numbers": [
-        417,
-        419,
-        421,
-        423
+        436,
+        438,
+        440,
+        442
       ],
       "recommended_follow_up": "Move primary diagnostic phrase selection to campaign config/adapters.",
       "risk": "Generic sales behavior can become coupled to fixture ids instead of campaign facts.",
@@ -222,10 +223,10 @@
       "file": "runtime/core/universal_conversation_policy_runtime.py",
       "id": "UDR-002",
       "line_numbers": [
-        417,
-        419,
-        421,
-        423
+        436,
+        438,
+        440,
+        442
       ],
       "recommended_follow_up": "Use campaign fact slots such as core_diagnostic_gaps, gap_label, and gap_value_bridge.",
       "risk": "A new campaign in the same vertical may inherit the wrong primary pain hypothesis.",
@@ -242,17 +243,17 @@
       "file": "runtime/core/universal_conversation_policy_runtime.py",
       "id": "UDR-003",
       "line_numbers": [
-        292,
-        293,
-        392,
-        393,
-        405,
-        406,
-        416,
-        754,
-        756,
-        757,
-        758
+        304,
+        305,
+        411,
+        412,
+        424,
+        425,
+        435,
+        773,
+        775,
+        776,
+        777
       ],
       "recommended_follow_up": "Keep RouteSignal-specific wording in RouteSignal campaign/playbook facts.",
       "risk": "RouteSignal preservation logic can leak into generic universal response shape code.",
@@ -271,39 +272,39 @@
       "file": "runtime/core/universal_conversation_policy_runtime.py",
       "id": "UDR-004",
       "line_numbers": [
-        207,
-        294,
-        295,
-        296,
-        298,
-        299,
-        300,
-        382,
-        418,
-        420,
-        422,
-        424,
-        521,
-        524,
-        525,
-        556,
-        557,
-        559,
-        560,
-        561,
-        741,
-        742,
-        743,
-        744,
-        745,
-        746,
-        747,
-        748,
-        749,
-        750,
-        751,
-        752,
-        1155
+        219,
+        306,
+        307,
+        308,
+        310,
+        311,
+        312,
+        401,
+        437,
+        439,
+        441,
+        443,
+        540,
+        543,
+        544,
+        575,
+        576,
+        578,
+        579,
+        580,
+        760,
+        761,
+        762,
+        763,
+        764,
+        765,
+        766,
+        767,
+        768,
+        769,
+        770,
+        771,
+        1211
       ],
       "recommended_follow_up": "Expose the preferred customer-facing phrase per gap through campaign config.",
       "risk": "Sales copy and primary pain language will require code changes instead of config changes.",

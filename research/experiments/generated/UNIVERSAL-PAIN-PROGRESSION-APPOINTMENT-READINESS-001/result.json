@@ -63,6 +63,7 @@
           "invented ROI or revenue claim",
           "appointment ask before pain"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -86,7 +87,12 @@
         "schema_version": 1,
         "selected_gap": "",
         "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false
+        "should_preserve_confirmed_gaps": false,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -155,6 +161,7 @@
           "appointment ask before implication",
           "repeat full diagnostic menu"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": true,
@@ -178,7 +185,12 @@
         "schema_version": 1,
         "selected_gap": "callbacks",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -245,6 +257,7 @@
           "appointment ask",
           "transfer-or-escalate"
         ],
+        "friction_level": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
         "implication_check_required": true,
@@ -268,7 +281,12 @@
         "schema_version": 1,
         "selected_gap": "handoffs",
         "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false
+        "should_preserve_confirmed_gaps": false,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -338,6 +356,7 @@
           "invent savings",
           "claim calendar action"
         ],
+        "friction_level": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "delay",
         "implication_check_required": false,
@@ -361,7 +380,12 @@
         "schema_version": 1,
         "selected_gap": "callbacks",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -429,6 +453,7 @@
           "appointment pressure",
           "push after minor impact"
         ],
+        "friction_level": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "weak_or_denied",
         "implication_check_required": false,
@@ -452,7 +477,12 @@
         "schema_version": 1,
         "selected_gap": "callbacks",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -518,6 +548,7 @@
           "invented security proof",
           "invented ROI or revenue claim"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -541,7 +572,12 @@
         "schema_version": 1,
         "selected_gap": "callbacks",
         "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false
+        "should_preserve_confirmed_gaps": false,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -605,6 +641,7 @@
           "invented ROI or revenue claim",
           "appointment ask before pain"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -628,7 +665,12 @@
         "schema_version": 1,
         "selected_gap": "",
         "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false
+        "should_preserve_confirmed_gaps": false,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -697,6 +739,7 @@
           "appointment ask before implication",
           "repeat full diagnostic menu"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": true,
@@ -720,7 +763,12 @@
         "schema_version": 1,
         "selected_gap": "premium_or_budget",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -787,6 +835,7 @@
           "appointment ask",
           "transfer-or-escalate"
         ],
+        "friction_level": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
         "implication_check_required": true,
@@ -810,7 +859,12 @@
         "schema_version": 1,
         "selected_gap": "coverage_fit",
         "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false
+        "should_preserve_confirmed_gaps": false,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -880,6 +934,7 @@
           "invent savings",
           "claim calendar action"
         ],
+        "friction_level": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "delay",
         "implication_check_required": false,
@@ -903,7 +958,12 @@
         "schema_version": 1,
         "selected_gap": "premium_or_budget",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -971,6 +1031,7 @@
           "appointment pressure",
           "push after minor impact"
         ],
+        "friction_level": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "weak_or_denied",
         "implication_check_required": false,
@@ -994,7 +1055,12 @@
         "schema_version": 1,
         "selected_gap": "premium_or_budget",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -1060,6 +1126,7 @@
           "invented security proof",
           "invented ROI or revenue claim"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -1083,7 +1150,12 @@
         "schema_version": 1,
         "selected_gap": "premium_or_budget",
         "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false
+        "should_preserve_confirmed_gaps": false,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -1147,6 +1219,7 @@
           "invented ROI or revenue claim",
           "appointment ask before pain"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -1170,7 +1243,12 @@
         "schema_version": 1,
         "selected_gap": "",
         "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false
+        "should_preserve_confirmed_gaps": false,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -1239,6 +1317,7 @@
           "appointment ask before implication",
           "repeat full diagnostic menu"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": true,
@@ -1262,7 +1341,12 @@
         "schema_version": 1,
         "selected_gap": "manual_work",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -1329,6 +1413,7 @@
           "appointment ask",
           "transfer-or-escalate"
         ],
+        "friction_level": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
         "implication_check_required": true,
@@ -1352,7 +1437,12 @@
         "schema_version": 1,
         "selected_gap": "integration_risk",
         "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false
+        "should_preserve_confirmed_gaps": false,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -1422,6 +1512,7 @@
           "invent savings",
           "claim calendar action"
         ],
+        "friction_level": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "delay",
         "implication_check_required": false,
@@ -1445,7 +1536,12 @@
         "schema_version": 1,
         "selected_gap": "manual_work",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -1513,6 +1609,7 @@
           "appointment pressure",
           "push after minor impact"
         ],
+        "friction_level": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "weak_or_denied",
         "implication_check_required": false,
@@ -1536,7 +1633,12 @@
         "schema_version": 1,
         "selected_gap": "manual_work",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -1602,6 +1704,7 @@
           "invented security proof",
           "invented ROI or revenue claim"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -1625,7 +1728,12 @@
         "schema_version": 1,
         "selected_gap": "manual_work",
         "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false
+        "should_preserve_confirmed_gaps": false,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -1689,6 +1797,7 @@
           "invented ROI or revenue claim",
           "appointment ask before pain"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -1712,7 +1821,12 @@
         "schema_version": 1,
         "selected_gap": "",
         "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false
+        "should_preserve_confirmed_gaps": false,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -1781,6 +1895,7 @@
           "appointment ask before implication",
           "repeat full diagnostic menu"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": true,
@@ -1804,7 +1919,12 @@
         "schema_version": 1,
         "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -1871,6 +1991,7 @@
           "appointment ask",
           "transfer-or-escalate"
         ],
+        "friction_level": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
         "implication_check_required": true,
@@ -1894,7 +2015,12 @@
         "schema_version": 1,
         "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false
+        "should_preserve_confirmed_gaps": false,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -1964,6 +2090,7 @@
           "invent savings",
           "claim calendar action"
         ],
+        "friction_level": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "delay",
         "implication_check_required": false,
@@ -1987,7 +2114,12 @@
         "schema_version": 1,
         "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -2055,6 +2187,7 @@
           "appointment pressure",
           "push after minor impact"
         ],
+        "friction_level": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "weak_or_denied",
         "implication_check_required": false,
@@ -2078,7 +2211,12 @@
         "schema_version": 1,
         "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -2144,6 +2282,7 @@
           "invented security proof",
           "invented ROI or revenue claim"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -2167,7 +2306,12 @@
         "schema_version": 1,
         "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false
+        "should_preserve_confirmed_gaps": false,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -2231,6 +2375,7 @@
           "invented ROI or revenue claim",
           "appointment ask before pain"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -2254,7 +2399,12 @@
         "schema_version": 1,
         "selected_gap": "",
         "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false
+        "should_preserve_confirmed_gaps": false,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -2323,6 +2473,7 @@
           "appointment ask before implication",
           "repeat full diagnostic menu"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": true,
@@ -2346,7 +2497,12 @@
         "schema_version": 1,
         "selected_gap": "service_need",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -2413,6 +2569,7 @@
           "appointment ask",
           "transfer-or-escalate"
         ],
+        "friction_level": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
         "implication_check_required": true,
@@ -2436,7 +2593,12 @@
         "schema_version": 1,
         "selected_gap": "scheduling_urgency",
         "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false
+        "should_preserve_confirmed_gaps": false,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -2506,6 +2668,7 @@
           "invent savings",
           "claim calendar action"
         ],
+        "friction_level": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "delay",
         "implication_check_required": false,
@@ -2529,7 +2692,12 @@
         "schema_version": 1,
         "selected_gap": "service_need",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -2597,6 +2765,7 @@
           "appointment pressure",
           "push after minor impact"
         ],
+        "friction_level": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "weak_or_denied",
         "implication_check_required": false,
@@ -2620,7 +2789,12 @@
         "schema_version": 1,
         "selected_gap": "service_need",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -2686,6 +2860,7 @@
           "invented security proof",
           "invented ROI or revenue claim"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -2709,7 +2884,12 @@
         "schema_version": 1,
         "selected_gap": "service_need",
         "should_preserve_cleared_gaps": false,
-        "should_preserve_confirmed_gaps": false
+        "should_preserve_confirmed_gaps": false,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     }
   ],

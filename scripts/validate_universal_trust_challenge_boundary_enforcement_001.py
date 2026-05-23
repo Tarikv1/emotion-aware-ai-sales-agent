@@ -335,7 +335,11 @@ def evaluate_challenge(packet: dict[str, Any], campaign: dict[str, Any], expecte
         packet=packet,
         campaign=campaign,
         expected_move=expected_move,
-        expected_category="confusion_challenge_repair",
+        expected_category=(
+            "social_conversation_management"
+            if expected_move in {"repeat_last_answer", "repeat_or_rephrase_request"}
+            else "confusion_challenge_repair"
+        ),
     )
     response = lower_response(packet)
     if not any(token in response for token in {"fair", "you're right", "i mean", "sure"}):

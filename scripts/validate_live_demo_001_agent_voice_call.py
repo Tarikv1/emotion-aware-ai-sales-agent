@@ -2170,6 +2170,7 @@ def main() -> None:
                     "initial_price_focus_selected",
                     "explicit_price_focus_selected",
                     "focus_shift_to_price_from_qualification",
+                    "focus_shift_to_price_from_social_conversation_management",
                     "resolved_price_focus",
                     "duplicate_response_prevented_with_price_progression",
                     "focus_shift_to_details_from_price",

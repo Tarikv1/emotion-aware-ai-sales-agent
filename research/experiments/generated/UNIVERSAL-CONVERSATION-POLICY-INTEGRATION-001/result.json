@@ -63,6 +63,7 @@
           "invented ROI or revenue claim",
           "appointment ask before pain"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -86,7 +87,12 @@
         "schema_version": 1,
         "selected_gap": "callbacks",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -150,6 +156,7 @@
           "capture appointment",
           "diagnostic menu"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -173,7 +180,12 @@
         "schema_version": 1,
         "selected_gap": "",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -237,6 +249,7 @@
           "capture appointment",
           "diagnostic menu"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -260,7 +273,12 @@
         "schema_version": 1,
         "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -329,6 +347,7 @@
           "appointment ask before implication",
           "repeat full diagnostic menu"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": true,
@@ -352,7 +371,12 @@
         "schema_version": 1,
         "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -420,6 +444,7 @@
           "repeat diagnostic menu",
           "erase confirmed gap"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -443,7 +468,12 @@
         "schema_version": 1,
         "selected_gap": "repair_timing",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -511,6 +541,7 @@
           "transfer-or-escalate",
           "product advice beyond allowed claims"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -534,7 +565,12 @@
         "schema_version": 1,
         "selected_gap": "premium_or_budget",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     },
     {
@@ -598,6 +634,7 @@
           "capture appointment",
           "diagnostic menu"
         ],
+        "friction_level": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
         "implication_check_required": false,
@@ -621,7 +658,12 @@
         "schema_version": 1,
         "selected_gap": "premium_or_budget",
         "should_preserve_cleared_gaps": true,
-        "should_preserve_confirmed_gaps": true
+        "should_preserve_confirmed_gaps": true,
+        "should_preserve_previous_question": false,
+        "simplified_language_required": false,
+        "social_repair_required": false,
+        "social_repair_type": "none",
+        "speech_adjustment_requested": false
       }
     }
   ],
