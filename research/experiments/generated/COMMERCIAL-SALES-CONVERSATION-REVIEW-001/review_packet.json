@@ -4221,13 +4221,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping right now?",
+          "final_response": "Fair to ask. Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 23,
+          "response_word_count": 26,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -6240,13 +6240,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
+          "final_response": "Fair. I do not want to waste your time. This is only useful if inbound demo follow-up is slipping now. If not, I will not push it.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 21,
+          "response_word_count": 28,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -11807,13 +11807,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Yes, I'm an AI voice agent calling for Synthetic Insurance Agency. I'll keep it brief: is premium pressure causing any issue right now?",
+          "final_response": "Fair to ask. Yes, I'm an AI voice agent calling for Synthetic Insurance Agency. I'll keep it brief: is premium pressure causing any issue right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 23,
+          "response_word_count": 26,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -13826,13 +13826,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
+          "final_response": "Fair. I do not want to waste your time. This is only useful if premium pressure is still a problem. If not, I will not push it.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 21,
+          "response_word_count": 27,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -19393,13 +19393,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Yes, I'm an AI voice agent calling for Synthetic SaaS Operations. I'll keep it brief: is manual work causing any issue right now?",
+          "final_response": "Fair to ask. Yes, I'm an AI voice agent calling for Synthetic SaaS Operations. I'll keep it brief: is manual work causing any issue right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 23,
+          "response_word_count": 26,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -21412,13 +21412,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
+          "final_response": "Fair. I do not want to waste your time. This is only useful if manual work is still a problem. If not, I will not push it.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 21,
+          "response_word_count": 27,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -26979,13 +26979,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Yes, I'm an AI voice agent calling for Synthetic Automotive Service. I'll keep it brief: is repair timing causing any issue right now?",
+          "final_response": "Fair to ask. Yes, I'm an AI voice agent calling for Synthetic Automotive Service. I'll keep it brief: is repair timing causing any issue right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 23,
+          "response_word_count": 26,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -28998,13 +28998,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
+          "final_response": "Fair. I do not want to waste your time. This is only useful if repair timing is still a problem. If not, I will not push it.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 21,
+          "response_word_count": 27,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -34565,13 +34565,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Yes, I'm an AI voice agent calling for Synthetic Home Services. I'll keep it brief: is the service need active right now?",
+          "final_response": "Fair to ask. Yes, I'm an AI voice agent calling for Synthetic Home Services. I'll keep it brief: is the service need active right now?",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 1,
-          "response_word_count": 22,
+          "response_word_count": 25,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -36584,13 +36584,13 @@
           "call_control": "continue-call",
           "cleared_gaps": null,
           "confirmed_gaps": null,
-          "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
+          "final_response": "Fair. I do not want to waste your time. This is only useful if the service need is active now. If not, I will not push it.",
           "impact_signal_detected": false,
           "impact_signal_type": "none",
           "mechanical_warning_flags": [],
           "next_best_sales_action": "none",
           "question_count": 0,
-          "response_word_count": 21,
+          "response_word_count": 27,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "universal_response_shape"
@@ -37953,7 +37953,7 @@
       ]
     }
   ],
-  "generated_at": "2026-05-24T00:03:34.629663+00:00",
+  "generated_at": "2026-05-24T01:09:42.523091+00:00",
   "mechanical_warning_counts": {},
   "most_concerning_conversations_by_mechanical_signals_only": [
     {

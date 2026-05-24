@@ -197,7 +197,7 @@
             "campaign_playbook_id": "synthetic-home-services-estimate-playbook",
             "creates_calendar_event": false,
             "durable_provider_agent_created": false,
-            "final_response": "Maybe estimate or property details, understood. Is that an active concern now, or just something you might want checked later?",
+            "final_response": "Understood, estimate or property details is the unclear part. What part is confusing: what it means, what the qualified service coordinator would check, or whether it matters here?",
             "lead_followup_state": {},
             "local_llm_calls_made": false,
             "opens_prod_102": false,
@@ -209,7 +209,7 @@
             "sends_email": false,
             "target_gap": "estimate_or_property_details",
             "transcript": "estimate is unclear",
-            "tts_input_text": "Maybe estimate or property details, understood. Is that an active concern now, or just something you might want checked later?",
+            "tts_input_text": "Understood, estimate or property details is the unclear part. What part is confusing: what it means, what the qualified service coordinator would check, or whether it matters here?",
             "voice_cloning_used": false,
             "writes_crm": false
           },

@@ -18,7 +18,7 @@
 
 ## Representative Responses
 - `concrete_time_preservation` / `routesignal_live_demo`: Got it. I'll note that time for the verified implementation reviewer to follow up.
-- `frustration_preservation` / `routesignal_live_demo`: Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.
+- `frustration_preservation` / `routesignal_live_demo`: Fair. I do not want to waste your time. This is only useful if inbound demo follow-up is slipping now. If not, I will not push it.
 - `high_readiness_close` / `routesignal_live_demo`: Got it. If callbacks is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?
 - `send_info_after_readiness` / `routesignal_live_demo`: Sure. Since this sounds worth a review, I can note it for the verified implementation reviewer. What email or callback window should they use?
 - `weak_impact_exit` / `routesignal_live_demo`: Understood. If it is only minor, there is no reason to force a review. Keep it in mind if it starts costing time.

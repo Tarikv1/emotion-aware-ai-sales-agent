@@ -1,0 +1,681 @@
+{
+  "audited_red_finding_count": 217,
+  "checkpoint_id": "ADVERSARIAL-REMAINING-MENU-RESET-AUDIT-001",
+  "classification_counts": {
+    "needs_human_review": 7,
+    "terminal_preservation_artifact": 6,
+    "true_appointment_too_early": 6,
+    "true_campaign_contamination": 4,
+    "true_hostile_challenge_not_deescalated": 18,
+    "true_out_of_scope_reset_after_relevant_context": 12,
+    "true_repeated_response_without_progress": 24,
+    "true_stability_menu_reset": 140
+  },
+  "classification_counts_by_source": {
+    "needs_human_review": {
+      "contextual_buyer_semantics": 1,
+      "universal_response_shape": 6
+    },
+    "terminal_preservation_artifact": {
+      "terminal_call_control": 6
+    },
+    "true_appointment_too_early": {
+      "universal_response_shape": 6
+    },
+    "true_campaign_contamination": {
+      "universal_response_shape": 4
+    },
+    "true_hostile_challenge_not_deescalated": {
+      "universal_response_shape": 18
+    },
+    "true_out_of_scope_reset_after_relevant_context": {
+      "contextual_buyer_semantics": 2,
+      "live_voice_session_policy": 5,
+      "universal_response_shape": 5
+    },
+    "true_repeated_response_without_progress": {
+      "universal_response_shape": 24
+    },
+    "true_stability_menu_reset": {
+      "contextual_buyer_semantics": 3,
+      "dialogue_pragmatics": 6,
+      "live_voice_session_policy": 1,
+      "pre_speech_conversation_stability_guard": 109,
+      "universal_response_shape": 21
+    }
+  },
+  "counts_by_campaign": {
+    "routesignal_live_demo": 34,
+    "synthetic-automotive-service-review": 42,
+    "synthetic-b2b-saas-operations": 34,
+    "synthetic-insurance-review": 37,
+    "synthetic-membership-plan-review": 31,
+    "synthetic-telecom-plan-review": 39
+  },
+  "counts_by_scenario_family": {
+    "asr_near_miss_gap_phrases": 1,
+    "asr_near_miss_invented_transcript_stress": 6,
+    "buyer_correction_contradiction_stress": 1,
+    "buyer_says_agent_is_wrong": 18,
+    "callback_time_too_early_or_ambiguous": 18,
+    "campaign_selector_wrong_campaign_contamination": 8,
+    "commercial_pressure_close_strength_stress": 16,
+    "commercial_quality_stress": 8,
+    "direct_product_value_challenge_loops": 6,
+    "disallowed_persistence_after_stop": 6,
+    "human_context_interruption_pressure": 6,
+    "impact_before_clean_pain": 16,
+    "long_conversation_state_drift": 5,
+    "multi_campaign_contamination_stress": 14,
+    "permission_weak_acknowledgement_variants": 15,
+    "price_budget_affordability_stress": 6,
+    "repeated_answer_variation_anti_loop": 18,
+    "repeated_challenge_escalation": 3,
+    "repeated_product_detail_scope_questions": 21,
+    "sales_realism_score_heuristics": 12,
+    "scope_boundary_regulated_detail_stress": 6,
+    "vague_affirmative_after_context": 7
+  },
+  "counts_by_selected_action_source": {
+    "contextual_buyer_semantics": 6,
+    "dialogue_pragmatics": 6,
+    "live_voice_session_policy": 6,
+    "pre_speech_conversation_stability_guard": 109,
+    "terminal_call_control": 6,
+    "universal_response_shape": 84
+  },
+  "generated_at": "2026-05-24T01:08:27.430357+00:00",
+  "recommended_patch_scope": [
+    "Patch true_stability_menu_reset after corrections, hostile challenges, mismatch, and configured-gap clarity requests.",
+    "Patch true_hostile_challenge_not_deescalated with direct one-move de-escalation.",
+    "Patch true_repeated_response_without_progress only where the buyer explicitly complains about repetition.",
+    "Patch true_appointment_too_early separately only if callback/time requests still schedule instead of noting a preference.",
+    "Do not patch acceptable ASR clarifications into pain confirmations."
+  ],
+  "runtime_behavior_changed": false,
+  "side_effect_boundary": {
+    "creates_calendar_event": false,
+    "live_tts_calls_made": false,
+    "local_llm_calls_made": false,
+    "opens_prod_102": false,
+    "provider_calls_made": false,
+    "sends_email": false,
+    "writes_crm": false
+  },
+  "source_checkpoint_id": "LIVE-INSPIRED-ADVERSARIAL-DIALOGUE-MATRIX-001",
+  "source_red_finding_count": 217,
+  "source_status": "red_findings",
+  "top_false_positive_or_expectation_examples": [
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "take me off",
+        "goodbye"
+      ],
+      "campaign_id": "routesignal_live_demo",
+      "classification": "terminal_preservation_artifact",
+      "final_response": "Understood. I will stop here. Goodbye.",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "disallowed_persistence_after_stop",
+      "scenario_id": "adv-disallowed-persistence-after-stop-routesignal_live_demo-03",
+      "selected_action_source": "terminal_call_control"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "take me off",
+        "goodbye"
+      ],
+      "campaign_id": "synthetic-insurance-review",
+      "classification": "terminal_preservation_artifact",
+      "final_response": "Understood. I will stop here. Goodbye.",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "disallowed_persistence_after_stop",
+      "scenario_id": "adv-disallowed-persistence-after-stop-synthetic-insurance-review-03",
+      "selected_action_source": "terminal_call_control"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "take me off",
+        "goodbye"
+      ],
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification": "terminal_preservation_artifact",
+      "final_response": "Understood. I will stop here. Goodbye.",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "disallowed_persistence_after_stop",
+      "scenario_id": "adv-disallowed-persistence-after-stop-synthetic-telecom-plan-review-03",
+      "selected_action_source": "terminal_call_control"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "take me off",
+        "goodbye"
+      ],
+      "campaign_id": "synthetic-automotive-service-review",
+      "classification": "terminal_preservation_artifact",
+      "final_response": "Understood. I will stop here. Goodbye.",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "disallowed_persistence_after_stop",
+      "scenario_id": "adv-disallowed-persistence-after-stop-synthetic-automotive-service-review-03",
+      "selected_action_source": "terminal_call_control"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "take me off",
+        "goodbye"
+      ],
+      "campaign_id": "synthetic-membership-plan-review",
+      "classification": "terminal_preservation_artifact",
+      "final_response": "Understood. I will stop here. Goodbye.",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "disallowed_persistence_after_stop",
+      "scenario_id": "adv-disallowed-persistence-after-stop-synthetic-membership-plan-review-03",
+      "selected_action_source": "terminal_call_control"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "take me off",
+        "goodbye"
+      ],
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "classification": "terminal_preservation_artifact",
+      "final_response": "Understood. I will stop here. Goodbye.",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "disallowed_persistence_after_stop",
+      "scenario_id": "adv-disallowed-persistence-after-stop-synthetic-b2b-saas-operations-03",
+      "selected_action_source": "terminal_call_control"
+    }
+  ],
+  "top_true_defects": [
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "okay fine"
+      ],
+      "campaign_id": "routesignal_live_demo",
+      "classification": "true_stability_menu_reset",
+      "final_response": "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "permission_weak_acknowledgement_variants",
+      "scenario_id": "adv-permission-weak-acknowledgement-variants-routesignal_live_demo-02",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "fine but be fast"
+      ],
+      "campaign_id": "routesignal_live_demo",
+      "classification": "true_stability_menu_reset",
+      "final_response": "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "permission_weak_acknowledgement_variants",
+      "scenario_id": "adv-permission-weak-acknowledgement-variants-routesignal_live_demo-04",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "okay fine"
+      ],
+      "campaign_id": "synthetic-insurance-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "permission_weak_acknowledgement_variants",
+      "scenario_id": "adv-permission-weak-acknowledgement-variants-synthetic-insurance-review-02",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "go ahead"
+      ],
+      "campaign_id": "synthetic-insurance-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "Thanks, I am checking premium or budget, coverage fit, or renewal or timing. Which one is causing trouble, if any?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "permission_weak_acknowledgement_variants",
+      "scenario_id": "adv-permission-weak-acknowledgement-variants-synthetic-insurance-review-03",
+      "selected_action_source": "contextual_buyer_semantics"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "fine but be fast"
+      ],
+      "campaign_id": "synthetic-insurance-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "The quick check is whether any of these areas is worth a short licensed coverage review: premium or budget, coverage fit, or renewal or timing. If not, I can stop here; which part should I check first?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "permission_weak_acknowledgement_variants",
+      "scenario_id": "adv-permission-weak-acknowledgement-variants-synthetic-insurance-review-04",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "okay fine"
+      ],
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "The quick check is whether any of these areas is worth a short human plan and availability review: plan fit, coverage or availability, or contract or switching. If not, I can stop here; which part should I check first?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "permission_weak_acknowledgement_variants",
+      "scenario_id": "adv-permission-weak-acknowledgement-variants-synthetic-telecom-plan-review-02",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "go ahead"
+      ],
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "Thanks, I am checking plan fit, coverage or availability, or contract or switching. Which one is causing trouble, if any?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "permission_weak_acknowledgement_variants",
+      "scenario_id": "adv-permission-weak-acknowledgement-variants-synthetic-telecom-plan-review-03",
+      "selected_action_source": "contextual_buyer_semantics"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "fine but be fast"
+      ],
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "The quick check is whether any of these areas is worth a short human plan and availability review: plan fit, coverage or availability, or contract or switching. If not, I can stop here; which part should I check first?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "permission_weak_acknowledgement_variants",
+      "scenario_id": "adv-permission-weak-acknowledgement-variants-synthetic-telecom-plan-review-04",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "okay fine"
+      ],
+      "campaign_id": "synthetic-automotive-service-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "permission_weak_acknowledgement_variants",
+      "scenario_id": "adv-permission-weak-acknowledgement-variants-synthetic-automotive-service-review-02",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "go ahead"
+      ],
+      "campaign_id": "synthetic-automotive-service-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "Thanks, I am checking vehicle issue, repair timing, or warranty or estimate. Which one is causing trouble, if any?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "permission_weak_acknowledgement_variants",
+      "scenario_id": "adv-permission-weak-acknowledgement-variants-synthetic-automotive-service-review-03",
+      "selected_action_source": "contextual_buyer_semantics"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "fine but be fast"
+      ],
+      "campaign_id": "synthetic-automotive-service-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "permission_weak_acknowledgement_variants",
+      "scenario_id": "adv-permission-weak-acknowledgement-variants-synthetic-automotive-service-review-04",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "okay fine"
+      ],
+      "campaign_id": "synthetic-membership-plan-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "The quick check is whether any of these areas is worth a short account support or plan-fit review: plan fit, renewal or cancellation, or usage or value. If not, I can stop here; which part should I check first?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "permission_weak_acknowledgement_variants",
+      "scenario_id": "adv-permission-weak-acknowledgement-variants-synthetic-membership-plan-review-02",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "fine but be fast"
+      ],
+      "campaign_id": "synthetic-membership-plan-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "The quick check is whether any of these areas is worth a short account support or plan-fit review: plan fit, renewal or cancellation, or usage or value. If not, I can stop here; which part should I check first?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "permission_weak_acknowledgement_variants",
+      "scenario_id": "adv-permission-weak-acknowledgement-variants-synthetic-membership-plan-review-04",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "okay fine"
+      ],
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "classification": "true_stability_menu_reset",
+      "final_response": "The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "permission_weak_acknowledgement_variants",
+      "scenario_id": "adv-permission-weak-acknowledgement-variants-synthetic-b2b-saas-operations-02",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "fine but be fast"
+      ],
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "classification": "true_stability_menu_reset",
+      "final_response": "The quick check is whether any of these areas is worth a short operations fit review: manual work, integration risk, or visibility gap. If not, I can stop here; which part should I check first?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "permission_weak_acknowledgement_variants",
+      "scenario_id": "adv-permission-weak-acknowledgement-variants-synthetic-b2b-saas-operations-04",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what are you selling",
+        "explain it plainly",
+        "say it in one sentence"
+      ],
+      "campaign_id": "routesignal_live_demo",
+      "classification": "true_repeated_response_without_progress",
+      "final_response": "In one sentence: this call checks whether inbound demo follow-up is slipping now and is worth a short review.",
+      "mechanical_failure_flags": [
+        "repeated_response"
+      ],
+      "scenario_family": "direct_product_value_challenge_loops",
+      "scenario_id": "adv-direct-product-value-challenge-loops-routesignal_live_demo-02",
+      "selected_action_source": "universal_response_shape"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what are you selling",
+        "explain it plainly",
+        "say it in one sentence"
+      ],
+      "campaign_id": "synthetic-insurance-review",
+      "classification": "true_repeated_response_without_progress",
+      "final_response": "In one sentence: this call checks whether premium pressure is still a problem and is worth a short review.",
+      "mechanical_failure_flags": [
+        "repeated_response"
+      ],
+      "scenario_family": "direct_product_value_challenge_loops",
+      "scenario_id": "adv-direct-product-value-challenge-loops-synthetic-insurance-review-02",
+      "selected_action_source": "universal_response_shape"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what are you selling",
+        "explain it plainly",
+        "say it in one sentence"
+      ],
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification": "true_repeated_response_without_progress",
+      "final_response": "In one sentence: this call checks whether plan fit is still a problem and is worth a short review.",
+      "mechanical_failure_flags": [
+        "repeated_response"
+      ],
+      "scenario_family": "direct_product_value_challenge_loops",
+      "scenario_id": "adv-direct-product-value-challenge-loops-synthetic-telecom-plan-review-02",
+      "selected_action_source": "universal_response_shape"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what are you selling",
+        "explain it plainly",
+        "say it in one sentence"
+      ],
+      "campaign_id": "synthetic-automotive-service-review",
+      "classification": "true_repeated_response_without_progress",
+      "final_response": "In one sentence: this call checks whether repair timing is still a problem and is worth a short review.",
+      "mechanical_failure_flags": [
+        "repeated_response"
+      ],
+      "scenario_family": "direct_product_value_challenge_loops",
+      "scenario_id": "adv-direct-product-value-challenge-loops-synthetic-automotive-service-review-02",
+      "selected_action_source": "universal_response_shape"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what are you selling",
+        "explain it plainly",
+        "say it in one sentence"
+      ],
+      "campaign_id": "synthetic-membership-plan-review",
+      "classification": "true_repeated_response_without_progress",
+      "final_response": "In one sentence: this call checks whether plan fit is still a problem and is worth a short review.",
+      "mechanical_failure_flags": [
+        "repeated_response"
+      ],
+      "scenario_family": "direct_product_value_challenge_loops",
+      "scenario_id": "adv-direct-product-value-challenge-loops-synthetic-membership-plan-review-02",
+      "selected_action_source": "universal_response_shape"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what are you selling",
+        "explain it plainly",
+        "say it in one sentence"
+      ],
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "classification": "true_repeated_response_without_progress",
+      "final_response": "In one sentence: this call checks whether manual work is still a problem and is worth a short review.",
+      "mechanical_failure_flags": [
+        "repeated_response"
+      ],
+      "scenario_family": "direct_product_value_challenge_loops",
+      "scenario_id": "adv-direct-product-value-challenge-loops-synthetic-b2b-saas-operations-02",
+      "selected_action_source": "universal_response_shape"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what exactly can you tell me",
+        "why are you calling if you cannot explain it"
+      ],
+      "campaign_id": "routesignal_live_demo",
+      "classification": "true_stability_menu_reset",
+      "final_response": "I am calling because RouteSignal helps with inbound demo follow-up: demo leads getting assigned, reminded, and followed up. Northstar is asking for a short workflow review if leads are slipping today.",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "repeated_product_detail_scope_questions",
+      "scenario_id": "adv-repeated-product-detail-scope-questions-routesignal_live_demo-02",
+      "selected_action_source": "dialogue_pragmatics"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "can you give me any information",
+        "what can you say in plain English"
+      ],
+      "campaign_id": "routesignal_live_demo",
+      "classification": "true_stability_menu_reset",
+      "final_response": "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied. Which part is harder today: seeing it, assigning the reply, or remembering the callback?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "repeated_product_detail_scope_questions",
+      "scenario_id": "adv-repeated-product-detail-scope-questions-routesignal_live_demo-03",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what does this do",
+        "can you explain the scope"
+      ],
+      "campaign_id": "routesignal_live_demo",
+      "classification": "true_stability_menu_reset",
+      "final_response": "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied. Which part is harder today: seeing it, assigning the reply, or remembering the callback?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "repeated_product_detail_scope_questions",
+      "scenario_id": "adv-repeated-product-detail-scope-questions-routesignal_live_demo-04",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what does your product do",
+        "can you give me details",
+        "so you cannot give me details"
+      ],
+      "campaign_id": "synthetic-insurance-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "Correct. I can explain the high-level purpose, but detailed advice belongs with the licensed insurance specialist. This call only checks whether a licensed coverage review is worth it. Do you want me to check whether a review is useful?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "repeated_product_detail_scope_questions",
+      "scenario_id": "adv-repeated-product-detail-scope-questions-synthetic-insurance-review-01",
+      "selected_action_source": "universal_response_shape"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what exactly can you tell me",
+        "why are you calling if you cannot explain it"
+      ],
+      "campaign_id": "synthetic-insurance-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "I am calling from Synthetic Insurance Agency about Policy Review Call, and asking whether premium or budget, coverage fit, or renewal or timing are worth a short licensed coverage review. If none of those apply, I can stop here.",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "repeated_product_detail_scope_questions",
+      "scenario_id": "adv-repeated-product-detail-scope-questions-synthetic-insurance-review-02",
+      "selected_action_source": "dialogue_pragmatics"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "can you give me any information",
+        "what can you say in plain English"
+      ],
+      "campaign_id": "synthetic-insurance-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "If premium or budget, coverage fit, or renewal or timing are actually relevant, a licensed insurance specialist can do a short licensed coverage review. If not, I can stop here; should I ask one quick fit question?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "repeated_product_detail_scope_questions",
+      "scenario_id": "adv-repeated-product-detail-scope-questions-synthetic-insurance-review-03",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what does this do",
+        "can you explain the scope"
+      ],
+      "campaign_id": "synthetic-insurance-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "If premium or budget, coverage fit, or renewal or timing are actually relevant, a licensed insurance specialist can do a short licensed coverage review. If not, I can stop here; should I ask one quick fit question?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "repeated_product_detail_scope_questions",
+      "scenario_id": "adv-repeated-product-detail-scope-questions-synthetic-insurance-review-04",
+      "selected_action_source": "pre_speech_conversation_stability_guard"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what does your product do",
+        "can you give me details",
+        "so you cannot give me details"
+      ],
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "Correct. I can explain the high-level purpose, but detailed advice belongs with the telecom account specialist. This call only checks whether a human plan and availability review is worth it. Do you want me to check whether a review is useful?",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "repeated_product_detail_scope_questions",
+      "scenario_id": "adv-repeated-product-detail-scope-questions-synthetic-telecom-plan-review-01",
+      "selected_action_source": "universal_response_shape"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what exactly can you tell me",
+        "why are you calling if you cannot explain it"
+      ],
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification": "true_stability_menu_reset",
+      "final_response": "I am calling from Synthetic Telecom Provider about Plan Review Call, and asking whether plan fit, coverage or availability, or contract or switching are worth a short human plan and availability review. If none of those apply, I can stop here.",
+      "mechanical_failure_flags": [
+        "repeated_full_menu"
+      ],
+      "scenario_family": "repeated_product_detail_scope_questions",
+      "scenario_id": "adv-repeated-product-detail-scope-questions-synthetic-telecom-plan-review-02",
+      "selected_action_source": "dialogue_pragmatics"
+    }
+  ]
+}

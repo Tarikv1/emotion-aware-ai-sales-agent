@@ -370,7 +370,7 @@
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "inbound demo follow-up slipping",
         "recognition_reason": "ai_or_robot_question_phrase",
-        "response": "Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping right now?",
+        "response": "Fair to ask. Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping right now?",
         "response_shape_enforced_category": "trust_identity_privacy_consent",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {

@@ -372,7 +372,7 @@
         "callbacks"
       ],
       "failures": [],
-      "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
+      "final_response": "Fair. I do not want to waste your time. This is only useful if inbound demo follow-up is slipping now. If not, I will not push it.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "none",
       "scenario": "frustration_not_flagged",
@@ -1077,7 +1077,7 @@
         "premium_or_budget"
       ],
       "failures": [],
-      "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
+      "final_response": "Fair. I do not want to waste your time. This is only useful if premium pressure is still a problem. If not, I will not push it.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "none",
       "scenario": "frustration_not_flagged",
@@ -1782,7 +1782,7 @@
         "manual_work"
       ],
       "failures": [],
-      "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
+      "final_response": "Fair. I do not want to waste your time. This is only useful if manual work is still a problem. If not, I will not push it.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "none",
       "scenario": "frustration_not_flagged",
@@ -2487,7 +2487,7 @@
         "repair_timing"
       ],
       "failures": [],
-      "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
+      "final_response": "Fair. I do not want to waste your time. This is only useful if repair timing is still a problem. If not, I will not push it.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "none",
       "scenario": "frustration_not_flagged",
@@ -3192,7 +3192,7 @@
         "service_need"
       ],
       "failures": [],
-      "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
+      "final_response": "Fair. I do not want to waste your time. This is only useful if the service need is active now. If not, I will not push it.",
       "mechanical_warning_flags": [],
       "next_best_sales_action": "none",
       "scenario": "frustration_not_flagged",

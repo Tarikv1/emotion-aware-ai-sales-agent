@@ -122,7 +122,7 @@
 - Buyer move: `are_you_ai_or_robot`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping right now?
+- Response: Fair to ask. Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping right now?
 
 ### preserve_callback_time_capture
 - Passed: `true`

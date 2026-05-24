@@ -34,7 +34,7 @@
 - Source: `universal_response_shape`
 - Call control: `continue-call`
 - Failures: ``
-- Final response: Maybe integration, understood. Is that an active concern now, or just something you might want checked later?
+- Final response: Understood, integration is the unclear part. What part is confusing: what it means, what the implementation specialist would check, or whether it matters here?
 
 ### b2b-visibility-thing-impact
 - Status: `pass`
@@ -52,7 +52,7 @@
 - Source: `universal_response_shape`
 - Call control: `continue-call`
 - Failures: ``
-- Final response: Maybe plan fit, understood. Is that an active concern now, or just something you might want checked later?
+- Final response: Understood, plan fit is the unclear part. What part is confusing: what it means, what the telecom account specialist would check, or whether it matters here?
 
 ### membership-plan-thing
 - Status: `pass`
@@ -61,7 +61,7 @@
 - Source: `universal_response_shape`
 - Call control: `continue-call`
 - Failures: ``
-- Final response: Maybe plan fit, understood. Is that an active concern now, or just something you might want checked later?
+- Final response: Understood, plan fit is the unclear part. What part is confusing: what it means, what the account support specialist would check, or whether it matters here?
 
 ### routesignal-coverage-mismatch-boundary
 - Status: `pass`
@@ -88,5 +88,5 @@
 - Source: `universal_response_shape`
 - Call control: `continue-call`
 - Failures: ``
-- Final response: Maybe integration, understood. Is that an active concern now, or just something you might want checked later?
+- Final response: Understood, integration is the unclear part. What part is confusing: what it means, what the implementation specialist would check, or whether it matters here?
 

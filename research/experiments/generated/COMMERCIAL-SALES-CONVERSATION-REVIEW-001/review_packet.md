@@ -317,7 +317,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `who_are_you`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: are you a robot
-  - Agent: Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping right now?
+  - Agent: Fair to ask. Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `are_you_ai_or_robot`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -422,7 +422,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `language_mismatch`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you're annoying
-  - Agent: Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.
+  - Agent: Fair. I do not want to waste your time. This is only useful if inbound demo follow-up is slipping now. If not, I will not push it.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `emotional_frustration`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -744,7 +744,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `who_are_you`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: are you a robot
-  - Agent: Yes, I'm an AI voice agent calling for Synthetic Insurance Agency. I'll keep it brief: is premium pressure causing any issue right now?
+  - Agent: Fair to ask. Yes, I'm an AI voice agent calling for Synthetic Insurance Agency. I'll keep it brief: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `are_you_ai_or_robot`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -849,7 +849,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `language_mismatch`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you're annoying
-  - Agent: Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.
+  - Agent: Fair. I do not want to waste your time. This is only useful if premium pressure is still a problem. If not, I will not push it.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `emotional_frustration`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1171,7 +1171,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `who_are_you`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: are you a robot
-  - Agent: Yes, I'm an AI voice agent calling for Synthetic SaaS Operations. I'll keep it brief: is manual work causing any issue right now?
+  - Agent: Fair to ask. Yes, I'm an AI voice agent calling for Synthetic SaaS Operations. I'll keep it brief: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `are_you_ai_or_robot`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1276,7 +1276,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `language_mismatch`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you're annoying
-  - Agent: Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.
+  - Agent: Fair. I do not want to waste your time. This is only useful if manual work is still a problem. If not, I will not push it.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `emotional_frustration`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1598,7 +1598,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `who_are_you`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: are you a robot
-  - Agent: Yes, I'm an AI voice agent calling for Synthetic Automotive Service. I'll keep it brief: is repair timing causing any issue right now?
+  - Agent: Fair to ask. Yes, I'm an AI voice agent calling for Synthetic Automotive Service. I'll keep it brief: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `are_you_ai_or_robot`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1703,7 +1703,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `language_mismatch`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you're annoying
-  - Agent: Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.
+  - Agent: Fair. I do not want to waste your time. This is only useful if repair timing is still a problem. If not, I will not push it.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `emotional_frustration`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -2025,7 +2025,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `who_are_you`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: are you a robot
-  - Agent: Yes, I'm an AI voice agent calling for Synthetic Home Services. I'll keep it brief: is the service need active right now?
+  - Agent: Fair to ask. Yes, I'm an AI voice agent calling for Synthetic Home Services. I'll keep it brief: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `are_you_ai_or_robot`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -2130,7 +2130,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `language_mismatch`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you're annoying
-  - Agent: Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.
+  - Agent: Fair. I do not want to waste your time. This is only useful if the service need is active now. If not, I will not push it.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `emotional_frustration`; readiness: `none`; next action: `none`
   - Warnings: `none`

@@ -3440,7 +3440,7 @@
         "are_you_ai_or_robot"
       ],
       "failures": [],
-      "final_response": "Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping right now?",
+      "final_response": "Fair to ask. Yes, I'm an AI voice agent calling for Northstar Workflow Labs. I'll keep it brief: is inbound demo follow-up slipping right now?",
       "passed": true,
       "previous_response": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
       "recognition_confidence": "high",
@@ -6201,7 +6201,7 @@
         "emotional_frustration"
       ],
       "failures": [],
-      "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
+      "final_response": "Fair. I do not want to waste your time. This is only useful if inbound demo follow-up is slipping now. If not, I will not push it.",
       "passed": true,
       "previous_response": "Thanks. Is inbound demo follow-up slipping right now?",
       "recognition_confidence": "high",
@@ -10378,7 +10378,7 @@
         "are_you_ai_or_robot"
       ],
       "failures": [],
-      "final_response": "Yes, I'm an AI voice agent calling for Synthetic Insurance Agency. I'll keep it brief: is premium pressure causing any issue right now?",
+      "final_response": "Fair to ask. Yes, I'm an AI voice agent calling for Synthetic Insurance Agency. I'll keep it brief: is premium pressure causing any issue right now?",
       "passed": true,
       "previous_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
       "recognition_confidence": "high",
@@ -13163,7 +13163,7 @@
         "emotional_frustration"
       ],
       "failures": [],
-      "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
+      "final_response": "Fair. I do not want to waste your time. This is only useful if premium pressure is still a problem. If not, I will not push it.",
       "passed": true,
       "previous_response": "Thanks. Is premium pressure causing any issue right now?",
       "recognition_confidence": "high",
@@ -17344,7 +17344,7 @@
         "are_you_ai_or_robot"
       ],
       "failures": [],
-      "final_response": "Yes, I'm an AI voice agent calling for Synthetic SaaS Operations. I'll keep it brief: is manual work causing any issue right now?",
+      "final_response": "Fair to ask. Yes, I'm an AI voice agent calling for Synthetic SaaS Operations. I'll keep it brief: is manual work causing any issue right now?",
       "passed": true,
       "previous_response": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
       "recognition_confidence": "high",
@@ -20129,7 +20129,7 @@
         "emotional_frustration"
       ],
       "failures": [],
-      "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
+      "final_response": "Fair. I do not want to waste your time. This is only useful if manual work is still a problem. If not, I will not push it.",
       "passed": true,
       "previous_response": "Thanks. Is manual work causing any issue right now?",
       "recognition_confidence": "high",
@@ -24308,7 +24308,7 @@
         "are_you_ai_or_robot"
       ],
       "failures": [],
-      "final_response": "Yes, I'm an AI voice agent calling for Synthetic Automotive Service. I'll keep it brief: is repair timing causing any issue right now?",
+      "final_response": "Fair to ask. Yes, I'm an AI voice agent calling for Synthetic Automotive Service. I'll keep it brief: is repair timing causing any issue right now?",
       "passed": true,
       "previous_response": "Hi, this is Maya calling from Synthetic Automotive Service about Service Advisor Review. I am checking whether a short service advisor inspection review is needed; do you have a minute?",
       "recognition_confidence": "high",
@@ -27093,7 +27093,7 @@
         "emotional_frustration"
       ],
       "failures": [],
-      "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
+      "final_response": "Fair. I do not want to waste your time. This is only useful if repair timing is still a problem. If not, I will not push it.",
       "passed": true,
       "previous_response": "Thanks. Is repair timing causing any issue right now?",
       "recognition_confidence": "high",
@@ -31272,7 +31272,7 @@
         "are_you_ai_or_robot"
       ],
       "failures": [],
-      "final_response": "Yes, I'm an AI voice agent calling for Synthetic Home Services. I'll keep it brief: is the service need active right now?",
+      "final_response": "Fair to ask. Yes, I'm an AI voice agent calling for Synthetic Home Services. I'll keep it brief: is the service need active right now?",
       "passed": true,
       "previous_response": "Hi, this is Maya calling from Synthetic Home Services about Service Estimate Call. I am checking whether a short inspection or estimate review is needed; do you have a minute?",
       "recognition_confidence": "high",
@@ -34057,7 +34057,7 @@
         "emotional_frustration"
       ],
       "failures": [],
-      "final_response": "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check.",
+      "final_response": "Fair. I do not want to waste your time. This is only useful if the service need is active now. If not, I will not push it.",
       "passed": true,
       "previous_response": "Thanks. Is the service need active right now?",
       "recognition_confidence": "high",

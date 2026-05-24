@@ -158,6 +158,7 @@ HIGH_CONFIDENCE_PRIORITY_MOVES = (
         "already_answered_challenge",
         "contradiction_challenge",
         "confusion_not_clear",
+        "abusive_or_hostile_buyer",
         "prior_bad_experience_context",
     }
 )
@@ -798,7 +799,18 @@ def _scope_relevance_clarification_response(campaign: dict | None) -> str:
 
 def _campaign_mismatch_response(campaign: dict | None, normalized: str) -> str:
     purpose = _campaign_purpose_phrase(campaign)
-    return f"Fair question. This call is about {purpose}. If that is not relevant, I should stop here."
+    return f"Fair question. This call is about {purpose}. If that is not relevant, we can stop here."
+
+
+def _gap_clarity_response(gap_phrase: str, campaign: dict | None) -> str:
+    gap = _plain_phrase(gap_phrase).lower()
+    if not gap or gap == "the relevant issue":
+        return "Understood. What part is unclear: what this means, what a reviewer checks, or whether it matters here?"
+    owner_role = _role_phrase(_campaign_owner(campaign))
+    return (
+        f"Understood, {gap} is the unclear part. What part is confusing: "
+        f"what it means, what {owner_role} would check, or whether it matters here?"
+    )
 
 
 def _issue_check_question_for_phrase(phrase: str) -> str:
@@ -1522,7 +1534,7 @@ def classify_universal_buyer_move_from_transcript(
 
     if normalized in {"who are you", "who is calling", "who am i speaking with"} or normalized.startswith("who are you "):
         return _recognition("who_are_you", reason="identity_question_phrase", confidence="high", category="identity_trust_privacy")
-    if _contains_any(normalized, {"are you a robot", "are you ai", "are you an ai", "is this automated"}):
+    if _contains_any(normalized, {"are you a robot", "are you ai", "are you an ai", "is this automated", "this sounds automated"}):
         return _recognition("are_you_ai_or_robot", reason="ai_or_robot_question_phrase", confidence="high", category="identity_trust_privacy")
     if _contains_any(
         normalized,
@@ -1643,6 +1655,15 @@ def classify_universal_buyer_move_from_transcript(
         },
     ):
         return _recognition("scope_limit_question", reason="scope_limit_question_phrase", confidence="high", category="product_value_scope")
+    if _contains_any(normalized, {"i need insurance coverage", "i need coverage", "insurance coverage"}):
+        if _unsupported_pain_phrase_gap_id(f"{normalized} is a problem", campaign):
+            return _recognition(
+                "confusion_not_clear",
+                reason="campaign_mismatch_question_phrase",
+                confidence="high",
+                category="confusion_challenge_repair",
+            )
+        return _recognition("scope_limit_question", reason="coverage_need_scope_phrase", confidence="high", category="product_value_scope")
     if _contains_any(
         normalized,
         {
@@ -1687,6 +1708,18 @@ def classify_universal_buyer_move_from_transcript(
             "thats wrong",
             "that does not make sense",
             "that doesn t make sense",
+            "no that is not what i meant",
+            "that is not what i meant",
+            "that s not what i meant",
+            "thats not what i meant",
+            "that s not my issue",
+            "thats not my issue",
+            "that is not my issue",
+            "not my issue",
+            "that s not my problem",
+            "thats not my problem",
+            "that is not my problem",
+            "not my problem",
             "you misunderstood me",
             "you misunderstood",
             "stop assuming that",
@@ -1744,13 +1777,13 @@ def classify_universal_buyer_move_from_transcript(
         },
     ):
         return _recognition("what_problem_do_you_solve", reason="problem_solved_question_phrase", confidence="high", category="product_value_scope")
-    if _contains_any(normalized, {"why should i care", "why would i care", "why care", "what should i care"}):
+    if _contains_any(normalized, {"why should i care", "why would i care", "why care", "what should i care", "prove this is useful"}):
         return _recognition("why_should_i_care", reason="why_should_i_care_phrase", confidence="high", category="product_value_scope")
     if _contains_any(normalized, {"what makes you different", "what is different", "why are you different"}):
         return _recognition("what_makes_you_different", reason="differentiation_question_phrase", confidence="high", category="product_value_scope")
     if _contains_any(normalized, {"who is this for", "who uses this", "is this for me"}):
         return _recognition("who_is_this_for", reason="target_buyer_question_phrase", confidence="high", category="product_value_scope")
-    if _contains_any(normalized, {"is this worth my time", "worth my time", "why stay on the phone"}):
+    if _contains_any(normalized, {"is this worth my time", "worth my time", "why stay on the phone", "are you wasting my time", "wasting my time"}):
         return _recognition("is_this_worth_my_time", reason="time_value_question_phrase", confidence="high", category="product_value_scope")
     if _contains_any(normalized, {"what result can i expect", "what will this do for me", "what improvement"}):
         return _recognition("what_result_can_i_expect", reason="expected_result_question_phrase", confidence="high", category="product_value_scope")
@@ -1791,6 +1824,7 @@ def classify_universal_buyer_move_from_transcript(
             "something else",
             "this is not what i asked",
             "this is not what i asked about",
+            "is this about",
         },
         )
         and _contains_any(
@@ -1814,10 +1848,10 @@ def classify_universal_buyer_move_from_transcript(
     ):
         if _contains_any(normalized, {"confusing", "confused", "unclear", "not clear", "thing"}):
             return _recognition(
-                "tentative_gap_interest",
-                reason="configured_gap_near_miss_unclear_phrase",
+                "confusion_not_clear",
+                reason="configured_gap_clarity_request_phrase",
                 confidence="high",
-                category="pain_tentative_pain",
+                category="confusion_challenge_repair",
             )
         return _recognition(
             "pain_confirmed",
@@ -1828,11 +1862,25 @@ def classify_universal_buyer_move_from_transcript(
 
     if _contains_any(normalized, {"send me details", "send details", "send me information", "send me info"}):
         return _recognition("send_info_request", reason="send_info_request_phrase", confidence="high", category="appointment_callback_send_info")
-    if _contains_any(normalized, {"call me next week", "call me later", "call back", "callback request", "call me back"}):
+    if _contains_any(
+        normalized,
+        {
+            "call me tomorrow at",
+            "call me tomorrow",
+            "call me next week",
+            "call me later",
+            "call later",
+            "call back sometime",
+            "call back",
+            "callback request",
+            "call me back",
+            "can someone call later",
+        },
+    ):
         return _recognition("callback_request", reason="callback_request_phrase", confidence="high", category="appointment_callback_send_info")
     if _contains_any(normalized, {"available times", "send available times", "what times are available"}):
         return _recognition("buyer_requests_available_times", reason="available_times_request_phrase", confidence="high", category="appointment_callback_send_info")
-    if _contains_any(normalized, {"email first", "need email first", "send email first"}):
+    if _contains_any(normalized, {"email first", "email me first", "need email first", "send email first"}):
         return _recognition("buyer_wants_email_before_booking", reason="email_before_booking_phrase", confidence="high", category="appointment_callback_send_info")
     if _contains_any(normalized, {"not now maybe later", "maybe later", "later maybe"}):
         return _recognition("buyer_defers_to_later", reason="defer_to_later_phrase", confidence="high", category="appointment_callback_send_info")
@@ -1907,7 +1955,7 @@ def classify_universal_buyer_move_from_transcript(
 
     if _contains_any(normalized, {"slow down", "too fast", "speak faster", "speak slower"}):
         return _recognition("slow_down_or_speak_faster", reason="speech_rate_request_phrase", confidence="high", category="social_conversation_management")
-    if _contains_any(normalized, {"say that again", "repeat that", "say again", "can you repeat"}):
+    if _contains_any(normalized, {"say that again", "repeat that", "say again", "can you repeat", "say it differently", "explain it another way"}):
         return _recognition("repeat_last_answer", reason="repeat_last_answer_phrase", confidence="high", category="social_conversation_management")
     if _contains_any(normalized, {"don t speak english", "dont speak english", "do not speak english", "english well", "different language"}):
         return _recognition("language_mismatch", reason="language_mismatch_phrase", confidence="high", category="social_conversation_management")
@@ -1924,7 +1972,24 @@ def classify_universal_buyer_move_from_transcript(
         return _recognition("small_talk", reason="small_talk_or_backchannel_phrase", confidence="medium", category="social_conversation_management")
     if _contains_any(normalized, {"annoying", "frustrated", "frustrating", "you re annoying", "you are annoying"}):
         return _recognition("emotional_frustration", reason="frustration_phrase", confidence="high", category="social_conversation_management")
+    if _contains_any(
+        normalized,
+        {
+            "this sounds like a scam",
+            "sounds like a scam",
+            "this is pointless",
+            "stop pitching me",
+        },
+    ):
+        return _recognition("abusive_or_hostile_buyer", reason="hostile_non_stop_challenge_phrase", confidence="high", category="social_conversation_management")
 
+    if _contains_any(normalized, {"what do you mean by"}) and _gap_id_from_transcript(normalized, campaign):
+        return _recognition(
+            "confusion_not_clear",
+            reason="configured_gap_clarity_request_phrase",
+            confidence="high",
+            category="confusion_challenge_repair",
+        )
     if _contains_any(normalized, {"what do you mean", "i do not understand", "i don t understand", "dont understand"}):
         return _recognition("confusion_not_clear", reason="confusion_or_clarification_phrase", confidence="high", category="confusion_challenge_repair")
     if _contains_any(
@@ -1938,6 +2003,7 @@ def classify_universal_buyer_move_from_transcript(
             "this is not what i asked about",
             "this isn t what i asked about",
             "this is not what i asked",
+            "is this about",
             "why are you talking about repair timing",
             "why are you talking about insurance",
         },
@@ -1982,6 +2048,8 @@ def classify_universal_buyer_move_from_transcript(
             "that still doesn t explain",
             "does not explain it",
             "doesn t explain it",
+            "that still does not explain it",
+            "that still doesn t explain it",
         },
     ):
         return _recognition(
@@ -2007,6 +2075,7 @@ def classify_universal_buyer_move_from_transcript(
             "youre not listening",
             "not listening",
             "i already told you",
+            "you already said that",
         },
     ):
         return _recognition(
@@ -2253,6 +2322,7 @@ def high_confidence_buyer_move_priority_protected(
         if buyer_move_id == "confusion_not_clear":
             return reason in {
                 "campaign_mismatch_question_phrase",
+                "configured_gap_clarity_request_phrase",
                 "confusion_or_clarification_phrase",
                 "out_of_campaign_pain_phrase",
             }
@@ -2477,7 +2547,7 @@ def render_universal_response_outline(
             return f"I'm good, thanks. I'll keep this quick: {_primary_issue_check_question(campaign)}"
         return f"Okay, thanks. I'll keep this quick: {_primary_issue_check_question(campaign)}"
     if buyer_move_id in {"emotional_frustration", "abusive_or_hostile_buyer"}:
-        return "Fair. I do not want to waste your time. I can end the call, or keep it to one simple check."
+        return f"Fair. I do not want to waste your time. This is only useful if {primary_issue_clause}. If not, I will not push it."
 
     if buyer_move_id == "permission_acknowledgement":
         return _permission_response(campaign, session_state=session_state)
@@ -2553,7 +2623,7 @@ def render_universal_response_outline(
     if buyer_move_id == "who_are_you":
         return f"Sure, I'm {caller} calling on behalf of {client} about {_campaign_purpose_phrase(campaign)}."
     if buyer_move_id == "are_you_ai_or_robot":
-        return f"Yes, I'm an AI voice agent calling for {client}. I'll keep it brief: {_primary_issue_check_question(campaign)}"
+        return f"Fair to ask. Yes, I'm an AI voice agent calling for {client}. I'll keep it brief: {_primary_issue_check_question(campaign)}"
     if buyer_move_id == "how_did_you_get_my_number":
         return "I do not have a reliable source note for that in this call, so I will not guess. I can stop here."
     if buyer_move_id == "is_this_recorded":
@@ -2564,6 +2634,8 @@ def render_universal_response_outline(
         return "Understood. I'll stop here. Goodbye."
 
     if buyer_move_id == "confusion_not_clear":
+        if recognition_reason == "configured_gap_clarity_request_phrase":
+            return _gap_clarity_response(_gap_phrase_from_frame_or_text(frame, campaign, session_state), campaign)
         if recognition_reason == "campaign_mismatch_question_phrase":
             return _campaign_mismatch_response(campaign, normalized)
         if recognition_reason == "out_of_campaign_pain_phrase":
@@ -2611,6 +2683,11 @@ def render_universal_response_outline(
     if buyer_move_id == "contradiction_challenge":
         return f"Fair point. I can ask basic fit questions, but detailed advice belongs with {owner_role}."
     if buyer_move_id == "scope_limit_question":
+        if recognition_reason == "coverage_need_scope_phrase":
+            return (
+                f"I can keep that high-level, but detailed coverage advice belongs with {owner_role}. "
+                "Do you want me to check whether that review is useful?"
+            )
         if recognition_reason == "why_human_review_phrase":
             return (
                 f"A human review matters because I can only check fit at a high level; {owner_role} "

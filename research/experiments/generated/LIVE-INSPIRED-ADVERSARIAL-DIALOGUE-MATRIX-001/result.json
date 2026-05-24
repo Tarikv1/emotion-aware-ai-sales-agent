@@ -1,8 +1,5 @@
 {
   "asr_near_miss_findings": [
-    "adv-asr-near-miss-gap-phrases-synthetic-telecom-plan-review-03",
-    "adv-asr-near-miss-gap-phrases-synthetic-membership-plan-review-03",
-    "adv-asr-near-miss-gap-phrases-synthetic-b2b-saas-operations-03",
     "adv-asr-near-miss-invented-transcript-stress-routesignal_live_demo-01",
     "adv-asr-near-miss-invented-transcript-stress-synthetic-insurance-review-01",
     "adv-asr-near-miss-invented-transcript-stress-synthetic-telecom-plan-review-01",
@@ -23,30 +20,28 @@
   "direct_question_challenge_findings": [],
   "explicit_stop_red_findings": [],
   "failure_counts_by_campaign": {
-    "routesignal_live_demo": 40,
-    "synthetic-automotive-service-review": 51,
-    "synthetic-b2b-saas-operations": 41,
-    "synthetic-insurance-review": 45,
-    "synthetic-membership-plan-review": 38,
-    "synthetic-telecom-plan-review": 48
+    "routesignal_live_demo": 34,
+    "synthetic-automotive-service-review": 42,
+    "synthetic-b2b-saas-operations": 34,
+    "synthetic-insurance-review": 37,
+    "synthetic-membership-plan-review": 31,
+    "synthetic-telecom-plan-review": 39
   },
   "failure_counts_by_family": {
-    "asr_near_miss_gap_phrases": 4,
+    "asr_near_miss_gap_phrases": 1,
     "asr_near_miss_invented_transcript_stress": 6,
-    "buyer_correction_contradiction_stress": 2,
-    "buyer_says_agent_is_wrong": 24,
-    "callback_time_too_early_or_ambiguous": 24,
+    "buyer_correction_contradiction_stress": 1,
+    "buyer_says_agent_is_wrong": 18,
+    "callback_time_too_early_or_ambiguous": 18,
     "campaign_selector_wrong_campaign_contamination": 8,
     "commercial_pressure_close_strength_stress": 16,
     "commercial_quality_stress": 8,
     "direct_product_value_challenge_loops": 6,
     "disallowed_persistence_after_stop": 6,
-    "early_callback_premature_scheduling": 6,
-    "hostile_challenging_buyer": 21,
     "human_context_interruption_pressure": 6,
     "impact_before_clean_pain": 16,
     "long_conversation_state_drift": 5,
-    "multi_campaign_contamination_stress": 17,
+    "multi_campaign_contamination_stress": 14,
     "permission_weak_acknowledgement_variants": 15,
     "price_budget_affordability_stress": 6,
     "repeated_answer_variation_anti_loop": 18,
@@ -57,16 +52,14 @@
     "vague_affirmative_after_context": 7
   },
   "failure_counts_by_selected_action_source": {
-    "contextual_buyer_semantics": 12,
+    "contextual_buyer_semantics": 6,
     "dialogue_pragmatics": 6,
-    "live_voice_session_policy": 19,
-    "pre_speech_conversation_stability_guard": 134,
+    "live_voice_session_policy": 6,
+    "pre_speech_conversation_stability_guard": 109,
     "terminal_call_control": 6,
-    "universal_response_shape": 86
+    "universal_response_shape": 84
   },
-  "false_assumption_clusters": [
-    "adv-buyer-correction-contradiction-stress-synthetic-automotive-service-review-04"
-  ],
+  "false_assumption_clusters": [],
   "family_counts": {
     "agent_looping_complaints": 24,
     "asr_near_miss_gap_phrases": 26,
@@ -99,12 +92,8 @@
     "vague_affirmative_after_context": 25,
     "why_human_review_challenge": 24
   },
-  "generated_at": "2026-05-24T00:13:59.424748+00:00",
-  "internal_wording_leaks": [
-    "adv-multi-campaign-contamination-stress-synthetic-insurance-review-02",
-    "adv-multi-campaign-contamination-stress-synthetic-telecom-plan-review-02",
-    "adv-multi-campaign-contamination-stress-synthetic-automotive-service-review-02"
-  ],
+  "generated_at": "2026-05-24T01:08:20.451679+00:00",
+  "internal_wording_leaks": [],
   "needs_human_review_examples": [
     "core-routesignal-permission-repeated-ack",
     "core-routesignal-asr-near-miss-callbacks",
@@ -135,12 +124,12 @@
   ],
   "pass_fail_counts": {
     "core_gate_failures": 0,
-    "exploratory_red_findings": 263,
-    "failed_or_red": 263,
-    "passed": 466
+    "exploratory_red_findings": 217,
+    "failed_or_red": 217,
+    "passed": 512
   },
   "recommendation": "needs human review and ranked follow-up patches",
-  "red_finding_count": 263,
+  "red_finding_count": 217,
   "repeated_response_clusters": [
     {
       "response": "Understood. I will stop here. Goodbye.",
@@ -219,10 +208,10 @@
     "core_gate_count": 9,
     "core_gate_failure_count": 0,
     "exploratory_count": 720,
-    "failure_count": 263,
+    "failure_count": 217,
     "multi_turn_conversation_count": 398,
-    "pass_count": 466,
-    "red_finding_count": 263,
+    "pass_count": 512,
+    "red_finding_count": 217,
     "scenario_count": 729,
     "scenario_family_coverage": [
       "agent_looping_complaints",
@@ -259,27 +248,27 @@
   },
   "top_failure_clusters": [
     {
-      "count": 174,
+      "count": 146,
       "flag": "repeated_full_menu"
-    },
-    {
-      "count": 27,
-      "flag": "hostile_response_not_deescalated"
     },
     {
       "count": 24,
       "flag": "repeated_response"
     },
     {
-      "count": 12,
-      "flag": "appointment_too_early"
+      "count": 18,
+      "flag": "hostile_response_not_deescalated"
     },
     {
       "count": 12,
       "flag": "out_of_scope_reset_after_relevant_context"
     },
     {
-      "count": 9,
+      "count": 6,
+      "flag": "appointment_too_early"
+    },
+    {
+      "count": 6,
       "flag": "asr_near_miss_not_clarified"
     },
     {
@@ -287,139 +276,11 @@
       "flag": "campaign_contamination"
     },
     {
-      "count": 3,
-      "flag": "internal_wording_leak"
-    },
-    {
       "count": 1,
       "flag": "too_long_for_live_voice"
-    },
-    {
-      "count": 1,
-      "flag": "false_assumption_not_repaired"
     }
   ],
   "worst_conversations": [
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "I need insurance coverage",
-        "why are you talking about something else"
-      ],
-      "campaign_id": "synthetic-automotive-service-review",
-      "final_response": "Fair question. This call is about a short human review around repair timing. If that is not relevant, I should stop here.",
-      "mechanical_failure_flags": [
-        "internal_wording_leak"
-      ],
-      "priority": "critical",
-      "scenario_family": "multi_campaign_contamination_stress",
-      "scenario_id": "adv-multi-campaign-contamination-stress-synthetic-automotive-service-review-02",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "I need insurance coverage",
-        "why are you talking about something else"
-      ],
-      "campaign_id": "synthetic-insurance-review",
-      "final_response": "Fair question. This call is about a short human review around premium pressure. If that is not relevant, I should stop here.",
-      "mechanical_failure_flags": [
-        "internal_wording_leak"
-      ],
-      "priority": "critical",
-      "scenario_family": "multi_campaign_contamination_stress",
-      "scenario_id": "adv-multi-campaign-contamination-stress-synthetic-insurance-review-02",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "I need insurance coverage",
-        "why are you talking about something else"
-      ],
-      "campaign_id": "synthetic-telecom-plan-review",
-      "final_response": "Fair question. This call is about a short human review around plan fit. If that is not relevant, I should stop here.",
-      "mechanical_failure_flags": [
-        "internal_wording_leak"
-      ],
-      "priority": "critical",
-      "scenario_family": "multi_campaign_contamination_stress",
-      "scenario_id": "adv-multi-campaign-contamination-stress-synthetic-telecom-plan-review-02",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "yeah",
-        "that's not my issue"
-      ],
-      "campaign_id": "synthetic-automotive-service-review",
-      "final_response": "The quick check is whether any of these areas is worth a short service advisor inspection review: vehicle issue, repair timing, or warranty or estimate. If not, I can stop here; which part should I check first?",
-      "mechanical_failure_flags": [
-        "false_assumption_not_repaired",
-        "repeated_full_menu"
-      ],
-      "priority": "medium",
-      "scenario_family": "buyer_correction_contradiction_stress",
-      "scenario_id": "adv-buyer-correction-contradiction-stress-synthetic-automotive-service-review-04",
-      "selected_action_source": "pre_speech_conversation_stability_guard",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "this sounds automated"
-      ],
-      "campaign_id": "routesignal_live_demo",
-      "final_response": "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
-      "mechanical_failure_flags": [
-        "hostile_response_not_deescalated",
-        "repeated_full_menu"
-      ],
-      "priority": "medium",
-      "scenario_family": "buyer_says_agent_is_wrong",
-      "scenario_id": "adv-buyer-says-agent-is-wrong-routesignal_live_demo-04",
-      "selected_action_source": "pre_speech_conversation_stability_guard",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "this is pointless"
-      ],
-      "campaign_id": "routesignal_live_demo",
-      "final_response": "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
-      "mechanical_failure_flags": [
-        "hostile_response_not_deescalated",
-        "repeated_full_menu"
-      ],
-      "priority": "medium",
-      "scenario_family": "hostile_challenging_buyer",
-      "scenario_id": "adv-hostile-challenging-buyer-routesignal_live_demo-03",
-      "selected_action_source": "pre_speech_conversation_stability_guard",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "prove this is useful"
-      ],
-      "campaign_id": "routesignal_live_demo",
-      "final_response": "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
-      "mechanical_failure_flags": [
-        "hostile_response_not_deescalated",
-        "repeated_full_menu"
-      ],
-      "priority": "medium",
-      "scenario_family": "hostile_challenging_buyer",
-      "scenario_id": "adv-hostile-challenging-buyer-routesignal_live_demo-04",
-      "selected_action_source": "pre_speech_conversation_stability_guard",
-      "tier": "exploratory_red_findings"
-    },
     {
       "buyer_script": [
         "__agent_open__",
@@ -441,57 +302,6 @@
     {
       "buyer_script": [
         "__agent_open__",
-        "yeah",
-        "integration thing is confusing"
-      ],
-      "campaign_id": "synthetic-b2b-saas-operations",
-      "final_response": "Maybe integration, understood. Is that an active concern now, or just something you might want checked later?",
-      "mechanical_failure_flags": [
-        "asr_near_miss_not_clarified"
-      ],
-      "priority": "medium",
-      "scenario_family": "asr_near_miss_gap_phrases",
-      "scenario_id": "adv-asr-near-miss-gap-phrases-synthetic-b2b-saas-operations-03",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "yeah",
-        "usage thing is unclear"
-      ],
-      "campaign_id": "synthetic-membership-plan-review",
-      "final_response": "Maybe usage or value, understood. Is that an active concern now, or just something you might want checked later?",
-      "mechanical_failure_flags": [
-        "asr_near_miss_not_clarified"
-      ],
-      "priority": "medium",
-      "scenario_family": "asr_near_miss_gap_phrases",
-      "scenario_id": "adv-asr-near-miss-gap-phrases-synthetic-membership-plan-review-03",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "yeah",
-        "contact switching is confusing"
-      ],
-      "campaign_id": "synthetic-telecom-plan-review",
-      "final_response": "Maybe contract or switching, understood. Is that an active concern now, or just something you might want checked later?",
-      "mechanical_failure_flags": [
-        "asr_near_miss_not_clarified"
-      ],
-      "priority": "medium",
-      "scenario_family": "asr_near_miss_gap_phrases",
-      "scenario_id": "adv-asr-near-miss-gap-phrases-synthetic-telecom-plan-review-03",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
         "what should I care"
       ],
       "campaign_id": "routesignal_live_demo",
@@ -502,6 +312,168 @@
       "priority": "medium",
       "scenario_family": "asr_near_miss_invented_transcript_stress",
       "scenario_id": "adv-asr-near-miss-invented-transcript-stress-routesignal_live_demo-01",
+      "selected_action_source": "universal_response_shape",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what should I care"
+      ],
+      "campaign_id": "synthetic-automotive-service-review",
+      "final_response": "Fair question. Only if repair timing is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
+      "mechanical_failure_flags": [
+        "asr_near_miss_not_clarified"
+      ],
+      "priority": "medium",
+      "scenario_family": "asr_near_miss_invented_transcript_stress",
+      "scenario_id": "adv-asr-near-miss-invented-transcript-stress-synthetic-automotive-service-review-01",
+      "selected_action_source": "universal_response_shape",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what should I care"
+      ],
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "final_response": "Fair question. Only if manual work is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
+      "mechanical_failure_flags": [
+        "asr_near_miss_not_clarified"
+      ],
+      "priority": "medium",
+      "scenario_family": "asr_near_miss_invented_transcript_stress",
+      "scenario_id": "adv-asr-near-miss-invented-transcript-stress-synthetic-b2b-saas-operations-01",
+      "selected_action_source": "universal_response_shape",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what should I care"
+      ],
+      "campaign_id": "synthetic-insurance-review",
+      "final_response": "Fair question. Only if premium pressure is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
+      "mechanical_failure_flags": [
+        "asr_near_miss_not_clarified"
+      ],
+      "priority": "medium",
+      "scenario_family": "asr_near_miss_invented_transcript_stress",
+      "scenario_id": "adv-asr-near-miss-invented-transcript-stress-synthetic-insurance-review-01",
+      "selected_action_source": "universal_response_shape",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what should I care"
+      ],
+      "campaign_id": "synthetic-membership-plan-review",
+      "final_response": "Fair question. Only if plan fit is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
+      "mechanical_failure_flags": [
+        "asr_near_miss_not_clarified"
+      ],
+      "priority": "medium",
+      "scenario_family": "asr_near_miss_invented_transcript_stress",
+      "scenario_id": "adv-asr-near-miss-invented-transcript-stress-synthetic-membership-plan-review-01",
+      "selected_action_source": "universal_response_shape",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "what should I care"
+      ],
+      "campaign_id": "synthetic-telecom-plan-review",
+      "final_response": "Fair question. Only if plan fit is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
+      "mechanical_failure_flags": [
+        "asr_near_miss_not_clarified"
+      ],
+      "priority": "medium",
+      "scenario_family": "asr_near_miss_invented_transcript_stress",
+      "scenario_id": "adv-asr-near-miss-invented-transcript-stress-synthetic-telecom-plan-review-01",
+      "selected_action_source": "universal_response_shape",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "yeah",
+        "callbacks are a problem",
+        "I said inbound demo follow-up, not callbacks"
+      ],
+      "campaign_id": "routesignal_live_demo",
+      "final_response": "Got it, you already said that is the problem: missed callbacks. RouteSignal helps demo leads stay assigned, reminded, and followed up before callback gaps turn into lost opportunities. The next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
+      "mechanical_failure_flags": [
+        "too_long_for_live_voice"
+      ],
+      "priority": "medium",
+      "scenario_family": "buyer_correction_contradiction_stress",
+      "scenario_id": "adv-buyer-correction-contradiction-stress-routesignal_live_demo-02",
+      "selected_action_source": "contextual_buyer_semantics",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "that's wrong"
+      ],
+      "campaign_id": "routesignal_live_demo",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful.",
+      "mechanical_failure_flags": [
+        "hostile_response_not_deescalated"
+      ],
+      "priority": "medium",
+      "scenario_family": "buyer_says_agent_is_wrong",
+      "scenario_id": "adv-buyer-says-agent-is-wrong-routesignal_live_demo-01",
+      "selected_action_source": "universal_response_shape",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "that doesn't make sense"
+      ],
+      "campaign_id": "routesignal_live_demo",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful.",
+      "mechanical_failure_flags": [
+        "hostile_response_not_deescalated"
+      ],
+      "priority": "medium",
+      "scenario_family": "buyer_says_agent_is_wrong",
+      "scenario_id": "adv-buyer-says-agent-is-wrong-routesignal_live_demo-02",
+      "selected_action_source": "universal_response_shape",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "you're making assumptions"
+      ],
+      "campaign_id": "routesignal_live_demo",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful.",
+      "mechanical_failure_flags": [
+        "hostile_response_not_deescalated"
+      ],
+      "priority": "medium",
+      "scenario_family": "buyer_says_agent_is_wrong",
+      "scenario_id": "adv-buyer-says-agent-is-wrong-routesignal_live_demo-03",
+      "selected_action_source": "universal_response_shape",
+      "tier": "exploratory_red_findings"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "that's wrong"
+      ],
+      "campaign_id": "synthetic-automotive-service-review",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a service advisor inspection review is useful.",
+      "mechanical_failure_flags": [
+        "hostile_response_not_deescalated"
+      ],
+      "priority": "medium",
+      "scenario_family": "buyer_says_agent_is_wrong",
+      "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-automotive-service-review-01",
       "selected_action_source": "universal_response_shape",
       "tier": "exploratory_red_findings"
     }
