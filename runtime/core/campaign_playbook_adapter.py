@@ -66,11 +66,34 @@ ROUTESIGNAL_GAP_MAPPINGS: dict[str, dict[str, list[str]]] = {
 def _campaign_context() -> dict[str, Any]:
     source_context = dict((routesignal_playbook.PLAYBOOK.get("campaign_context") or {}))
     return {
-        "product_or_offer_name": str(source_context.get("product") or "RouteSignal CRM"),
+        "product_or_offer_name": str(source_context.get("product") or "RouteSignal"),
+        "product_or_offer_summary": (
+            "RouteSignal is a CRM workflow tool for inbound demo follow-up. "
+            "It helps teams assign the next reply, track reminders, and avoid missed handoffs."
+        ),
+        "high_level_value_proposition": (
+            "The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift."
+        ),
+        "allowed_high_level_capabilities": [
+            "inbound demo follow-up ownership",
+            "next-reply assignment",
+            "reminder and handoff visibility",
+        ],
         "client_name": "Northstar Workflow Labs",
         "objective": str(source_context.get("objective") or "appointment_setting"),
-        "human_followup_owner": str(source_context.get("human_followup_owner") or "Northstar"),
+        "agent_call_objective": "check whether inbound demo follow-up is active enough for a workflow review",
+        "human_followup_owner": str(source_context.get("human_followup_owner") or "Northstar workflow reviewer"),
         "appointment_target": "short workflow review",
+        "human_review_scope": "who owns the lead, when follow-up happens, and where reminders or handoffs slip",
+        "agent_can_say": [
+            "RouteSignal is a CRM workflow tool for inbound demo follow-up",
+            "the call can check follow-up ownership, reminders, and handoffs at a high level",
+        ],
+        "agent_must_not_claim": [
+            "live CRM access",
+            "calendar booking",
+            "guaranteed implementation outcome",
+        ],
         "primary_customer_issue_phrase": str(source_context.get("primary_customer_issue_phrase") or ""),
         "short_relevance_question": str(source_context.get("short_relevance_question") or ""),
         "campaign_purpose_phrase": str(source_context.get("campaign_purpose_phrase") or ""),
@@ -242,6 +265,10 @@ def _resolve_generic_campaign_playbook(campaign: dict[str, Any]) -> dict[str, An
         "short_relevance_question": str(campaign.get("short_relevance_question") or ""),
         "campaign_purpose_phrase": str(campaign.get("campaign_purpose_phrase") or ""),
         "product_detail_answer": str(campaign.get("product_detail_answer") or ""),
+        "product_or_offer_summary": str(campaign.get("product_or_offer_summary") or ""),
+        "high_level_value_proposition": str(campaign.get("high_level_value_proposition") or ""),
+        "allowed_high_level_capabilities": _string_list(campaign.get("allowed_high_level_capabilities")),
+        "agent_call_objective": str(campaign.get("agent_call_objective") or ""),
         "human_followup_owner": str(
             campaign.get("human_followup_owner")
             or campaign.get("human_handoff_role")
@@ -252,6 +279,9 @@ def _resolve_generic_campaign_playbook(campaign: dict[str, Any]) -> dict[str, An
             or campaign.get("scheduling_goal")
             or "human review"
         ),
+        "human_review_scope": str(campaign.get("human_review_scope") or ""),
+        "agent_can_say": _string_list(campaign.get("agent_can_say")),
+        "agent_must_not_claim": _string_list(campaign.get("agent_must_not_claim")),
         "allowed_claims": allowed_claims,
         "blocked_claims": blocked_claims,
         "regulated_cautions": regulated_cautions,

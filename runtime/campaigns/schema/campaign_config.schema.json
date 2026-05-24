@@ -33,6 +33,25 @@
       "type": "string",
       "minLength": 1
     },
+    "product_or_offer_summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "high_level_value_proposition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_high_level_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "agent_call_objective": {
+      "type": "string",
+      "minLength": 1
+    },
     "primary_customer_issue_phrase": {
       "type": "string",
       "minLength": 1
@@ -55,6 +74,24 @@
     "appointment_target": {
       "type": "string",
       "minLength": 1
+    },
+    "human_review_scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "agent_can_say": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "agent_must_not_claim": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "allowed_claims": {
       "type": "array",

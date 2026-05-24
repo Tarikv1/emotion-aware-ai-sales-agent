@@ -5,9 +5,9 @@ Manual reviewers score live-call quality from 1 to 5 across ASR, turn-taking, TT
 
 ## Rehearsal Index
 - Status: `current_only_no_current_runtime_records`
-- Private input discovery count: `460`
+- Private input discovery count: `514`
 - Current-runtime-marked records: `0`
-- Unknown-version records: `425`
+- Unknown-version records: `430`
 - Record count: `0`
 
 ## Records

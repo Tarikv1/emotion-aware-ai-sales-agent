@@ -262,7 +262,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `5` buyer: I cannot afford another thing
-  - Agent: I hear you. Then I should not push anything. The only useful question is whether inbound demo follow-up is already costing more than it should.
+  - Agent: I hear you. Then I will not push anything. The only useful question is whether inbound demo follow-up is already costing more than it should.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `financial_stress_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -647,7 +647,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; category: `fallback`; readiness: `none`
   - Warnings: `none`
@@ -692,7 +692,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; category: `fallback`; readiness: `none`
   - Warnings: `none`
@@ -743,7 +743,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; category: `fallback`; readiness: `none`
   - Warnings: `none`
@@ -789,7 +789,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; category: `fallback`; readiness: `none`
   - Warnings: `none`
@@ -813,7 +813,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `5` buyer: I cannot afford another thing
-  - Agent: I hear you. Then I should not push anything. The only useful question is whether premium pressure is already costing more than it should.
+  - Agent: I hear you. Then I will not push anything. The only useful question is whether premium pressure is already costing more than it should.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `financial_stress_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -834,7 +834,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; category: `fallback`; readiness: `none`
   - Warnings: `none`
@@ -879,7 +879,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; category: `fallback`; readiness: `none`
   - Warnings: `none`
@@ -930,7 +930,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; category: `fallback`; readiness: `none`
   - Warnings: `none`
@@ -975,7 +975,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; category: `fallback`; readiness: `none`
   - Warnings: `none`
@@ -1020,7 +1020,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; category: `fallback`; readiness: `none`
   - Warnings: `none`
@@ -1065,7 +1065,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; category: `fallback`; readiness: `none`
   - Warnings: `none`
@@ -1109,7 +1109,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; category: `fallback`; readiness: `none`
   - Warnings: `none`
@@ -1153,7 +1153,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; category: `fallback`; readiness: `none`
   - Warnings: `none`
@@ -1364,7 +1364,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `5` buyer: I cannot afford another thing
-  - Agent: I hear you. Then I should not push anything. The only useful question is whether manual work is already costing more than it should.
+  - Agent: I hear you. Then I will not push anything. The only useful question is whether manual work is already costing more than it should.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `financial_stress_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -1915,7 +1915,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `5` buyer: I cannot afford another thing
-  - Agent: I hear you. Then I should not push anything. The only useful question is whether repair timing is already costing more than it should.
+  - Agent: I hear you. Then I will not push anything. The only useful question is whether repair timing is already costing more than it should.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `financial_stress_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`
@@ -2466,7 +2466,7 @@ This packet exposes synthetic dry-run conversations for human or ChatGPT review.
   - Warnings: `none`
   - Terminal preservation artifact: `false`
 - Turn `5` buyer: I cannot afford another thing
-  - Agent: I hear you. Then I should not push anything. The only useful question is whether the service need is already costing more than it should.
+  - Agent: I hear you. Then I will not push anything. The only useful question is whether the service need is already costing more than it should.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `financial_stress_context`; category: `rapport_relevance_bridge`; readiness: `none`
   - Warnings: `none`

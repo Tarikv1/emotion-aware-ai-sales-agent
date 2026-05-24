@@ -26,7 +26,7 @@
       "call_control": "continue-call",
       "local_llm_calls_made": false,
       "memory": {
-        "active_gap_scope": "multi_gap",
+        "active_gap_scope": "single_gap",
         "active_stage": "value_mapping",
         "active_topic": "callbacks",
         "answered_gaps": [
@@ -44,28 +44,23 @@
           "sales_progression_question": 1
         },
         "callback_semantic": null,
-        "candidate_gaps": [
-          "callbacks",
-          "manual_tracking",
-          "handoffs"
-        ],
         "candidate_response_signature": "handoff_workflow:bccf279fd9c617f3",
         "candidate_response_subject": "handoff_workflow",
         "cleared_gaps": [
           "callbacks"
         ],
         "last_active_agent_question_type": "permission_to_stop",
-        "last_agent_question_hash": "65e3b3575d13c41c",
+        "last_agent_question_hash": "205f3b9d6454c722",
         "last_agent_question_type": "permission_to_stop",
         "last_customer_intent": "current_gap_clear",
         "last_response_hashes": [
           "c4f25e2c6ac64318",
-          "65e3b3575d13c41c",
+          "205f3b9d6454c722",
           "bccf279fd9c617f3"
         ],
         "last_response_signatures": [
           "opening_permission:c4f25e2c6ac64318",
-          "callback_workflow:65e3b3575d13c41c",
+          "general:a31f8e75f16ad928:205f3b9d6454c722",
           "handoff_workflow:bccf279fd9c617f3"
         ],
         "last_sales_progression_step": "value_mapping",
@@ -124,7 +119,7 @@
         "primary_gap": "callbacks",
         "recent_response_subjects": [
           "opening_permission",
-          "callback_workflow",
+          "general:a31f8e75f16ad928",
           "handoff_workflow"
         ],
         "rejected_topics": [],
@@ -148,7 +143,7 @@
           "candidate_response": null,
           "confidence": 0.0,
           "continuity_reason": null,
-          "dialogue_focus": "qualification",
+          "dialogue_focus": "pain_progression",
           "dialogue_reasoning_act": "selected_gap",
           "legacy_reason": null,
           "local_llm_calls_made": false,
@@ -156,7 +151,7 @@
           "normalized_transcript": "callbacks are fine",
           "opens_prod_102": false,
           "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
-          "previous_question": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "previous_question": "Thanks. Is inbound demo follow-up slipping right now?",
           "previous_question_type": "sales_progression_question",
           "provider_calls_made": false,
           "response_strategy": "map_gap_to_value",
@@ -170,16 +165,12 @@
       },
       "semantic_frame": {
         "action_id": "continue_with_session_policy",
-        "active_gap_scope": "multi_gap",
+        "active_gap_scope": "single_gap",
         "answered_gaps": [
           "callbacks"
         ],
         "applied": true,
-        "candidate_gaps": [
-          "callbacks",
-          "manual_tracking",
-          "handoffs"
-        ],
+        "candidate_gaps": [],
         "candidate_response": "Got it, callbacks are clear. Should I check manual tracking or handoffs, or stop here?",
         "cleared_gaps": [
           "callbacks"
@@ -190,16 +181,12 @@
         "dialogue_focus": "qualification",
         "evidence": {
           "active_gap": "callbacks",
-          "active_gap_scope": "multi_gap",
+          "active_gap_scope": "single_gap",
           "answered_gaps": [
             "callbacks"
           ],
           "buyer_utterance": "callbacks are fine",
-          "candidate_gaps": [
-            "callbacks",
-            "manual_tracking",
-            "handoffs"
-          ],
+          "candidate_gaps": [],
           "cleared_gaps": [],
           "confirmed_gaps": [],
           "conversation_stage": "qualification",
@@ -245,7 +232,7 @@
             ],
             "vertical_id": "b2b_saas"
           },
-          "previous_agent_question_text": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "previous_agent_question_text": "Thanks. Is inbound demo follow-up slipping right now?",
           "previous_agent_question_type": "sales_progression_question"
         },
         "handoff_target_state_update": {},
@@ -255,7 +242,7 @@
           "classify as pain",
           "erase confirmed pain"
         ],
-        "next_action_hint": "ask_remaining_diagnostic",
+        "next_action_hint": "ask_next_diagnostic",
         "opens_prod_102": false,
         "outgoing_active_gap_scope": "unknown",
         "outgoing_candidate_gaps": [],
@@ -326,7 +313,7 @@
       "call_control": "continue-call",
       "local_llm_calls_made": false,
       "memory": {
-        "active_gap_scope": "multi_gap",
+        "active_gap_scope": "single_gap",
         "active_stage": "value_mapping",
         "active_topic": "callbacks",
         "answered_gaps": [
@@ -334,45 +321,40 @@
         ],
         "answered_topics": [
           "callbacks",
-          "qualification",
-          "timing"
+          "pain_progression",
+          "qualification"
         ],
         "appointment_close_gap": null,
         "appointment_close_ready": false,
         "asked_question_type_counts": {
-          "appointment_time": 1,
           "permission_check": 1,
-          "sales_progression_question": 1
+          "sales_progression_question": 2
         },
         "callback_semantic": "callback_workflow_gap",
-        "candidate_gaps": [
-          "callbacks",
-          "manual_tracking",
-          "handoffs"
-        ],
-        "candidate_response_signature": "callback_workflow:e553559e9af10234",
-        "candidate_response_subject": "callback_workflow",
+        "candidate_response_signature": "general:e66e1c4dc4c4b725:8a80ccbd9a88f514",
+        "candidate_response_subject": "general:e66e1c4dc4c4b725",
         "confirmed_gaps": [
           "callbacks"
         ],
-        "last_active_agent_question_type": "appointment_time",
-        "last_agent_question_hash": "65e3b3575d13c41c",
-        "last_agent_question_type": "appointment_time",
+        "last_active_agent_question_type": "sales_progression_question",
+        "last_agent_question_hash": "205f3b9d6454c722",
+        "last_agent_question_type": "sales_progression_question",
         "last_customer_intent": "pain_confirmed",
         "last_response_hashes": [
           "c4f25e2c6ac64318",
-          "65e3b3575d13c41c",
-          "e553559e9af10234"
+          "205f3b9d6454c722",
+          "8a80ccbd9a88f514"
         ],
         "last_response_signatures": [
           "opening_permission:c4f25e2c6ac64318",
-          "callback_workflow:65e3b3575d13c41c",
-          "callback_workflow:e553559e9af10234"
+          "general:a31f8e75f16ad928:205f3b9d6454c722",
+          "general:e66e1c4dc4c4b725:8a80ccbd9a88f514"
         ],
         "last_sales_progression_step": "value_mapping",
         "outgoing_active_gap_scope": "unknown",
         "outgoing_candidate_gaps": [],
-        "outgoing_question_type": "appointment_time",
+        "outgoing_question_type": "sales_progression_question",
+        "pending_tentative_gap": null,
         "playbook": {
           "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
           "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
@@ -422,24 +404,25 @@
         "primary_gap": "callbacks",
         "recent_response_subjects": [
           "opening_permission",
-          "callback_workflow",
-          "callback_workflow"
+          "general:a31f8e75f16ad928",
+          "general:e66e1c4dc4c4b725"
         ],
         "rejected_topics": [],
         "schema_version": 1,
         "selected_gap": "callbacks",
         "stored_audio_data": false,
-        "stores_secrets": false
+        "stores_secrets": false,
+        "tentative_gap": null
       },
       "opens_prod_102": false,
       "provider_calls_made": false,
-      "response": "Got it, missed callbacks is the real gap. RouteSignal helps demo leads stay assigned, reminded, and followed up before callback gaps turn into lost opportunities. The next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
+      "response": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
       "selected_action": {
-        "action_id": "request_appointment_time",
+        "action_id": "continue_with_session_policy",
         "call_control": "continue-call",
         "candidate_response_available": true,
-        "continuity_reason": "contextual_pain_confirmed",
-        "dialogue_focus": "timing",
+        "continuity_reason": "universal_response_shape_enforced",
+        "dialogue_focus": "pain_progression",
         "pragmatic_move": {
           "applied": true,
           "campaign_id": "campaign-prod-005-b2b-software",
@@ -454,7 +437,7 @@
           "normalized_transcript": "missed callbacks happen sometimes",
           "opens_prod_102": false,
           "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
-          "previous_question": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "previous_question": "Thanks. Is inbound demo follow-up slipping right now?",
           "previous_question_type": "sales_progression_question",
           "provider_calls_made": false,
           "response_strategy": "map_gap_to_value",
@@ -462,22 +445,18 @@
           "selected_gap": "callbacks",
           "target_action": "continue_with_session_policy"
         },
-        "selected_gap": "callbacks",
-        "source": "contextual_buyer_semantics",
-        "template_id": "appointment_time_request"
+        "selected_gap": null,
+        "source": "universal_response_shape",
+        "template_id": "session_policy_universal_response_shape_enforced"
       },
       "semantic_frame": {
         "action_id": "request_appointment_time",
-        "active_gap_scope": "multi_gap",
+        "active_gap_scope": "single_gap",
         "answered_gaps": [
           "callbacks"
         ],
         "applied": true,
-        "candidate_gaps": [
-          "callbacks",
-          "manual_tracking",
-          "handoffs"
-        ],
+        "candidate_gaps": [],
         "candidate_response": "Got it, missed callbacks is the real gap. RouteSignal helps demo leads stay assigned, reminded, and followed up before callback gaps turn into lost opportunities. The next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
         "cleared_gaps": [],
         "confidence": 0.88,
@@ -488,16 +467,12 @@
         "dialogue_focus": "timing",
         "evidence": {
           "active_gap": "callbacks",
-          "active_gap_scope": "multi_gap",
+          "active_gap_scope": "single_gap",
           "answered_gaps": [
             "callbacks"
           ],
           "buyer_utterance": "missed callbacks happen sometimes",
-          "candidate_gaps": [
-            "callbacks",
-            "manual_tracking",
-            "handoffs"
-          ],
+          "candidate_gaps": [],
           "cleared_gaps": [],
           "confirmed_gaps": [],
           "conversation_stage": "qualification",
@@ -543,7 +518,7 @@
             ],
             "vertical_id": "b2b_saas"
           },
-          "previous_agent_question_text": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "previous_agent_question_text": "Thanks. Is inbound demo follow-up slipping right now?",
           "previous_agent_question_type": "sales_progression_question"
         },
         "handoff_target_state_update": {},
@@ -624,53 +599,48 @@
       "call_control": "continue-call",
       "local_llm_calls_made": false,
       "memory": {
-        "active_gap_scope": "multi_gap",
+        "active_gap_scope": "single_gap",
         "active_stage": "value_mapping",
         "active_topic": "duplicates",
         "answered_gaps": [
           "duplicates"
         ],
         "answered_topics": [
+          "pain_progression",
           "qualification",
-          "routing",
-          "timing"
+          "routing"
         ],
         "appointment_close_gap": null,
         "appointment_close_ready": false,
         "asked_question_type_counts": {
-          "appointment_time": 1,
           "permission_check": 1,
-          "sales_progression_question": 1
+          "sales_progression_question": 2
         },
         "callback_semantic": null,
-        "candidate_gaps": [
-          "callbacks",
-          "manual_tracking",
-          "handoffs"
-        ],
-        "candidate_response_signature": "safe_next_step:c85bc870fa75c5f3",
-        "candidate_response_subject": "safe_next_step",
+        "candidate_response_signature": "general:247db8fa544b85bb:bcc574989652231b",
+        "candidate_response_subject": "general:247db8fa544b85bb",
         "confirmed_gaps": [
           "duplicates"
         ],
-        "last_active_agent_question_type": "appointment_time",
-        "last_agent_question_hash": "65e3b3575d13c41c",
-        "last_agent_question_type": "appointment_time",
+        "last_active_agent_question_type": "sales_progression_question",
+        "last_agent_question_hash": "205f3b9d6454c722",
+        "last_agent_question_type": "sales_progression_question",
         "last_customer_intent": "pain_confirmed",
         "last_response_hashes": [
           "c4f25e2c6ac64318",
-          "65e3b3575d13c41c",
-          "c85bc870fa75c5f3"
+          "205f3b9d6454c722",
+          "bcc574989652231b"
         ],
         "last_response_signatures": [
           "opening_permission:c4f25e2c6ac64318",
-          "callback_workflow:65e3b3575d13c41c",
-          "safe_next_step:c85bc870fa75c5f3"
+          "general:a31f8e75f16ad928:205f3b9d6454c722",
+          "general:247db8fa544b85bb:bcc574989652231b"
         ],
         "last_sales_progression_step": "value_mapping",
         "outgoing_active_gap_scope": "unknown",
         "outgoing_candidate_gaps": [],
-        "outgoing_question_type": "appointment_time",
+        "outgoing_question_type": "sales_progression_question",
+        "pending_tentative_gap": null,
         "playbook": {
           "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
           "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
@@ -719,31 +689,32 @@
         "primary_gap": "duplicates",
         "recent_response_subjects": [
           "opening_permission",
-          "callback_workflow",
-          "safe_next_step"
+          "general:a31f8e75f16ad928",
+          "general:247db8fa544b85bb"
         ],
         "rejected_topics": [],
         "schema_version": 1,
         "selected_gap": "duplicates",
         "stored_audio_data": false,
-        "stores_secrets": false
+        "stores_secrets": false,
+        "tentative_gap": null
       },
       "opens_prod_102": false,
       "provider_calls_made": false,
-      "response": "Got it, duplicate lead ownership is the real gap. RouteSignal can review whether duplicate requests are creating ownership confusion. The next step is a short workflow review with someone from Northstar. They would check duplicate lead ownership against your actual follow-up flow. What time works for a quick call?",
+      "response": "Got it, duplicate handling is the issue. Is that causing ownership confusion, or mostly a general process concern?",
       "selected_action": {
-        "action_id": "request_appointment_time",
+        "action_id": "continue_with_session_policy",
         "call_control": "continue-call",
         "candidate_response_available": true,
-        "continuity_reason": "contextual_pain_confirmed",
-        "dialogue_focus": "timing",
+        "continuity_reason": "universal_response_shape_enforced",
+        "dialogue_focus": "pain_progression",
         "pragmatic_move": {
           "applied": false,
           "campaign_id": "campaign-prod-005-b2b-software",
           "candidate_response": null,
           "confidence": 0.0,
           "continuity_reason": null,
-          "dialogue_focus": "qualification",
+          "dialogue_focus": "pain_progression",
           "dialogue_reasoning_act": "selected_gap",
           "legacy_reason": null,
           "local_llm_calls_made": false,
@@ -751,7 +722,7 @@
           "normalized_transcript": "duplicate demo requests confuse ownership",
           "opens_prod_102": false,
           "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
-          "previous_question": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "previous_question": "Thanks. Is inbound demo follow-up slipping right now?",
           "previous_question_type": "sales_progression_question",
           "provider_calls_made": false,
           "response_strategy": "map_gap_to_value",
@@ -759,22 +730,18 @@
           "selected_gap": null,
           "target_action": null
         },
-        "selected_gap": "duplicates",
-        "source": "contextual_buyer_semantics",
-        "template_id": "appointment_time_request"
+        "selected_gap": null,
+        "source": "universal_response_shape",
+        "template_id": "session_policy_universal_response_shape_enforced"
       },
       "semantic_frame": {
         "action_id": "request_appointment_time",
-        "active_gap_scope": "multi_gap",
+        "active_gap_scope": "single_gap",
         "answered_gaps": [
           "duplicates"
         ],
         "applied": true,
-        "candidate_gaps": [
-          "callbacks",
-          "manual_tracking",
-          "handoffs"
-        ],
+        "candidate_gaps": [],
         "candidate_response": "Got it, duplicate lead ownership is the real gap. RouteSignal can review whether duplicate requests are creating ownership confusion. The next step is a short workflow review with someone from Northstar. They would check duplicate lead ownership against your actual follow-up flow. What time works for a quick call?",
         "cleared_gaps": [],
         "confidence": 0.88,
@@ -785,16 +752,12 @@
         "dialogue_focus": "timing",
         "evidence": {
           "active_gap": "duplicates",
-          "active_gap_scope": "multi_gap",
+          "active_gap_scope": "single_gap",
           "answered_gaps": [
             "duplicates"
           ],
           "buyer_utterance": "duplicate demo requests confuse ownership",
-          "candidate_gaps": [
-            "callbacks",
-            "manual_tracking",
-            "handoffs"
-          ],
+          "candidate_gaps": [],
           "cleared_gaps": [],
           "confirmed_gaps": [],
           "conversation_stage": "qualification",
@@ -839,7 +802,7 @@
             ],
             "vertical_id": "b2b_saas"
           },
-          "previous_agent_question_text": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "previous_agent_question_text": "Thanks. Is inbound demo follow-up slipping right now?",
           "previous_agent_question_type": "sales_progression_question"
         },
         "handoff_target_state_update": {},
@@ -919,53 +882,47 @@
       "call_control": "continue-call",
       "local_llm_calls_made": false,
       "memory": {
-        "active_gap_scope": "multi_gap",
-        "active_stage": "value_mapping",
+        "active_gap_scope": "single_gap",
+        "active_stage": "qualification",
         "active_topic": "visibility",
         "answered_gaps": [
           "visibility"
         ],
         "answered_topics": [
-          "qualification",
-          "timing",
-          "visibility"
+          "pain_progression",
+          "qualification"
         ],
         "appointment_close_gap": null,
         "appointment_close_ready": false,
         "asked_question_type_counts": {
-          "appointment_time": 1,
           "permission_check": 1,
-          "sales_progression_question": 1
+          "sales_progression_question": 2
         },
         "callback_semantic": null,
-        "candidate_gaps": [
-          "callbacks",
-          "manual_tracking",
-          "handoffs"
-        ],
-        "candidate_response_signature": "safe_next_step:9683b1ad5ba1f298",
-        "candidate_response_subject": "safe_next_step",
+        "candidate_response_signature": "general:7b121165ed9a89fd:10e016f5f4c50628",
+        "candidate_response_subject": "general:7b121165ed9a89fd",
         "confirmed_gaps": [
           "visibility"
         ],
-        "last_active_agent_question_type": "appointment_time",
-        "last_agent_question_hash": "65e3b3575d13c41c",
-        "last_agent_question_type": "appointment_time",
+        "last_active_agent_question_type": "sales_progression_question",
+        "last_agent_question_hash": "205f3b9d6454c722",
+        "last_agent_question_type": "sales_progression_question",
         "last_customer_intent": "pain_confirmed",
         "last_response_hashes": [
           "c4f25e2c6ac64318",
-          "65e3b3575d13c41c",
-          "9683b1ad5ba1f298"
+          "205f3b9d6454c722",
+          "10e016f5f4c50628"
         ],
         "last_response_signatures": [
           "opening_permission:c4f25e2c6ac64318",
-          "callback_workflow:65e3b3575d13c41c",
-          "safe_next_step:9683b1ad5ba1f298"
+          "general:a31f8e75f16ad928:205f3b9d6454c722",
+          "general:7b121165ed9a89fd:10e016f5f4c50628"
         ],
-        "last_sales_progression_step": "value_mapping",
+        "last_sales_progression_step": "qualification",
         "outgoing_active_gap_scope": "unknown",
         "outgoing_candidate_gaps": [],
-        "outgoing_question_type": "appointment_time",
+        "outgoing_question_type": "sales_progression_question",
+        "pending_tentative_gap": null,
         "playbook": {
           "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
           "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
@@ -1013,31 +970,32 @@
         "primary_gap": "visibility",
         "recent_response_subjects": [
           "opening_permission",
-          "callback_workflow",
-          "safe_next_step"
+          "general:a31f8e75f16ad928",
+          "general:7b121165ed9a89fd"
         ],
         "rejected_topics": [],
         "schema_version": 1,
         "selected_gap": "visibility",
         "stored_audio_data": false,
-        "stores_secrets": false
+        "stores_secrets": false,
+        "tentative_gap": null
       },
       "opens_prod_102": false,
       "provider_calls_made": false,
-      "response": "Got it, manager follow-up visibility is the real gap. RouteSignal makes follow-up status and owner visibility easier to review. The next step is a short workflow review with someone from Northstar. They would check manager follow-up visibility against your actual follow-up flow. What time works for a quick call?",
+      "response": "Got it, manager visibility is the issue. Is that causing missed follow-up, or mostly extra status checking?",
       "selected_action": {
-        "action_id": "request_appointment_time",
+        "action_id": "continue_with_session_policy",
         "call_control": "continue-call",
         "candidate_response_available": true,
-        "continuity_reason": "contextual_pain_confirmed",
-        "dialogue_focus": "timing",
+        "continuity_reason": "universal_response_shape_enforced",
+        "dialogue_focus": "pain_progression",
         "pragmatic_move": {
           "applied": false,
           "campaign_id": "campaign-prod-005-b2b-software",
           "candidate_response": null,
           "confidence": 0.0,
           "continuity_reason": null,
-          "dialogue_focus": "qualification",
+          "dialogue_focus": "pain_progression",
           "dialogue_reasoning_act": "unknown",
           "legacy_reason": null,
           "local_llm_calls_made": false,
@@ -1045,7 +1003,7 @@
           "normalized_transcript": "managers cannot see who followed up",
           "opens_prod_102": false,
           "pragmatics_id": "DIALOGUE-PRAGMATICS-001",
-          "previous_question": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "previous_question": "Thanks. Is inbound demo follow-up slipping right now?",
           "previous_question_type": "sales_progression_question",
           "provider_calls_made": false,
           "response_strategy": "refocus_to_sales_call",
@@ -1053,22 +1011,18 @@
           "selected_gap": null,
           "target_action": null
         },
-        "selected_gap": "visibility",
-        "source": "contextual_buyer_semantics",
-        "template_id": "appointment_time_request"
+        "selected_gap": null,
+        "source": "universal_response_shape",
+        "template_id": "session_policy_universal_response_shape_enforced"
       },
       "semantic_frame": {
         "action_id": "request_appointment_time",
-        "active_gap_scope": "multi_gap",
+        "active_gap_scope": "single_gap",
         "answered_gaps": [
           "visibility"
         ],
         "applied": true,
-        "candidate_gaps": [
-          "callbacks",
-          "manual_tracking",
-          "handoffs"
-        ],
+        "candidate_gaps": [],
         "candidate_response": "Got it, manager follow-up visibility is the real gap. RouteSignal makes follow-up status and owner visibility easier to review. The next step is a short workflow review with someone from Northstar. They would check manager follow-up visibility against your actual follow-up flow. What time works for a quick call?",
         "cleared_gaps": [],
         "confidence": 0.88,
@@ -1079,16 +1033,12 @@
         "dialogue_focus": "timing",
         "evidence": {
           "active_gap": "visibility",
-          "active_gap_scope": "multi_gap",
+          "active_gap_scope": "single_gap",
           "answered_gaps": [
             "visibility"
           ],
           "buyer_utterance": "managers cannot see who followed up",
-          "candidate_gaps": [
-            "callbacks",
-            "manual_tracking",
-            "handoffs"
-          ],
+          "candidate_gaps": [],
           "cleared_gaps": [],
           "confirmed_gaps": [],
           "conversation_stage": "qualification",
@@ -1132,7 +1082,7 @@
             ],
             "vertical_id": "b2b_saas"
           },
-          "previous_agent_question_text": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "previous_agent_question_text": "Thanks. Is inbound demo follow-up slipping right now?",
           "previous_agent_question_type": "sales_progression_question"
         },
         "handoff_target_state_update": {},

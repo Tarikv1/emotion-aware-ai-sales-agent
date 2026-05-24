@@ -5,14 +5,18 @@
   "current_only_mode": true,
   "current_runtime_marked_record_count": 0,
   "current_runtime_reference": {
-    "git_head_short": "e1d1dca",
+    "git_head_short": "5a90594",
     "git_unavailable_reason": null,
     "runtime_manifest_entry_count": 66,
     "runtime_manifest_hash": "b0370cb94fe82889c95f7746f49400402d6d9830ad17c42687e3054f0bb8fcc8",
     "runtime_manifest_unavailable_reason": null,
     "source_worktree_dirty": true,
     "source_worktree_dirty_paths": [
-      "runtime/core/contextual_buyer_semantics.py",
+      "runtime/campaigns/examples/synthetic-insurance-review.json",
+      "runtime/campaigns/examples/synthetic-telecom-plan-review.json",
+      "runtime/campaigns/schema/campaign_config.schema.json",
+      "runtime/core/campaign_playbook_adapter.py",
+      "runtime/core/dialogue_manager.py",
       "runtime/core/live_voice_session_policy.py",
       "runtime/core/universal_conversation_policy_runtime.py"
     ],
@@ -20,13 +24,13 @@
     "universal_policy_runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001"
   },
   "freshness_counts": {
-    "stale_pre_current_runtime_artifact": 35,
-    "unknown_version_private_artifact": 425
+    "stale_pre_current_runtime_artifact": 84,
+    "unknown_version_private_artifact": 430
   },
-  "generated_at": "2026-05-24T12:27:34.243093+00:00",
+  "generated_at": "2026-05-24T14:24:33.425276+00:00",
   "mechanical_issue_counts": {},
-  "private_input_discovery_count": 460,
-  "private_turn_files_parsed": 460,
+  "private_input_discovery_count": 514,
+  "private_turn_files_parsed": 514,
   "private_turn_files_unreadable": 0,
   "recommended_live_rehearsal_scenarios": [
     {
@@ -95,7 +99,7 @@
   ],
   "records": [],
   "records_included": 0,
-  "stale_or_legacy_record_count": 35,
+  "stale_or_legacy_record_count": 84,
   "status": "current_only_no_current_runtime_records",
   "tool_side_effects": {
     "generator_creates_calendar_event": false,
@@ -107,6 +111,6 @@
     "generator_writes_crm": false
   },
   "top_concerning_rehearsal_records_by_mechanical_signals_only": [],
-  "unknown_version_record_count": 425,
+  "unknown_version_record_count": 430,
   "unreadable_private_inputs": []
 }

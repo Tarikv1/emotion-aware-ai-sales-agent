@@ -4,11 +4,11 @@
   "current_only_mode": true,
   "current_runtime_marked_record_count": 0,
   "freshness_counts": {
-    "stale_pre_current_runtime_artifact": 35,
-    "unknown_version_private_artifact": 425
+    "stale_pre_current_runtime_artifact": 84,
+    "unknown_version_private_artifact": 430
   },
   "mechanical_issue_counts": {},
-  "private_input_discovery_count": 460,
+  "private_input_discovery_count": 514,
   "rehearsal_record_count": 0,
   "required_files": [
     "rehearsal_packet.md",
@@ -29,7 +29,7 @@
     "generator_sends_email": false,
     "generator_writes_crm": false
   },
-  "stale_or_legacy_record_count": 35,
+  "stale_or_legacy_record_count": 84,
   "status": "current_only_no_current_runtime_records",
-  "unknown_version_record_count": 425
+  "unknown_version_record_count": 430
 }

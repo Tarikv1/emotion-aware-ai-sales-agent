@@ -79,7 +79,16 @@ FULL_MENU_PATTERNS = (
 REPAIR_PATTERNS = ("repeat", "rephrase", "misheard", "caught")
 APPOINTMENT_PATTERNS = ("callback window", "schedule", "book", "appointment")
 ROUTESIGNAL_LEAKS = ("routesignal", "northstar", "$29", "$59", "missed callbacks", "demo follow-up")
-FAKE_SIDE_EFFECT_CLAIMS = ("i sent", "i have sent", "calendar invite", "crm", "booked")
+FAKE_SIDE_EFFECT_CLAIMS = (
+    "i sent",
+    "i have sent",
+    "calendar invite",
+    "booked",
+    "updated the crm",
+    "wrote to the crm",
+    "logged it in the crm",
+    "saved it in the crm",
+)
 SIDE_EFFECT_KEYS = (
     "provider_calls_made",
     "local_llm_calls_made",

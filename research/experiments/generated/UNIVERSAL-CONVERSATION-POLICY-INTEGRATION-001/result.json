@@ -579,7 +579,7 @@
       "campaign_selector_mode": "generic_config",
       "cleared_gaps": null,
       "confirmed_gaps": null,
-      "final_response": "Sure. This call is only to check whether a short human review is useful around premium pressure. The quick question is whether that area is causing friction now.",
+      "final_response": "Sure. This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. The next step, if useful, is the licensed insurance specialist reviewing the actual details.",
       "label": "product_detail",
       "semantic": "product_detail_limit_question",
       "side_effect_flags": {

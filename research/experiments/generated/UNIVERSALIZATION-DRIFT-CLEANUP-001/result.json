@@ -159,16 +159,23 @@
         "pain_acknowledgement_phrase"
       ],
       "routesignal_adapter_context_fields": [
+        "agent_call_objective",
+        "agent_can_say",
+        "agent_must_not_claim",
         "allowed_claims",
+        "allowed_high_level_capabilities",
         "appointment_target",
         "blocked_claims",
         "campaign_purpose_phrase",
         "client_name",
+        "high_level_value_proposition",
         "human_followup_owner",
+        "human_review_scope",
         "objective",
         "primary_customer_issue_phrase",
         "product_detail_answer",
         "product_or_offer_name",
+        "product_or_offer_summary",
         "short_relevance_question"
       ]
     }

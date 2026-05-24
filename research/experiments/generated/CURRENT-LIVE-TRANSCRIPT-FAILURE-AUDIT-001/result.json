@@ -1,0 +1,1416 @@
+{
+  "campaign_selector_issue_count": 0,
+  "checkpoint_id": "CURRENT-LIVE-TRANSCRIPT-FAILURE-AUDIT-001",
+  "classification_counts": {
+    "current_live_asr_near_miss_repair_defect": 1,
+    "current_live_campaign_positioning_defect": 1,
+    "current_live_campaign_selector_issue": 0,
+    "current_live_direct_question_defect": 3,
+    "current_live_latency_or_turn_taking_issue": 0,
+    "current_live_offer_scope_model_defect": 1,
+    "current_live_repeated_response_defect": 2,
+    "current_live_runtime_defect": 7,
+    "current_live_stop_detection_defect": 1,
+    "current_live_tts_audio_issue": 0,
+    "needs_human_review": 0,
+    "not_reproduced": 38,
+    "stale_or_unknown_version_artifact": 0
+  },
+  "current_git_head_short": "5a90594",
+  "current_live_asr_near_miss_repair_defect_count": 1,
+  "current_live_direct_question_defect_count": 3,
+  "current_live_offer_scope_model_defect_count": 1,
+  "current_live_runtime_defect_count": 7,
+  "current_live_stop_detection_defect_count": 1,
+  "generated_at": "2026-05-24T14:23:42.820131+00:00",
+  "known_current_session_hits": {
+    "1c635f63-314a-48cf-9257-313da0935f5d": 11,
+    "2d476e4f-ff95-44e1-9c42-72476b41676e": 12,
+    "8318356e-9217-40a4-b230-ee94b54a3d4a": 12,
+    "fce64600-5d0c-4f99-80dc-5d5e431f6791": 10
+  },
+  "latency_issue_count": 0,
+  "private_records_total": 482,
+  "public_evidence_redaction": {
+    "included_fields": [
+      "session_id",
+      "campaign_id",
+      "runtime marker",
+      "git head",
+      "transcript and response hashes",
+      "synthetic replay hints",
+      "classification labels"
+    ],
+    "raw_private_responses_copied": false,
+    "raw_private_transcripts_copied": false
+  },
+  "records": [
+    {
+      "call_control": "continue-call",
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification_reasons": [
+        "direct product or offer question did not receive a product/offer answer first",
+        "response over-centered review/appointment framing instead of offer value"
+      ],
+      "classifications": [
+        "current_live_runtime_defect",
+        "current_live_direct_question_defect",
+        "current_live_offer_scope_model_defect",
+        "current_live_campaign_positioning_defect"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "43a42fd2490ada48",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "1c635f63-314a-48cf-9257-313da0935f5d",
+      "session_turn_index": 11,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151748.json",
+      "source_modified_utc": "2026-05-24T13:17:48.925019+00:00",
+      "source_path_hash": "e0b8de87c03cea3d",
+      "synthetic_replay_hint": "synthetic_direct_product_question",
+      "transcript_sha256_16": "1eabd7170293c5a7"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "7666c8d9766ca640",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "1c635f63-314a-48cf-9257-313da0935f5d",
+      "session_turn_index": 10,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151721.json",
+      "source_modified_utc": "2026-05-24T13:17:21.580108+00:00",
+      "source_path_hash": "7d9940aa5d53b344",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "40b4e130bd23b24a"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "a6f22edb47b1428a",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "1c635f63-314a-48cf-9257-313da0935f5d",
+      "session_turn_index": 9,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151645.json",
+      "source_modified_utc": "2026-05-24T13:16:45.752786+00:00",
+      "source_path_hash": "b8e98ece152332fe",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "8334f99edff62b10"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "64f90d89f3ee0b7c",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "1c635f63-314a-48cf-9257-313da0935f5d",
+      "session_turn_index": 8,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151629.json",
+      "source_modified_utc": "2026-05-24T13:16:29.259216+00:00",
+      "source_path_hash": "75a3c0b8593f3d5f",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "d9b138e058e50043"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "9f0f2fdd151b3a9a",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "1c635f63-314a-48cf-9257-313da0935f5d",
+      "session_turn_index": 7,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151613.json",
+      "source_modified_utc": "2026-05-24T13:16:13.378683+00:00",
+      "source_path_hash": "d01614117db2b55e",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "0d83a5517be31c44"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "f9b7682e182b0cf0",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "1c635f63-314a-48cf-9257-313da0935f5d",
+      "session_turn_index": 6,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151553.json",
+      "source_modified_utc": "2026-05-24T13:15:53.801645+00:00",
+      "source_path_hash": "f0888b4ad80f0c33",
+      "synthetic_replay_hint": "synthetic_repeated_or_unanswered_challenge",
+      "transcript_sha256_16": "e9bb886654426f3e"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "8768387ea64d1afc",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "1c635f63-314a-48cf-9257-313da0935f5d",
+      "session_turn_index": 5,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151535.json",
+      "source_modified_utc": "2026-05-24T13:15:35.601532+00:00",
+      "source_path_hash": "ef60ed08afabe242",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "dc8ded9e70b9b51f"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "0a9d0574b840eba4",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "1c635f63-314a-48cf-9257-313da0935f5d",
+      "session_turn_index": 4,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151518.json",
+      "source_modified_utc": "2026-05-24T13:15:18.585813+00:00",
+      "source_path_hash": "186d2d57ab0900c4",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "d04c0a8a0f31a88e"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "6fe1f7848180ca20",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "1c635f63-314a-48cf-9257-313da0935f5d",
+      "session_turn_index": 3,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151459.json",
+      "source_modified_utc": "2026-05-24T13:14:59.054360+00:00",
+      "source_path_hash": "7e1ad7a79a4eae43",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "5c5a2ccbff2e801e"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "d7e86160e262a7a7",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "1c635f63-314a-48cf-9257-313da0935f5d",
+      "session_turn_index": 2,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151444.json",
+      "source_modified_utc": "2026-05-24T13:14:44.843087+00:00",
+      "source_path_hash": "257123e5a4fa864c",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "2f6bcbe9b213f214"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "synthetic-telecom-plan-review",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "e87f38b73a454501",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "1c635f63-314a-48cf-9257-313da0935f5d",
+      "session_turn_index": 1,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151415.json",
+      "source_modified_utc": "2026-05-24T13:14:15.275293+00:00",
+      "source_path_hash": "55e8a57caa52c724",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "58f0d512c6eed8ca"
+    },
+    {
+      "call_control": "schedule-and-end",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "78982ba039402176",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "fce64600-5d0c-4f99-80dc-5d5e431f6791",
+      "session_turn_index": 10,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151354.json",
+      "source_modified_utc": "2026-05-24T13:13:54.871436+00:00",
+      "source_path_hash": "c8c66d441b3c92d4",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "7567dcbeca1f0746"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "3cdd165a45e7711a",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "fce64600-5d0c-4f99-80dc-5d5e431f6791",
+      "session_turn_index": 9,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151340.json",
+      "source_modified_utc": "2026-05-24T13:13:40.670439+00:00",
+      "source_path_hash": "04b8dda82796810b",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "6434c51fa4df3703"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "40699f706d4ff3ca",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "fce64600-5d0c-4f99-80dc-5d5e431f6791",
+      "session_turn_index": 8,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151328.json",
+      "source_modified_utc": "2026-05-24T13:13:28.009386+00:00",
+      "source_path_hash": "9a2cd6e897c28866",
+      "synthetic_replay_hint": "synthetic_repeated_or_unanswered_challenge",
+      "transcript_sha256_16": "31389177d6447382"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "d489579277796074",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "fce64600-5d0c-4f99-80dc-5d5e431f6791",
+      "session_turn_index": 7,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151312.json",
+      "source_modified_utc": "2026-05-24T13:13:12.722545+00:00",
+      "source_path_hash": "e4bf8c2b8f867ea9",
+      "synthetic_replay_hint": "synthetic_repeated_or_unanswered_challenge",
+      "transcript_sha256_16": "abb518c4f08e480d"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "462fbeeb66a8d4a4",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "fce64600-5d0c-4f99-80dc-5d5e431f6791",
+      "session_turn_index": 6,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151259.json",
+      "source_modified_utc": "2026-05-24T13:12:59.838422+00:00",
+      "source_path_hash": "bdd10eda80ce90f9",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "67c352bb85de4d03"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "eedcee8738c4f232",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "fce64600-5d0c-4f99-80dc-5d5e431f6791",
+      "session_turn_index": 5,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151244.json",
+      "source_modified_utc": "2026-05-24T13:12:44.301135+00:00",
+      "source_path_hash": "f83544bae04ddaf4",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "d1c6130c30f94453"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "3cdd165a45e7711a",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "fce64600-5d0c-4f99-80dc-5d5e431f6791",
+      "session_turn_index": 4,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151230.json",
+      "source_modified_utc": "2026-05-24T13:12:30.351529+00:00",
+      "source_path_hash": "0647a0935915dba4",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "e50df02eacfe37df"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "8a80ccbd9a88f514",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "fce64600-5d0c-4f99-80dc-5d5e431f6791",
+      "session_turn_index": 3,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151218.json",
+      "source_modified_utc": "2026-05-24T13:12:18.935359+00:00",
+      "source_path_hash": "b8cc7dbefefe20d7",
+      "synthetic_replay_hint": "synthetic_callback_asr_near_miss",
+      "transcript_sha256_16": "1ea89699d43c6f07"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "2c3adc56ec47f25c",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "fce64600-5d0c-4f99-80dc-5d5e431f6791",
+      "session_turn_index": 2,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151207.json",
+      "source_modified_utc": "2026-05-24T13:12:07.006968+00:00",
+      "source_path_hash": "8a2ab8dfdb8b8dd5",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "2f203d399dc9deda"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "c4f25e2c6ac64318",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "fce64600-5d0c-4f99-80dc-5d5e431f6791",
+      "session_turn_index": 1,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151147.json",
+      "source_modified_utc": "2026-05-24T13:11:47.737535+00:00",
+      "source_path_hash": "a8607dd1b1d11f4c",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "58f0d512c6eed8ca"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "stop-like ASR variant did not end the call"
+      ],
+      "classifications": [
+        "current_live_runtime_defect",
+        "current_live_stop_detection_defect"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "3bab68d372ea8256",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "2d476e4f-ff95-44e1-9c42-72476b41676e",
+      "session_turn_index": 12,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151124.json",
+      "source_modified_utc": "2026-05-24T13:11:24.315684+00:00",
+      "source_path_hash": "a9c8e8f411f853e2",
+      "synthetic_replay_hint": "synthetic_stop_request_variant",
+      "transcript_sha256_16": "fd82a6d01d1e65a9"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "review-process question was not answered directly"
+      ],
+      "classifications": [
+        "current_live_runtime_defect",
+        "current_live_direct_question_defect"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "50158c9fe285adb9",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "2d476e4f-ff95-44e1-9c42-72476b41676e",
+      "session_turn_index": 11,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151106.json",
+      "source_modified_utc": "2026-05-24T13:11:06.467543+00:00",
+      "source_path_hash": "b22effd9ed8d5c0c",
+      "synthetic_replay_hint": "synthetic_review_process_question",
+      "transcript_sha256_16": "9ba6e79b92f51393"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "d4eb758d88941330",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "2d476e4f-ff95-44e1-9c42-72476b41676e",
+      "session_turn_index": 10,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151054.json",
+      "source_modified_utc": "2026-05-24T13:10:54.264553+00:00",
+      "source_path_hash": "4019acc79697ad5a",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "578b2aadcc960e63"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "d489579277796074",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "2d476e4f-ff95-44e1-9c42-72476b41676e",
+      "session_turn_index": 9,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151039.json",
+      "source_modified_utc": "2026-05-24T13:10:39.741021+00:00",
+      "source_path_hash": "93780fc1c92fa44e",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "17e2cd856421d5e5"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "9d41302f81c18958",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "2d476e4f-ff95-44e1-9c42-72476b41676e",
+      "session_turn_index": 8,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-151019.json",
+      "source_modified_utc": "2026-05-24T13:10:19.126332+00:00",
+      "source_path_hash": "40386bd691a5896e",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "deb6165b31b2a1de"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "be01169528ff2eb3",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "2d476e4f-ff95-44e1-9c42-72476b41676e",
+      "session_turn_index": 7,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150958.json",
+      "source_modified_utc": "2026-05-24T13:09:58.934028+00:00",
+      "source_path_hash": "e3785ef8a0ac0f6b",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "3a033f126212188a"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "462fbeeb66a8d4a4",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "2d476e4f-ff95-44e1-9c42-72476b41676e",
+      "session_turn_index": 6,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150934.json",
+      "source_modified_utc": "2026-05-24T13:09:34.122267+00:00",
+      "source_path_hash": "3bf15e7bb79d587c",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "d6a976f896ef63b6"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "29afb943f24e14f0",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "2d476e4f-ff95-44e1-9c42-72476b41676e",
+      "session_turn_index": 5,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150916.json",
+      "source_modified_utc": "2026-05-24T13:09:16.943588+00:00",
+      "source_path_hash": "f647c592f37bafba",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "af16783b11c75bde"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "4ae31230cac9a476",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "2d476e4f-ff95-44e1-9c42-72476b41676e",
+      "session_turn_index": 4,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150856.json",
+      "source_modified_utc": "2026-05-24T13:08:56.268668+00:00",
+      "source_path_hash": "32faf912956a05b9",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "68f394a1f4df0082"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "be01169528ff2eb3",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "2d476e4f-ff95-44e1-9c42-72476b41676e",
+      "session_turn_index": 3,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150842.json",
+      "source_modified_utc": "2026-05-24T13:08:42.655119+00:00",
+      "source_path_hash": "556a5c1d14e746f9",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "0bc5b41f01726f49"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "direct product or offer question did not receive a product/offer answer first"
+      ],
+      "classifications": [
+        "current_live_runtime_defect",
+        "current_live_direct_question_defect"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "2c3adc56ec47f25c",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "2d476e4f-ff95-44e1-9c42-72476b41676e",
+      "session_turn_index": 2,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150829.json",
+      "source_modified_utc": "2026-05-24T13:08:29.821907+00:00",
+      "source_path_hash": "91fa9aebed512189",
+      "synthetic_replay_hint": "synthetic_direct_product_question",
+      "transcript_sha256_16": "bfadd7ba0bf4879d"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "c4f25e2c6ac64318",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "2d476e4f-ff95-44e1-9c42-72476b41676e",
+      "session_turn_index": 1,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150811.json",
+      "source_modified_utc": "2026-05-24T13:08:11.407834+00:00",
+      "source_path_hash": "d6c77c817a3f4dfa",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "58f0d512c6eed8ca"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "agent repeated impact question after issue, impact, and callback time were already captured"
+      ],
+      "classifications": [
+        "current_live_runtime_defect",
+        "current_live_repeated_response_defect"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "40699f706d4ff3ca",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "8318356e-9217-40a4-b230-ee94b54a3d4a",
+      "session_turn_index": 12,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150741.json",
+      "source_modified_utc": "2026-05-24T13:07:41.885427+00:00",
+      "source_path_hash": "799c04b4e086bf41",
+      "synthetic_replay_hint": "synthetic_repeated_or_unanswered_challenge",
+      "transcript_sha256_16": "f4cf9c8db9d8013d"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "agent repeated impact question after issue, impact, and callback time were already captured"
+      ],
+      "classifications": [
+        "current_live_runtime_defect",
+        "current_live_repeated_response_defect"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "40699f706d4ff3ca",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "8318356e-9217-40a4-b230-ee94b54a3d4a",
+      "session_turn_index": 11,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150725.json",
+      "source_modified_utc": "2026-05-24T13:07:25.349392+00:00",
+      "source_path_hash": "89c9ccda294bedc9",
+      "synthetic_replay_hint": "synthetic_repeated_or_unanswered_challenge",
+      "transcript_sha256_16": "ecd70b546be214b1"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "3cdd165a45e7711a",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "8318356e-9217-40a4-b230-ee94b54a3d4a",
+      "session_turn_index": 10,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150708.json",
+      "source_modified_utc": "2026-05-24T13:07:08.095207+00:00",
+      "source_path_hash": "15d097b61f9ad17f",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "6a11719c1e0ed200"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "3f4ce1af2bb2e6d4",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "8318356e-9217-40a4-b230-ee94b54a3d4a",
+      "session_turn_index": 9,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150652.json",
+      "source_modified_utc": "2026-05-24T13:06:52.348094+00:00",
+      "source_path_hash": "27e4690c97340079",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "c8d29c1c97b11948"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "6a0f8370632922cb",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "8318356e-9217-40a4-b230-ee94b54a3d4a",
+      "session_turn_index": 8,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150643.json",
+      "source_modified_utc": "2026-05-24T13:06:43.080365+00:00",
+      "source_path_hash": "c677eb9acf8f8231",
+      "synthetic_replay_hint": "synthetic_callback_asr_near_miss",
+      "transcript_sha256_16": "ff4692878edd7306"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "462fbeeb66a8d4a4",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "8318356e-9217-40a4-b230-ee94b54a3d4a",
+      "session_turn_index": 7,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150628.json",
+      "source_modified_utc": "2026-05-24T13:06:28.060562+00:00",
+      "source_path_hash": "4d7f114883174c57",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "700782f23dd0d9e3"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "8fe140c58cfed273",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "8318356e-9217-40a4-b230-ee94b54a3d4a",
+      "session_turn_index": 6,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150608.json",
+      "source_modified_utc": "2026-05-24T13:06:08.902949+00:00",
+      "source_path_hash": "f4e1e2c2924a0cda",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "710161cfcb6383a7"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "ed9b4d6e3f785484",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "8318356e-9217-40a4-b230-ee94b54a3d4a",
+      "session_turn_index": 5,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150557.json",
+      "source_modified_utc": "2026-05-24T13:05:57.186751+00:00",
+      "source_path_hash": "fa2e194f317c5028",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "d567ad89b0813a22"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "388eae477676c01a",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "8318356e-9217-40a4-b230-ee94b54a3d4a",
+      "session_turn_index": 4,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150536.json",
+      "source_modified_utc": "2026-05-24T13:05:36.566053+00:00",
+      "source_path_hash": "8735cf3324574800",
+      "synthetic_replay_hint": "synthetic_callback_asr_near_miss",
+      "transcript_sha256_16": "45cb7debd7a89537"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "callback-like ASR near miss was not preserved or clarified"
+      ],
+      "classifications": [
+        "current_live_runtime_defect",
+        "current_live_asr_near_miss_repair_defect"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "09773d08d6de35a7",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "8318356e-9217-40a4-b230-ee94b54a3d4a",
+      "session_turn_index": 3,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150517.json",
+      "source_modified_utc": "2026-05-24T13:05:17.297628+00:00",
+      "source_path_hash": "f63b312de3f94ae9",
+      "synthetic_replay_hint": "synthetic_callback_asr_near_miss",
+      "transcript_sha256_16": "ec454c12eaddfb4a"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "205f3b9d6454c722",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "8318356e-9217-40a4-b230-ee94b54a3d4a",
+      "session_turn_index": 2,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150505.json",
+      "source_modified_utc": "2026-05-24T13:05:05.605274+00:00",
+      "source_path_hash": "6ef36635f600c69a",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "68dc4dae4f525718"
+    },
+    {
+      "call_control": "continue-call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "classification_reasons": [
+        "no deterministic current-live defect rule matched this record"
+      ],
+      "classifications": [
+        "not_reproduced"
+      ],
+      "git_head_short": "5a90594",
+      "response_sha256_16": "c4f25e2c6ac64318",
+      "runtime_marker": "UNIVERSAL-CONVERSATION-POLICY-RUNTIME-001",
+      "session_id": "8318356e-9217-40a4-b230-ee94b54a3d4a",
+      "session_turn_index": 1,
+      "side_effect_flags": {
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": true,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "source_file_name": "LIVE-DEMO-001-turn-20260524-150446.json",
+      "source_modified_utc": "2026-05-24T13:04:46.838846+00:00",
+      "source_path_hash": "ddfcf5b660ca340b",
+      "synthetic_replay_hint": "synthetic_live_turn_no_public_text",
+      "transcript_sha256_16": "58f0d512c6eed8ca"
+    }
+  ],
+  "selected_record_count": 45,
+  "selection_basis": "known_current_session_ids_on_current_git_head",
+  "side_effect_issue_counts": {
+    "provider_calls_made": 45
+  },
+  "status": "pass",
+  "tts_audio_issue_count": 0
+}

@@ -769,7 +769,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "product_detail_question_phrase",
-        "response": "Sure. RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, or handoffs. The quick check is whether that problem exists on your side.",
+        "response": "Sure. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. This call is only to check whether that problem is active before any review.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -797,7 +797,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "why_should_i_care_phrase",
-        "response": "Fair question. Only if inbound demo follow-up slipping is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
+        "response": "Fair question. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. Only if the issue is active enough to create real impact is a human review worth time. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -825,7 +825,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "product_detail_question_phrase",
-        "response": "Sure. This call is only to check whether a short human review is useful around premium pressure. The quick question is whether that area is causing friction now.",
+        "response": "Sure. This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. This call is only to check whether a review is useful; the next step, if useful, is the licensed insurance specialist reviewing the actual details.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -853,7 +853,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "why_should_i_care_phrase",
-        "response": "Fair question. Only if premium pressure is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
+        "response": "Fair question. This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. Only if the issue is active enough to create real impact is a human review worth time. The value is routing policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -881,7 +881,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "product_detail_question_phrase",
-        "response": "Sure. This call is only to check whether a short human review is useful around manual work. The quick question is whether that area is causing friction now.",
+        "response": "Sure. Operations Workflow Review is represented here as a high-level offer check before operations fit review. This call is only to check whether a review is useful; the next step, if useful, is the implementation specialist reviewing the actual details.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -909,7 +909,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "why_should_i_care_phrase",
-        "response": "Fair question. Only if manual work is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
+        "response": "Fair question. Operations Workflow Review is represented here as a high-level offer check before operations fit review. Only if the issue is active enough to create real impact is a human review worth time. The value is keeping the review focused before a human checks the actual details.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -937,7 +937,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "product_detail_question_phrase",
-        "response": "Sure. This call is only to check whether a short human review is useful around repair timing. The quick question is whether that area is causing friction now.",
+        "response": "Sure. Service Advisor Review is represented here as a high-level offer check before service advisor inspection review. This call is only to check whether a review is useful; the next step, if useful, is the service advisor reviewing the actual details.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -965,7 +965,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "why_should_i_care_phrase",
-        "response": "Fair question. Only if repair timing is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
+        "response": "Fair question. Service Advisor Review is represented here as a high-level offer check before service advisor inspection review. Only if the issue is active enough to create real impact is a human review worth time. The value is keeping the review focused before a human checks the actual details.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -993,7 +993,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "product_detail_question_phrase",
-        "response": "Sure. This call is only to check whether a short human review is useful around the service need. The quick question is whether that area is causing friction now.",
+        "response": "Sure. Service Estimate Call is represented here as a high-level offer check before inspection or estimate review. This call is only to check whether a review is useful; the next step, if useful, is the qualified service coordinator reviewing the actual details.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1021,7 +1021,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "why_should_i_care_phrase",
-        "response": "Fair question. Only if service need is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
+        "response": "Fair question. Service Estimate Call is represented here as a high-level offer check before inspection or estimate review. Only if the issue is active enough to create real impact is a human review worth time. The value is keeping the review focused before a human checks the actual details.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {

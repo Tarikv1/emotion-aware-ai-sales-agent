@@ -2920,7 +2920,7 @@
           "campaign_id": "routesignal_live_demo",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-01-04-routesignal_live_demo-financial_stress_budget_emotion",
-          "final_response": "I hear you. Then I should not push anything. The only useful question is whether inbound demo follow-up is already costing more than it should.",
+          "final_response": "I hear you. Then I will not push anything. The only useful question is whether inbound demo follow-up is already costing more than it should.",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 0,
           "requires_human_sales_review": true,
@@ -9061,12 +9061,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-01-synthetic-insurance-review-casual_small_talk",
-          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 29,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "live_voice_session_policy"
@@ -9770,12 +9770,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-02-synthetic-insurance-review-busy_distracted",
-          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 29,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "live_voice_session_policy"
@@ -10636,12 +10636,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-03-synthetic-insurance-review-serious_hardship_bad_timing",
-          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 29,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "live_voice_session_policy"
@@ -11349,12 +11349,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-04-synthetic-insurance-review-financial_stress_budget_emotion",
-          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 29,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "live_voice_session_policy"
@@ -11879,7 +11879,7 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-04-synthetic-insurance-review-financial_stress_budget_emotion",
-          "final_response": "I hear you. Then I should not push anything. The only useful question is whether premium pressure is already costing more than it should.",
+          "final_response": "I hear you. Then I will not push anything. The only useful question is whether premium pressure is already costing more than it should.",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 0,
           "requires_human_sales_review": true,
@@ -12081,12 +12081,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-05-synthetic-insurance-review-prior_bad_experience",
-          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 29,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "live_voice_session_policy"
@@ -12814,12 +12814,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-06-synthetic-insurance-review-family_stakeholder_context",
-          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 29,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "live_voice_session_policy"
@@ -13650,12 +13650,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-07-synthetic-insurance-review-joking_sarcasm",
-          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 29,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "live_voice_session_policy"
@@ -14382,12 +14382,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-08-synthetic-insurance-review-emotional_frustration_venting",
-          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 29,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "live_voice_session_policy"
@@ -15114,12 +15114,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-09-synthetic-insurance-review-irrelevant_story_off_topic_ramble",
-          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 29,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "live_voice_session_policy"
@@ -15846,12 +15846,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-10-synthetic-insurance-review-sensitive_personal_data_boundary",
-          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 29,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "live_voice_session_policy"
@@ -16557,12 +16557,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-11-synthetic-insurance-review-b2c_home_life_interruption",
-          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 29,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "live_voice_session_policy"
@@ -17288,12 +17288,12 @@
           "campaign_id": "synthetic-insurance-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-02-12-synthetic-insurance-review-b2b_workplace_interruption",
-          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+          "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 1,
           "requires_human_sales_review": true,
           "resonance_warning_flags": [],
-          "response_word_count": 29,
+          "response_word_count": 30,
           "sales_progression_stage": "none",
           "selected_action": {
             "source": "live_voice_session_policy"
@@ -20838,7 +20838,7 @@
           "campaign_id": "synthetic-b2b-saas-operations",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-03-04-synthetic-b2b-saas-operations-financial_stress_budget_emotion",
-          "final_response": "I hear you. Then I should not push anything. The only useful question is whether manual work is already costing more than it should.",
+          "final_response": "I hear you. Then I will not push anything. The only useful question is whether manual work is already costing more than it should.",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 0,
           "requires_human_sales_review": true,
@@ -29797,7 +29797,7 @@
           "campaign_id": "synthetic-automotive-service-review",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-04-04-synthetic-automotive-service-review-financial_stress_budget_emotion",
-          "final_response": "I hear you. Then I should not push anything. The only useful question is whether repair timing is already costing more than it should.",
+          "final_response": "I hear you. Then I will not push anything. The only useful question is whether repair timing is already costing more than it should.",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 0,
           "requires_human_sales_review": true,
@@ -38756,7 +38756,7 @@
           "campaign_id": "synthetic-home-services-estimate",
           "confirmed_gaps": null,
           "conversation_id": "conversational-resonance-review-001-05-04-synthetic-home-services-estimate-financial_stress_budget_emotion",
-          "final_response": "I hear you. Then I should not push anything. The only useful question is whether the service need is already costing more than it should.",
+          "final_response": "I hear you. Then I will not push anything. The only useful question is whether the service need is already costing more than it should.",
           "notes_for_human_reviewer": "Review resonance and commercial control manually; warning flags are heuristics only.",
           "question_count": 0,
           "requires_human_sales_review": true,
@@ -44821,7 +44821,7 @@
       ]
     }
   ],
-  "generated_at": "2026-05-24T01:09:46.163597+00:00",
+  "generated_at": "2026-05-24T14:24:13.344488+00:00",
   "most_concerning_conversations_by_mechanical_signals_only": [
     {
       "arc_type": "casual_small_talk",

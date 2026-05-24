@@ -222,12 +222,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: what does your product do
-  - Agent: Sure. RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, or handoffs. The quick check is whether that problem exists on your side.
+  - Agent: Sure. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. This call is only to check whether that problem is active before any review.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `product_detail_question`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: why should I care
-  - Agent: Fair question. Only if inbound demo follow-up slipping is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?
+  - Agent: Fair question. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. Only if the issue is active enough to create real impact is a human review worth time. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_should_i_care`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -412,7 +412,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `slow_down_or_speak_faster`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: say that again
-  - Agent: Sure. Short version: I'm checking one thing: is inbound demo follow-up slipping right now?
+  - Agent: Sure. Short version: this call checks one thing: is inbound demo follow-up slipping right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `repeat_last_answer`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -518,7 +518,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -559,7 +559,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -599,7 +599,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -644,17 +644,17 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: what does your product do
-  - Agent: Sure. This call is only to check whether a short human review is useful around premium pressure. The quick question is whether that area is causing friction now.
+  - Agent: Sure. This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. This call is only to check whether a review is useful; the next step, if useful, is the licensed insurance specialist reviewing the actual details.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `product_detail_question`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: why should I care
-  - Agent: Fair question. Only if premium pressure is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?
+  - Agent: Fair question. This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. Only if the issue is active enough to create real impact is a human review worth time. The value is routing policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_should_i_care`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -689,7 +689,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -734,7 +734,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -784,7 +784,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -829,7 +829,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -839,7 +839,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `slow_down_or_speak_faster`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: say that again
-  - Agent: Sure. Short version: I'm checking one thing: is premium pressure causing any issue right now?
+  - Agent: Sure. Short version: this call checks one thing: is premium pressure causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `repeat_last_answer`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -869,7 +869,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -909,7 +909,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
 
 #### Turns
 - Turn `1` buyer: __agent_open__
-  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?
+  - Agent: Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?
   - Source: `live_voice_session_policy`; call_control: `continue-call`
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1076,12 +1076,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: what does your product do
-  - Agent: Sure. This call is only to check whether a short human review is useful around manual work. The quick question is whether that area is causing friction now.
+  - Agent: Sure. Operations Workflow Review is represented here as a high-level offer check before operations fit review. This call is only to check whether a review is useful; the next step, if useful, is the implementation specialist reviewing the actual details.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `product_detail_question`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: why should I care
-  - Agent: Fair question. Only if manual work is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?
+  - Agent: Fair question. Operations Workflow Review is represented here as a high-level offer check before operations fit review. Only if the issue is active enough to create real impact is a human review worth time. The value is keeping the review focused before a human checks the actual details.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_should_i_care`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1266,7 +1266,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `slow_down_or_speak_faster`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: say that again
-  - Agent: Sure. Short version: I'm checking one thing: is manual work causing any issue right now?
+  - Agent: Sure. Short version: this call checks one thing: is manual work causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `repeat_last_answer`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1503,12 +1503,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: what does your product do
-  - Agent: Sure. This call is only to check whether a short human review is useful around repair timing. The quick question is whether that area is causing friction now.
+  - Agent: Sure. Service Advisor Review is represented here as a high-level offer check before service advisor inspection review. This call is only to check whether a review is useful; the next step, if useful, is the service advisor reviewing the actual details.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `product_detail_question`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: why should I care
-  - Agent: Fair question. Only if repair timing is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?
+  - Agent: Fair question. Service Advisor Review is represented here as a high-level offer check before service advisor inspection review. Only if the issue is active enough to create real impact is a human review worth time. The value is keeping the review focused before a human checks the actual details.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_should_i_care`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1693,7 +1693,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `slow_down_or_speak_faster`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: say that again
-  - Agent: Sure. Short version: I'm checking one thing: is repair timing causing any issue right now?
+  - Agent: Sure. Short version: this call checks one thing: is repair timing causing any issue right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `repeat_last_answer`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1930,12 +1930,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `2` buyer: what does your product do
-  - Agent: Sure. This call is only to check whether a short human review is useful around the service need. The quick question is whether that area is causing friction now.
+  - Agent: Sure. Service Estimate Call is represented here as a high-level offer check before inspection or estimate review. This call is only to check whether a review is useful; the next step, if useful, is the qualified service coordinator reviewing the actual details.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `product_detail_question`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: why should I care
-  - Agent: Fair question. Only if service need is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?
+  - Agent: Fair question. Service Estimate Call is represented here as a high-level offer check before inspection or estimate review. Only if the issue is active enough to create real impact is a human review worth time. The value is keeping the review focused before a human checks the actual details.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `why_should_i_care`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -2120,7 +2120,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `slow_down_or_speak_faster`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `3` buyer: say that again
-  - Agent: Sure. Short version: I'm checking one thing: is the service need active right now?
+  - Agent: Sure. Short version: this call checks one thing: is the service need active right now?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `repeat_last_answer`; readiness: `none`; next action: `none`
   - Warnings: `none`

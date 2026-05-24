@@ -503,6 +503,29 @@ def _terminal_continuity(language: str) -> dict[str, Any]:
     }
 
 
+def _closed_schedule_summary_continuity(session_state: dict | None, campaign: dict[str, Any]) -> dict[str, Any]:
+    prior = " ".join(str(turn.get("transcript") or "").lower() for turn in _turns(session_state)[-8:])
+    issue = "callbacks" if "callback" in prior else "the issue"
+    impact = "delays" if "delay" in prior else "the impact"
+    if "tomorrow" in prior and "3" in prior:
+        callback_time = "tomorrow at 3"
+    elif "tomorrow" in prior:
+        callback_time = "tomorrow"
+    else:
+        callback_time = "the callback time"
+    owner = str(campaign.get("human_followup_owner") or "the reviewer")
+    return {
+        "applied": True,
+        "reason": "closed_schedule_summary_after_repeated_challenge",
+        "action_id": "end_call_stop_request",
+        "dialogue_focus": "closed_schedule_summary",
+        "candidate_response": (
+            f"You're right - you already gave me the issue, the impact, and the time. "
+            f"I have {issue}, {impact}, and {callback_time} noted for {owner}."
+        ),
+    }
+
+
 def plan_dialogue_action(
     *,
     transcript: str,
@@ -524,7 +547,8 @@ def plan_dialogue_action(
         campaign=campaign,
         quality_gate=quality_gate,
     )
-    if _previous_call_control(turns) in TERMINAL_CALL_CONTROLS:
+    previous_call_control = _previous_call_control(turns)
+    if previous_call_control in TERMINAL_CALL_CONTROLS:
         terminal_policy_frame = dict(initial_policy_frame)
         terminal_policy_frame["enforcement_enabled"] = False
         terminal_policy_frame["enforcement_reason"] = "terminal_call_control_preserved"
@@ -538,7 +562,13 @@ def plan_dialogue_action(
             pragmatic_move={},
             universal_policy_frame=terminal_policy_frame,
         )
-        continuity = _terminal_continuity(language)
+        if (
+            previous_call_control == "schedule-and-end"
+            and str(initial_policy_frame.get("buyer_move_id") or "") == "already_answered_challenge"
+        ):
+            continuity = _closed_schedule_summary_continuity(session_state, campaign)
+        else:
+            continuity = _terminal_continuity(language)
         action = _action_from_continuity(
             state_before=state_before,
             continuity=continuity,

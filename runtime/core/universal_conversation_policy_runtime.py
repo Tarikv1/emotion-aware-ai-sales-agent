@@ -38,6 +38,12 @@ NEAR_MISS_PHRASES = {
     "repeal timings",
 }
 
+ROUTESIGNAL_CALLBACK_NEAR_MISS_PHRASES = {
+    "colbert",
+    "call bags",
+    "cold backs",
+}
+
 CLEAN_ACKNOWLEDGEMENTS = {
     "yeah",
     "yes",
@@ -400,6 +406,43 @@ def _nested_campaign_text(campaign: dict | None, parent: str, key: str, default:
 
 def _campaign_product_name(campaign: dict | None) -> str:
     return _campaign_text(campaign, "product_or_offer_name", "product_name", default="this review")
+
+
+def _campaign_offer_summary(campaign: dict | None) -> str:
+    summary = _campaign_text(
+        campaign,
+        "product_or_offer_summary",
+        "product_summary_phrase",
+        "product_detail_answer",
+    )
+    if summary:
+        return summary
+    if _is_routesignal_campaign(campaign):
+        return (
+            "RouteSignal is a CRM workflow tool for inbound demo follow-up. "
+            "It helps teams assign the next reply, track reminders, and avoid missed handoffs."
+        )
+    product = _campaign_product_name(campaign)
+    target = _campaign_appointment_target(campaign)
+    return f"{product} is represented here as a high-level offer check before {target}."
+
+
+def _campaign_value_proposition(campaign: dict | None) -> str:
+    value = _campaign_text(campaign, "high_level_value_proposition", "value_proposition")
+    if value:
+        return value
+    if _is_routesignal_campaign(campaign):
+        return "The value is fewer missed replies, clearer ownership, and less manual follow-up drift."
+    return "The value is keeping the review focused before a human checks the actual details."
+
+
+def _campaign_human_review_scope(campaign: dict | None) -> str:
+    scope = _campaign_text(campaign, "human_review_scope", "review_scope")
+    if scope:
+        return scope
+    if _is_routesignal_campaign(campaign):
+        return "who owns the lead, when follow-up happens, and where reminders or handoffs slip"
+    return _primary_gap_review_focus(campaign)
 
 
 def _campaign_id(campaign: dict | None) -> str:
@@ -841,12 +884,14 @@ def _allowed_claim_summary(campaign: dict | None) -> str:
 
 def _approved_scope_response(campaign: dict | None) -> str:
     claim = _allowed_claim_summary(campaign)
+    summary = _campaign_offer_summary(campaign)
+    value = _campaign_value_proposition(campaign)
     lowered = claim.lower()
     if lowered.startswith("can "):
         action = claim[4:].strip()
         gerund = _gerund_action(action)
-        return f"Fair question. The useful difference here is narrow: {gerund}. More detail should come from a human follow-up."
-    return f"Fair question. The useful difference here is narrow: {claim}. More detail should come from a human follow-up."
+        return f"Fair question. {summary} The useful difference is narrow: {gerund}. {value}"
+    return f"Fair question. {summary} The useful difference is narrow: {claim}. {value}"
 
 
 def _gerund_action(action: str) -> str:
@@ -1609,10 +1654,11 @@ def classify_universal_buyer_move_from_transcript(
             category="asr_repair",
         )
 
-    if _contains_any(
+    if normalized in {"stop", "please stop", "bro stop", "bruh stop", "bra stop"} or _contains_any(
         normalized,
         {
             "stop calling",
+            "stop talking",
             "do not call",
             "don t call",
             "no thanks",
@@ -1641,6 +1687,20 @@ def classify_universal_buyer_move_from_transcript(
             confidence="high",
             category="trust_identity_privacy_consent",
         )
+
+    if _is_routesignal_campaign(campaign) and _contains_any(
+        normalized,
+        {
+            "what are you calling about",
+            "why are you calling",
+            "what exactly do you do",
+            "what are you guys selling",
+            "what do you guys sell",
+            "what do you sell",
+            "what is routesignal",
+        },
+    ):
+        return _recognition("what_problem_do_you_solve", reason="problem_solved_question_phrase", confidence="high", category="product_value_scope")
 
     if normalized in {"who are you", "who is calling", "who am i speaking with"} or normalized.startswith("who are you "):
         return _recognition("who_are_you", reason="identity_question_phrase", confidence="high", category="identity_trust_privacy")
@@ -1794,8 +1854,43 @@ def classify_universal_buyer_move_from_transcript(
         },
     ):
         return _recognition("scope_limit_question", reason="why_human_review_phrase", confidence="high", category="product_value_scope")
+    if _contains_any(
+        normalized,
+        {
+            "how are you going to check that",
+            "how would you check that",
+            "how do you review that",
+            "what would they look at",
+            "what will the specialist do",
+            "what would your specialist compare",
+        },
+    ):
+        return _recognition("scope_limit_question", reason="review_process_question_phrase", confidence="high", category="product_value_scope")
+    if _contains_any(
+        normalized,
+        {
+            "do you want to set an appointment",
+            "do you want an appointment",
+            "are you trying to book a review",
+            "are you trying to set an appointment",
+            "is this an appointment request",
+        },
+    ):
+        return _recognition("scope_limit_question", reason="appointment_next_step_question_phrase", confidence="high", category="product_value_scope")
     if _contains_any(normalized, {"how about", "what about"}) and _mentioned_gap_phrase(campaign, normalized):
         return _recognition("scope_limit_question", reason="configured_gap_scope_question", confidence="high", category="product_value_scope")
+    if _contains_any(
+        normalized,
+        {
+            "current provider wouldn",
+            "current provider would not",
+            "already have or current provider",
+            "how do i know the difference",
+            "difference from my current provider",
+            "different from my current provider",
+        },
+    ):
+        return _recognition("what_makes_you_different", reason="differentiation_question_phrase", confidence="high", category="product_value_scope")
     if _contains_any(normalized, {"did not mention", "didn t mention", "never mentioned", "i did not say", "i didn t say"}):
         return _recognition(
             "already_answered_challenge",
@@ -1812,6 +1907,9 @@ def classify_universal_buyer_move_from_transcript(
             "that is not what i asked",
             "that s not what i asked",
             "thats not what i asked",
+            "that wasn t my question",
+            "that wasnt my question",
+            "that was not my question",
             "no that is wrong",
             "that is wrong",
             "that s wrong",
@@ -1875,11 +1973,17 @@ def classify_universal_buyer_move_from_transcript(
             "what do you help with",
             "what is this for",
             "what are you selling",
+            "what are you guys selling",
+            "what do you sell",
+            "what do you guys sell",
+            "what is routesignal",
             "what is this",
             "what exactly is it",
+            "what exactly do you do",
             "what exactly can you tell me",
             "what exactly are you selling",
             "why are you calling",
+            "what are you calling about",
             "why are you calling if you cannot explain it",
             "explain it plainly",
             "explain plainly",
@@ -1922,6 +2026,17 @@ def classify_universal_buyer_move_from_transcript(
         return _recognition("no_clear_need", reason="no_clear_need_objection_phrase", confidence="high", category="objections")
     if _contains_any(normalized, {"too busy", "we are busy", "in a meeting", "not a good time"}):
         return _recognition("too_busy_now", reason="too_busy_objection_phrase", confidence="high", category="objections")
+
+    if _is_routesignal_campaign(campaign) and _contains_any(normalized, ROUTESIGNAL_CALLBACK_NEAR_MISS_PHRASES) and _contains_any(
+        normalized,
+        {"problem", "issue", "the problem", "a problem"},
+    ):
+        return _recognition(
+            "confusion_not_clear",
+            reason="routesignal_callback_near_miss_phrase",
+            confidence="high",
+            category="confusion_challenge_repair",
+        )
 
     confirmed_gap_impact = _impact_signal_from_transcript(normalized) if _confirmed_gap_id(session_state) else {}
     matched_gap = _gap_id_from_transcript(normalized, campaign)
@@ -2015,6 +2130,18 @@ def classify_universal_buyer_move_from_transcript(
         )
     if _looks_like_time(normalized) and _contains_any(normalized, {"works", "work", "is good", "would be good"}):
         return _recognition("callback_time_provided", reason="time_phrase_with_acceptance", confidence="high", category="appointment_callback_send_info")
+    previous_response = normalize_transcript(_previous_agent_response(session_state))
+    if _contains_any(normalized, {"that will be good", "that would be good", "yeah that will be good", "yes that will be good"}) and _contains_any(
+        previous_response,
+        {
+            "want them to check",
+            "what you want reviewed",
+            "what you want them to check",
+            "the next step if useful",
+            "next step if useful",
+        },
+    ):
+        return _recognition("appointment_interest", reason="review_scope_accepted", confidence="high", category="appointment_callback_send_info")
     if "that would be good" in normalized and _previous_response_asked_next_step_timing(session_state):
         return _recognition("appointment_interest", reason="clean_positive_after_progression", confidence="medium", category="appointment_callback_send_info")
 
@@ -2507,6 +2634,7 @@ def high_confidence_buyer_move_priority_protected(
                 "configured_gap_clarity_request_phrase",
                 "confusion_or_clarification_phrase",
                 "out_of_campaign_pain_phrase",
+                "routesignal_callback_near_miss_phrase",
             }
         return True
     semantic = str((contextual_semantics or {}).get("semantic") or "")
@@ -2715,6 +2843,31 @@ def render_universal_response_outline(
             return f"Sure, I can move faster. I'm checking one thing: {_primary_issue_check_question(campaign)}"
         return f"Sure, I'll slow down. I'm checking one thing: {_primary_issue_check_question(campaign)}"
     if buyer_move_id in {"repeat_or_rephrase_request", "repeat_last_answer"}:
+        previous = normalize_transcript(_previous_agent_response(session_state))
+        if "short version" in previous:
+            return (
+                f"Different wording: {_campaign_offer_summary(campaign)} "
+                f"The review is only useful if {primary_issue_clause}."
+            )
+        if _contains_any(
+            previous,
+            {
+                "crm workflow tool",
+                "high-level offer check",
+                "high level offer check",
+                "represented here",
+                "fit-check call",
+                "fit check call",
+                "product pitch",
+                "the quick check is whether",
+                "the next step, if useful",
+                "the next step if useful",
+            },
+        ):
+            return (
+                f"Short version: {_campaign_offer_summary(campaign)} "
+                f"Only if {primary_issue_clause} should it go to review."
+            )
         if has_confirmed_gap:
             return f"Sure. Short version: this call checks whether {active_area} is causing enough impact for a quick human review."
         return f"Sure. Short version: this call checks one thing: {_primary_issue_check_question(campaign)}"
@@ -2780,6 +2933,8 @@ def render_universal_response_outline(
             return "Understood. Timing is not right now. What later window should I note?"
         return "Understood. I will not push it now."
     if buyer_move_id == "appointment_interest":
+        if recognition_reason == "review_scope_accepted":
+            return f"Good. I can note that review focus for {owner_role}. What callback window works?"
         if str((frame or {}).get("appointment_readiness") or "") == "high" or _prior_impact_confirmed(session_state):
             return "Good. The next step is a short review. What callback window works?"
         if has_confirmed_gap:
@@ -2802,56 +2957,78 @@ def render_universal_response_outline(
             {
                 "what does your product do",
                 "helps teams keep",
+                "helps teams assign",
+                "crm workflow tool",
+                "high-level offer check",
+                "high level offer check",
+                "represented here",
+                "fit-check call",
+                "fit check call",
+                "product pitch",
+                "the next step, if useful",
+                "the next step if useful",
                 "this call is only to check",
                 "the quick question is whether",
+                "the quick check is whether",
                 "product detail",
                 "product-detail",
             },
         ):
             if has_confirmed_gap:
                 return (
-                    f"Already answered at a high level: this call checks whether {active_area} is worth a short review. "
+                    f"Already answered at a high level: {_campaign_offer_summary(campaign)} "
                     "The useful follow-up is impact: is it causing delays or extra work?"
                 )
             return (
-                f"Already answered at a high level: this call checks whether {primary_issue_subject} "
-                "is relevant enough for a short review. Is that relevant now?"
+                f"Already answered at a high level: {_campaign_offer_summary(campaign)} "
+                f"Only if {primary_issue_clause} should it go to review."
             )
-        configured_answer = _campaign_text(campaign, "product_detail_answer", "product_summary_phrase")
-        if configured_answer:
-            return f"Sure. {configured_answer}"
+        summary = _campaign_offer_summary(campaign)
+        if _is_routesignal_campaign(campaign):
+            return (
+                f"Sure. {summary} This call is only to check whether that problem is active before any review."
+            )
         return (
-            f"Sure. This call is only to check whether a short human review is useful around {_area_phrase(primary_gap)}. "
-            "The quick question is whether that area is causing friction now."
+            f"Sure. {summary} This call is only to check whether a review is useful; "
+            f"the next step, if useful, is {owner_role} reviewing the actual details."
         )
     if buyer_move_id == "what_problem_do_you_solve":
         if "why are you calling" in normalized:
-            return f"The reason for calling is simple: this call checks whether {primary_issue_clause} and is worth a short review."
+            if _is_routesignal_campaign(campaign):
+                return f"The reason for calling is simple: {_campaign_offer_summary(campaign)} The quick check before any review is whether that problem is active for you."
+            return f"The reason for calling is simple: {_campaign_offer_summary(campaign)} The next step, if useful, is {owner_role} reviewing the actual details."
         if _contains_any(normalized, {"one sentence", "say it in one sentence"}):
-            return f"In one sentence: this call checks whether {primary_issue_clause} and is worth a short review."
+            return f"In one sentence: {_campaign_offer_summary(campaign)} Any review is only useful if {primary_issue_clause}."
         if _contains_any(normalized, {"explain", "plainly", "what are you selling", "what is this"}):
             previous = normalize_transcript(_previous_agent_response(session_state))
-            if "plainly this call checks" in previous or "plainly, this call checks" in previous:
+            if (
+                "plainly this call checks" in previous
+                or "plainly, this call checks" in previous
+                or ("plainly" in previous and _contains_any(previous, {"crm workflow tool", "represented here", "fit check call"}))
+            ):
                 return f"Different wording: this call checks whether {primary_issue_clause}; I cannot give a final recommendation here."
-            return (
-                f"Plainly, this call checks whether {primary_gap} is active enough to justify "
-                "a short review by the right specialist."
-            )
+            if _is_routesignal_campaign(campaign):
+                return f"Plainly, {_campaign_offer_summary(campaign)} The quick check before any review is whether that problem is active for you."
+            return f"Plainly, {_campaign_offer_summary(campaign)} The next step, if useful, is {owner_role} reviewing the actual details."
         return (
-            f"Fair question. Mainly {primary_gap}: when it is costing time, creating delays, or hurting quality. "
-            "The useful check is whether it is showing up now."
+            f"Fair question. Mainly, {_campaign_offer_summary(campaign)} {_campaign_value_proposition(campaign)}"
         )
     if buyer_move_id == "why_should_i_care":
         return (
-            f"Fair question. Only if {primary_gap} is costing time, creating delays, or hurting follow-up quality. "
-            "If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?"
+            f"Fair question. {_campaign_offer_summary(campaign)} "
+            f"Only if the issue is active enough to create real impact is a human review worth time. {_campaign_value_proposition(campaign)}"
         )
     if buyer_move_id == "what_makes_you_different":
+        if _contains_any(normalized, {"current provider", "provider", "how do i know the difference", "difference"}):
+            return (
+                f"I cannot compare exact provider terms on this call. {_campaign_offer_summary(campaign)} "
+                f"{session_policy.sentence_start(owner_role)} would compare {_campaign_human_review_scope(campaign)} before any recommendation."
+            )
         return _approved_scope_response(campaign)
     if buyer_move_id == "who_is_this_for":
         return f"Fair question. It is for {buyer_role}. If that is not you, I can note the right person or keep this brief."
     if buyer_move_id == "is_this_worth_my_time":
-        return f"Fair question. It is worth time only if {primary_gap} is real enough to justify a short review. The useful check is whether it is showing up now."
+        return f"Fair question. {_campaign_offer_summary(campaign)} It is worth time only if that issue is active enough for {owner_role} to review."
 
     if buyer_move_id == "who_are_you":
         return f"Sure, I'm {caller} calling on behalf of {client} about {_campaign_purpose_phrase(campaign)}."
@@ -2867,6 +3044,8 @@ def render_universal_response_outline(
         return "Understood. I'll stop here. Goodbye."
 
     if buyer_move_id == "confusion_not_clear":
+        if recognition_reason == "routesignal_callback_near_miss_phrase":
+            return "I may have misheard that. Did you mean callbacks are the problem?"
         if recognition_reason == "configured_gap_clarity_request_phrase":
             return _gap_clarity_response(_gap_phrase_from_frame_or_text(frame, campaign, session_state), campaign)
         if recognition_reason == "campaign_mismatch_question_phrase":
@@ -2903,6 +3082,8 @@ def render_universal_response_outline(
                 "What, if anything, is the actual concern?"
             )
         if recognition_reason == "agent_wrong_or_false_assumption_challenge_phrase":
+            if "that wasn t my question" in normalized or "that wasnt my question" in normalized or "that was not my question" in normalized:
+                return "You're right. The direct answer is yes: if this is worth reviewing, the next step is to note a callback window for the reviewer. I'm not booking a calendar event here."
             if "make sense" in normalized:
                 return "Fair. What does not make sense: why I'm calling, or what the review would check?"
             if "assumption" in normalized or "assuming" in normalized:
@@ -2951,7 +3132,22 @@ def render_universal_response_outline(
         if recognition_reason == "why_human_review_phrase":
             return (
                 f"A human review matters because I can only check fit at a high level; {owner_role} "
-                "would review the actual details before any decision. Do you want me to check whether that review is useful?"
+                "would review the actual details before any decision. The review is the next step, not the product."
+            )
+        if recognition_reason == "review_process_question_phrase":
+            if _is_routesignal_campaign(campaign):
+                return (
+                    "The review would look at who owns the lead, when follow-up happens, and where reminders or handoffs slip. "
+                    "I can only check that at a high level here."
+                )
+            return (
+                f"{session_policy.sentence_start(owner_role)} would review {_campaign_human_review_scope(campaign)}. "
+                "I can only check that at a high level here."
+            )
+        if recognition_reason == "appointment_next_step_question_phrase":
+            return (
+                "Yes. If this is worth reviewing, the next step is to note a callback window for the reviewer. "
+                "I'm not booking a calendar event here."
             )
         mentioned_focus = _mentioned_gap_phrase(campaign, normalized)
         if mentioned_focus and _contains_any(normalized, {"how about", "what about"}):

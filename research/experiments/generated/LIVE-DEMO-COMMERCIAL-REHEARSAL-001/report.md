@@ -5,17 +5,17 @@
 - This packet is generated from ignored local private live-demo artifacts and redacts buyer transcript text.
 
 ## Private Input Discovery Count
-- Private JSON files discovered: `460`
+- Private JSON files discovered: `514`
 - Parsed rehearsal records: `0`
 - Unreadable private inputs: `0`
 - Current-runtime-marked records: `0`
-- Unknown-version records: `425`
-- Stale/legacy records: `35`
+- Unknown-version records: `430`
+- Stale/legacy records: `84`
 - Current-only evidence available: `false`
 
 ## Evidence Freshness Summary
-- `stale_pre_current_runtime_artifact`: `35`
-- `unknown_version_private_artifact`: `425`
+- `stale_pre_current_runtime_artifact`: `84`
+- `unknown_version_private_artifact`: `430`
 
 ## Rehearsal Record Count
 - Records available for human review: `0`

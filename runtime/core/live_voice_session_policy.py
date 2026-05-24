@@ -917,9 +917,12 @@ def is_time_waste_friction(normalized: str) -> bool:
 
 
 def is_buyer_stop_request(normalized: str) -> bool:
+    if normalized in {"stop", "please stop", "bro stop", "bruh stop", "bra stop"}:
+        return True
     return normalized_contains_any(
         normalized,
         {
+            "stop talking",
             "stop here",
             "stop the call",
             "end the call",

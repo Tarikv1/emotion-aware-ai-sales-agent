@@ -139,9 +139,29 @@
     "contract_or_switching"
   ],
   "human_followup_owner": "telecom account specialist",
+  "human_review_scope": "plan fit, coverage or availability, and switching constraints against account-specific details",
   "language": "en",
   "objective": "appointment_setting",
-  "product_or_offer_name": "Plan Review Call",
+  "product_or_offer_name": "Telecom Plan Fit Check",
+  "product_or_offer_summary": "This synthetic campaign represents a telecom plan fit-check call, not a full product pitch. It is about deciding whether account-specific plan questions should be reviewed by a telecom account specialist.",
+  "high_level_value_proposition": "The value is avoiding a bad-fit plan or wasted provider comparison by routing account-specific plan and coverage questions to a human reviewer.",
+  "allowed_high_level_capabilities": [
+    "general plan-fit discussion",
+    "coverage or availability review routing",
+    "switching-friction triage"
+  ],
+  "agent_call_objective": "identify whether a telecom account specialist should review plan fit, coverage or availability, or switching constraints",
+  "agent_can_say": [
+    "this is a high-level telecom plan fit-check call",
+    "a telecom account specialist can compare account-specific plan fit and coverage details",
+    "the AI can note the review focus and a callback window"
+  ],
+  "agent_must_not_claim": [
+    "exact price",
+    "coverage guarantee",
+    "better provider terms",
+    "contract cancellation advice"
+  ],
   "vertical_id": "telecom",
   "qualification_goals": [
     "identify plan-fit concern",

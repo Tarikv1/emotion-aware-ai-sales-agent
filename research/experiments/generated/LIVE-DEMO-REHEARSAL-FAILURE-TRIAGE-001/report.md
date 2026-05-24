@@ -1,14 +1,14 @@
 # LIVE-DEMO-REHEARSAL-FAILURE-TRIAGE-001 Report
 
 ## Summary
-- Total rehearsal records: `460`
-- Flagged records: `78`
+- Total rehearsal records: `0`
+- Flagged records: `0`
 - Current-runtime-marked records: `0`
-- Unknown-version records: `425`
+- Unknown-version records: `430`
 
 ## Freshness Summary
-- `stale_pre_current_runtime_artifact`: `35`
-- `unknown_version_private_artifact`: `425`
+- `stale_pre_current_runtime_artifact`: `84`
+- `unknown_version_private_artifact`: `430`
 
 ## Current Runtime Defect Count
 - `current_live_runtime_defect`: `0`
@@ -20,36 +20,21 @@
 - `expected_terminal_or_error_record`: `0`
 - `incomplete_or_invalid_private_record`: `0`
 - `needs_human_review`: `0`
-- `provider_audio_artifact_issue`: `2`
+- `provider_audio_artifact_issue`: `0`
 - `stale_pre_current_runtime_artifact`: `0`
-- `unknown_version_private_artifact`: `104`
+- `unknown_version_private_artifact`: `0`
 
 ## Mechanical Issue Counts
-- `audio_url_missing_when_provider_called`: `1`
-- `call_control_unexpected`: `19`
-- `final_response_missing`: `27`
-- `provider_audio_failed`: `1`
-- `repeated_response`: `28`
-- `response_too_long_for_live_voice`: `3`
-- `tts_input_missing`: `27`
 
 ## Provider Audio Issue Classification
-- Provider audio artifact issues: `2`
+- Provider audio artifact issues: `0`
 
 ## Missing Response/TTS Classification
 - Incomplete or invalid private records: `0`
 
 ## Issue Counts By Freshness Classification
-- `stale_pre_current_runtime_artifact`: {'call_control_unexpected': 1}
-- `unknown_version_private_artifact`: {'audio_url_missing_when_provider_called': 1, 'call_control_unexpected': 18, 'final_response_missing': 27, 'provider_audio_failed': 1, 'repeated_response': 28, 'response_too_long_for_live_voice': 3, 'tts_input_missing': 27}
 
 ## Issue Counts By Campaign
-- `campaign-prod-005-b2b-software`: {'audio_url_missing_when_provider_called': 1, 'call_control_unexpected': 16, 'final_response_missing': 17, 'provider_audio_failed': 1, 'repeated_response': 21, 'response_too_long_for_live_voice': 3, 'tts_input_missing': 17}
-- `campaign-prod-005-b2c-telecom`: {'repeated_response': 3}
-- `synthetic-automotive-service-review`: {'repeated_response': 2}
-- `synthetic-insurance-review`: {'call_control_unexpected': 2, 'repeated_response': 2}
-- `synthetic-telecom-plan-review`: {'call_control_unexpected': 1}
-- `unknown`: {'final_response_missing': 10, 'tts_input_missing': 10}
 
 ## Safety Boundary Summary
 - Future metadata probe provider calls made: `false`

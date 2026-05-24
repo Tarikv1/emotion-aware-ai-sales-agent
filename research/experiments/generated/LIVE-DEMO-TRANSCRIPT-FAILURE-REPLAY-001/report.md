@@ -31,10 +31,10 @@
 ### routesignal_asr_near_miss_callbacks
 - Passed: `true`
 - Classification: `reproduced_before_patch_then_fixed`
-- Buyer move: `pain_confirmed`
+- Buyer move: `confusion_not_clear`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?
+- Response: I may have misheard that. Did you mean callbacks are the problem?
 
 ### routesignal_near_miss_then_impact
 - Passed: `true`
@@ -58,7 +58,7 @@
 - Buyer move: `why_should_i_care`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Only if inbound demo follow-up slipping is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?
+- Response: Fair question. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. Only if the issue is active enough to create real impact is a human review worth time. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
 
 ### insurance_false_assumption_correction
 - Passed: `true`
@@ -114,7 +114,7 @@
 - Buyer move: `product_detail_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Sure. RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, or handoffs. The quick check is whether that problem exists on your side.
+- Response: Sure. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. This call is only to check whether that problem is active before any review.
 
 ### preserve_ai_disclosure
 - Passed: `true`
