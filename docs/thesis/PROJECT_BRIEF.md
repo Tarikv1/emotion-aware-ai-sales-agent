@@ -10,6 +10,8 @@ Develop the thesis work toward a real client-usable product: an autonomous emoti
 
 The launch target is autonomous behavior inside a constrained sales workflow, with fallback and escalation guardrails rather than human approval for every normal response.
 
+Current status as of 2026-05-24: the project is still a research/prototype system, not production-ready. It now has a stronger deterministic dialogue layer, a generic campaign selector, campaign-owned fact/config layers, replay-first live failure tests, a live-inspired adversarial matrix, and a source-grounded public OpenAI/ChatGPT plan-fit fixture. These improve evidence quality but do not remove the need for live ASR/TTS/latency testing, human review, compliance review, and controlled client campaign intake.
+
 ## Smallest believable system
 
 A turn-based pipeline:
@@ -37,6 +39,9 @@ Constraints for the first version:
 - interpretable voice-feature analysis as a later module supporting customer-state estimation
 - product MVP planning for a client-usable assistant workflow
 - lead qualification and appointment-setting workflow design
+- universal sales dialogue behavior with campaign-owned product facts
+- source-grounded campaign fixtures and claim governance
+- deterministic replay and adversarial validation for live-shaped dialogue failures
 
 ## Out of scope
 
@@ -46,6 +51,9 @@ Constraints for the first version:
 - advanced low-level prosody control
 - full legal-compliance implementation
 - broad autonomous sales behavior outside the constrained target workflow
+- official representation of third-party vendors in public-data simulations
+- fake email, calendar, CRM, or payment side effects
+- production deployment or real customer use without compliance, consent, retention, and handoff review
 
 ## Current risks
 
@@ -58,6 +66,9 @@ Constraints for the first version:
 - product overclaiming before the system is reliable
 - privacy and workflow-integration risk for client deployment
 - insufficient expert feedback before autonomous launch
+- deterministic validator pass being mistaken for real sales quality
+- source-grounded public product facts becoming stale
+- universal dialogue being contaminated by campaign-specific product claims
 
 ## Research posture
 
@@ -80,6 +91,13 @@ Prefer MVP slices that could later become a usable workflow:
 - strategy and confidence logging
 - fallback or escalation when needed
 - sales-expert feedback during development and testing
+
+Current architecture posture:
+
+- universal dialogue owns buyer-move recognition, response shape, repair, call control, and side-effect safety
+- campaign configs and adapters own product claims, customer-facing wording, close modes, source policies, and handoff targets
+- deterministic dry-run evidence is required before live rehearsal
+- live rehearsal is still required before stronger claims about ASR, TTS, latency, voice naturalness, or commercial readiness
 
 ## Collaboration posture
 

@@ -64,3 +64,30 @@ Each case should produce:
 - one non-adaptive response
 - one adaptive response
 - one rubric-based comparison record
+
+## Current Methodology Extension
+
+The early prompt baseline remains historical thesis evidence. Current runtime work should not be evaluated only through prompt packets.
+
+For post-baseline campaign/dialogue phases, use:
+
+- source-grounded claim objects for product-specific facts
+- deterministic replay for live-observed failures
+- exact regression cases plus generalized variants and negative controls
+- cross-campaign contamination checks when campaign facts or selectors change
+- universal isolation checks when real product fixtures are added
+- human/live review for ASR, TTS, latency, voice naturalness, and sales-quality judgments
+
+## Validation Budget
+
+Do not run the full historical validator ring for every phase.
+
+Default to:
+
+- new focused validator(s)
+- directly affected validators
+- runtime manifest when runtime/manifest-owned docs change
+- project drift guard when covered by the change
+- `git diff --check`
+
+Run the full ring only for broad universal runtime changes, major milestones, or release-readiness sweeps. If a reduced budget is used, record that scope instead of claiming all validators passed.

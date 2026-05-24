@@ -44,6 +44,20 @@ The final thesis should clearly state that:
 - the voice-analysis concept was informed by collaborative thesis work
 - the idea was adapted to the sales-dialogue and emotion-aware persuasion domain
 
+## Development Collaboration Process
+
+The post-May-22 development workflow also used iterative human/AI collaboration:
+
+- Tarik supplied live-call feedback, sales-quality judgments, direction changes, and acceptance boundaries.
+- Codex helped convert that feedback into scoped phase prompts, local code/doc changes, validators, and generated evidence.
+- The assistant was expected to challenge assumptions, preserve provider/private-data boundaries, and avoid broad repo audits when targeted reads were enough.
+- Live feedback was not copied into public thesis files as raw private transcript material; only sanitized findings and generated public-safe evidence should be cited.
+- Deterministic validation is treated as engineering evidence, not a substitute for Tarik's live listening review, sales-expert review, or compliance review.
+
 ## Draft Wording For Thesis
 
 `The voice-feature analysis component was informed by collaborative work with Shehzeb Iftakhar, whose thesis explores modular analysis of vocal performance and lyrical expression. In this thesis, the concept is adapted to customer speech analysis for emotion-aware sales dialogue strategy selection.`
+
+Optional process wording:
+
+`The implementation workflow used supervised AI-assisted development. The author provided project direction, live-call observations, review judgments, and acceptance boundaries; AI tooling assisted with local implementation, validator design, documentation planning, and evidence organization. Final interpretation and thesis claims remain the author's responsibility.`

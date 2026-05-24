@@ -41,9 +41,12 @@ The thesis is no longer only a small prompt-comparison project. It now has sever
 - persuasion strategy selection
 - vertical-agnostic sales-agent product architecture
 - campaign-specific guardrails
+- campaign knowledge isolation from universal dialogue behavior
+- source-grounded public product fixtures
 - bilingual German/English runtime behavior
 - realtime latency and call-control constraints
 - voice/TTS provider evaluation
+- live replay and adversarial dialogue regression
 - speech naturalness and speech-realism design
 - private call-center data policy and future learning path
 - thesis/product review gates and reproducibility discipline
@@ -53,6 +56,15 @@ When writing, keep the distinction clear:
 - Thesis evidence: what experiments and references support.
 - Product design: what a client-usable system needs.
 - Future work: what is planned but not proven yet.
+
+Post-May-22 writing boundary:
+
+- universal dialogue owns sales behavior, response shapes, buyer-move handling, repair rules, call control, and side-effect safety
+- campaign configs/adapters own product facts, plan names, pricing, source-grounded claims, customer-facing wording, and close targets
+- the public OpenAI/ChatGPT fixture is an internal public-data simulation, not an official OpenAI sales agent
+- deterministic validator pass is not the same as sales-quality pass
+- live ASR, TTS, latency, turn-taking, and voice naturalness need live rehearsal evidence
+- raw private transcripts should not be copied into thesis files
 
 ## Thesis-Friendly Document Map
 
@@ -152,8 +164,25 @@ Do not:
 - claim private-data-derived improvements are public-only
 - copy proprietary or third-party text into the thesis
 - include raw private transcripts, private audio, names, phone numbers, addresses, or health/financial facts
+- imply official vendor affiliation for public-data simulations
+- invent product, pricing, API, privacy, legal, security, discount, ROI, or model-availability claims
+- say an email, calendar event, CRM update, or payment action happened unless the runtime actually performs that side effect
 
 If a checkpoint is too small for a full methodology entry, still update the roadmap or decision log when the change affects thesis structure, evidence, scope, tooling, or future writing assumptions.
+
+## Validation Budget For Thesis Updates
+
+Do not run the full historical validator ring for every documentation or narrow fixture phase.
+
+Default narrow-phase budget:
+
+- focused validator or documentation check for the changed area
+- directly affected validators only
+- `validate_runtime_manifest.py` when runtime files or manifest-owned docs change
+- `validate_project_drift_guard.py` when the changed file class is covered by drift guard
+- `git diff --check`
+
+Run the full historical ring only for broad universal runtime changes, major milestones, or release-readiness sweeps. If a phase intentionally uses a reduced budget, write that plainly; do not say "everything passed."
 
 ## Writing From Evidence
 
@@ -203,6 +232,8 @@ Do not hide these:
 - private call-center data has not yet been processed
 - German/English speech-realism profiles are literature-informed but need listener validation
 - controlled delivery imperfections are currently offline-validated but still need live audio and listener validation
+- public OpenAI fixture validation proves source grounding and isolation, not official OpenAI authorization or live sales effectiveness
+- live-inspired adversarial matrices reduce repeated bug discovery but do not prove ASR, TTS, latency, or buyer-perceived quality
 - personal speech-pattern learning must be framed as abstract style learning, not voice cloning, identity learning, or raw transcript reuse
 - raw-audio learning currently extracts WAV acoustic features only; transcription, non-WAV decoding, and runtime personalization are separate later checkpoints
 - the product is not yet production deployed

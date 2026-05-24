@@ -41,8 +41,11 @@ Draft research questions:
 Likely contributions:
 
 - a vertical-agnostic sales-agent product architecture based on `SalesCampaign` profiles
+- a universal sales dialogue layer separated from campaign-owned product knowledge and wording
+- source-grounded campaign claim governance for real public product facts
 - a reproducible prompt and simulation workflow
 - emotion-to-strategy adaptation experiments
+- replay-first live failure methodology and adversarial regression matrix design
 - bilingual runtime and voice checkpoints
 - privacy-first private-call learning scaffold
 - language-aware speech-realism reference layer for future voice naturalness work
@@ -211,6 +214,28 @@ Evidence sources:
 - `docs/data/PRIVATE_CALL_LEARNING_PIPELINE.md`
 - `research/experiments/PRIVATE-CALL-LEARNING-001.md`
 
+### 3.5 Source-Grounded Public Product Fixture
+
+Current source-grounded public fixture:
+
+- `public-openai-chatgpt-plans`
+- official public OpenAI sources only
+- source-grounded claim objects for product, pricing, plan, privacy, sign-up, API-boundary, and feature claims
+- plan categories: Free, Go, Plus, Pro, Business Codex, Business ChatGPT & Codex, Enterprise
+- no official OpenAI affiliation claim
+- no raw private transcript source material
+
+Evidence sources:
+
+- `research/sources/public_openai_chatgpt_plans/source_manifest.json`
+- `research/sources/public_openai_chatgpt_plans/source_notes.md`
+- `runtime/campaigns/examples/public-openai-chatgpt-plans.json`
+- `research/experiments/generated/PUBLIC-OPENAI-SOURCE-BUNDLE-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-CAMPAIGN-FIXTURE-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-CAMPAIGN-DIALOGUE-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-CLOSE-SEMANTICS-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-UNIVERSAL-ISOLATION-001/`
+
 ## 4. System Design And Methodology
 
 ### 4.1 Architecture Overview
@@ -232,7 +257,9 @@ Product architecture:
 
 ```text
 reusable sales-agent core
+  + universal sales dialogue behavior
   + configurable SalesCampaign profiles
+  + source-grounded campaign claim objects
   + campaign guardrails
   + bilingual runtime support
   + human handoff / escalation
@@ -244,6 +271,9 @@ Evidence sources:
 - `../product/SIMULATION_CONTRACT.md`
 - `../product/VERTICAL_AGNOSTIC_PRODUCT_MODEL.md`
 - `../product/RESP_001_GUARDED_RESPONSE_GENERATION.md`
+- `research/experiments/generated/UNIVERSAL-BUYER-MOVE-RECOGNITION-001/`
+- `research/experiments/generated/UNIVERSAL-BUYER-MOVES-CROSS-CAMPAIGN-001/`
+- `research/experiments/generated/UNIVERSALIZATION-DRIFT-CLEANUP-001/`
 
 ### 4.2 Emotion And Persuasion Taxonomies
 
@@ -272,14 +302,22 @@ Fields to discuss:
 - campaign id
 - client/product
 - product category
+- fixture type
+- source policy
 - B2B/B2C type
 - approved opening
 - qualification questions
 - allowed claims
 - forbidden claims
+- source-grounded claims
+- product or offer summary
+- high-level value proposition
+- close modes
 - disclosures
 - escalation triggers
 - scheduling goal
+- self-serve close target
+- contact-sales target
 - handoff role
 - compliance notes
 
@@ -289,6 +327,9 @@ Evidence sources:
 - `../product/B2B_B2C_SCOPE.md`
 - `../product/INSURANCE_CLIENT_CONTEXT.md`
 - `../product/LEAD_DATABASE_DESIGN.md`
+- `runtime/campaigns/examples/public-openai-chatgpt-plans.json`
+- `research/experiments/generated/PUBLIC-OPENAI-CAMPAIGN-FIXTURE-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-CROSS-CAMPAIGN-CONTAMINATION-001/`
 
 ### 4.4 Realtime Runtime And Latency
 
@@ -301,6 +342,8 @@ Discuss:
 - interruption handling
 - deterministic response-shaping constraints for live calls: answer first, keep turns short, preserve low-pressure relief, ask one question, and stop
 - language-lane separation: English exact phrase review can be owner-reviewed now, while German exact phrase acceptance requires native or source-backed wording review
+- universal-vs-campaign boundary: response behavior and shapes are universal; product facts and customer-facing product wording are campaign-owned
+- replay-first debugging: capture live evidence, classify currentness, reproduce locally, patch only current reproduced defects, then add exact regressions, generalized variants, and negative controls
 
 Evidence sources:
 
@@ -316,6 +359,8 @@ Evidence sources:
 - `research/experiments/generated/PROD-053B-compact-english-psychology-layer-review/`
 - `research/experiments/generated/PROD-053C-english-spoken-response-expansion-review/`
 - `research/experiments/generated/PROD-053D-english-review-import/`
+- `research/experiments/generated/CURRENT-LIVE-TRANSCRIPT-REPLAY-001/`
+- `research/experiments/generated/LIVE-INSPIRED-ADVERSARIAL-DIALOGUE-MATRIX-001/`
 
 ### 4.5 Voice And Speech Delivery
 
@@ -330,6 +375,9 @@ Discuss the evolution:
 - custom voice comparison
 - spoken text normalization
 - planned speech-realism layer
+- live TTS gating for generic campaigns
+- audio playback error separation and raw URL avoidance in spoken self-serve closes
+- distinction between dry-run text validation and live ASR/TTS/latency/voice-realism evidence
 
 Evidence sources:
 
@@ -341,6 +389,9 @@ Evidence sources:
 - `research/experiments/VOICE-021-elevenlabs-custom-voice-comparison.md`
 - `research/experiments/VOICE-022-spoken-text-normalization.md`
 - `SPEECH_REALISM_REFERENCES.md`
+- `research/experiments/generated/LIVE-DEMO-GENERIC-CAMPAIGN-LIVE-TTS-GATE-001/`
+- `research/experiments/generated/LIVE-DEMO-TTS-AUDIO-PLAYBACK-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-CLOSE-SEMANTICS-001/`
 
 ### 4.6 Guardrails And Safety
 
@@ -353,6 +404,10 @@ Discuss:
 - private data stays local
 - API keys stay environment-only
 - provider runs require explicit `--live`
+- no fake email/calendar/CRM side effects
+- no vendor affiliation claims for public-data simulations
+- no unsupported product, pricing, privacy, legal, security, ROI, or model-availability claims
+- raw private transcripts must not be copied into public thesis evidence
 
 Evidence sources:
 
@@ -360,6 +415,8 @@ Evidence sources:
 - `../../runtime/providers/VOICE_PROVIDER_RUN_BOUNDARY.md`
 - `../product/RESP_003_RUNTIME_LIVE_TTS.md`
 - `docs/data/PRIVATE_CALL_CENTER_DATA_POLICY.md`
+- `research/experiments/generated/PUBLIC-OPENAI-UNIVERSAL-ISOLATION-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-SOURCE-BUNDLE-001/`
 
 ## 5. Experiments And Evaluation
 
@@ -449,6 +506,13 @@ Discuss validators as methodological controls:
 - generated audio asset log
 - context reader
 - voice and response validators
+- focused validation budgets
+- source-bundle validators
+- universal isolation validators
+- cross-campaign contamination validators
+- live replay validators
+- adversarial matrices
+- commercial and resonance review packets
 
 Evidence sources:
 
@@ -456,6 +520,31 @@ Evidence sources:
 - `../product/PROJECT_DRIFT_GUARD.md`
 - `../product/PROJECT_SELF_CONTAINMENT_POLICY.md`
 - `../../runtime/providers/VOICE_GENERATED_AUDIO_ASSET_LOG.md`
+- `research/experiments/generated/CURRENT-LIVE-TRANSCRIPT-REPLAY-001/`
+- `research/experiments/generated/LIVE-INSPIRED-ADVERSARIAL-DIALOGUE-MATRIX-001/`
+- `research/experiments/generated/COMMERCIAL-SALES-CONVERSATION-REVIEW-001/`
+- `research/experiments/generated/CONVERSATIONAL-RESONANCE-REVIEW-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-SOURCE-BUNDLE-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-UNIVERSAL-ISOLATION-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-CROSS-CAMPAIGN-CONTAMINATION-001/`
+
+### 5.5 Source-Grounded Product Dialogue Evaluation
+
+Evaluation focus:
+
+- direct product-intro answers
+- plan fit and upgrade value
+- price and API-boundary answers
+- privacy/training and security/admin boundaries
+- self-serve close and contact-sales close
+- unsupported-claim refusal
+- cross-campaign contamination prevention
+
+Evidence sources:
+
+- `research/experiments/generated/PUBLIC-OPENAI-CAMPAIGN-DIALOGUE-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-CLOSE-SEMANTICS-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-CROSS-CAMPAIGN-CONTAMINATION-001/`
 
 ## 6. Results And Discussion
 

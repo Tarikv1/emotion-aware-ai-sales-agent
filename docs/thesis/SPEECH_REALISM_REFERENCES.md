@@ -18,6 +18,14 @@ Use this file for:
 
 Do not use this file as the runtime rulebook. Runtime behavior should be implemented from the product design doc and validated separately.
 
+Post-May-22 evaluation boundary:
+
+- dry-run text validators can prove response content, guardrails, and side-effect flags, but they cannot prove spoken realism
+- live voice realism still requires ASR, TTS, latency, turn-taking, audio playback, and listener-review evidence
+- live TTS provider use remains explicit and gated; generic campaign live TTS requires consent plus the dedicated allow flag
+- self-serve close language should be voice-ready, which means the agent should not read raw URLs aloud even when the URL is available in metadata or a packet
+- public-data simulations should not sound like official vendor representation unless explicitly authorized and sourced
+
 ## Design Principle Supported By These Sources
 
 The project should model speech mechanics, not stereotypes.

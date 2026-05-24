@@ -85,6 +85,37 @@ Use the source categories carefully:
 - License and reuse status: observed as `cc-by-nc-4.0` on 2026-05-09. The dataset card and paper frame it as non-commercial research material. Do not use it as commercial runtime training data without separate license clearance.
 - Thesis caution: do not copy transcript sentences, high-similarity paraphrases, or raw transcript bodies into tracked scenarios, prompts, generated reports, runtime memory, or commercial runtime prompts. Scenarios must be project-owned rewrites combined from multiple source patterns.
 
+## Public Product Source Bundles
+
+### Public OpenAI ChatGPT plan-fit fixture
+
+- Type: official public product source bundle
+- Source bundle: `research/sources/public_openai_chatgpt_plans/source_manifest.json`
+- Source notes: `research/sources/public_openai_chatgpt_plans/source_notes.md`
+- Retrieved at: `2026-05-24T18:18:00Z`
+- Checkpoints:
+  - `research/experiments/generated/PUBLIC-OPENAI-SOURCE-BUNDLE-001/`
+  - `research/experiments/generated/PUBLIC-OPENAI-CAMPAIGN-FIXTURE-001/`
+  - `research/experiments/generated/PUBLIC-OPENAI-CAMPAIGN-DIALOGUE-001/`
+  - `research/experiments/generated/PUBLIC-OPENAI-UNIVERSAL-ISOLATION-001/`
+  - `research/experiments/generated/PUBLIC-OPENAI-CROSS-CAMPAIGN-CONTAMINATION-001/`
+  - `research/experiments/generated/PUBLIC-OPENAI-CLOSE-SEMANTICS-001/`
+- Official sources:
+  - ChatGPT plans page: https://chatgpt.com/pricing/
+  - ChatGPT FAQ: https://help.openai.com/en/articles/12677804-what-is-chatgpt-faq
+  - ChatGPT capabilities overview: https://help.openai.com/en/articles/9260256-chatgpt-capabilities-overview
+  - ChatGPT Go help article: https://help.openai.com/en/articles/11989085-what-is-chatgpt-go
+  - ChatGPT Plus help article: https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus
+  - ChatGPT Pro help article: https://help.openai.com/en/articles/9793128-what-is-chatgpt-pro
+  - ChatGPT Business help article: https://help.openai.com/en/articles/8792828-what-is-chatgpt-business
+  - ChatGPT Enterprise help article: https://help.openai.com/en/articles/8265053-what-is-chatgpt-enterprise
+  - ChatGPT data controls help article: https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt
+  - OpenAI enterprise privacy page: https://openai.com/enterprise-privacy/
+- Project use: source-grounded real-product campaign fixture for testing plan-fit dialogue, plan comparison, self-serve close, contact-sales close, API-separate boundaries, privacy/training boundaries, unsupported-claim refusal, and cross-campaign isolation.
+- Current project status: the campaign fixture records 33 source-grounded claims from 10 official sources, covers Free, Go, Plus, Pro, Business Codex, Business ChatGPT & Codex, and Enterprise, and keeps OpenAI facts isolated from universal dialogue runtime files.
+- Reuse status: paraphrased source-grounded claims only. Short quote excerpts are stored only where useful for traceability in the source manifest. This is an internal public-data simulation and is not an official OpenAI sales agent.
+- Thesis caution: use this bundle as product-grounding and claim-governance evidence, not as proof of sales effectiveness or OpenAI authorization. Re-check official source pages before final thesis submission because plans, prices, features, and privacy terms can change.
+
 ## Sales Communication And Compliance Sources
 
 ### PROD-028 synthetic CRM product grounding sources

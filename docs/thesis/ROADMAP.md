@@ -29,16 +29,18 @@ Status convention:
 
 ## Checkpoint Board
 
-Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped dialogue-policy validation, baseline voice/runtime quality, supervised live voice acceptance, realtime turn-taking stabilization, interrupt/pace/product-plan precision, live transcript reviewability, compact memory hardening, plain early qualification, provider TTS phrase-flow polish, appointment-setting MVP close behavior, live-feedback route polish, terminal stop handling, stale-context recovery, plain sales clarity, appointment timing repair, generic campaign-playbook resolution, cross-vertical smoke evidence, and thesis evidence preservation.
+Active phase: source-grounded campaign evaluation, universal dialogue isolation, self-serve close behavior, live-demo campaign selection, live replay/adversarial regression, and thesis evidence preservation.
 
 Current checkpoint:
 
-- [ ] Current: supervised live listening review of `LIVE-DEMO-014-clear-pain-callback-followup` before any broader runtime rewrite. `LIVE-DEMO-014` keeps the manager/pragmatics architecture, but tightens clear/no-pain acknowledgement, stated missed-callback workflow-review progression, `Growth` term correction, appointment hesitation, and callback-later time capture. It is not live voice acceptance, production readiness, local LLM adoption, or `PROD-102`.
+- [ ] Current: live dry-run and supervised voice rehearsal of `public-openai-chatgpt-plans` after `PUBLIC-OPENAI-CLOSE-SEMANTICS-001`. The fixture is now a source-grounded public-data ChatGPT plan-fit simulation with self-serve close and contact-sales routes. The next evidence should test whether the voice path handles plan questions, link requests, no-fit/free-plan answers, privacy boundaries, and Enterprise contact-sales routing naturally. This is not production readiness, official OpenAI representation, email sending, payment collection, local LLM adoption, or `PROD-102`.
 
 Next checkpoints:
 
-- [ ] Next: if Tarik's live listening rejects `LIVE-DEMO-014`, create one narrow follow-up from the observed failure: manager route priority, pragmatic-move coverage, wording, ASR misunderstanding, turn-taking, acknowledgement, stale-context repair, appointment timing, or voice delivery. Do not broaden into full autonomous sale closure, local LLM wiring, or `PROD-102` until appointment-setting behavior is heard as usable.
-- [ ] Next before live non-RouteSignal routing: define a narrow runtime integration gate for generic campaign configs. `CAMPAIGN-PLAYBOOK-ADAPTER-002` proves offline resolution only; do not route non-RouteSignal campaigns through live speech until the campaign config review contract, regulated-caution handling, and RouteSignal regression boundary are explicit.
+- [ ] Next: if the OpenAI live rehearsal fails, create one narrow follow-up from the observed failure: source-claim rendering, self-serve close wording, contact-sales routing, no-fit pressure, OpenAI affiliation boundary, raw-URL speech, ASR misunderstanding, turn-taking, latency, or TTS naturalness. Do not broaden into email/calendar/CRM integration, payment collection, official vendor representation, or unchecked LLM final speech.
+- [ ] Next: design a reusable source-grounded campaign intake workflow for real client campaigns. The workflow should collect official/product-owner sources, create claim objects, separate campaign facts from universal dialogue, define close modes, and run isolation/contamination checks before live routing.
+- [ ] Next: define compliance, consent, retention, handoff, and sales-review requirements before any real customer deployment or production claim.
+- [ ] Next: assess whether deterministic response shapes are becoming too rigid. Only consider a controlled LLM response-planning layer after replay/adversarial guardrails, source-claim constraints, latency budgets, and final-speech authority boundaries are explicit.
 - [ ] Parked after `PROD-101` until Tarik resumes: select the next remaining English customer-move classifier slice only if recommendation-roleplay positives, adjacent controls, and the stable English guard pass.
 - [ ] Next after `PROD-079`: select the next remaining English customer-move classifier slice only if provider-comparison regression stays stable.
 - [ ] Future persuasion-tactics checkpoint candidate: define and test `guided_option_selection` only after current coverage-boundary/runtime regression work is stable. Guardrails: use only after fit or interest is established, present two real options fairly, preserve `neither`, `not now`, and `explain the difference`, avoid fake urgency, and never pretend the customer already agreed.
@@ -65,6 +67,24 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PUBLIC-OPENAI-CLOSE-SEMANTICS-001`, which changes the OpenAI fixture from appointment-style framing to `self_serve_plan_fit`, keeps `self_serve_purchase_link` as the primary individual close mode, routes Enterprise to `contact_sales`, keeps raw URLs out of spoken final responses, preserves the official URL in metadata, keeps `can_send_email` false, and verifies 64 close scenarios including 32 multi-turn cases. It keeps provider calls, live TTS, local LLM calls, email sending, calendar creation, CRM writes, payment collection, OpenAI affiliation claims, real customer data, and `PROD-102` disabled.
+
+- [x] `PUBLIC-OPENAI-SOURCE-BUNDLE-001`, `PUBLIC-OPENAI-CAMPAIGN-FIXTURE-001`, `PUBLIC-OPENAI-UNIVERSAL-ISOLATION-001`, `PUBLIC-OPENAI-CAMPAIGN-DIALOGUE-001`, and `PUBLIC-OPENAI-CROSS-CAMPAIGN-CONTAMINATION-001`, which add a source-grounded public OpenAI/ChatGPT plan-fit campaign from official public OpenAI sources only. The evidence records 10 official sources, 33 source-grounded claims, 7 plan categories, 4 supported close modes after the close-semantics update, 179 dialogue scenarios, 90 multi-turn scenarios, 0 forbidden OpenAI matches in protected universal files, and clean cross-campaign reset boundaries.
+
+- [x] `SPOKEN-OFFER-LANGUAGE-NATURALNESS-001`, `CUSTOMER-FACING-OFFER-LANGUAGE-001`, and `CAMPAIGN-OFFER-SCOPE-MODEL-001`, which separate product/offer value from appointment/review targets, remove synthetic/test wording from buyer-facing language, and repair the problem where fixtures could sell a "review" rather than the actual offer value.
+
+- [x] `CURRENT-LIVE-TRANSCRIPT-REPLAY-001`, which converts current live transcript failure classes into deterministic replay coverage. The latest public-safe result covers 84 scenarios, 82 multi-turn cases, and 0 failures while preserving side-effect flags. It is regression evidence, not a live ASR/TTS quality claim.
+
+- [x] `LIVE-INSPIRED-ADVERSARIAL-DIALOGUE-MATRIX-001`, which expands live-inspired adversarial coverage to 729 scenarios, 398 multi-turn conversations, 30 scenario families, and 6 campaigns. It currently passes 729/729 with 0 red findings and false side-effect flags, after repairs for broad-menu loops, stability-guard menu resets, high-confidence buyer-move priority, and response progression after buyer challenges.
+
+- [x] `UNIVERSALIZATION-DRIFT-CLEANUP-001`, which removes or reduces fixture-specific wording drift from universal runtime. Customer-facing campaign wording now belongs in campaign configs/adapters; universal runtime owns product-agnostic response shapes, buyer-move handling, call control, and safety.
+
+- [x] `COMMERCIAL-SALES-CONVERSATION-REVIEW-001` and `CONVERSATIONAL-RESONANCE-REVIEW-001`, which add public-safe review packets for commercial sales quality and human-context resonance. They cover hardship, busy/distracted buyers, financial stress, prior bad experience, stakeholder routing, off-topic ramble, sensitive data, interruptions, sarcasm, and venting as review surfaces, while preserving no-provider/no-side-effect boundaries.
+
+- [x] Universal sales dialogue hardening through the 4E/4F chain, including universal sales conversation knowledge, universal policy runtime frame, buyer-move recognition, response-shape enforcement, ASR garble repair boundaries, trust/privacy/challenge handling, regulated-scope boundaries, pain progression, appointment readiness, tentative-pain continuity, social conversation management, rapport relevance, next-step discipline, broad-menu suppression, high-confidence buyer-move priority, and response progression after buyer challenges.
+
+- [x] Generic live-demo campaign selector, selector UI, operator rehearsal, generic live TTS gate, audio playback repair, and manual-work semantics repair. The selector lists generic configs from the browser, preserves the RouteSignal default, fails invalid generic selection closed without RouteSignal fallback, shows metadata/dry-run warnings, resets transcript/session state across selections, and requires explicit `--allow-generic-live-tts` before generic provider audio.
 
 - [x] `CAMPAIGN-PLAYBOOK-ADAPTER-002-cross-vertical-smoke`, which extends `runtime/core/campaign_playbook_adapter.py` so synthetic generic campaign configs with `vertical_id`, `diagnostic_gaps`, `core_diagnostic_gaps`, and `gap_order` resolve without falling back to `ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001`. It validates B2B SaaS, insurance, telecom, home services, healthcare admin or medical equipment, automotive service, membership or subscription, and retail or ecommerce support-sales smoke campaigns in memory only, requires known universal pain and qualification dimensions, requires vertical regulated cautions and blocked-claim coverage, keeps all side-effect flags false, preserves the RouteSignal default/live campaign behavior, and records generated evidence under `research/experiments/generated/CAMPAIGN-PLAYBOOK-ADAPTER-002-cross-vertical-smoke/`. It does not integrate non-RouteSignal campaigns into live runtime routing.
 
@@ -424,7 +444,15 @@ The product simulation runner now supports campaign wrappers, so one reusable co
 
 The contextual buyer semantics layer is now a separate thesis-relevant evidence chain. It proves that customer moves must be interpreted against previous-agent-question context, outgoing diagnostic scope, durable semantic memory, send-info/contact state, callback timing state, and right-person handoff state. This is part of the reusable dialogue core, while the current diagnostic vocabulary remains campaign-owned through the adapter.
 
-The next product-learning priority is difficulty-first: strengthen the reusable core against universal sales objections and edge cases before expanding aggressively into more industries.
+The universal sales dialogue layer is now the central reusable behavior layer. It owns buyer-move recognition, response shapes, repair rules, call control, rapport handling, safety boundaries, and next-step discipline. Campaign configs and adapters own product facts, plan names, prices, source-grounded claims, customer-facing wording, close targets, and campaign-specific caveats.
+
+`UNIVERSALIZATION-DRIFT-CLEANUP-001` corrected the earlier drift where customer-facing campaign wording and synthetic/RouteSignal phrases were creeping into universal runtime. Future campaign work should preserve this boundary: no product-specific facts in protected universal files unless they are generic leakage-test fixtures.
+
+The project now has a source-grounded real-product benchmark: `public-openai-chatgpt-plans`. It is an internal public-data simulation, not an official OpenAI agent, and its OpenAI/ChatGPT facts are isolated to the campaign fixture, source bundle, and public OpenAI generated evidence. This improves product-value realism compared with synthetic fixtures but does not prove live voice quality or production readiness.
+
+The validation approach is now budgeted by impact. Narrow phases should run focused validators, directly affected validators, runtime manifest, project drift guard, and `git diff --check`. The full historical validator ring is reserved for broad universal runtime changes, major milestones, or release-readiness sweeps.
+
+The next product-learning priority is source-grounded campaign intake plus live rehearsal: keep strengthening the reusable core against universal sales objections and edge cases, but test at least one real public-product fixture so the agent must answer actual buyer value questions rather than only offer "reviews."
 
 The product runtime priority is low latency. The live call path should be a fast real-time sales-agent core with deterministic guardrails and short bridge responses when slower lookup is needed. Specialist modules or sub-agents should support background compliance, product lookup, CRM work, handoff preparation, and post-call learning rather than blocking every customer-facing reply.
 
@@ -590,6 +618,11 @@ Current integrated prototype evidence:
 - universal sales knowledge and vertical playbook modules, which separate product-agnostic sales reasoning and regulated-vertical caution defaults from the RouteSignal/Northstar campaign
 - campaign playbook adapter 001/002, which preserves current RouteSignal behavior while proving generic synthetic campaign configs can resolve offline across eight verticals
 - runtime manifest and drift-guard coverage for the contextual semantics, diagnostic playbook, universal sales knowledge, vertical playbook, and campaign adapter modules
+- generic campaign selector and selector UI evidence, which allow browser selection of generic configs, preserve the RouteSignal default, fail invalid configs closed, expose selector metadata, and gate generic live TTS behind explicit consent plus `--allow-generic-live-tts`
+- universal dialogue evidence, including universal buyer-move recognition, response-shape enforcement, commercial review packets, resonance review packets, universalization drift cleanup, and cross-campaign matrices
+- live replay evidence that converts current live failures into deterministic regression without copying raw private transcripts into public evidence
+- live-inspired adversarial evidence with 729/729 dry-run pass across 398 multi-turn conversations, 30 scenario families, and 6 campaigns
+- source-grounded public OpenAI/ChatGPT plan-fit fixture evidence, with 10 official sources, 33 source-grounded claims, 7 plan categories, universal isolation, cross-campaign contamination checks, and voice-ready self-serve close semantics
 
 Out of scope:
 
@@ -597,6 +630,8 @@ Out of scope:
 - large-scale live customer testing
 - full-duplex real-time interruption handling
 - broad autonomous sales behavior outside the constrained target workflow
+- official representation of third-party vendors such as OpenAI
+- fake email/calendar/CRM side effects or payment collection
 
 ## Product MVP Track
 
@@ -672,22 +707,25 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Continue supervised live-demo listening review through `LIVE-DEMO-014-clear-pain-callback-followup` after `PROD-101-english-recommendation-roleplay-post-patch-regression`; do not open `PROD-102` or the next PROD customer-move slice in this run.
+Run a live dry-run and then supervised voice rehearsal for `public-openai-chatgpt-plans`, starting with the self-serve close and Enterprise contact-sales paths. Do not open `PROD-102`, do not add email/calendar/CRM side effects, and do not claim official OpenAI representation.
 
 Purpose:
 
-- do not open the next PROD checkpoint in this run
-- keep `PROD-102` or any customer-move slice selection parked until Tarik resumes
-- preserve customer facts before direct recommendation
-- preserve customer agency and no agent-decides-for-customer behavior
-- keep value guarantees, payment collection, contract signing, provider comparison, process clarity, generic confusion, German exact-phrase promotion, and production runtime promotion blocked
-- keep provider calls, customer data, payment handling, retrieval defaults, German exact-phrase promotion, voice playback, and production runtime promotion blocked
+- test whether the public-data OpenAI fixture sounds like a self-serve plan-fit campaign rather than appointment setting
+- verify spoken close responses avoid raw URLs while metadata keeps the official URL available
+- verify no-fit/free-plan responses do not pressure the buyer
+- verify Enterprise routes to contact sales without fake booking, legal/security guarantees, or exact Enterprise pricing
+- keep value guarantees, payment collection, contract signing, email sending, calendar creation, CRM writes, official-affiliation claims, and production runtime promotion blocked
+- keep private raw transcript text out of public thesis evidence
 
-Immediate live-demo artifact from `LIVE-DEMO-014`:
+Immediate OpenAI fixture artifacts:
 
-- clear pain callback follow-up result at `research/experiments/generated/LIVE-DEMO-014-clear-pain-callback-followup/result.json`
-- clear pain callback follow-up report at `research/experiments/generated/LIVE-DEMO-014-clear-pain-callback-followup/report.md`
-- no local LLM install, provider ASR, LLM-written final speech, production promotion, or real-customer use from this checkpoint
+- source bundle at `research/sources/public_openai_chatgpt_plans/`
+- fixture at `runtime/campaigns/examples/public-openai-chatgpt-plans.json`
+- close-semantics result at `research/experiments/generated/PUBLIC-OPENAI-CLOSE-SEMANTICS-001/result.json`
+- campaign dialogue result at `research/experiments/generated/PUBLIC-OPENAI-CAMPAIGN-DIALOGUE-001/result.json`
+- universal isolation result at `research/experiments/generated/PUBLIC-OPENAI-UNIVERSAL-ISOLATION-001/result.json`
+- cross-campaign contamination result at `research/experiments/generated/PUBLIC-OPENAI-CROSS-CAMPAIGN-CONTAMINATION-001/result.json`
 
 Immediate product artifact from `PROD-101`:
 

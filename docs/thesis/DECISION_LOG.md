@@ -15,6 +15,140 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-128 - Make self-serve close semantics campaign-owned for the OpenAI public fixture
+
+- Date: 2026-05-24
+- Status: accepted
+- Decision: treat the public OpenAI/ChatGPT plan fixture as a self-serve plan-fit campaign, not an appointment-setting campaign. The fixture uses `objective: self_serve_plan_fit`, `close_mode: self_serve_purchase_link`, voice-ready spoken close labels, metadata-only raw URL exposure, and `contact_sales` for Enterprise.
+- Why:
+  - reading a raw URL aloud is poor voice behavior
+  - saying a link was sent would be false because no email integration exists
+  - Enterprise procurement and organization-level controls require the official contact-sales route, not a fake booking claim
+  - a real product fixture should not inherit appointment/review framing from synthetic campaigns when the product journey is self-serve
+- Alternatives considered:
+  - keep `appointment_setting` as the fixture objective for schema compatibility
+  - speak the raw official pricing URL in final responses
+  - request an email address and imply link sending
+- Consequences:
+  - individual plan closes point to the official self-serve route without speaking raw URLs
+  - raw URL metadata remains available for packets and UI output
+  - `can_send_email` remains false
+  - no email, calendar, CRM, payment collection, OpenAI affiliation, or Enterprise pricing claim is introduced
+  - `PUBLIC-OPENAI-CLOSE-SEMANTICS-001` covers individual, business, Enterprise, no-fit, negative-control, and cross-campaign close behavior
+
+### DEC-127 - Add a source-grounded public OpenAI product fixture without contaminating universal dialogue
+
+- Date: 2026-05-24
+- Status: accepted
+- Decision: add `public-openai-chatgpt-plans` as an internal public-data simulation using only official OpenAI public sources, with every allowed product, pricing, privacy, sign-up, API-boundary, and feature claim represented as a source-grounded claim object. Keep OpenAI facts out of universal sales runtime files.
+- Why:
+  - synthetic campaigns had become acceptable fixtures but still mostly sold generic reviews or fit checks instead of rich real product value
+  - a real source-grounded product benchmark is needed to test whether the agent can answer buyer questions about plans, upgrades, teams, privacy, API separation, and next steps
+  - product facts are campaign knowledge, while response shape, buyer-move handling, and side-effect safety are universal behavior
+- Alternatives considered:
+  - add ChatGPT plan facts directly to universal response rules
+  - keep using only synthetic product fixtures
+  - use non-OpenAI web sources to enrich the fixture
+- Consequences:
+  - OpenAI product knowledge lives in `runtime/campaigns/examples/public-openai-chatgpt-plans.json`, `research/sources/public_openai_chatgpt_plans/`, and public OpenAI generated evidence
+  - protected universal files remain OpenAI-fact-free
+  - source validators check official domains, retrieved timestamps, claim backing, and side-effect flags
+  - campaign dialogue and contamination validators prove OpenAI facts do not leak into RouteSignal or synthetic campaigns
+  - the fixture is explicitly not an official OpenAI sales agent and must not claim affiliation or authorization
+
+### DEC-126 - Reduce routine validation budget to focused affected checks
+
+- Date: 2026-05-24
+- Status: accepted
+- Decision: stop running the full historical validator ring for every phase. Use focused validators, directly affected validators, runtime manifest, project drift guard, and `git diff --check` by default; reserve the full ring for broad universal runtime changes, major milestones, or release-readiness sweeps.
+- Why:
+  - the validator suite is now large enough that full-ring execution on every narrow phase creates slow feedback and hides the relevant signal
+  - most phases touch a bounded area with specific evidence needs
+  - focused budgets still preserve side-effect, manifest, and drift checks while reducing unnecessary generated-evidence churn
+- Alternatives considered:
+  - keep the full historical ring as the default for every phase
+  - run only the new validator and skip manifest/drift checks
+  - refresh unrelated evidence packets for every documentation or campaign change
+- Consequences:
+  - phase prompts should state the validation budget explicitly
+  - additional validators must be justified when run
+  - documentation-only phases should not run runtime dialogue validators unless runtime files change
+  - "all validators passed" must not be claimed when the budget was intentionally targeted
+
+### DEC-125 - Use replay-first live failure methodology before broad runtime patches
+
+- Date: 2026-05-23
+- Status: accepted
+- Decision: convert live-call failures into focused deterministic replay tests before patching, classify whether evidence is current or stale, then patch only reproduced current defects with exact regressions, generalized variants, and negative controls.
+- Why:
+  - live calls revealed failures that earlier dry-run validators missed: unanswered direct questions, ASR near-miss misroutes, stability guards reopening broad menus, repeated response loops, missed stop variants, and confusion between product/offer value and appointment/review targets
+  - broad validator patching can make stale issues look current or create new regressions
+  - private transcripts should not become public thesis content; only sanitized lessons and generated evidence should be cited
+- Alternatives considered:
+  - patch directly from raw live transcript observations
+  - expand validators broadly without reproducing the failure
+  - treat all historical live feedback as equally current
+- Consequences:
+  - `CURRENT-LIVE-TRANSCRIPT-REPLAY-001` and related live-demo replay artifacts are the public-safe bridge from live observation to deterministic regression
+  - private raw transcript text remains excluded from thesis files
+  - current defects can be generalized without copying private dialogue
+  - live testing remains necessary for ASR, TTS, latency, and voice realism even when replay validators are green
+
+### DEC-124 - Treat the live-inspired adversarial matrix as a regression net, not a sales-quality proof
+
+- Date: 2026-05-24
+- Status: accepted
+- Decision: use `LIVE-INSPIRED-ADVERSARIAL-DIALOGUE-MATRIX-001` as the broad deterministic regression surface for buyer challenges, ASR near-misses, stop/refusal handling, campaign contamination, menu loops, stability-guard failures, and response progression, while keeping human review and live calls as separate quality gates.
+- Why:
+  - the matrix reached 729/729 dry-run pass across 398 multi-turn conversations, 30 scenario families, and 6 campaigns after focused response-progression and no-menu repairs
+  - deterministic pass/fail coverage catches repeatable failure classes faster than ad hoc live bug discovery
+  - the matrix cannot measure actual microphone capture, speech timing, provider audio quality, latency, buyer perception, or real sales effectiveness
+- Alternatives considered:
+  - rely primarily on supervised live calls for regression detection
+  - treat the matrix pass as enough to claim live or commercial readiness
+  - keep only narrow one-off replay tests
+- Consequences:
+  - adversarial evidence supports the thesis methodology for regression hardening
+  - "validator pass" and "sales-quality pass" remain distinct claims
+  - live rehearsal and human review remain mandatory before stronger product-readiness claims
+
+### DEC-123 - Move customer-facing campaign wording out of universal runtime
+
+- Date: 2026-05-23
+- Status: accepted
+- Decision: remove or reduce hardcoded synthetic campaign ids, vertical-to-phrase branches, RouteSignal-specific customer-facing phrases, and hardcoded gap wording from universal runtime. Universal dialogue owns response shapes and sales behavior; campaign configs/adapters own product-specific facts, customer-facing offer wording, plan/value language, and campaign next-step targets.
+- Why:
+  - universal runtime had started to accumulate campaign wording and fixture assumptions
+  - that drift made cross-campaign generalization fragile and risked leaking one campaign's claims into another
+  - validators should test universal behavior against fixtures, not make fixture wording part of the universal layer
+- Alternatives considered:
+  - keep expanding universal runtime with campaign id branches
+  - create separate runtimes per campaign
+  - tolerate RouteSignal-specific wording as "generic enough"
+- Consequences:
+  - `UNIVERSALIZATION-DRIFT-CLEANUP-001` resolved or reduced UDR findings to acceptable test-fixture-only status
+  - RouteSignal wording belongs in the adapter/playbook layer
+  - generic campaign wording belongs in config facts
+  - the same separation later enabled the OpenAI fixture without contaminating protected universal files
+
+### DEC-122 - Widen universal sales dialogue architecture before adding richer campaigns
+
+- Date: 2026-05-22
+- Status: accepted
+- Decision: add a universal sales conversation knowledge contract and universal policy runtime frame for buyer moves, response shapes, ASR repair boundaries, campaign fact slots, forbidden patterns, call control, repair rules, next-step discipline, rapport, trust/privacy boundaries, social contexts, and high-confidence buyer-move priority.
+- Why:
+  - the project needed a reusable sales-agent core rather than campaign-specific route patches
+  - buyer questions, objections, trust challenges, stop variants, confusion, regulated-scope questions, hardship, and social interruptions are cross-campaign behavior
+  - product facts, plan names, prices, and campaign wording must stay campaign-owned
+- Alternatives considered:
+  - continue patching the live voice policy directly for each observed phrase
+  - let campaign configs define both facts and universal response behavior
+  - move final speech generation to an unchecked LLM planner
+- Consequences:
+  - direct product/value answers, objections, trust/privacy handling, challenge repair, no-menu suppression, pain progression, appointment readiness, rapport relevance, and next-step discipline are now universal dialogue responsibilities
+  - campaign adapters supply the facts and customer-facing terms needed by those shapes
+  - future controlled LLM response planning remains possible only behind strict guardrails and replay coverage
+
 ### DEC-121 - Split universal sales knowledge from campaign playbooks before non-RouteSignal live routing
 
 - Date: 2026-05-21
