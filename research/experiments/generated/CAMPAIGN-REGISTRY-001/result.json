@@ -952,6 +952,17 @@
     },
     "registry_listing": [
       {
+        "appointment_target": "plan-fit review or official Enterprise sales route",
+        "campaign_id": "public-openai-chatgpt-plans",
+        "failures": [],
+        "path": "runtime\\campaigns\\examples\\public-openai-chatgpt-plans.json",
+        "product_or_offer_name": "ChatGPT subscription plans",
+        "registry_id": "CAMPAIGN-REGISTRY-001",
+        "valid": true,
+        "validation_status": "valid",
+        "vertical_id": "b2b_saas"
+      },
+      {
         "appointment_target": "service advisor inspection review",
         "campaign_id": "synthetic-automotive-service-review",
         "failures": [],

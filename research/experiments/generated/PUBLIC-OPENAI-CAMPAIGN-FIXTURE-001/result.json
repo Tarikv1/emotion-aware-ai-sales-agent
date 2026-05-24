@@ -1,0 +1,68 @@
+{
+  "allowed_claim_categories": {
+    "api_usage_boundary": 3,
+    "enterprise_sales": 1,
+    "feature": 5,
+    "plan_catalog": 6,
+    "pricing": 5,
+    "privacy_training": 4,
+    "product_intro": 1,
+    "security_admin": 2,
+    "sign_up": 4,
+    "usage_limits": 2
+  },
+  "allowed_claim_count": 33,
+  "campaign_source_grounded_claim_count": 23,
+  "checkpoint_id": "PUBLIC-OPENAI-CAMPAIGN-FIXTURE-001",
+  "close_by_plan": {
+    "business_chatgpt_codex": "self_serve_purchase_link",
+    "business_codex": "self_serve_purchase_link",
+    "enterprise": "contact_sales",
+    "free": "self_serve_purchase_link",
+    "go": "self_serve_purchase_link",
+    "plus": "self_serve_purchase_link",
+    "pro": "self_serve_purchase_link"
+  },
+  "close_modes_supported": [
+    "appointment_review",
+    "contact_sales",
+    "no_fit_close",
+    "self_serve_purchase_link",
+    "send_info_capture"
+  ],
+  "creates_calendar_event": false,
+  "failures": [],
+  "fixture": "runtime\\campaigns\\examples\\public-openai-chatgpt-plans.json",
+  "local_llm_calls_made": false,
+  "manifest_claim_count": 33,
+  "opens_prod_102": false,
+  "plan_ids": [
+    "business_chatgpt_codex",
+    "business_codex",
+    "enterprise",
+    "free",
+    "go",
+    "plus",
+    "pro"
+  ],
+  "provider_calls_made": false,
+  "registry_validation": {
+    "campaign_id": "public-openai-chatgpt-plans",
+    "failures": [],
+    "registry_id": "CAMPAIGN-REGISTRY-001",
+    "safety": {
+      "creates_calendar_event": false,
+      "local_llm_calls_made": false,
+      "opens_prod_102": false,
+      "provider_calls_made": false,
+      "sends_email": false,
+      "writes_crm": false
+    },
+    "schema_version": 1,
+    "valid": true,
+    "vertical_id": "b2b_saas"
+  },
+  "sends_email": false,
+  "status": "pass",
+  "writes_crm": false
+}

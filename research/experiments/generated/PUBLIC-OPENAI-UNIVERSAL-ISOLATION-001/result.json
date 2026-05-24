@@ -1,0 +1,20 @@
+{
+  "checkpoint_id": "PUBLIC-OPENAI-UNIVERSAL-ISOLATION-001",
+  "creates_calendar_event": false,
+  "failures": [],
+  "files_checked": [
+    "runtime\\core\\universal_conversation_policy_runtime.py",
+    "runtime\\core\\universal_sales_conversation_knowledge.py",
+    "runtime\\core\\contextual_buyer_semantics.py",
+    "runtime\\core\\dialogue_manager.py",
+    "runtime\\core\\live_voice_session_policy.py"
+  ],
+  "local_llm_calls_made": false,
+  "match_count": 0,
+  "matches": [],
+  "opens_prod_102": false,
+  "provider_calls_made": false,
+  "sends_email": false,
+  "status": "pass",
+  "writes_crm": false
+}

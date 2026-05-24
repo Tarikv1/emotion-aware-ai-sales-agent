@@ -1,0 +1,1370 @@
+{
+  "campaign_id": "public-openai-chatgpt-plans",
+  "fixture_type": "public_data_simulation",
+  "not_affiliated_disclaimer": true,
+  "source_policy": "official_openai_public_sources_only",
+  "source_bundle_path": "research/sources/public_openai_chatgpt_plans/source_manifest.json",
+  "cross_campaign_leakage_forbidden": true,
+  "client_name": "OpenAI public product simulation",
+  "customer_facing_company_name": "OpenAI public product simulation",
+  "customer_facing_offer_name": "ChatGPT plan fit check",
+  "customer_facing_offer_summary": "A public-data simulation that compares ChatGPT plan categories at a high level using official public OpenAI sources.",
+  "customer_facing_value_proposition": "The value is quickly matching a buyer's use case to the public ChatGPT plan category that seems most relevant, without pretending to represent OpenAI or inventing unsupported claims.",
+  "customer_facing_call_objective": "Help the buyer compare Free, Go, Plus, Pro, Business, and Enterprise at a high level, then point to the official plan page or sales route.",
+  "customer_facing_human_review_scope": "buyer use case, budget, team size, API need, privacy concern, and admin/security needs",
+  "customer_facing_agent_limitations": "This is an internal public-data simulation. The agent can summarize official public plan information and point to official pages, but cannot represent OpenAI, send email, book meetings, create CRM records, quote enterprise pricing, or give legal/security advice.",
+  "internal_fixture_description": "Source-grounded public OpenAI ChatGPT plan campaign fixture based only on official public OpenAI sources.",
+  "product_or_offer_name": "ChatGPT subscription plans",
+  "product_name": "ChatGPT subscription plans",
+  "offer_name": "ChatGPT plan fit check",
+  "product_or_offer_summary": "ChatGPT has public individual and business plan categories. This fixture uses official public OpenAI sources to answer plan-fit, price, API-boundary, privacy, and close-path questions.",
+  "high_level_value_proposition": "Compare the buyer's use case to official public plan categories and point them to the right official next step without pressure or side effects.",
+  "agent_call_objective": "help the buyer understand which public ChatGPT plan category may fit, then point to the official self-serve or contact-sales route",
+  "primary_customer_issue_phrase": "plan fit",
+  "short_relevance_question": "Are you mainly comparing plans for yourself, a small team, or a larger organization?",
+  "vertical_id": "b2b_saas",
+  "objective": "appointment_setting",
+  "close_mode": "self_serve_purchase_link",
+  "close_modes_supported": [
+    "self_serve_purchase_link",
+    "contact_sales",
+    "send_info_capture",
+    "appointment_review",
+    "no_fit_close"
+  ],
+  "human_followup_owner": "demo operator for simulation notes; official OpenAI sales team for Enterprise",
+  "appointment_target": "plan-fit review or official Enterprise sales route",
+  "self_serve_close_target": "https://chatgpt.com/pricing/",
+  "contact_sales_target": "https://openai.com/contact-sales/",
+  "campaign_playbook_id": "public-openai-chatgpt-plans-playbook",
+  "caller_identity": {
+    "representative_name": "Maya",
+    "relationship_to_offer": "running a public-data ChatGPT plan-fit simulation"
+  },
+  "language": "en",
+  "opening_options": {
+    "preferred": "Hi, this is Maya. I'm running a public-data ChatGPT plan-fit simulation. I can help compare ChatGPT plans at a high level using OpenAI's public plan information. Do you have a minute?",
+    "short": "Hi, this is Maya. I'm doing a quick ChatGPT plan-fit check - mainly whether Free, Go, Plus, Pro, Business, or Enterprise fits your use case. Do you have a minute?"
+  },
+  "agent_can_say": [
+    "This is a public-data simulation based on official public OpenAI plan information.",
+    "I can compare ChatGPT plan categories at a high level.",
+    "I can point you to the official ChatGPT plans page.",
+    "For individual plans, the official next step is the ChatGPT plan page or the plan/profile flow described in OpenAI help articles.",
+    "For Enterprise, the official next step is contact sales.",
+    "If Free is enough for your use case, Free may be enough."
+  ],
+  "agent_must_not_claim": [
+    "I am calling from OpenAI.",
+    "I am authorized to represent OpenAI.",
+    "I sent you the link.",
+    "I booked a meeting.",
+    "I created a CRM record.",
+    "API usage is included in a ChatGPT subscription.",
+    "Enterprise has a specific public price.",
+    "Your company is legally compliant if it uses this.",
+    "Your data is never used under every circumstance.",
+    "You are guaranteed access to a specific future model or exact usage limit."
+  ],
+  "allowed_claims": [
+    "chatgpt_definition_001",
+    "chatgpt_capabilities_core_001",
+    "chatgpt_available_web_mobile_001",
+    "pricing_plan_set_001",
+    "free_basic_limits_001",
+    "go_expanded_popular_features_001",
+    "go_features_001",
+    "go_signup_profile_upgrade_001",
+    "plus_price_20_001",
+    "plus_features_001",
+    "plus_api_separate_001",
+    "plus_signup_profile_upgrade_001",
+    "pro_positioning_001",
+    "pro_tiers_100_200_001",
+    "pro_features_001",
+    "pro_unlimited_guardrails_001",
+    "pro_upgrade_settings_pricing_001",
+    "business_overview_001",
+    "business_standard_seat_price_001",
+    "business_standard_seat_includes_codex_001",
+    "business_codex_seat_usage_based_001",
+    "business_minimum_seats_001",
+    "business_no_training_workspace_data_001",
+    "business_api_separate_001",
+    "enterprise_overview_001",
+    "enterprise_org_purchase_contact_sales_001",
+    "enterprise_api_membership_separate_001",
+    "enterprise_security_admin_features_001",
+    "consumer_data_controls_opt_out_001",
+    "temporary_chat_training_boundary_001",
+    "enterprise_privacy_no_training_default_001",
+    "enterprise_privacy_controls_001",
+    "limits_vary_by_plan_model_001"
+  ],
+  "allowed_claim_fact_ids": [
+    "chatgpt_definition_001",
+    "chatgpt_capabilities_core_001",
+    "chatgpt_available_web_mobile_001",
+    "pricing_plan_set_001",
+    "free_basic_limits_001",
+    "go_expanded_popular_features_001",
+    "go_features_001",
+    "go_signup_profile_upgrade_001",
+    "plus_price_20_001",
+    "plus_features_001",
+    "plus_api_separate_001",
+    "plus_signup_profile_upgrade_001",
+    "pro_positioning_001",
+    "pro_tiers_100_200_001",
+    "pro_features_001",
+    "pro_unlimited_guardrails_001",
+    "pro_upgrade_settings_pricing_001",
+    "business_overview_001",
+    "business_standard_seat_price_001",
+    "business_standard_seat_includes_codex_001",
+    "business_codex_seat_usage_based_001",
+    "business_minimum_seats_001",
+    "business_no_training_workspace_data_001",
+    "business_api_separate_001",
+    "enterprise_overview_001",
+    "enterprise_org_purchase_contact_sales_001",
+    "enterprise_api_membership_separate_001",
+    "enterprise_security_admin_features_001",
+    "consumer_data_controls_opt_out_001",
+    "temporary_chat_training_boundary_001",
+    "enterprise_privacy_no_training_default_001",
+    "enterprise_privacy_controls_001",
+    "limits_vary_by_plan_model_001"
+  ],
+  "blocked_claims": [
+    "claiming affiliation or authorization from OpenAI",
+    "guaranteeing model availability",
+    "guaranteeing exact usage limits beyond official limits",
+    "saying API usage is included in ChatGPT plans",
+    "guaranteeing privacy terms beyond official wording",
+    "giving legal, compliance, or security advice",
+    "guaranteeing savings, ROI, or productivity",
+    "saying an email was sent",
+    "creating calendar or CRM side effects",
+    "inventing discounts",
+    "inventing Enterprise pricing",
+    "claiming payment collection is available in this demo"
+  ],
+  "regulated_cautions": [
+    "legal_or_contract_sensitive",
+    "financial_or_payment_sensitive"
+  ],
+  "regulated_or_sensitive_boundaries": [
+    "Treat privacy, training, security, compliance, data residency, and legal questions as source-grounded information only, not advice.",
+    "Enterprise, security, legal, procurement, or compliance specifics must route to official OpenAI sales or official terms.",
+    "The fixture must not collect payment, credentials, sensitive personal data, private company data, or API keys.",
+    "The fixture must not request email as if it can send unless a separate safe contact-capture demo explicitly supports capture without sending."
+  ],
+  "source_grounded_claims": [
+    {
+      "fact_id": "chatgpt_definition_001",
+      "claim": "ChatGPT is an AI assistant for everyday tasks such as writing, studying, planning, coding, and analyzing files or images.",
+      "source_title": "What is ChatGPT: FAQ",
+      "source_url": "https://help.openai.com/en/articles/12677804-what-is-chatgpt-faq",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [],
+      "claim_category": "product_intro",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images."
+    },
+    {
+      "fact_id": "pricing_plan_set_001",
+      "claim": "The public pricing page compares Free, Go, Plus, Pro, Business, and Enterprise plans.",
+      "source_title": "ChatGPT Plans | Free, Go, Plus, Pro, Business, and Enterprise",
+      "source_url": "https://chatgpt.com/pricing/",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_pricing_page",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Plan names, availability, and pricing can change, so the official pricing page is the authority.",
+      "plan_ids": [
+        "free",
+        "go",
+        "plus",
+        "pro",
+        "business_chatgpt_codex",
+        "enterprise"
+      ],
+      "claim_category": "plan_catalog",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "The public pricing page compares Free, Go, Plus, Pro, Business, and Enterprise."
+    },
+    {
+      "fact_id": "free_basic_limits_001",
+      "claim": "The Free plan is core ChatGPT with basic or limited access.",
+      "source_title": "What is ChatGPT: FAQ",
+      "source_url": "https://help.openai.com/en/articles/12677804-what-is-chatgpt-faq",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Exact limits can vary by plan and model.",
+      "plan_ids": [
+        "free"
+      ],
+      "claim_category": "plan_catalog",
+      "exact_quote_excerpt_optional": "Free: Core ChatGPT with basic limits.",
+      "normalized_speech_version": "Free is the basic ChatGPT option, with limited access compared with paid plans."
+    },
+    {
+      "fact_id": "go_expanded_popular_features_001",
+      "claim": "ChatGPT Go is a lower-cost paid plan with expanded access to popular ChatGPT features compared with Free.",
+      "source_title": "What is ChatGPT Go?",
+      "source_url": "https://help.openai.com/en/articles/11989085-what-is-chatgpt-go",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "The source says prices live on the ChatGPT pricing page and may change over time.",
+      "plan_ids": [
+        "go"
+      ],
+      "claim_category": "plan_catalog",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Go is positioned as a lower-cost paid plan that gives more access to popular ChatGPT features than Free."
+    },
+    {
+      "fact_id": "go_features_001",
+      "claim": "Go adds expanded access to image generation, file uploads, advanced data analysis, longer memory, and projects/tasks/custom GPTs compared with Free.",
+      "source_title": "What is ChatGPT Go?",
+      "source_url": "https://help.openai.com/en/articles/11989085-what-is-chatgpt-go",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Usage remains subject to safeguards and system conditions.",
+      "plan_ids": [
+        "go"
+      ],
+      "claim_category": "feature",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Go is mainly for more access to common tools such as image generation, file uploads, data analysis, memory, projects, tasks, and custom GPTs."
+    },
+    {
+      "fact_id": "plus_price_20_001",
+      "claim": "ChatGPT Plus is listed at $20/month, billed monthly.",
+      "source_title": "What is ChatGPT Plus?",
+      "source_url": "https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Regional billing details and future pricing can change.",
+      "plan_ids": [
+        "plus"
+      ],
+      "claim_category": "pricing",
+      "exact_quote_excerpt_optional": "$20/month",
+      "normalized_speech_version": "Plus is listed at 20 dollars per month, billed monthly."
+    },
+    {
+      "fact_id": "plus_features_001",
+      "claim": "Plus provides priority access during high-traffic periods, higher limits, faster responses, and expanded features such as voice, image generation, file uploads and analysis, deep research where available, and custom GPT creation and use.",
+      "source_title": "What is ChatGPT Plus?",
+      "source_url": "https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Plus subscriptions may include usage limits that vary with system conditions.",
+      "plan_ids": [
+        "plus"
+      ],
+      "claim_category": "feature",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Plus is for more access than Free or Go: higher limits, faster responses, and expanded tools like voice, images, file analysis, deep research where available, and custom GPTs."
+    },
+    {
+      "fact_id": "plus_api_separate_001",
+      "claim": "API usage is not included with ChatGPT Plus and is billed separately.",
+      "source_title": "What is ChatGPT Plus?",
+      "source_url": "https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [
+        "plus"
+      ],
+      "claim_category": "api_usage_boundary",
+      "exact_quote_excerpt_optional": "API usage is separate",
+      "normalized_speech_version": "API usage is separate from Plus and is billed independently."
+    },
+    {
+      "fact_id": "pro_positioning_001",
+      "claim": "ChatGPT Pro is designed for people who rely on AI for high-stakes, complex work.",
+      "source_title": "About ChatGPT Pro tiers",
+      "source_url": "https://help.openai.com/en/articles/9793128-what-is-chatgpt-pro",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "This is product positioning, not a guarantee that Pro is worth it for every user.",
+      "plan_ids": [
+        "pro"
+      ],
+      "claim_category": "plan_catalog",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Pro is aimed at people who use AI for more complex, high-usage work."
+    },
+    {
+      "fact_id": "pro_tiers_100_200_001",
+      "claim": "The Pro help article describes Pro $100 and Pro $200 tiers.",
+      "source_title": "About ChatGPT Pro tiers",
+      "source_url": "https://help.openai.com/en/articles/9793128-what-is-chatgpt-pro",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Promotional Codex multipliers in the article are time-limited and should not be treated as permanent unless confirmed on the official page.",
+      "plan_ids": [
+        "pro"
+      ],
+      "claim_category": "pricing",
+      "exact_quote_excerpt_optional": "Pro $100",
+      "normalized_speech_version": "The Pro help article lists 100 dollar and 200 dollar Pro tiers; the main difference is usage allowance."
+    },
+    {
+      "fact_id": "pro_unlimited_guardrails_001",
+      "claim": "The Pro article says unlimited access is subject to Terms of Use and misuse guardrails.",
+      "source_title": "About ChatGPT Pro tiers",
+      "source_url": "https://help.openai.com/en/articles/9793128-what-is-chatgpt-pro",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Do not present unlimited access as a guarantee of unrestricted use.",
+      "plan_ids": [
+        "pro"
+      ],
+      "claim_category": "usage_limits",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Even when Pro says unlimited, it is still subject to terms and misuse guardrails."
+    },
+    {
+      "fact_id": "business_overview_001",
+      "claim": "ChatGPT Business is a self-serve plan for organizations that want a shared ChatGPT workspace for teams.",
+      "source_title": "What is ChatGPT Business?",
+      "source_url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [
+        "business_chatgpt_codex"
+      ],
+      "claim_category": "plan_catalog",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Business is the self-serve team workspace plan."
+    },
+    {
+      "fact_id": "business_standard_seat_price_001",
+      "claim": "For most countries, standard ChatGPT Business seats are $25 per user per month when billed monthly and $20 per user per month when billed annually, with regional caveats.",
+      "source_title": "What is ChatGPT Business?",
+      "source_url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "The source says pricing may vary by country and currency.",
+      "plan_ids": [
+        "business_chatgpt_codex"
+      ],
+      "claim_category": "pricing",
+      "exact_quote_excerpt_optional": "$25 per user per month",
+      "normalized_speech_version": "For most countries, Business standard ChatGPT seats are listed at 25 dollars monthly or 20 dollars monthly when billed annually, with regional caveats."
+    },
+    {
+      "fact_id": "business_codex_seat_usage_based_001",
+      "claim": "Business Codex seats provide Codex-only access, are usage-based, have no fixed per-user monthly cost, and do not include ChatGPT workspace access.",
+      "source_title": "What is ChatGPT Business?",
+      "source_url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Using Codex seats requires workspace credits.",
+      "plan_ids": [
+        "business_codex"
+      ],
+      "claim_category": "pricing",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "A Business Codex seat is Codex-only and usage-based; it does not include ChatGPT workspace access."
+    },
+    {
+      "fact_id": "business_api_separate_001",
+      "claim": "A ChatGPT Business subscription does not include API usage; API usage is billed separately.",
+      "source_title": "What is ChatGPT Business?",
+      "source_url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [
+        "business_chatgpt_codex",
+        "business_codex"
+      ],
+      "claim_category": "api_usage_boundary",
+      "exact_quote_excerpt_optional": "API usage is billed separately",
+      "normalized_speech_version": "Business does not include API usage; API usage is billed separately."
+    },
+    {
+      "fact_id": "business_no_training_workspace_data_001",
+      "claim": "OpenAI says it will not train on ChatGPT Business workspace data.",
+      "source_title": "What is ChatGPT Business?",
+      "source_url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "This should not be expanded into a broader legal or security guarantee.",
+      "plan_ids": [
+        "business_chatgpt_codex",
+        "business_codex"
+      ],
+      "claim_category": "privacy_training",
+      "exact_quote_excerpt_optional": "won't train",
+      "normalized_speech_version": "For Business workspace data, OpenAI says it will not train on that workspace data."
+    },
+    {
+      "fact_id": "enterprise_overview_001",
+      "claim": "ChatGPT Enterprise is a managed ChatGPT plan for organizations, with privacy/security, centralized admin controls, and advanced capabilities.",
+      "source_title": "What is ChatGPT Enterprise?",
+      "source_url": "https://help.openai.com/en/articles/8265053-what-is-chatgpt-enterprise",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "This is not legal or security advice; details should be checked with official sales and terms.",
+      "plan_ids": [
+        "enterprise"
+      ],
+      "claim_category": "plan_catalog",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Enterprise is the managed organization plan, with centralized admin controls and enterprise privacy and security features."
+    },
+    {
+      "fact_id": "enterprise_org_purchase_contact_sales_001",
+      "claim": "ChatGPT Enterprise is purchased at the organization level; organizations should contact the OpenAI sales team.",
+      "source_title": "What is ChatGPT Enterprise?",
+      "source_url": "https://help.openai.com/en/articles/8265053-what-is-chatgpt-enterprise",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [
+        "enterprise"
+      ],
+      "claim_category": "enterprise_sales",
+      "exact_quote_excerpt_optional": "Contact the OpenAI sales team.",
+      "normalized_speech_version": "Enterprise is not an individual self-serve signup; an organization contacts sales."
+    },
+    {
+      "fact_id": "enterprise_api_membership_separate_001",
+      "claim": "ChatGPT Enterprise workspace membership and API Platform organization membership are separate systems.",
+      "source_title": "What is ChatGPT Enterprise?",
+      "source_url": "https://help.openai.com/en/articles/8265053-what-is-chatgpt-enterprise",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [
+        "enterprise"
+      ],
+      "claim_category": "api_usage_boundary",
+      "exact_quote_excerpt_optional": "separate membership systems",
+      "normalized_speech_version": "Enterprise workspace access and API Platform organization access are separate."
+    },
+    {
+      "fact_id": "enterprise_security_admin_features_001",
+      "claim": "Enterprise includes organization controls such as SSO, SCIM, domain verification, usage insights, and longer-context work.",
+      "source_title": "What is ChatGPT Enterprise?",
+      "source_url": "https://help.openai.com/en/articles/8265053-what-is-chatgpt-enterprise",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Actual availability depends on workspace settings, seat type, and the current official plan terms.",
+      "plan_ids": [
+        "enterprise"
+      ],
+      "claim_category": "security_admin",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Enterprise is where larger organizations look for controls such as SSO, SCIM, domain verification, usage insights, and longer-context work."
+    },
+    {
+      "fact_id": "consumer_data_controls_opt_out_001",
+      "claim": "Personal-plan users can turn off model training in Data Controls; new conversations are then not used to train ChatGPT.",
+      "source_title": "Data Controls FAQ",
+      "source_url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "This is a data-control summary, not a legal privacy guarantee.",
+      "plan_ids": [
+        "free",
+        "go",
+        "plus",
+        "pro"
+      ],
+      "claim_category": "privacy_training",
+      "exact_quote_excerpt_optional": "won't be used to train ChatGPT",
+      "normalized_speech_version": "For personal plans, users can turn off model training in Data Controls; after that, new conversations are not used to train ChatGPT."
+    },
+    {
+      "fact_id": "enterprise_privacy_no_training_default_001",
+      "claim": "By default, data from ChatGPT Business, ChatGPT Enterprise, and the API Platform after March 1, 2023 is not used to train OpenAI models unless the customer explicitly opts in.",
+      "source_title": "Enterprise privacy at OpenAI",
+      "source_url": "https://openai.com/enterprise-privacy/",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_privacy_page",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Do not turn this into a promise about every data flow; official terms and enterprise privacy documents govern.",
+      "plan_ids": [
+        "business_chatgpt_codex",
+        "business_codex",
+        "enterprise"
+      ],
+      "claim_category": "privacy_training",
+      "exact_quote_excerpt_optional": "isn't used for training",
+      "normalized_speech_version": "For Business, Enterprise, and API Platform data, OpenAI says data is not used for training by default unless the customer opts in."
+    },
+    {
+      "fact_id": "limits_vary_by_plan_model_001",
+      "claim": "OpenAI says message limits vary by plan and model and can change over time to keep performance stable.",
+      "source_title": "What is ChatGPT: FAQ",
+      "source_url": "https://help.openai.com/en/articles/12677804-what-is-chatgpt-faq",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [],
+      "claim_category": "usage_limits",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Usage limits vary by plan and model and can change over time."
+    }
+  ],
+  "buyer_personas": [
+    {
+      "persona_id": "student_or_light_user",
+      "description": "Uses ChatGPT for studying, writing, brainstorming, and occasional file or image tasks.",
+      "likely_plan_ids": [
+        "free",
+        "go",
+        "plus"
+      ]
+    },
+    {
+      "persona_id": "solo_power_user",
+      "description": "Uses ChatGPT frequently for work, deep research, coding, files, and advanced tools.",
+      "likely_plan_ids": [
+        "plus",
+        "pro"
+      ]
+    },
+    {
+      "persona_id": "heavy_ai_operator",
+      "description": "Runs demanding workflows throughout the week or across parallel projects.",
+      "likely_plan_ids": [
+        "pro"
+      ]
+    },
+    {
+      "persona_id": "small_team_owner",
+      "description": "Wants a shared workspace, member management, admin controls, and team features.",
+      "likely_plan_ids": [
+        "business_chatgpt_codex"
+      ]
+    },
+    {
+      "persona_id": "development_focused_team",
+      "description": "Needs Codex-only team access without ChatGPT workspace access.",
+      "likely_plan_ids": [
+        "business_codex"
+      ]
+    },
+    {
+      "persona_id": "enterprise_security_admin",
+      "description": "Needs organization-level controls, sales-led procurement, advanced admin/security, or enterprise terms.",
+      "likely_plan_ids": [
+        "enterprise"
+      ]
+    },
+    {
+      "persona_id": "api_builder",
+      "description": "Primarily wants API usage rather than ChatGPT app access.",
+      "likely_plan_ids": []
+    }
+  ],
+  "plan_catalog": [
+    {
+      "plan_id": "free",
+      "display_name": "Free",
+      "buyer_type": "individual",
+      "price_text": "source_visible_but_parser_blank",
+      "price_source_fact_id": "free_basic_limits_001",
+      "included_features": [
+        "core ChatGPT with basic limits",
+        "limited access compared with paid plans"
+      ],
+      "limits_summary": "Basic or limited access; exact limits vary by plan and model.",
+      "best_for": [
+        "trying ChatGPT",
+        "light studying or writing",
+        "budget-sensitive users"
+      ],
+      "not_best_for": [
+        "heavy usage",
+        "team admin controls",
+        "Enterprise security or procurement needs",
+        "API usage"
+      ],
+      "next_step": {
+        "close_mode": "self_serve_purchase_link",
+        "label": "Open official ChatGPT plans page",
+        "target": "https://chatgpt.com/pricing/"
+      },
+      "caveats": [
+        "Free may be enough when the buyer only needs basic use.",
+        "Do not claim exact limits beyond the source."
+      ]
+    },
+    {
+      "plan_id": "go",
+      "display_name": "Go",
+      "buyer_type": "individual",
+      "price_text": "requires_manual_review",
+      "price_source_fact_id": "go_expanded_popular_features_001",
+      "included_features": [
+        "expanded access to popular ChatGPT features",
+        "more use of image generation, file uploads, data analysis, memory, projects, tasks, and custom GPTs"
+      ],
+      "limits_summary": "Higher than Free for core chat and tools; limits may vary by system conditions.",
+      "best_for": [
+        "users who want more than Free at lower cost than heavier paid tiers",
+        "students or everyday users who need more common tools"
+      ],
+      "not_best_for": [
+        "advanced heavy work",
+        "Business workspace controls",
+        "Enterprise procurement",
+        "API usage"
+      ],
+      "next_step": {
+        "close_mode": "self_serve_purchase_link",
+        "label": "Try Go through ChatGPT profile upgrade flow",
+        "target": "https://chatgpt.com/pricing/"
+      },
+      "caveats": [
+        "The Help Center says prices are on the ChatGPT pricing page and may change."
+      ]
+    },
+    {
+      "plan_id": "plus",
+      "display_name": "Plus",
+      "buyer_type": "individual",
+      "price_text": "$20/month billed monthly",
+      "price_source_fact_id": "plus_price_20_001",
+      "included_features": [
+        "more access than Free or Go",
+        "higher limits",
+        "faster responses",
+        "expanded tools including voice, images, file analysis, deep research where available, and custom GPTs"
+      ],
+      "limits_summary": "Plus may include usage limits such as message caps, and limits can vary with demand or system conditions.",
+      "best_for": [
+        "individual users who want more access to advanced tools",
+        "regular writing, study, coding, file, image, or research use"
+      ],
+      "not_best_for": [
+        "heavy continuous use better suited to Pro",
+        "team workspace controls",
+        "API usage",
+        "Enterprise controls"
+      ],
+      "next_step": {
+        "close_mode": "self_serve_purchase_link",
+        "label": "Get Plus through ChatGPT Upgrade Plan",
+        "target": "https://chatgpt.com/pricing/"
+      },
+      "caveats": [
+        "API usage is separate and billed independently.",
+        "No ROI guarantee."
+      ]
+    },
+    {
+      "plan_id": "pro",
+      "display_name": "Pro",
+      "buyer_type": "individual",
+      "price_text": "$100/month or $200/month Pro tiers",
+      "price_source_fact_id": "pro_tiers_100_200_001",
+      "included_features": [
+        "Pro models",
+        "Codex",
+        "deep research",
+        "image creation",
+        "memory",
+        "file uploads",
+        "higher usage allowance than Plus"
+      ],
+      "limits_summary": "Pro usage is higher than Plus but still subject to Terms of Use and misuse guardrails.",
+      "best_for": [
+        "heavy individual usage",
+        "complex work",
+        "frequent advanced tools and model use"
+      ],
+      "not_best_for": [
+        "budget-sensitive light users",
+        "team admin controls",
+        "Enterprise procurement",
+        "API usage"
+      ],
+      "next_step": {
+        "close_mode": "self_serve_purchase_link",
+        "label": "Upgrade from Pricing page or Settings -> My Plan",
+        "target": "https://chatgpt.com/pricing/"
+      },
+      "caveats": [
+        "Do not describe unlimited as unrestricted.",
+        "Do not treat time-limited promotions as permanent."
+      ]
+    },
+    {
+      "plan_id": "business_codex",
+      "display_name": "Business Codex",
+      "buyer_type": "team",
+      "price_text": "usage-based Codex-only seats; no fixed per-user monthly cost",
+      "price_source_fact_id": "business_codex_seat_usage_based_001",
+      "included_features": [
+        "Codex-only access",
+        "usage-based billing",
+        "workspace-level admin controls"
+      ],
+      "limits_summary": "Codex seats do not include ChatGPT workspace access; using Codex requires workspace credits.",
+      "best_for": [
+        "development-focused teams that need Codex only",
+        "teams that do not need ChatGPT workspace access for those seats"
+      ],
+      "not_best_for": [
+        "users needing ChatGPT workspace access",
+        "individual self-serve ChatGPT use"
+      ],
+      "next_step": {
+        "close_mode": "self_serve_purchase_link",
+        "label": "Review Business/Codex seat options",
+        "target": "https://chatgpt.com/pricing/"
+      },
+      "caveats": [
+        "Codex-only seats do not include ChatGPT access."
+      ]
+    },
+    {
+      "plan_id": "business_chatgpt_codex",
+      "display_name": "Business ChatGPT & Codex",
+      "buyer_type": "team",
+      "price_text": "$25/user/month billed monthly or $20/user/month billed annually in most countries",
+      "price_source_fact_id": "business_standard_seat_price_001",
+      "included_features": [
+        "shared ChatGPT workspace",
+        "ChatGPT and Codex in the Business workspace",
+        "member and billing management",
+        "admin controls",
+        "team collaboration features"
+      ],
+      "limits_summary": "Standard ChatGPT seats start at two users; pricing may vary by country and currency.",
+      "best_for": [
+        "small or growing teams",
+        "shared workspace needs",
+        "admin controls without a full Enterprise sales route"
+      ],
+      "not_best_for": [
+        "single individual users",
+        "Enterprise legal/security/procurement needs",
+        "API usage included in subscription"
+      ],
+      "next_step": {
+        "close_mode": "self_serve_purchase_link",
+        "label": "Try or evaluate ChatGPT Business",
+        "target": "https://chatgpt.com/pricing/",
+        "business_next_step": "get_started_or_business_eval"
+      },
+      "caveats": [
+        "API usage is separate and billed independently.",
+        "Business workspace data should not be described beyond official privacy wording."
+      ]
+    },
+    {
+      "plan_id": "enterprise",
+      "display_name": "Enterprise",
+      "buyer_type": "organization",
+      "price_text": "custom pricing; contact sales",
+      "price_source_fact_id": "enterprise_org_purchase_contact_sales_001",
+      "included_features": [
+        "organization-level managed plan",
+        "centralized admin controls",
+        "enterprise privacy and security features",
+        "SSO, SCIM, domain verification, usage insights, and longer-context work where applicable"
+      ],
+      "limits_summary": "Access depends on organization purchase, seat type, workspace settings, and official plan terms.",
+      "best_for": [
+        "larger organizations",
+        "security and admin control requirements",
+        "sales-led procurement",
+        "enterprise privacy or legal terms"
+      ],
+      "not_best_for": [
+        "individual self-serve signup",
+        "users needing a public fixed seat price",
+        "legal compliance guarantees from this demo"
+      ],
+      "next_step": {
+        "close_mode": "contact_sales",
+        "label": "Contact OpenAI sales",
+        "target": "https://openai.com/contact-sales/"
+      },
+      "caveats": [
+        "Do not invent Enterprise pricing.",
+        "Do not give legal or security advice."
+      ]
+    }
+  ],
+  "plan_comparison_rules": [
+    {
+      "rule_id": "free_if_basic_and_budget_sensitive",
+      "if": [
+        "light use",
+        "budget sensitive",
+        "no advanced/team/admin need"
+      ],
+      "recommend": "free",
+      "speech": "If your use is light and you do not need expanded tools, Free may be enough."
+    },
+    {
+      "rule_id": "go_if_more_common_tools_low_cost",
+      "if": [
+        "more than Free",
+        "popular tools",
+        "low-cost paid option"
+      ],
+      "recommend": "go",
+      "speech": "Go is the lower-cost paid step for more access to common features, with price checked on the official plan page."
+    },
+    {
+      "rule_id": "plus_if_regular_individual_advanced_use",
+      "if": [
+        "regular individual use",
+        "more advanced tools",
+        "not heavy continuous usage"
+      ],
+      "recommend": "plus",
+      "speech": "Plus is the usual individual upgrade when Free or Go feels too limited."
+    },
+    {
+      "rule_id": "pro_if_heavy_complex_work",
+      "if": [
+        "heavy use",
+        "complex work",
+        "advanced tools throughout the week"
+      ],
+      "recommend": "pro",
+      "speech": "Pro is the heavier individual tier; it only makes sense if you expect enough complex usage to justify it."
+    },
+    {
+      "rule_id": "business_if_team_workspace",
+      "if": [
+        "team",
+        "shared workspace",
+        "admin controls"
+      ],
+      "recommend": "business_chatgpt_codex",
+      "speech": "Business is the self-serve team workspace route."
+    },
+    {
+      "rule_id": "enterprise_if_sales_led_controls",
+      "if": [
+        "larger organization",
+        "SSO or SCIM",
+        "sales-led procurement",
+        "enterprise controls"
+      ],
+      "recommend": "enterprise",
+      "speech": "Enterprise should go through contact sales because it is organization-level and sales-led."
+    },
+    {
+      "rule_id": "api_need_not_chatgpt_plan",
+      "if": [
+        "API usage required"
+      ],
+      "recommend": "api_platform_boundary",
+      "speech": "API usage is separate from ChatGPT subscriptions where the official sources state that boundary."
+    }
+  ],
+  "qualification_dimensions": [
+    "buyer_type",
+    "primary_use_case",
+    "usage_intensity",
+    "team_size",
+    "budget_sensitivity",
+    "api_need",
+    "admin_security_need",
+    "privacy_training_question",
+    "self_serve_or_sales_led_next_step"
+  ],
+  "objection_handling_facts": {
+    "i_do_not_want_to_pay": [
+      "free_basic_limits_001",
+      "limits_vary_by_plan_model_001"
+    ],
+    "why_upgrade_from_free": [
+      "go_expanded_popular_features_001",
+      "plus_features_001"
+    ],
+    "is_plus_worth_it": [
+      "plus_price_20_001",
+      "plus_features_001"
+    ],
+    "is_pro_worth_it": [
+      "pro_positioning_001",
+      "pro_tiers_100_200_001",
+      "pro_unlimited_guardrails_001"
+    ],
+    "api_included": [
+      "plus_api_separate_001",
+      "business_api_separate_001",
+      "enterprise_api_membership_separate_001"
+    ],
+    "training_privacy": [
+      "consumer_data_controls_opt_out_001",
+      "business_no_training_workspace_data_001",
+      "enterprise_privacy_no_training_default_001"
+    ],
+    "team_admin_security": [
+      "business_overview_001",
+      "enterprise_security_admin_features_001",
+      "enterprise_privacy_controls_001"
+    ]
+  },
+  "next_step_rules": [
+    {
+      "rule_id": "individual_self_serve",
+      "plan_ids": [
+        "free",
+        "go",
+        "plus",
+        "pro"
+      ],
+      "close_mode": "self_serve_purchase_link",
+      "allowed_speech": "I can point you to the official ChatGPT plans page.",
+      "must_not_say": "I sent the link."
+    },
+    {
+      "rule_id": "business_eval",
+      "plan_ids": [
+        "business_codex",
+        "business_chatgpt_codex"
+      ],
+      "close_mode": "self_serve_purchase_link",
+      "business_next_step": "get_started_or_business_eval",
+      "allowed_speech": "For Business, use the official plans page to review the team workspace options.",
+      "must_not_say": "I created a Business workspace."
+    },
+    {
+      "rule_id": "enterprise_contact_sales",
+      "plan_ids": [
+        "enterprise"
+      ],
+      "close_mode": "contact_sales",
+      "allowed_speech": "For Enterprise, the official next step is contact sales.",
+      "must_not_say": "I booked sales for you."
+    },
+    {
+      "rule_id": "send_info_capture_without_sending",
+      "plan_ids": [],
+      "close_mode": "send_info_capture",
+      "allowed_speech": "I can note that you want the link after this demo.",
+      "must_not_say": "I sent the email."
+    },
+    {
+      "rule_id": "no_fit_close",
+      "plan_ids": [],
+      "close_mode": "no_fit_close",
+      "allowed_speech": "If Free is enough, there is no reason to push a paid plan.",
+      "must_not_say": "You must upgrade."
+    }
+  ],
+  "diagnostic_gaps": {
+    "individual_use_case": {
+      "campaign_gap_id": "individual_use_case",
+      "label": "individual use case",
+      "customer_facing_phrase": "individual use case",
+      "diagnostic_question_phrase": "Is this mainly for studying, writing, coding, research, or everyday tasks?",
+      "impact_question_phrase": "How often do you expect to use advanced tools like files, images, coding, or research?",
+      "pain_acknowledgement_phrase": "Got it, the use case is individual plan fit.",
+      "universal_pain_dimensions": [
+        "unclear_next_step",
+        "cost_or_time_waste"
+      ],
+      "qualification_dimensions": [
+        "need_or_pain",
+        "fit",
+        "budget_or_price_sensitivity"
+      ],
+      "definition": "Determine whether the buyer needs basic individual access, expanded common tools, or heavier individual usage.",
+      "causal_story": "If the use case is light, pushing a paid plan creates pressure; if usage is frequent, a paid tier may fit better.",
+      "customer_language": [
+        "studying",
+        "writing",
+        "coding",
+        "research",
+        "personal use",
+        "for myself"
+      ],
+      "evidence_positive": [
+        "I use it for studying",
+        "I use it for coding",
+        "I need it for writing"
+      ],
+      "evidence_negative": [
+        "this is for a team",
+        "we need admin controls",
+        "we need enterprise controls"
+      ],
+      "diagnostic_questions": [
+        "Is this mainly for studying, writing, coding, research, or everyday tasks?"
+      ],
+      "value_bridge": "The plan fit depends on whether Free is enough or whether expanded tools justify Go, Plus, or Pro.",
+      "review_focus": "individual plan fit",
+      "next_gap_candidates": [
+        "usage_intensity",
+        "budget_sensitivity",
+        "api_boundary"
+      ]
+    },
+    "usage_intensity": {
+      "campaign_gap_id": "usage_intensity",
+      "label": "usage intensity",
+      "customer_facing_phrase": "usage level",
+      "diagnostic_question_phrase": "Would you use this occasionally, throughout the week, or heavily every day?",
+      "impact_question_phrase": "Would low limits slow your work, or is occasional access enough?",
+      "pain_acknowledgement_phrase": "Got it, usage level is the deciding point.",
+      "universal_pain_dimensions": [
+        "delay",
+        "cost_or_time_waste"
+      ],
+      "qualification_dimensions": [
+        "need_or_pain",
+        "fit",
+        "urgency"
+      ],
+      "definition": "Determine whether the buyer should stay basic, use a regular paid tier, or consider Pro.",
+      "causal_story": "Heavy usage can make higher tiers more relevant, but light usage can make Free or Go sufficient.",
+      "customer_language": [
+        "heavy use",
+        "daily",
+        "all week",
+        "occasionally",
+        "limits"
+      ],
+      "evidence_positive": [
+        "I use it all day",
+        "I run complex work",
+        "I need higher limits"
+      ],
+      "evidence_negative": [
+        "I only use it sometimes",
+        "I do not want to pay",
+        "I just want to try it"
+      ],
+      "diagnostic_questions": [
+        "Would you use this occasionally, throughout the week, or heavily every day?"
+      ],
+      "value_bridge": "Usage intensity separates Free or Go from Plus or Pro.",
+      "review_focus": "usage level and value of higher tiers",
+      "next_gap_candidates": [
+        "individual_use_case",
+        "budget_sensitivity",
+        "team_workspace"
+      ]
+    },
+    "team_workspace": {
+      "campaign_gap_id": "team_workspace",
+      "label": "team workspace",
+      "customer_facing_phrase": "team workspace",
+      "diagnostic_question_phrase": "Is this for one person, or do you need a shared workspace for a team?",
+      "impact_question_phrase": "Do you need member management, billing, or admin controls?",
+      "pain_acknowledgement_phrase": "Got it, team workspace needs matter here.",
+      "universal_pain_dimensions": [
+        "ownership_confusion",
+        "visibility_gap",
+        "trust_or_risk_concern"
+      ],
+      "qualification_dimensions": [
+        "authority_or_right_person",
+        "fit",
+        "compliance_or_risk_constraints"
+      ],
+      "definition": "Determine whether Business or Enterprise is more relevant than individual plans.",
+      "causal_story": "Team controls and workspace management are not solved by individual Plus or Pro subscriptions.",
+      "customer_language": [
+        "team",
+        "workspace",
+        "admin",
+        "billing",
+        "small company"
+      ],
+      "evidence_positive": [
+        "we have a team",
+        "we need admin controls",
+        "we need a workspace"
+      ],
+      "evidence_negative": [
+        "it is just for me",
+        "no team",
+        "no admin controls needed"
+      ],
+      "diagnostic_questions": [
+        "Is this for one person, or do you need a shared workspace for a team?"
+      ],
+      "value_bridge": "If it is a team workspace question, Business is the self-serve team route and Enterprise is for larger controls.",
+      "review_focus": "team workspace and admin controls",
+      "next_gap_candidates": [
+        "enterprise_security",
+        "api_boundary",
+        "budget_sensitivity"
+      ]
+    },
+    "enterprise_security": {
+      "campaign_gap_id": "enterprise_security",
+      "label": "enterprise security",
+      "customer_facing_phrase": "enterprise controls",
+      "diagnostic_question_phrase": "Do you need sales-led procurement, SSO, SCIM, domain controls, or enterprise terms?",
+      "impact_question_phrase": "Is this mainly a security/admin review, procurement requirement, or legal requirement?",
+      "pain_acknowledgement_phrase": "Got it, enterprise controls are the main question.",
+      "universal_pain_dimensions": [
+        "trust_or_risk_concern",
+        "ownership_confusion"
+      ],
+      "qualification_dimensions": [
+        "compliance_or_risk_constraints",
+        "authority_or_right_person",
+        "fit"
+      ],
+      "definition": "Determine whether Enterprise contact-sales routing is needed.",
+      "causal_story": "Enterprise control questions need official sales and terms rather than a demo agent's guarantee.",
+      "customer_language": [
+        "SSO",
+        "SCIM",
+        "enterprise",
+        "security",
+        "compliance",
+        "legal"
+      ],
+      "evidence_positive": [
+        "we need SSO",
+        "we need enterprise controls",
+        "legal needs to review"
+      ],
+      "evidence_negative": [
+        "we are a small team",
+        "self serve is fine",
+        "no enterprise controls"
+      ],
+      "diagnostic_questions": [
+        "Do you need sales-led procurement, SSO, SCIM, domain controls, or enterprise terms?"
+      ],
+      "value_bridge": "Enterprise should route to contact sales for organization-level controls.",
+      "review_focus": "enterprise controls and contact-sales fit",
+      "next_gap_candidates": [
+        "team_workspace",
+        "privacy_training",
+        "api_boundary"
+      ]
+    },
+    "api_boundary": {
+      "campaign_gap_id": "api_boundary",
+      "label": "API boundary",
+      "customer_facing_phrase": "API usage",
+      "diagnostic_question_phrase": "Are you asking about using ChatGPT itself, or building with the API?",
+      "impact_question_phrase": "Do you need the ChatGPT app subscription, API usage, or both?",
+      "pain_acknowledgement_phrase": "Got it, API usage is the boundary.",
+      "universal_pain_dimensions": [
+        "unclear_next_step"
+      ],
+      "qualification_dimensions": [
+        "fit",
+        "current_solution_or_status_quo",
+        "compliance_or_risk_constraints"
+      ],
+      "definition": "Separate ChatGPT app subscription questions from API billing and access questions.",
+      "causal_story": "A ChatGPT plan may not solve an API need, because official sources state API usage is separate for supported plans.",
+      "customer_language": [
+        "API",
+        "developer",
+        "build an app",
+        "API usage",
+        "tokens"
+      ],
+      "evidence_positive": [
+        "is API included",
+        "I need API usage",
+        "I am building an app"
+      ],
+      "evidence_negative": [
+        "I just want ChatGPT",
+        "no API",
+        "only the web app"
+      ],
+      "diagnostic_questions": [
+        "Are you asking about using ChatGPT itself, or building with the API?"
+      ],
+      "value_bridge": "If the buyer needs API usage, route away from ChatGPT plan promises and toward the API boundary.",
+      "review_focus": "ChatGPT subscription versus API usage",
+      "next_gap_candidates": [
+        "individual_use_case",
+        "team_workspace",
+        "enterprise_security"
+      ]
+    },
+    "budget_sensitivity": {
+      "campaign_gap_id": "budget_sensitivity",
+      "label": "budget sensitivity",
+      "customer_facing_phrase": "budget",
+      "diagnostic_question_phrase": "Are you trying to avoid paying, or deciding whether a paid tier is worth it?",
+      "impact_question_phrase": "Would a free or lower-cost option still cover your real use case?",
+      "pain_acknowledgement_phrase": "Got it, budget is the main constraint.",
+      "universal_pain_dimensions": [
+        "cost_or_time_waste"
+      ],
+      "qualification_dimensions": [
+        "budget_or_price_sensitivity",
+        "fit",
+        "need_or_pain"
+      ],
+      "definition": "Determine whether the agent should recommend Free or a lower paid tier instead of pushing an upgrade.",
+      "causal_story": "A paid upgrade is not justified if the buyer's usage does not need paid-plan value.",
+      "customer_language": [
+        "too expensive",
+        "do not want to pay",
+        "worth it",
+        "upgrade"
+      ],
+      "evidence_positive": [
+        "I do not want to pay",
+        "is Plus worth it",
+        "is Pro worth it"
+      ],
+      "evidence_negative": [
+        "budget is not a concern",
+        "we need enterprise controls",
+        "we need a team workspace"
+      ],
+      "diagnostic_questions": [
+        "Are you trying to avoid paying, or deciding whether a paid tier is worth it?"
+      ],
+      "value_bridge": "If Free is enough, Free may be enough; if limits or tools matter, compare the paid tier to that actual use case.",
+      "review_focus": "price sensitivity and paid-upgrade fit",
+      "next_gap_candidates": [
+        "individual_use_case",
+        "usage_intensity",
+        "team_workspace"
+      ]
+    },
+    "privacy_training": {
+      "campaign_gap_id": "privacy_training",
+      "label": "privacy and training",
+      "customer_facing_phrase": "data use",
+      "diagnostic_question_phrase": "Are you asking about personal plan training controls, or business workspace data?",
+      "impact_question_phrase": "Is this a personal privacy setting question, or a company policy/security review?",
+      "pain_acknowledgement_phrase": "Got it, data use is the concern.",
+      "universal_pain_dimensions": [
+        "trust_or_risk_concern"
+      ],
+      "qualification_dimensions": [
+        "compliance_or_risk_constraints",
+        "fit"
+      ],
+      "definition": "Answer privacy/training questions only from official source-backed boundaries.",
+      "causal_story": "Overclaiming privacy or legal compliance is unsafe; the fixture must use caveated official public wording.",
+      "customer_language": [
+        "data",
+        "training",
+        "privacy",
+        "used for training",
+        "company data"
+      ],
+      "evidence_positive": [
+        "is my data used for training",
+        "can you promise my data is never used",
+        "what about company data"
+      ],
+      "evidence_negative": [
+        "I do not care about privacy",
+        "no data questions"
+      ],
+      "diagnostic_questions": [
+        "Are you asking about personal plan training controls, or business workspace data?"
+      ],
+      "value_bridge": "The answer depends on whether the buyer means personal ChatGPT controls or Business/Enterprise data commitments.",
+      "review_focus": "privacy/training boundary",
+      "next_gap_candidates": [
+        "team_workspace",
+        "enterprise_security",
+        "individual_use_case"
+      ]
+    }
+  },
+  "core_diagnostic_gaps": [
+    "individual_use_case",
+    "usage_intensity",
+    "team_workspace"
+  ],
+  "gap_order": [
+    "individual_use_case",
+    "usage_intensity",
+    "team_workspace",
+    "enterprise_security",
+    "api_boundary",
+    "budget_sensitivity",
+    "privacy_training"
+  ],
+  "qualification_goals": [
+    "identify whether buyer is individual, team, API builder, or enterprise buyer",
+    "match use case to a plan category without pressure",
+    "route Enterprise and legal/security questions to official sales or terms",
+    "avoid fake email, calendar, CRM, payment, or provider side effects"
+  ],
+  "product_knowledge": {
+    "short_product_explanation": "ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images.",
+    "plan_page_url": "https://chatgpt.com/pricing/",
+    "contact_sales_url": "https://openai.com/contact-sales/"
+  },
+  "target_account_context": {
+    "buyer_role": "individual user, team owner, developer, or enterprise admin",
+    "data_scope": "public product information only"
+  },
+  "safety": {
+    "provider_calls_made": false,
+    "local_llm_calls_made": false,
+    "sends_email": false,
+    "creates_calendar_event": false,
+    "writes_crm": false,
+    "opens_prod_102": false
+  }
+}

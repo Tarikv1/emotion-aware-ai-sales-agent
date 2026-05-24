@@ -1,0 +1,786 @@
+{
+  "checkpoint_id": "PUBLIC-OPENAI-CAMPAIGN-DIALOGUE-001",
+  "close_counts": {
+    "contact_sales": 21,
+    "no_fit_close": 15,
+    "self_serve_purchase_link": 44
+  },
+  "contact_sales_close_examples": [
+    {
+      "answer": "That points toward Enterprise if you need organization-level controls like SSO, SCIM, domain verification, usage insights, or sales-led procurement. The official next step is contact sales.",
+      "close_mode": "contact_sales",
+      "fact_ids": [
+        "enterprise_overview_001",
+        "enterprise_security_admin_features_001",
+        "enterprise_org_purchase_contact_sales_001"
+      ],
+      "group": "D_business_enterprise",
+      "id": "D_business_enterprise-007",
+      "last_turn": "we need admin controls",
+      "persona": "small_team_owner",
+      "plan_id": "enterprise",
+      "turn_count": 3
+    },
+    {
+      "answer": "That points toward Enterprise if you need organization-level controls like SSO, SCIM, domain verification, usage insights, or sales-led procurement. The official next step is contact sales.",
+      "close_mode": "contact_sales",
+      "fact_ids": [
+        "enterprise_overview_001",
+        "enterprise_security_admin_features_001",
+        "enterprise_org_purchase_contact_sales_001"
+      ],
+      "group": "D_business_enterprise",
+      "id": "D_business_enterprise-008",
+      "last_turn": "we need SSO",
+      "persona": "small_team_owner",
+      "plan_id": "enterprise",
+      "turn_count": 1
+    },
+    {
+      "answer": "That points toward Enterprise if you need organization-level controls like SSO, SCIM, domain verification, usage insights, or sales-led procurement. The official next step is contact sales.",
+      "close_mode": "contact_sales",
+      "fact_ids": [
+        "enterprise_overview_001",
+        "enterprise_security_admin_features_001",
+        "enterprise_org_purchase_contact_sales_001"
+      ],
+      "group": "D_business_enterprise",
+      "id": "D_business_enterprise-009",
+      "last_turn": "we need SCIM",
+      "persona": "small_team_owner",
+      "plan_id": "enterprise",
+      "turn_count": 3
+    },
+    {
+      "answer": "For Enterprise, the official next step is contact sales. This demo can point to that route, but it cannot book sales or create a follow-up action.",
+      "close_mode": "contact_sales",
+      "fact_ids": [
+        "enterprise_overview_001",
+        "enterprise_org_purchase_contact_sales_001"
+      ],
+      "group": "D_business_enterprise",
+      "id": "D_business_enterprise-010",
+      "last_turn": "we need enterprise controls",
+      "persona": "small_team_owner",
+      "plan_id": "enterprise",
+      "turn_count": 1
+    },
+    {
+      "answer": "For Enterprise, the official next step is contact sales. This demo can point to that route, but it cannot book sales or create a follow-up action.",
+      "close_mode": "contact_sales",
+      "fact_ids": [
+        "enterprise_overview_001",
+        "enterprise_org_purchase_contact_sales_001"
+      ],
+      "group": "D_business_enterprise",
+      "id": "D_business_enterprise-011",
+      "last_turn": "our procurement needs terms",
+      "persona": "small_team_owner",
+      "plan_id": "enterprise",
+      "turn_count": 3
+    }
+  ],
+  "creates_calendar_event": false,
+  "examples_by_group": {
+    "A_product_intro": {
+      "answer": "This is a public-data simulation for ChatGPT plan fit. ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images. Are you comparing plans for yourself or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "chatgpt_definition_001",
+        "pricing_plan_set_001"
+      ],
+      "group": "A_product_intro",
+      "id": "A_product_intro-001",
+      "last_turn": "what are you selling",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 3
+    },
+    "B_free_go_plus": {
+      "answer": "For studying, I would start with Free if basic use is enough. If you need more access to common tools, Go or Plus is the next comparison point.",
+      "close_mode": null,
+      "fact_ids": [
+        "free_basic_limits_001",
+        "go_expanded_popular_features_001",
+        "plus_features_001"
+      ],
+      "group": "B_free_go_plus",
+      "id": "B_free_go_plus-001",
+      "last_turn": "I use it for studying",
+      "persona": "student_or_light_user",
+      "plan_id": "free",
+      "turn_count": 3
+    },
+    "C_plus_pro": {
+      "answer": "For regular coding or file work, Plus may be enough. If you use advanced tools heavily throughout the week, Pro is the heavier individual tier.",
+      "close_mode": null,
+      "fact_ids": [
+        "plus_features_001",
+        "pro_positioning_001",
+        "pro_features_001"
+      ],
+      "group": "C_plus_pro",
+      "id": "C_plus_pro-001",
+      "last_turn": "I use it for coding",
+      "persona": "solo_power_user",
+      "plan_id": "plus",
+      "turn_count": 3
+    },
+    "D_business_enterprise": {
+      "answer": "For a team, Business is the self-serve workspace route. Standard Business ChatGPT seats include ChatGPT and Codex, and the official source lists monthly and annual per-user pricing with regional caveats.",
+      "close_mode": "self_serve_purchase_link",
+      "fact_ids": [
+        "business_overview_001",
+        "business_standard_seat_includes_codex_001",
+        "business_standard_seat_price_001"
+      ],
+      "group": "D_business_enterprise",
+      "id": "D_business_enterprise-001",
+      "last_turn": "we have a team",
+      "persona": "small_team_owner",
+      "plan_id": "business_chatgpt_codex",
+      "turn_count": 3
+    },
+    "E_api_separate": {
+      "answer": "If you mean API usage, that is separate from the ChatGPT subscriptions where the official sources state that boundary. A ChatGPT plan is for the ChatGPT app, not bundled API usage.",
+      "close_mode": null,
+      "fact_ids": [
+        "plus_api_separate_001",
+        "business_api_separate_001",
+        "enterprise_api_membership_separate_001"
+      ],
+      "group": "E_api_separate",
+      "id": "E_api_separate-001",
+      "last_turn": "is API included",
+      "persona": "api_builder",
+      "plan_id": null,
+      "turn_count": 3
+    },
+    "F_privacy_security": {
+      "answer": "For personal plans, users can turn off model training in Data Controls; after that, new conversations are not used to train ChatGPT. That is a settings boundary, not a legal guarantee.",
+      "close_mode": null,
+      "fact_ids": [
+        "consumer_data_controls_opt_out_001"
+      ],
+      "group": "F_privacy_security",
+      "id": "F_privacy_security-001",
+      "last_turn": "is my data used for training",
+      "persona": "enterprise_security_admin",
+      "plan_id": "free",
+      "turn_count": 3
+    },
+    "G_price_objection": {
+      "answer": "If your use is basic and budget is the issue, Free may be enough. I would only look at a paid plan if limits or tools are actually blocking you.",
+      "close_mode": "no_fit_close",
+      "fact_ids": [
+        "free_basic_limits_001",
+        "limits_vary_by_plan_model_001"
+      ],
+      "group": "G_price_objection",
+      "id": "G_price_objection-001",
+      "last_turn": "I don't want to pay",
+      "persona": "student_or_light_user",
+      "plan_id": "free",
+      "turn_count": 3
+    },
+    "H_upgrade_value": {
+      "answer": "The upgrade case is mainly more access: Plus adds higher limits, faster responses, and expanded tools. If those tools do not matter, Free may be enough.",
+      "close_mode": "self_serve_purchase_link",
+      "fact_ids": [
+        "plus_features_001",
+        "free_basic_limits_001"
+      ],
+      "group": "H_upgrade_value",
+      "id": "H_upgrade_value-001",
+      "last_turn": "why should I upgrade from Free",
+      "persona": "heavy_ai_operator",
+      "plan_id": "plus",
+      "turn_count": 3
+    },
+    "I_self_serve_close": {
+      "answer": "I can point you to the official ChatGPT plans page: https://chatgpt.com/pricing/. In the actual product, you would upgrade through the plans page or profile upgrade flow inside ChatGPT.",
+      "close_mode": "self_serve_purchase_link",
+      "fact_ids": [
+        "pricing_plan_set_001",
+        "plus_signup_profile_upgrade_001",
+        "pro_upgrade_settings_pricing_001"
+      ],
+      "group": "I_self_serve_close",
+      "id": "I_self_serve_close-001",
+      "last_turn": "sounds good",
+      "persona": "solo_power_user",
+      "plan_id": "plus",
+      "turn_count": 3
+    },
+    "J_contact_sales_close": {
+      "answer": "For Enterprise, the official next step is contact sales. This demo can point to that route, but it cannot book sales or create a follow-up action.",
+      "close_mode": "contact_sales",
+      "fact_ids": [
+        "enterprise_overview_001",
+        "enterprise_org_purchase_contact_sales_001"
+      ],
+      "group": "J_contact_sales_close",
+      "id": "J_contact_sales_close-001",
+      "last_turn": "I want Enterprise",
+      "persona": "enterprise_security_admin",
+      "plan_id": "enterprise",
+      "turn_count": 3
+    },
+    "K_unsupported_claim_refusal": {
+      "answer": "I cannot invent discounts. The safe next step is the official ChatGPT plans page, and if Free covers your use case, Free may be enough.",
+      "close_mode": "self_serve_purchase_link",
+      "fact_ids": [
+        "free_basic_limits_001",
+        "pricing_plan_set_001"
+      ],
+      "group": "K_unsupported_claim_refusal",
+      "id": "K_unsupported_claim_refusal-001",
+      "last_turn": "give me a discount",
+      "persona": "enterprise_security_admin",
+      "plan_id": "free",
+      "turn_count": 3
+    },
+    "L_stop_refusal_hardship": {
+      "answer": "No problem. I will stop here.",
+      "close_mode": "no_fit_close",
+      "fact_ids": [],
+      "group": "L_stop_refusal_hardship",
+      "id": "L_stop_refusal_hardship-001",
+      "last_turn": "stop",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 3
+    },
+    "M_cross_campaign_contamination": {
+      "answer": "That is outside this ChatGPT plan-fit simulation. I can only compare ChatGPT plan categories from official public sources.",
+      "close_mode": null,
+      "fact_ids": [
+        "pricing_plan_set_001"
+      ],
+      "group": "M_cross_campaign_contamination",
+      "id": "M_cross_campaign_contamination-001",
+      "last_turn": "what about RouteSignal",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 3
+    }
+  },
+  "failures": [],
+  "group_counts": {
+    "A_product_intro": 13,
+    "B_free_go_plus": 14,
+    "C_plus_pro": 14,
+    "D_business_enterprise": 16,
+    "E_api_separate": 14,
+    "F_privacy_security": 14,
+    "G_price_objection": 14,
+    "H_upgrade_value": 14,
+    "I_self_serve_close": 14,
+    "J_contact_sales_close": 12,
+    "K_unsupported_claim_refusal": 14,
+    "L_stop_refusal_hardship": 12,
+    "M_cross_campaign_contamination": 14
+  },
+  "local_llm_calls_made": false,
+  "multi_turn_scenario_count": 90,
+  "opens_prod_102": false,
+  "persona_counts": {
+    "api_builder": 14,
+    "development_focused_team": 2,
+    "enterprise_security_admin": 40,
+    "heavy_ai_operator": 14,
+    "small_team_owner": 14,
+    "solo_power_user": 28,
+    "student_or_light_user": 67
+  },
+  "plan_counts": {
+    "business_chatgpt_codex": 13,
+    "business_codex": 1,
+    "enterprise": 21,
+    "free": 19,
+    "go": 3,
+    "plus": 26,
+    "pro": 6
+  },
+  "provider_calls_made": false,
+  "scenario_count": 179,
+  "self_serve_close_examples": [
+    {
+      "answer": "Go is positioned as a lower-cost paid step up from Free, with expanded access to popular ChatGPT features. I would compare it against Plus if your main issue is limits, not heavy advanced use.",
+      "close_mode": "self_serve_purchase_link",
+      "fact_ids": [
+        "go_expanded_popular_features_001",
+        "go_features_001",
+        "plus_features_001"
+      ],
+      "group": "B_free_go_plus",
+      "id": "B_free_go_plus-004",
+      "last_turn": "what is Go",
+      "persona": "student_or_light_user",
+      "plan_id": "go",
+      "turn_count": 1
+    },
+    {
+      "answer": "Go is positioned as a lower-cost paid step up from Free, with expanded access to popular ChatGPT features. I would compare it against Plus if your main issue is limits, not heavy advanced use.",
+      "close_mode": "self_serve_purchase_link",
+      "fact_ids": [
+        "go_expanded_popular_features_001",
+        "go_features_001",
+        "plus_features_001"
+      ],
+      "group": "B_free_go_plus",
+      "id": "B_free_go_plus-012",
+      "last_turn": "I want a low cost paid option",
+      "persona": "student_or_light_user",
+      "plan_id": "go",
+      "turn_count": 1
+    },
+    {
+      "answer": "Plus is listed at 20 dollars per month, billed monthly. It is for more access than Free or Go, with higher limits and expanded tools.",
+      "close_mode": "self_serve_purchase_link",
+      "fact_ids": [
+        "plus_price_20_001",
+        "plus_features_001"
+      ],
+      "group": "B_free_go_plus",
+      "id": "B_free_go_plus-013",
+      "last_turn": "what is Plus",
+      "persona": "student_or_light_user",
+      "plan_id": "plus",
+      "turn_count": 3
+    },
+    {
+      "answer": "The Pro help article lists 100 dollar and 200 dollar Pro tiers. Pro only makes sense if your usage is heavy enough to justify the higher allowance, and it is still subject to usage guardrails.",
+      "close_mode": "self_serve_purchase_link",
+      "fact_ids": [
+        "pro_tiers_100_200_001",
+        "pro_positioning_001",
+        "pro_unlimited_guardrails_001"
+      ],
+      "group": "C_plus_pro",
+      "id": "C_plus_pro-003",
+      "last_turn": "is Pro worth it",
+      "persona": "solo_power_user",
+      "plan_id": "pro",
+      "turn_count": 3
+    },
+    {
+      "answer": "The Pro help article lists 100 dollar and 200 dollar Pro tiers. Pro only makes sense if your usage is heavy enough to justify the higher allowance, and it is still subject to usage guardrails.",
+      "close_mode": "self_serve_purchase_link",
+      "fact_ids": [
+        "pro_tiers_100_200_001",
+        "pro_positioning_001",
+        "pro_unlimited_guardrails_001"
+      ],
+      "group": "C_plus_pro",
+      "id": "C_plus_pro-004",
+      "last_turn": "is Pro more expensive",
+      "persona": "solo_power_user",
+      "plan_id": "pro",
+      "turn_count": 1
+    }
+  ],
+  "sends_email": false,
+  "status": "pass",
+  "trace_sample": [
+    {
+      "answer": "This is a public-data simulation for ChatGPT plan fit. ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images. Are you comparing plans for yourself or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "chatgpt_definition_001",
+        "pricing_plan_set_001"
+      ],
+      "group": "A_product_intro",
+      "id": "A_product_intro-001",
+      "last_turn": "what are you selling",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 3
+    },
+    {
+      "answer": "This is a public-data simulation for ChatGPT plan fit. ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images. Are you comparing plans for yourself or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "chatgpt_definition_001",
+        "pricing_plan_set_001"
+      ],
+      "group": "A_product_intro",
+      "id": "A_product_intro-002",
+      "last_turn": "what is ChatGPT",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 1
+    },
+    {
+      "answer": "This is a public-data simulation for ChatGPT plan fit. ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images. Are you comparing plans for yourself or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "chatgpt_definition_001",
+        "pricing_plan_set_001"
+      ],
+      "group": "A_product_intro",
+      "id": "A_product_intro-003",
+      "last_turn": "what do I get",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 3
+    },
+    {
+      "answer": "This is a public-data simulation for ChatGPT plan fit. ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images. Are you comparing plans for yourself or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "chatgpt_definition_001",
+        "pricing_plan_set_001"
+      ],
+      "group": "A_product_intro",
+      "id": "A_product_intro-004",
+      "last_turn": "what is this",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 1
+    },
+    {
+      "answer": "At a high level, I would compare your use case against Free, Go, Plus, Pro, Business, and Enterprise, then point you to the official plan page or contact-sales route. Is this for one person or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "pricing_plan_set_001"
+      ],
+      "group": "A_product_intro",
+      "id": "A_product_intro-005",
+      "last_turn": "what does ChatGPT do",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 3
+    },
+    {
+      "answer": "At a high level, I would compare your use case against Free, Go, Plus, Pro, Business, and Enterprise, then point you to the official plan page or contact-sales route. Is this for one person or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "pricing_plan_set_001"
+      ],
+      "group": "A_product_intro",
+      "id": "A_product_intro-006",
+      "last_turn": "what are the plans",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 1
+    },
+    {
+      "answer": "At a high level, I would compare your use case against Free, Go, Plus, Pro, Business, and Enterprise, then point you to the official plan page or contact-sales route. Is this for one person or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "pricing_plan_set_001"
+      ],
+      "group": "A_product_intro",
+      "id": "A_product_intro-007",
+      "last_turn": "who is this for",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 3
+    },
+    {
+      "answer": "At a high level, I would compare your use case against Free, Go, Plus, Pro, Business, and Enterprise, then point you to the official plan page or contact-sales route. Is this for one person or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "pricing_plan_set_001"
+      ],
+      "group": "A_product_intro",
+      "id": "A_product_intro-008",
+      "last_turn": "why are you calling",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 1
+    },
+    {
+      "answer": "At a high level, I would compare your use case against Free, Go, Plus, Pro, Business, and Enterprise, then point you to the official plan page or contact-sales route. Is this for one person or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "pricing_plan_set_001"
+      ],
+      "group": "A_product_intro",
+      "id": "A_product_intro-009",
+      "last_turn": "what is the product",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 3
+    },
+    {
+      "answer": "This is a public-data simulation for ChatGPT plan fit. ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images. Are you comparing plans for yourself or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "chatgpt_definition_001",
+        "pricing_plan_set_001"
+      ],
+      "group": "A_product_intro",
+      "id": "A_product_intro-010",
+      "last_turn": "what do I get for upgrading",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 1
+    },
+    {
+      "answer": "At a high level, I would compare your use case against Free, Go, Plus, Pro, Business, and Enterprise, then point you to the official plan page or contact-sales route. Is this for one person or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "pricing_plan_set_001"
+      ],
+      "group": "A_product_intro",
+      "id": "A_product_intro-011",
+      "last_turn": "explain ChatGPT",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 3
+    },
+    {
+      "answer": "At a high level, I would compare your use case against Free, Go, Plus, Pro, Business, and Enterprise, then point you to the official plan page or contact-sales route. Is this for one person or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "pricing_plan_set_001"
+      ],
+      "group": "A_product_intro",
+      "id": "A_product_intro-012",
+      "last_turn": "what is the offer",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 1
+    },
+    {
+      "answer": "At a high level, I would compare your use case against Free, Go, Plus, Pro, Business, and Enterprise, then point you to the official plan page or contact-sales route. Is this for one person or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "pricing_plan_set_001"
+      ],
+      "group": "A_product_intro",
+      "id": "A_product_intro-013",
+      "last_turn": "what can it do",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 3
+    },
+    {
+      "answer": "For studying, I would start with Free if basic use is enough. If you need more access to common tools, Go or Plus is the next comparison point.",
+      "close_mode": null,
+      "fact_ids": [
+        "free_basic_limits_001",
+        "go_expanded_popular_features_001",
+        "plus_features_001"
+      ],
+      "group": "B_free_go_plus",
+      "id": "B_free_go_plus-001",
+      "last_turn": "I use it for studying",
+      "persona": "student_or_light_user",
+      "plan_id": "free",
+      "turn_count": 3
+    },
+    {
+      "answer": "For studying, I would start with Free if basic use is enough. If you need more access to common tools, Go or Plus is the next comparison point.",
+      "close_mode": null,
+      "fact_ids": [
+        "free_basic_limits_001",
+        "go_expanded_popular_features_001",
+        "plus_features_001"
+      ],
+      "group": "B_free_go_plus",
+      "id": "B_free_go_plus-002",
+      "last_turn": "I use it for school work",
+      "persona": "student_or_light_user",
+      "plan_id": "free",
+      "turn_count": 1
+    },
+    {
+      "answer": "At a high level, I would compare your use case against Free, Go, Plus, Pro, Business, and Enterprise, then point you to the official plan page or contact-sales route. Is this for one person or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "pricing_plan_set_001"
+      ],
+      "group": "B_free_go_plus",
+      "id": "B_free_go_plus-003",
+      "last_turn": "I want more than Free",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 3
+    },
+    {
+      "answer": "Go is positioned as a lower-cost paid step up from Free, with expanded access to popular ChatGPT features. I would compare it against Plus if your main issue is limits, not heavy advanced use.",
+      "close_mode": "self_serve_purchase_link",
+      "fact_ids": [
+        "go_expanded_popular_features_001",
+        "go_features_001",
+        "plus_features_001"
+      ],
+      "group": "B_free_go_plus",
+      "id": "B_free_go_plus-004",
+      "last_turn": "what is Go",
+      "persona": "student_or_light_user",
+      "plan_id": "go",
+      "turn_count": 1
+    },
+    {
+      "answer": "If your use is basic and budget is the issue, Free may be enough. I would only look at a paid plan if limits or tools are actually blocking you.",
+      "close_mode": "no_fit_close",
+      "fact_ids": [
+        "free_basic_limits_001",
+        "limits_vary_by_plan_model_001"
+      ],
+      "group": "B_free_go_plus",
+      "id": "B_free_go_plus-005",
+      "last_turn": "is Free enough",
+      "persona": "student_or_light_user",
+      "plan_id": "free",
+      "turn_count": 3
+    },
+    {
+      "answer": "At a high level, I would compare your use case against Free, Go, Plus, Pro, Business, and Enterprise, then point you to the official plan page or contact-sales route. Is this for one person or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "pricing_plan_set_001"
+      ],
+      "group": "B_free_go_plus",
+      "id": "B_free_go_plus-006",
+      "last_turn": "I need file uploads sometimes",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 1
+    },
+    {
+      "answer": "At a high level, I would compare your use case against Free, Go, Plus, Pro, Business, and Enterprise, then point you to the official plan page or contact-sales route. Is this for one person or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "pricing_plan_set_001"
+      ],
+      "group": "B_free_go_plus",
+      "id": "B_free_go_plus-007",
+      "last_turn": "I need images sometimes",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 3
+    },
+    {
+      "answer": "For studying, I would start with Free if basic use is enough. If you need more access to common tools, Go or Plus is the next comparison point.",
+      "close_mode": null,
+      "fact_ids": [
+        "free_basic_limits_001",
+        "go_expanded_popular_features_001",
+        "plus_features_001"
+      ],
+      "group": "B_free_go_plus",
+      "id": "B_free_go_plus-008",
+      "last_turn": "I am a student",
+      "persona": "student_or_light_user",
+      "plan_id": "free",
+      "turn_count": 1
+    },
+    {
+      "answer": "At a high level, I would compare your use case against Free, Go, Plus, Pro, Business, and Enterprise, then point you to the official plan page or contact-sales route. Is this for one person or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "pricing_plan_set_001"
+      ],
+      "group": "B_free_go_plus",
+      "id": "B_free_go_plus-009",
+      "last_turn": "I use it once a week",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 3
+    },
+    {
+      "answer": "At a high level, I would compare your use case against Free, Go, Plus, Pro, Business, and Enterprise, then point you to the official plan page or contact-sales route. Is this for one person or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "pricing_plan_set_001"
+      ],
+      "group": "B_free_go_plus",
+      "id": "B_free_go_plus-010",
+      "last_turn": "I use it for writing",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 1
+    },
+    {
+      "answer": "At a high level, I would compare your use case against Free, Go, Plus, Pro, Business, and Enterprise, then point you to the official plan page or contact-sales route. Is this for one person or a team?",
+      "close_mode": null,
+      "fact_ids": [
+        "pricing_plan_set_001"
+      ],
+      "group": "B_free_go_plus",
+      "id": "B_free_go_plus-011",
+      "last_turn": "I need custom GPTs sometimes",
+      "persona": "student_or_light_user",
+      "plan_id": null,
+      "turn_count": 3
+    }
+  ],
+  "unsupported_claim_refusal_examples": [
+    {
+      "answer": "I cannot invent discounts. The safe next step is the official ChatGPT plans page, and if Free covers your use case, Free may be enough.",
+      "close_mode": "self_serve_purchase_link",
+      "fact_ids": [
+        "free_basic_limits_001",
+        "pricing_plan_set_001"
+      ],
+      "group": "K_unsupported_claim_refusal",
+      "id": "K_unsupported_claim_refusal-001",
+      "last_turn": "give me a discount",
+      "persona": "enterprise_security_admin",
+      "plan_id": "free",
+      "turn_count": 3
+    },
+    {
+      "answer": "I cannot guarantee a specific model, exact availability, or unrestricted usage. Official limits vary by plan and model and can change over time.",
+      "close_mode": null,
+      "fact_ids": [
+        "limits_vary_by_plan_model_001",
+        "pro_unlimited_guardrails_001"
+      ],
+      "group": "K_unsupported_claim_refusal",
+      "id": "K_unsupported_claim_refusal-002",
+      "last_turn": "guarantee I get the newest model",
+      "persona": "enterprise_security_admin",
+      "plan_id": null,
+      "turn_count": 1
+    },
+    {
+      "answer": "I cannot guarantee a specific model, exact availability, or unrestricted usage. Official limits vary by plan and model and can change over time.",
+      "close_mode": null,
+      "fact_ids": [
+        "limits_vary_by_plan_model_001",
+        "pro_unlimited_guardrails_001"
+      ],
+      "group": "K_unsupported_claim_refusal",
+      "id": "K_unsupported_claim_refusal-003",
+      "last_turn": "guarantee exact limits",
+      "persona": "enterprise_security_admin",
+      "plan_id": null,
+      "turn_count": 3
+    },
+    {
+      "answer": "I cannot give a legal compliance guarantee. For Enterprise or security requirements, the right path is official sales and terms review.",
+      "close_mode": "contact_sales",
+      "fact_ids": [
+        "enterprise_org_purchase_contact_sales_001",
+        "enterprise_privacy_controls_001"
+      ],
+      "group": "K_unsupported_claim_refusal",
+      "id": "K_unsupported_claim_refusal-004",
+      "last_turn": "is my company legally compliant if we use this",
+      "persona": "enterprise_security_admin",
+      "plan_id": "enterprise",
+      "turn_count": 1
+    },
+    {
+      "answer": "I cannot promise that in every circumstance. For personal plans, users can turn off model training; for Business and Enterprise, OpenAI says business data is not used for training by default unless the customer opts in.",
+      "close_mode": null,
+      "fact_ids": [
+        "consumer_data_controls_opt_out_001",
+        "enterprise_privacy_no_training_default_001"
+      ],
+      "group": "K_unsupported_claim_refusal",
+      "id": "K_unsupported_claim_refusal-005",
+      "last_turn": "can you promise my data is never used",
+      "persona": "enterprise_security_admin",
+      "plan_id": null,
+      "turn_count": 3
+    }
+  ],
+  "writes_crm": false
+}

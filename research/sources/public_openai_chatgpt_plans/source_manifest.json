@@ -1,0 +1,727 @@
+{
+  "bundle_id": "PUBLIC-OPENAI-CHATGPT-PLANS-SOURCE-BUNDLE-001",
+  "fixture_id": "public-openai-chatgpt-plans",
+  "retrieved_at_utc": "2026-05-24T18:18:00Z",
+  "source_policy": "official_openai_public_sources_only",
+  "allowed_domains": [
+    "openai.com",
+    "chatgpt.com",
+    "help.openai.com",
+    "platform.openai.com"
+  ],
+  "sources": [
+    {
+      "source_id": "chatgpt_pricing",
+      "source_title": "ChatGPT Plans | Free, Go, Plus, Pro, Business, and Enterprise",
+      "source_url": "https://chatgpt.com/pricing/",
+      "source_domain": "chatgpt.com",
+      "source_type": "official_pricing_page",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "used_for_claim_categories": [
+        "plan_catalog",
+        "feature",
+        "privacy_training",
+        "security_admin"
+      ]
+    },
+    {
+      "source_id": "chatgpt_faq",
+      "source_title": "What is ChatGPT: FAQ",
+      "source_url": "https://help.openai.com/en/articles/12677804-what-is-chatgpt-faq",
+      "source_domain": "help.openai.com",
+      "source_type": "official_help_article",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "used_for_claim_categories": [
+        "product_intro",
+        "sign_up",
+        "usage_limits"
+      ]
+    },
+    {
+      "source_id": "chatgpt_capabilities",
+      "source_title": "ChatGPT Capabilities Overview",
+      "source_url": "https://help.openai.com/en/articles/9260256-chatgpt-capabilities-overview",
+      "source_domain": "help.openai.com",
+      "source_type": "official_help_article",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "used_for_claim_categories": [
+        "product_intro",
+        "feature"
+      ]
+    },
+    {
+      "source_id": "chatgpt_go",
+      "source_title": "What is ChatGPT Go?",
+      "source_url": "https://help.openai.com/en/articles/11989085-what-is-chatgpt-go",
+      "source_domain": "help.openai.com",
+      "source_type": "official_help_article",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "used_for_claim_categories": [
+        "plan_catalog",
+        "pricing",
+        "feature",
+        "sign_up",
+        "privacy_training"
+      ]
+    },
+    {
+      "source_id": "chatgpt_plus",
+      "source_title": "What is ChatGPT Plus?",
+      "source_url": "https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus",
+      "source_domain": "help.openai.com",
+      "source_type": "official_help_article",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "used_for_claim_categories": [
+        "plan_catalog",
+        "pricing",
+        "feature",
+        "api_usage_boundary",
+        "sign_up",
+        "privacy_training"
+      ]
+    },
+    {
+      "source_id": "chatgpt_pro",
+      "source_title": "About ChatGPT Pro tiers",
+      "source_url": "https://help.openai.com/en/articles/9793128-what-is-chatgpt-pro",
+      "source_domain": "help.openai.com",
+      "source_type": "official_help_article",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "used_for_claim_categories": [
+        "plan_catalog",
+        "pricing",
+        "feature",
+        "usage_limits",
+        "sign_up"
+      ]
+    },
+    {
+      "source_id": "chatgpt_business",
+      "source_title": "What is ChatGPT Business?",
+      "source_url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+      "source_domain": "help.openai.com",
+      "source_type": "official_help_article",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "used_for_claim_categories": [
+        "plan_catalog",
+        "pricing",
+        "feature",
+        "api_usage_boundary",
+        "privacy_training",
+        "security_admin"
+      ]
+    },
+    {
+      "source_id": "chatgpt_enterprise",
+      "source_title": "What is ChatGPT Enterprise?",
+      "source_url": "https://help.openai.com/en/articles/8265053-what-is-chatgpt-enterprise",
+      "source_domain": "help.openai.com",
+      "source_type": "official_help_article",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "used_for_claim_categories": [
+        "plan_catalog",
+        "enterprise_sales",
+        "feature",
+        "api_usage_boundary",
+        "security_admin"
+      ]
+    },
+    {
+      "source_id": "chatgpt_data_controls",
+      "source_title": "Data Controls FAQ",
+      "source_url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+      "source_domain": "help.openai.com",
+      "source_type": "official_help_article",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "used_for_claim_categories": [
+        "privacy_training"
+      ]
+    },
+    {
+      "source_id": "enterprise_privacy",
+      "source_title": "Enterprise privacy at OpenAI",
+      "source_url": "https://openai.com/enterprise-privacy/",
+      "source_domain": "openai.com",
+      "source_type": "official_privacy_page",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "used_for_claim_categories": [
+        "privacy_training",
+        "security_admin",
+        "api_usage_boundary"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "fact_id": "chatgpt_definition_001",
+      "claim": "ChatGPT is an AI assistant for everyday tasks such as brainstorming, writing, studying, planning, math, coding, and analyzing images or files.",
+      "source_title": "What is ChatGPT: FAQ",
+      "source_url": "https://help.openai.com/en/articles/12677804-what-is-chatgpt-faq",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [],
+      "claim_category": "product_intro",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images."
+    },
+    {
+      "fact_id": "chatgpt_capabilities_core_001",
+      "claim": "ChatGPT can help answer questions, explain concepts, draft or summarize content, provide creative suggestions, solve problems, and translate between languages.",
+      "source_title": "ChatGPT Capabilities Overview",
+      "source_url": "https://help.openai.com/en/articles/9260256-chatgpt-capabilities-overview",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [],
+      "claim_category": "feature",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "At a high level, ChatGPT can answer questions, explain concepts, draft and summarize content, help solve problems, and translate."
+    },
+    {
+      "fact_id": "chatgpt_available_web_mobile_001",
+      "claim": "ChatGPT is available on the web at chatgpt.com and through iOS and Android mobile apps.",
+      "source_title": "What is ChatGPT: FAQ",
+      "source_url": "https://help.openai.com/en/articles/12677804-what-is-chatgpt-faq",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [],
+      "claim_category": "sign_up",
+      "exact_quote_excerpt_optional": "Web: chatgpt.com",
+      "normalized_speech_version": "You can use ChatGPT on the web at chatgpt.com and in the iOS or Android apps."
+    },
+    {
+      "fact_id": "pricing_plan_set_001",
+      "claim": "The public pricing page compares Free, Go, Plus, Pro, Business, and Enterprise plans.",
+      "source_title": "ChatGPT Plans | Free, Go, Plus, Pro, Business, and Enterprise",
+      "source_url": "https://chatgpt.com/pricing/",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_pricing_page",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Plan names, availability, and pricing can change, so the official pricing page is the authority.",
+      "plan_ids": [
+        "free",
+        "go",
+        "plus",
+        "pro",
+        "business_chatgpt_codex",
+        "enterprise"
+      ],
+      "claim_category": "plan_catalog",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "The public pricing page compares Free, Go, Plus, Pro, Business, and Enterprise."
+    },
+    {
+      "fact_id": "free_basic_limits_001",
+      "claim": "The Free plan is described as core ChatGPT with basic or limited access.",
+      "source_title": "What is ChatGPT: FAQ",
+      "source_url": "https://help.openai.com/en/articles/12677804-what-is-chatgpt-faq",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Exact limits can vary by plan and model.",
+      "plan_ids": [
+        "free"
+      ],
+      "claim_category": "plan_catalog",
+      "exact_quote_excerpt_optional": "Free: Core ChatGPT with basic limits.",
+      "normalized_speech_version": "Free is the basic ChatGPT option, with limited access compared with paid plans."
+    },
+    {
+      "fact_id": "go_expanded_popular_features_001",
+      "claim": "ChatGPT Go is a lower-cost paid plan with expanded access to popular ChatGPT features compared with Free.",
+      "source_title": "What is ChatGPT Go?",
+      "source_url": "https://help.openai.com/en/articles/11989085-what-is-chatgpt-go",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "The source says prices live on the ChatGPT pricing page and may change over time.",
+      "plan_ids": [
+        "go"
+      ],
+      "claim_category": "plan_catalog",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Go is positioned as a lower-cost paid plan that gives more access to popular ChatGPT features than Free."
+    },
+    {
+      "fact_id": "go_features_001",
+      "claim": "Go adds expanded access to image generation, file uploads, advanced data analysis, longer memory, and projects/tasks/custom GPTs compared with Free.",
+      "source_title": "What is ChatGPT Go?",
+      "source_url": "https://help.openai.com/en/articles/11989085-what-is-chatgpt-go",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Usage remains subject to safeguards and system conditions.",
+      "plan_ids": [
+        "go"
+      ],
+      "claim_category": "feature",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Go is mainly for more access to common tools such as image generation, file uploads, data analysis, memory, projects, tasks, and custom GPTs."
+    },
+    {
+      "fact_id": "go_signup_profile_upgrade_001",
+      "claim": "The Go help article says users sign up by logging into ChatGPT, selecting the profile icon, choosing Upgrade Plan, and selecting Try Go.",
+      "source_title": "What is ChatGPT Go?",
+      "source_url": "https://help.openai.com/en/articles/11989085-what-is-chatgpt-go",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [
+        "go"
+      ],
+      "claim_category": "sign_up",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "For Go, the help article points to the ChatGPT profile menu, Upgrade Plan, then Try Go."
+    },
+    {
+      "fact_id": "plus_price_20_001",
+      "claim": "ChatGPT Plus is listed as enhanced access to the ChatGPT web app for $20/month, billed monthly.",
+      "source_title": "What is ChatGPT Plus?",
+      "source_url": "https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Regional billing details and future pricing can change.",
+      "plan_ids": [
+        "plus"
+      ],
+      "claim_category": "pricing",
+      "exact_quote_excerpt_optional": "$20/month",
+      "normalized_speech_version": "Plus is listed at 20 dollars per month, billed monthly."
+    },
+    {
+      "fact_id": "plus_features_001",
+      "claim": "Plus provides priority access during high-traffic periods, higher limits, faster responses, and expanded features such as voice, image generation, file uploads and analysis, deep research where available, and custom GPT creation and use.",
+      "source_title": "What is ChatGPT Plus?",
+      "source_url": "https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Plus subscriptions may include usage limits that vary with system conditions.",
+      "plan_ids": [
+        "plus"
+      ],
+      "claim_category": "feature",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Plus is for more access than Free or Go: higher limits, faster responses, and expanded tools like voice, images, file analysis, deep research where available, and custom GPTs."
+    },
+    {
+      "fact_id": "plus_api_separate_001",
+      "claim": "API usage is not included with ChatGPT Plus and is billed separately.",
+      "source_title": "What is ChatGPT Plus?",
+      "source_url": "https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [
+        "plus"
+      ],
+      "claim_category": "api_usage_boundary",
+      "exact_quote_excerpt_optional": "API usage is separate",
+      "normalized_speech_version": "API usage is separate from Plus and is billed independently."
+    },
+    {
+      "fact_id": "plus_signup_profile_upgrade_001",
+      "claim": "The Plus help article says users sign up by logging into ChatGPT, selecting the profile icon, choosing Upgrade Plan, and selecting Get Plus.",
+      "source_title": "What is ChatGPT Plus?",
+      "source_url": "https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [
+        "plus"
+      ],
+      "claim_category": "sign_up",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "For Plus, the help article points to ChatGPT, the profile icon, Upgrade Plan, then Get Plus."
+    },
+    {
+      "fact_id": "pro_positioning_001",
+      "claim": "ChatGPT Pro is designed for people who rely on AI for high-stakes, complex work.",
+      "source_title": "About ChatGPT Pro tiers",
+      "source_url": "https://help.openai.com/en/articles/9793128-what-is-chatgpt-pro",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "This is product positioning, not a guarantee that Pro is worth it for every user.",
+      "plan_ids": [
+        "pro"
+      ],
+      "claim_category": "plan_catalog",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Pro is aimed at people who use AI for more complex, high-usage work."
+    },
+    {
+      "fact_id": "pro_tiers_100_200_001",
+      "claim": "The Pro help article describes Pro $100 and Pro $200 tiers, with Pro $100 at 5x higher usage than Plus and Pro $200 at 20x higher usage than Plus.",
+      "source_title": "About ChatGPT Pro tiers",
+      "source_url": "https://help.openai.com/en/articles/9793128-what-is-chatgpt-pro",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Promotional Codex multipliers in the article are time-limited and should not be treated as permanent unless confirmed on the official page.",
+      "plan_ids": [
+        "pro"
+      ],
+      "claim_category": "pricing",
+      "exact_quote_excerpt_optional": "Pro $100",
+      "normalized_speech_version": "The Pro help article lists 100 dollar and 200 dollar Pro tiers; the main difference is usage allowance."
+    },
+    {
+      "fact_id": "pro_features_001",
+      "claim": "All Pro tiers include advanced features such as Pro models, Codex, deep research, image creation, memory, and file uploads.",
+      "source_title": "About ChatGPT Pro tiers",
+      "source_url": "https://help.openai.com/en/articles/9793128-what-is-chatgpt-pro",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Availability and limits remain subject to official plan terms and usage guardrails.",
+      "plan_ids": [
+        "pro"
+      ],
+      "claim_category": "feature",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Pro includes the higher-end Pro model access and advanced tools like Codex, deep research, images, memory, and file uploads."
+    },
+    {
+      "fact_id": "pro_unlimited_guardrails_001",
+      "claim": "The Pro article says unlimited access is subject to Terms of Use and misuse guardrails.",
+      "source_title": "About ChatGPT Pro tiers",
+      "source_url": "https://help.openai.com/en/articles/9793128-what-is-chatgpt-pro",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Do not present unlimited access as a guarantee of unrestricted use.",
+      "plan_ids": [
+        "pro"
+      ],
+      "claim_category": "usage_limits",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Even when Pro says unlimited, it is still subject to terms and misuse guardrails."
+    },
+    {
+      "fact_id": "pro_upgrade_settings_pricing_001",
+      "claim": "The Pro help article says users can upgrade to Pro from the Pricing page or from Settings -> My Plan.",
+      "source_title": "About ChatGPT Pro tiers",
+      "source_url": "https://help.openai.com/en/articles/9793128-what-is-chatgpt-pro",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [
+        "pro"
+      ],
+      "claim_category": "sign_up",
+      "exact_quote_excerpt_optional": "Settings -> My Plan",
+      "normalized_speech_version": "For Pro, the help article points to the Pricing page or Settings, then My Plan."
+    },
+    {
+      "fact_id": "business_overview_001",
+      "claim": "ChatGPT Business is a self-serve plan for organizations that want a shared ChatGPT workspace for teams.",
+      "source_title": "What is ChatGPT Business?",
+      "source_url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [
+        "business_chatgpt_codex"
+      ],
+      "claim_category": "plan_catalog",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Business is the self-serve team workspace plan."
+    },
+    {
+      "fact_id": "business_standard_seat_price_001",
+      "claim": "For most countries, standard ChatGPT Business seats are $25 per user per month when billed monthly and $20 per user per month when billed annually, with pricing varying by country and currency.",
+      "source_title": "What is ChatGPT Business?",
+      "source_url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "The source says pricing may vary by country and currency.",
+      "plan_ids": [
+        "business_chatgpt_codex"
+      ],
+      "claim_category": "pricing",
+      "exact_quote_excerpt_optional": "$25 per user per month",
+      "normalized_speech_version": "For most countries, Business standard ChatGPT seats are listed at 25 dollars monthly or 20 dollars monthly when billed annually, with regional caveats."
+    },
+    {
+      "fact_id": "business_standard_seat_includes_codex_001",
+      "claim": "A standard ChatGPT Business seat includes access to both ChatGPT and Codex within the Business workspace.",
+      "source_title": "What is ChatGPT Business?",
+      "source_url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Usage beyond included rate limits can use flexible pricing and workspace credits.",
+      "plan_ids": [
+        "business_chatgpt_codex"
+      ],
+      "claim_category": "feature",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "A standard Business ChatGPT seat includes both ChatGPT and Codex in the Business workspace."
+    },
+    {
+      "fact_id": "business_codex_seat_usage_based_001",
+      "claim": "Business Codex seats provide Codex-only access, are usage-based, have no fixed per-user monthly cost, and do not include ChatGPT workspace access.",
+      "source_title": "What is ChatGPT Business?",
+      "source_url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Using Codex seats requires workspace credits.",
+      "plan_ids": [
+        "business_codex"
+      ],
+      "claim_category": "pricing",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "A Business Codex seat is Codex-only and usage-based; it does not include ChatGPT workspace access."
+    },
+    {
+      "fact_id": "business_minimum_seats_001",
+      "claim": "Standard ChatGPT Business seat access starts at two users, while Codex-only workspaces do not require a minimum starting number of Codex seats.",
+      "source_title": "What is ChatGPT Business?",
+      "source_url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [
+        "business_chatgpt_codex",
+        "business_codex"
+      ],
+      "claim_category": "pricing",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Standard Business ChatGPT seats start at two users; Codex-only workspaces do not require a minimum starting number of Codex seats."
+    },
+    {
+      "fact_id": "business_no_training_workspace_data_001",
+      "claim": "OpenAI says it will not train on ChatGPT Business workspace data.",
+      "source_title": "What is ChatGPT Business?",
+      "source_url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "This should not be expanded into a broader legal or security guarantee.",
+      "plan_ids": [
+        "business_chatgpt_codex",
+        "business_codex"
+      ],
+      "claim_category": "privacy_training",
+      "exact_quote_excerpt_optional": "won't train",
+      "normalized_speech_version": "For Business workspace data, OpenAI says it will not train on that workspace data."
+    },
+    {
+      "fact_id": "business_api_separate_001",
+      "claim": "A ChatGPT Business subscription does not include API usage; API usage is billed separately.",
+      "source_title": "What is ChatGPT Business?",
+      "source_url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [
+        "business_chatgpt_codex",
+        "business_codex"
+      ],
+      "claim_category": "api_usage_boundary",
+      "exact_quote_excerpt_optional": "API usage is billed separately",
+      "normalized_speech_version": "Business does not include API usage; API usage is billed separately."
+    },
+    {
+      "fact_id": "enterprise_overview_001",
+      "claim": "ChatGPT Enterprise is a managed ChatGPT plan for organizations, combining enterprise-grade privacy and security with centralized admin controls and access to advanced ChatGPT capabilities.",
+      "source_title": "What is ChatGPT Enterprise?",
+      "source_url": "https://help.openai.com/en/articles/8265053-what-is-chatgpt-enterprise",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "This is not legal or security advice; details should be checked with official sales and terms.",
+      "plan_ids": [
+        "enterprise"
+      ],
+      "claim_category": "plan_catalog",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Enterprise is the managed organization plan, with centralized admin controls and enterprise privacy and security features."
+    },
+    {
+      "fact_id": "enterprise_org_purchase_contact_sales_001",
+      "claim": "ChatGPT Enterprise is purchased at the organization level; organizations that want to purchase it should contact the OpenAI sales team.",
+      "source_title": "What is ChatGPT Enterprise?",
+      "source_url": "https://help.openai.com/en/articles/8265053-what-is-chatgpt-enterprise",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [
+        "enterprise"
+      ],
+      "claim_category": "enterprise_sales",
+      "exact_quote_excerpt_optional": "Contact the OpenAI sales team.",
+      "normalized_speech_version": "Enterprise is not an individual self-serve signup; an organization contacts sales."
+    },
+    {
+      "fact_id": "enterprise_api_membership_separate_001",
+      "claim": "ChatGPT Enterprise workspace membership and API Platform organization membership are separate systems.",
+      "source_title": "What is ChatGPT Enterprise?",
+      "source_url": "https://help.openai.com/en/articles/8265053-what-is-chatgpt-enterprise",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [
+        "enterprise"
+      ],
+      "claim_category": "api_usage_boundary",
+      "exact_quote_excerpt_optional": "separate membership systems",
+      "normalized_speech_version": "Enterprise workspace access and API Platform organization access are separate."
+    },
+    {
+      "fact_id": "enterprise_security_admin_features_001",
+      "claim": "The Enterprise help article lists domain verification, SSO, SCIM, usage insights, longer context windows, advanced data analysis, and customization options among Enterprise capabilities.",
+      "source_title": "What is ChatGPT Enterprise?",
+      "source_url": "https://help.openai.com/en/articles/8265053-what-is-chatgpt-enterprise",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Actual availability depends on workspace settings, seat type, and the current official plan terms.",
+      "plan_ids": [
+        "enterprise"
+      ],
+      "claim_category": "security_admin",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Enterprise is where larger organizations look for controls such as SSO, SCIM, domain verification, usage insights, and longer-context work."
+    },
+    {
+      "fact_id": "consumer_data_controls_opt_out_001",
+      "claim": "Data Controls let ChatGPT users choose whether their conversations help improve OpenAI's models; turning off Improve the model for everyone means conversations still appear in history but are not used to train ChatGPT.",
+      "source_title": "Data Controls FAQ",
+      "source_url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "This is a data-control summary, not a legal privacy guarantee.",
+      "plan_ids": [
+        "free",
+        "go",
+        "plus",
+        "pro"
+      ],
+      "claim_category": "privacy_training",
+      "exact_quote_excerpt_optional": "won't be used to train ChatGPT",
+      "normalized_speech_version": "For personal plans, users can turn off model training in Data Controls; after that, new conversations are not used to train ChatGPT."
+    },
+    {
+      "fact_id": "temporary_chat_training_boundary_001",
+      "claim": "Temporary Chats are deleted from OpenAI systems after 30 days, are not used to train models, may be reviewed only for abuse monitoring, and do not save to history or create memories.",
+      "source_title": "Data Controls FAQ",
+      "source_url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "This is a Temporary Chat summary only; it does not cover every retention rule or legal exception.",
+      "plan_ids": [
+        "free",
+        "go",
+        "plus",
+        "pro"
+      ],
+      "claim_category": "privacy_training",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Temporary Chats are not used to train models and are deleted after 30 days, with abuse-monitoring caveats."
+    },
+    {
+      "fact_id": "enterprise_privacy_no_training_default_001",
+      "claim": "By default, data from ChatGPT Business, ChatGPT Enterprise, and the API Platform after March 1, 2023 is not used to train OpenAI models unless the customer explicitly opts in.",
+      "source_title": "Enterprise privacy at OpenAI",
+      "source_url": "https://openai.com/enterprise-privacy/",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_privacy_page",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Do not turn this into a promise about every data flow; official terms and enterprise privacy documents govern.",
+      "plan_ids": [
+        "business_chatgpt_codex",
+        "business_codex",
+        "enterprise"
+      ],
+      "claim_category": "privacy_training",
+      "exact_quote_excerpt_optional": "isn't used for training",
+      "normalized_speech_version": "For Business, Enterprise, and API Platform data, OpenAI says data is not used for training by default unless the customer opts in."
+    },
+    {
+      "fact_id": "enterprise_privacy_controls_001",
+      "claim": "The Enterprise privacy page says customers own and control their business data and that business offerings include controls such as SAML SSO, fine-grained access controls, and encryption at rest and in transit.",
+      "source_title": "Enterprise privacy at OpenAI",
+      "source_url": "https://openai.com/enterprise-privacy/",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_privacy_page",
+      "allowed_in_speech": true,
+      "requires_caveat": true,
+      "caveat_text": "Security and compliance details should be verified against official terms and sales materials.",
+      "plan_ids": [
+        "business_chatgpt_codex",
+        "business_codex",
+        "enterprise"
+      ],
+      "claim_category": "security_admin",
+      "exact_quote_excerpt_optional": "You own and control your data",
+      "normalized_speech_version": "For business use, OpenAI's privacy page emphasizes customer control over business data plus controls like SAML SSO, access controls, and encryption."
+    },
+    {
+      "fact_id": "limits_vary_by_plan_model_001",
+      "claim": "OpenAI says message limits vary by plan and model and can change over time to keep performance stable.",
+      "source_title": "What is ChatGPT: FAQ",
+      "source_url": "https://help.openai.com/en/articles/12677804-what-is-chatgpt-faq",
+      "retrieved_at_utc": "2026-05-24T18:18:00Z",
+      "source_type": "official_help_article",
+      "allowed_in_speech": true,
+      "requires_caveat": false,
+      "caveat_text": "",
+      "plan_ids": [],
+      "claim_category": "usage_limits",
+      "exact_quote_excerpt_optional": "",
+      "normalized_speech_version": "Usage limits vary by plan and model and can change over time."
+    }
+  ]
+}

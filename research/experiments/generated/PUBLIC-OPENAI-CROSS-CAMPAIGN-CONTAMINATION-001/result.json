@@ -1,0 +1,238 @@
+{
+  "campaign_selector_metadata_consistent": true,
+  "checkpoint_id": "PUBLIC-OPENAI-CROSS-CAMPAIGN-CONTAMINATION-001",
+  "creates_calendar_event": false,
+  "failures": [],
+  "local_llm_calls_made": false,
+  "opens_prod_102": false,
+  "provider_calls_made": false,
+  "sends_email": false,
+  "sequence_count": 6,
+  "sequences": [
+    {
+      "first": {
+        "answer": "This is a public-data simulation for ChatGPT plan fit. ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images. Are you comparing plans for yourself or a team?",
+        "campaign_id": "public-openai-chatgpt-plans",
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "metadata": {
+          "campaign_id": "public-openai-chatgpt-plans",
+          "path": "runtime\\campaigns\\examples\\public-openai-chatgpt-plans.json",
+          "selector_reset": true
+        },
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "second": {
+        "answer": "RouteSignal is a CRM workflow tool for inbound demo follow-up, focused on ownership, reminders, and handoffs.",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "metadata": {
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "path": null,
+          "selector_reset": true
+        },
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "sequence": [
+        "openai",
+        "routesignal"
+      ],
+      "session_reset_between_campaigns": true
+    },
+    {
+      "first": {
+        "answer": "RouteSignal is a CRM workflow tool for inbound demo follow-up, focused on ownership, reminders, and handoffs.",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "metadata": {
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "path": null,
+          "selector_reset": true
+        },
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "second": {
+        "answer": "This is a public-data simulation for ChatGPT plan fit. ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images. Are you comparing plans for yourself or a team?",
+        "campaign_id": "public-openai-chatgpt-plans",
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "metadata": {
+          "campaign_id": "public-openai-chatgpt-plans",
+          "path": "runtime\\campaigns\\examples\\public-openai-chatgpt-plans.json",
+          "selector_reset": true
+        },
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "sequence": [
+        "routesignal",
+        "openai"
+      ],
+      "session_reset_between_campaigns": true
+    },
+    {
+      "first": {
+        "answer": "This is a public-data simulation for ChatGPT plan fit. ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images. Are you comparing plans for yourself or a team?",
+        "campaign_id": "public-openai-chatgpt-plans",
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "metadata": {
+          "campaign_id": "public-openai-chatgpt-plans",
+          "path": "runtime\\campaigns\\examples\\public-openai-chatgpt-plans.json",
+          "selector_reset": true
+        },
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "second": {
+        "answer": "This is a telecom plan fit check. A high-level check to see whether plan fit, coverage availability, or switching terms are worth review by a telecom account specialist.",
+        "campaign_id": "synthetic-telecom-plan-review",
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "metadata": {
+          "campaign_id": "synthetic-telecom-plan-review",
+          "path": "runtime\\campaigns\\examples\\synthetic-telecom-plan-review.json",
+          "selector_reset": true
+        },
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "sequence": [
+        "openai",
+        "telecom"
+      ],
+      "session_reset_between_campaigns": true
+    },
+    {
+      "first": {
+        "answer": "This is a telecom plan fit check. A high-level check to see whether plan fit, coverage availability, or switching terms are worth review by a telecom account specialist.",
+        "campaign_id": "synthetic-telecom-plan-review",
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "metadata": {
+          "campaign_id": "synthetic-telecom-plan-review",
+          "path": "runtime\\campaigns\\examples\\synthetic-telecom-plan-review.json",
+          "selector_reset": true
+        },
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "second": {
+        "answer": "This is a public-data simulation for ChatGPT plan fit. ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images. Are you comparing plans for yourself or a team?",
+        "campaign_id": "public-openai-chatgpt-plans",
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "metadata": {
+          "campaign_id": "public-openai-chatgpt-plans",
+          "path": "runtime\\campaigns\\examples\\public-openai-chatgpt-plans.json",
+          "selector_reset": true
+        },
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "sequence": [
+        "telecom",
+        "openai"
+      ],
+      "session_reset_between_campaigns": true
+    },
+    {
+      "first": {
+        "answer": "This is a public-data simulation for ChatGPT plan fit. ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images. Are you comparing plans for yourself or a team?",
+        "campaign_id": "public-openai-chatgpt-plans",
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "metadata": {
+          "campaign_id": "public-openai-chatgpt-plans",
+          "path": "runtime\\campaigns\\examples\\public-openai-chatgpt-plans.json",
+          "selector_reset": true
+        },
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "second": {
+        "answer": "This is a policy fit check. A high-level check to see whether premium pressure, coverage fit, or renewal timing should be reviewed by a licensed specialist.",
+        "campaign_id": "synthetic-insurance-review",
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "metadata": {
+          "campaign_id": "synthetic-insurance-review",
+          "path": "runtime\\campaigns\\examples\\synthetic-insurance-review.json",
+          "selector_reset": true
+        },
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "sequence": [
+        "openai",
+        "insurance"
+      ],
+      "session_reset_between_campaigns": true
+    },
+    {
+      "first": {
+        "answer": "This is a policy fit check. A high-level check to see whether premium pressure, coverage fit, or renewal timing should be reviewed by a licensed specialist.",
+        "campaign_id": "synthetic-insurance-review",
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "metadata": {
+          "campaign_id": "synthetic-insurance-review",
+          "path": "runtime\\campaigns\\examples\\synthetic-insurance-review.json",
+          "selector_reset": true
+        },
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "second": {
+        "answer": "This is a public-data simulation for ChatGPT plan fit. ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images. Are you comparing plans for yourself or a team?",
+        "campaign_id": "public-openai-chatgpt-plans",
+        "creates_calendar_event": false,
+        "local_llm_calls_made": false,
+        "metadata": {
+          "campaign_id": "public-openai-chatgpt-plans",
+          "path": "runtime\\campaigns\\examples\\public-openai-chatgpt-plans.json",
+          "selector_reset": true
+        },
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "writes_crm": false
+      },
+      "sequence": [
+        "insurance",
+        "openai"
+      ],
+      "session_reset_between_campaigns": true
+    }
+  ],
+  "session_reset_boundaries_preserved": true,
+  "status": "pass",
+  "writes_crm": false
+}

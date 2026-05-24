@@ -25,6 +25,30 @@ SAFETY_FLAGS = {
     "opens_prod_102": False,
 }
 
+SUPPORTED_CLOSE_MODES = {
+    "self_serve_purchase_link",
+    "contact_sales",
+    "send_info_capture",
+    "appointment_review",
+    "no_fit_close",
+}
+
+SOURCE_GROUNDED_CLAIM_FIELDS = {
+    "fact_id",
+    "claim",
+    "source_title",
+    "source_url",
+    "retrieved_at_utc",
+    "source_type",
+    "allowed_in_speech",
+    "requires_caveat",
+    "caveat_text",
+    "plan_ids",
+    "claim_category",
+    "exact_quote_excerpt_optional",
+    "normalized_speech_version",
+}
+
 REQUIRED_TOP_LEVEL_FIELDS = {
     "campaign_id",
     "client_name",
@@ -192,6 +216,50 @@ def _validate_safety(failures: list[str], config: dict[str, Any]) -> None:
             failures.append(f"safety.{key}: must default to {expected}")
 
 
+def _validate_close_modes(failures: list[str], config: dict[str, Any]) -> None:
+    modes = config.get("close_modes_supported")
+    if modes is None:
+        return
+    normalized = _string_list(modes)
+    if not isinstance(modes, list):
+        failures.append("close_modes_supported: must be a list when present")
+        return
+    if len(normalized) != len(modes):
+        failures.append("close_modes_supported: entries must be non-empty strings")
+    unknown = sorted(set(normalized) - SUPPORTED_CLOSE_MODES)
+    if unknown:
+        failures.append(f"close_modes_supported: unknown close modes {unknown}")
+
+
+def _validate_source_grounded_claims(failures: list[str], config: dict[str, Any]) -> None:
+    claims = config.get("source_grounded_claims")
+    if claims is None:
+        return
+    if not isinstance(claims, list):
+        failures.append("source_grounded_claims: must be a list when present")
+        return
+    seen: set[str] = set()
+    for index, claim in enumerate(claims, start=1):
+        if not isinstance(claim, dict):
+            failures.append(f"source_grounded_claims[{index}]: must be an object")
+            continue
+        missing = sorted(field for field in SOURCE_GROUNDED_CLAIM_FIELDS if field not in claim)
+        if missing:
+            failures.append(f"source_grounded_claims[{index}]: missing fields {missing}")
+        fact_id = str(claim.get("fact_id") or "")
+        if not fact_id:
+            failures.append(f"source_grounded_claims[{index}].fact_id: must be populated")
+        elif fact_id in seen:
+            failures.append(f"source_grounded_claims[{index}].fact_id: duplicate {fact_id}")
+        seen.add(fact_id)
+        if not isinstance(claim.get("plan_ids"), list):
+            failures.append(f"source_grounded_claims[{index}].plan_ids: must be a list")
+        if claim.get("allowed_in_speech") is True and not str(claim.get("normalized_speech_version") or "").strip():
+            failures.append(f"source_grounded_claims[{index}].normalized_speech_version: required for speech")
+        if claim.get("requires_caveat") is True and not str(claim.get("caveat_text") or "").strip():
+            failures.append(f"source_grounded_claims[{index}].caveat_text: required when requires_caveat is true")
+
+
 def _validate_gap_record(
     failures: list[str],
     gap_id: str,
@@ -269,6 +337,8 @@ def validate_campaign_config(config: dict[str, Any]) -> dict[str, Any]:
     if normalized.get("caller_identity") is not None:
         _validate_caller_identity(failures, normalized.get("caller_identity"))
     _validate_safety(failures, normalized)
+    _validate_close_modes(failures, normalized)
+    _validate_source_grounded_claims(failures, normalized)
 
     vertical_cautions = vertical_sales_playbooks.vertical_regulated_cautions(vertical_id)
     if vertical_cautions:
@@ -442,15 +512,103 @@ def validate_campaign_registry(root: Path | None = None) -> dict[str, Any]:
     }
 
 
+def source_grounded_claims(config: dict[str, Any] | None) -> list[dict[str, Any]]:
+    claims = (config or {}).get("source_grounded_claims") or []
+    if not isinstance(claims, list):
+        return []
+    return [deepcopy(claim) for claim in claims if isinstance(claim, dict)]
+
+
+def source_claim_lookup(config: dict[str, Any] | None) -> dict[str, dict[str, Any]]:
+    return {
+        str(claim.get("fact_id")): claim
+        for claim in source_grounded_claims(config)
+        if str(claim.get("fact_id") or "")
+    }
+
+
+def source_claims_for(
+    config: dict[str, Any] | None,
+    *,
+    claim_category: str | None = None,
+    plan_ids: list[str] | tuple[str, ...] | set[str] | None = None,
+    allowed_in_speech: bool | None = None,
+) -> list[dict[str, Any]]:
+    wanted_plans = {str(plan_id) for plan_id in (plan_ids or []) if str(plan_id or "")}
+    matches: list[dict[str, Any]] = []
+    for claim in source_grounded_claims(config):
+        if claim_category and str(claim.get("claim_category") or "") != claim_category:
+            continue
+        if allowed_in_speech is not None and bool(claim.get("allowed_in_speech")) is not allowed_in_speech:
+            continue
+        claim_plans = {str(plan_id) for plan_id in (claim.get("plan_ids") or []) if str(plan_id or "")}
+        if wanted_plans and claim_plans and not (wanted_plans & claim_plans):
+            continue
+        matches.append(claim)
+    return matches
+
+
+def render_source_grounded_claims(
+    config: dict[str, Any] | None,
+    *,
+    claim_category: str | None = None,
+    plan_ids: list[str] | tuple[str, ...] | set[str] | None = None,
+    limit: int = 3,
+    include_caveats: bool = True,
+) -> str:
+    lines: list[str] = []
+    for claim in source_claims_for(
+        config,
+        claim_category=claim_category,
+        plan_ids=plan_ids,
+        allowed_in_speech=True,
+    )[: max(0, limit)]:
+        speech = str(claim.get("normalized_speech_version") or claim.get("claim") or "").strip()
+        if not speech:
+            continue
+        if include_caveats and claim.get("requires_caveat"):
+            caveat = str(claim.get("caveat_text") or "").strip()
+            if caveat and caveat.lower() not in speech.lower():
+                speech = f"{speech} {caveat}"
+        lines.append(speech)
+    return " ".join(lines)
+
+
+def close_modes_supported(config: dict[str, Any] | None) -> list[str]:
+    modes = _string_list((config or {}).get("close_modes_supported"))
+    return [mode for mode in modes if mode in SUPPORTED_CLOSE_MODES]
+
+
+def plan_catalog(config: dict[str, Any] | None) -> list[dict[str, Any]]:
+    catalog = (config or {}).get("plan_catalog") or []
+    if not isinstance(catalog, list):
+        return []
+    return [deepcopy(plan) for plan in catalog if isinstance(plan, dict)]
+
+
+def plan_record(config: dict[str, Any] | None, plan_id: str) -> dict[str, Any]:
+    for plan in plan_catalog(config):
+        if str(plan.get("plan_id") or "") == str(plan_id):
+            return plan
+    return {}
+
+
 __all__ = [
     "CAMPAIGN_REGISTRY_ID",
     "CampaignConfigNotFoundError",
     "CampaignConfigValidationError",
     "CampaignRegistryError",
     "campaign_registry_entry",
+    "close_modes_supported",
     "list_campaign_configs",
     "load_campaign_config",
+    "plan_catalog",
+    "plan_record",
+    "render_source_grounded_claims",
     "resolve_campaign_config",
+    "source_claim_lookup",
+    "source_claims_for",
+    "source_grounded_claims",
     "validate_campaign_config",
     "validate_campaign_registry",
 ]

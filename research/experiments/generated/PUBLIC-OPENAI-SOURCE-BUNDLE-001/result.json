@@ -1,0 +1,43 @@
+{
+  "allowed_domains": [
+    "chatgpt.com",
+    "help.openai.com",
+    "openai.com",
+    "platform.openai.com"
+  ],
+  "allowed_speech_claim_count": 33,
+  "categories": {
+    "api_usage_boundary": 3,
+    "enterprise_sales": 1,
+    "feature": 5,
+    "plan_catalog": 6,
+    "pricing": 5,
+    "privacy_training": 4,
+    "product_intro": 1,
+    "security_admin": 2,
+    "sign_up": 4,
+    "usage_limits": 2
+  },
+  "checkpoint_id": "PUBLIC-OPENAI-SOURCE-BUNDLE-001",
+  "claim_count": 33,
+  "creates_calendar_event": false,
+  "failures": [],
+  "local_llm_calls_made": false,
+  "opens_prod_102": false,
+  "plan_claims": {
+    "business_chatgpt_codex": 9,
+    "business_codex": 6,
+    "enterprise": 7,
+    "free": 4,
+    "go": 6,
+    "plus": 7,
+    "pro": 8
+  },
+  "provider_calls_made": false,
+  "sends_email": false,
+  "source_count": 10,
+  "source_manifest": "research\\sources\\public_openai_chatgpt_plans\\source_manifest.json",
+  "source_notes": "research\\sources\\public_openai_chatgpt_plans\\source_notes.md",
+  "status": "pass",
+  "writes_crm": false
+}
