@@ -7,7 +7,7 @@
   "failures_by_campaign": {},
   "failures_by_group": {},
   "failures_by_selected_action_source": {},
-  "generated_at": "2026-05-24T02:40:00.572627+00:00",
+  "generated_at": "2026-05-24T12:24:05.149772+00:00",
   "group_counts": {
     "agent_wrong_not_listening": 24,
     "asr_near_miss_generalization": 60,
@@ -4683,7 +4683,7 @@
         "false_assumption_correction"
       ],
       "failures": [],
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful. Is there any issue here you actually want reviewed?",
+      "final_response": "Fair. I won't assume. What should I correct first?",
       "group": "agent_wrong_not_listening",
       "negative_control": false,
       "passed": true,
@@ -5464,7 +5464,7 @@
             "candidate_gaps": [
               "callbacks"
             ],
-            "candidate_response": "Got it, you already said that is the problem: missed callbacks. RouteSignal helps demo leads stay assigned, reminded, and followed up before callback gaps turn into lost opportunities. The next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
+            "candidate_response": "Got it, you already said that is the problem: missed callbacks. Is missed callback reminders causing delays, missed ownership, or extra follow-up work now?",
             "cleared_gaps": [],
             "confidence": 0.9,
             "confirmed_gaps": [
@@ -5492,7 +5492,7 @@
               "normalized_buyer_utterance": "that is not what i said",
               "outgoing_active_gap_scope": "unknown",
               "outgoing_candidate_gaps": [],
-              "outgoing_question_type": "appointment_time",
+              "outgoing_question_type": "sales_progression_question",
               "pending_appointment": false,
               "pending_callback": false,
               "playbook": {
@@ -5541,7 +5541,7 @@
             "opens_prod_102": false,
             "outgoing_active_gap_scope": "unknown",
             "outgoing_candidate_gaps": [],
-            "outgoing_question_type": "appointment_time",
+            "outgoing_question_type": "sales_progression_question",
             "playbook": {
               "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
               "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
@@ -5601,13 +5601,13 @@
             "target_topic": "callbacks",
             "writes_crm": false
           },
-          "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful. Is there any issue here you actually want reviewed?",
+          "final_response": "Fair. I won't assume. What should I correct first?",
           "high_confidence_move_priority_protected": true,
           "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "agent_wrong_or_false_assumption_challenge_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 29,
+          "response_word_count": 9,
           "selected_action_source": "universal_response_shape",
           "semantic": "already_stated_confirmed_pain",
           "side_effect_flags": {
@@ -5739,7 +5739,7 @@
         "false_assumption_correction"
       ],
       "failures": [],
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful. Is there any issue here you actually want reviewed?",
+      "final_response": "Fair. I won't assume. What should I correct first?",
       "group": "agent_wrong_not_listening",
       "negative_control": false,
       "passed": true,
@@ -6632,13 +6632,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful. Is there any issue here you actually want reviewed?",
+          "final_response": "Fair. I won't assume. What should I correct first?",
           "high_confidence_move_priority_protected": true,
           "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "agent_wrong_or_false_assumption_challenge_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 29,
+          "response_word_count": 9,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -8830,7 +8830,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Fair question. This call is about inbound demo follow-up. If that is not relevant, we can stop here.",
+      "final_response": "I hear you. Coverage sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
       "group": "out_of_campaign_mismatch",
       "negative_control": false,
       "passed": true,
@@ -9212,13 +9212,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Fair question. This call is about inbound demo follow-up. If that is not relevant, we can stop here.",
+          "final_response": "I hear you. Coverage sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "campaign_mismatch_question_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 18,
+          "response_word_count": 27,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -9348,7 +9348,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Fair question. This call is about inbound demo follow-up. If that is not relevant, we can stop here.",
+      "final_response": "I hear you. Coverage sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
       "group": "out_of_campaign_mismatch",
       "negative_control": false,
       "passed": true,
@@ -9730,13 +9730,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Fair question. This call is about inbound demo follow-up. If that is not relevant, we can stop here.",
+          "final_response": "I hear you. Coverage sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "campaign_mismatch_question_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 18,
+          "response_word_count": 27,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -9852,13 +9852,10 @@
           "call_control": "continue-call",
           "contextual_buyer_semantics": {
             "action_id": null,
-            "active_gap_scope": "campaign_relevance",
+            "active_gap_scope": "unknown",
             "answered_gaps": [],
             "applied": false,
-            "candidate_gaps": [
-              "callbacks",
-              "handoffs"
-            ],
+            "candidate_gaps": [],
             "candidate_response": null,
             "cleared_gaps": [],
             "confidence": 0.0,
@@ -9867,16 +9864,13 @@
             "dialogue_focus": null,
             "evidence": {
               "active_gap": null,
-              "active_gap_scope": "campaign_relevance",
+              "active_gap_scope": "unknown",
               "answered_gaps": [],
               "buyer_utterance": "why are you talking about something else",
-              "candidate_gaps": [
-                "callbacks",
-                "handoffs"
-              ],
+              "candidate_gaps": [],
               "cleared_gaps": [],
               "confirmed_gaps": [],
-              "conversation_stage": "opening",
+              "conversation_stage": "qualification",
               "current_cleared_gaps": [],
               "current_confirmed_gaps": [],
               "normalized_buyer_utterance": "why are you talking about something else",
@@ -9908,8 +9902,8 @@
                 "universal_pain_dimensions": [],
                 "vertical_id": "b2b_saas"
               },
-              "previous_agent_question_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
-              "previous_agent_question_type": "permission_check"
+              "previous_agent_question_text": "I hear you. Coverage sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
+              "previous_agent_question_type": "permission_to_stop"
             },
             "handoff_target_state_update": {},
             "lead_followup_state_update": {},
@@ -9970,13 +9964,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Fair question. This call is about inbound demo follow-up. If that is not relevant, we can stop here.",
+          "final_response": "I hear you. Coverage sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "campaign_mismatch_question_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 18,
+          "response_word_count": 27,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -10018,7 +10012,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "why are you talking about something else",
-              "previous_question_type": "none",
+              "previous_question_type": "permission_to_stop",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -17358,7 +17352,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether inbound demo follow-up slipping is causing any issue now.",
+      "final_response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
       "group": "asr_near_miss_generalization",
       "negative_control": true,
       "passed": true,
@@ -17977,13 +17971,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether inbound demo follow-up slipping is causing any issue now.",
+          "final_response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 22,
+          "response_word_count": 28,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -18113,7 +18107,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether inbound demo follow-up slipping is causing any issue now.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
       "group": "asr_near_miss_generalization",
       "negative_control": true,
       "passed": true,
@@ -18732,13 +18726,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether inbound demo follow-up slipping is causing any issue now.",
+          "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 22,
+          "response_word_count": 27,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -27584,7 +27578,7 @@
         "false_assumption_correction"
       ],
       "failures": [],
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a licensed coverage review is useful. Is there any issue here you actually want reviewed?",
+      "final_response": "Fair. I won't assume. What should I correct first?",
       "group": "agent_wrong_not_listening",
       "negative_control": false,
       "passed": true,
@@ -28572,13 +28566,13 @@
             "target_topic": "premium_or_budget",
             "writes_crm": false
           },
-          "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a licensed coverage review is useful. Is there any issue here you actually want reviewed?",
+          "final_response": "Fair. I won't assume. What should I correct first?",
           "high_confidence_move_priority_protected": true,
           "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "agent_wrong_or_false_assumption_challenge_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 29,
+          "response_word_count": 9,
           "selected_action_source": "universal_response_shape",
           "semantic": "already_stated_confirmed_pain",
           "side_effect_flags": {
@@ -28710,7 +28704,7 @@
         "false_assumption_correction"
       ],
       "failures": [],
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a licensed coverage review is useful. Is there any issue here you actually want reviewed?",
+      "final_response": "Fair. I won't assume. What should I correct first?",
       "group": "agent_wrong_not_listening",
       "negative_control": false,
       "passed": true,
@@ -29691,13 +29685,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a licensed coverage review is useful. Is there any issue here you actually want reviewed?",
+          "final_response": "Fair. I won't assume. What should I correct first?",
           "high_confidence_move_priority_protected": true,
           "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "agent_wrong_or_false_assumption_challenge_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 29,
+          "response_word_count": 9,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -32065,7 +32059,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether premium pressure is causing any issue now.",
+      "final_response": "I hear you. Callbacks sounds like the issue on your mind, but this call is about premium pressure. That's this call's scope. Should I stop here?",
       "group": "out_of_campaign_mismatch",
       "negative_control": false,
       "passed": true,
@@ -32487,13 +32481,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether premium pressure is causing any issue now.",
+          "final_response": "I hear you. Callbacks sounds like the issue on your mind, but this call is about premium pressure. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 26,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -32623,7 +32617,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Fair question. This call is about a short human review around premium pressure. If that is not relevant, we can stop here.",
+      "final_response": "I hear you. Callbacks sounds like the issue on your mind, but this call is about premium pressure. That's this call's scope. Should I stop here?",
       "group": "out_of_campaign_mismatch",
       "negative_control": false,
       "passed": true,
@@ -33045,13 +33039,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether premium pressure is causing any issue now.",
+          "final_response": "I hear you. Callbacks sounds like the issue on your mind, but this call is about premium pressure. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 26,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -33167,10 +33161,12 @@
           "call_control": "continue-call",
           "contextual_buyer_semantics": {
             "action_id": null,
-            "active_gap_scope": "campaign_relevance",
+            "active_gap_scope": "single_gap",
             "answered_gaps": [],
             "applied": false,
-            "candidate_gaps": [],
+            "candidate_gaps": [
+              "premium_or_budget"
+            ],
             "candidate_response": null,
             "cleared_gaps": [],
             "confidence": 0.0,
@@ -33178,14 +33174,16 @@
             "creates_calendar_event": false,
             "dialogue_focus": null,
             "evidence": {
-              "active_gap": null,
-              "active_gap_scope": "campaign_relevance",
+              "active_gap": "premium_or_budget",
+              "active_gap_scope": "single_gap",
               "answered_gaps": [],
               "buyer_utterance": "why are you talking about something else",
-              "candidate_gaps": [],
+              "candidate_gaps": [
+                "premium_or_budget"
+              ],
               "cleared_gaps": [],
               "confirmed_gaps": [],
-              "conversation_stage": "opening",
+              "conversation_stage": "qualification",
               "current_cleared_gaps": [],
               "current_confirmed_gaps": [],
               "normalized_buyer_utterance": "why are you talking about something else",
@@ -33199,9 +33197,7 @@
                 "campaign_id": "synthetic-insurance-review",
                 "campaign_playbook_id": "synthetic-insurance-review-playbook",
                 "candidate_gaps": [
-                  "premium_or_budget",
-                  "coverage_fit",
-                  "renewal_or_timing"
+                  "premium_or_budget"
                 ],
                 "playbook_gap": null,
                 "playbook_id": "synthetic-insurance-review-playbook",
@@ -33231,8 +33227,8 @@
                 "universal_pain_dimensions": [],
                 "vertical_id": "insurance"
               },
-              "previous_agent_question_text": "Hi, this is Maya calling from Synthetic Insurance Agency about Policy Review Call. I am checking whether a short licensed coverage review is needed; do you have a minute?",
-              "previous_agent_question_type": "permission_check"
+              "previous_agent_question_text": "I hear you. Callbacks sounds like the issue on your mind, but this call is about premium pressure. That's this call's scope. Should I stop here?",
+              "previous_agent_question_type": "permission_to_stop"
             },
             "handoff_target_state_update": {},
             "lead_followup_state_update": {},
@@ -33248,9 +33244,7 @@
               "campaign_id": "synthetic-insurance-review",
               "campaign_playbook_id": "synthetic-insurance-review-playbook",
               "candidate_gaps": [
-                "premium_or_budget",
-                "coverage_fit",
-                "renewal_or_timing"
+                "premium_or_budget"
               ],
               "playbook_gap": null,
               "playbook_id": "synthetic-insurance-review-playbook",
@@ -33302,13 +33296,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Fair question. This call is about a short human review around premium pressure. If that is not relevant, we can stop here.",
+          "final_response": "I hear you. Callbacks sounds like the issue on your mind, but this call is about premium pressure. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "campaign_mismatch_question_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 22,
+          "response_word_count": 26,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -33350,7 +33344,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "why are you talking about something else",
-              "previous_question_type": "none",
+              "previous_question_type": "permission_to_stop",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -41280,7 +41274,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether premium pressure is causing any issue now.",
+      "final_response": "I hear you. Manual work sounds like the issue on your mind, but this call is about premium pressure. That's this call's scope. Should I stop here?",
       "group": "asr_near_miss_generalization",
       "negative_control": true,
       "passed": true,
@@ -41982,13 +41976,13 @@
             "universal_policy_sanitized": true,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether premium pressure is causing any issue now.",
+          "final_response": "I hear you. Manual work sounds like the issue on your mind, but this call is about premium pressure. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 27,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -42118,7 +42112,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether premium pressure is causing any issue now.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about premium pressure. That's this call's scope. Should I stop here?",
       "group": "asr_near_miss_generalization",
       "negative_control": true,
       "passed": true,
@@ -42800,13 +42794,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether premium pressure is causing any issue now.",
+          "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about premium pressure. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 26,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -52039,7 +52033,7 @@
         "false_assumption_correction"
       ],
       "failures": [],
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a human plan and availability review is useful. Is there any issue here you actually want reviewed?",
+      "final_response": "Fair. I won't assume. What should I correct first?",
       "group": "agent_wrong_not_listening",
       "negative_control": false,
       "passed": true,
@@ -53031,13 +53025,13 @@
             "target_topic": "plan_fit",
             "writes_crm": false
           },
-          "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a human plan and availability review is useful. Is there any issue here you actually want reviewed?",
+          "final_response": "Fair. I won't assume. What should I correct first?",
           "high_confidence_move_priority_protected": true,
           "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "agent_wrong_or_false_assumption_challenge_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 31,
+          "response_word_count": 9,
           "selected_action_source": "universal_response_shape",
           "semantic": "already_stated_confirmed_pain",
           "side_effect_flags": {
@@ -53169,7 +53163,7 @@
         "false_assumption_correction"
       ],
       "failures": [],
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a human plan and availability review is useful. Is there any issue here you actually want reviewed?",
+      "final_response": "Fair. I won't assume. What should I correct first?",
       "group": "agent_wrong_not_listening",
       "negative_control": false,
       "passed": true,
@@ -54154,13 +54148,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a human plan and availability review is useful. Is there any issue here you actually want reviewed?",
+          "final_response": "Fair. I won't assume. What should I correct first?",
           "high_confidence_move_priority_protected": true,
           "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "agent_wrong_or_false_assumption_challenge_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 31,
+          "response_word_count": 9,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -56536,7 +56530,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether plan fit is causing any issue now.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
       "group": "out_of_campaign_mismatch",
       "negative_control": false,
       "passed": true,
@@ -56958,13 +56952,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether plan fit is causing any issue now.",
+          "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 26,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -57094,7 +57088,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Fair question. This call is about a short human review around plan fit. If that is not relevant, we can stop here.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
       "group": "out_of_campaign_mismatch",
       "negative_control": false,
       "passed": true,
@@ -57516,13 +57510,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether plan fit is causing any issue now.",
+          "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 26,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -57638,10 +57632,12 @@
           "call_control": "continue-call",
           "contextual_buyer_semantics": {
             "action_id": null,
-            "active_gap_scope": "campaign_relevance",
+            "active_gap_scope": "single_gap",
             "answered_gaps": [],
             "applied": false,
-            "candidate_gaps": [],
+            "candidate_gaps": [
+              "plan_fit"
+            ],
             "candidate_response": null,
             "cleared_gaps": [],
             "confidence": 0.0,
@@ -57649,14 +57645,16 @@
             "creates_calendar_event": false,
             "dialogue_focus": null,
             "evidence": {
-              "active_gap": null,
-              "active_gap_scope": "campaign_relevance",
+              "active_gap": "plan_fit",
+              "active_gap_scope": "single_gap",
               "answered_gaps": [],
               "buyer_utterance": "why are you talking about something else",
-              "candidate_gaps": [],
+              "candidate_gaps": [
+                "plan_fit"
+              ],
               "cleared_gaps": [],
               "confirmed_gaps": [],
-              "conversation_stage": "opening",
+              "conversation_stage": "qualification",
               "current_cleared_gaps": [],
               "current_confirmed_gaps": [],
               "normalized_buyer_utterance": "why are you talking about something else",
@@ -57670,9 +57668,7 @@
                 "campaign_id": "synthetic-telecom-plan-review",
                 "campaign_playbook_id": "synthetic-telecom-plan-review-playbook",
                 "candidate_gaps": [
-                  "plan_fit",
-                  "coverage_or_availability",
-                  "contract_or_switching"
+                  "plan_fit"
                 ],
                 "playbook_gap": null,
                 "playbook_id": "synthetic-telecom-plan-review-playbook",
@@ -57702,8 +57698,8 @@
                 "universal_pain_dimensions": [],
                 "vertical_id": "telecom"
               },
-              "previous_agent_question_text": "Hi, this is Maya calling from Synthetic Telecom Provider about Plan Review Call. I am checking whether a short human plan and availability review is needed; do you have a minute?",
-              "previous_agent_question_type": "permission_check"
+              "previous_agent_question_text": "I hear you. Repair sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
+              "previous_agent_question_type": "permission_to_stop"
             },
             "handoff_target_state_update": {},
             "lead_followup_state_update": {},
@@ -57719,9 +57715,7 @@
               "campaign_id": "synthetic-telecom-plan-review",
               "campaign_playbook_id": "synthetic-telecom-plan-review-playbook",
               "candidate_gaps": [
-                "plan_fit",
-                "coverage_or_availability",
-                "contract_or_switching"
+                "plan_fit"
               ],
               "playbook_gap": null,
               "playbook_id": "synthetic-telecom-plan-review-playbook",
@@ -57773,13 +57767,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Fair question. This call is about a short human review around plan fit. If that is not relevant, we can stop here.",
+          "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "campaign_mismatch_question_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 22,
+          "response_word_count": 26,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -57821,7 +57815,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "why are you talking about something else",
-              "previous_question_type": "none",
+              "previous_question_type": "permission_to_stop",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -65707,7 +65701,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether plan fit is causing any issue now.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
       "group": "asr_near_miss_generalization",
       "negative_control": true,
       "passed": true,
@@ -66411,13 +66405,13 @@
             "universal_policy_sanitized": true,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether plan fit is causing any issue now.",
+          "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 26,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -66547,7 +66541,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether plan fit is causing any issue now.",
+      "final_response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
       "group": "asr_near_miss_generalization",
       "negative_control": true,
       "passed": true,
@@ -67229,13 +67223,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether plan fit is causing any issue now.",
+          "final_response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 27,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -76474,7 +76468,7 @@
         "false_assumption_correction"
       ],
       "failures": [],
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a service advisor inspection review is useful. Is there any issue here you actually want reviewed?",
+      "final_response": "Fair. I won't assume. What should I correct first?",
       "group": "agent_wrong_not_listening",
       "negative_control": false,
       "passed": true,
@@ -77474,13 +77468,13 @@
             "target_topic": "repair_timing",
             "writes_crm": false
           },
-          "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a service advisor inspection review is useful. Is there any issue here you actually want reviewed?",
+          "final_response": "Fair. I won't assume. What should I correct first?",
           "high_confidence_move_priority_protected": true,
           "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "agent_wrong_or_false_assumption_challenge_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 30,
+          "response_word_count": 9,
           "selected_action_source": "universal_response_shape",
           "semantic": "already_stated_confirmed_pain",
           "side_effect_flags": {
@@ -77612,7 +77606,7 @@
         "false_assumption_correction"
       ],
       "failures": [],
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a service advisor inspection review is useful. Is there any issue here you actually want reviewed?",
+      "final_response": "Fair. I won't assume. What should I correct first?",
       "group": "agent_wrong_not_listening",
       "negative_control": false,
       "passed": true,
@@ -78605,13 +78599,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a service advisor inspection review is useful. Is there any issue here you actually want reviewed?",
+          "final_response": "Fair. I won't assume. What should I correct first?",
           "high_confidence_move_priority_protected": true,
           "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "agent_wrong_or_false_assumption_challenge_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 30,
+          "response_word_count": 9,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -81003,7 +80997,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether repair timing is causing any issue now.",
+      "final_response": "That sounds like a different issue than this call covers. This call is about repair timing. That's this call's scope. Should I stop here?",
       "group": "out_of_campaign_mismatch",
       "negative_control": false,
       "passed": true,
@@ -81425,13 +81419,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether repair timing is causing any issue now.",
+          "final_response": "That sounds like a different issue than this call covers. This call is about repair timing. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 24,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -81561,7 +81555,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Fair question. This call is about a short human review around repair timing. If that is not relevant, we can stop here.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about repair timing. That's this call's scope. Should I stop here?",
       "group": "out_of_campaign_mismatch",
       "negative_control": false,
       "passed": true,
@@ -81983,13 +81977,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether repair timing is causing any issue now.",
+          "final_response": "That sounds like a different issue than this call covers. This call is about repair timing. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 24,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -82105,10 +82099,13 @@
           "call_control": "continue-call",
           "contextual_buyer_semantics": {
             "action_id": null,
-            "active_gap_scope": "campaign_relevance",
+            "active_gap_scope": "multi_gap",
             "answered_gaps": [],
             "applied": false,
-            "candidate_gaps": [],
+            "candidate_gaps": [
+              "repair_timing",
+              "warranty_or_estimate"
+            ],
             "candidate_response": null,
             "cleared_gaps": [],
             "confidence": 0.0,
@@ -82117,13 +82114,16 @@
             "dialogue_focus": null,
             "evidence": {
               "active_gap": null,
-              "active_gap_scope": "campaign_relevance",
+              "active_gap_scope": "multi_gap",
               "answered_gaps": [],
               "buyer_utterance": "why are you talking about something else",
-              "candidate_gaps": [],
+              "candidate_gaps": [
+                "repair_timing",
+                "warranty_or_estimate"
+              ],
               "cleared_gaps": [],
               "confirmed_gaps": [],
-              "conversation_stage": "opening",
+              "conversation_stage": "qualification",
               "current_cleared_gaps": [],
               "current_confirmed_gaps": [],
               "normalized_buyer_utterance": "why are you talking about something else",
@@ -82137,13 +82137,12 @@
                 "campaign_id": "synthetic-automotive-service-review",
                 "campaign_playbook_id": "synthetic-automotive-service-review-playbook",
                 "candidate_gaps": [
-                  "vehicle_issue",
                   "repair_timing",
                   "warranty_or_estimate"
                 ],
                 "playbook_gap": null,
                 "playbook_id": "synthetic-automotive-service-review-playbook",
-                "playbook_next_gap": "vehicle_issue",
+                "playbook_next_gap": "repair_timing",
                 "playbook_review_focus": null,
                 "playbook_supported_gap_ids": [
                   "vehicle_issue",
@@ -82169,8 +82168,8 @@
                 "universal_pain_dimensions": [],
                 "vertical_id": "automotive_service"
               },
-              "previous_agent_question_text": "Hi, this is Maya calling from Synthetic Automotive Service about Service Advisor Review. I am checking whether a short service advisor inspection review is needed; do you have a minute?",
-              "previous_agent_question_type": "permission_check"
+              "previous_agent_question_text": "That sounds like a different issue than this call covers. This call is about repair timing. That's this call's scope. Should I stop here?",
+              "previous_agent_question_type": "permission_to_stop"
             },
             "handoff_target_state_update": {},
             "lead_followup_state_update": {},
@@ -82186,13 +82185,12 @@
               "campaign_id": "synthetic-automotive-service-review",
               "campaign_playbook_id": "synthetic-automotive-service-review-playbook",
               "candidate_gaps": [
-                "vehicle_issue",
                 "repair_timing",
                 "warranty_or_estimate"
               ],
               "playbook_gap": null,
               "playbook_id": "synthetic-automotive-service-review-playbook",
-              "playbook_next_gap": "vehicle_issue",
+              "playbook_next_gap": "repair_timing",
               "playbook_review_focus": null,
               "playbook_supported_gap_ids": [
                 "vehicle_issue",
@@ -82220,7 +82218,7 @@
             },
             "playbook_gap": null,
             "playbook_id": "synthetic-automotive-service-review-playbook",
-            "playbook_next_gap": "vehicle_issue",
+            "playbook_next_gap": "repair_timing",
             "playbook_review_focus": null,
             "playbook_supported_gap_ids": [
               "vehicle_issue",
@@ -82240,13 +82238,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Fair question. This call is about a short human review around repair timing. If that is not relevant, we can stop here.",
+          "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about repair timing. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "campaign_mismatch_question_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 22,
+          "response_word_count": 26,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -82288,7 +82286,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "why are you talking about something else",
-              "previous_question_type": "none",
+              "previous_question_type": "permission_to_stop",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -90250,7 +90248,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether repair timing is causing any issue now.",
+      "final_response": "That sounds like a different issue than this call covers. This call is about repair timing. That's this call's scope. Should I stop here?",
       "group": "asr_near_miss_generalization",
       "negative_control": true,
       "passed": true,
@@ -90936,13 +90934,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether repair timing is causing any issue now.",
+          "final_response": "That sounds like a different issue than this call covers. This call is about repair timing. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 24,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -91072,7 +91070,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether repair timing is causing any issue now.",
+      "final_response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about repair timing. That's this call's scope. Should I stop here?",
       "group": "asr_near_miss_generalization",
       "negative_control": true,
       "passed": true,
@@ -91758,13 +91756,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether repair timing is causing any issue now.",
+          "final_response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about repair timing. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 27,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -100985,7 +100983,7 @@
         "false_assumption_correction"
       ],
       "failures": [],
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an account support or plan-fit review is useful. Is there any issue here you actually want reviewed?",
+      "final_response": "Fair. I won't assume. What should I correct first?",
       "group": "agent_wrong_not_listening",
       "negative_control": false,
       "passed": true,
@@ -101981,13 +101979,13 @@
             "target_topic": "plan_fit",
             "writes_crm": false
           },
-          "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an account support or plan-fit review is useful. Is there any issue here you actually want reviewed?",
+          "final_response": "Fair. I won't assume. What should I correct first?",
           "high_confidence_move_priority_protected": true,
           "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "agent_wrong_or_false_assumption_challenge_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 31,
+          "response_word_count": 9,
           "selected_action_source": "universal_response_shape",
           "semantic": "already_stated_confirmed_pain",
           "side_effect_flags": {
@@ -102119,7 +102117,7 @@
         "false_assumption_correction"
       ],
       "failures": [],
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an account support or plan-fit review is useful. Is there any issue here you actually want reviewed?",
+      "final_response": "Fair. I won't assume. What should I correct first?",
       "group": "agent_wrong_not_listening",
       "negative_control": false,
       "passed": true,
@@ -103108,13 +103106,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an account support or plan-fit review is useful. Is there any issue here you actually want reviewed?",
+          "final_response": "Fair. I won't assume. What should I correct first?",
           "high_confidence_move_priority_protected": true,
           "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "agent_wrong_or_false_assumption_challenge_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 31,
+          "response_word_count": 9,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -105498,7 +105496,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether plan fit is causing any issue now.",
+      "final_response": "That sounds like a different issue than this call covers. This call is about plan fit. That's this call's scope. Should I stop here?",
       "group": "out_of_campaign_mismatch",
       "negative_control": false,
       "passed": true,
@@ -105942,13 +105940,13 @@
             "universal_policy_sanitized": true,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether plan fit is causing any issue now.",
+          "final_response": "That sounds like a different issue than this call covers. This call is about plan fit. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 24,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -106078,7 +106076,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Fair question. This call is about a short human review around plan fit. If that is not relevant, we can stop here.",
+      "final_response": "That sounds like a different issue than this call covers. This call is about plan fit. That's this call's scope. Should I stop here?",
       "group": "out_of_campaign_mismatch",
       "negative_control": false,
       "passed": true,
@@ -106522,13 +106520,13 @@
             "universal_policy_sanitized": true,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether plan fit is causing any issue now.",
+          "final_response": "That sounds like a different issue than this call covers. This call is about plan fit. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 24,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -106644,7 +106642,7 @@
           "call_control": "continue-call",
           "contextual_buyer_semantics": {
             "action_id": null,
-            "active_gap_scope": "campaign_relevance",
+            "active_gap_scope": "single_gap",
             "answered_gaps": [],
             "applied": false,
             "candidate_gaps": [
@@ -106658,7 +106656,7 @@
             "dialogue_focus": null,
             "evidence": {
               "active_gap": "plan_fit",
-              "active_gap_scope": "campaign_relevance",
+              "active_gap_scope": "single_gap",
               "answered_gaps": [],
               "buyer_utterance": "why are you talking about something else",
               "candidate_gaps": [
@@ -106666,7 +106664,7 @@
               ],
               "cleared_gaps": [],
               "confirmed_gaps": [],
-              "conversation_stage": "opening",
+              "conversation_stage": "qualification",
               "current_cleared_gaps": [],
               "current_confirmed_gaps": [],
               "normalized_buyer_utterance": "why are you talking about something else",
@@ -106710,8 +106708,8 @@
                 "universal_pain_dimensions": [],
                 "vertical_id": "membership_or_subscription"
               },
-              "previous_agent_question_text": "Hi, this is Maya calling from Synthetic Membership Program about Plan Support Call. I am checking whether a short account support or plan-fit review is needed; do you have a minute?",
-              "previous_agent_question_type": "permission_check"
+              "previous_agent_question_text": "That sounds like a different issue than this call covers. This call is about plan fit. That's this call's scope. Should I stop here?",
+              "previous_agent_question_type": "permission_to_stop"
             },
             "handoff_target_state_update": {},
             "lead_followup_state_update": {},
@@ -106779,13 +106777,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Fair question. This call is about a short human review around plan fit. If that is not relevant, we can stop here.",
+          "final_response": "That sounds like a different issue than this call covers. This call is about plan fit. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "campaign_mismatch_question_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 22,
+          "response_word_count": 24,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -106827,7 +106825,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "why are you talking about something else",
-              "previous_question_type": "none",
+              "previous_question_type": "permission_to_stop",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -114671,7 +114669,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether plan fit is causing any issue now.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
       "group": "asr_near_miss_generalization",
       "negative_control": true,
       "passed": true,
@@ -115375,13 +115373,13 @@
             "universal_policy_sanitized": true,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether plan fit is causing any issue now.",
+          "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 26,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -115511,7 +115509,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether plan fit is causing any issue now.",
+      "final_response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
       "group": "asr_near_miss_generalization",
       "negative_control": true,
       "passed": true,
@@ -116193,13 +116191,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether plan fit is causing any issue now.",
+          "final_response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 27,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -125402,7 +125400,7 @@
         "false_assumption_correction"
       ],
       "failures": [],
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an operations fit review is useful. Is there any issue here you actually want reviewed?",
+      "final_response": "Fair. I won't assume. What should I correct first?",
       "group": "agent_wrong_not_listening",
       "negative_control": false,
       "passed": true,
@@ -126382,13 +126380,13 @@
             "target_topic": "manual_work",
             "writes_crm": false
           },
-          "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an operations fit review is useful. Is there any issue here you actually want reviewed?",
+          "final_response": "Fair. I won't assume. What should I correct first?",
           "high_confidence_move_priority_protected": true,
           "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "agent_wrong_or_false_assumption_challenge_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 29,
+          "response_word_count": 9,
           "selected_action_source": "universal_response_shape",
           "semantic": "already_stated_confirmed_pain",
           "side_effect_flags": {
@@ -126520,7 +126518,7 @@
         "false_assumption_correction"
       ],
       "failures": [],
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an operations fit review is useful. Is there any issue here you actually want reviewed?",
+      "final_response": "Fair. I won't assume. What should I correct first?",
       "group": "agent_wrong_not_listening",
       "negative_control": false,
       "passed": true,
@@ -127493,13 +127491,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an operations fit review is useful. Is there any issue here you actually want reviewed?",
+          "final_response": "Fair. I won't assume. What should I correct first?",
           "high_confidence_move_priority_protected": true,
           "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "agent_wrong_or_false_assumption_challenge_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 29,
+          "response_word_count": 9,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -129851,7 +129849,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Fair question. This call is about a short human review around manual work. If that is not relevant, we can stop here.",
+      "final_response": "That sounds like a different issue than this call covers. This call is about manual work. That's this call's scope. Should I stop here?",
       "group": "out_of_campaign_mismatch",
       "negative_control": false,
       "passed": true,
@@ -130269,13 +130267,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Fair question. This call is about a short human review around manual work. If that is not relevant, we can stop here.",
+          "final_response": "That sounds like a different issue than this call covers. This call is about manual work. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "campaign_mismatch_question_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 22,
+          "response_word_count": 24,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -130405,7 +130403,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "Fair question. This call is about a short human review around manual work. If that is not relevant, we can stop here.",
+      "final_response": "I hear you. Manual work sounds like the issue on your mind, but this call is about manual work. That's this call's scope. Should I stop here?",
       "group": "out_of_campaign_mismatch",
       "negative_control": false,
       "passed": true,
@@ -130823,13 +130821,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Fair question. This call is about a short human review around manual work. If that is not relevant, we can stop here.",
+          "final_response": "That sounds like a different issue than this call covers. This call is about manual work. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "campaign_mismatch_question_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 22,
+          "response_word_count": 24,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -130945,10 +130943,12 @@
           "call_control": "continue-call",
           "contextual_buyer_semantics": {
             "action_id": null,
-            "active_gap_scope": "campaign_relevance",
+            "active_gap_scope": "single_gap",
             "answered_gaps": [],
             "applied": false,
-            "candidate_gaps": [],
+            "candidate_gaps": [
+              "manual_work"
+            ],
             "candidate_response": null,
             "cleared_gaps": [],
             "confidence": 0.0,
@@ -130956,14 +130956,16 @@
             "creates_calendar_event": false,
             "dialogue_focus": null,
             "evidence": {
-              "active_gap": null,
-              "active_gap_scope": "campaign_relevance",
+              "active_gap": "manual_work",
+              "active_gap_scope": "single_gap",
               "answered_gaps": [],
               "buyer_utterance": "why are you talking about something else",
-              "candidate_gaps": [],
+              "candidate_gaps": [
+                "manual_work"
+              ],
               "cleared_gaps": [],
               "confirmed_gaps": [],
-              "conversation_stage": "opening",
+              "conversation_stage": "qualification",
               "current_cleared_gaps": [],
               "current_confirmed_gaps": [],
               "normalized_buyer_utterance": "why are you talking about something else",
@@ -130977,9 +130979,7 @@
                 "campaign_id": "synthetic-b2b-saas-operations",
                 "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
                 "candidate_gaps": [
-                  "manual_work",
-                  "integration_risk",
-                  "visibility_gap"
+                  "manual_work"
                 ],
                 "playbook_gap": null,
                 "playbook_id": "synthetic-b2b-saas-operations-playbook",
@@ -131008,8 +131008,8 @@
                 "universal_pain_dimensions": [],
                 "vertical_id": "b2b_saas"
               },
-              "previous_agent_question_text": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
-              "previous_agent_question_type": "permission_check"
+              "previous_agent_question_text": "That sounds like a different issue than this call covers. This call is about manual work. That's this call's scope. Should I stop here?",
+              "previous_agent_question_type": "permission_to_stop"
             },
             "handoff_target_state_update": {},
             "lead_followup_state_update": {},
@@ -131025,9 +131025,7 @@
               "campaign_id": "synthetic-b2b-saas-operations",
               "campaign_playbook_id": "synthetic-b2b-saas-operations-playbook",
               "candidate_gaps": [
-                "manual_work",
-                "integration_risk",
-                "visibility_gap"
+                "manual_work"
               ],
               "playbook_gap": null,
               "playbook_id": "synthetic-b2b-saas-operations-playbook",
@@ -131078,13 +131076,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "Fair question. This call is about a short human review around manual work. If that is not relevant, we can stop here.",
+          "final_response": "I hear you. Manual work sounds like the issue on your mind, but this call is about manual work. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "high",
           "recognition_reason": "campaign_mismatch_question_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 22,
+          "response_word_count": 27,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -131126,7 +131124,7 @@
             "detection": {
               "applied": false,
               "normalized_transcript": "why are you talking about something else",
-              "previous_question_type": "none",
+              "previous_question_type": "permission_to_stop",
               "reason": "not_garbled"
             },
             "direct_question_required": true,
@@ -138990,7 +138988,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether manual work is causing any issue now.",
+      "final_response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about manual work. That's this call's scope. Should I stop here?",
       "group": "asr_near_miss_generalization",
       "negative_control": true,
       "passed": true,
@@ -139686,13 +139684,13 @@
             "universal_policy_sanitized": true,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether manual work is causing any issue now.",
+          "final_response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about manual work. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 27,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {
@@ -139822,7 +139820,7 @@
         "scope_limit_question"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether manual work is causing any issue now.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about manual work. That's this call's scope. Should I stop here?",
       "group": "asr_near_miss_generalization",
       "negative_control": true,
       "passed": true,
@@ -140498,13 +140496,13 @@
             "target_topic": null,
             "writes_crm": false
           },
-          "final_response": "That may be outside this call's scope. The quick check here is whether manual work is causing any issue now.",
+          "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about manual work. That's this call's scope. Should I stop here?",
           "high_confidence_move_priority_protected": true,
-          "question_count": 0,
+          "question_count": 1,
           "recognition_confidence": "medium",
           "recognition_reason": "out_of_campaign_pain_phrase",
           "response_shape_enforced_category": "confusion_challenge_repair",
-          "response_word_count": 20,
+          "response_word_count": 26,
           "selected_action_source": "universal_response_shape",
           "semantic": "no_contextual_semantic",
           "side_effect_flags": {

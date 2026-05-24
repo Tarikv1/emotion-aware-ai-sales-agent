@@ -249,7 +249,7 @@
       },
       {
         "audio_url": null,
-        "call_control": "schedule-and-end",
+        "call_control": "continue-call",
         "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
         "campaign_id": "synthetic-insurance-review",
         "campaign_playbook_id": "synthetic-insurance-review-playbook",
@@ -259,7 +259,7 @@
         ],
         "creates_calendar_event": false,
         "durable_provider_agent_created": false,
-        "final_response": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
+        "final_response": "I can note that as a callback preference, but before I mark it as a review, is the issue causing delays or extra work?",
         "lead_followup_state": {
           "appointment": {
             "confirmation_text": "workflow review time captured",
@@ -308,7 +308,7 @@
         "sends_email": false,
         "target_gap": "premium_or_budget",
         "transcript": "tomorrow at 3 works",
-        "tts_input_text": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
+        "tts_input_text": "I can note that as a callback preference, but before I mark it as a review, is the issue causing delays or extra work?",
         "voice_cloning_used": false,
         "writes_crm": false
       }
@@ -435,9 +435,9 @@
         "durable_provider_agent_created": false,
         "error": "invalid generic campaign config selection",
         "error_type": "CampaignConfigValidationError",
-        "generated_at_utc": "2026-05-24T02:30:53.956909+00:00",
+        "generated_at_utc": "2026-05-24T12:33:02.115418+00:00",
         "generic_selected_campaign_live_tts_allowed": false,
-        "git_head_short": "3d6609c",
+        "git_head_short": "e1d1dca",
         "live_tts": false,
         "live_tts_used": false,
         "local_llm_calls_made": false,
@@ -450,8 +450,8 @@
         "runtime_manifest_hash": "b0370cb94fe82889c95f7746f49400402d6d9830ad17c42687e3054f0bb8fcc8",
         "runtime_metadata": {
           "campaign_registry_schema_version": 1,
-          "generated_at_utc": "2026-05-24T02:30:53.956909+00:00",
-          "git_head_short": "3d6609c",
+          "generated_at_utc": "2026-05-24T12:33:02.115418+00:00",
+          "git_head_short": "e1d1dca",
           "git_unavailable_reason": null,
           "runtime_manifest_entry_count": 66,
           "runtime_manifest_hash": "b0370cb94fe82889c95f7746f49400402d6d9830ad17c42687e3054f0bb8fcc8",

@@ -1024,7 +1024,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Good. What day or time window should I note?",
+      "final_response": "Good. The next step is a short review. What callback window works?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -2204,7 +2204,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Good. What day or time window should I note?",
+      "final_response": "Good. The next step is a short review. What callback window works?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -3384,7 +3384,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Good. What day or time window should I note?",
+      "final_response": "Good. The next step is a short review. What callback window works?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -4564,7 +4564,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Good. What day or time window should I note?",
+      "final_response": "Good. The next step is a short review. What callback window works?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -5744,7 +5744,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Good. What day or time window should I note?",
+      "final_response": "Good. The next step is a short review. What callback window works?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",

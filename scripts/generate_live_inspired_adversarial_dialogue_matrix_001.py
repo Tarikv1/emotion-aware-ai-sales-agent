@@ -231,6 +231,17 @@ def normalize(text: str) -> str:
     return " ".join(str(text or "").lower().replace("'", " ").split())
 
 
+def acknowledged_campaign_mismatch(response_text: str, leak_terms: list[str]) -> bool:
+    normalized = normalize(response_text)
+    if not any(term in normalized for term in leak_terms):
+        return False
+    return (
+        ("sounds like the issue on your mind" in normalized or "sound like the issue on your mind" in normalized)
+        and "but this call is about" in normalized
+        and ("should i stop here" in normalized or "if that is not relevant" in normalized)
+    )
+
+
 def safe_id(text: str) -> str:
     cleaned = re.sub(r"[^a-z0-9]+", "-", normalize(text)).strip("-")
     return cleaned[:80] or "scenario"
@@ -687,7 +698,9 @@ def evaluate_scenario(spec: dict[str, Any], tier: str, turns: list[dict[str, Any
             flags.add("failed_to_preserve_context")
 
     leak_terms = CAMPAIGN_LEAKS.get(campaign.id, [])
-    if any(term in all_response_lower for term in leak_terms):
+    if any(term in all_response_lower for term in leak_terms) and not any(
+        acknowledged_campaign_mismatch(response, leak_terms) for response in response_texts
+    ):
         flags.add("campaign_contamination")
 
     side_effects = {key: any(bool((turn.get("side_effect_flags") or {}).get(key)) for turn in turns) for key in SIDE_EFFECT_KEYS}

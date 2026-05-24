@@ -1516,9 +1516,9 @@ def _diagnostic_opening_response(language: str, campaign: dict | None) -> str:
 
 def _all_clear_response(campaign: dict | None) -> str:
     if _is_routesignal_playbook(campaign):
-        return "Understood. If callbacks, manual tracking, and handoffs are all clean, I should not push a review. I will stop here. Goodbye."
+        return "Understood. If callbacks, manual tracking, and handoffs are all clean, I won't push a review. I will stop here. Goodbye."
     labels = [_customer_label(gap, campaign) for gap in _core_diagnostic_gaps(campaign)]
-    return f"Understood. If {_join_or(labels)} are all clean, I should not push a review. I will stop here. Goodbye."
+    return f"Understood. If {_join_or(labels)} are all clean, I won't push a review. I will stop here. Goodbye."
 
 
 def _not_relevant_mid_call_response(campaign: dict | None) -> str:
@@ -1552,7 +1552,7 @@ def _multi_gap_clear_response(language: str, candidate_gaps: list[str], campaign
         return "Verstanden. Wenn diese Follow-up-Luecken sauber sind, druecke ich das nicht weiter. Gibt es eine andere Follow-up-Luecke, oder soll ich hier stoppen?"
     gap_labels = [_gap_labels(campaign).get(gap, gap) for gap in candidate_gaps] or ["those gaps"]
     label = ", ".join(gap_labels[:-1]) + f", and {gap_labels[-1]}" if len(gap_labels) > 1 else gap_labels[0]
-    return f"Understood. If {label} are clean, I should not push this further. Is there any other gap worth checking, or should I stop here?"
+    return f"Understood. If {label} are clean, I won't push this further. Is there any other gap worth checking, or should I stop here?"
 
 
 def _remaining_gap_response(language: str, cleared: list[str], candidate_gaps: list[str], campaign: dict | None) -> str:
@@ -1823,8 +1823,8 @@ def _is_routesignal_scope_boundary_question(normalized: str) -> bool:
 def _routesignal_scope_boundary_response(normalized: str) -> str:
     if _contains(normalized, {"coverage", "policy"}):
         return (
-            "I can't give coverage advice on this call; that is outside this call's scope. "
-            "This call is about inbound demo follow-up, so the useful check is whether follow-up is slipping now."
+            "I can't give coverage advice on this call. Coverage sounds like a different issue; "
+            "this call is about inbound demo follow-up. If that is not relevant, I should stop here."
         )
     return (
         "I can't answer that kind of specialist question on this call. "
@@ -2196,6 +2196,11 @@ def _pain_confirmed_response(
             f"Got it, you already said that is the problem: {gap_label}. "
             if acknowledge_repeat
             else f"Got it, {gap_label} is the real gap. "
+        )
+    if acknowledge_repeat:
+        return (
+            f"{acknowledgement}"
+            f"Is {review_label} causing delays, missed ownership, or extra follow-up work now?"
         )
     return (
         f"{acknowledgement}{bridge} "

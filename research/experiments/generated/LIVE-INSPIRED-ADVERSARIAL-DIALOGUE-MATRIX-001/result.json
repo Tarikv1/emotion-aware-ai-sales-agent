@@ -12,30 +12,9 @@
   "core_gate_failure_count": 0,
   "direct_question_challenge_findings": [],
   "explicit_stop_red_findings": [],
-  "failure_counts_by_campaign": {
-    "routesignal_live_demo": 12,
-    "synthetic-automotive-service-review": 11,
-    "synthetic-b2b-saas-operations": 11,
-    "synthetic-insurance-review": 11,
-    "synthetic-membership-plan-review": 8,
-    "synthetic-telecom-plan-review": 11
-  },
-  "failure_counts_by_family": {
-    "buyer_correction_contradiction_stress": 1,
-    "buyer_says_agent_is_wrong": 18,
-    "callback_time_too_early_or_ambiguous": 6,
-    "campaign_selector_wrong_campaign_contamination": 5,
-    "commercial_quality_stress": 5,
-    "multi_campaign_contamination_stress": 9,
-    "repeated_answer_variation_anti_loop": 18,
-    "scope_boundary_regulated_detail_stress": 2
-  },
-  "failure_counts_by_selected_action_source": {
-    "contextual_buyer_semantics": 3,
-    "live_voice_session_policy": 5,
-    "pre_speech_conversation_stability_guard": 5,
-    "universal_response_shape": 51
-  },
+  "failure_counts_by_campaign": {},
+  "failure_counts_by_family": {},
+  "failure_counts_by_selected_action_source": {},
   "false_assumption_clusters": [],
   "family_counts": {
     "agent_looping_complaints": 24,
@@ -69,7 +48,7 @@
     "vague_affirmative_after_context": 25,
     "why_human_review_challenge": 24
   },
-  "generated_at": "2026-05-24T02:47:26.005856+00:00",
+  "generated_at": "2026-05-24T12:27:09.415577+00:00",
   "internal_wording_leaks": [],
   "needs_human_review_examples": [
     "core-routesignal-permission-repeated-ack",
@@ -93,67 +72,54 @@
     "adv-permission-weak-acknowledgement-variants-synthetic-telecom-plan-review-02",
     "adv-permission-weak-acknowledgement-variants-synthetic-telecom-plan-review-03"
   ],
-  "out_of_campaign_relevance_failures": [
-    "adv-multi-campaign-contamination-stress-synthetic-insurance-review-03",
-    "adv-multi-campaign-contamination-stress-synthetic-telecom-plan-review-03",
-    "adv-multi-campaign-contamination-stress-synthetic-automotive-service-review-03",
-    "adv-multi-campaign-contamination-stress-synthetic-b2b-saas-operations-03"
-  ],
+  "out_of_campaign_relevance_failures": [],
   "pass_fail_counts": {
     "core_gate_failures": 0,
-    "exploratory_red_findings": 64,
-    "failed_or_red": 64,
-    "passed": 665
+    "exploratory_red_findings": 0,
+    "failed_or_red": 0,
+    "passed": 729
   },
-  "recommendation": "needs human review and ranked follow-up patches",
-  "red_finding_count": 64,
+  "recommendation": "no patch",
+  "red_finding_count": 0,
   "repeated_response_clusters": [
     {
       "response": "Understood. I will stop here. Goodbye.",
       "scenario_count": 6
     },
     {
-      "response": "Sure. This call is only to check whether a short human review is useful around plan fit. The quick question is whether that area is causing friction now.",
-      "scenario_count": 2
-    },
-    {
-      "response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether plan fit is still a problem and is worth a short review.",
-      "scenario_count": 2
-    },
-    {
-      "response": "Quick check for a short licensed coverage review: Is premium pressure causing any issue right now?",
+      "response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
       "scenario_count": 1
     },
     {
-      "response": "Quick check for a short human plan and availability review: Is plan fit causing any issue right now?",
+      "response": "I hear you. Coverage sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
       "scenario_count": 1
     },
     {
-      "response": "Quick check for a short service advisor inspection review: Is repair timing causing any issue right now?",
+      "response": "I hear you. Callbacks sounds like the issue on your mind, but this call is about premium pressure. That's this call's scope. Should I stop here?",
       "scenario_count": 1
     },
     {
-      "response": "Quick check for a short account support or plan-fit review: Is plan fit causing any issue right now?",
+      "response": "I hear you. Repair sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
       "scenario_count": 1
     },
     {
-      "response": "Quick check for a short operations fit review: Is manual work causing any issue right now?",
+      "response": "I hear you. Coverage sounds like the issue on your mind, but this call is about repair timing. That's this call's scope. Should I stop here?",
       "scenario_count": 1
     },
     {
-      "response": "Fair question. This call is about inbound demo follow-up. If that is not relevant, we can stop here.",
+      "response": "I hear you. Inbound demo follow-up sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
       "scenario_count": 1
     },
     {
-      "response": "Fair question. This call is about a short human review around plan fit. If that is not relevant, we can stop here.",
+      "response": "I hear you. Coverage sounds like the issue on your mind, but this call is about plan fit. That's this call's scope. Should I stop here?",
       "scenario_count": 1
     },
     {
-      "response": "Fair question. This call is about a short human review around manual work. If that is not relevant, we can stop here.",
+      "response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about manual work. That's this call's scope. Should I stop here?",
       "scenario_count": 1
     },
     {
-      "response": "Sure. RouteSignal helps teams keep inbound demo follow-up from slipping through ownership, reminders, or handoffs. The quick check is whether that problem exists on your side.",
+      "response": "I hear you. Coverage sounds like the issue on your mind, but this call is about manual work. That's this call's scope. Should I stop here?",
       "scenario_count": 1
     }
   ],
@@ -172,7 +138,7 @@
     "writes_crm": false
   },
   "stability_guard_override_findings": [],
-  "status": "red_findings",
+  "status": "pass",
   "summary": {
     "campaign_coverage": [
       "routesignal_live_demo",
@@ -185,10 +151,10 @@
     "core_gate_count": 9,
     "core_gate_failure_count": 0,
     "exploratory_count": 720,
-    "failure_count": 64,
+    "failure_count": 0,
     "multi_turn_conversation_count": 398,
-    "pass_count": 665,
-    "red_finding_count": 64,
+    "pass_count": 729,
+    "red_finding_count": 0,
     "scenario_count": 729,
     "scenario_family_coverage": [
       "agent_looping_complaints",
@@ -223,226 +189,6 @@
       "why_human_review_challenge"
     ]
   },
-  "top_failure_clusters": [
-    {
-      "count": 23,
-      "flag": "repeated_response"
-    },
-    {
-      "count": 18,
-      "flag": "hostile_response_not_deescalated"
-    },
-    {
-      "count": 12,
-      "flag": "out_of_scope_reset_after_relevant_context"
-    },
-    {
-      "count": 6,
-      "flag": "appointment_too_early"
-    },
-    {
-      "count": 4,
-      "flag": "campaign_contamination"
-    },
-    {
-      "count": 1,
-      "flag": "too_long_for_live_voice"
-    }
-  ],
-  "worst_conversations": [
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "yeah",
-        "callbacks are a problem",
-        "I said inbound demo follow-up, not callbacks"
-      ],
-      "campaign_id": "routesignal_live_demo",
-      "final_response": "Got it, you already said that is the problem: missed callbacks. RouteSignal helps demo leads stay assigned, reminded, and followed up before callback gaps turn into lost opportunities. The next step is a short workflow review with someone from Northstar. They would check missed callback reminders against your actual follow-up flow. What time works for a quick call?",
-      "mechanical_failure_flags": [
-        "too_long_for_live_voice"
-      ],
-      "priority": "medium",
-      "scenario_family": "buyer_correction_contradiction_stress",
-      "scenario_id": "adv-buyer-correction-contradiction-stress-routesignal_live_demo-02",
-      "selected_action_source": "contextual_buyer_semantics",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "that's wrong"
-      ],
-      "campaign_id": "routesignal_live_demo",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful. Is there any issue here you actually want reviewed?",
-      "mechanical_failure_flags": [
-        "hostile_response_not_deescalated"
-      ],
-      "priority": "medium",
-      "scenario_family": "buyer_says_agent_is_wrong",
-      "scenario_id": "adv-buyer-says-agent-is-wrong-routesignal_live_demo-01",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "that doesn't make sense"
-      ],
-      "campaign_id": "routesignal_live_demo",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful. Is there any issue here you actually want reviewed?",
-      "mechanical_failure_flags": [
-        "hostile_response_not_deescalated"
-      ],
-      "priority": "medium",
-      "scenario_family": "buyer_says_agent_is_wrong",
-      "scenario_id": "adv-buyer-says-agent-is-wrong-routesignal_live_demo-02",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "you're making assumptions"
-      ],
-      "campaign_id": "routesignal_live_demo",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful. Is there any issue here you actually want reviewed?",
-      "mechanical_failure_flags": [
-        "hostile_response_not_deescalated"
-      ],
-      "priority": "medium",
-      "scenario_family": "buyer_says_agent_is_wrong",
-      "scenario_id": "adv-buyer-says-agent-is-wrong-routesignal_live_demo-03",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "that's wrong"
-      ],
-      "campaign_id": "synthetic-automotive-service-review",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a service advisor inspection review is useful. Is there any issue here you actually want reviewed?",
-      "mechanical_failure_flags": [
-        "hostile_response_not_deescalated"
-      ],
-      "priority": "medium",
-      "scenario_family": "buyer_says_agent_is_wrong",
-      "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-automotive-service-review-01",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "that doesn't make sense"
-      ],
-      "campaign_id": "synthetic-automotive-service-review",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a service advisor inspection review is useful. Is there any issue here you actually want reviewed?",
-      "mechanical_failure_flags": [
-        "hostile_response_not_deescalated"
-      ],
-      "priority": "medium",
-      "scenario_family": "buyer_says_agent_is_wrong",
-      "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-automotive-service-review-02",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "you're making assumptions"
-      ],
-      "campaign_id": "synthetic-automotive-service-review",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a service advisor inspection review is useful. Is there any issue here you actually want reviewed?",
-      "mechanical_failure_flags": [
-        "hostile_response_not_deescalated"
-      ],
-      "priority": "medium",
-      "scenario_family": "buyer_says_agent_is_wrong",
-      "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-automotive-service-review-03",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "that's wrong"
-      ],
-      "campaign_id": "synthetic-b2b-saas-operations",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an operations fit review is useful. Is there any issue here you actually want reviewed?",
-      "mechanical_failure_flags": [
-        "hostile_response_not_deescalated"
-      ],
-      "priority": "medium",
-      "scenario_family": "buyer_says_agent_is_wrong",
-      "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-b2b-saas-operations-01",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "that doesn't make sense"
-      ],
-      "campaign_id": "synthetic-b2b-saas-operations",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an operations fit review is useful. Is there any issue here you actually want reviewed?",
-      "mechanical_failure_flags": [
-        "hostile_response_not_deescalated"
-      ],
-      "priority": "medium",
-      "scenario_family": "buyer_says_agent_is_wrong",
-      "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-b2b-saas-operations-02",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "you're making assumptions"
-      ],
-      "campaign_id": "synthetic-b2b-saas-operations",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an operations fit review is useful. Is there any issue here you actually want reviewed?",
-      "mechanical_failure_flags": [
-        "hostile_response_not_deescalated"
-      ],
-      "priority": "medium",
-      "scenario_family": "buyer_says_agent_is_wrong",
-      "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-b2b-saas-operations-03",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "that's wrong"
-      ],
-      "campaign_id": "synthetic-insurance-review",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a licensed coverage review is useful. Is there any issue here you actually want reviewed?",
-      "mechanical_failure_flags": [
-        "hostile_response_not_deescalated"
-      ],
-      "priority": "medium",
-      "scenario_family": "buyer_says_agent_is_wrong",
-      "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-insurance-review-01",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "that doesn't make sense"
-      ],
-      "campaign_id": "synthetic-insurance-review",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a licensed coverage review is useful. Is there any issue here you actually want reviewed?",
-      "mechanical_failure_flags": [
-        "hostile_response_not_deescalated"
-      ],
-      "priority": "medium",
-      "scenario_family": "buyer_says_agent_is_wrong",
-      "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-insurance-review-02",
-      "selected_action_source": "universal_response_shape",
-      "tier": "exploratory_red_findings"
-    }
-  ]
+  "top_failure_clusters": [],
+  "worst_conversations": []
 }

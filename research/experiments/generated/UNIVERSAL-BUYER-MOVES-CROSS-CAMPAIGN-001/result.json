@@ -388,7 +388,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether inbound demo follow-up slipping is causing any issue now.",
+      "final_response": "I hear you. Manual work sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Thanks. Is inbound demo follow-up slipping right now?",
       "recognition_confidence": "medium",
@@ -512,7 +512,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether inbound demo follow-up slipping is causing any issue now.",
+      "final_response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Thanks. Is inbound demo follow-up slipping right now?",
       "recognition_confidence": "medium",
@@ -636,7 +636,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether inbound demo follow-up slipping is causing any issue now.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Thanks. Is inbound demo follow-up slipping right now?",
       "recognition_confidence": "medium",
@@ -5060,7 +5060,7 @@
     },
     {
       "actual_buyer_move_id": "callback_time_provided",
-      "actual_call_control": "schedule-and-end",
+      "actual_call_control": "continue-call",
       "actual_semantic": "appointment_time_given",
       "actual_target_gap": "callbacks",
       "buyer_move_category": "appointment_callback_send_info",
@@ -5072,7 +5072,7 @@
         "callback_time_provided"
       ],
       "failures": [],
-      "final_response": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
+      "final_response": "I can note that as a callback preference, but before I mark it as a review, is the issue causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
       "recognition_confidence": "high",
@@ -6823,7 +6823,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether inbound demo follow-up slipping is causing any issue now.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about inbound demo follow-up. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
       "recognition_confidence": "medium",
@@ -7319,7 +7319,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether premium pressure is causing any issue now.",
+      "final_response": "I hear you. Manual work sounds like the issue on your mind, but this call is about premium pressure. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Thanks. Is premium pressure causing any issue right now?",
       "recognition_confidence": "medium",
@@ -7572,7 +7572,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether premium pressure is causing any issue now.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about premium pressure. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Thanks. Is premium pressure causing any issue right now?",
       "recognition_confidence": "medium",
@@ -12014,7 +12014,7 @@
     },
     {
       "actual_buyer_move_id": "callback_time_provided",
-      "actual_call_control": "schedule-and-end",
+      "actual_call_control": "continue-call",
       "actual_semantic": "appointment_time_given",
       "actual_target_gap": "premium_or_budget",
       "buyer_move_category": "appointment_callback_send_info",
@@ -12028,7 +12028,7 @@
         "callback_time_provided"
       ],
       "failures": [],
-      "final_response": "Got it. I'll note that time for the licensed insurance specialist to follow up.",
+      "final_response": "I can note that as a callback preference, but before I mark it as a review, is the issue causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
       "recognition_confidence": "high",
@@ -13789,7 +13789,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether premium pressure is causing any issue now.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about premium pressure. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
       "recognition_confidence": "medium",
@@ -14414,7 +14414,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether manual work is causing any issue now.",
+      "final_response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about manual work. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Thanks. Is manual work causing any issue right now?",
       "recognition_confidence": "medium",
@@ -14538,7 +14538,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether manual work is causing any issue now.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about manual work. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Thanks. Is manual work causing any issue right now?",
       "recognition_confidence": "medium",
@@ -18980,7 +18980,7 @@
     },
     {
       "actual_buyer_move_id": "callback_time_provided",
-      "actual_call_control": "schedule-and-end",
+      "actual_call_control": "continue-call",
       "actual_semantic": "appointment_time_given",
       "actual_target_gap": "manual_work",
       "buyer_move_category": "appointment_callback_send_info",
@@ -18994,7 +18994,7 @@
         "callback_time_provided"
       ],
       "failures": [],
-      "final_response": "Got it. I'll note that time for the implementation specialist to follow up.",
+      "final_response": "I can note that as a callback preference, but before I mark it as a review, is the issue causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
       "recognition_confidence": "high",
@@ -20755,7 +20755,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether manual work is causing any issue now.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about manual work. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
       "recognition_confidence": "medium",
@@ -21251,7 +21251,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether repair timing is causing any issue now.",
+      "final_response": "I hear you. Manual work sounds like the issue on your mind, but this call is about repair timing. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Thanks. Is repair timing causing any issue right now?",
       "recognition_confidence": "medium",
@@ -21375,7 +21375,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether repair timing is causing any issue now.",
+      "final_response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about repair timing. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Thanks. Is repair timing causing any issue right now?",
       "recognition_confidence": "medium",
@@ -25944,7 +25944,7 @@
     },
     {
       "actual_buyer_move_id": "callback_time_provided",
-      "actual_call_control": "schedule-and-end",
+      "actual_call_control": "continue-call",
       "actual_semantic": "appointment_time_given",
       "actual_target_gap": "repair_timing",
       "buyer_move_category": "appointment_callback_send_info",
@@ -25958,7 +25958,7 @@
         "callback_time_provided"
       ],
       "failures": [],
-      "final_response": "Got it. I'll note that time for the service advisor to follow up.",
+      "final_response": "I can note that as a callback preference, but before I mark it as a review, is the issue causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?",
       "recognition_confidence": "high",
@@ -28218,7 +28218,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether the service need is active now.",
+      "final_response": "I hear you. Manual work sounds like the issue on your mind, but this call is about the service need. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Thanks. Is the service need active right now?",
       "recognition_confidence": "medium",
@@ -28342,7 +28342,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether the service need is active now.",
+      "final_response": "I hear you. Premium pressure sounds like the issue on your mind, but this call is about the service need. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Thanks. Is the service need active right now?",
       "recognition_confidence": "medium",
@@ -28466,7 +28466,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether the service need is active now.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about the service need. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Thanks. Is the service need active right now?",
       "recognition_confidence": "medium",
@@ -32908,7 +32908,7 @@
     },
     {
       "actual_buyer_move_id": "callback_time_provided",
-      "actual_call_control": "schedule-and-end",
+      "actual_call_control": "continue-call",
       "actual_semantic": "appointment_time_given",
       "actual_target_gap": "service_need",
       "buyer_move_category": "appointment_callback_send_info",
@@ -32922,7 +32922,7 @@
         "callback_time_provided"
       ],
       "failures": [],
-      "final_response": "Got it. I'll note that time for the qualified service coordinator to follow up.",
+      "final_response": "I can note that as a callback preference, but before I mark it as a review, is the issue causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, service need is the issue. Is it causing a real service issue now, or just a general question?",
       "recognition_confidence": "high",
@@ -34683,7 +34683,7 @@
         "confusion_not_clear"
       ],
       "failures": [],
-      "final_response": "That may be outside this call's scope. The quick check here is whether the service need is active now.",
+      "final_response": "I hear you. Repair sounds like the issue on your mind, but this call is about the service need. That's this call's scope. Should I stop here?",
       "passed": true,
       "previous_response": "Got it, service need is the issue. Is it causing a real service issue now, or just a general question?",
       "recognition_confidence": "medium",

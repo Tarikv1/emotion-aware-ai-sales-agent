@@ -292,6 +292,73 @@ def _previous_response_asked_next_step_timing(session_state: dict | None) -> boo
     )
 
 
+def _prior_impact_confirmed(session_state: dict | None) -> bool:
+    for turn in reversed(_turns(session_state)):
+        frame = turn.get("universal_policy_frame") if isinstance(turn, dict) else None
+        if not isinstance(frame, dict):
+            frame = ((turn.get("dialogue_manager") or {}).get("universal_policy_frame") if isinstance(turn, dict) else None)
+        if isinstance(frame, dict) and frame.get("buyer_move_id") == "implication_confirmed":
+            return True
+    return False
+
+
+def _prior_out_of_campaign_phrase(session_state: dict | None) -> str:
+    for turn in reversed(_turns(session_state)[-3:]):
+        frame = turn.get("universal_policy_frame") if isinstance(turn, dict) else None
+        if not isinstance(frame, dict):
+            frame = ((turn.get("dialogue_manager") or {}).get("universal_policy_frame") if isinstance(turn, dict) else None)
+        if not isinstance(frame, dict):
+            continue
+        reason = str(frame.get("recognition_reason") or "")
+        if reason in {"out_of_campaign_pain_phrase", "campaign_mismatch_question_phrase"}:
+            normalized = str(((frame.get("detection") or {}).get("normalized_transcript")) or "")
+            phrase = _mismatch_phrase_from_normalized(normalized)
+            if phrase:
+                return phrase
+    return ""
+
+
+def _mismatch_phrase_from_normalized(normalized: str) -> str:
+    if _contains_any(normalized, {"premium pressure", "premium"}):
+        return "premium pressure"
+    if _contains_any(normalized, {"repair timings", "repair timing", "repair"}):
+        return "repair"
+    if _contains_any(normalized, {"coverage availability", "coverage"}):
+        return "coverage"
+    if _contains_any(normalized, {"callbacks", "callback"}):
+        return "callbacks"
+    if _contains_any(normalized, {"inbound demo follow up", "inbound demo follow-up", "demo follow up"}):
+        return "inbound demo follow-up"
+    if _contains_any(normalized, {"manual work", "manual tracking"}):
+        return "manual work"
+    return ""
+
+
+def _is_next_step_interest_after_context(normalized: str) -> bool:
+    return normalized in {
+        "okay what now",
+        "ok what now",
+        "what now",
+        "what next",
+        "sure what next",
+        "so what next",
+        "what happens next",
+        "that would be useful",
+        "that would be good",
+        "that sounds useful",
+        "sounds useful",
+        "okay then",
+    } or _contains_any(
+        normalized,
+        {
+            "what happens next",
+            "what should we do next",
+            "what is the next step",
+            "next step",
+        },
+    )
+
+
 def _is_generic_campaign(campaign: dict | None) -> bool:
     if not isinstance(campaign, dict):
         return False
@@ -634,6 +701,7 @@ def _pain_like_unsupported_phrase(normalized: str) -> bool:
             "is confusing",
             "is the problem",
             "is the issue",
+            "is what i mean",
             "is unclear",
             "usually pretty long",
             "we need",
@@ -830,15 +898,20 @@ def _permission_response(campaign: dict | None, session_state: dict | None = Non
 
 
 def _scope_relevance_clarification_response(campaign: dict | None) -> str:
-    primary_gap = _sharp_diagnostic_gap_phrase(campaign)
-    if primary_gap.endswith("need"):
-        return f"That may be outside this call's scope. The quick check here is whether {_area_phrase(primary_gap)} is active now."
-    return f"That may be outside this call's scope. The quick check here is whether {primary_gap} is causing any issue now."
+    return _campaign_mismatch_response(campaign, "")
 
 
 def _campaign_mismatch_response(campaign: dict | None, normalized: str) -> str:
-    purpose = _campaign_purpose_phrase(campaign)
-    return f"Fair question. This call is about {purpose}. If that is not relevant, we can stop here."
+    mismatch = _mismatch_phrase_from_normalized(normalized)
+    if mismatch:
+        return (
+            f"I hear you. {session_policy.sentence_start(mismatch)} sounds like the issue on your mind, "
+            f"but this call is about {_primary_issue_subject_phrase(campaign)}. That's this call's scope. Should I stop here?"
+        )
+    return (
+        f"That sounds like a different issue than this call covers. "
+        f"This call is about {_primary_issue_subject_phrase(campaign)}. That's this call's scope. Should I stop here?"
+    )
 
 
 def _gap_clarity_response(gap_phrase: str, campaign: dict | None) -> str:
@@ -1213,8 +1286,6 @@ def _pain_progression_metadata(
             "appointment_interest": "clarify_callback_window",
             "callback_time_provided": "confirm_callback_time",
         }
-        if buyer_move_id == "callback_time_provided" and target_gap and readiness == "none":
-            readiness = "high"
         base.update(
             sales_progression_stage="next_step_capture",
             appointment_readiness=readiness,
@@ -1926,6 +1997,22 @@ def classify_universal_buyer_move_from_transcript(
         return _recognition("buyer_wants_email_before_booking", reason="email_before_booking_phrase", confidence="high", category="appointment_callback_send_info")
     if _contains_any(normalized, {"not now maybe later", "maybe later", "later maybe"}):
         return _recognition("buyer_defers_to_later", reason="defer_to_later_phrase", confidence="high", category="appointment_callback_send_info")
+    if _prior_out_of_campaign_phrase(session_state) and _contains_any(
+        normalized,
+        {
+            "why is that relevant",
+            "why is this relevant",
+            "how is that relevant",
+            "is this about that or something else",
+            "about that or something else",
+        },
+    ):
+        return _recognition(
+            "confusion_not_clear",
+            reason="campaign_mismatch_question_phrase",
+            confidence="high",
+            category="confusion_challenge_repair",
+        )
     if _looks_like_time(normalized) and _contains_any(normalized, {"works", "work", "is good", "would be good"}):
         return _recognition("callback_time_provided", reason="time_phrase_with_acceptance", confidence="high", category="appointment_callback_send_info")
     if "that would be good" in normalized and _previous_response_asked_next_step_timing(session_state):
@@ -1937,6 +2024,21 @@ def classify_universal_buyer_move_from_transcript(
             reason="contextual_semantics_mapping",
             confidence="medium",
             category="confusion_challenge_repair",
+        )
+
+    if _confirmed_gap_id(session_state) and _is_next_step_interest_after_context(normalized):
+        if _prior_appointment_readiness(session_state) == "high" or _prior_impact_confirmed(session_state):
+            return _recognition(
+                "appointment_interest",
+                reason="next_step_interest_after_confirmed_impact",
+                confidence="high",
+                category="appointment_callback_send_info",
+            )
+        return _recognition(
+            "pain_confirmed",
+            reason="next_step_interest_after_confirmed_pain_needs_impact",
+            confidence="high",
+            category="pain_progression",
         )
 
     if _time_constrained_permission_acknowledgement(normalized):
@@ -2015,6 +2117,20 @@ def classify_universal_buyer_move_from_transcript(
                 "implication_unclear",
                 reason="unclear_impact_signal",
                 confidence="medium",
+                category="pain_progression",
+            )
+        if _is_next_step_interest_after_context(normalized):
+            if _prior_appointment_readiness(session_state) == "high" or _prior_impact_confirmed(session_state):
+                return _recognition(
+                    "appointment_interest",
+                    reason="next_step_interest_after_confirmed_impact",
+                    confidence="high",
+                    category="appointment_callback_send_info",
+                )
+            return _recognition(
+                "pain_confirmed",
+                reason="next_step_interest_after_confirmed_pain_needs_impact",
+                confidence="high",
                 category="pain_progression",
             )
 
@@ -2171,6 +2287,7 @@ def classify_universal_buyer_move_from_transcript(
             "we need service",
             "is unclear",
             "is the issue",
+            "is what i mean",
         },
     ):
         if _unsupported_pain_phrase_gap_id(normalized, campaign):
@@ -2545,7 +2662,7 @@ def render_universal_response_outline(
                 f"{primary_issue_subject} is already wasting time."
             )
         return (
-            "I hear you. Then I should not push anything. The only useful question is whether "
+            "I hear you. Then I will not push anything. The only useful question is whether "
             f"{primary_issue_subject} is already costing more than it should."
         )
     if buyer_move_id == "prior_bad_experience_context":
@@ -2622,6 +2739,9 @@ def render_universal_response_outline(
         gap_phrase = _gap_phrase_from_frame_or_text(frame, campaign, session_state)
         gap_id = str((frame or {}).get("confirmed_gap_id") or (frame or {}).get("selected_gap") or "")
         if gap_id and gap_id in _string_items(_memory_from_session(session_state).get("confirmed_gaps")):
+            previous = normalize_transcript(_previous_agent_response(session_state))
+            if "creating a real impact" in previous or "causing delays or extra work" in previous:
+                return f"Before a review, I still need the impact from {_area_phrase(gap_phrase)}: delays, extra work, or missed follow-up?"
             return f"Right, {_area_phrase(gap_phrase)} is already noted. Is it creating a real impact now?"
         return _pain_implication_response(gap_phrase, campaign=campaign, gap_id=gap_id)
     if buyer_move_id == "tentative_gap_interest":
@@ -2660,11 +2780,43 @@ def render_universal_response_outline(
             return "Understood. Timing is not right now. What later window should I note?"
         return "Understood. I will not push it now."
     if buyer_move_id == "appointment_interest":
-        return "Good. What day or time window should I note?"
+        if str((frame or {}).get("appointment_readiness") or "") == "high" or _prior_impact_confirmed(session_state):
+            return "Good. The next step is a short review. What callback window works?"
+        if has_confirmed_gap:
+            return f"Good. I have {active_area} noted; before a review, is it causing delays or extra work?"
+        return f"Good. First I need to check relevance: {_primary_issue_check_question(campaign)}"
     if buyer_move_id == "callback_time_provided":
+        if str((frame or {}).get("appointment_readiness") or "") != "high":
+            if has_confirmed_gap:
+                return (
+                    "I can note that as a callback preference, but before I mark it as a review, "
+                    "is the issue causing delays or extra work?"
+                )
+            return f"I can note that as a callback preference, but first I need to check relevance: {_primary_issue_check_question(campaign)}"
         return f"Got it. I'll note that time for {owner_role} to follow up."
 
     if buyer_move_id == "product_detail_question":
+        previous = normalize_transcript(_previous_agent_response(session_state))
+        if _contains_any(
+            previous,
+            {
+                "what does your product do",
+                "helps teams keep",
+                "this call is only to check",
+                "the quick question is whether",
+                "product detail",
+                "product-detail",
+            },
+        ):
+            if has_confirmed_gap:
+                return (
+                    f"Already answered at a high level: this call checks whether {active_area} is worth a short review. "
+                    "The useful follow-up is impact: is it causing delays or extra work?"
+                )
+            return (
+                f"Already answered at a high level: this call checks whether {primary_issue_subject} "
+                "is relevant enough for a short review. Is that relevant now?"
+            )
         configured_answer = _campaign_text(campaign, "product_detail_answer", "product_summary_phrase")
         if configured_answer:
             return f"Sure. {configured_answer}"
@@ -2718,9 +2870,14 @@ def render_universal_response_outline(
         if recognition_reason == "configured_gap_clarity_request_phrase":
             return _gap_clarity_response(_gap_phrase_from_frame_or_text(frame, campaign, session_state), campaign)
         if recognition_reason == "campaign_mismatch_question_phrase":
-            return _campaign_mismatch_response(campaign, normalized)
+            mismatch_source = (
+                normalized
+                if _mismatch_phrase_from_normalized(normalized)
+                else _prior_out_of_campaign_phrase(session_state) or _previous_agent_response(session_state)
+            )
+            return _campaign_mismatch_response(campaign, mismatch_source)
         if recognition_reason == "out_of_campaign_pain_phrase":
-            return _scope_relevance_clarification_response(campaign)
+            return _campaign_mismatch_response(campaign, normalized)
         if has_confirmed_gap:
             return (
                 f"I mean whether that issue is causing real impact, like delays, extra work, or missed follow-up. "
@@ -2746,13 +2903,22 @@ def render_universal_response_outline(
                 "What, if anything, is the actual concern?"
             )
         if recognition_reason == "agent_wrong_or_false_assumption_challenge_phrase":
-            target = _campaign_appointment_target(campaign)
-            return (
-                "Understood. I won't assume that. Let me reset: "
-                f"this call can only check whether {_with_indefinite_article(target)} is useful. "
-                "Is there any issue here you actually want reviewed?"
-            )
+            if "make sense" in normalized:
+                return "Fair. What does not make sense: why I'm calling, or what the review would check?"
+            if "assumption" in normalized or "assuming" in normalized:
+                return "Fair. I won't assume. What should I correct first?"
+            if "wrong" in normalized:
+                return "Fair. What part is wrong: the reason for my call, or the issue I mentioned?"
+            if "not my issue" in normalized or "not my problem" in normalized:
+                return "Fair. I won't assume. What should I correct first: the issue I mentioned, or whether this call is useful at all?"
+            return "Fair. I won't assume. What should I correct first?"
         if recognition_reason == "did_not_answer_challenge_phrase":
+            previous = normalize_transcript(_previous_agent_response(session_state))
+            if "direct answer is" in previous or "quick fit check" in previous:
+                return (
+                    f"Different wording: this call checks whether {primary_issue_clause}. "
+                    "I cannot give a full product explanation here."
+                )
             return (
                 "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. "
                 f"I'm checking whether {primary_issue_clause} and is worth a short review."
@@ -2771,6 +2937,12 @@ def render_universal_response_outline(
     if buyer_move_id == "contradiction_challenge":
         return f"Fair point. I can ask basic fit questions, but detailed advice belongs with {owner_role}."
     if buyer_move_id == "scope_limit_question":
+        previous = normalize_transcript(_previous_agent_response(session_state))
+        if _contains_any(previous, {"detailed advice belongs", "only checks whether", "cannot give detailed", "can't give detailed"}):
+            return (
+                "Same boundary: I can explain the call purpose, but not give detailed advice here. "
+                f"This call is only about whether {primary_issue_subject} is relevant. If not, I should stop here."
+            )
         if recognition_reason == "coverage_need_scope_phrase":
             return (
                 f"I can keep that high-level, but detailed coverage advice belongs with {owner_role}. "
@@ -2849,7 +3021,7 @@ def universal_response_shape_continuity(
     category = _response_shape_category(buyer_move_id) or "universal_response_shape"
     if buyer_move_id in TERMINAL_RESPONSE_SHAPE_MOVES or buyer_move_id in TERMINAL_RAPPORT_MOVES or (frame or {}).get("safe_to_continue") is False:
         action_id = "end_call_stop_request"
-    elif buyer_move_id == "callback_time_provided":
+    elif buyer_move_id == "callback_time_provided" and str((frame or {}).get("appointment_readiness") or "") == "high":
         action_id = "confirm_callback_and_end"
     elif buyer_move_id in {"send_info_request", "buyer_wants_email_before_booking"}:
         action_id = "request_send_info_contact"

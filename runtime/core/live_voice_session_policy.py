@@ -4011,6 +4011,18 @@ def continuity_response(
             "candidate_response": appointment_lead_close_response(language, appointment_gap),
         }
     if callback_semantic == CALLBACK_WORKFLOW_GAP:
+        if is_generic_campaign_config(campaign):
+            primary_issue = _generic_primary_issue_phrase(campaign)
+            return {
+                "applied": True,
+                "reason": "generic_campaign_callback_mismatch_boundary",
+                "dialogue_focus": resolved_focus or "qualification",
+                "callback_semantic": CALLBACK_WORKFLOW_GAP,
+                "candidate_response": (
+                    f"I hear you. Callbacks sound like the issue on your mind, "
+                    f"but this call is about {primary_issue}. Should I stop here?"
+                ),
+            }
         gap_focus = resolved_focus or "qualification"
         return {
             "applied": True,

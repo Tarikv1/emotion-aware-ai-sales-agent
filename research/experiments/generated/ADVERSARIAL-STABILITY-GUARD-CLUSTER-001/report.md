@@ -70,7 +70,7 @@
 - Source: `contextual_buyer_semantics`
 - Call control: `continue-call`
 - Failures: ``
-- Final response: I can't give coverage advice on this call; that is outside this call's scope. This call is about inbound demo follow-up, so the useful check is whether follow-up is slipping now.
+- Final response: I can't give coverage advice on this call. Coverage sounds like a different issue; this call is about inbound demo follow-up. If that is not relevant, I should stop here.
 
 ### telecom-plan-fit-coverage-boundary
 - Status: `pass`

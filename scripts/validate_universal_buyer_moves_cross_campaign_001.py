@@ -608,8 +608,14 @@ def evaluate_result(
             add_failure(failures, "wrong_gap", "prior campaign pain was not preserved in memory")
 
     if category_name == "appointment_callback_send_info":
-        if "tomorrow at 3" in transcript and call != "schedule-and-end":
-            add_failure(failures, "wrong_call_control", "usable time did not schedule-and-end")
+        if "tomorrow at 3" in transcript:
+            if case["context"] == "after_campaign_pain":
+                if call == "schedule-and-end":
+                    add_failure(failures, "appointment_too_early", "pain-only callback time scheduled before impact/readiness")
+                if not any(word in response for word in ["callback", "preference", "note"]):
+                    add_failure(failures, "callback_preference_missing", "pain-only callback time did not preserve the callback preference")
+            elif call != "schedule-and-end":
+                add_failure(failures, "wrong_call_control", "usable time did not schedule-and-end")
         if (
             "available times" in transcript
             and ("calendar" in response and "send" in response)

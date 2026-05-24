@@ -235,7 +235,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "out_of_campaign_pain_phrase",
-        "response": "That may be outside this call's scope. The quick check here is whether premium pressure is causing any issue now.",
+        "response": "I hear you. Repair sounds like the issue on your mind, but this call is about premium pressure. That's this call's scope. Should I stop here?",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -263,7 +263,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "out_of_campaign_pain_phrase",
-        "response": "That may be outside this call's scope. The quick check here is whether manual work is causing any issue now.",
+        "response": "I hear you. Repair sounds like the issue on your mind, but this call is about manual work. That's this call's scope. Should I stop here?",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -291,7 +291,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "out_of_campaign_pain_phrase",
-        "response": "That may be outside this call's scope. The quick check here is whether the service need is active now.",
+        "response": "I hear you. Repair sounds like the issue on your mind, but this call is about the service need. That's this call's scope. Should I stop here?",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {

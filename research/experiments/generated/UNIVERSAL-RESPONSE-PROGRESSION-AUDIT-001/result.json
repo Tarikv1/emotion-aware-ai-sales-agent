@@ -1,0 +1,28 @@
+{
+  "audited_red_finding_count": 0,
+  "checkpoint_id": "UNIVERSAL-RESPONSE-PROGRESSION-AUDIT-001",
+  "classification_counts": {},
+  "classification_counts_by_campaign": {},
+  "classification_counts_by_source": {},
+  "counts_by_campaign": {},
+  "counts_by_scenario_family": {},
+  "counts_by_source": {},
+  "generated_at": "2026-05-24T12:20:27.574371+00:00",
+  "previous_audit_checkpoint_id": "BROAD-MENU-SUPPRESSION-AUDIT-001",
+  "previous_audit_classification_counts": {},
+  "recommended_patch_scope": [],
+  "runtime_behavior_changed": false,
+  "side_effect_boundary": {
+    "creates_calendar_event": false,
+    "live_tts_calls_made": false,
+    "local_llm_calls_made": false,
+    "opens_prod_102": false,
+    "provider_calls_made": false,
+    "sends_email": false,
+    "writes_crm": false
+  },
+  "source_checkpoint_id": "LIVE-INSPIRED-ADVERSARIAL-DIALOGUE-MATRIX-001",
+  "source_red_finding_count": 0,
+  "source_status": "pass",
+  "top_examples": []
+}
