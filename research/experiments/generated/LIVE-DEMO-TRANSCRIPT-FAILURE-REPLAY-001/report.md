@@ -66,7 +66,7 @@
 - Buyer move: `already_answered_challenge`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: You're right, you did not mention premium pressure. I won't assume that. This call can only check whether a licensed coverage review is useful.
+- Response: You're right, you did not mention premium pressure. I won't assume that. This call can only check whether a licensed coverage review is useful. What, if anything, is the actual concern?
 
 ### insurance_repeated_product_detail_challenge
 - Passed: `true`

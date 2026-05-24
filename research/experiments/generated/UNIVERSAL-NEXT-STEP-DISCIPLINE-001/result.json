@@ -434,7 +434,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Sure. Next week works as a direction. Which day or time window should I note?",
+      "final_response": "Sure. Next week can work. What day or time window should I note?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -1614,7 +1614,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Sure. Next week works as a direction. Which day or time window should I note?",
+      "final_response": "Sure. Next week can work. What day or time window should I note?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -2794,7 +2794,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Sure. Next week works as a direction. Which day or time window should I note?",
+      "final_response": "Sure. Next week can work. What day or time window should I note?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -3974,7 +3974,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Sure. Next week works as a direction. Which day or time window should I note?",
+      "final_response": "Sure. Next week can work. What day or time window should I note?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -5154,7 +5154,7 @@
       ],
       "call_control": "continue-call",
       "source": "universal_response_shape",
-      "final_response": "Sure. Next week works as a direction. Which day or time window should I note?",
+      "final_response": "Sure. Next week can work. What day or time window should I note?",
       "universal_policy_frame": {
         "schema_version": 1,
         "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",

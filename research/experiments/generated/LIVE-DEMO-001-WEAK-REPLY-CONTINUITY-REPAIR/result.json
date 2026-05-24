@@ -184,7 +184,7 @@
           "continuity_reason": "proactive_qualification_guidance_after_acknowledgement",
           "creates_calendar_event": false,
           "durable_provider_agent_created": false,
-          "final_response": "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
+          "final_response": "Thanks. Is inbound demo follow-up slipping right now?",
           "local_llm_calls_made": false,
           "mode": "dry-run",
           "opens_prod_102": false,
@@ -195,7 +195,7 @@
           "sends_email": false,
           "target_gap": null,
           "transcript": "hmm okay that is interesting",
-          "tts_input_text": "This is about inbound demo follow-up: <break time=\"0.24s\" /> one person should be responsible for the next reply, so, that prevents missed follow-up. Which part is least clear today?",
+          "tts_input_text": "Thanks. Is inbound demo follow-up slipping right now?",
           "voice_cloning_used": false,
           "writes_crm": false
         }
@@ -352,7 +352,7 @@
           "continuity_reason": "resolved_qualification_focus_progressed",
           "creates_calendar_event": false,
           "durable_provider_agent_created": false,
-          "final_response": "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
+          "final_response": "Thanks. Is inbound demo follow-up slipping right now?",
           "local_llm_calls_made": false,
           "mode": "dry-run",
           "opens_prod_102": false,
@@ -363,7 +363,7 @@
           "sends_email": false,
           "target_gap": null,
           "transcript": "tell me more",
-          "tts_input_text": "This is about inbound demo follow-up: <break time=\"0.189s\" /> one person should be responsible for the next reply, well, that prevents missed follow-up. Which part is least clear today?",
+          "tts_input_text": "Thanks. Is inbound demo follow-up slipping right now?",
           "voice_cloning_used": false,
           "writes_crm": false
         }
@@ -408,7 +408,7 @@
           "continuity_reason": "resolved_qualification_focus_progressed",
           "creates_calendar_event": false,
           "durable_provider_agent_created": false,
-          "final_response": "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
+          "final_response": "Thanks. Is inbound demo follow-up slipping right now?",
           "local_llm_calls_made": false,
           "mode": "dry-run",
           "opens_prod_102": false,
@@ -419,7 +419,7 @@
           "sends_email": false,
           "target_gap": null,
           "transcript": "what else should I know",
-          "tts_input_text": "This is about inbound demo follow-up: <break time=\"0.156s\" /> one person should be responsible for the next reply, so, that prevents missed follow-up. Which part is least clear today?",
+          "tts_input_text": "Thanks. Is inbound demo follow-up slipping right now?",
           "voice_cloning_used": false,
           "writes_crm": false
         }

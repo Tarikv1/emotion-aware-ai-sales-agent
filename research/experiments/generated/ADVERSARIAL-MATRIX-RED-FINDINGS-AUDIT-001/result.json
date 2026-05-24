@@ -1,57 +1,39 @@
 {
-  "audited_red_finding_count": 217,
+  "audited_red_finding_count": 64,
   "checkpoint_id": "ADVERSARIAL-MATRIX-RED-FINDINGS-AUDIT-001",
   "classification_counts": {
     "appointment_too_early": 6,
-    "asr_near_miss_gap_not_recognized": 6,
     "campaign_contamination": 4,
     "hostile_challenge_not_deescalated": 18,
-    "needs_human_review": 38,
+    "needs_human_review": 1,
     "out_of_campaign_relevance_bad_fallback": 12,
-    "repeated_response_without_progress": 24,
-    "stability_guard_menu_reset": 109
+    "repeated_response_without_progress": 23
   },
   "counts_by_campaign": {
-    "routesignal_live_demo": 34,
-    "synthetic-automotive-service-review": 42,
-    "synthetic-b2b-saas-operations": 34,
-    "synthetic-insurance-review": 37,
-    "synthetic-membership-plan-review": 31,
-    "synthetic-telecom-plan-review": 39
+    "routesignal_live_demo": 12,
+    "synthetic-automotive-service-review": 11,
+    "synthetic-b2b-saas-operations": 11,
+    "synthetic-insurance-review": 11,
+    "synthetic-membership-plan-review": 8,
+    "synthetic-telecom-plan-review": 11
   },
   "counts_by_scenario_family": {
-    "asr_near_miss_gap_phrases": 1,
-    "asr_near_miss_invented_transcript_stress": 6,
     "buyer_correction_contradiction_stress": 1,
     "buyer_says_agent_is_wrong": 18,
-    "callback_time_too_early_or_ambiguous": 18,
-    "campaign_selector_wrong_campaign_contamination": 8,
-    "commercial_pressure_close_strength_stress": 16,
-    "commercial_quality_stress": 8,
-    "direct_product_value_challenge_loops": 6,
-    "disallowed_persistence_after_stop": 6,
-    "human_context_interruption_pressure": 6,
-    "impact_before_clean_pain": 16,
-    "long_conversation_state_drift": 5,
-    "multi_campaign_contamination_stress": 14,
-    "permission_weak_acknowledgement_variants": 15,
-    "price_budget_affordability_stress": 6,
+    "callback_time_too_early_or_ambiguous": 6,
+    "campaign_selector_wrong_campaign_contamination": 5,
+    "commercial_quality_stress": 5,
+    "multi_campaign_contamination_stress": 9,
     "repeated_answer_variation_anti_loop": 18,
-    "repeated_challenge_escalation": 3,
-    "repeated_product_detail_scope_questions": 21,
-    "sales_realism_score_heuristics": 12,
-    "scope_boundary_regulated_detail_stress": 6,
-    "vague_affirmative_after_context": 7
+    "scope_boundary_regulated_detail_stress": 2
   },
   "counts_by_source": {
-    "contextual_buyer_semantics": 6,
-    "dialogue_pragmatics": 6,
-    "live_voice_session_policy": 6,
-    "pre_speech_conversation_stability_guard": 109,
-    "terminal_call_control": 6,
-    "universal_response_shape": 84
+    "contextual_buyer_semantics": 3,
+    "live_voice_session_policy": 5,
+    "pre_speech_conversation_stability_guard": 5,
+    "universal_response_shape": 51
   },
-  "generated_at": "2026-05-24T01:08:27.421771+00:00",
+  "generated_at": "2026-05-24T02:47:38.667458+00:00",
   "recommended_patch_slice": [
     "Patch stability_guard_menu_reset for near configured gaps before broad exploratory work.",
     "Patch internal_wording_source_live_policy where customer-facing boundary text leaks implementation wording.",
@@ -62,9 +44,6 @@
     "appointment_too_early": {
       "universal_response_shape": 6
     },
-    "asr_near_miss_gap_not_recognized": {
-      "universal_response_shape": 6
-    },
     "campaign_contamination": {
       "universal_response_shape": 4
     },
@@ -72,11 +51,7 @@
       "universal_response_shape": 18
     },
     "needs_human_review": {
-      "contextual_buyer_semantics": 4,
-      "dialogue_pragmatics": 6,
-      "live_voice_session_policy": 1,
-      "terminal_call_control": 6,
-      "universal_response_shape": 21
+      "contextual_buyer_semantics": 1
     },
     "out_of_campaign_relevance_bad_fallback": {
       "contextual_buyer_semantics": 2,
@@ -84,10 +59,8 @@
       "universal_response_shape": 5
     },
     "repeated_response_without_progress": {
-      "universal_response_shape": 24
-    },
-    "stability_guard_menu_reset": {
-      "pre_speech_conversation_stability_guard": 109
+      "pre_speech_conversation_stability_guard": 5,
+      "universal_response_shape": 18
     }
   },
   "runtime_behavior_changed": false,
@@ -101,116 +74,9 @@
     "writes_crm": false
   },
   "source_checkpoint_id": "LIVE-INSPIRED-ADVERSARIAL-DIALOGUE-MATRIX-001",
-  "source_red_finding_count": 217,
+  "source_red_finding_count": 64,
   "source_status": "red_findings",
   "top_examples": [
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "yeah",
-        "service timing is long",
-        "it wastes time"
-      ],
-      "campaign_id": "synthetic-automotive-service-review",
-      "final_response": "If vehicle issue, repair timing, or warranty or estimate are actually relevant, a service advisor can do a short service advisor inspection review. If not, I can stop here; should I ask one quick fit question?",
-      "mechanical_failure_flags": [
-        "repeated_full_menu"
-      ],
-      "root_cause": "stability_guard_menu_reset",
-      "scenario_family": "asr_near_miss_gap_phrases",
-      "scenario_id": "adv-asr-near-miss-gap-phrases-synthetic-automotive-service-review-04",
-      "selected_action_source": "pre_speech_conversation_stability_guard"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "what should I care"
-      ],
-      "campaign_id": "routesignal_live_demo",
-      "final_response": "Fair question. Only if inbound demo follow-up slipping is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
-      "mechanical_failure_flags": [
-        "asr_near_miss_not_clarified"
-      ],
-      "root_cause": "asr_near_miss_gap_not_recognized",
-      "scenario_family": "asr_near_miss_invented_transcript_stress",
-      "scenario_id": "adv-asr-near-miss-invented-transcript-stress-routesignal_live_demo-01",
-      "selected_action_source": "universal_response_shape"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "what should I care"
-      ],
-      "campaign_id": "synthetic-automotive-service-review",
-      "final_response": "Fair question. Only if repair timing is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
-      "mechanical_failure_flags": [
-        "asr_near_miss_not_clarified"
-      ],
-      "root_cause": "asr_near_miss_gap_not_recognized",
-      "scenario_family": "asr_near_miss_invented_transcript_stress",
-      "scenario_id": "adv-asr-near-miss-invented-transcript-stress-synthetic-automotive-service-review-01",
-      "selected_action_source": "universal_response_shape"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "what should I care"
-      ],
-      "campaign_id": "synthetic-b2b-saas-operations",
-      "final_response": "Fair question. Only if manual work is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
-      "mechanical_failure_flags": [
-        "asr_near_miss_not_clarified"
-      ],
-      "root_cause": "asr_near_miss_gap_not_recognized",
-      "scenario_family": "asr_near_miss_invented_transcript_stress",
-      "scenario_id": "adv-asr-near-miss-invented-transcript-stress-synthetic-b2b-saas-operations-01",
-      "selected_action_source": "universal_response_shape"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "what should I care"
-      ],
-      "campaign_id": "synthetic-insurance-review",
-      "final_response": "Fair question. Only if premium pressure is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
-      "mechanical_failure_flags": [
-        "asr_near_miss_not_clarified"
-      ],
-      "root_cause": "asr_near_miss_gap_not_recognized",
-      "scenario_family": "asr_near_miss_invented_transcript_stress",
-      "scenario_id": "adv-asr-near-miss-invented-transcript-stress-synthetic-insurance-review-01",
-      "selected_action_source": "universal_response_shape"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "what should I care"
-      ],
-      "campaign_id": "synthetic-membership-plan-review",
-      "final_response": "Fair question. Only if plan fit is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
-      "mechanical_failure_flags": [
-        "asr_near_miss_not_clarified"
-      ],
-      "root_cause": "asr_near_miss_gap_not_recognized",
-      "scenario_family": "asr_near_miss_invented_transcript_stress",
-      "scenario_id": "adv-asr-near-miss-invented-transcript-stress-synthetic-membership-plan-review-01",
-      "selected_action_source": "universal_response_shape"
-    },
-    {
-      "buyer_script": [
-        "__agent_open__",
-        "what should I care"
-      ],
-      "campaign_id": "synthetic-telecom-plan-review",
-      "final_response": "Fair question. Only if plan fit is costing time, creating delays, or hurting follow-up quality. If that is happening, a short review can confirm whether it is worth fixing. Is that showing up now?",
-      "mechanical_failure_flags": [
-        "asr_near_miss_not_clarified"
-      ],
-      "root_cause": "asr_near_miss_gap_not_recognized",
-      "scenario_family": "asr_near_miss_invented_transcript_stress",
-      "scenario_id": "adv-asr-near-miss-invented-transcript-stress-synthetic-telecom-plan-review-01",
-      "selected_action_source": "universal_response_shape"
-    },
     {
       "buyer_script": [
         "__agent_open__",
@@ -234,7 +100,7 @@
         "that's wrong"
       ],
       "campaign_id": "routesignal_live_demo",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful.",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful. Is there any issue here you actually want reviewed?",
       "mechanical_failure_flags": [
         "hostile_response_not_deescalated"
       ],
@@ -249,7 +115,7 @@
         "that doesn't make sense"
       ],
       "campaign_id": "routesignal_live_demo",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful.",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful. Is there any issue here you actually want reviewed?",
       "mechanical_failure_flags": [
         "hostile_response_not_deescalated"
       ],
@@ -264,7 +130,7 @@
         "you're making assumptions"
       ],
       "campaign_id": "routesignal_live_demo",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful.",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a non-binding workflow review is useful. Is there any issue here you actually want reviewed?",
       "mechanical_failure_flags": [
         "hostile_response_not_deescalated"
       ],
@@ -279,7 +145,7 @@
         "that's wrong"
       ],
       "campaign_id": "synthetic-automotive-service-review",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a service advisor inspection review is useful.",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a service advisor inspection review is useful. Is there any issue here you actually want reviewed?",
       "mechanical_failure_flags": [
         "hostile_response_not_deescalated"
       ],
@@ -294,7 +160,7 @@
         "that doesn't make sense"
       ],
       "campaign_id": "synthetic-automotive-service-review",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a service advisor inspection review is useful.",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a service advisor inspection review is useful. Is there any issue here you actually want reviewed?",
       "mechanical_failure_flags": [
         "hostile_response_not_deescalated"
       ],
@@ -309,7 +175,7 @@
         "you're making assumptions"
       ],
       "campaign_id": "synthetic-automotive-service-review",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a service advisor inspection review is useful.",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a service advisor inspection review is useful. Is there any issue here you actually want reviewed?",
       "mechanical_failure_flags": [
         "hostile_response_not_deescalated"
       ],
@@ -324,7 +190,7 @@
         "that's wrong"
       ],
       "campaign_id": "synthetic-b2b-saas-operations",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an operations fit review is useful.",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an operations fit review is useful. Is there any issue here you actually want reviewed?",
       "mechanical_failure_flags": [
         "hostile_response_not_deescalated"
       ],
@@ -339,7 +205,7 @@
         "that doesn't make sense"
       ],
       "campaign_id": "synthetic-b2b-saas-operations",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an operations fit review is useful.",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an operations fit review is useful. Is there any issue here you actually want reviewed?",
       "mechanical_failure_flags": [
         "hostile_response_not_deescalated"
       ],
@@ -354,7 +220,7 @@
         "you're making assumptions"
       ],
       "campaign_id": "synthetic-b2b-saas-operations",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an operations fit review is useful.",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an operations fit review is useful. Is there any issue here you actually want reviewed?",
       "mechanical_failure_flags": [
         "hostile_response_not_deescalated"
       ],
@@ -369,7 +235,7 @@
         "that's wrong"
       ],
       "campaign_id": "synthetic-insurance-review",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a licensed coverage review is useful.",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a licensed coverage review is useful. Is there any issue here you actually want reviewed?",
       "mechanical_failure_flags": [
         "hostile_response_not_deescalated"
       ],
@@ -384,7 +250,7 @@
         "that doesn't make sense"
       ],
       "campaign_id": "synthetic-insurance-review",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a licensed coverage review is useful.",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a licensed coverage review is useful. Is there any issue here you actually want reviewed?",
       "mechanical_failure_flags": [
         "hostile_response_not_deescalated"
       ],
@@ -399,13 +265,118 @@
         "you're making assumptions"
       ],
       "campaign_id": "synthetic-insurance-review",
-      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a licensed coverage review is useful.",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a licensed coverage review is useful. Is there any issue here you actually want reviewed?",
       "mechanical_failure_flags": [
         "hostile_response_not_deescalated"
       ],
       "root_cause": "hostile_challenge_not_deescalated",
       "scenario_family": "buyer_says_agent_is_wrong",
       "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-insurance-review-03",
+      "selected_action_source": "universal_response_shape"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "that's wrong"
+      ],
+      "campaign_id": "synthetic-membership-plan-review",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an account support or plan-fit review is useful. Is there any issue here you actually want reviewed?",
+      "mechanical_failure_flags": [
+        "hostile_response_not_deescalated"
+      ],
+      "root_cause": "hostile_challenge_not_deescalated",
+      "scenario_family": "buyer_says_agent_is_wrong",
+      "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-membership-plan-review-01",
+      "selected_action_source": "universal_response_shape"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "that doesn't make sense"
+      ],
+      "campaign_id": "synthetic-membership-plan-review",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an account support or plan-fit review is useful. Is there any issue here you actually want reviewed?",
+      "mechanical_failure_flags": [
+        "hostile_response_not_deescalated"
+      ],
+      "root_cause": "hostile_challenge_not_deescalated",
+      "scenario_family": "buyer_says_agent_is_wrong",
+      "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-membership-plan-review-02",
+      "selected_action_source": "universal_response_shape"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "you're making assumptions"
+      ],
+      "campaign_id": "synthetic-membership-plan-review",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether an account support or plan-fit review is useful. Is there any issue here you actually want reviewed?",
+      "mechanical_failure_flags": [
+        "hostile_response_not_deescalated"
+      ],
+      "root_cause": "hostile_challenge_not_deescalated",
+      "scenario_family": "buyer_says_agent_is_wrong",
+      "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-membership-plan-review-03",
+      "selected_action_source": "universal_response_shape"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "that's wrong"
+      ],
+      "campaign_id": "synthetic-telecom-plan-review",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a human plan and availability review is useful. Is there any issue here you actually want reviewed?",
+      "mechanical_failure_flags": [
+        "hostile_response_not_deescalated"
+      ],
+      "root_cause": "hostile_challenge_not_deescalated",
+      "scenario_family": "buyer_says_agent_is_wrong",
+      "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-telecom-plan-review-01",
+      "selected_action_source": "universal_response_shape"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "that doesn't make sense"
+      ],
+      "campaign_id": "synthetic-telecom-plan-review",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a human plan and availability review is useful. Is there any issue here you actually want reviewed?",
+      "mechanical_failure_flags": [
+        "hostile_response_not_deescalated"
+      ],
+      "root_cause": "hostile_challenge_not_deescalated",
+      "scenario_family": "buyer_says_agent_is_wrong",
+      "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-telecom-plan-review-02",
+      "selected_action_source": "universal_response_shape"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "you're making assumptions"
+      ],
+      "campaign_id": "synthetic-telecom-plan-review",
+      "final_response": "Understood. I won't assume that. Let me reset: this call can only check whether a human plan and availability review is useful. Is there any issue here you actually want reviewed?",
+      "mechanical_failure_flags": [
+        "hostile_response_not_deescalated"
+      ],
+      "root_cause": "hostile_challenge_not_deescalated",
+      "scenario_family": "buyer_says_agent_is_wrong",
+      "scenario_id": "adv-buyer-says-agent-is-wrong-synthetic-telecom-plan-review-03",
+      "selected_action_source": "universal_response_shape"
+    },
+    {
+      "buyer_script": [
+        "__agent_open__",
+        "tomorrow works"
+      ],
+      "campaign_id": "routesignal_live_demo",
+      "final_response": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
+      "mechanical_failure_flags": [
+        "appointment_too_early"
+      ],
+      "root_cause": "appointment_too_early",
+      "scenario_family": "callback_time_too_early_or_ambiguous",
+      "scenario_id": "adv-callback-time-too-early-or-ambiguous-routesignal_live_demo-02",
       "selected_action_source": "universal_response_shape"
     }
   ]

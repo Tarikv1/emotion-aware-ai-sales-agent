@@ -48,6 +48,8 @@ FULL_MENU_PATTERNS = [
     "which part is more familiar",
     "name the point",
     "which part should i check first",
+    "which one is causing trouble",
+    "which part causes trouble",
     "manual tracking or missed callbacks",
     "plan fit, coverage or availability, or contract or switching",
     "premium or budget, coverage fit, or renewal",
@@ -669,6 +671,10 @@ def evaluate_scenario(spec: dict[str, Any], tier: str, turns: list[dict[str, Any
         if any(item in last_buyer for item in ["yadav", "play a double"]):
             if "repeat" not in final_lower and "misheard" not in final_lower:
                 flags.add("asr_near_miss_not_clarified")
+        elif "what should i care" in last_buyer and any(token in final_lower for token in ["only if", "worth", "useful", "review"]):
+            pass
+        elif "why should i care" in last_buyer and any(token in final_lower for token in ["only if", "worth", "useful", "review"]):
+            pass
         elif not any(token in final_lower for token in ["issue", "misheard", "repeat", "mean", "clarify", "got it"]):
             flags.add("asr_near_miss_not_clarified")
     if family in {"hostile_challenging_buyer", "buyer_says_agent_is_wrong"}:

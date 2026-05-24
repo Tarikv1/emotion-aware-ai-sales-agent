@@ -776,8 +776,12 @@ def _is_permission_ack(normalized: str) -> bool:
         "sure thing",
         "ok",
         "okay",
+        "okay fine",
+        "okay go on",
         "okay quick",
         "okay sure",
+        "fine",
+        "fine go ahead",
         "no problem",
         "go ahead",
         "i do",
@@ -906,9 +910,18 @@ def _is_clear_or_no_pain(normalized: str) -> bool:
         normalized,
         {
             "callbacks are fine",
+            "callbacks are not a problem",
             "callback is fine",
+            "callback is not a problem",
             "manual tracking is fine",
+            "manual tracking is not a problem",
             "handoffs are fine",
+            "handoffs are not a problem",
+            "manual work is not a problem",
+            "coverage is not confusing",
+            "coverage availability is not confusing",
+            "plan fit is not a problem",
+            "repair timing is not a problem",
             "everything is clear",
             "nothing is slipping",
             "nothing gets missed",
@@ -981,6 +994,15 @@ def _is_broad_clear_or_no_pain(normalized: str) -> bool:
 
 
 def _clear_gaps_from_text(normalized: str, campaign: dict | None = None) -> list[str]:
+    if _is_routesignal_playbook(campaign) and _is_clear_or_no_pain(normalized):
+        gaps: list[str] = []
+        if _contains(normalized, {"callback", "callbacks"}):
+            gaps.append("callbacks")
+        if _contains(normalized, {"handoff", "handoffs"}):
+            gaps.append("handoffs")
+        if _contains(normalized, {"manual tracking", "tracking"}):
+            gaps.append("manual_tracking")
+        return gaps
     if _is_routesignal_playbook(campaign):
         return diagnostic_playbook.cleared_gaps_from_text(normalized)
     if _is_confusion(normalized):
@@ -996,6 +1018,8 @@ def _clear_gaps_from_text(normalized: str, campaign: dict | None = None) -> list
 
 def _confirmed_gaps_from_text(normalized: str, campaign: dict | None = None) -> list[str]:
     if _is_confusion(normalized):
+        return []
+    if _is_clear_or_no_pain(normalized):
         return []
     if _is_routesignal_playbook(campaign):
         return diagnostic_playbook.confirmed_gaps_from_text(normalized)
@@ -1486,9 +1510,8 @@ def _frame(
 
 def _diagnostic_opening_response(language: str, campaign: dict | None) -> str:
     if _is_routesignal_playbook(campaign):
-        return "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?"
-    labels = [_customer_label(gap, campaign) for gap in _core_diagnostic_gaps(campaign)]
-    return f"Thanks, I am checking {_join_or(labels)}. Which one is causing trouble, if any?"
+        return "Thanks. Is inbound demo follow-up slipping right now?"
+    return f"Thanks. {session_policy.generic_campaign_primary_question(language, campaign)}"
 
 
 def _all_clear_response(campaign: dict | None) -> str:
@@ -1500,9 +1523,8 @@ def _all_clear_response(campaign: dict | None) -> str:
 
 def _not_relevant_mid_call_response(campaign: dict | None) -> str:
     if _is_routesignal_playbook(campaign):
-        return "Understood. Do you mean callbacks and handoffs are not an issue at all, or just this part?"
-    labels = [_customer_label(gap, campaign) for gap in _core_diagnostic_gaps(campaign)]
-    return f"Understood. Do you mean {_join_or(labels)} are not an issue at all, or just this part?"
+        return "Understood. I won't assume that. Is there any inbound follow-up issue you actually want reviewed?"
+    return "Understood. I won't assume that. Is there any issue here you actually want reviewed?"
 
 
 def _next_diagnostic_response(language: str, cleared_gap: str | None, confirmed_gaps: list[str], campaign: dict | None) -> str:
@@ -1562,12 +1584,9 @@ def _confusion_response(active_gap: str | None, campaign: dict | None) -> str:
         target = str(context.get("appointment_target") or "human review")
         if active_gap:
             label = _customer_label(active_gap, campaign)
-            return f"I am asking whether {label} is worth a human review. If it is not an issue, I can stop here."
-        labels = [_customer_label(gap, campaign) for gap in _core_diagnostic_gaps(campaign)]
-        return (
-            f"I am asking whether anything is worth a {target}: {_join_or(labels)}. "
-            "If none of those apply, I can stop here."
-        )
+            return f"I am asking whether {label} is worth a {target}. What part is unclear?"
+        language = str((campaign or {}).get("language") or "en") if isinstance(campaign, dict) else "en"
+        return f"I am asking one thing for a possible {target}: {session_policy.generic_campaign_primary_question(language, campaign)}"
     if active_gap == "callbacks":
         return "Sorry, I meant callbacks after an inbound demo request. Do those follow-up calls ever get missed?"
     if active_gap == "manual_tracking":
@@ -1755,8 +1774,8 @@ def _is_time_constrained_permission(normalized: str) -> bool:
 
 
 def _generic_quick_permission_response(campaign: dict | None) -> str:
-    labels = [_customer_label(gap, campaign) for gap in _core_diagnostic_gaps(campaign)]
-    return f"Sure, one quick check: is this mainly about {_join_or(labels)}?"
+    language = str((campaign or {}).get("language") or "en") if isinstance(campaign, dict) else "en"
+    return f"Sure, one quick check: {session_policy.generic_campaign_primary_question(language, campaign).lower()}"
 
 
 def _is_gap_specific_unclear_context(normalized: str, gap_id: str | None, campaign: dict | None) -> bool:
@@ -1778,7 +1797,8 @@ def _is_gap_specific_unclear_context(normalized: str, gap_id: str | None, campai
 
 def _gap_specific_unclear_response(gap_id: str | None, campaign: dict | None) -> str:
     label = _customer_label(gap_id, campaign)
-    return f"Understood, {label} is the unclear part. Is it causing trouble now, or do you just want the scope clarified?"
+    owner = session_policy.generic_campaign_role_phrase(str(_campaign_context(campaign).get("human_followup_owner") or "qualified specialist"))
+    return f"Understood, {label} is the unclear part. What part is confusing: what it means, what {owner} would check, or whether it matters here?"
 
 
 def _is_routesignal_scope_boundary_question(normalized: str) -> bool:

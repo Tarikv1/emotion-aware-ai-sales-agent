@@ -224,42 +224,62 @@ def generic_campaign_context(campaign: dict | None) -> dict[str, str]:
     }
 
 
+def _question_sentence(question: str) -> str:
+    cleaned = " ".join(str(question or "").split()).strip()
+    if not cleaned:
+        return ""
+    if cleaned[-1] not in ".?!":
+        cleaned = f"{cleaned}?"
+    return cleaned
+
+
+def _generic_primary_issue_phrase(campaign: dict | None) -> str:
+    phrase = campaign_value(campaign, "primary_customer_issue_phrase", campaign_value(campaign, "primary_issue_phrase", ""))
+    if phrase:
+        return phrase
+    if is_generic_campaign_config(campaign):
+        gap_ids = campaign.get("core_diagnostic_gaps") or list((campaign.get("diagnostic_gaps") or {}).keys())
+        if gap_ids:
+            definition = (campaign.get("diagnostic_gaps") or {}).get(gap_ids[0]) or {}
+            return str(definition.get("customer_facing_phrase") or definition.get("label") or gap_ids[0]).replace("_", " ").strip()
+    return "the relevant issue"
+
+
+def generic_campaign_primary_question(language: str, campaign: dict | None) -> str:
+    configured = campaign_value(campaign, "short_relevance_question", "")
+    if configured:
+        return _question_sentence(configured)
+    issue = _generic_primary_issue_phrase(campaign)
+    if language.startswith("de"):
+        return f"Ist {issue} gerade relevant?"
+    return f"Is {issue} causing any issue right now?"
+
+
 def generic_campaign_review_question(language: str, campaign: dict | None) -> str:
     context = generic_campaign_context(campaign)
     if language.startswith("de"):
-        return (
-            f"Die kurze Pruefung ist, ob {context['gaps']} eine {context['target']} "
-            f"mit {context['owner']} brauchen. Welchen Teil soll ich zuerst pruefen?"
-        )
-    return (
-        f"The quick check is whether any of these areas is worth a short {context['target']}: {context['gaps']}. "
-        "If not, I can stop here; which part should I check first?"
-    )
+        return f"Kurze Pruefung fuer {context['target']}: {generic_campaign_primary_question(language, campaign)}"
+    return f"Quick check for a short {context['target']}: {generic_campaign_primary_question(language, campaign)}"
 
 
 def generic_campaign_next_step_text(language: str, campaign: dict | None) -> str:
     context = generic_campaign_context(campaign)
     if language.startswith("de"):
-        return (
-            f"Der naechste Schritt ist nur eine sichere Pruefung: Wenn {context['gaps']} relevant sind, "
-            f"kann {context['owner']} eine kurze {context['target']} machen. Sonst stoppe ich hier."
-        )
-    return (
-        f"If {context['gaps']} are actually relevant, {context['owner_phrase']} can do a short {context['target']}. "
-        "If not, I can stop here; should I ask one quick fit question?"
-    )
+        return f"Der naechste Schritt ist nur eine sichere Pruefung mit {context['owner']}. {generic_campaign_primary_question(language, campaign)}"
+    return f"If it is relevant, {context['owner_phrase']} can do a short {context['target']}. {generic_campaign_primary_question(language, campaign)}"
 
 
 def generic_campaign_product_detail_text(language: str, campaign: dict | None) -> str:
     context = generic_campaign_context(campaign)
+    primary_issue = _generic_primary_issue_phrase(campaign)
     if language.startswith("de"):
         return (
             f"Das ist kein Produktdetail-Gespraech. Ich kann nur pruefen, ob eine kurze {context['target']} "
-            f"zu {context['gaps']} sinnvoll ist."
+            f"zu {primary_issue} sinnvoll ist."
         )
     return (
         f"This is not a product-detail call. I can only check whether a short {context['target']} "
-        f"is useful, mainly around {context['gaps']}."
+        f"is useful around {primary_issue}."
     )
 
 
@@ -366,10 +386,9 @@ def generic_campaign_focus_text(
     if focus in {"fit", "qualification", "provider_gap"}:
         return generic_campaign_review_question(language, campaign)
     if focus == "effort":
-        context = generic_campaign_context(campaign)
         if language.startswith("de"):
-            return f"Der Aufwand lohnt nur, wenn {context['gaps']} wirklich relevant sind. Soll ich diesen Punkt pruefen oder hier stoppen?"
-        return f"This is only worth time when one of these areas is active: {context['gaps']}. Should I check one of them, or stop here?"
+            return f"Der Aufwand lohnt nur, wenn es gerade relevant ist. {generic_campaign_primary_question(language, campaign)}"
+        return f"This is only worth time if the primary issue is active. {generic_campaign_primary_question(language, campaign)}"
     if focus == "timing":
         if language.startswith("de"):
             return "Kein Problem. Ohne konkrete Zeit bestaetige ich nichts; wir koennen es bei einer spaeteren menschlichen Pruefung belassen."
@@ -535,7 +554,7 @@ def callback_workflow_clarification_response(language: str) -> str:
         return "Mit Rueckrufen meine ich Nachfass-Erinnerungen nach Demo-Anfragen, nicht diesen Anruf. RouteSignal haelt Besitzer und naechsten Schritt sichtbar. Passieren verpasste Nachfassaktionen oft genug?"
     return (
         "Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. "
-        "RouteSignal keeps owner and next step visible. Are missed follow-ups happening often enough to check?"
+        "Which part is confusing: what callback means here, who owns it, or whether missed follow-ups happen?"
     )
 
 
@@ -1005,6 +1024,8 @@ def is_value_relevance_question(normalized: str) -> bool:
             "what does that mean for us",
             "why is this useful",
             "why would this help",
+            "how would it help",
+            "how does that help",
             "would it",
             "i dont know would it",
             "i don t know would it",
@@ -1353,7 +1374,26 @@ def response_asked_main_focus_choice(response: str) -> bool:
 
 
 def response_reopens_focus_menu(response: str) -> bool:
-    return response_asked_main_focus_choice(response) or response_asked_price_choice(response)
+    lowered = normalize_text(response)
+    return (
+        response_asked_main_focus_choice(response)
+        or response_asked_price_choice(response)
+        or normalized_contains_any(
+            lowered,
+            {
+                "which part is least clear",
+                "which part is more familiar",
+                "which part should i check first",
+                "which one is causing trouble",
+                "which part causes trouble",
+                "manual tracking or missed callbacks",
+                "premium or budget, coverage fit",
+                "plan fit, coverage or availability",
+                "manual work, integration",
+                "vehicle issue, repair timing",
+            },
+        )
+    )
 
 
 def focus_menu_count(turns: list[dict]) -> int:
@@ -1472,7 +1512,7 @@ def continuity_text(language: str, focus: str, *, persisted: bool = False, campa
         if german:
             return "Dann pruefen wir nur die echte Luecke: Routing, Rueckrufe oder Uebergaben. Welche davon rutscht heute durch?"
         return "The useful check is whether routing, callbacks, or handoffs still slip with your current setup. Which one is still a gap?"
-    return "I can answer that directly if you name the point: workflow, price, security, or callback timing."
+    return "I can answer that directly if you name the point: workflow routing, price, security, or callback timing."
 
 
 def focus_followup_text(language: str, focus: str, normalized: str, campaign: dict | None = None) -> str:
@@ -1595,16 +1635,20 @@ def same_focus_progression_response(
         },
     )
     if selected_focus == resolved_focus or generic_progression:
-        return {
-            "applied": True,
-            "reason": f"resolved_{resolved_focus}_focus_progressed",
-            "dialogue_focus": resolved_focus,
-            "candidate_response": proactive_guidance_text(
+        if resolved_focus == "qualification" and is_value_relevance_question(normalized):
+            candidate_response = value_relevance_response(language, campaign)
+        else:
+            candidate_response = proactive_guidance_text(
                 language,
                 resolved_focus,
                 max(0, focus_turn_count(turns, resolved_focus) - 1),
                 campaign,
-            ),
+            )
+        return {
+            "applied": True,
+            "reason": f"resolved_{resolved_focus}_focus_progressed",
+            "dialogue_focus": resolved_focus,
+            "candidate_response": candidate_response,
         }
     return None
 
@@ -1620,10 +1664,10 @@ def modular_qualification_guidance_text(language: str, step: int, campaign: dict
         ]
         return options[step % len(options)]
     options = [
-        "This is about inbound demo follow-up: one person should be responsible for the next reply. That prevents missed follow-up. Which part is least clear today?",
-        "If inbound demo requests land in one inbox, missed follow-up can happen because everyone assumes someone else replied. Which part is harder today: seeing it, assigning the reply, or remembering the callback?",
-        "If callback reminders for demo follow-up sit in a spreadsheet, they can slip. Which part is more familiar: manual tracking or missed callbacks?",
-        "For inbound demo follow-up, a short check asks who replies next, when they reply, and how it is tracked. Which part is least clear today?",
+        "Thanks. Is inbound demo follow-up slipping right now?",
+        "Quick check: are demo leads missing an owner or next reply right now?",
+        "Is manual follow-up after demo requests slowing anyone down right now?",
+        "Are callback reminders after demo requests getting missed right now?",
         "For inbound demo or trial requests, quick routing means the next reply is assigned fast. Are missed follow-ups frequent enough to check?",
         "For managers, a short workflow review shows whether inbound demo follow-up is waiting too long. Would a short workflow review be worth checking?",
     ]
@@ -1891,6 +1935,22 @@ def unique_progressive_focus_text(
             if candidate and candidate not in seen:
                 return candidate
         return options[-1] or generic_campaign_review_question(language, campaign)
+    if focus == "qualification" and is_value_relevance_question(normalized):
+        options = [
+            (
+                "It helps only when inbound demo follow-up has no clear owner, callback reminder, or handoff. Which one is costing time today?"
+                if not language.startswith("de")
+                else "Es hilft nur, wenn Demo-Nachfassung keinen klaren Besitzer, keine Rueckruf-Erinnerung oder keine saubere Uebergabe hat. Was kostet heute Zeit?"
+            ),
+            (
+                "The useful value is not generic software; it is fewer missed demo replies, clearer owners, and cleaner handoffs. Which gap is active now?"
+                if not language.startswith("de")
+                else "Der Nutzen ist nicht allgemeine Software, sondern weniger verpasste Demo-Antworten, klarere Besitzer und sauberere Uebergaben. Welche Luecke ist aktiv?"
+            ),
+        ]
+        for candidate in options:
+            if candidate not in seen:
+                return candidate
     for offset in range(8):
         candidate = progressive_focus_text(language, focus, normalized, step + offset, campaign)
         if candidate not in seen:

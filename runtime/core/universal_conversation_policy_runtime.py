@@ -50,6 +50,11 @@ CLEAN_ACKNOWLEDGEMENTS = {
     "yeah that would be good",
     "ok",
     "okay",
+    "okay fine",
+    "okay go on",
+    "fine go ahead",
+    "fine",
+    "go ahead",
 }
 
 TIME_WORDS = {
@@ -220,6 +225,40 @@ TERMINAL_RAPPORT_MOVES = {"serious_hardship_bad_timing", "sensitive_personal_dat
 
 def _contains_any(normalized: str, phrases: set[str] | list[str] | tuple[str, ...]) -> bool:
     return any(phrase in normalized for phrase in phrases)
+
+
+def _weak_permission_acknowledgement(normalized: str) -> bool:
+    if normalized in CLEAN_ACKNOWLEDGEMENTS:
+        return True
+    return _contains_any(
+        normalized,
+        {
+            "okay fine",
+            "ok fine",
+            "fine go ahead",
+            "fine you can go ahead",
+            "okay go ahead",
+            "okay go on",
+            "go on then",
+        },
+    )
+
+
+def _time_constrained_permission_acknowledgement(normalized: str) -> bool:
+    return _contains_any(
+        normalized,
+        {
+            "fine but be fast",
+            "fine be fast",
+            "be fast",
+            "make it quick",
+            "keep it quick",
+            "quickly",
+            "maybe quickly",
+            "maybe go quickly",
+            "maybe but quickly",
+        },
+    )
 
 
 def _turns(session_state: dict | None) -> list[dict[str, Any]]:
@@ -1767,7 +1806,10 @@ def classify_universal_buyer_move_from_transcript(
             "what are you selling",
             "what is this",
             "what exactly is it",
+            "what exactly can you tell me",
             "what exactly are you selling",
+            "why are you calling",
+            "why are you calling if you cannot explain it",
             "explain it plainly",
             "explain plainly",
             "plainly",
@@ -1888,6 +1930,29 @@ def classify_universal_buyer_move_from_transcript(
         return _recognition("callback_time_provided", reason="time_phrase_with_acceptance", confidence="high", category="appointment_callback_send_info")
     if "that would be good" in normalized and _previous_response_asked_next_step_timing(session_state):
         return _recognition("appointment_interest", reason="clean_positive_after_progression", confidence="medium", category="appointment_callback_send_info")
+
+    if str((contextual_semantics or {}).get("semantic") or "") == "purpose_explanation_accepted":
+        return _recognition(
+            "why_are_you_asking",
+            reason="contextual_semantics_mapping",
+            confidence="medium",
+            category="confusion_challenge_repair",
+        )
+
+    if _time_constrained_permission_acknowledgement(normalized):
+        return _recognition(
+            "time_constrained_permission",
+            reason="time_constrained_permission_phrase",
+            confidence="high",
+            category="permission_time_pressure",
+        )
+    if _weak_permission_acknowledgement(normalized):
+        return _recognition(
+            "permission_acknowledgement",
+            reason="weak_permission_acknowledgement_phrase",
+            confidence="high",
+            category="permission_time_pressure",
+        )
 
     pending_tentative_gap = _pending_tentative_gap_id(session_state)
     if pending_tentative_gap and _is_tentative_gap_active_confirmation(normalized):
@@ -2129,14 +2194,14 @@ def classify_universal_buyer_move_from_transcript(
         }.get(context_move, "contextual_semantics")
         return _recognition(context_move, reason="contextual_semantics_mapping", confidence="medium", category=category)
 
-    if normalized in CLEAN_ACKNOWLEDGEMENTS:
+    if _weak_permission_acknowledgement(normalized):
         return _recognition(
             "permission_acknowledgement",
             reason="clean_acknowledgement_phrase",
             confidence="high",
             category="permission_time_pressure",
         )
-    if _contains_any(normalized, {"make it quick", "short minute", "quick minute", "keep it quick"}):
+    if _time_constrained_permission_acknowledgement(normalized) or _contains_any(normalized, {"short minute", "quick minute"}):
         return _recognition(
             "time_constrained_permission",
             reason="time_constrained_permission_phrase",
@@ -2534,8 +2599,8 @@ def render_universal_response_outline(
         return f"Sure, I'll slow down. I'm checking one thing: {_primary_issue_check_question(campaign)}"
     if buyer_move_id in {"repeat_or_rephrase_request", "repeat_last_answer"}:
         if has_confirmed_gap:
-            return f"Sure. Short version: you named {active_area}; I'm checking whether it is causing enough impact for a quick human review."
-        return f"Sure. Short version: I'm checking one thing: {_primary_issue_check_question(campaign)}"
+            return f"Sure. Short version: this call checks whether {active_area} is causing enough impact for a quick human review."
+        return f"Sure. Short version: this call checks one thing: {_primary_issue_check_question(campaign)}"
     if buyer_move_id == "language_mismatch":
         if has_confirmed_gap:
             return f"Understood. I'll use simple English. You named {active_area}; is it causing a real problem now?"
@@ -2572,9 +2637,20 @@ def render_universal_response_outline(
             return f"Sure. Since this sounds worth a review, I can note it for {owner_role}. What email or callback window should they use?"
         return f"Sure. I can note a request for details. What email should {owner_role} use?"
     if buyer_move_id == "callback_request":
+        readiness = str((frame or {}).get("appointment_readiness") or "")
+        if readiness in {"medium", "high"} or has_confirmed_gap:
+            if "next week" in normalized:
+                return "Sure. Next week can work. What day or time window should I note?"
+            if "tomorrow" in normalized:
+                return "Sure. Tomorrow can work. What time window should I note?"
+            return "Sure. What day or time window should I note?"
+        if "tomorrow at" in normalized:
+            return f"Sure. I can note tomorrow as a callback preference, but before I mark it as a review: {_primary_issue_check_question(campaign)}"
+        if "tomorrow" in normalized:
+            return f"Sure. I can note tomorrow as a callback preference, but first: {_primary_issue_check_question(campaign)}"
         if "next week" in normalized:
-            return "Sure. Next week works as a direction. Which day or time window should I note?"
-        return "Sure. What day or time window should I note?"
+            return f"Sure. I can note next week as a callback preference, but first: {_primary_issue_check_question(campaign)}"
+        return f"Sure. I can note a callback preference, but first I should check what this is about: {_primary_issue_check_question(campaign)}"
     if buyer_move_id == "buyer_requests_available_times":
         return f"I cannot send a live calendar from this call. I can note a preferred window for {owner_role}. What works?"
     if buyer_move_id == "buyer_wants_email_before_booking":
@@ -2597,9 +2673,14 @@ def render_universal_response_outline(
             "The quick question is whether that area is causing friction now."
         )
     if buyer_move_id == "what_problem_do_you_solve":
+        if "why are you calling" in normalized:
+            return f"The reason for calling is simple: this call checks whether {primary_issue_clause} and is worth a short review."
         if _contains_any(normalized, {"one sentence", "say it in one sentence"}):
             return f"In one sentence: this call checks whether {primary_issue_clause} and is worth a short review."
         if _contains_any(normalized, {"explain", "plainly", "what are you selling", "what is this"}):
+            previous = normalize_transcript(_previous_agent_response(session_state))
+            if "plainly this call checks" in previous or "plainly, this call checks" in previous:
+                return f"Different wording: this call checks whether {primary_issue_clause}; I cannot give a final recommendation here."
             return (
                 f"Plainly, this call checks whether {primary_gap} is active enough to justify "
                 "a short review by the right specialist."
@@ -2647,6 +2728,11 @@ def render_universal_response_outline(
             )
         return f"I mean whether {_sharp_diagnostic_gap_phrase(campaign)} is happening and causing enough impact to review. Is it showing up now?"
     if buyer_move_id == "why_are_you_asking":
+        if recognition_reason == "contextual_semantics_mapping" and has_confirmed_gap:
+            return (
+                f"The reason is to see whether {owner_role} should review {active_area} with you. "
+                "That is enough context. Should I note a callback time, or stop here?"
+            )
         return (
             f"Fair question. Because {owner_role} only needs to review this when there is real impact from {active_area}, "
             "I'm asking about impact now, not collecting extra details."
@@ -2656,13 +2742,15 @@ def render_universal_response_outline(
             target = _campaign_appointment_target(campaign)
             return (
                 f"You're right, you did not mention {_area_phrase(active_gap)}. I won't assume that. "
-                f"This call can only check whether {_with_indefinite_article(target)} is useful."
+                f"This call can only check whether {_with_indefinite_article(target)} is useful. "
+                "What, if anything, is the actual concern?"
             )
         if recognition_reason == "agent_wrong_or_false_assumption_challenge_phrase":
             target = _campaign_appointment_target(campaign)
             return (
                 "Understood. I won't assume that. Let me reset: "
-                f"this call can only check whether {_with_indefinite_article(target)} is useful."
+                f"this call can only check whether {_with_indefinite_article(target)} is useful. "
+                "Is there any issue here you actually want reviewed?"
             )
         if recognition_reason == "did_not_answer_challenge_phrase":
             return (

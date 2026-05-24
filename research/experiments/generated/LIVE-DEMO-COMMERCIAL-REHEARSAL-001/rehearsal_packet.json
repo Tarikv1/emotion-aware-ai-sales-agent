@@ -5,13 +5,15 @@
   "current_only_mode": true,
   "current_runtime_marked_record_count": 0,
   "current_runtime_reference": {
-    "git_head_short": "6d3d788",
+    "git_head_short": "3d6609c",
     "git_unavailable_reason": null,
     "runtime_manifest_entry_count": 66,
     "runtime_manifest_hash": "b0370cb94fe82889c95f7746f49400402d6d9830ad17c42687e3054f0bb8fcc8",
     "runtime_manifest_unavailable_reason": null,
     "source_worktree_dirty": true,
     "source_worktree_dirty_paths": [
+      "runtime/core/contextual_buyer_semantics.py",
+      "runtime/core/live_voice_session_policy.py",
       "runtime/core/universal_conversation_policy_runtime.py"
     ],
     "source_worktree_dirty_unavailable_reason": null,
@@ -21,7 +23,7 @@
     "stale_pre_current_runtime_artifact": 35,
     "unknown_version_private_artifact": 425
   },
-  "generated_at": "2026-05-24T01:09:05.608070+00:00",
+  "generated_at": "2026-05-24T02:43:14.624993+00:00",
   "mechanical_issue_counts": {},
   "private_input_discovery_count": 460,
   "private_turn_files_parsed": 460,

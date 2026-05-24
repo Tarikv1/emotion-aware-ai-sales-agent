@@ -773,8 +773,8 @@
       ],
       "failures": [],
       "passed": true,
-      "recognition_confidence": "medium",
-      "recognition_reason": "contextual_semantics_mapping",
+      "recognition_confidence": "high",
+      "recognition_reason": "weak_permission_acknowledgement_phrase",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -1559,8 +1559,8 @@
       ],
       "failures": [],
       "passed": true,
-      "recognition_confidence": "medium",
-      "recognition_reason": "contextual_semantics_mapping",
+      "recognition_confidence": "high",
+      "recognition_reason": "weak_permission_acknowledgement_phrase",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -2345,8 +2345,8 @@
       ],
       "failures": [],
       "passed": true,
-      "recognition_confidence": "medium",
-      "recognition_reason": "contextual_semantics_mapping",
+      "recognition_confidence": "high",
+      "recognition_reason": "weak_permission_acknowledgement_phrase",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
@@ -3131,8 +3131,8 @@
       ],
       "failures": [],
       "passed": true,
-      "recognition_confidence": "medium",
-      "recognition_reason": "contextual_semantics_mapping",
+      "recognition_confidence": "high",
+      "recognition_reason": "weak_permission_acknowledgement_phrase",
       "side_effect_flags": {
         "creates_calendar_event": false,
         "customer_audio_uploaded_to_python_server": false,
