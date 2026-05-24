@@ -79,6 +79,8 @@
           "claim calendar action"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "time",
@@ -195,6 +197,8 @@
           "invent contact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -311,6 +315,8 @@
           "push after minor impact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "weak_or_denied",
@@ -426,6 +432,8 @@
           "continue after stop"
         ],
         "friction_level": "high",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -540,6 +548,8 @@
           "pressure confused buyer"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -654,6 +664,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -772,6 +784,8 @@
           "claim calendar action"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "time",
@@ -888,6 +902,8 @@
           "invent contact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1004,6 +1020,8 @@
           "push after minor impact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "weak_or_denied",
@@ -1119,6 +1137,8 @@
           "continue after stop"
         ],
         "friction_level": "high",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1233,6 +1253,8 @@
           "pressure confused buyer"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1347,6 +1369,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1465,6 +1489,8 @@
           "claim calendar action"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "time",
@@ -1581,6 +1607,8 @@
           "invent contact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1697,6 +1725,8 @@
           "push after minor impact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "weak_or_denied",
@@ -1812,6 +1842,8 @@
           "continue after stop"
         ],
         "friction_level": "high",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1926,6 +1958,8 @@
           "pressure confused buyer"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2040,6 +2074,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2158,6 +2194,8 @@
           "claim calendar action"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "time",
@@ -2274,6 +2312,8 @@
           "invent contact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2390,6 +2430,8 @@
           "push after minor impact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "weak_or_denied",
@@ -2505,6 +2547,8 @@
           "continue after stop"
         ],
         "friction_level": "high",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2619,6 +2663,8 @@
           "pressure confused buyer"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2733,6 +2779,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2851,6 +2899,8 @@
           "claim calendar action"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "time",
@@ -2967,6 +3017,8 @@
           "invent contact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3083,6 +3135,8 @@
           "push after minor impact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "weak_or_denied",
@@ -3198,6 +3252,8 @@
           "continue after stop"
         ],
         "friction_level": "high",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3312,6 +3368,8 @@
           "pressure confused buyer"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3426,6 +3484,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",

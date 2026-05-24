@@ -72,6 +72,8 @@
           "claim human when automated"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -186,6 +188,8 @@
           "as an AI language model"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -302,6 +306,8 @@
           "name private source without evidence"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -418,6 +424,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -534,6 +542,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -646,6 +656,8 @@
           "ask diagnostic"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -758,6 +770,8 @@
           "ask diagnostic"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -873,6 +887,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -990,6 +1006,8 @@
           "erase confirmed gap"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1045,7 +1063,7 @@
       ],
       "expected_buyer_move_id": "already_answered_challenge",
       "failures": [],
-      "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named callbacks, the only useful follow-up is impact. Is it causing delays or extra work?",
+      "final_response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether inbound demo follow-up is slipping now and is worth a short review.",
       "passed": true,
       "response_shape_enforced_category": "confusion_challenge_repair",
       "response_shape_enforcement_enabled": true,
@@ -1106,6 +1124,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1161,7 +1181,7 @@
       ],
       "expected_buyer_move_id": "already_answered_challenge",
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have callbacks noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have callbacks noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "response_shape_enforced_category": "confusion_challenge_repair",
       "response_shape_enforcement_enabled": true,
@@ -1222,6 +1242,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1339,6 +1361,8 @@
           "defensive wording"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1394,7 +1418,7 @@
       ],
       "expected_buyer_move_id": "already_answered_challenge",
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have callbacks noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have callbacks noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "response_shape_enforced_category": "confusion_challenge_repair",
       "response_shape_enforcement_enabled": true,
@@ -1455,6 +1479,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1574,6 +1600,8 @@
           "repeat long diagnostic menu"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1691,6 +1719,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1807,6 +1837,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1923,6 +1955,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2039,6 +2073,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2155,6 +2191,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2271,6 +2309,8 @@
           "claim human when automated"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2385,6 +2425,8 @@
           "as an AI language model"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2501,6 +2543,8 @@
           "name private source without evidence"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2617,6 +2661,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2733,6 +2779,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2845,6 +2893,8 @@
           "ask diagnostic"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2957,6 +3007,8 @@
           "ask diagnostic"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3072,6 +3124,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3189,6 +3243,8 @@
           "erase confirmed gap"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3244,7 +3300,7 @@
       ],
       "expected_buyer_move_id": "already_answered_challenge",
       "failures": [],
-      "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named premium pressure, the only useful follow-up is impact. Is it causing delays or extra work?",
+      "final_response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether premium pressure is still a problem and is worth a short review.",
       "passed": true,
       "response_shape_enforced_category": "confusion_challenge_repair",
       "response_shape_enforcement_enabled": true,
@@ -3305,6 +3361,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3360,7 +3418,7 @@
       ],
       "expected_buyer_move_id": "already_answered_challenge",
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have premium pressure noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have premium pressure noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "response_shape_enforced_category": "confusion_challenge_repair",
       "response_shape_enforcement_enabled": true,
@@ -3421,6 +3479,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3538,6 +3598,8 @@
           "defensive wording"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3593,7 +3655,7 @@
       ],
       "expected_buyer_move_id": "already_answered_challenge",
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have premium pressure noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have premium pressure noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "response_shape_enforced_category": "confusion_challenge_repair",
       "response_shape_enforcement_enabled": true,
@@ -3654,6 +3716,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3773,6 +3837,8 @@
           "repeat long diagnostic menu"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3890,6 +3956,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4006,6 +4074,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4122,6 +4192,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4209,8 +4281,8 @@
         "buyer_move_category": "product_value_scope",
         "buyer_move_id": "regulated_claim_question",
         "callback_capture_required": false,
-        "confirmed_gap_id": "",
-        "confirmed_gap_phrase": "premium pressure",
+        "confirmed_gap_id": "coverage_fit",
+        "confirmed_gap_phrase": "coverage fit",
         "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
@@ -4238,6 +4310,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4266,7 +4340,7 @@
         "safe_to_continue": true,
         "sales_progression_stage": "none",
         "schema_version": 1,
-        "selected_gap": "",
+        "selected_gap": "coverage_fit",
         "sensitive_context_detected": false,
         "serious_bad_timing_detected": false,
         "should_offer_later_or_stop": false,
@@ -4354,6 +4428,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4470,6 +4546,8 @@
           "claim human when automated"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4584,6 +4662,8 @@
           "as an AI language model"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4700,6 +4780,8 @@
           "name private source without evidence"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4816,6 +4898,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4932,6 +5016,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5044,6 +5130,8 @@
           "ask diagnostic"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5156,6 +5244,8 @@
           "ask diagnostic"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5271,6 +5361,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5388,6 +5480,8 @@
           "erase confirmed gap"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5443,7 +5537,7 @@
       ],
       "expected_buyer_move_id": "already_answered_challenge",
       "failures": [],
-      "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named manual work, the only useful follow-up is impact. Is it causing delays or extra work?",
+      "final_response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether manual work is still a problem and is worth a short review.",
       "passed": true,
       "response_shape_enforced_category": "confusion_challenge_repair",
       "response_shape_enforcement_enabled": true,
@@ -5504,6 +5598,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5559,7 +5655,7 @@
       ],
       "expected_buyer_move_id": "already_answered_challenge",
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have manual work noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have manual work noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "response_shape_enforced_category": "confusion_challenge_repair",
       "response_shape_enforcement_enabled": true,
@@ -5620,6 +5716,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5737,6 +5835,8 @@
           "defensive wording"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5792,7 +5892,7 @@
       ],
       "expected_buyer_move_id": "already_answered_challenge",
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have manual work noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have manual work noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "response_shape_enforced_category": "confusion_challenge_repair",
       "response_shape_enforcement_enabled": true,
@@ -5853,6 +5953,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5972,6 +6074,8 @@
           "repeat long diagnostic menu"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6089,6 +6193,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6205,6 +6311,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6321,6 +6429,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6437,6 +6547,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6553,6 +6665,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6669,6 +6783,8 @@
           "claim human when automated"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6783,6 +6899,8 @@
           "as an AI language model"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6899,6 +7017,8 @@
           "name private source without evidence"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7015,6 +7135,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7131,6 +7253,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7243,6 +7367,8 @@
           "ask diagnostic"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7355,6 +7481,8 @@
           "ask diagnostic"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7470,6 +7598,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7587,6 +7717,8 @@
           "erase confirmed gap"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7642,7 +7774,7 @@
       ],
       "expected_buyer_move_id": "already_answered_challenge",
       "failures": [],
-      "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named repair timing, the only useful follow-up is impact. Is it causing delays or extra work?",
+      "final_response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether repair timing is still a problem and is worth a short review.",
       "passed": true,
       "response_shape_enforced_category": "confusion_challenge_repair",
       "response_shape_enforcement_enabled": true,
@@ -7703,6 +7835,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7758,7 +7892,7 @@
       ],
       "expected_buyer_move_id": "already_answered_challenge",
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have repair timing noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have repair timing noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "response_shape_enforced_category": "confusion_challenge_repair",
       "response_shape_enforcement_enabled": true,
@@ -7819,6 +7953,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7936,6 +8072,8 @@
           "defensive wording"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7991,7 +8129,7 @@
       ],
       "expected_buyer_move_id": "already_answered_challenge",
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have repair timing noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have repair timing noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "response_shape_enforced_category": "confusion_challenge_repair",
       "response_shape_enforcement_enabled": true,
@@ -8052,6 +8190,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8171,6 +8311,8 @@
           "repeat long diagnostic menu"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8288,6 +8430,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8404,6 +8548,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8520,6 +8666,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8636,6 +8784,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8752,6 +8902,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8868,6 +9020,8 @@
           "claim human when automated"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8982,6 +9136,8 @@
           "as an AI language model"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9098,6 +9254,8 @@
           "name private source without evidence"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9214,6 +9372,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9330,6 +9490,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9442,6 +9604,8 @@
           "ask diagnostic"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9554,6 +9718,8 @@
           "ask diagnostic"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9669,6 +9835,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9786,6 +9954,8 @@
           "erase confirmed gap"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9841,7 +10011,7 @@
       ],
       "expected_buyer_move_id": "already_answered_challenge",
       "failures": [],
-      "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named the service need, the only useful follow-up is impact. Is it causing delays or extra work?",
+      "final_response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether the service need is active now and is worth a short review.",
       "passed": true,
       "response_shape_enforced_category": "confusion_challenge_repair",
       "response_shape_enforcement_enabled": true,
@@ -9902,6 +10072,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9957,7 +10129,7 @@
       ],
       "expected_buyer_move_id": "already_answered_challenge",
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have the service need noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have the service need noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "response_shape_enforced_category": "confusion_challenge_repair",
       "response_shape_enforcement_enabled": true,
@@ -10018,6 +10190,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10135,6 +10309,8 @@
           "defensive wording"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10190,7 +10366,7 @@
       ],
       "expected_buyer_move_id": "already_answered_challenge",
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have the service need noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have the service need noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "response_shape_enforced_category": "confusion_challenge_repair",
       "response_shape_enforcement_enabled": true,
@@ -10251,6 +10427,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10370,6 +10548,8 @@
           "repeat long diagnostic menu"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10487,6 +10667,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10603,6 +10785,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10719,6 +10903,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10835,6 +11021,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10951,6 +11139,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",

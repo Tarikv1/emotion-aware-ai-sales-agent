@@ -67,6 +67,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -177,6 +179,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -287,6 +291,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -402,6 +408,8 @@
           "repeat full diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -516,6 +524,8 @@
           "erase confirmed gap"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -630,6 +640,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -740,6 +752,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",

@@ -67,6 +67,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -182,6 +184,8 @@
           "repeat full diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -199,8 +203,8 @@
         "provider_calls_made": false,
         "rapport_repair_required": false,
         "rapport_response_shape_id": "none",
-        "recognition_confidence": "medium",
-        "recognition_reason": "contextual_semantics_mapping",
+        "recognition_confidence": "high",
+        "recognition_reason": "configured_gap_near_miss_pain_phrase",
         "relevance_bridge_allowed": false,
         "response_shape_candidate_source": "universal_response_shape",
         "response_shape_enforced_category": "pain_progression",
@@ -295,6 +299,8 @@
           "transfer-or-escalate"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -411,6 +417,8 @@
           "claim calendar action"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "delay",
@@ -525,6 +533,8 @@
           "push after minor impact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "weak_or_denied",
@@ -637,6 +647,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -747,6 +759,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -862,6 +876,8 @@
           "repeat full diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -880,7 +896,7 @@
         "rapport_repair_required": false,
         "rapport_response_shape_id": "none",
         "recognition_confidence": "high",
-        "recognition_reason": "clean_pain_phrase",
+        "recognition_reason": "configured_gap_near_miss_pain_phrase",
         "relevance_bridge_allowed": false,
         "response_shape_candidate_source": "universal_response_shape",
         "response_shape_enforced_category": "pain_progression",
@@ -975,6 +991,8 @@
           "transfer-or-escalate"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -1091,6 +1109,8 @@
           "claim calendar action"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "delay",
@@ -1205,6 +1225,8 @@
           "push after minor impact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "weak_or_denied",
@@ -1317,6 +1339,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1427,6 +1451,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1542,6 +1568,8 @@
           "repeat full diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1560,7 +1588,7 @@
         "rapport_repair_required": false,
         "rapport_response_shape_id": "none",
         "recognition_confidence": "high",
-        "recognition_reason": "clean_pain_phrase",
+        "recognition_reason": "configured_gap_near_miss_pain_phrase",
         "relevance_bridge_allowed": false,
         "response_shape_candidate_source": "universal_response_shape",
         "response_shape_enforced_category": "pain_progression",
@@ -1655,6 +1683,8 @@
           "transfer-or-escalate"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -1771,6 +1801,8 @@
           "claim calendar action"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "delay",
@@ -1885,6 +1917,8 @@
           "push after minor impact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "weak_or_denied",
@@ -1997,6 +2031,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2107,6 +2143,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2222,6 +2260,8 @@
           "repeat full diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2335,6 +2375,8 @@
           "transfer-or-escalate"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -2451,6 +2493,8 @@
           "claim calendar action"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "delay",
@@ -2565,6 +2609,8 @@
           "push after minor impact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "weak_or_denied",
@@ -2677,6 +2723,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2787,6 +2835,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2902,6 +2952,8 @@
           "repeat full diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3015,6 +3067,8 @@
           "transfer-or-escalate"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -3131,6 +3185,8 @@
           "claim calendar action"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "delay",
@@ -3245,6 +3301,8 @@
           "push after minor impact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "weak_or_denied",
@@ -3357,6 +3415,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",

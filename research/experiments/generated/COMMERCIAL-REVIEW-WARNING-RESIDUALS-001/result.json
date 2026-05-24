@@ -1081,7 +1081,7 @@
           "callbacks"
         ],
         "recognition_reason": "already_answered_challenge_phrase",
-        "response": "You're right, you already gave me that. I have callbacks noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+        "response": "You're right, you already gave me that. I won't repeat it. I have callbacks noted; the useful follow-up is impact. Is it causing delays or extra work?",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1111,7 +1111,7 @@
           "callbacks"
         ],
         "recognition_reason": "did_not_answer_challenge_phrase",
-        "response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named callbacks, the only useful follow-up is impact. Is it causing delays or extra work?",
+        "response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether inbound demo follow-up is slipping now and is worth a short review.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1171,7 +1171,7 @@
           "premium_or_budget"
         ],
         "recognition_reason": "already_answered_challenge_phrase",
-        "response": "You're right, you already gave me that. I have premium pressure noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+        "response": "You're right, you already gave me that. I won't repeat it. I have premium pressure noted; the useful follow-up is impact. Is it causing delays or extra work?",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1201,7 +1201,7 @@
           "premium_or_budget"
         ],
         "recognition_reason": "did_not_answer_challenge_phrase",
-        "response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named premium pressure, the only useful follow-up is impact. Is it causing delays or extra work?",
+        "response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether premium pressure is still a problem and is worth a short review.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1261,7 +1261,7 @@
           "manual_work"
         ],
         "recognition_reason": "already_answered_challenge_phrase",
-        "response": "You're right, you already gave me that. I have manual work noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+        "response": "You're right, you already gave me that. I won't repeat it. I have manual work noted; the useful follow-up is impact. Is it causing delays or extra work?",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1291,7 +1291,7 @@
           "manual_work"
         ],
         "recognition_reason": "did_not_answer_challenge_phrase",
-        "response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named manual work, the only useful follow-up is impact. Is it causing delays or extra work?",
+        "response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether manual work is still a problem and is worth a short review.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1351,7 +1351,7 @@
           "repair_timing"
         ],
         "recognition_reason": "already_answered_challenge_phrase",
-        "response": "You're right, you already gave me that. I have repair timing noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+        "response": "You're right, you already gave me that. I won't repeat it. I have repair timing noted; the useful follow-up is impact. Is it causing delays or extra work?",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1381,7 +1381,7 @@
           "repair_timing"
         ],
         "recognition_reason": "did_not_answer_challenge_phrase",
-        "response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named repair timing, the only useful follow-up is impact. Is it causing delays or extra work?",
+        "response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether repair timing is still a problem and is worth a short review.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1441,7 +1441,7 @@
           "service_need"
         ],
         "recognition_reason": "already_answered_challenge_phrase",
-        "response": "You're right, you already gave me that. I have the service need noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+        "response": "You're right, you already gave me that. I won't repeat it. I have the service need noted; the useful follow-up is impact. Is it causing delays or extra work?",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1471,7 +1471,7 @@
           "service_need"
         ],
         "recognition_reason": "did_not_answer_challenge_phrase",
-        "response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named the service need, the only useful follow-up is impact. Is it causing delays or extra work?",
+        "response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether the service need is active now and is worth a short review.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {

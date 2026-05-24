@@ -1883,9 +1883,9 @@ def unique_progressive_focus_text(
             generic_campaign_focus_text(language, focus, campaign, normalized=normalized),
             generic_campaign_review_question(language, campaign),
             generic_campaign_next_step_text(language, campaign),
-            "I may not be the right contact for that question. Should I note a callback path, or stop here?"
+            "I can only keep this to the current call scope. Should I keep checking that, or stop here?"
             if not language.startswith("de")
-            else "Dafuer bin ich wahrscheinlich nicht der richtige Kontakt. Soll ich einen Rueckruf notieren oder hier stoppen?",
+            else "Ich kann das nur im aktuellen Anrufskontext halten. Soll ich dort weiter pruefen oder hier stoppen?",
         ]
         for candidate in options:
             if candidate and candidate not in seen:
@@ -3650,6 +3650,18 @@ def pre_speech_conversation_stability_guard(
     if response_starts_with_customer_phrase(transcript, response):
         violations.append("leading_customer_echo")
         repaired_response = response_echo_repair(transcript, language, response, memory, turns, campaign)
+
+    if is_new_trial_request_clarification(normalized) and not normalized_contains_any(
+        normalize_text(response),
+        {
+            "inbound demo or trial inquiries",
+            "inbound demo or trial requests",
+            "trial inquiries",
+            "trial requests",
+        },
+    ):
+        violations.append("failed_to_explain_previous_question")
+        repaired_response = new_trial_request_clarification_response(language)
 
     if is_previous_question_clarification_request(normalized) and not normalized_contains_any(
         normalize_text(response),

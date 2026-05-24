@@ -197,7 +197,7 @@
             "campaign_playbook_id": "synthetic-home-services-estimate-playbook",
             "creates_calendar_event": false,
             "durable_provider_agent_created": false,
-            "final_response": "Got it, estimate details are the concern. Is the estimate or property detail creating a real blocker, or mostly a question for later?",
+            "final_response": "Maybe estimate or property details, understood. Is that an active concern now, or just something you might want checked later?",
             "lead_followup_state": {},
             "local_llm_calls_made": false,
             "opens_prod_102": false,
@@ -209,7 +209,7 @@
             "sends_email": false,
             "target_gap": "estimate_or_property_details",
             "transcript": "estimate is unclear",
-            "tts_input_text": "Got it, estimate details are the concern. Is the estimate or property detail creating a real blocker, or mostly a question for later?",
+            "tts_input_text": "Maybe estimate or property details, understood. Is that an active concern now, or just something you might want checked later?",
             "voice_cloning_used": false,
             "writes_crm": false
           },
@@ -223,9 +223,9 @@
             "final_response": "Got it. I'll note that time for the qualified service coordinator to follow up.",
             "lead_followup_state": {
               "appointment": {
-                "confirmation_text": "workflow review time captured",
-                "confirmed": true,
-                "type": "workflow_review"
+                "confirmation_text": null,
+                "confirmed": false,
+                "type": "callback"
               },
               "callback": {
                 "needs_clarification": false,
@@ -247,8 +247,8 @@
                 "email_valid": false,
                 "raw_email_stored_in_public_evidence": false
               },
-              "lead_status": "open_workflow_review",
-              "requested_summary_type": "workflow_review",
+              "lead_status": "open_callback",
+              "requested_summary_type": "unknown",
               "safety": {
                 "creates_calendar_event": false,
                 "local_llm_calls_made": false,
@@ -262,12 +262,12 @@
             "local_llm_calls_made": false,
             "opens_prod_102": false,
             "playbook_id": "synthetic-home-services-estimate-playbook",
-            "playbook_review_focus": "estimate details and property context",
+            "playbook_review_focus": null,
             "provider_agent_used": false,
             "provider_calls_made": false,
-            "semantic": "appointment_time_given",
+            "semantic": "no_contextual_semantic",
             "sends_email": false,
-            "target_gap": "estimate_or_property_details",
+            "target_gap": null,
             "transcript": "tomorrow at 3 works",
             "tts_input_text": "Got it. I'll note that time for the qualified service coordinator to follow up.",
             "voice_cloning_used": false,

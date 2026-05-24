@@ -50,7 +50,7 @@
         "call_control": "continue-call",
         "confirmed_gap_id": "callbacks",
         "confirmed_gap_phrase": "callbacks",
-        "recognition_reason": "contextual_semantics_mapping",
+        "recognition_reason": "configured_gap_near_miss_pain_phrase",
         "response": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
         "response_shape_enforced_category": "pain_progression",
         "selected_action_source": "universal_response_shape",

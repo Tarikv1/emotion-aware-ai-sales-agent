@@ -149,6 +149,34 @@ REGULATED_SCOPE_BOUNDARY_MOVES = {
     "regulated_claim_question",
 }
 
+HIGH_CONFIDENCE_PRIORITY_MOVES = (
+    DIRECT_PRODUCT_VALUE_MOVES
+    | {
+        "scope_limit_question",
+        "regulated_claim_question",
+        "why_are_you_asking",
+        "already_answered_challenge",
+        "contradiction_challenge",
+        "confusion_not_clear",
+        "prior_bad_experience_context",
+    }
+)
+
+HIGH_CONFIDENCE_CONTEXTUAL_SEMANTICS = {
+    "account_support_boundary",
+    "already_stated_confirmed_pain",
+    "campaign_claim_boundary_caution",
+    "cannot_provide_product_details_acknowledged",
+    "contact_boundary_contradiction_repair",
+    "gap_specific_unclear_context",
+    "next_step_question_after_confirmed_pain",
+    "product_detail_limit_question",
+    "purpose_clarification_after_confirmed_gap",
+    "purpose_explanation_accepted",
+    "route_signal_scope_boundary",
+    "vertical_support_boundary",
+}
+
 SOCIAL_CONVERSATION_MANAGEMENT_MOVES = {
     "slow_down_or_speak_faster",
     "repeat_last_answer",
@@ -503,6 +531,7 @@ def _transcript_near_matches_gap_record(normalized: str, record: dict[str, Any])
             "problem",
             "issue",
             "pressure",
+            "wrong",
         },
     )
     normalized_token_set = set(tokens)
@@ -511,13 +540,35 @@ def _transcript_near_matches_gap_record(normalized: str, record: dict[str, Any])
         phrase_tokens = cleaned.split()
         if not phrase_tokens:
             continue
+        if (
+            has_relevance_cue
+            and {"manual", "work"}.issubset(set(phrase_tokens))
+            and "manual" in normalized_token_set
+            and normalized_token_set & {"process", "spreadsheet", "tracking", "trucking", "workflow"}
+        ):
+            return True
         significant = _significant_gap_tokens(cleaned)
         if not significant:
             continue
         if has_relevance_cue and (significant & normalized_token_set):
             return True
         if len(phrase_tokens) == 1:
+            for start in range(0, max(0, len(tokens) - 1)):
+                joined = "".join(tokens[start : start + 2])
+                if SequenceMatcher(None, cleaned, joined).ratio() >= 0.90:
+                    return True
             continue
+        if has_relevance_cue:
+            for phrase_token in significant:
+                if any(
+                    phrase_token not in {"manual", "manually"}
+                    and token not in {"manual", "manually"}
+                    and
+                    phrase_token[:3] == token[:3]
+                    and SequenceMatcher(None, phrase_token, token).ratio() >= 0.76
+                    for token in tokens
+                ):
+                    return True
         if len(phrase_tokens) <= len(tokens):
             for start in range(0, len(tokens) - len(phrase_tokens) + 1):
                 window = " ".join(tokens[start : start + len(phrase_tokens)])
@@ -536,7 +587,38 @@ def _transcript_matches_gap_record(normalized: str, record: dict[str, Any]) -> b
 def _pain_like_unsupported_phrase(normalized: str) -> bool:
     return _contains_any(
         normalized,
-        {"is a problem", "is the problem", "usually pretty long", "we need", "is unclear", "is the issue"},
+        {
+            "are a problem",
+            "are the problem",
+            "is a problem",
+            "is confusing",
+            "is the problem",
+            "is the issue",
+            "is unclear",
+            "usually pretty long",
+            "we need",
+        },
+    )
+
+
+def _negates_gap_pain(normalized: str) -> bool:
+    return _contains_any(
+        normalized,
+        {
+            "are fine",
+            "are not a problem",
+            "is fine",
+            "is not a problem",
+            "is not the problem",
+            "isn t a problem",
+            "isn t the problem",
+            "not a problem",
+            "not an issue",
+            "not causing",
+            "not the issue",
+            "not the problem",
+            "no problem",
+        },
     )
 
 
@@ -712,6 +794,11 @@ def _scope_relevance_clarification_response(campaign: dict | None) -> str:
     if primary_gap.endswith("need"):
         return f"That may be outside this call's scope. The quick check here is whether {_area_phrase(primary_gap)} is active now."
     return f"That may be outside this call's scope. The quick check here is whether {primary_gap} is causing any issue now."
+
+
+def _campaign_mismatch_response(campaign: dict | None, normalized: str) -> str:
+    purpose = _campaign_purpose_phrase(campaign)
+    return f"Fair question. This call is about {purpose}. If that is not relevant, I should stop here."
 
 
 def _issue_check_question_for_phrase(phrase: str) -> str:
@@ -1337,6 +1424,12 @@ def _buyer_move_from_context(contextual_semantics: dict | None, transcript: str)
     normalized = normalize_transcript(transcript)
     if semantic == "pain_confirmed":
         return "pain_confirmed"
+    if semantic == "gap_specific_unclear_context":
+        return "tentative_gap_interest"
+    if semantic in {"product_detail_limit_question", "cannot_provide_product_details_acknowledged"}:
+        return "scope_limit_question"
+    if semantic in {"route_signal_scope_boundary", "campaign_claim_boundary_caution", "vertical_support_boundary"}:
+        return "scope_limit_question"
     if semantic in {"current_gap_clear", "no_pain_for_specific_gap"}:
         return "no_pain_clear"
     if semantic in {"callback_time_confirmed", "appointment_time_confirmed"}:
@@ -1550,12 +1643,61 @@ def classify_universal_buyer_move_from_transcript(
         },
     ):
         return _recognition("scope_limit_question", reason="scope_limit_question_phrase", confidence="high", category="product_value_scope")
+    if _contains_any(
+        normalized,
+        {
+            "why do i need a human review",
+            "why need a human review",
+            "why can t you just tell me",
+            "why cant you just tell me",
+            "why cannot you just tell me",
+            "why can t you book it now",
+            "why cant you book it now",
+            "why are you passing me",
+            "passing me to someone else",
+            "what will they do that you can t",
+            "what will they do that you cant",
+            "what can they do that you can t",
+            "what can they do that you cant",
+            "what do you mean by human review",
+        },
+    ):
+        return _recognition("scope_limit_question", reason="why_human_review_phrase", confidence="high", category="product_value_scope")
     if _contains_any(normalized, {"how about", "what about"}) and _mentioned_gap_phrase(campaign, normalized):
         return _recognition("scope_limit_question", reason="configured_gap_scope_question", confidence="high", category="product_value_scope")
     if _contains_any(normalized, {"did not mention", "didn t mention", "never mentioned", "i did not say", "i didn t say"}):
         return _recognition(
             "already_answered_challenge",
             reason="false_assumption_correction_phrase",
+            confidence="high",
+            category="confusion_challenge_repair",
+        )
+    if _contains_any(
+        normalized,
+        {
+            "that is not what i said",
+            "that s not what i said",
+            "thats not what i said",
+            "that is not what i asked",
+            "that s not what i asked",
+            "thats not what i asked",
+            "no that is wrong",
+            "that is wrong",
+            "that s wrong",
+            "thats wrong",
+            "that does not make sense",
+            "that doesn t make sense",
+            "you misunderstood me",
+            "you misunderstood",
+            "stop assuming that",
+            "you are making assumptions",
+            "you re making assumptions",
+            "youre making assumptions",
+        },
+    ):
+        return _recognition(
+            "already_answered_challenge",
+            reason="agent_wrong_or_false_assumption_challenge_phrase",
             confidence="high",
             category="confusion_challenge_repair",
         )
@@ -1582,7 +1724,25 @@ def classify_universal_buyer_move_from_transcript(
         )
     if _contains_any(normalized, {"what does your product do", "what is your product", "what your product do"}):
         return _recognition("product_detail_question", reason="product_detail_question_phrase", confidence="high", category="product_value_scope")
-    if _contains_any(normalized, {"what problem do you solve", "what do you solve", "what do you help with", "what is this for"}):
+    if _contains_any(
+        normalized,
+        {
+            "what problem do you solve",
+            "what do you solve",
+            "what do you help with",
+            "what is this for",
+            "what are you selling",
+            "what is this",
+            "what exactly is it",
+            "what exactly are you selling",
+            "explain it plainly",
+            "explain plainly",
+            "plainly",
+            "say it in one sentence",
+            "one sentence",
+            "no explain it plainly",
+        },
+    ):
         return _recognition("what_problem_do_you_solve", reason="problem_solved_question_phrase", confidence="high", category="product_value_scope")
     if _contains_any(normalized, {"why should i care", "why would i care", "why care", "what should i care"}):
         return _recognition("why_should_i_care", reason="why_should_i_care_phrase", confidence="high", category="product_value_scope")
@@ -1617,6 +1777,55 @@ def classify_universal_buyer_move_from_transcript(
     if _contains_any(normalized, {"too busy", "we are busy", "in a meeting", "not a good time"}):
         return _recognition("too_busy_now", reason="too_busy_objection_phrase", confidence="high", category="objections")
 
+    confirmed_gap_impact = _impact_signal_from_transcript(normalized) if _confirmed_gap_id(session_state) else {}
+    matched_gap = _gap_id_from_transcript(normalized, campaign)
+    if (
+        matched_gap
+        and confirmed_gap_impact.get("strength") not in {"confirmed", "weak_or_denied", "unclear"}
+        and not _negates_gap_pain(normalized)
+        and not _contains_any(
+        normalized,
+        {
+            "why are you talking about",
+            "why talk about",
+            "something else",
+            "this is not what i asked",
+            "this is not what i asked about",
+        },
+        )
+        and _contains_any(
+        normalized,
+        {
+            "confusing",
+            "confused",
+            "unclear",
+            "not clear",
+            "thing",
+            "problem",
+            "issue",
+            "pressure",
+            "messy",
+            "slipping",
+            "wastes time",
+            "waste time",
+            "wrong",
+        },
+        )
+    ):
+        if _contains_any(normalized, {"confusing", "confused", "unclear", "not clear", "thing"}):
+            return _recognition(
+                "tentative_gap_interest",
+                reason="configured_gap_near_miss_unclear_phrase",
+                confidence="high",
+                category="pain_tentative_pain",
+            )
+        return _recognition(
+            "pain_confirmed",
+            reason="configured_gap_near_miss_pain_phrase",
+            confidence="high",
+            category="pain_tentative_pain",
+        )
+
     if _contains_any(normalized, {"send me details", "send details", "send me information", "send me info"}):
         return _recognition("send_info_request", reason="send_info_request_phrase", confidence="high", category="appointment_callback_send_info")
     if _contains_any(normalized, {"call me next week", "call me later", "call back", "callback request", "call me back"}):
@@ -1640,6 +1849,29 @@ def classify_universal_buyer_move_from_transcript(
             confidence="high",
             category="pain_tentative_pain",
         )
+    if pending_tentative_gap:
+        impact = _impact_signal_from_transcript(normalized)
+        if impact.get("strength") == "confirmed":
+            return _recognition(
+                "implication_confirmed",
+                reason=f"tentative_gap_impact_signal_{impact.get('type')}",
+                confidence="high",
+                category="pain_progression",
+            )
+        if impact.get("strength") == "weak_or_denied":
+            return _recognition(
+                "implication_weak_or_denied",
+                reason="tentative_gap_weak_or_denied_impact_signal",
+                confidence="high",
+                category="pain_progression",
+            )
+        if impact.get("strength") == "unclear":
+            return _recognition(
+                "implication_unclear",
+                reason="tentative_gap_unclear_impact_signal",
+                confidence="medium",
+                category="pain_progression",
+            )
 
     if _confirmed_gap_id(session_state) and _looks_like_time(normalized):
         return _recognition(
@@ -1695,16 +1927,88 @@ def classify_universal_buyer_move_from_transcript(
 
     if _contains_any(normalized, {"what do you mean", "i do not understand", "i don t understand", "dont understand"}):
         return _recognition("confusion_not_clear", reason="confusion_or_clarification_phrase", confidence="high", category="confusion_challenge_repair")
+    if _contains_any(
+        normalized,
+        {
+            "why are you talking about something else",
+            "why are you talking about",
+            "why talk about",
+            "are you calling about insurance or software",
+            "are you calling about",
+            "this is not what i asked about",
+            "this isn t what i asked about",
+            "this is not what i asked",
+            "why are you talking about repair timing",
+            "why are you talking about insurance",
+        },
+    ):
+        return _recognition("confusion_not_clear", reason="campaign_mismatch_question_phrase", confidence="high", category="confusion_challenge_repair")
+    if _contains_any(
+        normalized,
+        {
+            "i need insurance coverage",
+            "i need coverage",
+            "insurance coverage",
+            "software callbacks",
+            "inbound demo follow up",
+            "repair timing",
+            "plan fit",
+            "warranty estimate",
+            "cancellation terms",
+        },
+    ) and _unsupported_pain_phrase_gap_id(f"{normalized} is a problem", campaign):
+        if _pain_like_unsupported_phrase(normalized):
+            return _recognition(
+                "confusion_not_clear",
+                reason="out_of_campaign_pain_phrase",
+                confidence="medium",
+                category="confusion_challenge_repair",
+            )
+        return _recognition("confusion_not_clear", reason="campaign_mismatch_question_phrase", confidence="high", category="confusion_challenge_repair")
     if "why" in normalized and "asking" in normalized:
         return _recognition("why_are_you_asking", reason="why_are_you_asking_phrase", confidence="high", category="confusion_challenge_repair")
-    if _contains_any(normalized, {"didn t answer", "did not answer", "you didn t answer", "you did not answer"}):
+    if _contains_any(
+        normalized,
+        {
+            "didn t answer",
+            "did not answer",
+            "you didn t answer",
+            "you did not answer",
+            "still did not answer",
+            "still didn t answer",
+            "you still did not answer",
+            "you still didn t answer",
+            "that still does not explain",
+            "that still doesn t explain",
+            "does not explain it",
+            "doesn t explain it",
+        },
+    ):
         return _recognition(
             "already_answered_challenge",
             reason="did_not_answer_challenge_phrase",
             confidence="high",
             category="confusion_challenge_repair",
         )
-    if _contains_any(normalized, {"already told you", "i told you", "already asked that", "keep asking the same"}):
+    if _contains_any(
+        normalized,
+        {
+            "already told you",
+            "i told you",
+            "already asked that",
+            "keep asking the same",
+            "keep repeating yourself",
+            "you keep repeating yourself",
+            "you are looping",
+            "you re looping",
+            "youre looping",
+            "you are not listening",
+            "you re not listening",
+            "youre not listening",
+            "not listening",
+            "i already told you",
+        },
+    ):
         return _recognition(
             "already_answered_challenge",
             reason="already_answered_challenge_phrase",
@@ -1721,7 +2025,20 @@ def classify_universal_buyer_move_from_transcript(
 
     if normalized.startswith("maybe ") or _contains_any(normalized, {"maybe coverage", "maybe integration", "maybe repair", "maybe scheduling", "maybe handoff"}):
         return _recognition("tentative_gap_interest", reason="tentative_gap_phrase", confidence="high", category="pain_tentative_pain")
-    if "price" not in normalized and _contains_any(normalized, {"is a problem", "is the problem", "usually pretty long", "we need service", "is unclear", "is the issue"}):
+    if "price" not in normalized and _contains_any(
+        normalized,
+        {
+            "are a problem",
+            "are the problem",
+            "is a problem",
+            "is confusing",
+            "is the problem",
+            "usually pretty long",
+            "we need service",
+            "is unclear",
+            "is the issue",
+        },
+    ):
         if _unsupported_pain_phrase_gap_id(normalized, campaign):
             return _recognition(
                 "confusion_not_clear",
@@ -1888,6 +2205,15 @@ def build_universal_conversation_policy_frame(
     frame.update(progression)
     frame.update(_social_repair_metadata(buyer_move_id))
     frame.update(_rapport_repair_metadata(buyer_move_id, normalized))
+    protected = high_confidence_buyer_move_priority_protected(frame, contextual_semantics=contextual_semantics)
+    frame.update(
+        {
+            "high_confidence_move_priority_protected": protected,
+            "high_confidence_move_priority_reason": (
+                "protected_universal_or_contextual_buyer_move" if protected else "not_protected"
+            ),
+        }
+    )
     if buyer_move_id in NEXT_STEP_DISCIPLINE_MOVES and frame.get("confirmed_gap_id"):
         frame["should_preserve_confirmed_gaps"] = True
         frame["should_preserve_cleared_gaps"] = True
@@ -1912,6 +2238,28 @@ def build_universal_conversation_policy_frame(
             }
         )
     return frame
+
+
+def high_confidence_buyer_move_priority_protected(
+    frame: dict[str, Any] | None,
+    *,
+    contextual_semantics: dict | None = None,
+) -> bool:
+    frame = frame or {}
+    buyer_move_id = str(frame.get("buyer_move_id") or "")
+    confidence = str(frame.get("recognition_confidence") or "")
+    reason = str(frame.get("recognition_reason") or "")
+    if confidence in {"high", "medium"} and buyer_move_id in HIGH_CONFIDENCE_PRIORITY_MOVES:
+        if buyer_move_id == "confusion_not_clear":
+            return reason in {
+                "campaign_mismatch_question_phrase",
+                "confusion_or_clarification_phrase",
+                "out_of_campaign_pain_phrase",
+            }
+        return True
+    semantic = str((contextual_semantics or {}).get("semantic") or "")
+    semantic_confidence = float((contextual_semantics or {}).get("confidence") or 0.0)
+    return semantic in HIGH_CONFIDENCE_CONTEXTUAL_SEMANTICS and semantic_confidence >= 0.84
 
 
 def _enforcement_reason(enforcement_enabled: bool, detection: dict, campaign: dict | None) -> str:
@@ -2015,6 +2363,7 @@ def render_universal_response_outline(
     primary_issue_subject = _primary_issue_subject_phrase(campaign)
     primary_issue_clause = _primary_issue_problem_clause(campaign)
     primary_issue_question = _primary_issue_check_question(campaign)
+    recognition_reason = str((frame or {}).get("recognition_reason") or "")
 
     if buyer_move_id == "serious_hardship_bad_timing":
         return "I'm sorry to hear that. This is not the right time for this call. I'll stop here."
@@ -2178,6 +2527,13 @@ def render_universal_response_outline(
             "The quick question is whether that area is causing friction now."
         )
     if buyer_move_id == "what_problem_do_you_solve":
+        if _contains_any(normalized, {"one sentence", "say it in one sentence"}):
+            return f"In one sentence: this call checks whether {primary_issue_clause} and is worth a short review."
+        if _contains_any(normalized, {"explain", "plainly", "what are you selling", "what is this"}):
+            return (
+                f"Plainly, this call checks whether {primary_gap} is active enough to justify "
+                "a short review by the right specialist."
+            )
         return (
             f"Fair question. Mainly {primary_gap}: when it is costing time, creating delays, or hurting quality. "
             "The useful check is whether it is showing up now."
@@ -2208,7 +2564,9 @@ def render_universal_response_outline(
         return "Understood. I'll stop here. Goodbye."
 
     if buyer_move_id == "confusion_not_clear":
-        if str((frame or {}).get("recognition_reason") or "") == "out_of_campaign_pain_phrase":
+        if recognition_reason == "campaign_mismatch_question_phrase":
+            return _campaign_mismatch_response(campaign, normalized)
+        if recognition_reason == "out_of_campaign_pain_phrase":
             return _scope_relevance_clarification_response(campaign)
         if has_confirmed_gap:
             return (
@@ -2222,18 +2580,30 @@ def render_universal_response_outline(
             "I'm asking about impact now, not collecting extra details."
         )
     if buyer_move_id == "already_answered_challenge":
-        if str((frame or {}).get("recognition_reason") or "") == "false_assumption_correction_phrase":
+        if recognition_reason == "false_assumption_correction_phrase":
             target = _campaign_appointment_target(campaign)
             return (
                 f"You're right, you did not mention {_area_phrase(active_gap)}. I won't assume that. "
                 f"This call can only check whether {_with_indefinite_article(target)} is useful."
             )
-        if str((frame or {}).get("recognition_reason") or "") == "did_not_answer_challenge_phrase":
+        if recognition_reason == "agent_wrong_or_false_assumption_challenge_phrase":
+            target = _campaign_appointment_target(campaign)
             return (
-                "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify "
-                f"a short human review. Since you already named {active_area}, the only useful follow-up is impact. "
-                f"{_impact_followup_question()}"
+                "Understood. I won't assume that. Let me reset: "
+                f"this call can only check whether {_with_indefinite_article(target)} is useful."
             )
+        if recognition_reason == "did_not_answer_challenge_phrase":
+            return (
+                "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. "
+                f"I'm checking whether {primary_issue_clause} and is worth a short review."
+            )
+        if recognition_reason == "already_answered_challenge_phrase":
+            if has_confirmed_gap:
+                return (
+                    f"You're right, you already gave me that. I won't repeat it. I have {active_area} noted; "
+                    f"the useful follow-up is impact. {_impact_followup_question()}"
+                )
+            return f"You're right, I already asked that. I won't repeat myself. The direct check is whether {primary_issue_clause}."
         return (
             f"You're right, you already gave me that. I have {active_area} noted; the useful follow-up is whether it is "
             f"causing real impact. {_impact_followup_question()}"
@@ -2241,6 +2611,11 @@ def render_universal_response_outline(
     if buyer_move_id == "contradiction_challenge":
         return f"Fair point. I can ask basic fit questions, but detailed advice belongs with {owner_role}."
     if buyer_move_id == "scope_limit_question":
+        if recognition_reason == "why_human_review_phrase":
+            return (
+                f"A human review matters because I can only check fit at a high level; {owner_role} "
+                "would review the actual details before any decision. Do you want me to check whether that review is useful?"
+            )
         mentioned_focus = _mentioned_gap_phrase(campaign, normalized)
         if mentioned_focus and _contains_any(normalized, {"how about", "what about"}):
             return (

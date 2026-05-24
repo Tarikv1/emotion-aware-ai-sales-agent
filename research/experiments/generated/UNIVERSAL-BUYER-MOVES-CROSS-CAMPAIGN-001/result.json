@@ -79,6 +79,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -201,6 +203,8 @@
           "appointment ask"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -323,6 +327,8 @@
           "appointment ask"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -445,6 +451,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -567,6 +575,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -689,6 +699,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -814,6 +826,8 @@
           "transfer-or-escalate"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -939,6 +953,8 @@
           "transfer-or-escalate"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -1065,6 +1081,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1192,6 +1210,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1319,6 +1339,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1446,6 +1468,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1573,6 +1597,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1700,6 +1726,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1826,6 +1854,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -1951,6 +1981,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2077,6 +2109,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2202,6 +2236,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2327,6 +2363,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2452,6 +2490,8 @@
           "claim superiority without allowed facts"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2578,6 +2618,8 @@
           "guarantee savings"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "cost",
@@ -2702,6 +2744,8 @@
           "treat approval as pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2828,6 +2872,8 @@
           "claim proof unavailable from config"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -2952,6 +2998,8 @@
           "invent callback time"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3079,6 +3127,8 @@
           "push appointment after no"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3202,6 +3252,8 @@
           "invent callback time"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3327,6 +3379,8 @@
           "claim human when automated"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3450,6 +3504,8 @@
           "as an AI language model"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3575,6 +3631,8 @@
           "name private source without evidence"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3700,6 +3758,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3825,6 +3885,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -3947,6 +4009,8 @@
           "ask diagnostic"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4069,6 +4133,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4193,6 +4259,8 @@
           "erase confirmed gap"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4252,7 +4320,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named callbacks, the only useful follow-up is impact. Is it causing delays or extra work?",
+      "final_response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether inbound demo follow-up is slipping now and is worth a short review.",
       "passed": true,
       "previous_response": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
       "recognition_confidence": "high",
@@ -4316,6 +4384,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4375,7 +4445,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have callbacks noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have callbacks noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
       "recognition_confidence": "high",
@@ -4439,6 +4509,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4563,6 +4635,8 @@
           "defensive wording"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4623,7 +4697,7 @@
         "emotional_frustration"
       ],
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have callbacks noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have callbacks noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
       "recognition_confidence": "high",
@@ -4687,6 +4761,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4811,6 +4887,8 @@
           "invent contact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -4933,6 +5011,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5055,6 +5135,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5178,6 +5260,8 @@
           "create calendar event"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5302,6 +5386,8 @@
           "invent contact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5427,6 +5513,8 @@
           "erase interest"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -5549,6 +5637,8 @@
           "ignore correction"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5676,6 +5766,8 @@
           "repeat long diagnostic menu"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5798,6 +5890,8 @@
           "pressure confused buyer"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -5920,6 +6014,8 @@
           "ignore correction"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6043,6 +6139,8 @@
           "linger on small talk"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6167,6 +6265,8 @@
           "continue after stop"
         ],
         "friction_level": "high",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6289,6 +6389,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6411,6 +6513,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6533,6 +6637,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6656,6 +6762,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6778,6 +6886,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -6900,6 +7010,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7022,6 +7134,8 @@
           "appointment ask"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7144,6 +7258,8 @@
           "appointment ask"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7266,6 +7382,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7331,7 +7449,7 @@
       "passed": true,
       "previous_response": "Thanks. Is premium pressure causing any issue right now?",
       "recognition_confidence": "high",
-      "recognition_reason": "clean_pain_phrase",
+      "recognition_reason": "configured_gap_near_miss_pain_phrase",
       "recognized_buyer_move_category": "pain_tentative_pain",
       "response_shape_enforced_category": "pain_progression",
       "response_shape_enforcement_enabled": true,
@@ -7393,6 +7511,8 @@
           "repeat full diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7411,7 +7531,7 @@
         "rapport_repair_required": false,
         "rapport_response_shape_id": "none",
         "recognition_confidence": "high",
-        "recognition_reason": "clean_pain_phrase",
+        "recognition_reason": "configured_gap_near_miss_pain_phrase",
         "relevance_bridge_allowed": false,
         "response_shape_candidate_source": "universal_response_shape",
         "response_shape_enforced_category": "pain_progression",
@@ -7515,6 +7635,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -7640,6 +7762,8 @@
           "transfer-or-escalate"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -7765,6 +7889,8 @@
           "transfer-or-escalate"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -7891,6 +8017,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8020,6 +8148,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8147,6 +8277,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8274,6 +8406,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8401,6 +8535,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8528,6 +8664,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8654,6 +8792,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8779,6 +8919,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -8905,6 +9047,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9001,8 +9145,8 @@
         "buyer_move_category": "product_value_scope",
         "buyer_move_id": "regulated_claim_question",
         "callback_capture_required": false,
-        "confirmed_gap_id": "",
-        "confirmed_gap_phrase": "premium pressure",
+        "confirmed_gap_id": "coverage_fit",
+        "confirmed_gap_phrase": "coverage fit",
         "contact_capture_required": false,
         "conversation_stage": "diagnostic",
         "detection": {
@@ -9030,6 +9174,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9058,7 +9204,7 @@
         "safe_to_continue": true,
         "sales_progression_stage": "none",
         "schema_version": 1,
-        "selected_gap": "",
+        "selected_gap": "coverage_fit",
         "sensitive_context_detected": false,
         "serious_bad_timing_detected": false,
         "should_offer_later_or_stop": false,
@@ -9155,6 +9301,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9280,6 +9428,8 @@
           "claim superiority without allowed facts"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9406,6 +9556,8 @@
           "guarantee savings"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "cost",
@@ -9530,6 +9682,8 @@
           "treat approval as pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9656,6 +9810,8 @@
           "claim proof unavailable from config"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9780,6 +9936,8 @@
           "invent callback time"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -9907,6 +10065,8 @@
           "push appointment after no"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10030,6 +10190,8 @@
           "invent callback time"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10155,6 +10317,8 @@
           "claim human when automated"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10278,6 +10442,8 @@
           "as an AI language model"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10403,6 +10569,8 @@
           "name private source without evidence"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10528,6 +10696,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10653,6 +10823,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10775,6 +10947,8 @@
           "ask diagnostic"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -10899,6 +11073,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -11025,6 +11201,8 @@
           "erase confirmed gap"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -11086,7 +11264,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named premium pressure, the only useful follow-up is impact. Is it causing delays or extra work?",
+      "final_response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether premium pressure is still a problem and is worth a short review.",
       "passed": true,
       "previous_response": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
       "recognition_confidence": "high",
@@ -11150,6 +11328,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -11211,7 +11391,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have premium pressure noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have premium pressure noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
       "recognition_confidence": "high",
@@ -11275,6 +11455,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -11401,6 +11583,8 @@
           "defensive wording"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -11463,7 +11647,7 @@
         "emotional_frustration"
       ],
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have premium pressure noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have premium pressure noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, premium pressure is the issue. Is it creating a real budget concern, or more of a quick review question?",
       "recognition_confidence": "high",
@@ -11527,6 +11711,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -11653,6 +11839,8 @@
           "invent contact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -11777,6 +11965,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -11901,6 +12091,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -12026,6 +12218,8 @@
           "create calendar event"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -12152,6 +12346,8 @@
           "invent contact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -12279,6 +12475,8 @@
           "erase interest"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -12401,6 +12599,8 @@
           "ignore correction"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -12528,6 +12728,8 @@
           "repeat long diagnostic menu"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -12650,6 +12852,8 @@
           "pressure confused buyer"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -12772,6 +12976,8 @@
           "ignore correction"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -12895,6 +13101,8 @@
           "linger on small talk"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -13019,6 +13227,8 @@
           "continue after stop"
         ],
         "friction_level": "high",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -13141,6 +13351,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -13263,6 +13475,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -13385,6 +13599,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -13510,6 +13726,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -13634,6 +13852,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -13756,6 +13976,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -13878,6 +14100,8 @@
           "appointment ask"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -14000,6 +14224,8 @@
           "appointment ask"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -14065,7 +14291,7 @@
       "passed": true,
       "previous_response": "Thanks. Is manual work causing any issue right now?",
       "recognition_confidence": "high",
-      "recognition_reason": "clean_pain_phrase",
+      "recognition_reason": "configured_gap_near_miss_pain_phrase",
       "recognized_buyer_move_category": "pain_tentative_pain",
       "response_shape_enforced_category": "pain_progression",
       "response_shape_enforcement_enabled": true,
@@ -14127,6 +14353,8 @@
           "repeat full diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -14145,7 +14373,7 @@
         "rapport_repair_required": false,
         "rapport_response_shape_id": "none",
         "recognition_confidence": "high",
-        "recognition_reason": "clean_pain_phrase",
+        "recognition_reason": "configured_gap_near_miss_pain_phrase",
         "relevance_bridge_allowed": false,
         "response_shape_candidate_source": "universal_response_shape",
         "response_shape_enforced_category": "pain_progression",
@@ -14249,6 +14477,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -14371,6 +14601,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -14496,6 +14728,8 @@
           "transfer-or-escalate"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -14621,6 +14855,8 @@
           "transfer-or-escalate"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -14747,6 +14983,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -14876,6 +15114,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -15003,6 +15243,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -15130,6 +15372,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -15257,6 +15501,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -15384,6 +15630,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -15510,6 +15758,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -15635,6 +15885,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -15761,6 +16013,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -15886,6 +16140,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -16011,6 +16267,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -16136,6 +16394,8 @@
           "claim superiority without allowed facts"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -16262,6 +16522,8 @@
           "guarantee savings"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "cost",
@@ -16386,6 +16648,8 @@
           "treat approval as pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -16512,6 +16776,8 @@
           "claim proof unavailable from config"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -16636,6 +16902,8 @@
           "invent callback time"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -16763,6 +17031,8 @@
           "push appointment after no"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -16886,6 +17156,8 @@
           "invent callback time"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -17011,6 +17283,8 @@
           "claim human when automated"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -17134,6 +17408,8 @@
           "as an AI language model"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -17259,6 +17535,8 @@
           "name private source without evidence"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -17384,6 +17662,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -17509,6 +17789,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -17631,6 +17913,8 @@
           "ask diagnostic"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -17755,6 +18039,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -17881,6 +18167,8 @@
           "erase confirmed gap"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -17942,7 +18230,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named manual work, the only useful follow-up is impact. Is it causing delays or extra work?",
+      "final_response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether manual work is still a problem and is worth a short review.",
       "passed": true,
       "previous_response": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
       "recognition_confidence": "high",
@@ -18006,6 +18294,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -18067,7 +18357,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have manual work noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have manual work noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
       "recognition_confidence": "high",
@@ -18131,6 +18421,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -18257,6 +18549,8 @@
           "defensive wording"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -18319,7 +18613,7 @@
         "emotional_frustration"
       ],
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have manual work noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have manual work noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?",
       "recognition_confidence": "high",
@@ -18383,6 +18677,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -18509,6 +18805,8 @@
           "invent contact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -18633,6 +18931,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -18757,6 +19057,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -18882,6 +19184,8 @@
           "create calendar event"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -19008,6 +19312,8 @@
           "invent contact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -19135,6 +19441,8 @@
           "erase interest"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -19257,6 +19565,8 @@
           "ignore correction"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -19384,6 +19694,8 @@
           "repeat long diagnostic menu"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -19506,6 +19818,8 @@
           "pressure confused buyer"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -19628,6 +19942,8 @@
           "ignore correction"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -19751,6 +20067,8 @@
           "linger on small talk"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -19875,6 +20193,8 @@
           "continue after stop"
         ],
         "friction_level": "high",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -19997,6 +20317,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -20119,6 +20441,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -20241,6 +20565,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -20366,6 +20692,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -20490,6 +20818,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -20612,6 +20942,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -20734,6 +21066,8 @@
           "appointment ask"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -20856,6 +21190,8 @@
           "appointment ask"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -20978,6 +21314,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -21100,6 +21438,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -21227,6 +21567,8 @@
           "repeat full diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -21352,6 +21694,8 @@
           "transfer-or-escalate"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -21477,6 +21821,8 @@
           "transfer-or-escalate"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -21603,6 +21949,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -21730,6 +22078,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -21857,6 +22207,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -21984,6 +22336,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -22111,6 +22465,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -22238,6 +22594,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -22364,6 +22722,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -22489,6 +22849,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -22615,6 +22977,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -22740,6 +23104,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -22865,6 +23231,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -22990,6 +23358,8 @@
           "claim superiority without allowed facts"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -23116,6 +23486,8 @@
           "guarantee savings"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "cost",
@@ -23240,6 +23612,8 @@
           "treat approval as pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -23366,6 +23740,8 @@
           "claim proof unavailable from config"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -23490,6 +23866,8 @@
           "invent callback time"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -23617,6 +23995,8 @@
           "push appointment after no"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -23740,6 +24120,8 @@
           "invent callback time"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -23865,6 +24247,8 @@
           "claim human when automated"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -23988,6 +24372,8 @@
           "as an AI language model"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -24113,6 +24499,8 @@
           "name private source without evidence"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -24238,6 +24626,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -24363,6 +24753,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -24485,6 +24877,8 @@
           "ask diagnostic"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -24609,6 +25003,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -24735,6 +25131,8 @@
           "erase confirmed gap"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -24796,7 +25194,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named repair timing, the only useful follow-up is impact. Is it causing delays or extra work?",
+      "final_response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether repair timing is still a problem and is worth a short review.",
       "passed": true,
       "previous_response": "Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?",
       "recognition_confidence": "high",
@@ -24860,6 +25258,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -24921,7 +25321,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have repair timing noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have repair timing noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?",
       "recognition_confidence": "high",
@@ -24985,6 +25385,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -25111,6 +25513,8 @@
           "defensive wording"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -25173,7 +25577,7 @@
         "emotional_frustration"
       ],
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have repair timing noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have repair timing noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, repair timing is the issue. Is it causing delays someone should review, or mostly a general frustration?",
       "recognition_confidence": "high",
@@ -25237,6 +25641,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -25363,6 +25769,8 @@
           "invent contact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -25487,6 +25895,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -25611,6 +26021,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -25736,6 +26148,8 @@
           "create calendar event"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -25862,6 +26276,8 @@
           "invent contact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -25989,6 +26405,8 @@
           "erase interest"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -26111,6 +26529,8 @@
           "ignore correction"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -26238,6 +26658,8 @@
           "repeat long diagnostic menu"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -26360,6 +26782,8 @@
           "pressure confused buyer"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -26482,6 +26906,8 @@
           "ignore correction"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -26605,6 +27031,8 @@
           "linger on small talk"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -26729,6 +27157,8 @@
           "continue after stop"
         ],
         "friction_level": "high",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -26851,6 +27281,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -26973,6 +27405,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -27095,6 +27529,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -27220,6 +27656,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -27347,6 +27785,8 @@
           "repeat full diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -27469,6 +27909,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -27591,6 +28033,8 @@
           "appointment ask"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -27713,6 +28157,8 @@
           "appointment ask"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -27835,6 +28281,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -27957,6 +28405,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -28079,6 +28529,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -28204,6 +28656,8 @@
           "transfer-or-escalate"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -28329,6 +28783,8 @@
           "transfer-or-escalate"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -28455,6 +28911,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -28584,6 +29042,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -28711,6 +29171,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -28838,6 +29300,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -28965,6 +29429,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -29092,6 +29558,8 @@
           "invent compliance proof"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -29218,6 +29686,8 @@
           "product advice beyond allowed claims"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -29343,6 +29813,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -29469,6 +29941,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -29594,6 +30068,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -29719,6 +30195,8 @@
           "exact quote"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -29844,6 +30322,8 @@
           "claim superiority without allowed facts"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -29970,6 +30450,8 @@
           "guarantee savings"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "cost",
@@ -30094,6 +30576,8 @@
           "treat approval as pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -30220,6 +30704,8 @@
           "claim proof unavailable from config"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -30344,6 +30830,8 @@
           "invent callback time"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -30471,6 +30959,8 @@
           "push appointment after no"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -30594,6 +31084,8 @@
           "invent callback time"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -30719,6 +31211,8 @@
           "claim human when automated"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -30842,6 +31336,8 @@
           "as an AI language model"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -30967,6 +31463,8 @@
           "name private source without evidence"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -31092,6 +31590,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -31217,6 +31717,8 @@
           "invent privacy policy"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -31339,6 +31841,8 @@
           "ask diagnostic"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -31463,6 +31967,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -31589,6 +32095,8 @@
           "erase confirmed gap"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -31650,7 +32158,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named the service need, the only useful follow-up is impact. Is it causing delays or extra work?",
+      "final_response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether the service need is active now and is worth a short review.",
       "passed": true,
       "previous_response": "Got it, service need is the issue. Is it causing a real service issue now, or just a general question?",
       "recognition_confidence": "high",
@@ -31714,6 +32222,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -31775,7 +32285,7 @@
         "already_answered_challenge"
       ],
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have the service need noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have the service need noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, service need is the issue. Is it causing a real service issue now, or just a general question?",
       "recognition_confidence": "high",
@@ -31839,6 +32349,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -31965,6 +32477,8 @@
           "defensive wording"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -32027,7 +32541,7 @@
         "emotional_frustration"
       ],
       "failures": [],
-      "final_response": "You're right, you already gave me that. I have the service need noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?",
+      "final_response": "You're right, you already gave me that. I won't repeat it. I have the service need noted; the useful follow-up is impact. Is it causing delays or extra work?",
       "passed": true,
       "previous_response": "Got it, service need is the issue. Is it causing a real service issue now, or just a general question?",
       "recognition_confidence": "high",
@@ -32091,6 +32605,8 @@
           "erase prior answer"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -32217,6 +32733,8 @@
           "invent contact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -32341,6 +32859,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -32465,6 +32985,8 @@
           "invented ROI or revenue claim"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -32590,6 +33112,8 @@
           "create calendar event"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -32716,6 +33240,8 @@
           "invent contact"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -32843,6 +33369,8 @@
           "erase interest"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": true,
         "impact_signal_type": "unclear",
@@ -32965,6 +33493,8 @@
           "ignore correction"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -33092,6 +33622,8 @@
           "repeat long diagnostic menu"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -33214,6 +33746,8 @@
           "pressure confused buyer"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -33336,6 +33870,8 @@
           "ignore correction"
         ],
         "friction_level": "mild",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -33459,6 +33995,8 @@
           "linger on small talk"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -33583,6 +34121,8 @@
           "continue after stop"
         ],
         "friction_level": "high",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -33705,6 +34245,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -33827,6 +34369,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -33949,6 +34493,8 @@
           "diagnostic menu"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -34074,6 +34620,8 @@
           "appointment ask before pain"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": false,
+        "high_confidence_move_priority_reason": "not_protected",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",
@@ -34198,6 +34746,8 @@
           "appointment pressure while confused"
         ],
         "friction_level": "none",
+        "high_confidence_move_priority_protected": true,
+        "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
         "human_context_type": "none",
         "impact_signal_detected": false,
         "impact_signal_type": "none",

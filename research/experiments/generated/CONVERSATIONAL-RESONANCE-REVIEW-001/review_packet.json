@@ -172,6 +172,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -298,6 +300,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -424,6 +428,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -550,6 +556,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -676,6 +684,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -871,6 +881,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -1003,6 +1015,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -1135,6 +1149,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -1267,6 +1283,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -1399,6 +1417,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -1531,6 +1551,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -1725,6 +1747,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -1852,6 +1876,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -1979,6 +2005,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -2106,6 +2134,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -2233,6 +2263,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -2428,6 +2460,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -2530,8 +2564,8 @@
             "buyer_move_category": "rapport_relevance_bridge",
             "buyer_move_id": "financial_stress_context",
             "callback_capture_required": false,
-            "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_id": "right_person",
+            "confirmed_gap_phrase": "right person",
             "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
@@ -2560,6 +2594,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": true,
             "impact_signal_type": "cost",
@@ -2588,7 +2624,7 @@
             "safe_to_continue": true,
             "sales_progression_stage": "none",
             "schema_version": 1,
-            "selected_gap": "",
+            "selected_gap": "right_person",
             "sensitive_context_detected": false,
             "serious_bad_timing_detected": false,
             "should_offer_later_or_stop": false,
@@ -2692,6 +2728,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -2824,6 +2862,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -2926,8 +2966,8 @@
             "buyer_move_category": "rapport_relevance_bridge",
             "buyer_move_id": "financial_stress_context",
             "callback_capture_required": false,
-            "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_id": "visibility",
+            "confirmed_gap_phrase": "manager visibility",
             "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
@@ -2956,6 +2996,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -2984,7 +3026,7 @@
             "safe_to_continue": true,
             "sales_progression_stage": "none",
             "schema_version": 1,
-            "selected_gap": "",
+            "selected_gap": "visibility",
             "sensitive_context_detected": false,
             "serious_bad_timing_detected": false,
             "should_offer_later_or_stop": false,
@@ -3150,6 +3192,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -3282,6 +3326,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -3414,6 +3460,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": true,
             "impact_signal_type": "unclear",
@@ -3546,6 +3594,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -3678,6 +3728,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -3873,6 +3925,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -3999,6 +4053,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -4125,6 +4181,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -4224,8 +4282,8 @@
             "buyer_move_category": "rapport_relevance_bridge",
             "buyer_move_id": "stakeholder_or_right_person_context",
             "callback_capture_required": false,
-            "confirmed_gap_id": "",
-            "confirmed_gap_phrase": "inbound demo follow-up slipping",
+            "confirmed_gap_id": "right_person",
+            "confirmed_gap_phrase": "right person",
             "contact_capture_required": false,
             "conversation_stage": "diagnostic",
             "detection": {
@@ -4251,6 +4309,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -4279,7 +4339,7 @@
             "safe_to_continue": true,
             "sales_progression_stage": "none",
             "schema_version": 1,
-            "selected_gap": "",
+            "selected_gap": "right_person",
             "sensitive_context_detected": false,
             "serious_bad_timing_detected": false,
             "should_offer_later_or_stop": false,
@@ -4377,6 +4437,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -4503,6 +4565,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -4697,6 +4761,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -4829,6 +4895,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -4961,6 +5029,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -5093,6 +5163,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -5225,6 +5297,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -5419,6 +5493,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -5551,6 +5627,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -5683,6 +5761,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -5815,6 +5895,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -5947,6 +6029,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -6141,6 +6225,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -6273,6 +6359,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -6405,6 +6493,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -6537,6 +6627,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -6669,6 +6761,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -6863,6 +6957,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -6990,6 +7086,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -7117,6 +7215,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -7244,6 +7344,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -7371,6 +7473,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -7564,6 +7668,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -7696,6 +7802,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -7828,6 +7936,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -7960,6 +8070,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -8092,6 +8204,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -8285,6 +8399,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -8417,6 +8533,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -8549,6 +8667,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -8681,6 +8801,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -8813,6 +8935,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -9007,6 +9131,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -9133,6 +9259,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -9259,6 +9387,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -9385,6 +9515,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -9511,6 +9643,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -9706,6 +9840,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -9838,6 +9974,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -9970,6 +10108,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -10102,6 +10242,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -10234,6 +10376,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -10366,6 +10510,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -10560,6 +10706,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -10687,6 +10835,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -10814,6 +10964,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -10941,6 +11093,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -11068,6 +11222,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -11263,6 +11419,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -11395,6 +11553,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": true,
             "impact_signal_type": "cost",
@@ -11527,6 +11687,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -11659,6 +11821,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -11791,6 +11955,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -11985,6 +12151,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -12117,6 +12285,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -12249,6 +12419,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": true,
             "impact_signal_type": "unclear",
@@ -12381,6 +12553,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -12513,6 +12687,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -12708,6 +12884,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -12834,6 +13012,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -12960,6 +13140,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -13086,6 +13268,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -13212,6 +13396,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -13338,6 +13524,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -13532,6 +13720,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -13664,6 +13854,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -13796,6 +13988,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -13928,6 +14122,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -14060,6 +14256,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -14254,6 +14452,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -14386,6 +14586,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -14518,6 +14720,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -14650,6 +14854,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -14782,6 +14988,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -14976,6 +15184,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -15108,6 +15318,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -15240,6 +15452,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -15372,6 +15586,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -15504,6 +15720,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -15698,6 +15916,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -15825,6 +16045,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -15952,6 +16174,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -16079,6 +16303,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -16206,6 +16432,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -16399,6 +16627,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -16531,6 +16761,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -16663,6 +16895,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -16795,6 +17029,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -16927,6 +17163,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -17120,6 +17358,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -17252,6 +17492,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -17384,6 +17626,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -17516,6 +17760,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -17648,6 +17894,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -17842,6 +18090,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -17968,6 +18218,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -18094,6 +18346,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -18220,6 +18474,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -18346,6 +18602,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -18541,6 +18799,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -18673,6 +18933,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -18805,6 +19067,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -18937,6 +19201,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -19069,6 +19335,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -19201,6 +19469,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -19395,6 +19665,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -19522,6 +19794,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -19649,6 +19923,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -19776,6 +20052,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -19903,6 +20181,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -20098,6 +20378,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -20230,6 +20512,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": true,
             "impact_signal_type": "cost",
@@ -20362,6 +20646,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -20494,6 +20780,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -20626,6 +20914,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -20820,6 +21110,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -20952,6 +21244,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -21084,6 +21378,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": true,
             "impact_signal_type": "unclear",
@@ -21216,6 +21512,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -21348,6 +21646,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -21543,6 +21843,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -21669,6 +21971,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -21795,6 +22099,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -21921,6 +22227,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -22047,6 +22355,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -22173,6 +22483,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -22367,6 +22679,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -22499,6 +22813,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -22631,6 +22947,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -22763,6 +23081,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -22895,6 +23215,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -23089,6 +23411,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -23221,6 +23545,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -23353,6 +23679,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -23485,6 +23813,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -23617,6 +23947,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -23811,6 +24143,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -23943,6 +24277,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -24075,6 +24411,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -24207,6 +24545,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -24339,6 +24679,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -24533,6 +24875,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -24660,6 +25004,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -24787,6 +25133,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -24914,6 +25262,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -25041,6 +25391,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -25234,6 +25586,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -25366,6 +25720,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -25498,6 +25854,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -25630,6 +25988,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -25762,6 +26122,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -25955,6 +26317,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -26087,6 +26451,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -26219,6 +26585,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -26351,6 +26719,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -26483,6 +26853,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -26677,6 +27049,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -26803,6 +27177,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -26929,6 +27305,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -27055,6 +27433,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -27181,6 +27561,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -27376,6 +27758,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -27508,6 +27892,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -27640,6 +28026,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -27772,6 +28160,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -27904,6 +28294,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -28036,6 +28428,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -28230,6 +28624,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -28357,6 +28753,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -28484,6 +28882,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -28611,6 +29011,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -28738,6 +29140,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -28933,6 +29337,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -29065,6 +29471,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": true,
             "impact_signal_type": "cost",
@@ -29197,6 +29605,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -29329,6 +29739,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -29461,6 +29873,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -29655,6 +30069,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -29787,6 +30203,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -29919,6 +30337,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": true,
             "impact_signal_type": "unclear",
@@ -30051,6 +30471,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -30183,6 +30605,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -30378,6 +30802,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -30504,6 +30930,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -30630,6 +31058,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -30756,6 +31186,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -30882,6 +31314,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -31008,6 +31442,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -31202,6 +31638,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -31334,6 +31772,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -31466,6 +31906,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -31598,6 +32040,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -31730,6 +32174,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -31924,6 +32370,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -32056,6 +32504,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -32188,6 +32638,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -32320,6 +32772,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -32452,6 +32906,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -32646,6 +33102,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -32778,6 +33236,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -32910,6 +33370,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -33042,6 +33504,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -33174,6 +33638,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -33368,6 +33834,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -33495,6 +33963,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -33622,6 +34092,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -33749,6 +34221,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -33876,6 +34350,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -34069,6 +34545,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -34201,6 +34679,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -34333,6 +34813,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -34465,6 +34947,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -34597,6 +35081,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -34790,6 +35276,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -34922,6 +35410,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -35054,6 +35544,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -35186,6 +35678,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -35318,6 +35812,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -35512,6 +36008,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -35638,6 +36136,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -35764,6 +36264,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -35890,6 +36392,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -36016,6 +36520,8 @@
               "linger on small talk"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -36211,6 +36717,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -36343,6 +36851,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -36475,6 +36985,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -36607,6 +37119,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -36739,6 +37253,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -36871,6 +37387,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "busy_or_distracted",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -37065,6 +37583,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -37192,6 +37712,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -37319,6 +37841,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -37446,6 +37970,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -37573,6 +38099,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "serious_hardship",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -37768,6 +38296,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -37900,6 +38430,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": true,
             "impact_signal_type": "cost",
@@ -38032,6 +38564,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -38164,6 +38698,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -38296,6 +38832,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "financial_stress",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -38490,6 +39028,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -38622,6 +39162,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -38754,6 +39296,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": true,
             "impact_signal_type": "unclear",
@@ -38886,6 +39430,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -39018,6 +39564,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": true,
+            "high_confidence_move_priority_reason": "protected_universal_or_contextual_buyer_move",
             "human_context_type": "prior_bad_experience",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -39213,6 +39761,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -39339,6 +39889,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -39465,6 +40017,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -39591,6 +40145,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -39717,6 +40273,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -39843,6 +40401,8 @@
               "treat contact routing as product pain"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "stakeholder_or_right_person",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -40037,6 +40597,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -40169,6 +40731,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -40301,6 +40865,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -40433,6 +40999,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -40565,6 +41133,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sarcasm_or_joking",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -40759,6 +41329,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -40891,6 +41463,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -41023,6 +41597,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -41155,6 +41731,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -41287,6 +41865,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "emotional_venting",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -41481,6 +42061,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -41613,6 +42195,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -41745,6 +42329,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -41877,6 +42463,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -42009,6 +42597,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "irrelevant_off_topic",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -42203,6 +42793,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -42330,6 +42922,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -42457,6 +43051,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -42584,6 +43180,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -42711,6 +43309,8 @@
               "claim escalation without configuration"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "sensitive_personal_data",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -42904,6 +43504,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -43036,6 +43638,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -43168,6 +43772,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -43300,6 +43906,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -43432,6 +44040,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "home_life_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -43625,6 +44235,8 @@
               "appointment pressure while confused"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "none",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -43757,6 +44369,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -43889,6 +44503,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -44021,6 +44637,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -44153,6 +44771,8 @@
               "probe personal details"
             ],
             "friction_level": "none",
+            "high_confidence_move_priority_protected": false,
+            "high_confidence_move_priority_reason": "not_protected",
             "human_context_type": "workplace_interruption",
             "impact_signal_detected": false,
             "impact_signal_type": "none",
@@ -44201,7 +44821,7 @@
       ]
     }
   ],
-  "generated_at": "2026-05-23T15:59:45.934819+00:00",
+  "generated_at": "2026-05-24T00:02:02.352549+00:00",
   "most_concerning_conversations_by_mechanical_signals_only": [
     {
       "arc_type": "casual_small_talk",

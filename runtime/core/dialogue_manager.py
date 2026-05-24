@@ -953,6 +953,29 @@ def build_conversation_memory(
         send_info_state["stores_private_contact_in_public_evidence"] = False
         memory["send_info_state"] = send_info_state
     lead_followup_update = dict(semantic_frame.get("lead_followup_state_update") or {})
+    if not lead_followup_update and universal_move == "callback_time_provided":
+        callback_state = contextual_buyer_semantics._normalize_callback_time(transcript)
+        if not bool(callback_state.get("needs_clarification")):
+            lead_followup_update = {
+                "schema_version": 1,
+                "lead_status": "open_callback",
+                "capture_status": "callback_time_captured",
+                "requested_summary_type": "unknown",
+                "callback": callback_state,
+                "appointment": {
+                    "type": "callback",
+                    "confirmed": False,
+                    "confirmation_text": None,
+                },
+                "safety": {
+                    "provider_calls_made": False,
+                    "local_llm_calls_made": False,
+                    "sends_email": False,
+                    "creates_calendar_event": False,
+                    "writes_crm": False,
+                    "stores_private_contact_in_public_evidence": False,
+                },
+            }
     previous_lead_followup_state: dict[str, Any] = {}
     for turn in reversed(_turns(session_state)):
         prior_memory = turn.get("conversation_memory") or {}
@@ -1138,6 +1161,18 @@ def apply_stability_guard_if_needed(
         or {}
     )
     universal_category = str(universal_frame.get("response_shape_enforced_category") or "")
+    normalized_transcript = session_policy.normalize_transcript(transcript)
+    if (
+        universal_frame.get("high_confidence_move_priority_protected") is True
+        and not session_policy.is_new_trial_request_clarification(normalized_transcript)
+    ):
+        return action, {
+            "applied": False,
+            "reason": "high_confidence_buyer_move_stability_guard_skipped",
+            "violations": [],
+            "dialogue_focus": continuity(action).get("dialogue_focus"),
+            "selected_gap": continuity(action).get("selected_gap"),
+        }
     if (
         selected.get("source") == "universal_conversation_policy"
         and universal_frame.get("asr_repair_required") is True

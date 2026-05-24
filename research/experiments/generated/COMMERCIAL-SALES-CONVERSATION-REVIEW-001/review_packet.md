@@ -106,7 +106,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `4` buyer: it causes delays
-  - Agent: Got it. If it is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?
+  - Agent: Got it. If callbacks is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -192,7 +192,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `5` buyer: it wastes time
-  - Agent: Got it. If it is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?
+  - Agent: Got it. If handoffs is already costing time, the next useful step is a short review with the verified implementation reviewer. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -237,7 +237,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `5` buyer: it causes delays
-  - Agent: Got it. If it is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?
+  - Agent: Got it. If callbacks is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -337,7 +337,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `why_are_you_asking`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `7` buyer: it causes delays
-  - Agent: Got it. If it is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?
+  - Agent: Got it. If callbacks is already causing delays, the next useful step is a short review with the verified implementation reviewer. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -377,12 +377,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you already asked that
-  - Agent: You're right, you already gave me that. I have callbacks noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?
+  - Agent: You're right, you already gave me that. I won't repeat it. I have callbacks noted; the useful follow-up is impact. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `6` buyer: you didn't answer my question
-  - Agent: You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named callbacks, the only useful follow-up is impact. Is it causing delays or extra work?
+  - Agent: You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether inbound demo follow-up is slipping now and is worth a short review.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -533,7 +533,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `4` buyer: it causes delays
-  - Agent: Got it. If it is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window works?
+  - Agent: Got it. If premium pressure is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -619,7 +619,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `5` buyer: it wastes time
-  - Agent: Got it. If it is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?
+  - Agent: Got it. If coverage fit is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -664,7 +664,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `5` buyer: it causes delays
-  - Agent: Got it. If it is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window works?
+  - Agent: Got it. If premium pressure is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -764,7 +764,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `why_are_you_asking`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `7` buyer: it causes delays
-  - Agent: Got it. If it is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window works?
+  - Agent: Got it. If premium pressure is already causing delays, the next useful step is a short review with the licensed insurance specialist. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -804,12 +804,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you already asked that
-  - Agent: You're right, you already gave me that. I have premium pressure noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?
+  - Agent: You're right, you already gave me that. I won't repeat it. I have premium pressure noted; the useful follow-up is impact. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `6` buyer: you didn't answer my question
-  - Agent: You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named premium pressure, the only useful follow-up is impact. Is it causing delays or extra work?
+  - Agent: You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether premium pressure is still a problem and is worth a short review.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -960,7 +960,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `4` buyer: it causes delays
-  - Agent: Got it. If it is already causing delays, the next useful step is a short review with the implementation specialist. What callback window works?
+  - Agent: Got it. If manual work is already causing delays, the next useful step is a short review with the implementation specialist. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -1046,7 +1046,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `5` buyer: it wastes time
-  - Agent: Got it. If it is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?
+  - Agent: Got it. If integration is already costing time, the next useful step is a short review with the implementation specialist. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -1091,7 +1091,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `5` buyer: it causes delays
-  - Agent: Got it. If it is already causing delays, the next useful step is a short review with the implementation specialist. What callback window works?
+  - Agent: Got it. If manual work is already causing delays, the next useful step is a short review with the implementation specialist. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -1191,7 +1191,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `why_are_you_asking`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `7` buyer: it causes delays
-  - Agent: Got it. If it is already causing delays, the next useful step is a short review with the implementation specialist. What callback window works?
+  - Agent: Got it. If manual work is already causing delays, the next useful step is a short review with the implementation specialist. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -1231,12 +1231,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you already asked that
-  - Agent: You're right, you already gave me that. I have manual work noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?
+  - Agent: You're right, you already gave me that. I won't repeat it. I have manual work noted; the useful follow-up is impact. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `6` buyer: you didn't answer my question
-  - Agent: You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named manual work, the only useful follow-up is impact. Is it causing delays or extra work?
+  - Agent: You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether manual work is still a problem and is worth a short review.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1387,7 +1387,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `4` buyer: it causes delays
-  - Agent: Got it. If it is already causing delays, the next useful step is a short review with the service advisor. What callback window works?
+  - Agent: Got it. If repair timing is already causing delays, the next useful step is a short review with the service advisor. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -1473,7 +1473,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `5` buyer: it wastes time
-  - Agent: Got it. If it is already costing time, the next useful step is a short review with the service advisor. What callback window works?
+  - Agent: Got it. If repair timing is already costing time, the next useful step is a short review with the service advisor. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -1518,7 +1518,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `5` buyer: it causes delays
-  - Agent: Got it. If it is already causing delays, the next useful step is a short review with the service advisor. What callback window works?
+  - Agent: Got it. If repair timing is already causing delays, the next useful step is a short review with the service advisor. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -1618,7 +1618,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `why_are_you_asking`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `7` buyer: it causes delays
-  - Agent: Got it. If it is already causing delays, the next useful step is a short review with the service advisor. What callback window works?
+  - Agent: Got it. If repair timing is already causing delays, the next useful step is a short review with the service advisor. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -1658,12 +1658,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you already asked that
-  - Agent: You're right, you already gave me that. I have repair timing noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?
+  - Agent: You're right, you already gave me that. I won't repeat it. I have repair timing noted; the useful follow-up is impact. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `6` buyer: you didn't answer my question
-  - Agent: You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named repair timing, the only useful follow-up is impact. Is it causing delays or extra work?
+  - Agent: You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether repair timing is still a problem and is worth a short review.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
@@ -1814,7 +1814,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `4` buyer: it causes delays
-  - Agent: Got it. If it is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window works?
+  - Agent: Got it. If service need is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -1900,7 +1900,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `5` buyer: it wastes time
-  - Agent: Got it. If it is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?
+  - Agent: Got it. If scheduling is already costing time, the next useful step is a short review with the qualified service coordinator. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -1945,7 +1945,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `pain_confirmed`; readiness: `medium`; next action: `ask_implication_question`
   - Warnings: `none`
 - Turn `5` buyer: it causes delays
-  - Agent: Got it. If it is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window works?
+  - Agent: Got it. If service need is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -2045,7 +2045,7 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `why_are_you_asking`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `7` buyer: it causes delays
-  - Agent: Got it. If it is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window works?
+  - Agent: Got it. If service need is already causing delays, the next useful step is a short review with the qualified service coordinator. What callback window works?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `implication_confirmed`; readiness: `high`; next action: `ask_callback_window`
   - Warnings: `none`
@@ -2085,12 +2085,12 @@ This packet exposes full dry-run conversations for human or ChatGPT review. Code
   - Buyer move: `confusion_not_clear`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `5` buyer: you already asked that
-  - Agent: You're right, you already gave me that. I have the service need noted; the useful follow-up is whether it is causing real impact. Is it causing delays or extra work?
+  - Agent: You're right, you already gave me that. I won't repeat it. I have the service need noted; the useful follow-up is impact. Is it causing delays or extra work?
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`
 - Turn `6` buyer: you didn't answer my question
-  - Agent: You're right. The direct answer is: I'm checking whether this problem has enough impact to justify a short human review. Since you already named the service need, the only useful follow-up is impact. Is it causing delays or extra work?
+  - Agent: You're right, I already have the prior context. The direct answer is: this is a quick fit check, not a full product explanation. I'm checking whether the service need is active now and is worth a short review.
   - Source: `universal_response_shape`; call_control: `continue-call`
   - Buyer move: `already_answered_challenge`; readiness: `none`; next action: `none`
   - Warnings: `none`

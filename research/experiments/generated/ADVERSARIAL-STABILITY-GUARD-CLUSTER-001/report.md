@@ -16,7 +16,7 @@
 - Source: `universal_response_shape`
 - Call control: `continue-call`
 - Failures: ``
-- Final response: Got it, coverage fit is the concern. Is it active now, or more something you want checked later?
+- Final response: Got it. If coverage fit is already costing time, the next useful step is a short review with the licensed insurance specialist. What callback window works?
 
 ### insurance-payment-pressure-impact
 - Status: `pass`
@@ -31,10 +31,10 @@
 - Status: `pass`
 - Campaign: `synthetic-b2b-saas-operations`
 - Category: `near_miss_configured_gap`
-- Source: `contextual_buyer_semantics`
+- Source: `universal_response_shape`
 - Call control: `continue-call`
 - Failures: ``
-- Final response: Understood, integration risk is the unclear part. Is it causing trouble now, or do you just want the scope clarified?
+- Final response: Maybe integration, understood. Is that an active concern now, or just something you might want checked later?
 
 ### b2b-visibility-thing-impact
 - Status: `pass`
@@ -49,19 +49,19 @@
 - Status: `pass`
 - Campaign: `synthetic-telecom-plan-review`
 - Category: `near_miss_configured_gap`
-- Source: `contextual_buyer_semantics`
+- Source: `universal_response_shape`
 - Call control: `continue-call`
 - Failures: ``
-- Final response: Understood, plan fit is the unclear part. Is it causing trouble now, or do you just want the scope clarified?
+- Final response: Maybe plan fit, understood. Is that an active concern now, or just something you might want checked later?
 
 ### membership-plan-thing
 - Status: `pass`
 - Campaign: `synthetic-membership-plan-review`
 - Category: `near_miss_configured_gap`
-- Source: `contextual_buyer_semantics`
+- Source: `universal_response_shape`
 - Call control: `continue-call`
 - Failures: ``
-- Final response: Understood, plan fit is the unclear part. Is it causing trouble now, or do you just want the scope clarified?
+- Final response: Maybe plan fit, understood. Is that an active concern now, or just something you might want checked later?
 
 ### routesignal-coverage-mismatch-boundary
 - Status: `pass`
@@ -85,8 +85,8 @@
 - Status: `pass`
 - Campaign: `synthetic-b2b-saas-operations`
 - Category: `customer_facing_scope_boundary`
-- Source: `contextual_buyer_semantics`
+- Source: `universal_response_shape`
 - Call control: `continue-call`
 - Failures: ``
-- Final response: Understood, integration risk is the unclear part. Is it causing trouble now, or do you just want the scope clarified?
+- Final response: Maybe integration, understood. Is that an active concern now, or just something you might want checked later?
 
