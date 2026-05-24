@@ -1728,31 +1728,10 @@ def _generic_product_detail_scope_response(
     if session_policy.is_generic_product_detail_limitation_ack(normalized):
         repeated = _contains(normalized, {"only a licensed", "only a license", "only licensed", "only license"})
         if str((campaign or {}).get("vertical_id") or "") == "insurance":
-            focus = _gap_short_focus(selected_gap, campaign)
-            if repeated:
-                return (
-                    "Yes, that is right. I can explain the purpose of this call, but I can't give detailed policy "
-                    "or coverage advice. A licensed insurance specialist would handle that. "
-                    f"Since you mentioned {focus}, the review would focus there. I can note a time, or stop here."
-                )
-            return (
-                "Correct, I can't give detailed policy or coverage advice on this call. "
-                "This call only checks whether a licensed coverage review would be useful. "
-                f"Since you mentioned {focus}, the review would focus there. I can note a time, or stop here."
-            )
+            return session_policy.generic_campaign_product_detail_limitation_text(language, campaign, repeated=repeated)
         return session_policy.generic_campaign_product_detail_limitation_text(language, campaign, repeated=repeated)
     if str((campaign or {}).get("vertical_id") or "") == "insurance" and selected_gap:
-        focus = _gap_short_focus(selected_gap, campaign)
-        if _contains(normalized, {"i am asking the question", "i am asking what", "asking what your product"}):
-            return (
-                "I hear you. I can explain the purpose of this call, but not detailed policy or coverage advice. "
-                "This call only checks whether a licensed coverage review would be useful. "
-                f"Since you mentioned {focus}, the review would focus there. I can note a time, or stop here."
-            )
-        return (
-            "This is not a product-detail call. I can only check whether a short licensed coverage review is useful. "
-            f"Since you mentioned {focus}, the review would focus there."
-        )
+        return session_policy.generic_campaign_product_detail_text(language, campaign)
     return session_policy.generic_campaign_product_detail_text(language, campaign)
 
 

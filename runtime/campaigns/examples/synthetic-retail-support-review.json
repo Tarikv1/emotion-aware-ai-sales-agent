@@ -11,11 +11,21 @@
     "warranty promise"
   ],
   "caller_identity": {
-    "relationship_to_offer": "calling about a synthetic retail support review",
+    "relationship_to_offer": "calling about a retail support fit check",
     "representative_name": "Maya"
   },
   "campaign_id": "synthetic-retail-support-review",
   "client_name": "Synthetic Retail Support",
+  "customer_facing_company_name": "Parcel Retail Support",
+  "customer_facing_offer_name": "retail support fit check",
+  "customer_facing_offer_summary": "A high-level check to see whether an order issue, product support question, or return concern should be reviewed by a support specialist.",
+  "customer_facing_value_proposition": "Route order, product, or return questions to support before any stock, delivery, refund, or warranty claim is made.",
+  "customer_facing_call_objective": "See whether the buyer wants support to review an order issue, product support question, or return concern.",
+  "customer_facing_human_review_scope": "order issue, product support question, availability or delivery, and return or warranty context",
+  "customer_facing_agent_limitations": "The agent can explain the high-level scope and note a callback window, but cannot promise stock, delivery timing, refunds, or warranty outcomes.",
+  "internal_fixture_description": "Synthetic retail-support fixture for testing support-review routing.",
+  "primary_customer_issue_phrase": "order issue",
+  "short_relevance_question": "Is an order issue or product support question active right now?",
   "core_diagnostic_gaps": [
     "product_fit",
     "availability_or_delivery",
@@ -141,7 +151,11 @@
   "human_followup_owner": "support specialist",
   "language": "en",
   "objective": "appointment_setting",
-  "product_or_offer_name": "Product Support Call",
+  "product_or_offer_name": "retail support fit check",
+  "product_or_offer_summary": "A high-level check to see whether an order issue, product support question, or return concern should be reviewed by a support specialist.",
+  "high_level_value_proposition": "Route order, product, or return questions to support before any stock, delivery, refund, or warranty claim is made.",
+  "agent_call_objective": "see whether the buyer wants support to review an order issue, product support question, or return concern",
+  "human_review_scope": "order issue, product support question, availability or delivery, and return or warranty context",
   "vertical_id": "retail_or_ecommerce_support_sales",
   "qualification_goals": [
     "identify product or support need",

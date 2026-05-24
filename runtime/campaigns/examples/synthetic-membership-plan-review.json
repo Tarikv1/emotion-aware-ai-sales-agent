@@ -11,11 +11,21 @@
     "binding account change"
   ],
   "caller_identity": {
-    "relationship_to_offer": "calling about a synthetic membership plan review",
+    "relationship_to_offer": "calling about a membership plan fit check",
     "representative_name": "Maya"
   },
   "campaign_id": "synthetic-membership-plan-review",
   "client_name": "Synthetic Membership Program",
+  "customer_facing_company_name": "Cedar Membership Services",
+  "customer_facing_offer_name": "membership plan fit check",
+  "customer_facing_offer_summary": "A high-level check to see whether plan fit, renewal or cancellation, or usage value should be reviewed by account support.",
+  "customer_facing_value_proposition": "Route account-specific renewal, cancellation, or usage questions to support before any account action or refund claim is made.",
+  "customer_facing_call_objective": "See whether the buyer wants account support to review plan fit, renewal or cancellation, or usage value.",
+  "customer_facing_human_review_scope": "plan fit, renewal or cancellation, and usage or value against account-specific details",
+  "customer_facing_agent_limitations": "The agent can explain the high-level scope and note a callback window, but cannot change the account, promise refunds, or confirm cancellation terms.",
+  "internal_fixture_description": "Synthetic membership fixture for testing account-support review routing.",
+  "primary_customer_issue_phrase": "plan fit",
+  "short_relevance_question": "Is plan fit or renewal timing worth checking right now?",
   "core_diagnostic_gaps": [
     "plan_fit",
     "renewal_or_cancellation",
@@ -142,7 +152,11 @@
   "human_followup_owner": "account support specialist",
   "language": "en",
   "objective": "appointment_setting",
-  "product_or_offer_name": "Plan Support Call",
+  "product_or_offer_name": "membership plan fit check",
+  "product_or_offer_summary": "A high-level check to see whether plan fit, renewal or cancellation, or usage value should be reviewed by account support.",
+  "high_level_value_proposition": "Route account-specific renewal, cancellation, or usage questions to support before any account action or refund claim is made.",
+  "agent_call_objective": "see whether the buyer wants account support to review plan fit, renewal or cancellation, or usage value",
+  "human_review_scope": "plan fit, renewal or cancellation, and usage or value against account-specific details",
   "vertical_id": "membership_or_subscription",
   "qualification_goals": [
     "identify plan-fit or support need",

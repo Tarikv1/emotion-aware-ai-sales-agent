@@ -11,11 +11,19 @@
     "claim outcome promise"
   ],
   "caller_identity": {
-    "relationship_to_offer": "calling about a synthetic policy review",
+    "relationship_to_offer": "calling about a policy fit check",
     "representative_name": "Maya"
   },
   "campaign_id": "synthetic-insurance-review",
   "client_name": "Synthetic Insurance Agency",
+  "customer_facing_company_name": "Harbor Insurance",
+  "customer_facing_offer_name": "policy fit check",
+  "customer_facing_offer_summary": "A high-level check to see whether premium pressure, coverage fit, or renewal timing should be reviewed by a licensed specialist.",
+  "customer_facing_value_proposition": "Route policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.",
+  "customer_facing_call_objective": "See whether the buyer wants a licensed specialist to review premium pressure, coverage fit, or renewal timing.",
+  "customer_facing_human_review_scope": "premium pressure, coverage fit, and renewal timing against actual policy details",
+  "customer_facing_agent_limitations": "The agent can explain the high-level scope and note a callback window, but cannot quote premiums, decide eligibility, or give coverage advice.",
+  "internal_fixture_description": "Synthetic insurance fixture for testing licensed-review routing.",
   "primary_customer_issue_phrase": "premium pressure",
   "short_relevance_question": "Is premium pressure causing any issue right now?",
   "core_diagnostic_gaps": [
@@ -152,15 +160,15 @@
   "human_review_scope": "premium pressure, coverage fit, and renewal timing against actual policy details",
   "language": "en",
   "objective": "appointment_setting",
-  "product_or_offer_name": "Insurance Policy Fit Check",
-  "product_or_offer_summary": "This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist.",
-  "high_level_value_proposition": "The value is routing policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.",
+  "product_or_offer_name": "policy fit check",
+  "product_or_offer_summary": "A high-level check to see whether premium pressure, coverage fit, or renewal timing should be reviewed by a licensed specialist.",
+  "high_level_value_proposition": "Route policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.",
   "allowed_high_level_capabilities": [
     "general review-need triage",
     "licensed specialist routing",
     "premium, coverage, or renewal focus capture"
   ],
-  "agent_call_objective": "identify whether a licensed insurance specialist should review premium pressure, coverage fit, or renewal timing",
+  "agent_call_objective": "see whether the buyer wants a licensed specialist to review premium pressure, coverage fit, or renewal timing",
   "agent_can_say": [
     "this is a high-level insurance policy fit-check call",
     "a licensed insurance specialist must review actual policy details",

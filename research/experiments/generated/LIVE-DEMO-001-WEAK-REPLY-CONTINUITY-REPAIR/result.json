@@ -15,7 +15,7 @@
         "continuity_reason": "agent_opening_started",
         "creates_calendar_event": false,
         "durable_provider_agent_created": false,
-        "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+        "final_response": "Hi, this is Maya calling from Harbor Insurance. I am doing a quick policy fit check to see whether premium pressure is worth a licensed review. Do you have a minute?",
         "local_llm_calls_made": false,
         "mode": "dry-run",
         "opens_prod_102": false,
@@ -26,7 +26,7 @@
         "sends_email": false,
         "target_gap": null,
         "transcript": "__agent_open__",
-        "tts_input_text": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+        "tts_input_text": "Hi, this is Maya calling from Harbor Insurance. I am doing a quick policy fit check to see whether premium pressure is worth a licensed review. Do you have a minute?",
         "voice_cloning_used": false,
         "writes_crm": false
       },

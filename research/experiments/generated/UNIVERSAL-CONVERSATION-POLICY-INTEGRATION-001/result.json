@@ -579,7 +579,7 @@
       "campaign_selector_mode": "generic_config",
       "cleared_gaps": null,
       "confirmed_gaps": null,
-      "final_response": "Sure. This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. The next step, if useful, is the licensed insurance specialist reviewing the actual details.",
+      "final_response": "Sure. This is policy fit check. I can explain the high-level scope; this call is only to check whether premium pressure is still a problem; if it is relevant, the licensed insurance specialist reviews the actual details.",
       "label": "product_detail",
       "semantic": "product_detail_limit_question",
       "side_effect_flags": {

@@ -11,11 +11,21 @@
     "eligibility promise"
   ],
   "caller_identity": {
-    "relationship_to_offer": "calling about a synthetic healthcare admin review",
+    "relationship_to_offer": "calling about an admin fit check",
     "representative_name": "Maya"
   },
   "campaign_id": "synthetic-healthcare-admin-review",
   "client_name": "Synthetic Healthcare Admin",
+  "customer_facing_company_name": "Harbor Admin Services",
+  "customer_facing_offer_name": "admin fit check",
+  "customer_facing_offer_summary": "A high-level check to see whether an administrative issue, equipment or service fit, or specialist question should be reviewed by a qualified specialist.",
+  "customer_facing_value_proposition": "Route admin-specific questions to a qualified specialist before any clinical, eligibility, or outcome claim is made.",
+  "customer_facing_call_objective": "See whether the buyer wants a qualified specialist to review an administrative issue, equipment or service fit, or specialist question.",
+  "customer_facing_human_review_scope": "administrative issue, equipment or service fit, and specialist callback path",
+  "customer_facing_agent_limitations": "The agent can explain the high-level scope and note a callback window, but cannot give clinical advice, decide eligibility, or promise outcomes.",
+  "internal_fixture_description": "Synthetic healthcare-admin fixture for testing qualified-specialist review routing.",
+  "primary_customer_issue_phrase": "administrative issue",
+  "short_relevance_question": "Is an administrative issue worth checking right now?",
   "core_diagnostic_gaps": [
     "admin_workflow_need",
     "equipment_or_service_fit",
@@ -141,7 +151,11 @@
   "human_followup_owner": "qualified healthcare admin specialist",
   "language": "en",
   "objective": "appointment_setting",
-  "product_or_offer_name": "Specialist Review Call",
+  "product_or_offer_name": "admin fit check",
+  "product_or_offer_summary": "A high-level check to see whether an administrative issue, equipment or service fit, or specialist question should be reviewed by a qualified specialist.",
+  "high_level_value_proposition": "Route admin-specific questions to a qualified specialist before any clinical, eligibility, or outcome claim is made.",
+  "agent_call_objective": "see whether the buyer wants a qualified specialist to review an administrative issue, equipment or service fit, or specialist question",
+  "human_review_scope": "administrative issue, equipment or service fit, and specialist callback path",
   "vertical_id": "healthcare_admin_or_medical_equipment",
   "qualification_goals": [
     "identify the operational review need",

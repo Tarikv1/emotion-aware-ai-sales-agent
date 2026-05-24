@@ -10,11 +10,19 @@
     "permit or code interpretation"
   ],
   "caller_identity": {
-    "relationship_to_offer": "calling about a synthetic service estimate review",
+    "relationship_to_offer": "calling about a home service fit check",
     "representative_name": "Maya"
   },
   "campaign_id": "synthetic-home-services-estimate",
   "client_name": "Synthetic Home Services",
+  "customer_facing_company_name": "Hearthside Home Services",
+  "customer_facing_offer_name": "home service fit check",
+  "customer_facing_offer_summary": "A high-level check to see whether a service need, scheduling concern, or estimate question should be reviewed by a qualified coordinator.",
+  "customer_facing_value_proposition": "Route service, property, or estimate questions to a coordinator before any remote diagnosis or price claim is made.",
+  "customer_facing_call_objective": "See whether the buyer wants a qualified coordinator to review a service need, scheduling concern, or estimate question.",
+  "customer_facing_human_review_scope": "service need, scheduling, and estimate or property details",
+  "customer_facing_agent_limitations": "The agent can explain the high-level scope and note a callback window, but cannot diagnose remotely, quote an estimate, or interpret permit or code requirements.",
+  "internal_fixture_description": "Synthetic home-services fixture for testing inspection-or-estimate review routing.",
   "primary_customer_issue_phrase": "service need",
   "short_relevance_question": "Is the service need active right now?",
   "core_diagnostic_gaps": [
@@ -149,7 +157,11 @@
   "human_followup_owner": "qualified service coordinator",
   "language": "en",
   "objective": "appointment_setting",
-  "product_or_offer_name": "Service Estimate Call",
+  "product_or_offer_name": "home service fit check",
+  "product_or_offer_summary": "A high-level check to see whether a service need, scheduling concern, or estimate question should be reviewed by a qualified coordinator.",
+  "high_level_value_proposition": "Route service, property, or estimate questions to a coordinator before any remote diagnosis or price claim is made.",
+  "agent_call_objective": "see whether the buyer wants a qualified coordinator to review a service need, scheduling concern, or estimate question",
+  "human_review_scope": "service need, scheduling, and estimate or property details",
   "vertical_id": "home_services",
   "qualification_goals": [
     "identify the service need",

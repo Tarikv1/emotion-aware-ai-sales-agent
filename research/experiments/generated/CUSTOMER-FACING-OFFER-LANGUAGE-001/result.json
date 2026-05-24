@@ -1,0 +1,292 @@
+{
+  "banned_exact_phrases": [
+    "This synthetic campaign represents",
+    "not a full product pitch",
+    "Plan Review Call",
+    "Policy Review Call",
+    "Synthetic Telecom Provider",
+    "Synthetic Insurance Agency",
+    "Synthetic Membership Program",
+    "Synthetic Automotive Service",
+    "Synthetic Home Services",
+    "review is the next step, not the product"
+  ],
+  "banned_paraphrase_patterns": [
+    "\\bsynthetic (campaign|fixture|provider|agency|program|service|company)\\b",
+    "\\btest fixture\\b",
+    "\\binternal (fixture|policy|metadata|review target|campaign)\\b",
+    "\\bapproved (qualified )?(reviewer )?path\\b",
+    "\\bnot (?:a )?(?:complete|full) product pitch\\b",
+    "\\breview (?:is|as) the product\\b",
+    "\\bthe product is (?:a )?review\\b",
+    "\\bmechanical campaign metadata\\b"
+  ],
+  "campaign_count": 9,
+  "checkpoint_id": "CUSTOMER-FACING-OFFER-LANGUAGE-001",
+  "failure_count": 0,
+  "failure_types": {},
+  "failures": [],
+  "generic_campaign_count": 8,
+  "opening_samples": [
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "response": "Hi, this is Maya calling from Cedar Telecom. I am doing a quick telecom plan fit check to see whether plan fit is worth a short specialist review. Do you have a minute?"
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "response": "Hi, this is Maya calling from Harbor Insurance. I am doing a quick policy fit check to see whether premium pressure is worth a licensed review. Do you have a minute?"
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "response": "Hi, this is Maya calling from Atlas Auto Service. I am doing a quick service fit check to see whether repair timing is worth a short specialist review. Do you have a minute?"
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "response": "Hi, this is Maya calling from Cedar Membership Services. I am doing a quick membership plan fit check to see whether plan fit is worth a short specialist review. Do you have a minute?"
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "response": "Hi, this is Maya calling from Vector Workflow Labs. I am doing a quick operations fit check to see whether manual work is worth a short specialist review. Do you have a minute?"
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "response": "Hi, this is Maya calling from Hearthside Home Services. I am doing a quick home service fit check to see whether service need is worth a short specialist review. Do you have a minute?"
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "response": "Hi, this is Maya calling from Harbor Admin Services. I am doing a quick admin fit check to see whether administrative issue is worth a short specialist review. Do you have a minute?"
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "response": "Hi, this is Maya calling from Parcel Retail Support. I am doing a quick retail support fit check to see whether order issue is worth a short specialist review. Do you have a minute?"
+    }
+  ],
+  "response_samples": [
+    {
+      "campaign_id": "routesignal",
+      "group": "product_offer_questions",
+      "question": "what are you selling",
+      "response": "Plainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. The quick check before any review is whether that problem is active for you."
+    },
+    {
+      "campaign_id": "routesignal",
+      "group": "product_offer_questions",
+      "question": "what is your product",
+      "response": "Sure. RouteSignal is a CRM workflow tool for inbound demo follow-up. This call is only to check whether that problem is active before any review."
+    },
+    {
+      "campaign_id": "routesignal",
+      "group": "product_offer_questions",
+      "question": "what do you do",
+      "response": "RouteSignal CRM routes leads, captures follow-up tasks, and shows handoff status so inbound requests do not sit in a spreadsheet. Where does follow-up break first today: assignment, reminders, or missed replies?"
+    },
+    {
+      "campaign_id": "routesignal",
+      "group": "product_offer_questions",
+      "question": "what problem do you solve",
+      "response": "Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "product_offer_questions",
+      "question": "what are you selling",
+      "response": "Fair question. This is telecom plan fit check. I am checking whether plan fit is still a problem; if so, the telecom account specialist reviews plan fit, coverage availability, and switching constraints against account-specific details."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "product_offer_questions",
+      "question": "what is your product",
+      "response": "Sure. This is telecom plan fit check. I can explain the high-level scope; this call is only to check whether plan fit is still a problem; if it is relevant, the telecom account specialist reviews the actual details."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "product_offer_questions",
+      "question": "what do you do",
+      "response": "This is telecom plan fit check. I can explain that high-level scope; A telecom account specialist reviews plan fit and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "product_offer_questions",
+      "question": "what problem do you solve",
+      "response": "Fair question. Mainly, this helps decide whether plan fit is still a problem. This is telecom plan fit check. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked. If it is relevant, the telecom account specialist reviews the actual details."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "product_offer_questions",
+      "question": "what are you selling",
+      "response": "Fair question. This is policy fit check. I am checking whether premium pressure is still a problem; if so, the licensed insurance specialist reviews premium pressure, coverage fit, and renewal timing against actual policy details."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "product_offer_questions",
+      "question": "what is your product",
+      "response": "Sure. This is policy fit check. I can explain the high-level scope; this call is only to check whether premium pressure is still a problem; if it is relevant, the licensed insurance specialist reviews the actual details."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "product_offer_questions",
+      "question": "what do you do",
+      "response": "This is policy fit check. I can explain that high-level scope; A licensed insurance specialist reviews premium pressure and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "product_offer_questions",
+      "question": "what problem do you solve",
+      "response": "Fair question. Mainly, this helps decide whether premium pressure is still a problem. This is policy fit check. Route policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made. If it is relevant, the licensed insurance specialist reviews the actual details."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "product_offer_questions",
+      "question": "what are you selling",
+      "response": "Fair question. This is service fit check. I am checking whether repair timing is still a problem; if so, the service advisor reviews vehicle issue, repair timing, and warranty or estimate context."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "product_offer_questions",
+      "question": "what is your product",
+      "response": "Sure. This is service fit check. I can explain the high-level scope; this call is only to check whether repair timing is still a problem; if it is relevant, the service advisor reviews the actual details."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "product_offer_questions",
+      "question": "what do you do",
+      "response": "This is service fit check. I can explain that high-level scope; A service advisor reviews repair timing and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "product_offer_questions",
+      "question": "what problem do you solve",
+      "response": "Fair question. Mainly, this helps decide whether repair timing is still a problem. This is service fit check. Route timing, warranty, or estimate questions to a service advisor before any remote diagnosis or cost claim is made. If it is relevant, the service advisor reviews the actual details."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "product_offer_questions",
+      "question": "what are you selling",
+      "response": "Fair question. This is membership plan fit check. I am checking whether plan fit is still a problem; if so, the account support specialist reviews plan fit, renewal or cancellation, and usage or value against account-specific details."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "product_offer_questions",
+      "question": "what is your product",
+      "response": "Sure. This is membership plan fit check. I can explain the high-level scope; this call is only to check whether plan fit is still a problem; if it is relevant, the account support specialist reviews the actual details."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "product_offer_questions",
+      "question": "what do you do",
+      "response": "This is membership plan fit check. I can explain that high-level scope; An account support specialist reviews plan fit and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "product_offer_questions",
+      "question": "what problem do you solve",
+      "response": "Fair question. Mainly, this helps decide whether plan fit is still a problem. This is membership plan fit check. Route account-specific renewal, cancellation, or usage questions to support before any account action or refund claim is made. If it is relevant, the account support specialist reviews the actual details."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "product_offer_questions",
+      "question": "what are you selling",
+      "response": "Fair question. This is operations fit check. I am checking whether manual work is still a problem; if so, the implementation specialist reviews manual work, integration risk, and visibility gaps against the actual operating workflow."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "product_offer_questions",
+      "question": "what is your product",
+      "response": "Sure. This is operations fit check. I can explain the high-level scope; this call is only to check whether manual work is still a problem; if it is relevant, the implementation specialist reviews the actual details."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "product_offer_questions",
+      "question": "what do you do",
+      "response": "This is operations fit check. I can explain that high-level scope; An implementation specialist reviews manual work and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "product_offer_questions",
+      "question": "what problem do you solve",
+      "response": "Fair question. Mainly, this helps decide whether manual work is still a problem. This is operations fit check. Route workflow-fit questions to an implementation specialist before any integration, security, or business-outcome claim is made. If it is relevant, the implementation specialist reviews the actual details."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "product_offer_questions",
+      "question": "what are you selling",
+      "response": "Fair question. This is home service fit check. I am checking whether the service need is active now; if so, the qualified service coordinator reviews service need, scheduling, and estimate or property details."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "product_offer_questions",
+      "question": "what is your product",
+      "response": "Sure. This is home service fit check. I can explain the high-level scope; this call is only to check whether the service need is active now; if it is relevant, the qualified service coordinator reviews the actual details."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "product_offer_questions",
+      "question": "what do you do",
+      "response": "This is home service fit check. I can explain that high-level scope; A qualified service coordinator reviews service need and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "product_offer_questions",
+      "question": "what problem do you solve",
+      "response": "Fair question. Mainly, this helps decide whether the service need is active now. This is home service fit check. Route service, property, or estimate questions to a coordinator before any remote diagnosis or price claim is made. If it is relevant, the qualified service coordinator reviews the actual details."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "product_offer_questions",
+      "question": "what are you selling",
+      "response": "Fair question. This is admin fit check. I am checking whether the administrative issue is still a problem; if so, the qualified healthcare admin specialist reviews administrative issue, equipment or service fit, and specialist callback path."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "product_offer_questions",
+      "question": "what is your product",
+      "response": "Sure. This is admin fit check. I can explain the high-level scope; this call is only to check whether the administrative issue is still a problem; if it is relevant, the qualified healthcare admin specialist reviews the actual details."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "product_offer_questions",
+      "question": "what do you do",
+      "response": "This is admin fit check. I can explain that high-level scope; A qualified healthcare admin specialist reviews administrative issue and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "product_offer_questions",
+      "question": "what problem do you solve",
+      "response": "Fair question. Mainly, this helps decide whether the administrative issue is still a problem. This is admin fit check. Route admin-specific questions to a qualified specialist before any clinical, eligibility, or outcome claim is made. If it is relevant, the qualified healthcare admin specialist reviews the actual details."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "product_offer_questions",
+      "question": "what are you selling",
+      "response": "Fair question. This is retail support fit check. I am checking whether the order issue is still a problem; if so, the support specialist reviews order issue, product support question, availability or delivery, and return or warranty context."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "product_offer_questions",
+      "question": "what is your product",
+      "response": "Sure. This is retail support fit check. I can explain the high-level scope; this call is only to check whether the order issue is still a problem; if it is relevant, the support specialist reviews the actual details."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "product_offer_questions",
+      "question": "what do you do",
+      "response": "This is retail support fit check. I can explain that high-level scope; A support specialist reviews order issue and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "product_offer_questions",
+      "question": "what problem do you solve",
+      "response": "Fair question. Mainly, this helps decide whether the order issue is still a problem. This is retail support fit check. Route order, product, or return questions to support before any stock, delivery, refund, or warranty claim is made. If it is relevant, the support specialist reviews the actual details."
+    }
+  ],
+  "scenario_count": 143,
+  "side_effect_keys": [
+    "provider_calls_made",
+    "local_llm_calls_made",
+    "sends_email",
+    "creates_calendar_event",
+    "writes_crm",
+    "opens_prod_102"
+  ],
+  "valid": true
+}

@@ -9,7 +9,7 @@
         "buyer_move_id": "who_are_you",
         "call_control": "continue-call",
         "mechanical_warning_flags": [],
-        "response": "Sure, I'm Maya calling on behalf of Northstar Workflow Labs about inbound demo follow-up.",
+        "response": "Sure, I'm Maya calling on behalf of Northstar Workflow Labs about check whether inbound demo follow-up is active enough for a workflow review.",
         "response_shape_enforced_category": "trust_identity_privacy_consent",
         "side_effect_flags": {
           "creates_calendar_event": false,
@@ -197,7 +197,7 @@
         "buyer_move_id": "who_are_you",
         "call_control": "continue-call",
         "mechanical_warning_flags": [],
-        "response": "Sure, I'm Maya calling on behalf of Synthetic Insurance Agency about a short human review around premium pressure.",
+        "response": "Sure, I'm Maya calling on behalf of Harbor Insurance about policy fit check.",
         "response_shape_enforced_category": "trust_identity_privacy_consent",
         "side_effect_flags": {
           "creates_calendar_event": false,
@@ -221,7 +221,7 @@
         "buyer_move_id": "are_you_ai_or_robot",
         "call_control": "continue-call",
         "mechanical_warning_flags": [],
-        "response": "Fair to ask. Yes, I'm an AI voice agent calling for Synthetic Insurance Agency. I'll keep it brief: is premium pressure causing any issue right now?",
+        "response": "Fair to ask. Yes, I'm an AI voice agent calling for Harbor Insurance. I'll keep it brief: is premium pressure causing any issue right now?",
         "response_shape_enforced_category": "trust_identity_privacy_consent",
         "side_effect_flags": {
           "creates_calendar_event": false,
@@ -385,7 +385,7 @@
         "buyer_move_id": "who_are_you",
         "call_control": "continue-call",
         "mechanical_warning_flags": [],
-        "response": "Sure, I'm Maya calling on behalf of Synthetic SaaS Operations about a short human review around manual work.",
+        "response": "Sure, I'm Maya calling on behalf of Vector Workflow Labs about operations fit check.",
         "response_shape_enforced_category": "trust_identity_privacy_consent",
         "side_effect_flags": {
           "creates_calendar_event": false,
@@ -409,7 +409,7 @@
         "buyer_move_id": "are_you_ai_or_robot",
         "call_control": "continue-call",
         "mechanical_warning_flags": [],
-        "response": "Fair to ask. Yes, I'm an AI voice agent calling for Synthetic SaaS Operations. I'll keep it brief: is manual work causing any issue right now?",
+        "response": "Fair to ask. Yes, I'm an AI voice agent calling for Vector Workflow Labs. I'll keep it brief: is manual work causing any issue right now?",
         "response_shape_enforced_category": "trust_identity_privacy_consent",
         "side_effect_flags": {
           "creates_calendar_event": false,
@@ -573,7 +573,7 @@
         "buyer_move_id": "who_are_you",
         "call_control": "continue-call",
         "mechanical_warning_flags": [],
-        "response": "Sure, I'm Maya calling on behalf of Synthetic Automotive Service about a short human review around repair timing.",
+        "response": "Sure, I'm Maya calling on behalf of Atlas Auto Service about service fit check.",
         "response_shape_enforced_category": "trust_identity_privacy_consent",
         "side_effect_flags": {
           "creates_calendar_event": false,
@@ -597,7 +597,7 @@
         "buyer_move_id": "are_you_ai_or_robot",
         "call_control": "continue-call",
         "mechanical_warning_flags": [],
-        "response": "Fair to ask. Yes, I'm an AI voice agent calling for Synthetic Automotive Service. I'll keep it brief: is repair timing causing any issue right now?",
+        "response": "Fair to ask. Yes, I'm an AI voice agent calling for Atlas Auto Service. I'll keep it brief: is repair timing causing any issue right now?",
         "response_shape_enforced_category": "trust_identity_privacy_consent",
         "side_effect_flags": {
           "creates_calendar_event": false,
@@ -761,7 +761,7 @@
         "buyer_move_id": "who_are_you",
         "call_control": "continue-call",
         "mechanical_warning_flags": [],
-        "response": "Sure, I'm Maya calling on behalf of Synthetic Home Services about a short human review around the service need.",
+        "response": "Sure, I'm Maya calling on behalf of Hearthside Home Services about home service fit check.",
         "response_shape_enforced_category": "trust_identity_privacy_consent",
         "side_effect_flags": {
           "creates_calendar_event": false,
@@ -785,7 +785,7 @@
         "buyer_move_id": "are_you_ai_or_robot",
         "call_control": "continue-call",
         "mechanical_warning_flags": [],
-        "response": "Fair to ask. Yes, I'm an AI voice agent calling for Synthetic Home Services. I'll keep it brief: is the service need active right now?",
+        "response": "Fair to ask. Yes, I'm an AI voice agent calling for Hearthside Home Services. I'll keep it brief: is the service need active right now?",
         "response_shape_enforced_category": "trust_identity_privacy_consent",
         "side_effect_flags": {
           "creates_calendar_event": false,

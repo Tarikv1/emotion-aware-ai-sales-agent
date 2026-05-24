@@ -66,6 +66,16 @@ ROUTESIGNAL_GAP_MAPPINGS: dict[str, dict[str, list[str]]] = {
 def _campaign_context() -> dict[str, Any]:
     source_context = dict((routesignal_playbook.PLAYBOOK.get("campaign_context") or {}))
     return {
+        "customer_facing_company_name": "Northstar Workflow Labs",
+        "customer_facing_offer_name": "RouteSignal",
+        "customer_facing_offer_summary": (
+            "RouteSignal is a CRM workflow tool for inbound demo follow-up."
+        ),
+        "customer_facing_value_proposition": (
+            "The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift."
+        ),
+        "customer_facing_call_objective": "check whether inbound demo follow-up is active enough for a workflow review",
+        "customer_facing_human_review_scope": "who owns the lead, when follow-up happens, and where reminders or handoffs slip",
         "product_or_offer_name": str(source_context.get("product") or "RouteSignal"),
         "product_or_offer_summary": (
             "RouteSignal is a CRM workflow tool for inbound demo follow-up. "
@@ -254,21 +264,32 @@ def _resolve_generic_campaign_playbook(campaign: dict[str, Any]) -> dict[str, An
 
     campaign_context = {
         "product_or_offer_name": str(
-            campaign.get("product_or_offer_name")
+            campaign.get("customer_facing_offer_name")
+            or campaign.get("product_or_offer_name")
             or campaign.get("offer_name")
             or campaign.get("product_name")
             or "Generic Campaign Offer"
         ),
-        "client_name": str(campaign.get("client_name") or "Generic Campaign Client"),
+        "customer_facing_company_name": str(campaign.get("customer_facing_company_name") or ""),
+        "customer_facing_offer_name": str(campaign.get("customer_facing_offer_name") or ""),
+        "customer_facing_offer_summary": str(campaign.get("customer_facing_offer_summary") or ""),
+        "customer_facing_value_proposition": str(campaign.get("customer_facing_value_proposition") or ""),
+        "customer_facing_call_objective": str(campaign.get("customer_facing_call_objective") or ""),
+        "customer_facing_human_review_scope": str(campaign.get("customer_facing_human_review_scope") or ""),
+        "customer_facing_agent_limitations": str(campaign.get("customer_facing_agent_limitations") or ""),
+        "internal_fixture_description": str(campaign.get("internal_fixture_description") or ""),
+        "client_name": str(campaign.get("customer_facing_company_name") or campaign.get("client_name") or "Generic Campaign Client"),
         "objective": str(campaign.get("objective") or "appointment_setting"),
         "primary_customer_issue_phrase": str(campaign.get("primary_customer_issue_phrase") or ""),
         "short_relevance_question": str(campaign.get("short_relevance_question") or ""),
         "campaign_purpose_phrase": str(campaign.get("campaign_purpose_phrase") or ""),
         "product_detail_answer": str(campaign.get("product_detail_answer") or ""),
-        "product_or_offer_summary": str(campaign.get("product_or_offer_summary") or ""),
-        "high_level_value_proposition": str(campaign.get("high_level_value_proposition") or ""),
+        "product_or_offer_summary": str(campaign.get("customer_facing_offer_summary") or campaign.get("product_or_offer_summary") or ""),
+        "high_level_value_proposition": str(
+            campaign.get("customer_facing_value_proposition") or campaign.get("high_level_value_proposition") or ""
+        ),
         "allowed_high_level_capabilities": _string_list(campaign.get("allowed_high_level_capabilities")),
-        "agent_call_objective": str(campaign.get("agent_call_objective") or ""),
+        "agent_call_objective": str(campaign.get("customer_facing_call_objective") or campaign.get("agent_call_objective") or ""),
         "human_followup_owner": str(
             campaign.get("human_followup_owner")
             or campaign.get("human_handoff_role")
@@ -279,7 +300,7 @@ def _resolve_generic_campaign_playbook(campaign: dict[str, Any]) -> dict[str, An
             or campaign.get("scheduling_goal")
             or "human review"
         ),
-        "human_review_scope": str(campaign.get("human_review_scope") or ""),
+        "human_review_scope": str(campaign.get("customer_facing_human_review_scope") or campaign.get("human_review_scope") or ""),
         "agent_can_say": _string_list(campaign.get("agent_can_say")),
         "agent_must_not_claim": _string_list(campaign.get("agent_must_not_claim")),
         "allowed_claims": allowed_claims,

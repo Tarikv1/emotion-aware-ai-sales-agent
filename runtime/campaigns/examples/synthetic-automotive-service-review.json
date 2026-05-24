@@ -11,11 +11,19 @@
     "roadworthiness claim"
   ],
   "caller_identity": {
-    "relationship_to_offer": "calling about a synthetic service advisor review",
+    "relationship_to_offer": "calling about a service fit check",
     "representative_name": "Maya"
   },
   "campaign_id": "synthetic-automotive-service-review",
   "client_name": "Synthetic Automotive Service",
+  "customer_facing_company_name": "Atlas Auto Service",
+  "customer_facing_offer_name": "service fit check",
+  "customer_facing_offer_summary": "A high-level check to see whether a vehicle issue, repair timing, or estimate concern should be reviewed by a service advisor.",
+  "customer_facing_value_proposition": "Route timing, warranty, or estimate questions to a service advisor before any remote diagnosis or cost claim is made.",
+  "customer_facing_call_objective": "See whether the buyer wants a service advisor to review a vehicle issue, repair timing, or estimate concern.",
+  "customer_facing_human_review_scope": "vehicle issue, repair timing, and warranty or estimate context",
+  "customer_facing_agent_limitations": "The agent can explain the high-level scope and note a callback window, but cannot diagnose the vehicle, quote repair cost, or make warranty promises.",
+  "internal_fixture_description": "Synthetic automotive fixture for testing service-advisor review routing.",
   "primary_customer_issue_phrase": "repair timing",
   "short_relevance_question": "Is repair timing causing any issue right now?",
   "core_diagnostic_gaps": [
@@ -153,7 +161,11 @@
   "human_followup_owner": "service advisor",
   "language": "en",
   "objective": "appointment_setting",
-  "product_or_offer_name": "Service Advisor Review",
+  "product_or_offer_name": "service fit check",
+  "product_or_offer_summary": "A high-level check to see whether a vehicle issue, repair timing, or estimate concern should be reviewed by a service advisor.",
+  "high_level_value_proposition": "Route timing, warranty, or estimate questions to a service advisor before any remote diagnosis or cost claim is made.",
+  "agent_call_objective": "see whether the buyer wants a service advisor to review a vehicle issue, repair timing, or estimate concern",
+  "human_review_scope": "vehicle issue, repair timing, and warranty or estimate context",
   "vertical_id": "automotive_service",
   "qualification_goals": [
     "identify vehicle issue and timing",

@@ -11,11 +11,19 @@
     "guaranteed business outcome"
   ],
   "caller_identity": {
-    "relationship_to_offer": "calling about a synthetic operations workflow review",
+    "relationship_to_offer": "calling about an operations fit check",
     "representative_name": "Maya"
   },
   "campaign_id": "synthetic-b2b-saas-operations",
   "client_name": "Synthetic SaaS Operations",
+  "customer_facing_company_name": "Vector Workflow Labs",
+  "customer_facing_offer_name": "operations fit check",
+  "customer_facing_offer_summary": "A high-level check to see whether manual work, integration risk, or visibility gaps should be reviewed by an implementation specialist.",
+  "customer_facing_value_proposition": "Route workflow-fit questions to an implementation specialist before any integration, security, or business-outcome claim is made.",
+  "customer_facing_call_objective": "See whether the buyer wants an implementation specialist to review manual work, integration risk, or visibility gaps.",
+  "customer_facing_human_review_scope": "manual work, integration risk, and visibility gaps against the actual operating workflow",
+  "customer_facing_agent_limitations": "The agent can explain the high-level scope and note a callback window, but cannot guarantee integration, security posture, or business outcomes.",
+  "internal_fixture_description": "Synthetic B2B SaaS fixture for testing operations-fit review routing.",
   "primary_customer_issue_phrase": "manual work",
   "short_relevance_question": "Is manual work causing any issue right now?",
   "core_diagnostic_gaps": [
@@ -155,7 +163,11 @@
   "human_followup_owner": "implementation specialist",
   "language": "en",
   "objective": "appointment_setting",
-  "product_or_offer_name": "Operations Workflow Review",
+  "product_or_offer_name": "operations fit check",
+  "product_or_offer_summary": "A high-level check to see whether manual work, integration risk, or visibility gaps should be reviewed by an implementation specialist.",
+  "high_level_value_proposition": "Route workflow-fit questions to an implementation specialist before any integration, security, or business-outcome claim is made.",
+  "agent_call_objective": "see whether the buyer wants an implementation specialist to review manual work, integration risk, or visibility gaps",
+  "human_review_scope": "manual work, integration risk, and visibility gaps against the actual operating workflow",
   "vertical_id": "b2b_saas",
   "qualification_goals": [
     "identify current workflow friction",

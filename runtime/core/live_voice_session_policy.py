@@ -160,6 +160,10 @@ def campaign_value(campaign: dict | None, key: str, fallback: str) -> str:
     return value or fallback
 
 
+def customer_campaign_value(campaign: dict | None, customer_key: str, legacy_key: str, fallback: str) -> str:
+    return campaign_value(campaign, customer_key, campaign_value(campaign, legacy_key, fallback))
+
+
 def nested_campaign_value(campaign: dict | None, section: str, key: str, fallback: str) -> str:
     data = (campaign or {}).get(section) or {}
     value = str(data.get(key) or "").strip() if isinstance(data, dict) else ""
@@ -213,14 +217,17 @@ def sentence_start(text: str) -> str:
 def generic_campaign_context(campaign: dict | None) -> dict[str, str]:
     owner = campaign_value(campaign, "human_followup_owner", "qualified specialist")
     owner_phrase = generic_campaign_role_phrase(owner)
+    offer = customer_campaign_value(campaign, "customer_facing_offer_name", "product_or_offer_name", campaign_value(campaign, "product_name", "this review"))
     return {
-        "client": campaign_value(campaign, "client_name", "the campaign team"),
-        "offer": campaign_value(campaign, "product_or_offer_name", campaign_value(campaign, "product_name", "this review")),
+        "client": customer_campaign_value(campaign, "customer_facing_company_name", "client_name", "the campaign team"),
+        "offer": offer,
         "owner": owner,
         "owner_phrase": owner_phrase,
         "owner_sentence": sentence_start(owner_phrase),
         "target": campaign_value(campaign, "appointment_target", "human review"),
         "gaps": generic_campaign_gap_clause(campaign),
+        "summary": customer_campaign_value(campaign, "customer_facing_offer_summary", "product_or_offer_summary", f"a high-level {offer}"),
+        "scope": customer_campaign_value(campaign, "customer_facing_human_review_scope", "human_review_scope", generic_campaign_gap_clause(campaign)),
     }
 
 
@@ -269,17 +276,49 @@ def generic_campaign_next_step_text(language: str, campaign: dict | None) -> str
     return f"If it is relevant, {context['owner_phrase']} can do a short {context['target']}. {generic_campaign_primary_question(language, campaign)}"
 
 
+def is_human_review_scope_question(normalized: str) -> bool:
+    if not normalized:
+        return False
+    return normalized_contains_any(
+        normalized,
+        {
+            "what will the specialist check",
+            "what would the specialist check",
+            "what does the specialist check",
+            "what will the reviewer check",
+            "what would the reviewer check",
+            "what will the human review",
+            "what would the human review",
+            "what will they check",
+        },
+    )
+
+
+def human_review_scope_response(language: str, campaign: dict | None) -> str:
+    if is_generic_campaign_config(campaign):
+        context = generic_campaign_context(campaign)
+        primary_issue = _generic_primary_issue_phrase(campaign)
+        if language.startswith("de"):
+            return f"{context['owner']} prueft {primary_issue} und die konkreten Details. Ich kann nur klaeren, ob diese Pruefung sinnvoll ist."
+        return f"{context['owner_sentence']} would review {primary_issue} and the actual details. I can only check whether that review is worth a callback."
+    if language.startswith("de"):
+        return "Die Workflow-Pruefung schaut darauf, wem der Lead gehoert, wann nachgefasst wird und wo Erinnerungen oder Uebergaben rutschen."
+    return (
+        "The workflow reviewer would check who owns the lead, when follow-up happens, "
+        "and where reminders or handoffs slip. I can only check whether that review is worth a callback."
+    )
+
+
 def generic_campaign_product_detail_text(language: str, campaign: dict | None) -> str:
     context = generic_campaign_context(campaign)
-    primary_issue = _generic_primary_issue_phrase(campaign)
     if language.startswith("de"):
         return (
-            f"Das ist kein Produktdetail-Gespraech. Ich kann nur pruefen, ob eine kurze {context['target']} "
-            f"zu {primary_issue} sinnvoll ist."
+            f"{context['summary']} Ich kann den Rahmen nur allgemein erklaeren; "
+            f"{context['owner']} prueft die Details."
         )
     return (
-        f"This is not a product-detail call. I can only check whether a short {context['target']} "
-        f"is useful around {primary_issue}."
+        f"This is {context['offer']}. I can explain that high-level scope; "
+        f"{context['owner_sentence']} reviews {_generic_primary_issue_phrase(campaign)} and the actual details."
     )
 
 
@@ -325,13 +364,13 @@ def generic_campaign_product_detail_limitation_text(language: str, campaign: dic
         owner = "a licensed insurance specialist"
     if repeated:
         return (
-            f"Yes, that is right. I can explain the purpose of the call, but not detailed policy advice. "
-            f"{session_role_sentence(owner)} would handle that. I can note a time for the review, or stop here."
+            "Yes, that is right. I can explain the purpose of the call, but not detailed advice. "
+            f"{session_role_sentence(owner)} would review the actual details. I can note a time, or stop here."
         )
     return (
         "Correct, I cannot give detailed policy or product advice on this call. "
-        f"This call only checks whether a {context['target']} is worth setting up. "
-        "If premium is the issue, I can note a time for that review, or stop here."
+        f"I can only check whether this should go to {context['owner_phrase']}. "
+        "I can note a time, or stop here."
     )
 
 
@@ -403,18 +442,21 @@ def generic_campaign_focus_text(
 
 def sales_opening_response(language: str, campaign: dict | None = None) -> str:
     if is_generic_campaign_config(campaign):
-        client_name = campaign_value(campaign, "client_name", "the campaign team")
-        offer_name = campaign_value(campaign, "product_or_offer_name", campaign_value(campaign, "product_name", "this review"))
+        context = generic_campaign_context(campaign)
+        client_name = context["client"]
+        offer_name = context["offer"]
         representative = nested_campaign_value(campaign, "caller_identity", "representative_name", "Maya")
-        appointment_target = campaign_value(campaign, "appointment_target", "human review")
+        issue = _generic_primary_issue_phrase(campaign)
+        review_phrase = "licensed review" if "licensed" in context["owner_phrase"].lower() else "short specialist review"
         if language.startswith("de"):
             return (
                 f"Hallo, hier ist {representative} von {client_name} wegen {offer_name}. "
-                f"Ich pruefe, ob eine kurze {appointment_target} sinnvoll ist; haben Sie kurz Zeit?"
+                f"Ich pruefe, ob {issue} eine kurze Pruefung braucht; haben Sie kurz Zeit?"
             )
         return (
-            f"Hi, this is {representative} calling from {client_name} about {offer_name}. "
-            f"I am checking whether a short {appointment_target} is needed; do you have a minute?"
+            f"Hi, this is {representative} calling from {client_name}. "
+            f"I am doing a quick {offer_name} to see whether {issue} is worth a {review_phrase}. "
+            "Do you have a minute?"
         )
     client_name = campaign_value(campaign, "client_name", "Northstar Workflow Labs")
     product_name = campaign_value(campaign, "product_name", "RouteSignal CRM")
@@ -474,19 +516,19 @@ def has_caller_identity_question(normalized: str) -> bool:
 
 def caller_identity_recall_response(language: str, campaign: dict | None = None) -> str:
     if is_generic_campaign_config(campaign):
-        client_name = campaign_value(campaign, "client_name", "the campaign team")
-        offer_name = campaign_value(campaign, "product_or_offer_name", campaign_value(campaign, "product_name", "this review"))
+        context = generic_campaign_context(campaign)
+        client_name = context["client"]
+        offer_name = context["offer"]
         representative = nested_campaign_value(campaign, "caller_identity", "representative_name", "Maya")
-        owner = campaign_value(campaign, "human_followup_owner", "qualified specialist")
-        appointment_target = campaign_value(campaign, "appointment_target", "human review")
+        owner = context["owner"]
         if language.startswith("de"):
             return (
                 f"Ich bin {representative} von {client_name}. Es geht um {offer_name} "
-                f"und darum, ob eine kurze {appointment_target} mit {owner} sinnvoll waere."
+                f"und darum, ob eine kurze Pruefung mit {owner} sinnvoll waere."
             )
         return (
             f"I am {representative} calling from {client_name} about {offer_name}. "
-            f"The reason is to see whether a short {appointment_target} with {owner} would be useful. "
+            f"The reason is to see whether this is worth review by {owner}. "
             "Should I restate the quick question?"
         )
     client_name = campaign_value(campaign, "client_name", "Northstar Workflow Labs")
@@ -3881,6 +3923,13 @@ def continuity_response(
             "reason": "opening_greeting_answered",
             "dialogue_focus": "qualification",
             "candidate_response": opening_greeting_response(language, campaign),
+        }
+    if is_human_review_scope_question(normalized):
+        return {
+            "applied": True,
+            "reason": "human_review_scope_explained",
+            "dialogue_focus": resolved_focus or "details",
+            "candidate_response": human_review_scope_response(language, campaign),
         }
     structured_route = structured_reasoning_continuity_response(
         normalized,

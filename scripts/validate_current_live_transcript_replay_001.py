@@ -284,23 +284,34 @@ def generic_product_answer(packet: dict[str, Any], failures: list[str], campaign
     common_checks(packet, failures)
     add_failure(failures, frame(packet).get("buyer_move_id") in {"what_problem_do_you_solve", "product_detail_question"}, f"{campaign_label} product question not recognized")
     add_failure(failures, "review is the product" not in lower, f"{campaign_label} framed review as product")
-    add_failure(failures, "this synthetic campaign represents" in lower or "offer" in lower or "fit-check" in lower or "fit check" in lower or "review call" in lower, f"{campaign_label} offer summary missing")
-    add_failure(failures, "next step" in lower or "human" in lower or "specialist" in lower, f"{campaign_label} next-step boundary missing")
+    add_failure(failures, "synthetic campaign" not in lower and "test fixture" not in lower, f"{campaign_label} leaked fixture wording")
+    add_failure(failures, "high-level check" in lower or "fit check" in lower or "fit-check" in lower, f"{campaign_label} offer summary missing")
+    add_failure(failures, "review" in lower and ("human" in lower or "specialist" in lower or "licensed" in lower), f"{campaign_label} review boundary missing")
 
 
 def generic_value_answer(packet: dict[str, Any], failures: list[str], campaign_label: str) -> None:
     lower = lower_response(packet)
     common_checks(packet, failures)
     add_failure(failures, "review is the product" not in lower, f"{campaign_label} framed review as product")
-    add_failure(failures, "this synthetic campaign represents" in lower or "offer" in lower or "fit-check" in lower or "fit check" in lower or "review call" in lower, f"{campaign_label} offer summary missing")
-    add_failure(failures, "value" in lower or "useful difference" in lower or "worth time" in lower or "next step" in lower or "human" in lower or "specialist" in lower, f"{campaign_label} value boundary missing")
+    add_failure(failures, "synthetic campaign" not in lower and "test fixture" not in lower, f"{campaign_label} leaked fixture wording")
+    add_failure(failures, "high-level check" in lower or "fit check" in lower or "fit-check" in lower, f"{campaign_label} offer summary missing")
+    add_failure(failures, "value" in lower or "useful" in lower or "avoid wasting" in lower or "route" in lower or "specialist" in lower, f"{campaign_label} value boundary missing")
 
 
 def human_review_answer(packet: dict[str, Any], failures: list[str]) -> None:
     lower = lower_response(packet)
     common_checks(packet, failures)
-    add_failure(failures, "human review" in lower or "specialist" in lower or "human" in lower, "human review not explained")
-    add_failure(failures, "next step" in lower or "before any decision" in lower or "actual details" in lower, "review not positioned as next step")
+    add_failure(failures, "human review" in lower or "specialist" in lower or "human" in lower or "reviewer" in lower, "human review not explained")
+    add_failure(
+        failures,
+        "next step" in lower
+        or "before any decision" in lower
+        or "actual details" in lower
+        or "before any recommendation" in lower
+        or "worth a callback" in lower
+        or "callback window" in lower,
+        "review not positioned as next step",
+    )
     add_failure(failures, "product" not in lower or "not the product" in lower or "next step" in lower, "human review may be framed as product")
 
 

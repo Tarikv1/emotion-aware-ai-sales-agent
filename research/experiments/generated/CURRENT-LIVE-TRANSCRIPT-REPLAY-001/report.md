@@ -33,7 +33,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
+- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
 
 ### routesignal_direct_product_01
 - Group: `A_routesignal_direct_product_question`
@@ -42,7 +42,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Plainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The quick check before any review is whether that problem is active for you.
+- Response: Plainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. The quick check before any review is whether that problem is active for you.
 
 ### routesignal_direct_product_02
 - Group: `A_routesignal_direct_product_question`
@@ -51,7 +51,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
+- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
 
 ### routesignal_direct_product_03
 - Group: `A_routesignal_direct_product_question`
@@ -60,7 +60,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Plainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The quick check before any review is whether that problem is active for you.
+- Response: Plainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. The quick check before any review is whether that problem is active for you.
 
 ### routesignal_direct_product_04
 - Group: `A_routesignal_direct_product_question`
@@ -69,7 +69,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
+- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
 
 ### routesignal_direct_product_05
 - Group: `A_routesignal_direct_product_question`
@@ -78,7 +78,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
+- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
 
 ### routesignal_direct_product_06
 - Group: `A_routesignal_direct_product_question`
@@ -87,7 +87,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
+- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
 
 ### routesignal_process_explanation_00
 - Group: `B_routesignal_process_explanation`
@@ -366,7 +366,7 @@
 - Buyer move: `what_makes_you_different`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: I cannot compare exact provider terms on this call. This synthetic campaign represents a telecom plan fit-check call, not a full product pitch. It is about deciding whether account-specific plan questions should be reviewed by a telecom account specialist. The telecom account specialist would compare plan fit, coverage or availability, and switching constraints against account-specific details before any recommendation.
+- Response: I cannot compare exact provider terms on this call. A high-level check to see whether plan fit, coverage availability, or switching terms are worth review by a telecom account specialist. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked. The telecom account specialist would compare plan fit, coverage availability, and switching constraints against account-specific details before any recommendation.
 
 ### telecom_product_difference_01
 - Group: `G_telecom_price_value_product_difference`
@@ -375,7 +375,7 @@
 - Buyer move: `what_makes_you_different`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: I cannot compare exact provider terms on this call. This synthetic campaign represents a telecom plan fit-check call, not a full product pitch. It is about deciding whether account-specific plan questions should be reviewed by a telecom account specialist. The telecom account specialist would compare plan fit, coverage or availability, and switching constraints against account-specific details before any recommendation.
+- Response: I cannot compare exact provider terms on this call. A high-level check to see whether plan fit, coverage availability, or switching terms are worth review by a telecom account specialist. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked. The telecom account specialist would compare plan fit, coverage availability, and switching constraints against account-specific details before any recommendation.
 
 ### telecom_product_difference_02
 - Group: `G_telecom_price_value_product_difference`
@@ -384,7 +384,7 @@
 - Buyer move: `scope_limit_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: The telecom account specialist would review plan fit, coverage or availability, and switching constraints against account-specific details. I can only check that at a high level here.
+- Response: The telecom account specialist would review plan fit, coverage availability, and switching constraints against account-specific details. I can only check that at a high level here.
 
 ### telecom_product_difference_03
 - Group: `G_telecom_price_value_product_difference`
@@ -420,7 +420,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
+- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
 
 ### routesignal_offer_question_01
 - Group: `H_campaign_offer_scope_product_questions`
@@ -429,7 +429,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Plainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The quick check before any review is whether that problem is active for you.
+- Response: Plainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. The quick check before any review is whether that problem is active for you.
 
 ### routesignal_offer_question_02
 - Group: `H_campaign_offer_scope_product_questions`
@@ -438,7 +438,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Plainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The quick check before any review is whether that problem is active for you.
+- Response: Plainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. The quick check before any review is whether that problem is active for you.
 
 ### routesignal_offer_question_03
 - Group: `H_campaign_offer_scope_product_questions`
@@ -447,7 +447,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
+- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
 
 ### routesignal_offer_question_04
 - Group: `H_campaign_offer_scope_product_questions`
@@ -456,7 +456,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
+- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
 
 ### routesignal_offer_question_05
 - Group: `H_campaign_offer_scope_product_questions`
@@ -465,7 +465,7 @@
 - Buyer move: `product_detail_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Sure. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. This call is only to check whether that problem is active before any review.
+- Response: Sure. RouteSignal is a CRM workflow tool for inbound demo follow-up. This call is only to check whether that problem is active before any review.
 
 ### synthetic-telecom-plan-review_offer_question_00
 - Group: `H_campaign_offer_scope_product_questions`
@@ -474,7 +474,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, This synthetic campaign represents a telecom plan fit-check call, not a full product pitch. It is about deciding whether account-specific plan questions should be reviewed by a telecom account specialist. The value is avoiding a bad-fit plan or wasted provider comparison by routing account-specific plan and coverage questions to a human reviewer.
+- Response: Fair question. Mainly, this helps decide whether plan fit is still a problem. This is telecom plan fit check. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked. If it is relevant, the telecom account specialist reviews the actual details.
 
 ### synthetic-telecom-plan-review_offer_question_01
 - Group: `H_campaign_offer_scope_product_questions`
@@ -483,7 +483,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Plainly, This synthetic campaign represents a telecom plan fit-check call, not a full product pitch. It is about deciding whether account-specific plan questions should be reviewed by a telecom account specialist. The next step, if useful, is the telecom account specialist reviewing the actual details.
+- Response: Fair question. This is telecom plan fit check. I am checking whether plan fit is still a problem; if so, the telecom account specialist reviews plan fit, coverage availability, and switching constraints against account-specific details.
 
 ### synthetic-telecom-plan-review_offer_question_02
 - Group: `H_campaign_offer_scope_product_questions`
@@ -492,7 +492,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Plainly, This synthetic campaign represents a telecom plan fit-check call, not a full product pitch. It is about deciding whether account-specific plan questions should be reviewed by a telecom account specialist. The next step, if useful, is the telecom account specialist reviewing the actual details.
+- Response: Fair question. This is telecom plan fit check. I am checking whether plan fit is still a problem; if so, the telecom account specialist reviews plan fit, coverage availability, and switching constraints against account-specific details.
 
 ### synthetic-telecom-plan-review_offer_question_03
 - Group: `H_campaign_offer_scope_product_questions`
@@ -501,7 +501,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, This synthetic campaign represents a telecom plan fit-check call, not a full product pitch. It is about deciding whether account-specific plan questions should be reviewed by a telecom account specialist. The value is avoiding a bad-fit plan or wasted provider comparison by routing account-specific plan and coverage questions to a human reviewer.
+- Response: Fair question. Mainly, this helps decide whether plan fit is still a problem. This is telecom plan fit check. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked. If it is relevant, the telecom account specialist reviews the actual details.
 
 ### synthetic-telecom-plan-review_offer_question_04
 - Group: `H_campaign_offer_scope_product_questions`
@@ -510,7 +510,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, This synthetic campaign represents a telecom plan fit-check call, not a full product pitch. It is about deciding whether account-specific plan questions should be reviewed by a telecom account specialist. The value is avoiding a bad-fit plan or wasted provider comparison by routing account-specific plan and coverage questions to a human reviewer.
+- Response: Fair question. Mainly, this helps decide whether plan fit is still a problem. This is telecom plan fit check. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked. If it is relevant, the telecom account specialist reviews the actual details.
 
 ### synthetic-telecom-plan-review_offer_question_05
 - Group: `H_campaign_offer_scope_product_questions`
@@ -519,7 +519,7 @@
 - Buyer move: `product_detail_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Sure. This synthetic campaign represents a telecom plan fit-check call, not a full product pitch. It is about deciding whether account-specific plan questions should be reviewed by a telecom account specialist. This call is only to check whether a review is useful; the next step, if useful, is the telecom account specialist reviewing the actual details.
+- Response: Sure. This is telecom plan fit check. I can explain the high-level scope; this call is only to check whether plan fit is still a problem; if it is relevant, the telecom account specialist reviews the actual details.
 
 ### synthetic-insurance-review_offer_question_00
 - Group: `H_campaign_offer_scope_product_questions`
@@ -528,7 +528,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. The value is routing policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.
+- Response: Fair question. Mainly, this helps decide whether premium pressure is still a problem. This is policy fit check. Route policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made. If it is relevant, the licensed insurance specialist reviews the actual details.
 
 ### synthetic-insurance-review_offer_question_01
 - Group: `H_campaign_offer_scope_product_questions`
@@ -537,7 +537,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Plainly, This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. The next step, if useful, is the licensed insurance specialist reviewing the actual details.
+- Response: Fair question. This is policy fit check. I am checking whether premium pressure is still a problem; if so, the licensed insurance specialist reviews premium pressure, coverage fit, and renewal timing against actual policy details.
 
 ### synthetic-insurance-review_offer_question_02
 - Group: `H_campaign_offer_scope_product_questions`
@@ -546,7 +546,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Plainly, This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. The next step, if useful, is the licensed insurance specialist reviewing the actual details.
+- Response: Fair question. This is policy fit check. I am checking whether premium pressure is still a problem; if so, the licensed insurance specialist reviews premium pressure, coverage fit, and renewal timing against actual policy details.
 
 ### synthetic-insurance-review_offer_question_03
 - Group: `H_campaign_offer_scope_product_questions`
@@ -555,7 +555,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. The value is routing policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.
+- Response: Fair question. Mainly, this helps decide whether premium pressure is still a problem. This is policy fit check. Route policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made. If it is relevant, the licensed insurance specialist reviews the actual details.
 
 ### synthetic-insurance-review_offer_question_04
 - Group: `H_campaign_offer_scope_product_questions`
@@ -564,7 +564,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. The value is routing policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.
+- Response: Fair question. Mainly, this helps decide whether premium pressure is still a problem. This is policy fit check. Route policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made. If it is relevant, the licensed insurance specialist reviews the actual details.
 
 ### synthetic-insurance-review_offer_question_05
 - Group: `H_campaign_offer_scope_product_questions`
@@ -573,7 +573,7 @@
 - Buyer move: `product_detail_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Sure. This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. This call is only to check whether a review is useful; the next step, if useful, is the licensed insurance specialist reviewing the actual details.
+- Response: Sure. This is policy fit check. I can explain the high-level scope; this call is only to check whether premium pressure is still a problem; if it is relevant, the licensed insurance specialist reviews the actual details.
 
 ### routesignal_human_review_00
 - Group: `H_campaign_offer_scope_human_review`
@@ -582,7 +582,7 @@
 - Buyer move: `scope_limit_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: A human review matters because I can only check fit at a high level; the verified implementation reviewer would review the actual details before any decision. The review is the next step, not the product.
+- Response: Because I can only check fit at a high level. The verified implementation reviewer would review who owns the lead, when follow-up happens, and where reminders or handoffs slip before any recommendation. I can note a callback window or stop here.
 
 ### routesignal_human_review_01
 - Group: `H_campaign_offer_scope_human_review`
@@ -591,7 +591,7 @@
 - Buyer move: `scope_limit_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: A human review matters because I can only check fit at a high level; the verified implementation reviewer would review the actual details before any decision. The review is the next step, not the product.
+- Response: Because I can only check fit at a high level. The verified implementation reviewer would review who owns the lead, when follow-up happens, and where reminders or handoffs slip before any recommendation. I can note a callback window or stop here.
 
 ### routesignal_human_review_02
 - Group: `H_campaign_offer_scope_human_review`
@@ -600,7 +600,7 @@
 - Buyer move: `scope_limit_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: A human review matters because I can only check fit at a high level; the verified implementation reviewer would review the actual details before any decision. The review is the next step, not the product.
+- Response: Because I can only check fit at a high level. The verified implementation reviewer would review who owns the lead, when follow-up happens, and where reminders or handoffs slip before any recommendation. I can note a callback window or stop here.
 
 ### synthetic-telecom-plan-review_human_review_00
 - Group: `H_campaign_offer_scope_human_review`
@@ -609,7 +609,7 @@
 - Buyer move: `scope_limit_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: A human review matters because I can only check fit at a high level; the telecom account specialist would review the actual details before any decision. The review is the next step, not the product.
+- Response: Because I can only check fit at a high level. The telecom account specialist would review plan fit, coverage availability, and switching constraints against account-specific details before any recommendation. I can note a callback window or stop here.
 
 ### synthetic-telecom-plan-review_human_review_01
 - Group: `H_campaign_offer_scope_human_review`
@@ -618,7 +618,7 @@
 - Buyer move: `scope_limit_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: A human review matters because I can only check fit at a high level; the telecom account specialist would review the actual details before any decision. The review is the next step, not the product.
+- Response: Because I can only check fit at a high level. The telecom account specialist would review plan fit, coverage availability, and switching constraints against account-specific details before any recommendation. I can note a callback window or stop here.
 
 ### synthetic-telecom-plan-review_human_review_02
 - Group: `H_campaign_offer_scope_human_review`
@@ -627,7 +627,7 @@
 - Buyer move: `scope_limit_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: A human review matters because I can only check fit at a high level; the telecom account specialist would review the actual details before any decision. The review is the next step, not the product.
+- Response: Because I can only check fit at a high level. The telecom account specialist would review plan fit, coverage availability, and switching constraints against account-specific details before any recommendation. I can note a callback window or stop here.
 
 ### synthetic-insurance-review_human_review_00
 - Group: `H_campaign_offer_scope_human_review`
@@ -636,7 +636,7 @@
 - Buyer move: `scope_limit_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: A human review matters because I can only check fit at a high level; the licensed insurance specialist would review the actual details before any decision. The review is the next step, not the product.
+- Response: Because I can only check fit at a high level. The licensed insurance specialist would review premium pressure, coverage fit, and renewal timing against actual policy details before any recommendation. I can note a callback window or stop here.
 
 ### synthetic-insurance-review_human_review_01
 - Group: `H_campaign_offer_scope_human_review`
@@ -645,7 +645,7 @@
 - Buyer move: `scope_limit_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: A human review matters because I can only check fit at a high level; the licensed insurance specialist would review the actual details before any decision. The review is the next step, not the product.
+- Response: Because I can only check fit at a high level. The licensed insurance specialist would review premium pressure, coverage fit, and renewal timing against actual policy details before any recommendation. I can note a callback window or stop here.
 
 ### synthetic-insurance-review_human_review_02
 - Group: `H_campaign_offer_scope_human_review`
@@ -654,7 +654,7 @@
 - Buyer move: `scope_limit_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: A human review matters because I can only check fit at a high level; the licensed insurance specialist would review the actual details before any decision. The review is the next step, not the product.
+- Response: Because I can only check fit at a high level. The licensed insurance specialist would review premium pressure, coverage fit, and renewal timing against actual policy details before any recommendation. I can note a callback window or stop here.
 
 ### routesignal_value_question_00
 - Group: `H_campaign_offer_scope_value_questions`
@@ -663,7 +663,7 @@
 - Buyer move: `what_makes_you_different`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The useful difference is narrow: RouteSignal CRM helps inbound sales teams capture, route, follow up, and review ownership of demo and contact-sales requests. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
+- Response: Fair question. RouteSignal is a CRM workflow tool for inbound demo follow-up. The useful difference is narrow: RouteSignal CRM helps inbound sales teams capture, route, follow up, and review ownership of demo and contact-sales requests. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
 
 ### routesignal_value_question_01
 - Group: `H_campaign_offer_scope_value_questions`
@@ -672,7 +672,7 @@
 - Buyer move: `why_should_i_care`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. Only if the issue is active enough to create real impact is a human review worth time. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
+- Response: Fair question. RouteSignal is a CRM workflow tool for inbound demo follow-up. It matters only if the issue is active enough to create real impact and justify a specialist review. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
 
 ### routesignal_value_question_02
 - Group: `H_campaign_offer_scope_value_questions`
@@ -681,7 +681,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
+- Response: Fair question. Mainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
 
 ### routesignal_value_question_03
 - Group: `H_campaign_offer_scope_value_questions`
@@ -690,7 +690,7 @@
 - Buyer move: `is_this_worth_my_time`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. It is worth time only if that issue is active enough for the verified implementation reviewer to review.
+- Response: Fair question. RouteSignal is a CRM workflow tool for inbound demo follow-up. It is worth time only if that issue is active enough for the verified implementation reviewer to review.
 
 ### synthetic-telecom-plan-review_value_question_00
 - Group: `H_campaign_offer_scope_value_questions`
@@ -699,7 +699,7 @@
 - Buyer move: `what_makes_you_different`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. This synthetic campaign represents a telecom plan fit-check call, not a full product pitch. It is about deciding whether account-specific plan questions should be reviewed by a telecom account specialist. The useful difference is narrow: discussing plan fit generally. The value is avoiding a bad-fit plan or wasted provider comparison by routing account-specific plan and coverage questions to a human reviewer.
+- Response: Fair question. This is telecom plan fit check. The useful difference is narrow: discussing plan fit generally. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked.
 
 ### synthetic-telecom-plan-review_value_question_01
 - Group: `H_campaign_offer_scope_value_questions`
@@ -708,7 +708,7 @@
 - Buyer move: `why_should_i_care`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. This synthetic campaign represents a telecom plan fit-check call, not a full product pitch. It is about deciding whether account-specific plan questions should be reviewed by a telecom account specialist. Only if the issue is active enough to create real impact is a human review worth time. The value is avoiding a bad-fit plan or wasted provider comparison by routing account-specific plan and coverage questions to a human reviewer.
+- Response: Fair question. This is telecom plan fit check. It matters only if the issue is active enough to create real impact and justify a specialist review. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked.
 
 ### synthetic-telecom-plan-review_value_question_02
 - Group: `H_campaign_offer_scope_value_questions`
@@ -717,7 +717,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, This synthetic campaign represents a telecom plan fit-check call, not a full product pitch. It is about deciding whether account-specific plan questions should be reviewed by a telecom account specialist. The value is avoiding a bad-fit plan or wasted provider comparison by routing account-specific plan and coverage questions to a human reviewer.
+- Response: Fair question. Mainly, this helps decide whether plan fit is still a problem. This is telecom plan fit check. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked. If it is relevant, the telecom account specialist reviews the actual details.
 
 ### synthetic-telecom-plan-review_value_question_03
 - Group: `H_campaign_offer_scope_value_questions`
@@ -726,7 +726,7 @@
 - Buyer move: `is_this_worth_my_time`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. This synthetic campaign represents a telecom plan fit-check call, not a full product pitch. It is about deciding whether account-specific plan questions should be reviewed by a telecom account specialist. It is worth time only if that issue is active enough for the telecom account specialist to review.
+- Response: Fair question. This is telecom plan fit check. It is worth time only if that issue is active enough for the telecom account specialist to review.
 
 ### synthetic-insurance-review_value_question_00
 - Group: `H_campaign_offer_scope_value_questions`
@@ -735,7 +735,7 @@
 - Buyer move: `what_makes_you_different`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. The useful difference is narrow: collecting general review needs. The value is routing policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.
+- Response: Fair question. This is policy fit check. The useful difference is narrow: collecting general review needs. Route policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.
 
 ### synthetic-insurance-review_value_question_01
 - Group: `H_campaign_offer_scope_value_questions`
@@ -744,7 +744,7 @@
 - Buyer move: `why_should_i_care`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. Only if the issue is active enough to create real impact is a human review worth time. The value is routing policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.
+- Response: Fair question. This is policy fit check. It matters only if the issue is active enough to create real impact and justify a specialist review. Route policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.
 
 ### synthetic-insurance-review_value_question_02
 - Group: `H_campaign_offer_scope_value_questions`
@@ -753,7 +753,7 @@
 - Buyer move: `what_problem_do_you_solve`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. Mainly, This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. The value is routing policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.
+- Response: Fair question. Mainly, this helps decide whether premium pressure is still a problem. This is policy fit check. Route policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made. If it is relevant, the licensed insurance specialist reviews the actual details.
 
 ### synthetic-insurance-review_value_question_03
 - Group: `H_campaign_offer_scope_value_questions`
@@ -762,7 +762,7 @@
 - Buyer move: `is_this_worth_my_time`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. This synthetic campaign represents an insurance policy fit-check call, not a full product pitch. It is about deciding whether a policy-specific concern should be reviewed by a licensed insurance specialist. It is worth time only if that issue is active enough for the licensed insurance specialist to review.
+- Response: Fair question. This is policy fit check. It is worth time only if that issue is active enough for the licensed insurance specialist to review.
 
 ### synthetic-telecom-plan-review_required_offer_fields_present
 - Group: `H_campaign_offer_scope_model_validation`

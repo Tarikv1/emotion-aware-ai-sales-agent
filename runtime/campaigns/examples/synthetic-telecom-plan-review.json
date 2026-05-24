@@ -11,11 +11,21 @@
     "unverified fee claim"
   ],
   "caller_identity": {
-    "relationship_to_offer": "calling about a synthetic plan review",
+    "relationship_to_offer": "calling about a telecom plan fit check",
     "representative_name": "Maya"
   },
   "campaign_id": "synthetic-telecom-plan-review",
   "client_name": "Synthetic Telecom Provider",
+  "customer_facing_company_name": "Cedar Telecom",
+  "customer_facing_offer_name": "telecom plan fit check",
+  "customer_facing_offer_summary": "A high-level check to see whether plan fit, coverage availability, or switching terms are worth review by a telecom account specialist.",
+  "customer_facing_value_proposition": "Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked.",
+  "customer_facing_call_objective": "See whether the buyer wants a specialist to review plan fit, coverage availability, or switching constraints.",
+  "customer_facing_human_review_scope": "plan fit, coverage availability, and switching constraints against account-specific details",
+  "customer_facing_agent_limitations": "The agent can explain the high-level scope and note a callback window, but cannot quote price, guarantee coverage, or advise on contract cancellation.",
+  "internal_fixture_description": "Synthetic telecom fixture for testing plan-fit review routing.",
+  "primary_customer_issue_phrase": "plan fit",
+  "short_relevance_question": "Is plan fit or coverage availability worth checking right now?",
   "core_diagnostic_gaps": [
     "plan_fit",
     "coverage_or_availability",
@@ -142,15 +152,15 @@
   "human_review_scope": "plan fit, coverage or availability, and switching constraints against account-specific details",
   "language": "en",
   "objective": "appointment_setting",
-  "product_or_offer_name": "Telecom Plan Fit Check",
-  "product_or_offer_summary": "This synthetic campaign represents a telecom plan fit-check call, not a full product pitch. It is about deciding whether account-specific plan questions should be reviewed by a telecom account specialist.",
-  "high_level_value_proposition": "The value is avoiding a bad-fit plan or wasted provider comparison by routing account-specific plan and coverage questions to a human reviewer.",
+  "product_or_offer_name": "telecom plan fit check",
+  "product_or_offer_summary": "A high-level check to see whether plan fit, coverage availability, or switching terms are worth review by a telecom account specialist.",
+  "high_level_value_proposition": "Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked.",
   "allowed_high_level_capabilities": [
     "general plan-fit discussion",
     "coverage or availability review routing",
     "switching-friction triage"
   ],
-  "agent_call_objective": "identify whether a telecom account specialist should review plan fit, coverage or availability, or switching constraints",
+  "agent_call_objective": "see whether the buyer wants a specialist to review plan fit, coverage availability, or switching constraints",
   "agent_can_say": [
     "this is a high-level telecom plan fit-check call",
     "a telecom account specialist can compare account-specific plan fit and coverage details",

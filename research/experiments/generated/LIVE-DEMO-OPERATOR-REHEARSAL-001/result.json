@@ -14,7 +14,7 @@
         "cleared_gaps": [],
         "confirmed_gaps": [],
         "creates_calendar_event": false,
-        "final_response": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+        "final_response": "Hi, this is Maya calling from Vector Workflow Labs. I am doing a quick operations fit check to see whether manual work is worth a short specialist review. Do you have a minute?",
         "lead_followup_state": {},
         "live_tts_used": false,
         "local_llm_calls_made": false,
@@ -29,7 +29,7 @@
           "human_followup_owner": "implementation specialist",
           "live_tts_enabled": false,
           "mode": "generic config dry-run",
-          "product_or_offer_name": "Operations Workflow Review",
+          "product_or_offer_name": "operations fit check",
           "route_signal_fallback_used": false,
           "vertical_id": "b2b_saas"
         },
@@ -37,7 +37,7 @@
         "sends_email": false,
         "target_gap": null,
         "transcript": "__agent_open__",
-        "tts_input_text": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+        "tts_input_text": "Hi, this is Maya calling from Vector Workflow Labs. I am doing a quick operations fit check to see whether manual work is worth a short specialist review. Do you have a minute?",
         "vertical_id": "b2b_saas",
         "writes_crm": false
       },
@@ -66,7 +66,7 @@
           "human_followup_owner": "implementation specialist",
           "live_tts_enabled": false,
           "mode": "generic config dry-run",
-          "product_or_offer_name": "Operations Workflow Review",
+          "product_or_offer_name": "operations fit check",
           "route_signal_fallback_used": false,
           "vertical_id": "b2b_saas"
         },
@@ -105,7 +105,7 @@
           "human_followup_owner": "implementation specialist",
           "live_tts_enabled": false,
           "mode": "generic config dry-run",
-          "product_or_offer_name": "Operations Workflow Review",
+          "product_or_offer_name": "operations fit check",
           "route_signal_fallback_used": false,
           "vertical_id": "b2b_saas"
         },
@@ -181,7 +181,7 @@
           "human_followup_owner": "implementation specialist",
           "live_tts_enabled": false,
           "mode": "generic config dry-run",
-          "product_or_offer_name": "Operations Workflow Review",
+          "product_or_offer_name": "operations fit check",
           "route_signal_fallback_used": false,
           "vertical_id": "b2b_saas"
         },
@@ -203,7 +203,7 @@
       "has_download_payload": true,
       "has_generic_dry_run_warning": true,
       "has_selector_metadata_panel": true,
-      "html_length": 60563,
+      "html_length": 60548,
       "metadata_generic_campaign_count": 8
     },
     "insurance_rehearsal": [
@@ -217,7 +217,7 @@
         "cleared_gaps": [],
         "confirmed_gaps": [],
         "creates_calendar_event": false,
-        "final_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+        "final_response": "Hi, this is Maya calling from Harbor Insurance. I am doing a quick policy fit check to see whether premium pressure is worth a licensed review. Do you have a minute?",
         "lead_followup_state": {},
         "live_tts_used": false,
         "local_llm_calls_made": false,
@@ -232,7 +232,7 @@
           "human_followup_owner": "licensed insurance specialist",
           "live_tts_enabled": false,
           "mode": "generic config dry-run",
-          "product_or_offer_name": "Insurance Policy Fit Check",
+          "product_or_offer_name": "policy fit check",
           "route_signal_fallback_used": false,
           "vertical_id": "insurance"
         },
@@ -240,7 +240,7 @@
         "sends_email": false,
         "target_gap": null,
         "transcript": "__agent_open__",
-        "tts_input_text": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+        "tts_input_text": "Hi, this is Maya calling from Harbor Insurance. I am doing a quick policy fit check to see whether premium pressure is worth a licensed review. Do you have a minute?",
         "vertical_id": "insurance",
         "writes_crm": false
       },
@@ -269,7 +269,7 @@
           "human_followup_owner": "licensed insurance specialist",
           "live_tts_enabled": false,
           "mode": "generic config dry-run",
-          "product_or_offer_name": "Insurance Policy Fit Check",
+          "product_or_offer_name": "policy fit check",
           "route_signal_fallback_used": false,
           "vertical_id": "insurance"
         },
@@ -308,7 +308,7 @@
           "human_followup_owner": "licensed insurance specialist",
           "live_tts_enabled": false,
           "mode": "generic config dry-run",
-          "product_or_offer_name": "Insurance Policy Fit Check",
+          "product_or_offer_name": "policy fit check",
           "route_signal_fallback_used": false,
           "vertical_id": "insurance"
         },
@@ -384,7 +384,7 @@
           "human_followup_owner": "licensed insurance specialist",
           "live_tts_enabled": false,
           "mode": "generic config dry-run",
-          "product_or_offer_name": "Insurance Policy Fit Check",
+          "product_or_offer_name": "policy fit check",
           "route_signal_fallback_used": false,
           "vertical_id": "insurance"
         },
@@ -410,9 +410,9 @@
         "durable_provider_agent_created": false,
         "error": "invalid generic campaign config selection",
         "error_type": "CampaignConfigValidationError",
-        "generated_at_utc": "2026-05-24T14:19:45.314041+00:00",
+        "generated_at_utc": "2026-05-24T15:43:55.424170+00:00",
         "generic_selected_campaign_live_tts_allowed": false,
-        "git_head_short": "5a90594",
+        "git_head_short": "6073fb6",
         "live_tts": false,
         "live_tts_used": false,
         "local_llm_calls_made": false,
@@ -425,8 +425,8 @@
         "runtime_manifest_hash": "b0370cb94fe82889c95f7746f49400402d6d9830ad17c42687e3054f0bb8fcc8",
         "runtime_metadata": {
           "campaign_registry_schema_version": 1,
-          "generated_at_utc": "2026-05-24T14:19:45.314041+00:00",
-          "git_head_short": "5a90594",
+          "generated_at_utc": "2026-05-24T15:43:55.424170+00:00",
+          "git_head_short": "6073fb6",
           "git_unavailable_reason": null,
           "runtime_manifest_entry_count": 66,
           "runtime_manifest_hash": "b0370cb94fe82889c95f7746f49400402d6d9830ad17c42687e3054f0bb8fcc8",
@@ -543,7 +543,7 @@
         "session_id": "operator-b2b",
         "turns": [
           {
-            "agent_response": "Hi, this is Maya calling from Synthetic SaaS Operations about Operations Workflow Review. I am checking whether a short operations fit review is needed; do you have a minute?",
+            "agent_response": "Hi, this is Maya calling from Vector Workflow Labs. I am doing a quick operations fit check to see whether manual work is worth a short specialist review. Do you have a minute?",
             "call_control": "continue-call",
             "campaign_selector": {
               "campaign_config_path": "runtime/campaigns/examples/synthetic-b2b-saas-operations.json",
@@ -560,7 +560,7 @@
                 "human_followup_owner": "implementation specialist",
                 "live_tts_enabled": false,
                 "mode": "generic config dry-run",
-                "product_or_offer_name": "Operations Workflow Review",
+                "product_or_offer_name": "operations fit check",
                 "route_signal_fallback_used": false,
                 "vertical_id": "b2b_saas"
               },
@@ -598,7 +598,7 @@
                 "human_followup_owner": "implementation specialist",
                 "live_tts_enabled": false,
                 "mode": "generic config dry-run",
-                "product_or_offer_name": "Operations Workflow Review",
+                "product_or_offer_name": "operations fit check",
                 "route_signal_fallback_used": false,
                 "vertical_id": "b2b_saas"
               },
@@ -636,7 +636,7 @@
                 "human_followup_owner": "implementation specialist",
                 "live_tts_enabled": false,
                 "mode": "generic config dry-run",
-                "product_or_offer_name": "Operations Workflow Review",
+                "product_or_offer_name": "operations fit check",
                 "route_signal_fallback_used": false,
                 "vertical_id": "b2b_saas"
               },
@@ -674,7 +674,7 @@
                 "human_followup_owner": "implementation specialist",
                 "live_tts_enabled": false,
                 "mode": "generic config dry-run",
-                "product_or_offer_name": "Operations Workflow Review",
+                "product_or_offer_name": "operations fit check",
                 "route_signal_fallback_used": false,
                 "vertical_id": "b2b_saas"
               },
@@ -705,7 +705,7 @@
         "session_id": "operator-insurance",
         "turns": [
           {
-            "agent_response": "Hi, this is Maya calling from Synthetic Insurance Agency about Insurance Policy Fit Check. I am checking whether a short licensed coverage review is needed; do you have a minute?",
+            "agent_response": "Hi, this is Maya calling from Harbor Insurance. I am doing a quick policy fit check to see whether premium pressure is worth a licensed review. Do you have a minute?",
             "call_control": "continue-call",
             "campaign_selector": {
               "campaign_config_path": "runtime/campaigns/examples/synthetic-insurance-review.json",
@@ -722,7 +722,7 @@
                 "human_followup_owner": "licensed insurance specialist",
                 "live_tts_enabled": false,
                 "mode": "generic config dry-run",
-                "product_or_offer_name": "Insurance Policy Fit Check",
+                "product_or_offer_name": "policy fit check",
                 "route_signal_fallback_used": false,
                 "vertical_id": "insurance"
               },
@@ -760,7 +760,7 @@
                 "human_followup_owner": "licensed insurance specialist",
                 "live_tts_enabled": false,
                 "mode": "generic config dry-run",
-                "product_or_offer_name": "Insurance Policy Fit Check",
+                "product_or_offer_name": "policy fit check",
                 "route_signal_fallback_used": false,
                 "vertical_id": "insurance"
               },
@@ -798,7 +798,7 @@
                 "human_followup_owner": "licensed insurance specialist",
                 "live_tts_enabled": false,
                 "mode": "generic config dry-run",
-                "product_or_offer_name": "Insurance Policy Fit Check",
+                "product_or_offer_name": "policy fit check",
                 "route_signal_fallback_used": false,
                 "vertical_id": "insurance"
               },
@@ -836,7 +836,7 @@
                 "human_followup_owner": "licensed insurance specialist",
                 "live_tts_enabled": false,
                 "mode": "generic config dry-run",
-                "product_or_offer_name": "Insurance Policy Fit Check",
+                "product_or_offer_name": "policy fit check",
                 "route_signal_fallback_used": false,
                 "vertical_id": "insurance"
               },

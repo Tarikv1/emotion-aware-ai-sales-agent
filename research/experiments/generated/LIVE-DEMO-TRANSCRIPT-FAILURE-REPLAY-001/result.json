@@ -138,7 +138,7 @@
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "inbound demo follow-up slipping",
         "recognition_reason": "why_should_i_care_phrase",
-        "response": "Fair question. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. Only if the issue is active enough to create real impact is a human review worth time. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.",
+        "response": "Fair question. RouteSignal is a CRM workflow tool for inbound demo follow-up. It matters only if the issue is active enough to create real impact and justify a specialist review. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.",
         "response_shape_enforced_category": "direct_product_value_questions",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -196,7 +196,7 @@
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "premium pressure",
         "recognition_reason": "scope_limit_question_phrase",
-        "response": "Correct. I can explain the high-level purpose, but detailed advice belongs with the licensed insurance specialist. This call only checks whether a licensed coverage review is worth it. Do you want me to check whether a review is useful?",
+        "response": "Correct. I can explain the high-level purpose, but detailed advice belongs with the licensed insurance specialist. The scope for the licensed insurance specialist would be premium pressure and the actual details. Do you want me to check whether a review is useful?",
         "response_shape_enforced_category": "scope_regulated_claim_boundaries",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {
@@ -341,7 +341,7 @@
         "confirmed_gap_id": "",
         "confirmed_gap_phrase": "inbound demo follow-up slipping",
         "recognition_reason": "product_detail_question_phrase",
-        "response": "Sure. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. This call is only to check whether that problem is active before any review.",
+        "response": "Sure. RouteSignal is a CRM workflow tool for inbound demo follow-up. This call is only to check whether that problem is active before any review.",
         "response_shape_enforced_category": "direct_product_value_questions",
         "selected_action_source": "universal_response_shape",
         "side_effect_flags": {

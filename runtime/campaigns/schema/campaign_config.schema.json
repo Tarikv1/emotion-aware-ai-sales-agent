@@ -33,6 +33,38 @@
       "type": "string",
       "minLength": 1
     },
+    "customer_facing_company_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "customer_facing_offer_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "customer_facing_offer_summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "customer_facing_value_proposition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "customer_facing_call_objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "customer_facing_human_review_scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "customer_facing_agent_limitations": {
+      "type": "string",
+      "minLength": 1
+    },
+    "internal_fixture_description": {
+      "type": "string",
+      "minLength": 1
+    },
     "product_or_offer_summary": {
       "type": "string",
       "minLength": 1
