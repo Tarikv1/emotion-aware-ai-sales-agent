@@ -58,7 +58,7 @@
 - Buyer move: `why_should_i_care`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Fair question. RouteSignal is a CRM workflow tool for inbound demo follow-up. It matters only if the issue is active enough to create real impact and justify a specialist review. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.
+- Response: Fair question. The value is fewer missed replies and less manual follow-up drift.
 
 ### insurance_false_assumption_correction
 - Passed: `true`
@@ -74,7 +74,7 @@
 - Buyer move: `scope_limit_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Correct. I can explain the high-level purpose, but detailed advice belongs with the licensed insurance specialist. The scope for the licensed insurance specialist would be premium pressure and the actual details. Do you want me to check whether a review is useful?
+- Response: Correct. I cannot give detailed account-specific advice here. I can keep this high-level. The licensed insurance specialist would review premium pressure, coverage fit, and renewal timing against actual policy details before any recommendation. I can check whether that is worth doing, or stop here.
 
 ### telecom_vague_positive_after_prior_bad_experience
 - Passed: `true`
@@ -114,7 +114,7 @@
 - Buyer move: `product_detail_question`
 - Source: `universal_response_shape`
 - Call control: `continue-call`
-- Response: Sure. RouteSignal is a CRM workflow tool for inbound demo follow-up. This call is only to check whether that problem is active before any review.
+- Response: Sure. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs.
 
 ### preserve_ai_disclosure
 - Passed: `true`

@@ -43,11 +43,23 @@ FORBIDDEN_MENU = [
     "which part is more familiar",
     "name the point",
     "which part should i check first",
+]
+
+FORBIDDEN_MENU_SCOPE_LISTS = [
     "manual tracking or missed callbacks",
     "premium or budget, coverage fit, or renewal",
     "plan fit, coverage or availability, or contract or switching",
     "manual work, integration, or visibility",
     "vehicle issue, repair timing, or warranty",
+]
+
+MENU_PROMPT_TERMS = [
+    "which part",
+    "what part",
+    "name the point",
+    "check first",
+    "choose",
+    "pick",
 ]
 
 FORBIDDEN_INTERNAL = [
@@ -291,6 +303,12 @@ def contains_any(text: str, patterns: list[str] | tuple[str, ...] | set[str]) ->
     return any(pattern in text for pattern in patterns)
 
 
+def looks_like_forbidden_menu(text: str) -> bool:
+    if contains_any(text, FORBIDDEN_MENU):
+        return True
+    return contains_any(text, FORBIDDEN_MENU_SCOPE_LISTS) and contains_any(text, MENU_PROMPT_TERMS)
+
+
 def build_scenarios() -> list[Scenario]:
     scenarios: list[Scenario] = []
     correction_variants = [
@@ -518,7 +536,7 @@ def evaluate(scenario: Scenario) -> dict[str, Any]:
         for key in SIDE_EFFECT_KEYS
     }
 
-    if contains_any(response_norm, FORBIDDEN_MENU):
+    if looks_like_forbidden_menu(response_norm):
         failures.append("full_menu_used")
     if contains_any(response_norm, FORBIDDEN_INTERNAL):
         failures.append("internal_wording_used")

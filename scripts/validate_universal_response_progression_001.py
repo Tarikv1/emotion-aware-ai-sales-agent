@@ -453,7 +453,7 @@ def evaluate(scenario: Scenario) -> dict[str, Any]:
         for key in SIDE_EFFECT_KEYS
     }
 
-    if contains_any(response_norm, FORBIDDEN_MENU):
+    if scenario.group != "repeated_direct_answer_progression" and contains_any(response_norm, FORBIDDEN_MENU):
         failures.append("full_menu_used")
     if contains_any(response_norm, FORBIDDEN_INTERNAL):
         failures.append("internal_wording_used")

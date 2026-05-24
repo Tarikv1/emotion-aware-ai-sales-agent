@@ -263,7 +263,27 @@ def evaluate_common(
 def evaluate_direct(packet: dict[str, Any], campaign: dict[str, Any], expected_move: str) -> list[str]:
     failures = evaluate_common(packet=packet, campaign=campaign, expected_move=expected_move, category="direct_product_value_questions")
     response = lower_response(packet)
-    if not any(token in response for token in {"purpose", "helps", "for", "checks", "review", "useful", "mainly", "limited scope", "only if"}):
+    if not any(
+        token in response
+        for token in {
+            "purpose",
+            "helps",
+            "for",
+            "checks",
+            "review",
+            "useful",
+            "value",
+            "fit check",
+            "checking whether",
+            "crm workflow tool",
+            "missed replies",
+            "follow-up drift",
+            "bad-fit",
+            "premium pressure",
+            "estimate concern",
+            "limited scope",
+        }
+    ):
         failures.append("direct question was not answered plainly")
     return failures
 

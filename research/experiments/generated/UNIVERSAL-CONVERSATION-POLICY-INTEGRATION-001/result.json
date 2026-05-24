@@ -579,7 +579,7 @@
       "campaign_selector_mode": "generic_config",
       "cleared_gaps": null,
       "confirmed_gaps": null,
-      "final_response": "Sure. This is policy fit check. I can explain the high-level scope; this call is only to check whether premium pressure is still a problem; if it is relevant, the licensed insurance specialist reviews the actual details.",
+      "final_response": "Sure. It is a quick policy fit check. I can explain the high-level scope, but anything policy-specific has to be reviewed by the licensed insurance specialist. Should I keep it to that review?",
       "label": "product_detail",
       "semantic": "product_detail_limit_question",
       "side_effect_flags": {

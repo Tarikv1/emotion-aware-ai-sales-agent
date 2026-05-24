@@ -528,7 +528,8 @@ def evaluate_result(
         add_failure(failures, "internal_wording", ", ".join(internal))
 
     menu_hits = [term for term in campaign["menu_terms"] if term in response]
-    if len(menu_hits) >= 3:
+    menu_prompt = any(term in response for term in {"which ", "what part", "which part", "which one", "choose", "pick"})
+    if len(menu_hits) >= 3 and menu_prompt:
         add_failure(failures, "repeated_full_menu", ", ".join(menu_hits))
 
     if response == lower(result.get("previous_response")) and response:
@@ -680,7 +681,8 @@ def question_count(response: str) -> int:
 
 def looks_like_menu_answer(response: str, campaign: dict[str, Any]) -> bool:
     hits = [term for term in campaign["menu_terms"] if term in response]
-    return len(hits) >= 3 or "i am asking whether" in response
+    menu_prompt = any(term in response for term in {"which ", "what part", "which part", "which one", "choose", "pick"})
+    return (len(hits) >= 3 and menu_prompt) or "i am asking whether" in response
 
 
 def has_invented_claim(response: str) -> bool:

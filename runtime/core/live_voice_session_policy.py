@@ -231,6 +231,20 @@ def generic_campaign_context(campaign: dict | None) -> dict[str, str]:
     }
 
 
+def generic_campaign_spoken_area_phrase(campaign: dict | None) -> str:
+    context = generic_campaign_context(campaign)
+    scope = context["scope"]
+    for marker in (" against ", " before ", " without "):
+        if marker in scope:
+            scope = scope.split(marker, 1)[0]
+    parts = [part.strip(" .") for part in re.split(r",|\band\b", scope) if part.strip(" .")]
+    if len(parts) >= 3:
+        return f"{parts[0]}, {parts[1]}, or {parts[2]}"
+    if len(parts) == 2:
+        return f"{parts[0]} or {parts[1]}"
+    return parts[0] if parts else _generic_primary_issue_phrase(campaign)
+
+
 def _question_sentence(question: str) -> str:
     cleaned = " ".join(str(question or "").split()).strip()
     if not cleaned:
@@ -290,6 +304,9 @@ def is_human_review_scope_question(normalized: str) -> bool:
             "what will the human review",
             "what would the human review",
             "what will they check",
+            "why can't the ai answer that",
+            "why can t the ai answer that",
+            "why cant the ai answer that",
         },
     )
 
@@ -297,10 +314,13 @@ def is_human_review_scope_question(normalized: str) -> bool:
 def human_review_scope_response(language: str, campaign: dict | None) -> str:
     if is_generic_campaign_config(campaign):
         context = generic_campaign_context(campaign)
-        primary_issue = _generic_primary_issue_phrase(campaign)
+        scope = generic_campaign_spoken_area_phrase(campaign)
         if language.startswith("de"):
-            return f"{context['owner']} prueft {primary_issue} und die konkreten Details. Ich kann nur klaeren, ob diese Pruefung sinnvoll ist."
-        return f"{context['owner_sentence']} would review {primary_issue} and the actual details. I can only check whether that review is worth a callback."
+            return f"{context['owner']} prueft {scope} und die konkreten Details. Ich kann nur klaeren, ob diese Pruefung sinnvoll ist."
+        return (
+            f"I can keep this high-level. {context['owner_sentence']} would review {scope} "
+            "and the actual details before any recommendation."
+        )
     if language.startswith("de"):
         return "Die Workflow-Pruefung schaut darauf, wem der Lead gehoert, wann nachgefasst wird und wo Erinnerungen oder Uebergaben rutschen."
     return (
@@ -311,14 +331,15 @@ def human_review_scope_response(language: str, campaign: dict | None) -> str:
 
 def generic_campaign_product_detail_text(language: str, campaign: dict | None) -> str:
     context = generic_campaign_context(campaign)
+    scope = generic_campaign_spoken_area_phrase(campaign)
     if language.startswith("de"):
         return (
             f"{context['summary']} Ich kann den Rahmen nur allgemein erklaeren; "
             f"{context['owner']} prueft die Details."
         )
     return (
-        f"This is {context['offer']}. I can explain that high-level scope; "
-        f"{context['owner_sentence']} reviews {_generic_primary_issue_phrase(campaign)} and the actual details."
+        f"It is a quick {context['offer']}. I can explain the high-level scope; "
+        f"{context['owner_sentence']} would review {scope} and the actual details."
     )
 
 
@@ -446,16 +467,15 @@ def sales_opening_response(language: str, campaign: dict | None = None) -> str:
         client_name = context["client"]
         offer_name = context["offer"]
         representative = nested_campaign_value(campaign, "caller_identity", "representative_name", "Maya")
-        issue = _generic_primary_issue_phrase(campaign)
-        review_phrase = "licensed review" if "licensed" in context["owner_phrase"].lower() else "short specialist review"
+        areas = generic_campaign_spoken_area_phrase(campaign)
         if language.startswith("de"):
             return (
                 f"Hallo, hier ist {representative} von {client_name} wegen {offer_name}. "
-                f"Ich pruefe, ob {issue} eine kurze Pruefung braucht; haben Sie kurz Zeit?"
+                f"Ich pruefe kurz {areas}; haben Sie kurz Zeit?"
             )
         return (
-            f"Hi, this is {representative} calling from {client_name}. "
-            f"I am doing a quick {offer_name} to see whether {issue} is worth a {review_phrase}. "
+            f"Hi, this is {representative} from {client_name}. "
+            f"I'm doing a quick {offer_name} - mainly {areas}. "
             "Do you have a minute?"
         )
     client_name = campaign_value(campaign, "client_name", "Northstar Workflow Labs")
@@ -1330,6 +1350,12 @@ def english_live_demo_campaign_response(normalized: str, campaign: dict) -> dict
             "candidate_response": response,
         }
 
+    if normalized_contains_any(normalized, {"social security", "ssn", "personal id", "account number", "diagnosis", "medical condition"}):
+        return candidate(
+            "sensitive_personal_data_boundary_answered",
+            "sensitive_data",
+            "Please don't share sensitive personal details on this call. This is not the right place for that information, so I'll stop here.",
+        )
     if normalized_contains_any(normalized, {"soc 2", "soc2", "security", "secure", "compliance"}):
         return candidate(
             "campaign_depth_security_boundary_answered",
@@ -3734,7 +3760,7 @@ def pre_speech_conversation_stability_guard(
         else:
             repaired_response = repeated_question_repair(language, transcript, memory, turns, response, campaign)
 
-    if response_reopens_focus_menu(response) and (memory.get("selected_gap") or memory.get("active_topic")):
+    if not is_agent_open_turn(normalized) and response_reopens_focus_menu(response) and (memory.get("selected_gap") or memory.get("active_topic")):
         violations.append("generic_menu_reopened_after_focus")
         repaired_response = repeated_question_repair(language, transcript, memory, turns, response, campaign)
 

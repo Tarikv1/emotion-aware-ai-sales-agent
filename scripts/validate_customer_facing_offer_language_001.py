@@ -339,7 +339,10 @@ def opening_checks(configs: dict[str, dict[str, Any]]) -> tuple[list[dict[str, A
             failures.append({"check": "opening_missing_company", "campaign_id": campaign_id, "expected": company, "text": text})
         if offer and normalize(offer) not in normalize(text):
             failures.append({"check": "opening_missing_offer", "campaign_id": campaign_id, "expected": offer, "text": text})
-        if "worth" not in normalize(text) or "review" not in normalize(text):
+        expected = EXPECTED_BY_CAMPAIGN.get(campaign_id) or {}
+        has_review_purpose = "worth" in normalize(text) and "review" in normalize(text)
+        has_spoken_fit_scope = "fit check" in normalize(text) and contains_any(text, expected.get("summary_fragments") or [])
+        if not has_review_purpose and not has_spoken_fit_scope:
             failures.append({"check": "opening_missing_review_purpose", "campaign_id": campaign_id, "text": text})
     return failures, samples
 

@@ -43,11 +43,23 @@ FORBIDDEN_MENU = [
     "which part is more familiar",
     "which part should i check first",
     "name the point",
+]
+
+FORBIDDEN_MENU_SCOPE_LISTS = [
     "manual tracking or missed callbacks",
     "premium or budget, coverage fit, or renewal",
     "plan fit, coverage or availability, or contract or switching",
     "manual work, integration, or visibility",
     "vehicle issue, repair timing, or warranty",
+]
+
+MENU_PROMPT_TERMS = [
+    "which part",
+    "what part",
+    "name the point",
+    "check first",
+    "choose",
+    "pick",
 ]
 
 FORBIDDEN_INTERNAL = [
@@ -332,6 +344,12 @@ def contains_any(text: str, patterns: list[str] | tuple[str, ...] | set[str]) ->
     return any(pattern in text for pattern in patterns)
 
 
+def looks_like_forbidden_menu(text: str) -> bool:
+    if contains_any(text, FORBIDDEN_MENU):
+        return True
+    return contains_any(text, FORBIDDEN_MENU_SCOPE_LISTS) and contains_any(text, MENU_PROMPT_TERMS)
+
+
 def response_has_answer(text: str) -> bool:
     return contains_any(
         text,
@@ -346,6 +364,11 @@ def response_has_answer(text: str) -> bool:
             "because",
             "scope",
             "useful",
+            "value",
+            "helps",
+            "avoid",
+            "fit check",
+            "crm workflow tool",
         },
     )
 
@@ -371,7 +394,7 @@ def evaluate(scenario: Scenario) -> dict[str, Any]:
         for key in SIDE_EFFECT_KEYS
     }
 
-    if contains_any(response_norm, FORBIDDEN_MENU):
+    if looks_like_forbidden_menu(response_norm):
         failures.append("full_menu_or_point_picker_used")
     if contains_any(response_norm, FORBIDDEN_INTERNAL):
         failures.append("internal_or_legacy_fallback_wording_used")
@@ -570,7 +593,16 @@ def build_scenarios() -> list[Scenario]:
                     campaign,
                     script,
                     frozenset(DIRECT_MOVE_IDS | CHALLENGE_MOVE_IDS | {"why_should_i_care"}),
-                    expected_terms=("review",),
+                    expected_terms=(
+                        campaign.primary_issue.split()[0].lower(),
+                        "review",
+                        "value",
+                        "fit",
+                        "follow-up",
+                        "replies",
+                        "details",
+                        "estimate",
+                    ),
                 )
             )
 

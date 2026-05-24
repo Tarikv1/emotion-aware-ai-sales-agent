@@ -769,7 +769,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "product_detail_question_phrase",
-        "response": "Sure. RouteSignal is a CRM workflow tool for inbound demo follow-up. This call is only to check whether that problem is active before any review.",
+        "response": "Sure. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -797,7 +797,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "why_should_i_care_phrase",
-        "response": "Fair question. RouteSignal is a CRM workflow tool for inbound demo follow-up. It matters only if the issue is active enough to create real impact and justify a specialist review. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift.",
+        "response": "Fair question. The value is fewer missed replies and less manual follow-up drift.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -825,7 +825,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "product_detail_question_phrase",
-        "response": "Sure. This is policy fit check. I can explain the high-level scope; this call is only to check whether premium pressure is still a problem; if it is relevant, the licensed insurance specialist reviews the actual details.",
+        "response": "Sure. It is a quick policy fit check. I can explain the high-level scope, but anything policy-specific has to be reviewed by the licensed insurance specialist. Should I keep it to that review?",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -853,7 +853,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "why_should_i_care_phrase",
-        "response": "Fair question. This is policy fit check. It matters only if the issue is active enough to create real impact and justify a specialist review. Route policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.",
+        "response": "Fair question. The point is to see whether premium pressure, coverage fit, or renewal timing is worth a licensed review before policy-specific details are discussed.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -881,7 +881,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "product_detail_question_phrase",
-        "response": "Sure. This is operations fit check. I can explain the high-level scope; this call is only to check whether manual work is still a problem; if it is relevant, the implementation specialist reviews the actual details.",
+        "response": "Sure. It is a quick operations fit check. I cannot confirm technical fit here, but I can check whether manual work, integration risk, or visibility gaps should be reviewed by the implementation specialist. Should I keep it to that review?",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -909,7 +909,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "why_should_i_care_phrase",
-        "response": "Fair question. This is operations fit check. It matters only if the issue is active enough to create real impact and justify a specialist review. Route workflow-fit questions to an implementation specialist before any integration, security, or business-outcome claim is made.",
+        "response": "Fair question. The value is spotting manual work, integration risk, or visibility gaps before an implementation specialist reviews the workflow.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -937,7 +937,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "product_detail_question_phrase",
-        "response": "Sure. This is service fit check. I can explain the high-level scope; this call is only to check whether repair timing is still a problem; if it is relevant, the service advisor reviews the actual details.",
+        "response": "Sure. It is a quick service fit check. I cannot diagnose the vehicle here, but I can check whether vehicle issue, repair timing, or estimate concern should be reviewed by the service advisor. Should I keep it to that review?",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -965,7 +965,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "why_should_i_care_phrase",
-        "response": "Fair question. This is service fit check. It matters only if the issue is active enough to create real impact and justify a specialist review. Route timing, warranty, or estimate questions to a service advisor before any remote diagnosis or cost claim is made.",
+        "response": "Fair question. The value is avoiding a premature diagnosis or estimate before a service advisor checks the vehicle issue, timing, and estimate context.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -993,7 +993,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "product_detail_question_phrase",
-        "response": "Sure. This is home service fit check. I can explain the high-level scope; this call is only to check whether the service need is active now; if it is relevant, the qualified service coordinator reviews the actual details.",
+        "response": "Sure. It is a quick home service fit check. I'm checking whether service need, scheduling timing, or estimate concern should be reviewed by the qualified service coordinator before anyone discusses exact scope or price. Should I keep it to that review?",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1021,7 +1021,7 @@
         "call_control": "continue-call",
         "confirmed_gaps": [],
         "recognition_reason": "why_should_i_care_phrase",
-        "response": "Fair question. This is home service fit check. It matters only if the issue is active enough to create real impact and justify a specialist review. Route service, property, or estimate questions to a coordinator before any remote diagnosis or price claim is made.",
+        "response": "Fair question. The value is checking service need, scheduling timing, and estimate concern before a coordinator reviews property details.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1111,7 +1111,7 @@
           "callbacks"
         ],
         "recognition_reason": "did_not_answer_challenge_phrase",
-        "response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check. I'm checking whether inbound demo follow-up is slipping now and is worth a short review.",
+        "response": "You're right, I already have the prior context. The direct answer is: It is a quick RouteSignal CRM. I'm checking whether who owns the lead, when follow-up happens, or where reminders or handoffs slip should be reviewed by the verified implementation reviewer.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1201,7 +1201,7 @@
           "premium_or_budget"
         ],
         "recognition_reason": "did_not_answer_challenge_phrase",
-        "response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check. I'm checking whether premium pressure is still a problem and is worth a short review.",
+        "response": "You're right, I already have the prior context. The direct answer is: It is a quick policy fit check. I can explain the high-level scope, but anything policy-specific has to be reviewed by the licensed insurance specialist.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1291,7 +1291,7 @@
           "manual_work"
         ],
         "recognition_reason": "did_not_answer_challenge_phrase",
-        "response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check. I'm checking whether manual work is still a problem and is worth a short review.",
+        "response": "You're right, I already have the prior context. The direct answer is: It is a quick operations fit check. I cannot confirm technical fit here, but I can check whether manual work, integration risk, or visibility gaps should be reviewed by the implementation specialist.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1381,7 +1381,7 @@
           "repair_timing"
         ],
         "recognition_reason": "did_not_answer_challenge_phrase",
-        "response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check. I'm checking whether repair timing is still a problem and is worth a short review.",
+        "response": "You're right, I already have the prior context. The direct answer is: It is a quick service fit check. I cannot diagnose the vehicle here, but I can check whether vehicle issue, repair timing, or estimate concern should be reviewed by the service advisor.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {
@@ -1471,7 +1471,7 @@
           "service_need"
         ],
         "recognition_reason": "did_not_answer_challenge_phrase",
-        "response": "You're right, I already have the prior context. The direct answer is: this is a quick fit check. I'm checking whether the service need is active now and is worth a short review.",
+        "response": "You're right, I already have the prior context. The direct answer is: It is a quick home service fit check. I'm checking whether service need, scheduling timing, or estimate concern should be reviewed by the qualified service coordinator before anyone discusses exact scope or price.",
         "selected_action_source": "universal_response_shape",
         "semantic": null,
         "side_effect_flags": {

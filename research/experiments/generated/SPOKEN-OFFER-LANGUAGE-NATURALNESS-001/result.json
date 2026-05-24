@@ -1,0 +1,1113 @@
+{
+  "banned_customer_patterns": [
+    "synthetic campaign",
+    "Synthetic Telecom Provider",
+    "Synthetic Insurance Agency",
+    "Synthetic Membership Program",
+    "Synthetic Automotive Service",
+    "not a full product pitch",
+    "This is telecom plan fit check",
+    "This is policy fit check",
+    "This is service fit check",
+    "This is operations fit check",
+    "Mainly, this helps decide whether",
+    "The review is the next step, not the product",
+    "approved qualified reviewer path",
+    "I should not",
+    "approved scope",
+    "internal wording"
+  ],
+  "campaign_count": 9,
+  "checkpoint_id": "SPOKEN-OFFER-LANGUAGE-NATURALNESS-001",
+  "failure_count": 0,
+  "failure_types": {},
+  "failures": [],
+  "generic_campaign_count": 8,
+  "human_review_samples": [
+    {
+      "campaign_id": "routesignal",
+      "group": "human_review",
+      "question": "why do I need a human review",
+      "response": "I can keep this high-level. The verified implementation reviewer would review who owns the lead, when follow-up happens, and where reminders or handoffs slip before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "routesignal",
+      "group": "human_review",
+      "question": "why can't you just tell me",
+      "response": "I can keep this high-level. The verified implementation reviewer would review who owns the lead, when follow-up happens, and where reminders or handoffs slip before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "routesignal",
+      "group": "human_review",
+      "question": "what will the specialist check",
+      "response": "The workflow reviewer would check who owns the lead, when follow-up happens, and where reminders or handoffs slip. I can only check whether that review is worth a callback."
+    },
+    {
+      "campaign_id": "routesignal",
+      "group": "human_review",
+      "question": "what would they look at",
+      "response": "The review would look at who owns the lead, when follow-up happens, and where reminders or handoffs slip. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "routesignal",
+      "group": "human_review",
+      "question": "why can't the AI answer that",
+      "response": "The review would look at who owns the lead, when follow-up happens, and where reminders or handoffs slip. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "human_review",
+      "question": "why do I need a human review",
+      "response": "I can keep this high-level. The telecom account specialist would review plan fit, coverage availability, and switching constraints against account-specific details before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "human_review",
+      "question": "why can't you just tell me",
+      "response": "I can keep this high-level. The telecom account specialist would review plan fit, coverage availability, and switching constraints against account-specific details before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "human_review",
+      "question": "what will the specialist check",
+      "response": "I can keep this high-level. A telecom account specialist would review plan fit, coverage availability, or switching constraints and the actual details before any recommendation."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "human_review",
+      "question": "what would they look at",
+      "response": "The telecom account specialist would review plan fit, coverage availability, and switching constraints against account-specific details. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "human_review",
+      "question": "why can't the AI answer that",
+      "response": "The telecom account specialist would review plan fit, coverage availability, and switching constraints against account-specific details. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "human_review",
+      "question": "why do I need a human review",
+      "response": "I can keep this high-level. The licensed insurance specialist would review premium pressure, coverage fit, and renewal timing against actual policy details before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "human_review",
+      "question": "why can't you just tell me",
+      "response": "I can keep this high-level. The licensed insurance specialist would review premium pressure, coverage fit, and renewal timing against actual policy details before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "human_review",
+      "question": "what will the specialist check",
+      "response": "I can keep this high-level. A licensed insurance specialist would review premium pressure, coverage fit, or renewal timing and the actual details before any recommendation."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "human_review",
+      "question": "what would they look at",
+      "response": "The licensed insurance specialist would review premium pressure, coverage fit, and renewal timing against actual policy details. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "human_review",
+      "question": "why can't the AI answer that",
+      "response": "The licensed insurance specialist would review premium pressure, coverage fit, and renewal timing against actual policy details. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "human_review",
+      "question": "why do I need a human review",
+      "response": "I can keep this high-level. The service advisor would review vehicle issue, repair timing, and estimate concern before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "human_review",
+      "question": "why can't you just tell me",
+      "response": "I can keep this high-level. The service advisor would review vehicle issue, repair timing, and estimate concern before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "human_review",
+      "question": "what will the specialist check",
+      "response": "It is a quick service fit check. I can explain the high-level scope; A service advisor would review vehicle issue, repair timing, or estimate concern and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "human_review",
+      "question": "what would they look at",
+      "response": "The service advisor would review vehicle issue, repair timing, and estimate concern. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "human_review",
+      "question": "why can't the AI answer that",
+      "response": "The service advisor would review vehicle issue, repair timing, and estimate concern. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "human_review",
+      "question": "why do I need a human review",
+      "response": "I can keep this high-level. The account support specialist would review plan fit, renewal or cancellation, and usage or value against account-specific details before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "human_review",
+      "question": "why can't you just tell me",
+      "response": "I can keep this high-level. The account support specialist would review plan fit, renewal or cancellation, and usage or value against account-specific details before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "human_review",
+      "question": "what will the specialist check",
+      "response": "I can keep this high-level. An account support specialist would review plan fit, renewal or cancellation, or usage or value and the actual details before any recommendation."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "human_review",
+      "question": "what would they look at",
+      "response": "The account support specialist would review plan fit, renewal or cancellation, and usage or value against account-specific details. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "human_review",
+      "question": "why can't the AI answer that",
+      "response": "The account support specialist would review plan fit, renewal or cancellation, and usage or value against account-specific details. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "human_review",
+      "question": "why do I need a human review",
+      "response": "I can keep this high-level. The implementation specialist would review manual work, integration risk, and visibility gaps against the actual operating workflow before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "human_review",
+      "question": "why can't you just tell me",
+      "response": "I can keep this high-level. The implementation specialist would review manual work, integration risk, and visibility gaps against the actual operating workflow before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "human_review",
+      "question": "what will the specialist check",
+      "response": "It is a quick operations fit check. I can explain the high-level scope; An implementation specialist would review manual work, integration risk, or visibility gaps and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "human_review",
+      "question": "what would they look at",
+      "response": "The implementation specialist would review manual work, integration risk, and visibility gaps against the actual operating workflow. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "human_review",
+      "question": "why can't the AI answer that",
+      "response": "The implementation specialist would review manual work, integration risk, and visibility gaps against the actual operating workflow. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "human_review",
+      "question": "why do I need a human review",
+      "response": "I can keep this high-level. The qualified service coordinator would review service need, scheduling timing, and estimate concern before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "human_review",
+      "question": "why can't you just tell me",
+      "response": "I can keep this high-level. The qualified service coordinator would review service need, scheduling timing, and estimate concern before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "human_review",
+      "question": "what will the specialist check",
+      "response": "I can keep this high-level. A qualified service coordinator would review service need, scheduling timing, or estimate concern and the actual details before any recommendation."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "human_review",
+      "question": "what would they look at",
+      "response": "The qualified service coordinator would review service need, scheduling timing, and estimate concern. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "human_review",
+      "question": "why can't the AI answer that",
+      "response": "The qualified service coordinator would review service need, scheduling timing, and estimate concern. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "human_review",
+      "question": "why do I need a human review",
+      "response": "I can keep this high-level. The qualified healthcare admin specialist would review administrative issue, equipment or service fit, and specialist callback path before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "human_review",
+      "question": "why can't you just tell me",
+      "response": "I can keep this high-level. The qualified healthcare admin specialist would review administrative issue, equipment or service fit, and specialist callback path before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "human_review",
+      "question": "what will the specialist check",
+      "response": "I can keep this high-level. A qualified healthcare admin specialist would review administrative issue, equipment or service fit, or specialist callback path and the actual details before any recommendation."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "human_review",
+      "question": "what would they look at",
+      "response": "The qualified healthcare admin specialist would review administrative issue, equipment or service fit, and specialist callback path. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "human_review",
+      "question": "why can't the AI answer that",
+      "response": "The qualified healthcare admin specialist would review administrative issue, equipment or service fit, and specialist callback path. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "human_review",
+      "question": "why do I need a human review",
+      "response": "I can keep this high-level. The support specialist would review order issue, product support question, availability or delivery, and return or warranty context before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "human_review",
+      "question": "why can't you just tell me",
+      "response": "I can keep this high-level. The support specialist would review order issue, product support question, availability or delivery, and return or warranty context before any recommendation. I'm not making the decision here."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "human_review",
+      "question": "what will the specialist check",
+      "response": "I can keep this high-level. A support specialist would review order issue, product support question, or availability or delivery and the actual details before any recommendation."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "human_review",
+      "question": "what would they look at",
+      "response": "The support specialist would review order issue, product support question, availability or delivery, and return or warranty context. I can only check that at a high level here."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "human_review",
+      "question": "why can't the AI answer that",
+      "response": "The support specialist would review order issue, product support question, availability or delivery, and return or warranty context. I can only check that at a high level here."
+    }
+  ],
+  "minimum_required_scenarios": 160,
+  "negative_control_samples": [
+    {
+      "campaign_id": "routesignal",
+      "control": "explicit_stop",
+      "response": "Understood. I'll stop here. Goodbye."
+    },
+    {
+      "campaign_id": "routesignal",
+      "control": "serious_hardship",
+      "response": "I'm sorry to hear that. This is not the right time for this call. I'll stop here."
+    },
+    {
+      "campaign_id": "routesignal",
+      "control": "sensitive_data",
+      "response": "Understood. Please don't share sensitive details on this call. This is not the right place for that information, so I'll stop here."
+    },
+    {
+      "campaign_id": "routesignal",
+      "control": "regulated_exact_advice",
+      "response": "No, I cannot guarantee that on this call. That depends on details the verified implementation reviewer would need to review."
+    },
+    {
+      "campaign_id": "routesignal",
+      "control": "price_quote_request",
+      "response": "I cannot give an exact price on this call. That depends on details the verified implementation reviewer would need to review."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "control": "explicit_stop",
+      "response": "Understood. I'll stop here. Goodbye."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "control": "serious_hardship",
+      "response": "I'm sorry to hear that. This is not the right time for this call. I'll stop here."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "control": "sensitive_data",
+      "response": "Understood. Please don't share sensitive details on this call. This is not the right place for that information, so I'll stop here."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "control": "regulated_exact_advice",
+      "response": "No, I cannot guarantee that on this call. That depends on details the telecom account specialist would need to review."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "control": "price_quote_request",
+      "response": "I cannot give an exact price on this call. That depends on details the telecom account specialist would need to review."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "control": "explicit_stop",
+      "response": "Understood. I'll stop here. Goodbye."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "control": "serious_hardship",
+      "response": "I'm sorry to hear that. This is not the right time for this call. I'll stop here."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "control": "sensitive_data",
+      "response": "Understood. Please don't share sensitive details on this call. This is not the right place for that information, so I'll stop here."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "control": "regulated_exact_advice",
+      "response": "No, I cannot guarantee that on this call. That depends on details the licensed insurance specialist would need to review."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "control": "price_quote_request",
+      "response": "I cannot give an exact price on this call. That depends on details the licensed insurance specialist would need to review."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "control": "explicit_stop",
+      "response": "Understood. I'll stop here. Goodbye."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "control": "serious_hardship",
+      "response": "I'm sorry to hear that. This is not the right time for this call. I'll stop here."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "control": "sensitive_data",
+      "response": "Understood. Please don't share sensitive details on this call. This is not the right place for that information, so I'll stop here."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "control": "regulated_exact_advice",
+      "response": "No, I cannot guarantee that on this call. That depends on details the service advisor would need to review."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "control": "price_quote_request",
+      "response": "I cannot give an exact price on this call. That depends on details the service advisor would need to review."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "control": "explicit_stop",
+      "response": "Understood. I'll stop here. Goodbye."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "control": "serious_hardship",
+      "response": "I'm sorry to hear that. This is not the right time for this call. I'll stop here."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "control": "sensitive_data",
+      "response": "Understood. Please don't share sensitive details on this call. This is not the right place for that information, so I'll stop here."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "control": "regulated_exact_advice",
+      "response": "No, I cannot guarantee that on this call. That depends on details the account support specialist would need to review."
+    }
+  ],
+  "opening_samples": [
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "response": "Hi, this is Maya from Cedar Telecom. I'm doing a quick telecom plan fit check - mainly plan fit, coverage availability, or switching constraints. Do you have a minute?"
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "response": "Hi, this is Maya from Harbor Insurance. I'm doing a quick policy fit check - mainly premium pressure, coverage fit, or renewal timing. Do you have a minute?"
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "response": "Hi, this is Maya from Atlas Auto Service. I'm doing a quick service fit check - mainly vehicle issue, repair timing, or estimate concern. Do you have a minute?"
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "response": "Hi, this is Maya from Cedar Membership Services. I'm doing a quick membership plan fit check - mainly plan fit, renewal or cancellation, or usage or value. Do you have a minute?"
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "response": "Hi, this is Maya from Vector Workflow Labs. I'm doing a quick operations fit check - mainly manual work, integration risk, or visibility gaps. Do you have a minute?"
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "response": "Hi, this is Maya from Hearthside Home Services. I'm doing a quick home service fit check - mainly service need, scheduling timing, or estimate concern. Do you have a minute?"
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "response": "Hi, this is Maya from Harbor Admin Services. I'm doing a quick admin fit check - mainly administrative issue, equipment or service fit, or specialist callback path. Do you have a minute?"
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "response": "Hi, this is Maya from Parcel Retail Support. I'm doing a quick retail support fit check - mainly order issue, product support question, or availability or delivery. Do you have a minute?"
+    }
+  ],
+  "product_samples": [
+    {
+      "campaign_id": "routesignal",
+      "group": "product",
+      "question": "what are you selling",
+      "response": "Plainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs."
+    },
+    {
+      "campaign_id": "routesignal",
+      "group": "product",
+      "question": "what is your product",
+      "response": "Sure. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs."
+    },
+    {
+      "campaign_id": "routesignal",
+      "group": "product",
+      "question": "what do you do",
+      "response": "RouteSignal CRM routes leads, captures follow-up tasks, and shows handoff status so inbound requests do not sit in a spreadsheet. Where does follow-up break first today: assignment, reminders, or missed replies?"
+    },
+    {
+      "campaign_id": "routesignal",
+      "group": "product",
+      "question": "what problem do you solve",
+      "response": "Fair question. RouteSignal helps inbound demo requests avoid sitting without an owner. The value is fewer missed replies and less manual follow-up drift."
+    },
+    {
+      "campaign_id": "routesignal",
+      "group": "product",
+      "question": "what are you calling about",
+      "response": "Fair question. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The value is fewer missed replies and less manual follow-up drift."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "product",
+      "question": "what are you selling",
+      "response": "Fair question. It is a quick telecom plan fit check. I'm not quoting a plan here; I'm checking whether plan fit, coverage availability, or switching constraints should be reviewed by the telecom account specialist."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "product",
+      "question": "what is your product",
+      "response": "Sure. It is a quick telecom plan fit check. I'm not quoting a plan here; I'm checking whether plan fit, coverage availability, or switching constraints should be reviewed by the telecom account specialist. Should I keep it to that review?"
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "product",
+      "question": "what do you do",
+      "response": "It is a quick telecom plan fit check. I can explain the high-level scope; A telecom account specialist would review plan fit, coverage availability, or switching constraints and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "product",
+      "question": "what problem do you solve",
+      "response": "Fair question. It is a quick telecom plan fit check. I'm not quoting a plan here; I'm checking whether plan fit, coverage availability, or switching constraints should be reviewed by the telecom account specialist. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "product",
+      "question": "what are you calling about",
+      "response": "Fair question. It is a quick telecom plan fit check. I'm not quoting a plan here; I'm checking whether plan fit, coverage availability, or switching constraints should be reviewed by the telecom account specialist. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "product",
+      "question": "what are you selling",
+      "response": "Fair question. It is a quick policy fit check. I can explain the high-level scope, but anything policy-specific has to be reviewed by the licensed insurance specialist."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "product",
+      "question": "what is your product",
+      "response": "Sure. It is a quick policy fit check. I can explain the high-level scope, but anything policy-specific has to be reviewed by the licensed insurance specialist. Should I keep it to that review?"
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "product",
+      "question": "what do you do",
+      "response": "It is a quick policy fit check. I can explain the high-level scope; A licensed insurance specialist would review premium pressure, coverage fit, or renewal timing and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "product",
+      "question": "what problem do you solve",
+      "response": "Fair question. It is a quick policy fit check. I can explain the high-level scope, but anything policy-specific has to be reviewed by the licensed insurance specialist. The point is to see whether premium pressure, coverage fit, or renewal timing is worth a licensed review before policy-specific details are discussed."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "product",
+      "question": "what are you calling about",
+      "response": "Fair question. It is a quick policy fit check. I can explain the high-level scope, but anything policy-specific has to be reviewed by the licensed insurance specialist. The point is to see whether premium pressure, coverage fit, or renewal timing is worth a licensed review before policy-specific details are discussed."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "product",
+      "question": "what are you selling",
+      "response": "Fair question. It is a quick service fit check. I cannot diagnose the vehicle here, but I can check whether vehicle issue, repair timing, or estimate concern should be reviewed by the service advisor."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "product",
+      "question": "what is your product",
+      "response": "Sure. It is a quick service fit check. I cannot diagnose the vehicle here, but I can check whether vehicle issue, repair timing, or estimate concern should be reviewed by the service advisor. Should I keep it to that review?"
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "product",
+      "question": "what do you do",
+      "response": "It is a quick service fit check. I can explain the high-level scope; A service advisor would review vehicle issue, repair timing, or estimate concern and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "product",
+      "question": "what problem do you solve",
+      "response": "Fair question. It is a quick service fit check. I cannot diagnose the vehicle here, but I can check whether vehicle issue, repair timing, or estimate concern should be reviewed by the service advisor. The value is avoiding a premature diagnosis or estimate before a service advisor checks the vehicle issue, timing, and estimate context."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "product",
+      "question": "what are you calling about",
+      "response": "Fair question. It is a quick service fit check. I cannot diagnose the vehicle here, but I can check whether vehicle issue, repair timing, or estimate concern should be reviewed by the service advisor. The value is avoiding a premature diagnosis or estimate before a service advisor checks the vehicle issue, timing, and estimate context."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "product",
+      "question": "what are you selling",
+      "response": "Fair question. It is a quick membership plan fit check. I cannot change the account here, but I can check whether plan fit, renewal or cancellation, or usage or value should be reviewed by the account support specialist."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "product",
+      "question": "what is your product",
+      "response": "Sure. It is a quick membership plan fit check. I cannot change the account here, but I can check whether plan fit, renewal or cancellation, or usage or value should be reviewed by the account support specialist. Should I keep it to that review?"
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "product",
+      "question": "what do you do",
+      "response": "It is a quick membership plan fit check. I can explain the high-level scope; An account support specialist would review plan fit, renewal or cancellation, or usage or value and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "product",
+      "question": "what problem do you solve",
+      "response": "Fair question. It is a quick membership plan fit check. I cannot change the account here, but I can check whether plan fit, renewal or cancellation, or usage or value should be reviewed by the account support specialist. The value is checking plan fit, renewal or cancellation timing, and usage value before account support reviews account-specific details."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "product",
+      "question": "what are you calling about",
+      "response": "Fair question. It is a quick membership plan fit check. I cannot change the account here, but I can check whether plan fit, renewal or cancellation, or usage or value should be reviewed by the account support specialist. The value is checking plan fit, renewal or cancellation timing, and usage value before account support reviews account-specific details."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "product",
+      "question": "what are you selling",
+      "response": "Fair question. It is a quick operations fit check. I cannot confirm technical fit here, but I can check whether manual work, integration risk, or visibility gaps should be reviewed by the implementation specialist."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "product",
+      "question": "what is your product",
+      "response": "Sure. It is a quick operations fit check. I cannot confirm technical fit here, but I can check whether manual work, integration risk, or visibility gaps should be reviewed by the implementation specialist. Should I keep it to that review?"
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "product",
+      "question": "what do you do",
+      "response": "It is a quick operations fit check. I can explain the high-level scope; An implementation specialist would review manual work, integration risk, or visibility gaps and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "product",
+      "question": "what problem do you solve",
+      "response": "Fair question. It is a quick operations fit check. I cannot confirm technical fit here, but I can check whether manual work, integration risk, or visibility gaps should be reviewed by the implementation specialist. The value is spotting manual work, integration risk, or visibility gaps before an implementation specialist reviews the workflow."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "product",
+      "question": "what are you calling about",
+      "response": "Fair question. It is a quick operations fit check. I cannot confirm technical fit here, but I can check whether manual work, integration risk, or visibility gaps should be reviewed by the implementation specialist. The value is spotting manual work, integration risk, or visibility gaps before an implementation specialist reviews the workflow."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "product",
+      "question": "what are you selling",
+      "response": "Fair question. It is a quick home service fit check. I'm checking whether service need, scheduling timing, or estimate concern should be reviewed by the qualified service coordinator before anyone discusses exact scope or price."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "product",
+      "question": "what is your product",
+      "response": "Sure. It is a quick home service fit check. I'm checking whether service need, scheduling timing, or estimate concern should be reviewed by the qualified service coordinator before anyone discusses exact scope or price. Should I keep it to that review?"
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "product",
+      "question": "what do you do",
+      "response": "It is a quick home service fit check. I can explain the high-level scope; A qualified service coordinator would review service need, scheduling timing, or estimate concern and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "product",
+      "question": "what problem do you solve",
+      "response": "Fair question. It is a quick home service fit check. I'm checking whether service need, scheduling timing, or estimate concern should be reviewed by the qualified service coordinator before anyone discusses exact scope or price. The value is checking service need, scheduling timing, and estimate concern before a coordinator reviews property details."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "product",
+      "question": "what are you calling about",
+      "response": "Fair question. It is a quick home service fit check. I'm checking whether service need, scheduling timing, or estimate concern should be reviewed by the qualified service coordinator before anyone discusses exact scope or price. The value is checking service need, scheduling timing, and estimate concern before a coordinator reviews property details."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "product",
+      "question": "what are you selling",
+      "response": "Fair question. It is a quick admin fit check. I'm checking whether administrative issue, equipment or service fit, or specialist callback path should be reviewed by the qualified healthcare admin specialist. I cannot give clinical advice."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "product",
+      "question": "what is your product",
+      "response": "Sure. It is a quick admin fit check. I'm checking whether administrative issue, equipment or service fit, or specialist callback path should be reviewed by the qualified healthcare admin specialist. I cannot give clinical advice. Should I keep it to that review?"
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "product",
+      "question": "what do you do",
+      "response": "It is a quick admin fit check. I can explain the high-level scope; A qualified healthcare admin specialist would review administrative issue, equipment or service fit, or specialist callback path and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "product",
+      "question": "what problem do you solve",
+      "response": "Fair question. It is a quick admin fit check. I'm checking whether administrative issue, equipment or service fit, or specialist callback path should be reviewed by the qualified healthcare admin specialist. I cannot give clinical advice. The value is keeping administrative questions separate from clinical advice while a qualified specialist reviews the right admin path."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "product",
+      "question": "what are you calling about",
+      "response": "Fair question. It is a quick admin fit check. I'm checking whether administrative issue, equipment or service fit, or specialist callback path should be reviewed by the qualified healthcare admin specialist. I cannot give clinical advice. The value is keeping administrative questions separate from clinical advice while a qualified specialist reviews the right admin path."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "product",
+      "question": "what are you selling",
+      "response": "Fair question. It is a quick retail support fit check. I'm checking whether order issue, product support question, or availability or delivery should be reviewed by the support specialist before account-specific answers."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "product",
+      "question": "what is your product",
+      "response": "Sure. It is a quick retail support fit check. I'm checking whether order issue, product support question, or availability or delivery should be reviewed by the support specialist before account-specific answers. Should I keep it to that review?"
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "product",
+      "question": "what do you do",
+      "response": "It is a quick retail support fit check. I can explain the high-level scope; A support specialist would review order issue, product support question, or availability or delivery and the actual details."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "product",
+      "question": "what problem do you solve",
+      "response": "Fair question. It is a quick retail support fit check. I'm checking whether order issue, product support question, or availability or delivery should be reviewed by the support specialist before account-specific answers. The value is checking order, return, or account concerns before support reviews the specific account or policy details."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "product",
+      "question": "what are you calling about",
+      "response": "Fair question. It is a quick retail support fit check. I'm checking whether order issue, product support question, or availability or delivery should be reviewed by the support specialist before account-specific answers. The value is checking order, return, or account concerns before support reviews the specific account or policy details."
+    }
+  ],
+  "scenario_count": 278,
+  "scenario_threshold_met": true,
+  "side_effect_keys": [
+    "provider_calls_made",
+    "local_llm_calls_made",
+    "sends_email",
+    "creates_calendar_event",
+    "writes_crm",
+    "opens_prod_102",
+    "live_tts_used",
+    "audio_file_created"
+  ],
+  "valid": true,
+  "value_samples": [
+    {
+      "campaign_id": "routesignal",
+      "group": "value",
+      "question": "why should I care",
+      "response": "Fair question. The value is fewer missed replies and less manual follow-up drift."
+    },
+    {
+      "campaign_id": "routesignal",
+      "group": "value",
+      "question": "what makes you different",
+      "response": "Fair question. RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The difference is the scope: RouteSignal CRM helps inbound sales teams capture, route, follow up, and review ownership of demo and contact-sales requests. The high-level value is fewer missed replies, clearer ownership, and less manual follow-up drift."
+    },
+    {
+      "campaign_id": "routesignal",
+      "group": "value",
+      "question": "how do I know the difference from my current provider",
+      "response": "I cannot compare exact provider terms on this call. RouteSignal gives teams clearer ownership of the next reply and a cleaner view of whether follow-up is slipping. The verified implementation reviewer would compare who owns the lead, when follow-up happens, and where reminders or handoffs slip before any recommendation."
+    },
+    {
+      "campaign_id": "routesignal",
+      "group": "value",
+      "question": "why is this worth my time",
+      "response": "Fair question. It is worth time only if inbound demo follow-up is actually slipping. The value is fewer missed replies and less manual follow-up drift."
+    },
+    {
+      "campaign_id": "routesignal",
+      "group": "value",
+      "question": "what makes this useful",
+      "response": "Fair question. It is useful when demo requests need clear ownership for the next reply. The value is fewer missed replies and less manual follow-up drift."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "value",
+      "question": "why should I care",
+      "response": "Fair question. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "value",
+      "question": "what makes you different",
+      "response": "Fair question. It is a quick telecom plan fit check. I'm not quoting a plan here; I'm checking whether plan fit, coverage availability, or switching constraints should be reviewed by the telecom account specialist. The difference is the scope: I keep this to discussing plan fit generally at a high level before the telecom account specialist reviews the actual details. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "value",
+      "question": "how do I know the difference from my current provider",
+      "response": "I cannot compare exact provider terms on this call. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked. The telecom account specialist would compare plan fit, coverage availability, and switching constraints against account-specific details before any recommendation."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "value",
+      "question": "why is this worth my time",
+      "response": "Fair question. It is worth time only if plan fit, coverage availability, or switching constraints need specialist review. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked."
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "group": "value",
+      "question": "what makes this useful",
+      "response": "Fair question. It is useful as a quick filter. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "value",
+      "question": "why should I care",
+      "response": "Fair question. The point is to see whether premium pressure, coverage fit, or renewal timing is worth a licensed review before policy-specific details are discussed."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "value",
+      "question": "what makes you different",
+      "response": "Fair question. It is a quick policy fit check. I can explain the high-level scope, but anything policy-specific has to be reviewed by the licensed insurance specialist. The difference is the scope: I keep this to collecting general review needs at a high level before the licensed insurance specialist reviews the actual details. The point is to see whether premium pressure, coverage fit, or renewal timing is worth a licensed review before policy-specific details are discussed."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "value",
+      "question": "how do I know the difference from my current provider",
+      "response": "I cannot compare exact provider terms on this call. The point is to see whether premium pressure, coverage fit, or renewal timing is worth a licensed review before policy-specific details are discussed. The licensed insurance specialist would compare premium pressure, coverage fit, and renewal timing against actual policy details before any recommendation."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "value",
+      "question": "why is this worth my time",
+      "response": "Fair question. It is worth time only if premium pressure, coverage fit, or renewal timing need specialist review. The point is to see whether premium pressure, coverage fit, or renewal timing is worth a licensed review before policy-specific details are discussed."
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "group": "value",
+      "question": "what makes this useful",
+      "response": "Fair question. It is useful as a quick filter. The point is to see whether premium pressure, coverage fit, or renewal timing is worth a licensed review before policy-specific details are discussed."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "value",
+      "question": "why should I care",
+      "response": "Fair question. The value is avoiding a premature diagnosis or estimate before a service advisor checks the vehicle issue, timing, and estimate context."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "value",
+      "question": "what makes you different",
+      "response": "Fair question. It is a quick service fit check. I cannot diagnose the vehicle here, but I can check whether vehicle issue, repair timing, or estimate concern should be reviewed by the service advisor. The difference is the scope: I keep this to collecting vehicle issue and timing context at a high level before the service advisor reviews the actual details. The value is avoiding a premature diagnosis or estimate before a service advisor checks the vehicle issue, timing, and estimate context."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "value",
+      "question": "how do I know the difference from my current provider",
+      "response": "I cannot compare exact provider terms on this call. The value is avoiding a premature diagnosis or estimate before a service advisor checks the vehicle issue, timing, and estimate context. The service advisor would compare vehicle issue, repair timing, and estimate concern before any recommendation."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "value",
+      "question": "why is this worth my time",
+      "response": "Fair question. It is worth time only if vehicle issue, repair timing, or estimate concern need specialist review. The value is avoiding a premature diagnosis or estimate before a service advisor checks the vehicle issue, timing, and estimate context."
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "group": "value",
+      "question": "what makes this useful",
+      "response": "Fair question. It is useful as a quick filter. The value is avoiding a premature diagnosis or estimate before a service advisor checks the vehicle issue, timing, and estimate context."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "value",
+      "question": "why should I care",
+      "response": "Fair question. The value is checking plan fit, renewal or cancellation timing, and usage value before account support reviews account-specific details."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "value",
+      "question": "what makes you different",
+      "response": "Fair question. It is a quick membership plan fit check. I cannot change the account here, but I can check whether plan fit, renewal or cancellation, or usage or value should be reviewed by the account support specialist. The difference is the scope: I keep this to discussing plan fit and support options generally at a high level before the account support specialist reviews the actual details. The value is checking plan fit, renewal or cancellation timing, and usage value before account support reviews account-specific details."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "value",
+      "question": "how do I know the difference from my current provider",
+      "response": "I cannot compare exact provider terms on this call. The value is checking plan fit, renewal or cancellation timing, and usage value before account support reviews account-specific details. The account support specialist would compare plan fit, renewal or cancellation, and usage or value against account-specific details before any recommendation."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "value",
+      "question": "why is this worth my time",
+      "response": "Fair question. It is worth time only if plan fit, renewal or cancellation, or usage or value need specialist review. The value is checking plan fit, renewal or cancellation timing, and usage value before account support reviews account-specific details."
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "group": "value",
+      "question": "what makes this useful",
+      "response": "Fair question. It is useful as a quick filter. The value is checking plan fit, renewal or cancellation timing, and usage value before account support reviews account-specific details."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "value",
+      "question": "why should I care",
+      "response": "Fair question. The value is spotting manual work, integration risk, or visibility gaps before an implementation specialist reviews the workflow."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "value",
+      "question": "what makes you different",
+      "response": "Fair question. It is a quick operations fit check. I cannot confirm technical fit here, but I can check whether manual work, integration risk, or visibility gaps should be reviewed by the implementation specialist. The difference is the scope: I keep this to discussing workflow fit at a general level at a high level before the implementation specialist reviews the actual details. The value is spotting manual work, integration risk, or visibility gaps before an implementation specialist reviews the workflow."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "value",
+      "question": "how do I know the difference from my current provider",
+      "response": "I cannot compare exact provider terms on this call. The value is spotting manual work, integration risk, or visibility gaps before an implementation specialist reviews the workflow. The implementation specialist would compare manual work, integration risk, and visibility gaps against the actual operating workflow before any recommendation."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "value",
+      "question": "why is this worth my time",
+      "response": "Fair question. It is worth time only if manual work, integration risk, or visibility gaps need specialist review. The value is spotting manual work, integration risk, or visibility gaps before an implementation specialist reviews the workflow."
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "group": "value",
+      "question": "what makes this useful",
+      "response": "Fair question. It is useful as a quick filter. The value is spotting manual work, integration risk, or visibility gaps before an implementation specialist reviews the workflow."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "value",
+      "question": "why should I care",
+      "response": "Fair question. The value is checking service need, scheduling timing, and estimate concern before a coordinator reviews property details."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "value",
+      "question": "what makes you different",
+      "response": "Fair question. It is a quick home service fit check. I'm checking whether service need, scheduling timing, or estimate concern should be reviewed by the qualified service coordinator before anyone discusses exact scope or price. The difference is the scope: I keep this to collecting scheduling and property context at a high level before the qualified service coordinator reviews the actual details. The value is checking service need, scheduling timing, and estimate concern before a coordinator reviews property details."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "value",
+      "question": "how do I know the difference from my current provider",
+      "response": "I cannot compare exact provider terms on this call. The value is checking service need, scheduling timing, and estimate concern before a coordinator reviews property details. The qualified service coordinator would compare service need, scheduling timing, and estimate concern before any recommendation."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "value",
+      "question": "why is this worth my time",
+      "response": "Fair question. It is worth time only if service need, scheduling timing, or estimate concern need specialist review. The value is checking service need, scheduling timing, and estimate concern before a coordinator reviews property details."
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "group": "value",
+      "question": "what makes this useful",
+      "response": "Fair question. It is useful as a quick filter. The value is checking service need, scheduling timing, and estimate concern before a coordinator reviews property details."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "value",
+      "question": "why should I care",
+      "response": "Fair question. The value is keeping administrative questions separate from clinical advice while a qualified specialist reviews the right admin path."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "value",
+      "question": "what makes you different",
+      "response": "Fair question. It is a quick admin fit check. I'm checking whether administrative issue, equipment or service fit, or specialist callback path should be reviewed by the qualified healthcare admin specialist. I cannot give clinical advice. The difference is the scope: I keep this to collecting admin workflow or equipment review needs at a high level before the qualified healthcare admin specialist reviews the actual details. The value is keeping administrative questions separate from clinical advice while a qualified specialist reviews the right admin path."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "value",
+      "question": "how do I know the difference from my current provider",
+      "response": "I cannot compare exact provider terms on this call. The value is keeping administrative questions separate from clinical advice while a qualified specialist reviews the right admin path. The qualified healthcare admin specialist would compare administrative issue, equipment or service fit, and specialist callback path before any recommendation."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "value",
+      "question": "why is this worth my time",
+      "response": "Fair question. It is worth time only if administrative issue, equipment or service fit, or specialist callback path need specialist review. The value is keeping administrative questions separate from clinical advice while a qualified specialist reviews the right admin path."
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "group": "value",
+      "question": "what makes this useful",
+      "response": "Fair question. It is useful as a quick filter. The value is keeping administrative questions separate from clinical advice while a qualified specialist reviews the right admin path."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "value",
+      "question": "why should I care",
+      "response": "Fair question. The value is checking order, return, or account concerns before support reviews the specific account or policy details."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "value",
+      "question": "what makes you different",
+      "response": "Fair question. It is a quick retail support fit check. I'm checking whether order issue, product support question, or availability or delivery should be reviewed by the support specialist before account-specific answers. The difference is the scope: I keep this to collecting product fit or support context at a high level before the support specialist reviews the actual details. The value is checking order, return, or account concerns before support reviews the specific account or policy details."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "value",
+      "question": "how do I know the difference from my current provider",
+      "response": "I cannot compare exact provider terms on this call. The value is checking order, return, or account concerns before support reviews the specific account or policy details. The support specialist would compare order issue, product support question, availability or delivery, and return or warranty context before any recommendation."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "value",
+      "question": "why is this worth my time",
+      "response": "Fair question. It is worth time only if order issue, product support question, or availability or delivery need specialist review. The value is checking order, return, or account concerns before support reviews the specific account or policy details."
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "group": "value",
+      "question": "what makes this useful",
+      "response": "Fair question. It is useful as a quick filter. The value is checking order, return, or account concerns before support reviews the specific account or policy details."
+    }
+  ],
+  "variety_samples": [
+    {
+      "campaign_id": "routesignal",
+      "responses": [
+        "Plainly, RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs.",
+        "Already answered at a high level: RouteSignal is a CRM workflow tool for inbound demo follow-up. It helps teams assign the next reply, track reminders, and avoid missed handoffs. The next check is whether that is worth a specialist review.",
+        "RouteSignal CRM routes leads, captures follow-up tasks, and shows handoff status so inbound requests do not sit in a spreadsheet. Where does follow-up break first today: assignment, reminders, or missed replies?",
+        "Fair question. RouteSignal helps inbound demo requests avoid sitting without an owner. The value is fewer missed replies and less manual follow-up drift."
+      ],
+      "total_responses": 10,
+      "unique_responses": 10
+    },
+    {
+      "campaign_id": "synthetic-telecom-plan-review",
+      "responses": [
+        "Fair question. It is a quick telecom plan fit check. I'm not quoting a plan here; I'm checking whether plan fit, coverage availability, or switching constraints should be reviewed by the telecom account specialist.",
+        "Already answered at a high level: It is a quick telecom plan fit check. I'm not quoting a plan here; I'm checking whether plan fit, coverage availability, or switching constraints should be reviewed by the telecom account specialist. The next check is whether that is worth a specialist review.",
+        "It is a quick telecom plan fit check. I can explain the high-level scope; A telecom account specialist would review plan fit, coverage availability, or switching constraints and the actual details.",
+        "Fair question. It is a quick telecom plan fit check. I'm not quoting a plan here; I'm checking whether plan fit, coverage availability, or switching constraints should be reviewed by the telecom account specialist. Avoid wasting time on a bad-fit plan or switching path before account-specific details are checked."
+      ],
+      "total_responses": 10,
+      "unique_responses": 9
+    },
+    {
+      "campaign_id": "synthetic-insurance-review",
+      "responses": [
+        "Fair question. It is a quick policy fit check. I can explain the high-level scope, but anything policy-specific has to be reviewed by the licensed insurance specialist.",
+        "Already answered at a high level: It is a quick policy fit check. I can explain the high-level scope, but anything policy-specific has to be reviewed by the licensed insurance specialist. The next check is whether that is worth a specialist review.",
+        "It is a quick policy fit check. I can explain the high-level scope; A licensed insurance specialist would review premium pressure, coverage fit, or renewal timing and the actual details.",
+        "Fair question. It is a quick policy fit check. I can explain the high-level scope, but anything policy-specific has to be reviewed by the licensed insurance specialist. The point is to see whether premium pressure, coverage fit, or renewal timing is worth a licensed review before policy-specific details are discussed."
+      ],
+      "total_responses": 10,
+      "unique_responses": 9
+    },
+    {
+      "campaign_id": "synthetic-automotive-service-review",
+      "responses": [
+        "Fair question. It is a quick service fit check. I cannot diagnose the vehicle here, but I can check whether vehicle issue, repair timing, or estimate concern should be reviewed by the service advisor.",
+        "Already answered at a high level: It is a quick service fit check. I cannot diagnose the vehicle here, but I can check whether vehicle issue, repair timing, or estimate concern should be reviewed by the service advisor. The next check is whether that is worth a specialist review.",
+        "It is a quick service fit check. I can explain the high-level scope; A service advisor would review vehicle issue, repair timing, or estimate concern and the actual details.",
+        "Fair question. It is a quick service fit check. I cannot diagnose the vehicle here, but I can check whether vehicle issue, repair timing, or estimate concern should be reviewed by the service advisor. The value is avoiding a premature diagnosis or estimate before a service advisor checks the vehicle issue, timing, and estimate context."
+      ],
+      "total_responses": 10,
+      "unique_responses": 9
+    },
+    {
+      "campaign_id": "synthetic-membership-plan-review",
+      "responses": [
+        "Fair question. It is a quick membership plan fit check. I cannot change the account here, but I can check whether plan fit, renewal or cancellation, or usage or value should be reviewed by the account support specialist.",
+        "Already answered at a high level: It is a quick membership plan fit check. I cannot change the account here, but I can check whether plan fit, renewal or cancellation, or usage or value should be reviewed by the account support specialist. The next check is whether that is worth a specialist review.",
+        "It is a quick membership plan fit check. I can explain the high-level scope; An account support specialist would review plan fit, renewal or cancellation, or usage or value and the actual details.",
+        "Fair question. It is a quick membership plan fit check. I cannot change the account here, but I can check whether plan fit, renewal or cancellation, or usage or value should be reviewed by the account support specialist. The value is checking plan fit, renewal or cancellation timing, and usage value before account support reviews account-specific details."
+      ],
+      "total_responses": 10,
+      "unique_responses": 9
+    },
+    {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "responses": [
+        "Fair question. It is a quick operations fit check. I cannot confirm technical fit here, but I can check whether manual work, integration risk, or visibility gaps should be reviewed by the implementation specialist.",
+        "Already answered at a high level: It is a quick operations fit check. I cannot confirm technical fit here, but I can check whether manual work, integration risk, or visibility gaps should be reviewed by the implementation specialist. The next check is whether that is worth a specialist review.",
+        "It is a quick operations fit check. I can explain the high-level scope; An implementation specialist would review manual work, integration risk, or visibility gaps and the actual details.",
+        "Fair question. It is a quick operations fit check. I cannot confirm technical fit here, but I can check whether manual work, integration risk, or visibility gaps should be reviewed by the implementation specialist. The value is spotting manual work, integration risk, or visibility gaps before an implementation specialist reviews the workflow."
+      ],
+      "total_responses": 10,
+      "unique_responses": 9
+    },
+    {
+      "campaign_id": "synthetic-home-services-estimate",
+      "responses": [
+        "Fair question. It is a quick home service fit check. I'm checking whether service need, scheduling timing, or estimate concern should be reviewed by the qualified service coordinator before anyone discusses exact scope or price.",
+        "Already answered at a high level: It is a quick home service fit check. I'm checking whether service need, scheduling timing, or estimate concern should be reviewed by the qualified service coordinator before anyone discusses exact scope or price. The next check is whether that is worth a specialist review.",
+        "It is a quick home service fit check. I can explain the high-level scope; A qualified service coordinator would review service need, scheduling timing, or estimate concern and the actual details.",
+        "Fair question. It is a quick home service fit check. I'm checking whether service need, scheduling timing, or estimate concern should be reviewed by the qualified service coordinator before anyone discusses exact scope or price. The value is checking service need, scheduling timing, and estimate concern before a coordinator reviews property details."
+      ],
+      "total_responses": 10,
+      "unique_responses": 9
+    },
+    {
+      "campaign_id": "synthetic-healthcare-admin-review",
+      "responses": [
+        "Fair question. It is a quick admin fit check. I'm checking whether administrative issue, equipment or service fit, or specialist callback path should be reviewed by the qualified healthcare admin specialist. I cannot give clinical advice.",
+        "Already answered at a high level: It is a quick admin fit check. I'm checking whether administrative issue, equipment or service fit, or specialist callback path should be reviewed by the qualified healthcare admin specialist. I cannot give clinical advice. The next check is whether that is worth a specialist review.",
+        "It is a quick admin fit check. I can explain the high-level scope; A qualified healthcare admin specialist would review administrative issue, equipment or service fit, or specialist callback path and the actual details.",
+        "Fair question. It is a quick admin fit check. I'm checking whether administrative issue, equipment or service fit, or specialist callback path should be reviewed by the qualified healthcare admin specialist. I cannot give clinical advice. The value is keeping administrative questions separate from clinical advice while a qualified specialist reviews the right admin path."
+      ],
+      "total_responses": 10,
+      "unique_responses": 9
+    },
+    {
+      "campaign_id": "synthetic-retail-support-review",
+      "responses": [
+        "Fair question. It is a quick retail support fit check. I'm checking whether order issue, product support question, or availability or delivery should be reviewed by the support specialist before account-specific answers.",
+        "Already answered at a high level: It is a quick retail support fit check. I'm checking whether order issue, product support question, or availability or delivery should be reviewed by the support specialist before account-specific answers. The next check is whether that is worth a specialist review.",
+        "It is a quick retail support fit check. I can explain the high-level scope; A support specialist would review order issue, product support question, or availability or delivery and the actual details.",
+        "Fair question. It is a quick retail support fit check. I'm checking whether order issue, product support question, or availability or delivery should be reviewed by the support specialist before account-specific answers. The value is checking order, return, or account concerns before support reviews the specific account or policy details."
+      ],
+      "total_responses": 10,
+      "unique_responses": 9
+    }
+  ]
+}

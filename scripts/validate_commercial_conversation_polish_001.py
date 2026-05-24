@@ -60,8 +60,34 @@ CAMPAIGNS = [
 ]
 
 ACK_PATTERNS = ("fair question", "sure", "understood", "got it", "right", "you re right", "you're right")
-RELEVANCE_PATTERNS = ("costing time", "creating delays", "hurting", "risk", "quality", "impact", "worth fixing")
+RELEVANCE_PATTERNS = (
+    "costing time",
+    "creating delays",
+    "hurting",
+    "risk",
+    "quality",
+    "impact",
+    "worth fixing",
+    "missed replies",
+    "follow-up drift",
+    "wasted time",
+    "bad-fit",
+    "policy-specific",
+    "premium pressure",
+    "coverage fit",
+    "premature diagnosis",
+    "estimate",
+    "service need",
+    "scheduling timing",
+    "account-specific",
+)
 FULL_MENU_PATTERNS = (
+    "which part is least clear",
+    "which part is more familiar",
+    "which part should i check first",
+    "name the point",
+)
+FULL_MENU_SCOPE_LISTS = (
     "missed callbacks, manual tracking, or handoffs",
     "owner, callback reminder, or handoff",
     "premium or budget, coverage fit, or renewal",
@@ -70,6 +96,14 @@ FULL_MENU_PATTERNS = (
     "vehicle issue, repair timing, or warranty",
     "service need, scheduling urgency, or estimate",
     "service need, scheduling, or estimate",
+)
+MENU_PROMPT_TERMS = (
+    "which part",
+    "what part",
+    "name the point",
+    "check first",
+    "choose",
+    "pick",
 )
 INTERNAL_PATTERNS = (
     "approved qualified reviewer path",
@@ -190,6 +224,12 @@ def contains_any(text: str, patterns: tuple[str, ...]) -> bool:
     return any(pattern in text for pattern in patterns)
 
 
+def looks_like_full_menu(text: str) -> bool:
+    if contains_any(text, FULL_MENU_PATTERNS):
+        return True
+    return contains_any(text, FULL_MENU_SCOPE_LISTS) and contains_any(text, MENU_PROMPT_TERMS)
+
+
 def question_count(text: str) -> int:
     return text.count("?")
 
@@ -201,7 +241,7 @@ def add_failure(failures: list[str], condition: bool, message: str) -> None:
 
 def common_response_checks(packet: dict[str, Any], failures: list[str]) -> None:
     lower = lower_response(packet)
-    add_failure(failures, not contains_any(lower, FULL_MENU_PATTERNS), "response used full diagnostic menu")
+    add_failure(failures, not looks_like_full_menu(lower), "response used full diagnostic menu")
     add_failure(failures, not contains_any(lower, INTERNAL_PATTERNS), "response used internal wording")
     add_failure(failures, not contains_any(lower, UNSAFE_CLAIMS), "response invented unsafe claim")
     add_failure(failures, question_count(response(packet)) <= 1, "response asked more than one question")

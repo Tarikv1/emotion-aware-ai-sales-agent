@@ -19,7 +19,7 @@
   "customer_facing_company_name": "Harbor Insurance",
   "customer_facing_offer_name": "policy fit check",
   "customer_facing_offer_summary": "A high-level check to see whether premium pressure, coverage fit, or renewal timing should be reviewed by a licensed specialist.",
-  "customer_facing_value_proposition": "Route policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.",
+  "customer_facing_value_proposition": "The point is to see whether premium pressure, coverage fit, or renewal timing is worth a licensed review before policy-specific details are discussed.",
   "customer_facing_call_objective": "See whether the buyer wants a licensed specialist to review premium pressure, coverage fit, or renewal timing.",
   "customer_facing_human_review_scope": "premium pressure, coverage fit, and renewal timing against actual policy details",
   "customer_facing_agent_limitations": "The agent can explain the high-level scope and note a callback window, but cannot quote premiums, decide eligibility, or give coverage advice.",
@@ -162,7 +162,7 @@
   "objective": "appointment_setting",
   "product_or_offer_name": "policy fit check",
   "product_or_offer_summary": "A high-level check to see whether premium pressure, coverage fit, or renewal timing should be reviewed by a licensed specialist.",
-  "high_level_value_proposition": "Route policy-specific questions to a licensed reviewer before any coverage, premium, or eligibility claim is made.",
+  "high_level_value_proposition": "The point is to see whether premium pressure, coverage fit, or renewal timing is worth a licensed review before policy-specific details are discussed.",
   "allowed_high_level_capabilities": [
     "general review-need triage",
     "licensed specialist routing",

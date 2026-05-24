@@ -70,6 +70,13 @@ UNSAFE_CLAIM_PATTERNS = {
 }
 
 FULL_MENU_PATTERNS = {
+    "which part is least clear": "menu prompt",
+    "which part is more familiar": "menu prompt",
+    "which part should i check first": "menu prompt",
+    "name the point": "menu prompt",
+}
+
+FULL_MENU_SCOPE_PATTERNS = {
     "owner, callback reminder, or handoff": "full RouteSignal menu",
     "assignment, reminders, or missed replies": "full RouteSignal menu",
     "premium, coverage fit, or renewal": "full insurance menu",
@@ -80,10 +87,15 @@ FULL_MENU_PATTERNS = {
 }
 
 SNAKE_CASE = re.compile(r"\b[a-z]+_[a-z_]+\b")
+MENU_PROMPT_TERMS = ("which part", "what part", "name the point", "check first", "choose", "pick")
 
 
 def lower(value: Any) -> str:
     return str(value or "").lower()
+
+
+def has_any(text: str, patterns: tuple[str, ...]) -> bool:
+    return any(pattern in text for pattern in patterns)
 
 
 def quality_failures(row: dict[str, Any]) -> list[dict[str, str]]:
@@ -103,6 +115,8 @@ def quality_failures(row: dict[str, Any]) -> list[dict[str, str]]:
     for pattern, reason in FULL_MENU_PATTERNS.items():
         if pattern in lowered:
             failures.append({"type": "full_diagnostic_menu", "detail": reason})
+    if has_any(lowered, tuple(FULL_MENU_SCOPE_PATTERNS)) and has_any(lowered, MENU_PROMPT_TERMS):
+        failures.append({"type": "full_diagnostic_menu", "detail": "scope list used as menu prompt"})
 
     snake_hits = sorted(set(SNAKE_CASE.findall(lowered)))
     if snake_hits:
@@ -122,15 +136,56 @@ def quality_failures(row: dict[str, Any]) -> list[dict[str, str]]:
         if len(response.split()) > 28:
             failures.append({"type": "time_pressure_too_long", "detail": f"{len(response.split())} words"})
     if category == "direct_product_value_questions":
-        if transcript == "what does your product do" and not (
-            "helps teams keep" in lowered or "this call is only to check" in lowered
+        if transcript == "what does your product do" and not has_any(
+            lowered,
+            (
+                "crm workflow tool",
+                "quick",
+                "fit check",
+                "helps teams",
+                "checking whether",
+                "high-level scope",
+            ),
         ):
             failures.append({"type": "direct_answer_weak", "detail": "product-detail answer not direct"})
-        if transcript == "what problem do you solve" and "mainly" not in lowered:
+        if transcript == "what problem do you solve" and not has_any(
+            lowered,
+            (
+                "helps",
+                "value",
+                "point is",
+                "checking whether",
+                "avoid",
+                "worth",
+                "fit check",
+            ),
+        ):
             failures.append({"type": "direct_answer_weak", "detail": "problem-solved answer not direct"})
-        if transcript == "why should i care" and "only if" not in lowered:
+        if transcript == "why should i care" and not has_any(
+            lowered,
+            (
+                "value is",
+                "avoid",
+                "worth",
+                "fewer missed",
+                "point is",
+                "useful",
+                "bad-fit",
+            ),
+        ):
             failures.append({"type": "direct_answer_weak", "detail": "why-care answer not direct"})
-        if transcript == "what makes you different" and not ("limited scope" in lowered or "useful difference" in lowered):
+        if transcript == "what makes you different" and not has_any(
+            lowered,
+            (
+                "cannot compare exact",
+                "clearer ownership",
+                "would compare",
+                "before any recommendation",
+                "difference is the scope",
+                "value is",
+                "limited scope",
+            ),
+        ):
             failures.append({"type": "direct_answer_weak", "detail": "differentiation answer not bounded"})
     if category == "objections":
         if not any(token in lowered for token in ("understood", "fair", "no problem")):

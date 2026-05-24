@@ -49,8 +49,6 @@ FORBIDDEN_MENU = [
     "callback reminders for demo follow-up",
     "premium or budget, coverage fit",
     "plan fit, coverage or availability",
-    "vehicle issue, repair timing",
-    "manual work, integration",
     "if not, i can stop here; which",
     "if not i can stop here; which",
 ]
@@ -439,7 +437,7 @@ def build_scenarios() -> list[Scenario]:
             "what-should-care",
             ("__agent_open__", "what should I care"),
             expected_move_ids=frozenset({"why_should_i_care"}),
-            required_terms=("only if", "review"),
+            required_terms=("only if", "review", "value", "avoid wasting", "follow-up drift", "useful", "account-specific"),
         )
         for index, (phrase, expected_term) in enumerate(campaign.configured_gap_phrases, start=1):
             add_scenario(

@@ -294,8 +294,27 @@ def generic_value_answer(packet: dict[str, Any], failures: list[str], campaign_l
     common_checks(packet, failures)
     add_failure(failures, "review is the product" not in lower, f"{campaign_label} framed review as product")
     add_failure(failures, "synthetic campaign" not in lower and "test fixture" not in lower, f"{campaign_label} leaked fixture wording")
-    add_failure(failures, "high-level check" in lower or "fit check" in lower or "fit-check" in lower, f"{campaign_label} offer summary missing")
-    add_failure(failures, "value" in lower or "useful" in lower or "avoid wasting" in lower or "route" in lower or "specialist" in lower, f"{campaign_label} value boundary missing")
+    natural_offer_scope = (
+        "high-level check" in lower
+        or "fit check" in lower
+        or "fit-check" in lower
+        or "bad-fit plan" in lower
+        or "premium pressure" in lower
+        or "coverage fit" in lower
+        or "renewal timing" in lower
+    )
+    natural_value_boundary = (
+        "value" in lower
+        or "useful" in lower
+        or "point is" in lower
+        or "avoid wasting" in lower
+        or "route" in lower
+        or "specialist" in lower
+        or "account-specific" in lower
+        or "policy-specific" in lower
+    )
+    add_failure(failures, natural_offer_scope, f"{campaign_label} offer summary missing")
+    add_failure(failures, natural_value_boundary, f"{campaign_label} value boundary missing")
 
 
 def human_review_answer(packet: dict[str, Any], failures: list[str]) -> None:
