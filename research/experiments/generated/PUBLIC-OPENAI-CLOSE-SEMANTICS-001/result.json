@@ -1,0 +1,274 @@
+{
+  "checkpoint_id": "PUBLIC-OPENAI-CLOSE-SEMANTICS-001",
+  "creates_calendar_event": false,
+  "cross_campaign_controls": {
+    "openai_after_callback_control": "I can point you to the official ChatGPT plans page. In the actual product, you would upgrade through ChatGPT's plan page or the profile upgrade flow.",
+    "routesignal_response": "RouteSignal is a CRM workflow tool for inbound demo follow-up.",
+    "synthetic_response": "I can note the callback preference for this dry-run, without sending or booking anything."
+  },
+  "enterprise_examples": [
+    {
+      "answer": "For Enterprise, the official next step is contact sales. This demo can point to that route, but it cannot book sales or create a follow-up action.",
+      "close_mode": "contact_sales",
+      "group": "C_enterprise_contact_sales",
+      "id": "C_enterprise_contact_sales-001",
+      "last_turn": "I want Enterprise",
+      "metadata": {
+        "can_send_email": false,
+        "link_available_in_packet": true,
+        "self_serve_close_url": "https://chatgpt.com/pricing/",
+        "should_speak_raw_url": false
+      },
+      "persona": "enterprise",
+      "plan_id": "enterprise",
+      "turn_count": 3
+    },
+    {
+      "answer": "That points toward Enterprise if you need organization-level controls like SSO, SCIM, domain verification, usage insights, or sales-led procurement. The official next step is contact sales.",
+      "close_mode": "contact_sales",
+      "group": "C_enterprise_contact_sales",
+      "id": "C_enterprise_contact_sales-002",
+      "last_turn": "we need SSO",
+      "metadata": {
+        "can_send_email": false,
+        "link_available_in_packet": true,
+        "self_serve_close_url": "https://chatgpt.com/pricing/",
+        "should_speak_raw_url": false
+      },
+      "persona": "enterprise",
+      "plan_id": "enterprise",
+      "turn_count": 1
+    },
+    {
+      "answer": "That points toward Enterprise if you need organization-level controls like SSO, SCIM, domain verification, usage insights, or sales-led procurement. The official next step is contact sales.",
+      "close_mode": "contact_sales",
+      "group": "C_enterprise_contact_sales",
+      "id": "C_enterprise_contact_sales-003",
+      "last_turn": "we need SCIM",
+      "metadata": {
+        "can_send_email": false,
+        "link_available_in_packet": true,
+        "self_serve_close_url": "https://chatgpt.com/pricing/",
+        "should_speak_raw_url": false
+      },
+      "persona": "enterprise",
+      "plan_id": "enterprise",
+      "turn_count": 3
+    },
+    {
+      "answer": "For Enterprise, the official next step is contact sales. This demo can point to that route, but it cannot book sales or create a follow-up action.",
+      "close_mode": "contact_sales",
+      "group": "C_enterprise_contact_sales",
+      "id": "C_enterprise_contact_sales-004",
+      "last_turn": "our procurement needs terms",
+      "metadata": {
+        "can_send_email": false,
+        "link_available_in_packet": true,
+        "self_serve_close_url": "https://chatgpt.com/pricing/",
+        "should_speak_raw_url": false
+      },
+      "persona": "enterprise",
+      "plan_id": "enterprise",
+      "turn_count": 1
+    },
+    {
+      "answer": "For Enterprise, the official next step is contact sales. This demo can point to that route, but it cannot book sales or create a follow-up action.",
+      "close_mode": "contact_sales",
+      "group": "C_enterprise_contact_sales",
+      "id": "C_enterprise_contact_sales-005",
+      "last_turn": "we need enterprise controls",
+      "metadata": {
+        "can_send_email": false,
+        "link_available_in_packet": true,
+        "self_serve_close_url": "https://chatgpt.com/pricing/",
+        "should_speak_raw_url": false
+      },
+      "persona": "enterprise",
+      "plan_id": "enterprise",
+      "turn_count": 3
+    }
+  ],
+  "failures": [],
+  "group_counts": {
+    "A_individual_self_serve": 16,
+    "B_business_self_serve": 10,
+    "C_enterprise_contact_sales": 10,
+    "D_no_fit": 8,
+    "E_negative_controls": 12,
+    "F_paraphrase_close": 8
+  },
+  "local_llm_calls_made": false,
+  "metadata_url_available": true,
+  "multi_turn_scenario_count": 32,
+  "no_fit_examples": [
+    {
+      "answer": "If your use is basic and budget is the issue, Free may be enough. I would only look at a paid plan if limits or tools are actually blocking you.",
+      "close_mode": "no_fit_close",
+      "group": "D_no_fit",
+      "id": "D_no_fit-001",
+      "last_turn": "I only need basic use",
+      "metadata": {
+        "can_send_email": false,
+        "link_available_in_packet": true,
+        "self_serve_close_url": "https://chatgpt.com/pricing/",
+        "should_speak_raw_url": false
+      },
+      "persona": "no_fit",
+      "plan_id": "free",
+      "turn_count": 3
+    },
+    {
+      "answer": "If your use is basic and budget is the issue, Free may be enough. I would only look at a paid plan if limits or tools are actually blocking you.",
+      "close_mode": "no_fit_close",
+      "group": "D_no_fit",
+      "id": "D_no_fit-002",
+      "last_turn": "I do not want to pay",
+      "metadata": {
+        "can_send_email": false,
+        "link_available_in_packet": true,
+        "self_serve_close_url": "https://chatgpt.com/pricing/",
+        "should_speak_raw_url": false
+      },
+      "persona": "no_fit",
+      "plan_id": "free",
+      "turn_count": 1
+    },
+    {
+      "answer": "If your use is basic and budget is the issue, Free may be enough. I would only look at a paid plan if limits or tools are actually blocking you.",
+      "close_mode": "no_fit_close",
+      "group": "D_no_fit",
+      "id": "D_no_fit-003",
+      "last_turn": "Free is enough",
+      "metadata": {
+        "can_send_email": false,
+        "link_available_in_packet": true,
+        "self_serve_close_url": "https://chatgpt.com/pricing/",
+        "should_speak_raw_url": false
+      },
+      "persona": "no_fit",
+      "plan_id": "free",
+      "turn_count": 3
+    },
+    {
+      "answer": "No pressure. If your use is basic or budget is tight, Free may be enough; I would not push a paid plan.",
+      "close_mode": "no_fit_close",
+      "group": "D_no_fit",
+      "id": "D_no_fit-004",
+      "last_turn": "I cannot afford anything",
+      "metadata": {
+        "can_send_email": false,
+        "link_available_in_packet": true,
+        "self_serve_close_url": "https://chatgpt.com/pricing/",
+        "should_speak_raw_url": false
+      },
+      "persona": "no_fit",
+      "plan_id": "free",
+      "turn_count": 1
+    },
+    {
+      "answer": "No pressure. If your use is basic or budget is tight, Free may be enough; I would not push a paid plan.",
+      "close_mode": "no_fit_close",
+      "group": "D_no_fit",
+      "id": "D_no_fit-005",
+      "last_turn": "I am worried about money right now",
+      "metadata": {
+        "can_send_email": false,
+        "link_available_in_packet": true,
+        "self_serve_close_url": "https://chatgpt.com/pricing/",
+        "should_speak_raw_url": false
+      },
+      "persona": "no_fit",
+      "plan_id": "free",
+      "turn_count": 3
+    }
+  ],
+  "opens_prod_102": false,
+  "provider_calls_made": false,
+  "raw_url_in_spoken_response": false,
+  "scenario_count": 64,
+  "self_serve_examples": [
+    {
+      "answer": "I can point you to the official ChatGPT plans page. In the actual product, you would upgrade through ChatGPT's plan page or the profile upgrade flow.",
+      "close_mode": "self_serve_purchase_link",
+      "group": "A_individual_self_serve",
+      "id": "A_individual_self_serve-001",
+      "last_turn": "sounds good",
+      "metadata": {
+        "can_send_email": false,
+        "link_available_in_packet": true,
+        "self_serve_close_url": "https://chatgpt.com/pricing/",
+        "should_speak_raw_url": false
+      },
+      "persona": "individual",
+      "plan_id": "plus",
+      "turn_count": 3
+    },
+    {
+      "answer": "I can point you to the official ChatGPT plans page. In the actual product, you would upgrade through ChatGPT's plan page or the profile upgrade flow.",
+      "close_mode": "self_serve_purchase_link",
+      "group": "A_individual_self_serve",
+      "id": "A_individual_self_serve-002",
+      "last_turn": "I want Plus",
+      "metadata": {
+        "can_send_email": false,
+        "link_available_in_packet": true,
+        "self_serve_close_url": "https://chatgpt.com/pricing/",
+        "should_speak_raw_url": false
+      },
+      "persona": "individual",
+      "plan_id": "plus",
+      "turn_count": 1
+    },
+    {
+      "answer": "I can point you to the official ChatGPT plans page. In the actual product, you would upgrade through ChatGPT's plan page or the profile upgrade flow.",
+      "close_mode": "self_serve_purchase_link",
+      "group": "A_individual_self_serve",
+      "id": "A_individual_self_serve-003",
+      "last_turn": "I want Pro",
+      "metadata": {
+        "can_send_email": false,
+        "link_available_in_packet": true,
+        "self_serve_close_url": "https://chatgpt.com/pricing/",
+        "should_speak_raw_url": false
+      },
+      "persona": "individual",
+      "plan_id": "pro",
+      "turn_count": 3
+    },
+    {
+      "answer": "I can point you to the official ChatGPT plans page. In the actual product, you would upgrade through ChatGPT's plan page or the profile upgrade flow.",
+      "close_mode": "self_serve_purchase_link",
+      "group": "A_individual_self_serve",
+      "id": "A_individual_self_serve-004",
+      "last_turn": "send me the link",
+      "metadata": {
+        "can_send_email": false,
+        "link_available_in_packet": true,
+        "self_serve_close_url": "https://chatgpt.com/pricing/",
+        "should_speak_raw_url": false
+      },
+      "persona": "individual",
+      "plan_id": "plus",
+      "turn_count": 1
+    },
+    {
+      "answer": "I can point you to the official ChatGPT plans page. In the actual product, you would upgrade through ChatGPT's plan page or the profile upgrade flow.",
+      "close_mode": "self_serve_purchase_link",
+      "group": "A_individual_self_serve",
+      "id": "A_individual_self_serve-005",
+      "last_turn": "how do I sign up",
+      "metadata": {
+        "can_send_email": false,
+        "link_available_in_packet": true,
+        "self_serve_close_url": "https://chatgpt.com/pricing/",
+        "should_speak_raw_url": false
+      },
+      "persona": "individual",
+      "plan_id": "plus",
+      "turn_count": 3
+    }
+  ],
+  "sends_email": false,
+  "status": "pass",
+  "writes_crm": false
+}

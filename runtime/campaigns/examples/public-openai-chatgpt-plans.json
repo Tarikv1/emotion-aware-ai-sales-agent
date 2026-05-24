@@ -23,18 +23,28 @@
   "primary_customer_issue_phrase": "plan fit",
   "short_relevance_question": "Are you mainly comparing plans for yourself, a small team, or a larger organization?",
   "vertical_id": "b2b_saas",
-  "objective": "appointment_setting",
+  "objective": "self_serve_plan_fit",
+  "primary_conversion_goal": "recommend_plan_and_point_to_official_self_serve_or_contact_sales_route",
   "close_mode": "self_serve_purchase_link",
   "close_modes_supported": [
     "self_serve_purchase_link",
     "contact_sales",
     "send_info_capture",
-    "appointment_review",
     "no_fit_close"
   ],
   "human_followup_owner": "demo operator for simulation notes; official OpenAI sales team for Enterprise",
-  "appointment_target": "plan-fit review or official Enterprise sales route",
+  "appointment_target": "legacy compatibility field only; primary close is official self-serve plan page or Enterprise contact-sales route",
   "self_serve_close_target": "https://chatgpt.com/pricing/",
+  "self_serve_close_url": "https://chatgpt.com/pricing/",
+  "self_serve_close_spoken_label": "the official ChatGPT plans page",
+  "self_serve_close_channel_policy": {
+    "spoken_response": "Say the official ChatGPT plans page or profile upgrade flow; do not read the raw URL aloud.",
+    "metadata_response": "The raw official URL may appear in generated evidence or operator packet metadata.",
+    "email_sending": "Not supported in this fixture."
+  },
+  "should_speak_raw_url": false,
+  "link_available_in_packet": true,
+  "can_send_email": false,
   "contact_sales_target": "https://openai.com/contact-sales/",
   "campaign_playbook_id": "public-openai-chatgpt-plans-playbook",
   "caller_identity": {

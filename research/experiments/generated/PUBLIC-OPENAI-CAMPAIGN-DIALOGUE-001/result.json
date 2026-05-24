@@ -2,8 +2,8 @@
   "checkpoint_id": "PUBLIC-OPENAI-CAMPAIGN-DIALOGUE-001",
   "close_counts": {
     "contact_sales": 21,
-    "no_fit_close": 15,
-    "self_serve_purchase_link": 44
+    "no_fit_close": 16,
+    "self_serve_purchase_link": 45
   },
   "contact_sales_close_examples": [
     {
@@ -198,7 +198,7 @@
       "turn_count": 3
     },
     "I_self_serve_close": {
-      "answer": "I can point you to the official ChatGPT plans page: https://chatgpt.com/pricing/. In the actual product, you would upgrade through the plans page or profile upgrade flow inside ChatGPT.",
+      "answer": "I can point you to the official ChatGPT plans page. In the actual product, you would upgrade through ChatGPT's plan page or the profile upgrade flow.",
       "close_mode": "self_serve_purchase_link",
       "fact_ids": [
         "pricing_plan_set_001",
@@ -294,10 +294,10 @@
     "student_or_light_user": 67
   },
   "plan_counts": {
-    "business_chatgpt_codex": 13,
+    "business_chatgpt_codex": 14,
     "business_codex": 1,
     "enterprise": 21,
-    "free": 19,
+    "free": 20,
     "go": 3,
     "plus": 26,
     "pro": 6
@@ -671,16 +671,17 @@
       "turn_count": 1
     },
     {
-      "answer": "At a high level, I would compare your use case against Free, Go, Plus, Pro, Business, and Enterprise, then point you to the official plan page or contact-sales route. Is this for one person or a team?",
-      "close_mode": null,
+      "answer": "If your use is basic and budget is the issue, Free may be enough. I would only look at a paid plan if limits or tools are actually blocking you.",
+      "close_mode": "no_fit_close",
       "fact_ids": [
-        "pricing_plan_set_001"
+        "free_basic_limits_001",
+        "limits_vary_by_plan_model_001"
       ],
       "group": "B_free_go_plus",
       "id": "B_free_go_plus-009",
       "last_turn": "I use it once a week",
       "persona": "student_or_light_user",
-      "plan_id": null,
+      "plan_id": "free",
       "turn_count": 3
     },
     {

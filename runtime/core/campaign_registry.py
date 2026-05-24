@@ -33,6 +33,11 @@ SUPPORTED_CLOSE_MODES = {
     "no_fit_close",
 }
 
+SUPPORTED_OBJECTIVES = {
+    "appointment_setting",
+    "self_serve_plan_fit",
+}
+
 SOURCE_GROUNDED_CLAIM_FIELDS = {
     "fact_id",
     "claim",
@@ -328,8 +333,8 @@ def validate_campaign_config(config: dict[str, Any]) -> dict[str, Any]:
     if vertical_id and vertical_id not in set(vertical_sales_playbooks.all_vertical_ids()):
         failures.append(f"unsupported vertical_id: {vertical_id}")
 
-    if normalized.get("objective") != "appointment_setting":
-        failures.append("objective: must be appointment_setting")
+    if normalized.get("objective") not in SUPPORTED_OBJECTIVES:
+        failures.append(f"objective: must be one of {sorted(SUPPORTED_OBJECTIVES)}")
     if normalized.get("allowed_claims") is not None:
         _validate_string_list(failures, normalized, "allowed_claims", allow_empty=True)
     if normalized.get("blocked_claims") is not None:

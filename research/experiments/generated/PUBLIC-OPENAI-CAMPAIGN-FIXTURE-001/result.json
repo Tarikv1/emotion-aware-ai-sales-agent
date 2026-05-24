@@ -24,7 +24,6 @@
     "pro": "self_serve_purchase_link"
   },
   "close_modes_supported": [
-    "appointment_review",
     "contact_sales",
     "no_fit_close",
     "self_serve_purchase_link",
@@ -35,6 +34,7 @@
   "fixture": "runtime\\campaigns\\examples\\public-openai-chatgpt-plans.json",
   "local_llm_calls_made": false,
   "manifest_claim_count": 33,
+  "objective": "self_serve_plan_fit",
   "opens_prod_102": false,
   "plan_ids": [
     "business_chatgpt_codex",
@@ -45,6 +45,7 @@
     "plus",
     "pro"
   ],
+  "primary_conversion_goal": "recommend_plan_and_point_to_official_self_serve_or_contact_sales_route",
   "provider_calls_made": false,
   "registry_validation": {
     "campaign_id": "public-openai-chatgpt-plans",

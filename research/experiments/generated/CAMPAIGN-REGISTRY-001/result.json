@@ -952,7 +952,7 @@
     },
     "registry_listing": [
       {
-        "appointment_target": "plan-fit review or official Enterprise sales route",
+        "appointment_target": "legacy compatibility field only; primary close is official self-serve plan page or Enterprise contact-sales route",
         "campaign_id": "public-openai-chatgpt-plans",
         "failures": [],
         "path": "runtime\\campaigns\\examples\\public-openai-chatgpt-plans.json",

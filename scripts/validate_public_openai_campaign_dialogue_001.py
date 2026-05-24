@@ -199,7 +199,7 @@ def answer_for(transcript: str, fixture: dict[str, Any], claims: dict[str, dict[
             category="privacy",
         )
 
-    if contains_any(lowered, {"team", "small team", "workspace", "business", "members", "billing management"}):
+    if contains_any(lowered, {"team", "small team", "workspace", "business", "members", "member billing", "billing management", "workspace controls", "want business"}):
         return make_response(
             answer="For a team, Business is the self-serve workspace route. Standard Business ChatGPT seats include ChatGPT and Codex, and the official source lists monthly and annual per-user pricing with regional caveats.",
             fact_ids=["business_overview_001", "business_standard_seat_includes_codex_001", "business_standard_seat_price_001"],
@@ -253,7 +253,7 @@ def answer_for(transcript: str, fixture: dict[str, Any], claims: dict[str, dict[
             category="price",
         )
 
-    if contains_any(lowered, {"don't want to pay", "do not want to pay", "too expensive", "free enough", "free is enough"}):
+    if contains_any(lowered, {"don't want to pay", "do not want to pay", "too expensive", "free enough", "free is enough", "only need basic", "basic use", "once a week", "do not need advanced", "don't need advanced"}):
         return make_response(
             answer="If your use is basic and budget is the issue, Free may be enough. I would only look at a paid plan if limits or tools are actually blocking you.",
             fact_ids=["free_basic_limits_001", "limits_vary_by_plan_model_001"],
@@ -271,7 +271,7 @@ def answer_for(transcript: str, fixture: dict[str, Any], claims: dict[str, dict[
             category="upgrade_value",
         )
 
-    if contains_any(lowered, {"send me the link", "how do i sign up", "i want plus", "sounds good", "get plus", "sign up", "i want go", "get go", "try go", "i want pro", "get pro", "i want free", "use free", "show me the plan page", "where do i upgrade", "where is pricing", "upgrade in settings", "official link", "point me there"}):
+    if contains_any(lowered, {"send me the link", "how do i sign up", "i want plus", "sounds good", "get plus", "sign up", "i want go", "go sounds good", "get go", "try go", "i want pro", "get pro", "i want free", "start with free", "use free", "show me the plan page", "where do i upgrade", "where is pricing", "upgrade in settings", "official link", "point me there", "that plan works", "ready to upgrade", "show me where to start", "i want the paid plan", "i will start with go", "higher individual tier", "where would i click", "what should i do next"}):
         if "enterprise" in lowered:
             return make_response(
                 answer="For Enterprise, the official next step is contact sales. I cannot book it or send anything from this demo.",
@@ -289,7 +289,7 @@ def answer_for(transcript: str, fixture: dict[str, Any], claims: dict[str, dict[
         else:
             plan_id = "plus"
         return make_response(
-            answer="I can point you to the official ChatGPT plans page: https://chatgpt.com/pricing/. In the actual product, you would upgrade through the plans page or profile upgrade flow inside ChatGPT.",
+            answer="I can point you to the official ChatGPT plans page. In the actual product, you would upgrade through ChatGPT's plan page or the profile upgrade flow.",
             fact_ids=["pricing_plan_set_001", "plus_signup_profile_upgrade_001", "pro_upgrade_settings_pricing_001"],
             plan_id=plan_id,
             close_mode="self_serve_purchase_link",
@@ -422,8 +422,10 @@ def main() -> None:
             if response.get(key) is not expected:
                 failures.append(f"{scenario['id']}: {key} must be {expected}")
         if scenario["group"] == "I_self_serve_close":
-            if "chatgpt.com/pricing" not in text and "official ChatGPT plans page" not in text:
+            if "official ChatGPT plans page" not in text:
                 failures.append(f"{scenario['id']}: self-serve close did not point to official page")
+            if re.search(r"https?://|www\.", text, flags=re.I):
+                failures.append(f"{scenario['id']}: self-serve close must not speak raw URL")
             if re.search(r"\bsent\b|\bemailed\b|\bbooked\b", text, flags=re.I):
                 failures.append(f"{scenario['id']}: self-serve close implied fake side effect")
         if scenario["group"] == "J_contact_sales_close" and "contact sales" not in normalize(text):

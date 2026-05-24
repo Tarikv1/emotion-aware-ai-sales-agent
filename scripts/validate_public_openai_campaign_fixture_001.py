@@ -36,10 +36,14 @@ REQUIRED_FIELDS = {
     "product_or_offer_summary",
     "high_level_value_proposition",
     "customer_facing_call_objective",
+    "primary_conversion_goal",
     "close_mode",
     "close_modes_supported",
     "human_followup_owner",
     "self_serve_close_target",
+    "self_serve_close_url",
+    "self_serve_close_spoken_label",
+    "self_serve_close_channel_policy",
     "contact_sales_target",
     "agent_can_say",
     "agent_must_not_claim",
@@ -134,15 +138,21 @@ def main() -> None:
     assert_condition(failures, not missing, f"fixture missing required fields: {missing}")
     assert_condition(failures, loaded.get("campaign_id") == "public-openai-chatgpt-plans", "campaign_id mismatch")
     assert_condition(failures, loaded.get("fixture_type") == "public_data_simulation", "fixture_type mismatch")
+    assert_condition(failures, loaded.get("objective") == "self_serve_plan_fit", "objective must be self_serve_plan_fit")
     assert_condition(failures, loaded.get("not_affiliated_disclaimer") is True, "not_affiliated_disclaimer must be true")
     assert_condition(failures, loaded.get("cross_campaign_leakage_forbidden") is True, "cross_campaign_leakage_forbidden must be true")
+    assert_condition(failures, loaded.get("should_speak_raw_url") is False, "should_speak_raw_url must be false")
+    assert_condition(failures, loaded.get("link_available_in_packet") is True, "link_available_in_packet must be true")
+    assert_condition(failures, loaded.get("can_send_email") is False, "can_send_email must be false")
+    assert_condition(failures, "http" not in str(loaded.get("self_serve_close_spoken_label") or "").lower(), "self_serve_close_spoken_label must not include raw URL")
 
-    for url_field in ("self_serve_close_target", "contact_sales_target"):
+    for url_field in ("self_serve_close_target", "self_serve_close_url", "contact_sales_target"):
         assert_condition(failures, domain_allowed(str(loaded.get(url_field) or "")), f"{url_field} must use official domain")
 
     close_modes = set(campaign_registry.close_modes_supported(loaded))
     for mode in ("self_serve_purchase_link", "contact_sales"):
         assert_condition(failures, mode in close_modes, f"{mode} close mode missing")
+    assert_condition(failures, "appointment_review" not in close_modes, "appointment_review should not be a primary close mode")
 
     source_claims = campaign_registry.source_grounded_claims(loaded)
     source_claim_ids = {str(claim.get("fact_id")) for claim in source_claims}
@@ -193,6 +203,8 @@ def main() -> None:
         "checkpoint_id": CHECKPOINT_ID,
         "fixture": str(FIXTURE_PATH.relative_to(ROOT)),
         "registry_validation": registry_validation,
+        "objective": loaded.get("objective"),
+        "primary_conversion_goal": loaded.get("primary_conversion_goal"),
         "plan_ids": sorted(plan_ids),
         "close_modes_supported": sorted(close_modes),
         "close_by_plan": close_by_plan,

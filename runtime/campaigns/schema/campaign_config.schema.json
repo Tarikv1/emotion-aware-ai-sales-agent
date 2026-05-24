@@ -97,7 +97,10 @@
       "minLength": 1
     },
     "objective": {
-      "const": "appointment_setting"
+      "enum": [
+        "appointment_setting",
+        "self_serve_plan_fit"
+      ]
     },
     "human_followup_owner": {
       "type": "string",
