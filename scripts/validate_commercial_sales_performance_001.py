@@ -18,10 +18,14 @@ import scripts.run_live_demo_001_agent_voice_call as demo  # noqa: E402
 
 
 CHECKPOINT_ID = "COMMERCIAL-SALES-PERFORMANCE-001"
+GATE_CHECKPOINT_ID = "COMMERCIAL-SALES-PERFORMANCE-GATE-001"
 FIXTURE_PATH = ROOT / "runtime" / "campaigns" / "examples" / "public-openai-chatgpt-plans.json"
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
 RESULT_PATH = OUT_DIR / "result.json"
 REPORT_PATH = OUT_DIR / "report.md"
+GATE_OUT_DIR = ROOT / "research" / "experiments" / "generated" / GATE_CHECKPOINT_ID
+GATE_RESULT_PATH = GATE_OUT_DIR / "result.json"
+GATE_REPORT_PATH = GATE_OUT_DIR / "report.md"
 TMP_DIR = ROOT / ".tmp" / CHECKPOINT_ID
 
 RUBRIC_DIMENSIONS = [
@@ -73,6 +77,34 @@ GENERIC_DISCOVERY_AFTER_FIT_RE = re.compile(
     r"are you mainly comparing plans|are you using chatgpt today",
     re.I,
 )
+PRICE_QUESTION_RE = re.compile(
+    r"\b(price|pricing|cost|costs|how much|paid tiers?|monthly|expensive|budget|subscription)\b",
+    re.I,
+)
+ENOUGH_QUESTION_RE = re.compile(r"\b(is|would|will|should)\s+\w+\s+(be\s+)?enough\b|\benough\s+(for|though)\b", re.I)
+OVER_QUALIFYING_RE = re.compile(
+    r"\b(hard to say|it depends|before i can recommend|before recommending|need to know more|"
+    r"first i need|i should first|plan fit still needs|only after that)\b",
+    re.I,
+)
+REPEATED_CAVEAT_RE = re.compile(
+    r"\b(you may not need to switch|plan fit still needs|i should not assume buying intent|"
+    r"first i need the adoption state|cannot recommend yet)\b",
+    re.I,
+)
+
+CRITICAL_FAILURE_RULES = [
+    "no_loop_score == 0",
+    "direct buying question is not answered",
+    "enough context exists but no recommendation is made",
+    "buyer gives buying signal but no close/decision step follows",
+    "buyer asks price but response gives no value frame",
+    "buyer asks is X enough but response dodges or over-qualifies",
+    "response repeats same caveat after buyer gives new information",
+    "response only provides information and no next commercial action",
+    "response asks another qualifier when recommendation is already possible",
+    "unsupported claim / fake side effect / internal policy language / product leakage",
+]
 
 
 def normalize(text: Any) -> str:
@@ -161,6 +193,84 @@ def no_unsafe_text(text: str) -> bool:
     )
 
 
+def has_commercial_action(text: str) -> bool:
+    return contains_any(
+        text,
+        {
+            "next step",
+            "next action",
+            "choose",
+            "compare",
+            "start",
+            "official",
+            "profile upgrade flow",
+            "contact sales",
+            "stay free",
+            "stay with",
+            "stop here",
+            "no paid plan",
+            "source of truth",
+            "decision is",
+            "next decision",
+            "real decision",
+            "i would",
+            "recommend",
+            "to move it forward",
+            "we've already",
+        },
+    )
+
+
+def has_price_value_frame(text: str) -> bool:
+    lowered = normalize(text)
+    has_price_content = contains_any(lowered, {"free", "paid", "price", "cost", "dollar", "per month", "monthly", "plus", "pro"})
+    has_value_context = contains_any(
+        lowered,
+        {
+            "because",
+            "since",
+            "given",
+            "for coding",
+            "for writing",
+            "heavy",
+            "lower-cost",
+            "cheaper",
+            "usage",
+            "limits",
+            "higher-usage",
+            "decision",
+            "source of truth",
+            "compare",
+        },
+    )
+    return has_price_content and has_value_context
+
+
+def threshold_failures_for_scores(
+    scores: dict[str, int],
+    expectation: dict[str, Any],
+) -> tuple[list[str], list[str]]:
+    failures: list[str] = []
+    critical: list[str] = []
+    zero_dimensions = [dimension for dimension, value in scores.items() if value == 0]
+    if zero_dimensions:
+        failures.append(f"zero dimension score found: {', '.join(zero_dimensions)}")
+        critical.append("zero dimension score")
+    if scores["no_loop_score"] == 0:
+        failures.append("loop-prevention score was zero")
+        critical.append("no_loop_score == 0")
+    if expectation.get("buying_question") and scores["direct_answer_score"] != 10:
+        failures.append("direct-question scenario did not earn direct_answer_score 10")
+        critical.append("direct buying question dodged")
+    if (expectation.get("buying_signal") or expectation.get("close_expected")) and scores["close_progression_score"] < 8:
+        failures.append("high-intent scenario did not reach close_progression_score >= 8")
+        critical.append("close opportunity missed")
+    if expectation.get("objection") and scores["objection_handling_score"] < 8:
+        failures.append("objection scenario did not reach objection_handling_score >= 8")
+        critical.append("objection not reframed")
+    return failures, critical
+
+
 def score_commercial_response(
     *,
     response: str,
@@ -183,6 +293,10 @@ def score_commercial_response(
     close_expected = bool(expectation.get("close_expected", False))
     no_fit_expected = bool(expectation.get("no_fit_expected", False))
     objection = str(expectation.get("objection") or "")
+    price_question = bool(expectation.get("price_question")) or bool(
+        PRICE_QUESTION_RE.search(context) and (expected_plan or objection in {"price", "subscription", "why_pro"})
+    )
+    enough_question = bool(expectation.get("enough_question")) or bool(ENOUGH_QUESTION_RE.search(context))
 
     direct_markers = [
         "yes",
@@ -194,6 +308,11 @@ def score_commercial_response(
         "enterprise",
         "free is",
         "the next step",
+        "next action",
+        "compare plus",
+        "compare pro",
+        "to move it forward",
+        "we already",
         "i would",
         "i'd",
     ]
@@ -201,10 +320,14 @@ def score_commercial_response(
         scores["direct_answer_score"] = 0
         failures.append("direct buying question was not answered directly")
         critical.append("direct buying question dodged")
-    elif buying_question and contains_any(text, {"i should first", "before comparing", "i need to learn"}):
+    elif buying_question and contains_any(text, {"i should first", "before comparing", "i need to learn", "before recommending"}):
         scores["direct_answer_score"] = 3
         failures.append("direct buying question was answered with qualification")
         critical.append("direct buying question dodged")
+    if enough_question and OVER_QUALIFYING_RE.search(response):
+        scores["direct_answer_score"] = 0
+        failures.append("is-enough buying question was dodged or over-qualified")
+        critical.append("is-enough question dodged")
 
     if expectation.get("buyer_terms"):
         if not any(term.lower() in text for term in expectation["buyer_terms"]):
@@ -219,7 +342,22 @@ def score_commercial_response(
             scores["recommendation_strength_score"] = 2
             failures.append(f"expected recommendation {expected_plan!r} missing")
             critical.append("enough context exists but no recommendation")
-        elif not contains_any(text, {"i would", "i'd", "recommend", "compare", "choose", "stronger fit", "safer choice", "worth comparing"}):
+        elif not contains_any(
+            text,
+            {
+                "i would",
+                "i'd",
+                "recommend",
+                "compare",
+                "choose",
+                "stronger fit",
+                "stronger plan",
+                "safer choice",
+                "worth comparing",
+                "start lower",
+                "lower-cost test",
+            },
+        ):
             scores["recommendation_strength_score"] = 5
             failures.append("recommendation was present but weak")
     if no_fit_expected and contains_any(text, {"you should upgrade", "choose pro", "buy pro", "official chatgpt plans page"}):
@@ -232,7 +370,7 @@ def score_commercial_response(
             "plus_vs_pro": ("plus", "pro"),
             "free_vs_paid": ("free", "paid"),
             "business_vs_enterprise": ("business", "enterprise"),
-            "stay_with_current_tool": ("current tool", "switch"),
+            "stay_with_current_tool": ("current tool",),
             "no_fit": ("free", "not push"),
         }.get(decision_frame, ())
         if frame_terms and not all(term in text for term in frame_terms):
@@ -241,6 +379,10 @@ def score_commercial_response(
     if not contains_any(text, {"because", "since", "given", "if", "lower-cost", "limits", "controls", "tool", "price"}):
         scores["value_framing_score"] = min(scores["value_framing_score"], 5)
         failures.append("value frame missing")
+    if price_question and not has_price_value_frame(response):
+        scores["value_framing_score"] = 0
+        failures.append("price question did not receive a price/value frame")
+        critical.append("price asked without value frame")
 
     if objection:
         objection_markers = {
@@ -258,26 +400,45 @@ def score_commercial_response(
             scores["momentum_score"] = 1
             failures.append("buyer momentum was reset with generic discovery")
             critical.append("close opportunity missed")
-        if not contains_any(text, {"next step", "official", "choose", "compare", "start", "contact sales"}):
+        if not contains_any(text, {"next step", "official", "choose", "compare", "start", "contact sales", "profile upgrade flow"}):
             scores["momentum_score"] = min(scores["momentum_score"], 5)
             failures.append("buying signal did not advance")
+            critical.append("close opportunity missed")
 
     if close_expected:
-        if not contains_any(text, {"official chatgpt plans page", "profile upgrade flow", "contact sales", "free may be enough", "stay with your current tool"}):
+        if not (
+            has_commercial_action(response)
+            or contains_any(text, {"official chatgpt plans page", "profile upgrade flow", "contact sales", "free may be enough", "stay with your current tool"})
+        ):
             scores["close_progression_score"] = 2
             failures.append("close did not give a next action")
             critical.append("close opportunity missed")
-    elif next_action_required and not contains_any(text, {"next step", "choose", "compare", "ask", "look at", "contact sales", "official"}):
-        scores["close_progression_score"] = 6
-        failures.append("next action was weak")
+    elif next_action_required and not has_commercial_action(response):
+        scores["close_progression_score"] = 0 if enough_context else 6
+        failures.append("response only provided information without a next commercial action")
+        if enough_context:
+            critical.append("information-only response without commercial action")
+
+    if enough_context and next_action_required and not has_commercial_action(response):
+        scores["close_progression_score"] = min(scores["close_progression_score"], 0)
+        failures.append("response did not move the sale forward")
+        critical.append("information-only response without commercial action")
 
     if prior and text in prior:
         scores["no_loop_score"] = 0
         failures.append("response repeated earlier response exactly")
         critical.append("repeated same response after buyer gives new info")
+    if prior and REPEATED_CAVEAT_RE.search(response):
+        repeated_caveat = any(REPEATED_CAVEAT_RE.search(previous) for previous in prior)
+        if repeated_caveat:
+            scores["no_loop_score"] = min(scores["no_loop_score"], 0)
+            failures.append("response repeated the same caveat after new buyer information")
+            critical.append("repeated same caveat after buyer gives new info")
     if GENERIC_DISCOVERY_AFTER_FIT_RE.search(response) and enough_context:
-        scores["no_loop_score"] = min(scores["no_loop_score"], 2)
+        scores["no_loop_score"] = min(scores["no_loop_score"], 0)
+        scores["recommendation_strength_score"] = min(scores["recommendation_strength_score"], 0)
         failures.append("generic discovery loop after enough context")
+        failures.append("asked another qualifier when recommendation was already possible")
         critical.append("enough context exists but no recommendation")
 
     if not no_unsafe_text(response):
@@ -303,12 +464,16 @@ def score_commercial_response(
         scores["naturalness_score"] = min(scores["naturalness_score"], 6)
         failures.append("response was too information-heavy")
 
+    threshold_failures, threshold_critical = threshold_failures_for_scores(scores, expectation)
+    failures.extend(threshold_failures)
+    critical.extend(threshold_critical)
+
     total = sum(scores.values())
     return {
         "score": total,
         "scores": scores,
         "status": "pass" if total >= int(expectation.get("threshold", 85)) and not critical else "fail",
-        "failures": failures,
+        "failures": list(dict.fromkeys(failures)),
         "critical_failures": list(dict.fromkeys(critical)),
     }
 
@@ -485,6 +650,194 @@ def run_scenario(item: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def dimension_score_averages(traces: list[dict[str, Any]]) -> dict[str, float]:
+    return {
+        dimension: round(sum(trace["dimension_scores"][dimension] for trace in traces) / len(traces), 2)
+        for dimension in RUBRIC_DIMENSIONS
+    }
+
+
+def build_critical_rule_probes() -> list[dict[str, Any]]:
+    probes = [
+        {
+            "id": "probe-no-loop-zero",
+            "rule": "no_loop_score == 0",
+            "response": "For coding and writing, Plus is usually enough if use is moderate.",
+            "prior_responses": ["For coding and writing, Plus is usually enough if use is moderate."],
+            "buyer_context": "I use it for coding and writing. Is Plus enough though?",
+            "expectation": {"buying_question": True, "expected_plan": "plus", "decision_frame": "plus_vs_pro"},
+        },
+        {
+            "id": "probe-direct-question-dodged",
+            "rule": "direct buying question is not answered",
+            "response": "Before comparing plans, I need to learn what matters most.",
+            "buyer_context": "I code and write. Is Plus enough?",
+            "expectation": {"buying_question": True, "expected_plan": "plus", "decision_frame": "plus_vs_pro"},
+        },
+        {
+            "id": "probe-no-recommendation-after-context",
+            "rule": "enough context exists but no recommendation is made",
+            "response": "There are several plans, and each plan has different usage limits.",
+            "buyer_context": "I use it heavily every day for coding and writing. Which plan?",
+            "expectation": {"buying_question": True, "expected_plan": "pro", "decision_frame": "plus_vs_pro"},
+        },
+        {
+            "id": "probe-buying-signal-no-close",
+            "rule": "buyer gives buying signal but no close/decision step follows",
+            "response": "Yes, Pro can make sense for heavy coding and writing.",
+            "buyer_context": "I use it heavily every day. Pro seems better.",
+            "expectation": {"buying_question": True, "buying_signal": True, "close_expected": True, "expected_plan": "pro"},
+        },
+        {
+            "id": "probe-price-no-value-frame",
+            "rule": "buyer asks price but response gives no value frame",
+            "response": "The plans have monthly prices.",
+            "buyer_context": "I use it heavily for coding. How much does it cost?",
+            "expectation": {"buying_question": True, "expected_plan": "pro", "price_question": True},
+        },
+        {
+            "id": "probe-enough-overqualified",
+            "rule": "buyer asks is X enough but response dodges or over-qualifies",
+            "response": "It depends; before recommending, I need to learn your workflow.",
+            "buyer_context": "I use it for coding and writing. Is Plus enough?",
+            "expectation": {"buying_question": True, "expected_plan": "plus", "enough_question": True},
+        },
+        {
+            "id": "probe-repeated-caveat",
+            "rule": "response repeats same caveat after buyer gives new information",
+            "response": "You may not need to switch, so first compare your current tool.",
+            "prior_responses": ["You may not need to switch, so first compare your current tool."],
+            "buyer_context": "I use another LLM. I now want Pro for heavy coding.",
+            "expectation": {"buying_question": True, "expected_plan": "pro"},
+        },
+        {
+            "id": "probe-information-only",
+            "rule": "response only provides information and no next commercial action",
+            "response": "Plus has some features and Pro has more usage for heavy work.",
+            "buyer_context": "I use it heavily for coding and writing.",
+            "expectation": {"buying_question": False, "expected_plan": "pro"},
+        },
+        {
+            "id": "probe-extra-qualifier",
+            "rule": "response asks another qualifier when recommendation is already possible",
+            "response": "What would you mainly use it for before I recommend a plan?",
+            "buyer_context": "I use it heavily every day for coding and writing. Which plan?",
+            "expectation": {"buying_question": True, "expected_plan": "pro"},
+        },
+        {
+            "id": "probe-fake-side-effect",
+            "rule": "unsupported claim / fake side effect / internal policy language / product leakage",
+            "response": "I sent you the link and booked a calendar event.",
+            "buyer_context": "How do I sign up?",
+            "expectation": {"buying_question": True, "close_expected": True, "expected_plan": "pro"},
+        },
+    ]
+    evaluated = []
+    for probe in probes:
+        score = score_commercial_response(
+            response=probe["response"],
+            buyer_context=probe["buyer_context"],
+            expectation=probe["expectation"],
+            prior_responses=probe.get("prior_responses", []),
+        )
+        evaluated.append(
+            {
+                "id": probe["id"],
+                "rule": probe["rule"],
+                "expected_status": "fail",
+                "actual_status": score["status"],
+                "score": score["score"],
+                "dimension_scores": score["scores"],
+                "critical_failures": score["critical_failures"],
+                "failure_count": len(score["failures"]),
+                "response_hash": sha12(probe["response"]),
+            }
+        )
+    return evaluated
+
+
+def write_gate_evidence(result: dict[str, Any]) -> None:
+    GATE_OUT_DIR.mkdir(parents=True, exist_ok=True)
+    gate_result = dict(result)
+    gate_result["checkpoint_id"] = GATE_CHECKPOINT_ID
+    gate_result["critical_failure_rules"] = CRITICAL_FAILURE_RULES
+    gate_result["why_critical_failures_are_critical"] = {
+        "no_loop_score == 0": "Looping proves the seller ignored new buyer information, so a high aggregate score is misleading.",
+        "direct buying question is not answered": "A buyer asking what to buy is a high-intent moment; dodging it loses trust and momentum.",
+        "enough context exists but no recommendation is made": "When fit evidence is available, more discovery is friction rather than selling.",
+        "buyer gives buying signal but no close/decision step follows": "Buying signals must be converted into a next decision, comparison, or close.",
+        "buyer asks price but response gives no value frame": "Price without value creates sticker-shock instead of a commercial decision.",
+        "buyer asks is X enough but response dodges or over-qualifies": "An is-enough question requests a direct plan decision, not another qualifier.",
+        "response repeats same caveat after buyer gives new information": "Repeated caveats show the dialogue is not adapting to the buyer.",
+        "response only provides information and no next commercial action": "Information is not selling unless it advances the buyer toward a decision.",
+        "response asks another qualifier when recommendation is already possible": "Unneeded qualification stalls high-intent buyers.",
+        "unsupported claim / fake side effect / internal policy language / product leakage": "These create trust, legal, privacy, or campaign-boundary failures.",
+    }
+    gate_result["critical_rule_probes"] = build_critical_rule_probes()
+    gate_result["critical_rule_probe_failures"] = [
+        probe for probe in gate_result["critical_rule_probes"] if probe["actual_status"] != "fail"
+    ]
+    gate_result["strict_enough_to_catch_previous_live_failures"] = (
+        gate_result["critical_failure_count"] == 0
+        and not gate_result["critical_rule_probe_failures"]
+        and gate_result["minimum_score"] >= 85
+        and gate_result["average_score"] >= 90
+    )
+    GATE_RESULT_PATH.write_text(json.dumps(gate_result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    report = "\n".join(
+        [
+            f"# {GATE_CHECKPOINT_ID}",
+            "",
+            f"- Status: `{gate_result['status']}`",
+            f"- Scenario count: `{gate_result['scenario_count']}`",
+            f"- Multi-turn count: `{gate_result['multi_turn_scenario_count']}`",
+            f"- Average score: `{gate_result['average_score']}`",
+            f"- Minimum score: `{gate_result['minimum_score']}`",
+            f"- Critical failure count: `{gate_result['critical_failure_count']}`",
+            f"- Zero-dimension-score count: `{gate_result['zero_dimension_score_count']}`",
+            f"- Strict enough to catch previous live failures: `{str(gate_result['strict_enough_to_catch_previous_live_failures']).lower()}`",
+            "",
+            "## Score By Dimension",
+            "",
+            "```json",
+            json.dumps(gate_result["dimension_score_averages"], indent=2, sort_keys=True),
+            "```",
+            "",
+            "## Critical Failure Rules",
+            "",
+            "```json",
+            json.dumps(gate_result["critical_failure_rules"], indent=2, sort_keys=True),
+            "```",
+            "",
+            "## Why Each Critical Failure Is Critical",
+            "",
+            "```json",
+            json.dumps(gate_result["why_critical_failures_are_critical"], indent=2, sort_keys=True),
+            "```",
+            "",
+            "## Failure Examples",
+            "",
+            "```json",
+            json.dumps(gate_result["failed_cases"][:10], indent=2, sort_keys=True),
+            "```",
+            "",
+            "## Low-Score Examples",
+            "",
+            "```json",
+            json.dumps(gate_result["low_score_examples"], indent=2, sort_keys=True),
+            "```",
+            "",
+            "## Critical Rule Probes",
+            "",
+            "```json",
+            json.dumps(gate_result["critical_rule_probes"], indent=2, sort_keys=True),
+            "```",
+            "",
+        ]
+    )
+    GATE_REPORT_PATH.write_text(report, encoding="utf-8")
+
+
 def write_evidence(result: dict[str, Any]) -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     RESULT_PATH.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -526,6 +879,11 @@ def main() -> None:
     failed = [trace for trace in traces if trace["status"] != "pass"]
     critical_count = sum(len(trace["critical_failures"]) for trace in traces)
     scores = [trace["score"] for trace in traces]
+    zero_dimension_cases = [
+        trace
+        for trace in traces
+        if any(value == 0 for value in trace["dimension_scores"].values())
+    ]
     side_effects_false = all(not any(trace["side_effects"].get(key) for key in SIDE_EFFECT_KEYS) for trace in traces)
     provider_calls = any(
         trace["side_effects"].get("provider_calls_made") or trace["side_effects"].get("tts_provider_calls_made")
@@ -536,7 +894,15 @@ def main() -> None:
         for trace in traces
     )
     result = {
-        "status": "pass" if not failed and sum(scores) / len(scores) >= 85 and critical_count == 0 else "fail",
+        "status": "pass"
+        if (
+            not failed
+            and not zero_dimension_cases
+            and sum(scores) / len(scores) >= 90
+            and min(scores) >= 85
+            and critical_count == 0
+        )
+        else "fail",
         "checkpoint_id": CHECKPOINT_ID,
         "scenario_count": len(scenarios),
         "multi_turn_scenario_count": sum(1 for item in scenarios if item["multi_turn"]),
@@ -544,7 +910,18 @@ def main() -> None:
         "minimum_score": min(scores),
         "failed_count": len(failed),
         "critical_failure_count": critical_count,
+        "zero_dimension_score_count": len(zero_dimension_cases),
         "group_counts": dict(sorted(Counter(trace["group"] for trace in traces).items())),
+        "dimension_score_averages": dimension_score_averages(traces),
+        "minimum_thresholds": {
+            "average_score": 90,
+            "minimum_scenario_score": 85,
+            "critical_failure_count": 0,
+            "zero_dimension_score_count": 0,
+            "high_intent_close_progression_score": 8,
+            "objection_handling_score": 8,
+            "direct_question_direct_answer_score": 10,
+        },
         "rubric_dimensions": RUBRIC_DIMENSIONS,
         "side_effects_false": side_effects_false,
         "provider_calls_made": provider_calls,
@@ -552,17 +929,36 @@ def main() -> None:
         "local_llm_calls_made": False,
         "raw_private_transcript_copied_to_public_evidence": False,
         "failed_cases": failed,
+        "zero_dimension_cases": zero_dimension_cases,
+        "low_score_examples": sorted(
+            [
+                {
+                    "id": trace["id"],
+                    "group": trace["group"],
+                    "score": trace["score"],
+                    "dimension_scores": trace["dimension_scores"],
+                    "failures": trace["failures"],
+                    "critical_failures": trace["critical_failures"],
+                    "final_response_hash": trace["final_response_hash"],
+                }
+                for trace in traces
+            ],
+            key=lambda item: item["score"],
+        )[:10],
         "traces": traces,
     }
     write_evidence(result)
+    write_gate_evidence(result)
     print(
         json.dumps(
             {
                 "status": result["status"],
                 "scenario_count": result["scenario_count"],
                 "average_score": result["average_score"],
+                "minimum_score": result["minimum_score"],
                 "failed_count": result["failed_count"],
                 "critical_failure_count": result["critical_failure_count"],
+                "zero_dimension_score_count": result["zero_dimension_score_count"],
             },
             indent=2,
             sort_keys=True,

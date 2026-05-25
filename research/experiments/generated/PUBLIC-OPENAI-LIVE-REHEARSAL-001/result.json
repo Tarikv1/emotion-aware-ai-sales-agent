@@ -134,7 +134,7 @@
   "fake_side_effect_claim_count": 0,
   "fixed_by_replay_after_patch_count": 8,
   "fresh_openai_live_records": 11,
-  "git_head_short": "d98e430",
+  "git_head_short": "84f9dd1",
   "historical_dry_run_count": 11,
   "human_followup_owner_leakage_count": 0,
   "incomplete_or_invalid_private_record_count": 0,
@@ -374,8 +374,8 @@
       {
         "case_id": "post-patch-replay-14",
         "classifications": [],
-        "final_response": "That ChatGPT use case makes plan fit relevant. Plus is usually the first paid plan to compare; Pro is for heavier individual use. Are you using it occasionally or heavily every day?",
-        "final_response_hash": "d3a8d8229bff",
+        "final_response": "That ChatGPT use case is enough to frame the plan decision. Plus is the lower-cost first paid plan; Pro is for heavier individual use. The next action is compare Plus versus Pro rather than restart discovery.",
+        "final_response_hash": "f2fe1b23b364",
         "side_effects": {
           "creates_calendar_event": false,
           "customer_audio_uploaded_to_python_server": false,
@@ -390,8 +390,8 @@
       {
         "case_id": "post-patch-replay-15",
         "classifications": [],
-        "final_response": "To move it forward: compare Pro first for heavy coding and writing; choose Plus only if lower cost matters more than usage headroom.",
-        "final_response_hash": "d0a495c36be7",
+        "final_response": "To move it forward: compare Pro first for heavy coding and writing; choose Plus only if lower cost matters more than usage headroom. The next step is the official ChatGPT plans page.",
+        "final_response_hash": "ab174249bedd",
         "side_effects": {
           "creates_calendar_event": false,
           "customer_audio_uploaded_to_python_server": false,

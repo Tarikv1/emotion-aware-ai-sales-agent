@@ -16,8 +16,10 @@ if str(ROOT) not in sys.path:
 
 from scripts.validate_commercial_sales_performance_001 import (  # noqa: E402
     RAW_URL_RE,
+    RUBRIC_DIMENSIONS,
     SIDE_EFFECT_KEYS,
     build_turn,
+    has_commercial_action,
     normalize,
     response_text,
     score_commercial_response,
@@ -455,6 +457,45 @@ def build_scenarios() -> list[dict[str, Any]]:
     return scenarios
 
 
+def build_information_advancement_scenarios() -> list[dict[str, Any]]:
+    scenarios: list[dict[str, Any]] = []
+    sequences = [
+        ("info-advance-moderate-plus-001", ["I use it for coding and writing", "what is the difference between Plus and Pro?"], "plus"),
+        ("info-advance-moderate-plus-002", ["personal writing and light coding", "explain the paid plans"], "plus"),
+        ("info-advance-moderate-plus-003", ["I use ChatGPT a few times a week for drafts", "what do the plans include?"], "plus"),
+        ("info-advance-moderate-plus-004", ["coding and writing, not heavy", "what should I know before paying?"], "plus"),
+        ("info-advance-moderate-plus-005", ["I mostly write and research", "tell me Free versus Plus versus Pro"], "plus"),
+        ("info-advance-heavy-pro-001", ["I use it heavily every day for coding and writing", "explain the difference between Plus and Pro"], "pro"),
+        ("info-advance-heavy-pro-002", ["heavy coding work all week", "what do I get with paid plans?"], "pro"),
+        ("info-advance-heavy-pro-003", ["I rely on it for code reviews and writing", "which tier should I compare?"], "pro"),
+        ("info-advance-heavy-pro-004", ["I am a power user and hit usage limits", "explain pricing and plans"], "pro"),
+        ("info-advance-heavy-pro-005", ["serious daily writing and coding", "give me the practical plan comparison"], "pro"),
+        ("info-advance-competitor-001", ["I use another AI tool for code", "what would I compare in ChatGPT?"], ""),
+        ("info-advance-no-fit-001", ["I use AI rarely and do not want to pay", "what are the plan options?"], ""),
+    ]
+    for scenario_id, turns, expected_plan in sequences:
+        expectation: dict[str, Any] = {
+            "buying_question": True,
+            "decision_frame": "plus_vs_pro" if expected_plan else "free_vs_paid",
+            "buyer_terms": ["plus", "pro"] if expected_plan else ["free"],
+            "forbid": ["what matters most", "plan fit still needs", "you may not need to switch"],
+        }
+        if expected_plan:
+            expectation["expected_plan"] = expected_plan
+        elif "rarely" in " ".join(turns):
+            expectation["no_fit_expected"] = True
+            expectation["decision_frame"] = "no_fit"
+        scenarios.append(
+            scenario(
+                scenario_id,
+                "information_must_advance",
+                with_open(turns),
+                expectation,
+            )
+        )
+    return scenarios
+
+
 def build_live_derived_application_scenarios() -> list[dict[str, Any]]:
     """Focused 4H1 proof that OpenAI-specific dialogue applies the universal sales skill."""
     return [
@@ -766,6 +807,16 @@ def validate_expectation(item: dict[str, Any], text: str, responses: list[str]) 
         if not contains_any(lowered, ["official chatgpt plans page", "profile upgrade flow", "next step", "choose", "compare pro", "summary"]):
             failures.append("loop sequence did not advance or summarize")
 
+    elif group == "information_must_advance":
+        if not contains_any(lowered, ["free", "plus", "pro", "paid", "plan"]):
+            failures.append("informational answer omitted plan facts")
+        if item["expectation"].get("expected_plan") and item["expectation"]["expected_plan"] not in lowered:
+            failures.append("informational answer did not convert facts into the expected recommendation")
+        if not has_commercial_action(text):
+            failures.append("informational answer did not end with a recommendation, decision frame, or close")
+        if GENERIC_DISCOVERY_RE.search(text):
+            failures.append("informational answer asked generic discovery instead of advancing")
+
     return failures
 
 
@@ -784,13 +835,11 @@ def run_scenario(item: dict[str, Any]) -> dict[str, Any]:
     if flags.get("live_tts_used") or flags.get("tts_provider_calls_made") or flags.get("audio_file_created"):
         side_effect_failures.append("validator must not use live TTS, provider calls, or audio files")
     failures.extend(side_effect_failures)
-    critical = [
-        item
-        for item in dict.fromkeys(score["critical_failures"])
-        if item != "repeated same response after buyer gives new info"
-    ]
+    critical = list(dict.fromkeys(score["critical_failures"]))
+    if score["status"] != "pass":
+        failures.extend(score["failures"])
     failures.extend(critical)
-    status = "pass" if not failures else "fail"
+    status = "pass" if score["status"] == "pass" and not failures else "fail"
     return {
         "id": item["id"],
         "group": item["group"],
@@ -818,8 +867,10 @@ def write_evidence(result: dict[str, Any]) -> None:
             f"- Scenario count: `{result['scenario_count']}`",
             f"- Multi-turn scenario count: `{result['multi_turn_scenario_count']}`",
             f"- Average score: `{result['average_score']}`",
+            f"- Minimum score: `{result['minimum_score']}`",
             f"- Failed count: `{result['failed_count']}`",
             f"- Critical failure count: `{result['critical_failure_count']}`",
+            f"- Zero-dimension-score count: `{result['zero_dimension_score_count']}`",
             f"- Side effects false: `{str(result['side_effects_false']).lower()}`",
             f"- Provider calls made: `{str(result['provider_calls_made']).lower()}`",
             f"- Live TTS calls made: `{str(result['live_tts_calls_made']).lower()}`",
@@ -829,6 +880,12 @@ def write_evidence(result: dict[str, Any]) -> None:
             "",
             "```json",
             json.dumps(result["group_counts"], indent=2, sort_keys=True),
+            "```",
+            "",
+            "## Score By Dimension",
+            "",
+            "```json",
+            json.dumps(result["dimension_score_averages"], indent=2, sort_keys=True),
             "```",
             "",
             "## Failed Cases",
@@ -842,8 +899,46 @@ def write_evidence(result: dict[str, Any]) -> None:
     REPORT_PATH.write_text(report, encoding="utf-8")
 
 
-def main() -> None:
+def build_expanded_commercial_closing_scenarios() -> list[dict[str, Any]]:
+    group_targets = {
+        "plus_enough_direct_answer": 12,
+        "heavy_usage_recommendation": 12,
+        "buyer_agreement_to_pro": 10,
+        "price_with_known_use_case": 12,
+        "price_with_explicit_limits_pain": 8,
+        "signup_after_recommendation": 10,
+        "current_tool_competitor_path": 12,
+        "no_fit_path": 8,
+        "objections": 12,
+        "loop_prevention_repeated_buyer_prompts": 12,
+        "information_must_advance": 10,
+    }
     scenarios = build_live_derived_application_scenarios()
+    used_ids = {item["id"] for item in scenarios}
+    group_counts = Counter(item["group"] for item in scenarios)
+
+    for candidate in [*build_scenarios(), *build_information_advancement_scenarios()]:
+        group = candidate["group"]
+        if group not in group_targets or candidate["id"] in used_ids:
+            continue
+        if group_counts[group] >= group_targets[group]:
+            continue
+        scenarios.append(candidate)
+        used_ids.add(candidate["id"])
+        group_counts[group] += 1
+
+    return scenarios
+
+
+def dimension_score_averages(traces: list[dict[str, Any]]) -> dict[str, float]:
+    return {
+        dimension: round(sum(trace["dimension_scores"][dimension] for trace in traces) / len(traces), 2)
+        for dimension in RUBRIC_DIMENSIONS
+    }
+
+
+def main() -> None:
+    scenarios = build_expanded_commercial_closing_scenarios()
     traces = [run_scenario(item) for item in scenarios]
     failed = [trace for trace in traces if trace["status"] != "pass"]
     group_counts = Counter(trace["group"] for trace in traces)
@@ -860,13 +955,39 @@ def main() -> None:
         "no_fit_path",
         "objections",
         "loop_prevention_repeated_buyer_prompts",
+        "information_must_advance",
+    }
+    required_group_minimums = {
+        "plus_enough_direct_answer": 12,
+        "heavy_usage_recommendation": 12,
+        "buyer_agreement_to_pro": 10,
+        "price_with_known_use_case": 12,
+        "price_with_explicit_limits_pain": 8,
+        "signup_after_recommendation": 10,
+        "current_tool_competitor_path": 12,
+        "no_fit_path": 8,
+        "objections": 12,
+        "loop_prevention_repeated_buyer_prompts": 12,
+        "information_must_advance": 10,
     }
     missing_groups = sorted(required_groups - set(group_counts))
     if missing_groups:
         structure_failures.append(f"missing scenario groups: {missing_groups}")
+    if len(scenarios) < 100:
+        structure_failures.append("scenario count below 100")
+    if multi_turn_count < 75:
+        structure_failures.append("multi-turn scenario count below 75")
+    for group, minimum in required_group_minimums.items():
+        if group_counts[group] < minimum:
+            structure_failures.append(f"group {group!r} has {group_counts[group]} cases; expected at least {minimum}")
 
     scores = [trace["score"] for trace in traces]
     critical_count = sum(len(trace["critical_failures"]) for trace in traces)
+    zero_dimension_cases = [
+        trace
+        for trace in traces
+        if any(value == 0 for value in trace["dimension_scores"].values())
+    ]
     side_effects_false = all(not any(trace["side_effects"].get(key) for key in SIDE_EFFECT_KEYS) for trace in traces)
     provider_calls = any(
         trace["side_effects"].get("provider_calls_made") or trace["side_effects"].get("tts_provider_calls_made")
@@ -878,7 +999,14 @@ def main() -> None:
     )
     result = {
         "status": "pass"
-        if not failed and not structure_failures and sum(scores) / len(scores) >= 85 and critical_count == 0
+        if (
+            not failed
+            and not structure_failures
+            and not zero_dimension_cases
+            and sum(scores) / len(scores) >= 90
+            and min(scores) >= 85
+            and critical_count == 0
+        )
         else "fail",
         "checkpoint_id": CHECKPOINT_ID,
         "scenario_count": len(scenarios),
@@ -887,14 +1015,18 @@ def main() -> None:
         "minimum_score": min(scores),
         "failed_count": len(failed) + len(structure_failures),
         "critical_failure_count": critical_count,
+        "zero_dimension_score_count": len(zero_dimension_cases),
         "structure_failures": structure_failures,
         "group_counts": dict(sorted(group_counts.items())),
+        "required_group_minimums": required_group_minimums,
+        "dimension_score_averages": dimension_score_averages(traces),
         "side_effects_false": side_effects_false,
         "provider_calls_made": provider_calls,
         "live_tts_calls_made": live_tts_calls,
         "local_llm_calls_made": False,
         "raw_private_transcript_copied_to_public_evidence": False,
         "failed_cases": failed,
+        "zero_dimension_cases": zero_dimension_cases,
         "traces": traces,
     }
     write_evidence(result)
@@ -905,8 +1037,10 @@ def main() -> None:
                 "scenario_count": result["scenario_count"],
                 "multi_turn_scenario_count": result["multi_turn_scenario_count"],
                 "average_score": result["average_score"],
+                "minimum_score": result["minimum_score"],
                 "failed_count": result["failed_count"],
                 "critical_failure_count": result["critical_failure_count"],
+                "zero_dimension_score_count": result["zero_dimension_score_count"],
             },
             indent=2,
             sort_keys=True,

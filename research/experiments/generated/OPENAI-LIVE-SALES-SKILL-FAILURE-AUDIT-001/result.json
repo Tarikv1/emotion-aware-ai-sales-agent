@@ -112,7 +112,7 @@
     "should_speak_raw_url": false,
     "source_policy": "official_openai_public_sources_only"
   },
-  "generated_at_utc": "2026-05-25T17:53:26.769454+00:00",
+  "generated_at_utc": "2026-05-25T18:49:26.185632+00:00",
   "generated_evidence_finding_count": 0,
   "latest_private_transcript_source": "data/private/live-demo-003/raw-turns/browser-transcript/LIVE-DEMO-001-1ee53a37-c72e-41d7-87f6-472f4b7315fc-transcript.json",
   "live_tts_calls_made": false,

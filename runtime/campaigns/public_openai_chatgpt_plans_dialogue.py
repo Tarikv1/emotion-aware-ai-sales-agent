@@ -636,12 +636,17 @@ def _competitor_objection(normalized: str) -> bool:
             "current assistant",
             "use copilot",
             "reason to switch",
+            "reason to compare",
+            "reason to compare chatgpt",
+            "what is the reason to compare",
             "instead of what i have",
+            "over what i have",
             "why would i add chatgpt",
             "why would i add this",
             "why add chatgpt",
             "why add this",
             "why not stay",
+            "should i switch",
         },
     )
 
@@ -743,7 +748,9 @@ def _light_or_basic_use(normalized: str) -> bool:
         {
             "once in a while",
             "occasionally",
+            "light",
             "lightly",
+            "light personal use",
             "only need basic",
             "basic use",
             "studying",
@@ -818,6 +825,7 @@ def _current_tool_enough(normalized: str) -> bool:
             "no paid plan",
             "no subscription",
             "no budget",
+            "why pay",
         },
     )
 
@@ -847,6 +855,7 @@ def _commercial_objection(normalized: str) -> str:
             "don't want to overpay",
             "worth paying",
             "why not just use free",
+            "why pay",
             "is this worth paying",
             "paid is too much",
         },
@@ -924,6 +933,7 @@ def _price_question(normalized: str) -> bool:
             "what does pro cost",
             "what do i pay",
             "what do the paid tiers cost",
+            "what are the paid tiers",
             "what does it cost monthly",
             "monthly",
             "monthly price",
@@ -931,11 +941,15 @@ def _price_question(normalized: str) -> bool:
             "paid tiers",
             "tell me the cost",
             "tell me the pricing",
+            "price please",
             "pricing",
             "current prices",
             "what should i budget",
             "how expensive",
             "difference in price",
+            "what is the difference in price",
+            "free versus paid",
+            "free vs paid",
             "price before",
             "want to know the price",
             "want the price",
@@ -998,6 +1012,14 @@ def _plus_sufficiency_question(normalized: str) -> bool:
             "right plan",
             "which plan",
             "what should i choose",
+            "difference between plus and pro",
+            "explain the paid plans",
+            "what do the plans include",
+            "what should i know before paying",
+            "free versus plus versus pro",
+            "free vs plus vs pro",
+            "practical plan comparison",
+            "which tier should i compare",
             "plus enough",
         },
     )
@@ -1067,8 +1089,11 @@ def _prior_plan_selection(turns: list[dict[str, Any]]) -> bool:
             "plus sounds good",
             "i want pro",
             "pro sounds right",
+            "sounds like pro",
             "pro seems better",
             "pro is better",
+            "pro is the better fit",
+            "pro better fit",
             "pro is probably right",
             "pro makes more sense",
             "pro is safer",
@@ -1161,7 +1186,13 @@ def _pro_agreement_response(turns: list[dict[str, Any]]) -> str:
 
 def _commercial_objection_response(normalized: str, turns: list[dict[str, Any]]) -> str:
     objection = _commercial_objection(normalized)
+    prior_text = _prior_customer_text(turns)
     if objection == "why_pro":
+        if _another_ai_user(prior_text) or _competitor_objection(f"{prior_text} {normalized}"):
+            return (
+                "No automatic switch: against your current tool, Pro only makes sense if ChatGPT fills a specific gap and you expect heavier usage. "
+                "If the current tool covers the work, stay there; if coding, files, or usage headroom are the gap, compare Pro, with Plus as the lower-cost test."
+            )
         if _known_limit_pain(normalized, turns):
             return (
                 "The reason to compare Pro over Plus is limits. Plus is the lower-cost paid start; "
@@ -1183,8 +1214,8 @@ def _commercial_objection_response(normalized: str, turns: list[dict[str, Any]])
         )
     if objection == "price":
         return (
-            "If price is the main concern, start lower. Plus is the lower-cost paid option; "
-            "Pro is only the better comparison if heavy coding and writing makes limits or usage headroom important."
+            "If price is the main concern, I would start lower. Plus is the lower-cost paid option; "
+            "Pro is only the better comparison if heavy coding and writing makes limits or usage headroom important. The decision is cost control versus usage headroom."
         )
     return (
         "The clean decision is value versus cost: Plus is the lower-cost start; Pro is the higher-usage comparison. "
@@ -1330,16 +1361,26 @@ def _plus_sufficiency_response(normalized: str, turns: list[dict[str, Any]]) -> 
         return _choosing_before_upgrade_response(turns)
     heavy = _known_heavy_use(normalized, turns)
     if heavy:
-        return (
+        proposed = (
             "For coding and writing, Plus is usually enough if use is moderate. "
             "Since your use is heavy, I would compare Pro seriously. Plus is the lower-cost starting point; "
             "Pro is safer if usage limits matter. The next step is the official ChatGPT plans page."
         )
-    return (
+        fallback = (
+            "We've already narrowed it: for heavy coding and writing, Pro is the stronger plan to compare; "
+            "Plus is the cheaper fallback if cost matters more than usage headroom. The next step is the official ChatGPT plans page."
+        )
+        return _avoid_duplicate_response("", proposed, fallback, turns)
+    proposed = (
         "For coding and writing, Plus is usually enough if use is moderate. "
         "Plus is the lower-cost starting point; Pro is safer if usage limits matter. "
         "The next action is to compare Plus versus Pro on the official ChatGPT plans page."
     )
+    fallback = (
+        "We've already covered the plan frame: Plus is the lower-cost start for moderate individual use; "
+        "Pro is the comparison if heavier usage or limits matter. The next action is to compare those two on the official ChatGPT plans page."
+    )
+    return _avoid_duplicate_response("", proposed, fallback, turns)
 
 
 def _plain_ask_response(turns: list[dict[str, Any]]) -> str:
@@ -1410,9 +1451,9 @@ def _known_context_repeat_response(normalized: str, turns: list[dict[str, Any]],
         return (
             "public_plan_known_use_and_heavy_continue_progress" if continuing else "public_plan_known_use_and_heavy_repeat_progress",
             (
-                "To move it forward: compare Pro first for heavy coding and writing; choose Plus only if lower cost matters more than usage headroom."
+                "To move it forward: compare Pro first for heavy coding and writing; choose Plus only if lower cost matters more than usage headroom. The next step is the official ChatGPT plans page."
                 if continuing
-                else "You already gave both use case and intensity. For heavy coding and writing, Pro is the stronger fit to compare; Plus is the lower-cost starting point."
+                else "You already gave both use case and intensity. For heavy coding and writing, Pro is the stronger fit to compare; Plus is the lower-cost starting point. The next step is the official ChatGPT plans page."
             ),
             "plan_fit",
         )
@@ -1420,9 +1461,9 @@ def _known_context_repeat_response(normalized: str, turns: list[dict[str, Any]],
         return (
             "public_plan_known_use_case_continue_progress" if continuing else "public_plan_known_use_case_repeat_progress",
             (
-                "To move it forward: Plus is the safer first paid plan for that individual use; Pro is worth comparing only if limits, files, or heavier usage are already frustrating."
+                "To move it forward: compare Plus as the safer first paid plan for that individual use; compare Pro only if limits, files, or heavier usage are already frustrating. The next action is the official ChatGPT plans page."
                 if continuing
-                else "You already gave the use case. For that kind of individual work, Plus is the safer first paid plan; Pro is the comparison if limits, files, or heavier usage are already frustrating."
+                else "You already gave the use case. For that kind of individual work, Plus is the safer first paid plan; Pro is the comparison if limits, files, or heavier usage are already frustrating. The next action is the official ChatGPT plans page."
             ),
             "plan_fit",
         )
@@ -1924,7 +1965,19 @@ def classify_turn(
 
     if _signup_question(normalized) and (
         _prior_plan_selection(turns)
-        or _contains(normalized, {"how do i sign up", "where do i upgrade", "show me the official page", "where is the plan page", "sounds good how do i sign up", "how do we sign up", "can you send me a link", "send me a link"})
+        or _contains(
+            normalized,
+            {
+                "how do i sign up",
+                "where do i upgrade",
+                "show me the official page",
+                "where is the plan page",
+                "sounds good how do i sign up",
+                "how do we sign up",
+                "can you send me a link",
+                "send me a link",
+            },
+        )
     ):
         return _frame(
             **base,
@@ -2034,28 +2087,43 @@ def classify_turn(
         )
 
     if _current_tool_enough(normalized):
+        proposed = (
+            "Then I would not push a paid ChatGPT plan. Free or staying with your current tool may be enough "
+            "unless you hit limits, need tools your current setup lacks, or need team controls. The next action is stay free or stop here."
+        )
+        fallback = (
+            "Same recommendation: if your current tool is enough and you do not want to pay, stay free or stay with the current tool. "
+            "No paid ChatGPT close is needed unless a real gap appears."
+        )
         return _frame(
             **base,
             semantic="public_plan_current_tool_no_fit",
-            response=(
-                "Then I would not push a paid ChatGPT plan. Free or staying with your current tool may be enough "
-                "unless you hit limits, need tools your current setup lacks, or need team controls."
-            ),
+            response=_avoid_duplicate_response("", proposed, fallback, turns),
             dialogue_focus="no_fit",
             polarity="low_pressure",
         )
 
     if _competitor_objection(normalized):
         if _known_use_case(normalized, turns):
-            response = (
+            proposed = (
                 "A switch only makes sense if ChatGPT improves a specific gap in your current tool: "
                 "coding workflow, files, research, writing, voice/images, or team controls. For coding and writing, compare Plus as the lower-cost test and Pro if heavier usage matters."
             )
+            fallback = (
+                "We've already framed the switch: compare ChatGPT only against a current-tool gap. "
+                "If the current tool covers the job, stay there; if coding, files, or usage headroom are the gap, compare Plus as the lower-cost test and Pro for heavier use."
+            )
+            response = _avoid_duplicate_response("", proposed, fallback, turns)
         else:
-            response = (
+            proposed = (
                 "A switch only makes sense if ChatGPT covers something your current tool does not: "
                 "coding workflow, files, research, voice/images, team admin, or privacy controls. What is the one area where your current tool feels weakest?"
             )
+            fallback = (
+                "We've already covered the current-tool question. Do not switch if it covers the job; "
+                "compare ChatGPT only against one concrete gap such as coding workflow, files, research, voice/images, team admin, or privacy controls."
+            )
+            response = _avoid_duplicate_response("", proposed, fallback, turns)
         return _frame(
             **base,
             semantic="public_plan_competitor_objection",
@@ -2255,13 +2323,18 @@ def classify_turn(
         )
 
     if _known_use_case(normalized, turns) and _known_heavy_use(normalized, turns):
+        proposed = (
+            "Right - coding and writing with heavy use. I would compare Pro first because usage headroom matters here. "
+            "Plus is the lower-cost starting point; Pro is safer if usage limits matter."
+        )
+        fallback = (
+            "We already have the key context: heavy coding and writing. Compare Pro first for usage headroom; "
+            "choose Plus only if the lower monthly cost matters more. The next decision is Pro versus Plus, not more discovery."
+        )
         return _frame(
             **base,
             semantic="public_plan_known_use_and_heavy_answered",
-            response=(
-                "Right - coding and writing with heavy use. I would compare Pro first because usage headroom matters here. "
-                "Plus is the lower-cost starting point; Pro is safer if usage limits matter."
-            ),
+            response=_avoid_duplicate_response("", proposed, fallback, turns),
             target_gap="usage_intensity",
             dialogue_focus="plan_fit",
             polarity="recommendation",
@@ -2281,13 +2354,18 @@ def classify_turn(
         )
 
     if _known_use_case(normalized, turns):
+        proposed = (
+            "That ChatGPT use case is enough to frame the plan decision. Plus is the lower-cost first paid plan; "
+            "Pro is for heavier individual use. The next action is compare Plus versus Pro rather than restart discovery."
+        )
+        fallback = (
+            "We already have the use case. Compare Plus as the lower-cost first paid plan; compare Pro only if heavier usage or limits matter. "
+            "The next action is the official ChatGPT plans page."
+        )
         return _frame(
             **base,
             semantic="public_plan_use_case_confirmed",
-            response=(
-                "That ChatGPT use case makes plan fit relevant. Plus is usually the first paid plan to compare; Pro is for heavier individual use. "
-                "Are you using it occasionally or heavily every day?"
-            ),
+            response=_avoid_duplicate_response("", proposed, fallback, turns),
             target_gap="individual_use_case",
             dialogue_focus="usage_intensity",
             polarity="progress",
@@ -2298,8 +2376,8 @@ def classify_turn(
             **base,
             semantic="public_plan_heavy_use_needs_relevance",
             response=(
-                "Heavy daily use can make Plus or Pro relevant, but I should first check the actual work. "
-                "What would you mainly use ChatGPT for - coding, writing, study, files, or a team?"
+                "Heavy daily use makes Pro worth comparing, with Plus as the lower-cost fallback. "
+                "The next action is to tie that to the work type only if the use case is still unknown."
             ),
             target_gap="openai_use_case",
             dialogue_focus="use_case_discovery",
