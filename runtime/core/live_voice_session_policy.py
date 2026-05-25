@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import re
 
+from runtime.campaigns import public_openai_chatgpt_plans_dialogue as public_openai_dialogue
 from runtime.speech.asr_quality_gate import asr_fragment_response, looks_like_asr_fragment, normalize_transcript
 
 AGENT_OPEN_TRANSCRIPT = "__agent_open__"
@@ -3693,6 +3694,15 @@ def response_echo_repair(
     callback_semantic = memory.get("callback_semantic")
     selected_gap = str(memory.get("selected_gap") or "")
     active_topic = str(memory.get("active_topic") or "") or dialogue_focus_from_turns(turns) or "qualification"
+    openai_repair = public_openai_dialogue.duplicate_repair_response(
+        transcript=transcript,
+        memory=memory,
+        turns=turns,
+        candidate_response=response,
+        campaign=campaign,
+    )
+    if openai_repair:
+        return openai_repair
     if callback_semantic == CALLBACK_WORKFLOW_GAP:
         if is_generic_campaign_config(campaign):
             return generic_campaign_review_question(language, campaign)
@@ -3741,6 +3751,15 @@ def repeated_question_repair(
     normalized = normalize_text(transcript)
     active_topic = str(memory.get("active_topic") or "") or dialogue_focus_from_turns(turns) or "qualification"
     selected_gap = str(memory.get("selected_gap") or "")
+    openai_repair = public_openai_dialogue.duplicate_repair_response(
+        transcript=transcript,
+        memory=memory,
+        turns=turns,
+        candidate_response=response,
+        campaign=campaign,
+    )
+    if openai_repair:
+        return openai_repair
     if selected_gap and active_topic in {"qualification", "price", "fit", "details", "effort"}:
         if is_generic_campaign_config(campaign):
             generic = generic_campaign_focus_text(language, active_topic, campaign, normalized=normalized)

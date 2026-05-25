@@ -1,10 +1,10 @@
 # PUBLIC-OPENAI-LIVE-REHEARSAL-001
 
 - Status: `pass`
-- Total private records scanned: `566`
+- Total private records scanned: `579`
 - Current OpenAI live records found: `11`
 - Records after `b58aa53` or latest marker: `11`
-- Stale/historical OpenAI records ignored: `39`
+- Stale/historical OpenAI records ignored: `52`
 - Live TTS used count: `11`
 - Dry-run count: `0`
 - ElevenLabs call made count: `11`
@@ -51,7 +51,7 @@
   "fixed_by_replay_after_patch": 8,
   "needs_human_review": 8,
   "pre_patch_current_live_defect": 8,
-  "stale_or_unknown_version_artifact": 28
+  "stale_or_unknown_version_artifact": 41
 }
 ```
 

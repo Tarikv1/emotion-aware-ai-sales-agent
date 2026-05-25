@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import re
 from typing import Any
 
 
 CAMPAIGN_ID = "public-openai-chatgpt-plans"
+OPENAI_STATE_KEY = "openai_chatgpt_plan_state"
 CHATGPT_ASR_ALIASES = {
     "chachu pt",
     "chachu bt",
@@ -51,6 +53,241 @@ def _prior_customer_text(turns: list[dict[str, Any]]) -> str:
         evidence = semantics.get("evidence") if isinstance(semantics.get("evidence"), dict) else {}
         texts.append(str(evidence.get("buyer_utterance") or evidence.get("normalized_buyer_utterance") or ""))
     return _normalize_openai_asr_aliases(" ".join(text.lower() for text in texts if text))
+
+
+def _prior_openai_state(turns: list[dict[str, Any]], current_memory: dict[str, Any] | None = None) -> dict[str, Any]:
+    if isinstance(current_memory, dict):
+        current = current_memory.get(OPENAI_STATE_KEY)
+        if isinstance(current, dict):
+            return dict(current)
+    for turn in reversed(turns):
+        memory = turn.get("conversation_memory") if isinstance(turn, dict) else {}
+        if not isinstance(memory, dict):
+            continue
+        state = memory.get(OPENAI_STATE_KEY)
+        if isinstance(state, dict):
+            return dict(state)
+    return {}
+
+
+def _state_text_value(state: dict[str, Any], key: str) -> str:
+    value = state.get(key)
+    if isinstance(value, list):
+        return " ".join(str(item) for item in value)
+    return str(value or "")
+
+
+def _state_has_use_case(state: dict[str, Any], value: str) -> bool:
+    return value in _state_text_value(state, "openai_use_case").lower()
+
+
+def _openai_use_case_tags(text: str) -> list[str]:
+    normalized = _normalize_openai_asr_aliases(" ".join(str(text or "").lower().split()))
+    tags: list[str] = []
+    checks = [
+        ("coding", {"coding", "code", "developer", "programming"}),
+        ("writing", {"writing", "write", "drafting", "editing"}),
+        ("research", {"research", "deep research"}),
+        ("files", {"files", "file uploads", "documents", "work documents"}),
+        ("study", {"study", "studying", "school"}),
+        ("team", {"team", "workspace", "admin", "sso", "scim", "procurement"}),
+        ("enterprise", {"enterprise", "security review", "legal", "compliance"}),
+    ]
+    for tag, phrases in checks:
+        if _contains(normalized, phrases):
+            tags.append(tag)
+    return tags
+
+
+def _usage_intensity_from_text(text: str) -> str:
+    normalized = _normalize_openai_asr_aliases(" ".join(str(text or "").lower().split()))
+    if _contains(
+        normalized,
+        {
+            "heavily every day",
+            "very heavily",
+            "heavy daily",
+            "a little bit on the heavy side",
+            "heavy side",
+            "a little heavy",
+            "use heavily",
+            "use it heavily",
+            "heavy",
+            "every day",
+            "daily",
+            "advanced tools all week",
+            "hitting limits",
+            "hit limits",
+            "running out",
+            "blocked by limits",
+        },
+    ):
+        return "heavy"
+    if _contains(normalized, {"middle", "medium", "moderate", "throughout the week", "regularly"}):
+        return "medium"
+    if _contains(normalized, {"occasionally", "light", "sometimes", "once in a while", "free is enough", "basic"}):
+        return "light"
+    return "unknown"
+
+
+def _limit_pain_from_text(text: str) -> bool | None:
+    normalized = _normalize_openai_asr_aliases(" ".join(str(text or "").lower().split()))
+    if _contains(normalized, {"do not hit limits", "don't hit limits", "not hitting limits", "no limits problem"}):
+        return False
+    if _contains(
+        normalized,
+        {
+            "mostly hitting limits",
+            "hitting limits",
+            "hit limits",
+            "limits are frustrating",
+            "limits frustrating",
+            "running out of limits",
+            "running out",
+            "blocked by limits",
+            "already hitting limits",
+            "a bit frustrating",
+            "frustrating",
+        },
+    ):
+        return True
+    return None
+
+
+def _budget_sensitivity_from_text(text: str) -> str:
+    normalized = " ".join(str(text or "").lower().split())
+    if _contains(normalized, {"cannot afford", "too expensive", "worried about money", "budget is tight", "avoid paying"}):
+        return "high"
+    if _contains(normalized, {"price", "cost", "cheaper", "lower-cost", "twenty dollars", "20 dollars"}):
+        return "medium"
+    if _contains(normalized, {"budget is not a concern", "price is not a concern"}):
+        return "low"
+    return "unknown"
+
+
+def _choosing_before_upgrade(normalized: str) -> bool:
+    return _contains(
+        normalized,
+        {
+            "just trying to choose before upgrading",
+            "just choosing before upgrading",
+            "trying to choose before upgrading",
+            "before upgrading",
+        },
+    )
+
+
+def _recommended_path_for_state(state: dict[str, Any]) -> str:
+    use_text = _state_text_value(state, "openai_use_case").lower()
+    intensity = str(state.get("openai_usage_intensity") or "unknown")
+    limit_pain = state.get("openai_limit_pain")
+    budget = str(state.get("openai_budget_sensitivity") or "unknown")
+    if "enterprise" in use_text:
+        return "enterprise"
+    if "team" in use_text:
+        return "business"
+    if limit_pain is True or intensity == "heavy":
+        return "pro"
+    if intensity == "light" or budget == "high":
+        return "free"
+    if use_text:
+        return "plus"
+    return "unknown"
+
+
+def _next_best_action_for_state(state: dict[str, Any], normalized: str, final_response: str) -> str:
+    if _price_question(normalized):
+        return "recommend_plan" if state.get("openai_price_answered") else "answer_price"
+    if _contains(normalized, {"api included", "is api included", "api usage", "tokens", "developer app", "platform api"}):
+        return "answer_api_boundary"
+    if _signup_question(normalized):
+        if _recommended_path_for_state(state) == "enterprise":
+            return "contact_sales_close"
+        return "self_serve_close"
+    if not _state_text_value(state, "openai_adoption_state") or state.get("openai_adoption_state") == "unknown":
+        return "ask_adoption_state"
+    if not _state_text_value(state, "openai_use_case") or state.get("openai_use_case") == "unknown":
+        return "ask_use_case"
+    if state.get("openai_usage_intensity") in {None, "unknown"}:
+        return "ask_usage_intensity"
+    if _contains(final_response.lower(), {"official chatgpt plans page", "profile upgrade flow"}):
+        return "self_serve_close"
+    return "recommend_plan"
+
+
+def memory_update_for_turn(
+    *,
+    transcript: str,
+    turns: list[dict[str, Any]],
+    final_response: str,
+    campaign: dict | None,
+    current_memory: dict[str, Any] | None = None,
+) -> dict[str, Any] | None:
+    if not applies(campaign):
+        return None
+    normalized = _normalize_openai_asr_aliases(" ".join(str(transcript or "").lower().split()))
+    response = " ".join(str(final_response or "").lower().split())
+    prior = _prior_openai_state(turns, current_memory)
+    state: dict[str, Any] = {
+        "openai_adoption_state": prior.get("openai_adoption_state") or "unknown",
+        "openai_use_case": prior.get("openai_use_case") or [],
+        "openai_usage_intensity": prior.get("openai_usage_intensity") or "unknown",
+        "openai_limit_pain": prior.get("openai_limit_pain", "unknown"),
+        "openai_budget_sensitivity": prior.get("openai_budget_sensitivity") or "unknown",
+        "openai_price_answered": bool(prior.get("openai_price_answered")),
+        "openai_api_boundary_answered": bool(prior.get("openai_api_boundary_answered")),
+        "openai_recommended_path": prior.get("openai_recommended_path") or "unknown",
+        "openai_next_best_action": prior.get("openai_next_best_action") or "unknown",
+    }
+
+    if _current_chatgpt_user(normalized) or _openai_use_case_tags(normalized):
+        state["openai_adoption_state"] = "current_chatgpt_user"
+    elif _another_ai_user(normalized):
+        state["openai_adoption_state"] = "other_ai_user"
+    elif _no_ai_user(normalized):
+        state["openai_adoption_state"] = "no_ai_user"
+
+    prior_tags = state["openai_use_case"] if isinstance(state["openai_use_case"], list) else []
+    tags = list(prior_tags)
+    for tag in _openai_use_case_tags(normalized):
+        if tag not in tags:
+            tags.append(tag)
+    state["openai_use_case"] = tags or "unknown"
+
+    intensity = _usage_intensity_from_text(normalized)
+    if intensity != "unknown":
+        state["openai_usage_intensity"] = intensity
+
+    limit_pain = _limit_pain_from_text(normalized)
+    if limit_pain is not None:
+        state["openai_limit_pain"] = limit_pain
+        if limit_pain:
+            state["openai_usage_intensity"] = "heavy"
+
+    budget = _budget_sensitivity_from_text(normalized)
+    if budget != "unknown":
+        state["openai_budget_sensitivity"] = budget
+
+    if _price_question(normalized) or re.search(r"\b(20|100|200)\b", response):
+        state["openai_price_answered"] = bool(
+            re.search(r"\b(20|100|200)\b|source of truth|free is the no-cost", response)
+        ) or state["openai_price_answered"]
+    if _contains(normalized, {"api included", "is api included", "api usage", "tokens", "developer app", "platform api"}) or "api usage is separate" in response:
+        state["openai_api_boundary_answered"] = True
+
+    recommended = _recommended_path_for_state(state)
+    if recommended != "unknown":
+        state["openai_recommended_path"] = recommended
+
+    state["openai_next_best_action"] = _next_best_action_for_state(state, normalized, response)
+    state["known_use_case"] = state["openai_use_case"]
+    state["known_usage_intensity"] = state["openai_usage_intensity"]
+    state["limit_pain"] = state["openai_limit_pain"]
+    state["price_answered"] = state["openai_price_answered"]
+    state["API_boundary_answered"] = state["openai_api_boundary_answered"]
+    state["last_agent_question_type"] = "none"
+    state["last_agent_question_text"] = final_response if "?" in final_response else ""
+    return state
 
 
 def _source_claim(campaign: dict | None, fact_id: str) -> dict[str, Any] | None:
@@ -277,12 +514,16 @@ def _competitor_objection(normalized: str) -> bool:
 
 def _known_use_case(normalized: str, turns: list[dict[str, Any]]) -> bool:
     prior = _prior_customer_text(turns)
+    state = _prior_openai_state(turns)
+    if any(_state_has_use_case(state, tag) for tag in {"coding", "writing", "research", "files", "study"}):
+        return True
     prior_has_use_case = _contains(
         prior,
         {
             "coding",
             "code",
             "writing",
+            "coding/writing",
             "files",
             "research",
             "study",
@@ -294,6 +535,7 @@ def _known_use_case(normalized: str, turns: list[dict[str, Any]]) -> bool:
         normalized,
         {
             "coding and writing",
+            "coding/writing",
             "coding",
             "code",
             "writing",
@@ -307,6 +549,9 @@ def _known_use_case(normalized: str, turns: list[dict[str, Any]]) -> bool:
 
 def _known_heavy_use(normalized: str, turns: list[dict[str, Any]]) -> bool:
     prior = _prior_customer_text(turns)
+    state = _prior_openai_state(turns)
+    if state.get("openai_usage_intensity") == "heavy" or state.get("openai_limit_pain") is True:
+        return True
     return _contains(
         f"{prior} {normalized}",
         {
@@ -320,18 +565,31 @@ def _known_heavy_use(normalized: str, turns: list[dict[str, Any]]) -> bool:
             "a little bit on the heavy side",
             "a little heavy",
             "heavy",
+            "use it heavily",
+            "use heavily",
             "hit limits",
             "hitting limits",
+            "mostly hitting limits",
+            "limits are frustrating",
+            "running out",
+            "blocked by limits",
         },
     )
 
 
 def _team_context(normalized: str, turns: list[dict[str, Any]]) -> bool:
     prior = _prior_customer_text(turns)
+    state = _prior_openai_state(turns)
+    if any(_state_has_use_case(state, tag) for tag in {"team", "enterprise"}):
+        return True
     return _contains(
         f"{prior} {normalized}",
         {
             "we have a team",
+            "team",
+            "for a team",
+            "this is for a team",
+            "actually this is for a team",
             "small team",
             "team admin",
             "team workspace",
@@ -350,6 +608,7 @@ def _light_or_basic_use(normalized: str) -> bool:
         normalized,
         {
             "once in a while",
+            "occasionally",
             "only need basic",
             "basic use",
             "studying",
@@ -360,6 +619,11 @@ def _light_or_basic_use(normalized: str) -> bool:
             "only use it sometimes",
         },
     )
+
+
+def _known_limit_pain(normalized: str, turns: list[dict[str, Any]]) -> bool:
+    state = _prior_openai_state(turns)
+    return state.get("openai_limit_pain") is True or _limit_pain_from_text(normalized) is True
 
 
 def _current_chatgpt_user(normalized: str) -> bool:
@@ -460,6 +724,7 @@ def _price_question(normalized: str) -> bool:
             "tell me the cost",
             "price before",
             "want to know the price",
+            "want the price",
             "would like to know the price",
             "plan structure and price",
             "asked the price",
@@ -473,6 +738,23 @@ def _price_question(normalized: str) -> bool:
             "expensive",
             "free option",
             "really free",
+        },
+    )
+
+
+def _pro_tier_question(normalized: str) -> bool:
+    return _contains(
+        normalized,
+        {
+            "100 and 200 dollar pro",
+            "100 dollar pro",
+            "200 dollar pro",
+            "one hundred and two hundred dollar pro",
+            "which pro should i use",
+            "which pro",
+            "pro tier",
+            "pro tiers",
+            "pro should i use",
         },
     )
 
@@ -566,6 +848,68 @@ def _prior_plan_selection(turns: list[dict[str, Any]]) -> bool:
     )
 
 
+def _limit_pain_recommendation_response(turns: list[dict[str, Any]]) -> str:
+    if _known_use_case("", turns):
+        return (
+            "Got it - if limits are already frustrating, Pro is the plan to compare seriously. "
+            "Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. "
+            "Do you want the lower-cost starting point, or the plan least likely to hit limits?"
+        )
+    return (
+        "Got it - hitting limits makes Pro relevant, but I should still tie that to the actual work. "
+        "Is this mainly coding, writing, research, files, or team use?"
+    )
+
+
+def _choosing_before_upgrade_response(turns: list[dict[str, Any]]) -> str:
+    if _known_use_case("", turns):
+        return (
+            "Got it - if you are choosing before upgrading and limits are not the problem yet, Plus is the lower-cost starting point. "
+            "Pro is the comparison only if heavier use or limits are already blocking the work."
+        )
+    return (
+        "Got it - if you are just choosing before upgrading, I would start with the use case before pushing a tier. "
+        "Is this mainly coding, writing, research, files, or team use?"
+    )
+
+
+def _pro_tier_response(campaign: dict | None, normalized: str, turns: list[dict[str, Any]]) -> str:
+    pro_price = _source_speech(
+        campaign,
+        "pro_tiers_100_200_001",
+        "The Pro help article describes 100 dollar and 200 dollar Pro tiers.",
+    )
+    caveat = _official_price_caveat()
+    if _known_limit_pain(normalized, turns) or _known_heavy_use(normalized, turns):
+        return (
+            f"{pro_price} At a high level, use the lower Pro tier first if it covers your heavy work; "
+            f"compare the higher Pro tier only if limits still block you. {caveat}"
+        )
+    return (
+        f"{pro_price} At a high level, the choice is usage pressure: start lower if you are unsure, "
+        f"and compare the higher Pro tier only if heavy work keeps hitting limits. {caveat} "
+        "Are limits already blocking your work?"
+    )
+
+
+def _avoid_duplicate_response(
+    candidate_response: str,
+    proposed: str,
+    fallback: str,
+    turns: list[dict[str, Any]] | None = None,
+) -> str:
+    normalized_proposed = " ".join(proposed.split()).lower()
+    prior_responses = {
+        " ".join(str((turn.get("summary") or {}).get("final_response") or "").split()).lower()
+        for turn in list(turns or [])
+    }
+    if " ".join(candidate_response.split()).lower() == normalized_proposed:
+        return fallback
+    if normalized_proposed and normalized_proposed in prior_responses:
+        return fallback
+    return proposed
+
+
 def _price_response(campaign: dict | None, normalized: str, turns: list[dict[str, Any]]) -> str:
     plus_price = _source_speech(campaign, "plus_price_20_001", "Plus is an individual paid tier.")
     plus_features = _source_speech(
@@ -586,23 +930,40 @@ def _price_response(campaign: dict | None, normalized: str, turns: list[dict[str
     caveat = _official_price_caveat()
     known_context = _known_use_case(normalized, turns)
     heavy_context = _known_heavy_use(normalized, turns)
+    limit_context = _known_limit_pain(normalized, turns)
 
     if _contains(normalized, {"what do i get for 20 dollars", "20 dollars", "twenty dollars"}):
         suffix = (
-            " For coding and writing, Plus is usually the first paid plan to try; if limits are already frustrating, compare Pro."
+            " For coding and writing, Plus is the lower-cost starting point; if limits are already frustrating, compare Pro."
             if known_context
             else ""
         )
         return f"{plus_price} {plus_features} {caveat}{suffix}"
     if _contains(normalized, {"how much is plus", "plus cost", "pay for plus", "is plus twenty"}):
-        suffix = " Since your use sounds heavy, compare Pro if you regularly hit limits." if heavy_context else ""
+        suffix = " Given your limits/heavy-use context, compare Pro if Plus still blocks the work." if heavy_context or limit_context else ""
         return f"{plus_price} {caveat}{suffix}"
     if _contains(normalized, {"how much is pro", "pro cost", "pay for pro", "pro one hundred"}):
-        return f"{pro_price} {caveat}"
+        suffix = (
+            " Given you are hitting limits, compare that against Plus at 20 dollars per month: Plus is cheaper; Pro is for higher usage."
+            if known_context and (limit_context or heavy_context)
+            else (" That is the relevant comparison if limits are the main frustration." if limit_context else "")
+        )
+        return f"{pro_price} {caveat}{suffix}"
     if "business" in normalized:
         return f"{business_price} {caveat}"
     if "enterprise" in normalized:
         return "Enterprise pricing is not a public fixed individual price in this fixture; the official route is contact sales. " + caveat
+    if known_context and (heavy_context or limit_context):
+        return (
+            f"Sure. Free is the no-cost option. {plus_price} {pro_price} "
+            f"{caveat} Given you are hitting limits, the relevant comparison is Plus at 20 dollars per month versus the Pro tiers. "
+            "Plus is cheaper; Pro is for higher usage."
+        )
+    if known_context:
+        return (
+            f"Sure. Free is the no-cost option. {plus_price} {pro_price} "
+            f"{caveat} For coding and writing, Plus is the lower-cost paid starting point; Pro is for heavier usage."
+        )
     return (
         f"Sure. Free is the no-cost option. {plus_price} {pro_price} "
         "Business is for teams, and Enterprise routes to contact sales. "
@@ -611,19 +972,28 @@ def _price_response(campaign: dict | None, normalized: str, turns: list[dict[str
 
 
 def _plus_sufficiency_response(normalized: str, turns: list[dict[str, Any]]) -> str:
+    prior_state = _prior_openai_state(turns)
+    if prior_state.get("openai_adoption_state") == "other_ai_user" or _another_ai_user(_prior_customer_text(turns)):
+        return (
+            "If you already use another AI tool, you may not need to switch. "
+            "Plus is worth comparing only if ChatGPT covers a real gap in your current setup; Pro is for heavier individual usage."
+        )
     if not _known_use_case(normalized, turns):
         return (
             "Plus is usually the first paid individual plan to compare when Free or Go feels limited. "
             "Pro is for heavier individual usage, especially if limits, files, or advanced tools are already frustrating. "
             "To choose cleanly, the deciding factor is whether your main use is coding, writing, research, files, or something lighter."
         )
+    if _known_limit_pain(normalized, turns):
+        return _limit_pain_recommendation_response(turns)
+    if _choosing_before_upgrade(normalized):
+        return _choosing_before_upgrade_response(turns)
     heavy = _known_heavy_use(normalized, turns)
     if heavy:
         return (
-            "For coding and writing, Plus is usually the first paid plan to try. "
-            "Since you said your use is a little heavy, Pro is worth comparing if you regularly hit limits, use files heavily, "
-            "or need the highest individual usage. If you want the safer starting point, Plus first; if limits are already frustrating, Pro. "
-            "Are you mostly hitting limits, or just trying to choose before upgrading?"
+            "For coding and writing on the heavy side, Plus is the lower-cost paid starting point. "
+            "Pro is the plan to compare if limits, files, or advanced tools are already frequent. "
+            "Do you want the lower-cost starting point, or the plan least likely to hit limits?"
         )
     return (
         "For coding and writing, Plus is usually the first paid plan to try. "
@@ -644,15 +1014,31 @@ def _plain_ask_response(turns: list[dict[str, Any]]) -> str:
     )
 
 
-def _signup_response(turns: list[dict[str, Any]]) -> str:
+def _signup_response(normalized: str, turns: list[dict[str, Any]]) -> str:
+    link_requested = _contains(normalized, {"send me a link", "can you send me a link"})
+    if _team_context(normalized, turns):
+        return (
+            "For Business, use the official ChatGPT plans page for the self-serve workspace route. "
+            "For Enterprise requirements, use contact sales."
+        )
     if _known_use_case("", turns):
+        suffix = " I cannot send a link from this fixture." if link_requested else ""
+        if _known_limit_pain(normalized, turns) or _known_heavy_use(normalized, turns):
+            return (
+                "For individual plans, use the official ChatGPT plans page or profile upgrade flow. "
+                "Based on what you said - coding/writing and hitting limits - compare Pro if you want fewer limits; "
+                "choose Plus first if you want the lower-cost starting point."
+                f"{suffix}"
+            )
         return (
             "If you decide to upgrade, individual plans use the official ChatGPT plans page or profile upgrade flow. "
-            "I cannot send a link, book anything, or take payment here. For coding and writing, choose Plus first unless limits are already frustrating; then compare Pro."
+            "For coding and writing, choose Plus first unless limits are already frustrating; then compare Pro."
+            f"{suffix}"
         )
+    suffix = " I cannot send a link from this fixture." if link_requested else ""
     return (
         "If you decide to upgrade, individual plans use the official ChatGPT plans page or profile upgrade flow, and Enterprise uses contact sales. "
-        "I cannot send a link, book anything, or take payment here."
+        f"Choose the plan only after the use case is clear.{suffix}"
     )
 
 
@@ -669,6 +1055,12 @@ def _known_context_repeat_response(normalized: str, turns: list[dict[str, Any]],
             "team_plan_fit",
         )
     if _known_use_case(normalized, turns) and _known_heavy_use(normalized, turns):
+        if _known_limit_pain(normalized, turns):
+            return (
+                "public_plan_known_use_limit_pain_continue_progress" if continuing else "public_plan_known_use_limit_pain_repeat_progress",
+                _limit_pain_recommendation_response(turns),
+                "plan_fit",
+            )
         return (
             "public_plan_known_use_and_heavy_continue_progress" if continuing else "public_plan_known_use_and_heavy_repeat_progress",
             (
@@ -722,6 +1114,7 @@ def _trust_or_affiliation(normalized: str) -> bool:
             "is this official",
             "do you work for openai",
             "are you actually openai",
+            "are you openai",
             "is openai behind this",
             "do you represent openai",
             "why should i trust this",
@@ -742,11 +1135,17 @@ def _context_progress_response(normalized: str, turns: list[dict[str, Any]]) -> 
             "team_plan_fit",
         )
     if _known_use_case(normalized, turns) and _known_heavy_use(normalized, turns):
+        if _known_limit_pain(normalized, turns):
+            return (
+                "public_plan_known_use_limit_pain_progress",
+                _limit_pain_recommendation_response(turns),
+                "plan_fit",
+            )
         return (
             "public_plan_known_use_and_heavy_progress",
             (
-                "Right - coding and writing with heavy daily use. Plus is the first paid plan to compare, and Pro is the heavier individual tier. "
-                "Do you want the Plus-versus-Pro tradeoff, or should I stop there?"
+                "Right - coding and writing with heavier use. Plus is the lower-cost paid starting point, and Pro is the heavier individual tier. "
+                "Do you want the lower-cost starting point, or the plan least likely to hit limits?"
             ),
             "plan_fit",
         )
@@ -824,6 +1223,69 @@ def _plan_fit_established(turns: list[dict[str, Any]]) -> bool:
             "pro is for heavier",
         },
     )
+
+
+def duplicate_repair_response(
+    *,
+    transcript: str,
+    memory: dict[str, Any] | None,
+    turns: list[dict[str, Any]],
+    candidate_response: str,
+    campaign: dict | None,
+) -> str | None:
+    if not applies(campaign):
+        return None
+    normalized = _normalize_openai_asr_aliases(" ".join(str(transcript or "").lower().split()))
+    state = _prior_openai_state(turns, memory)
+    if not state:
+        return None
+    if _pro_tier_question(normalized):
+        return _pro_tier_response(campaign, normalized, turns)
+    if _price_question(normalized) or _price_followup_complaint(normalized, turns):
+        return _avoid_duplicate_response(
+            candidate_response,
+            _price_response(campaign, normalized, turns),
+            (
+                "Same price context: Plus is listed at 20 dollars per month, while Pro has 100 and 200 dollar tiers. "
+                "Given the known usage context, Plus is cheaper; Pro is for higher usage. The official ChatGPT pricing page is the source of truth."
+            ),
+            turns,
+        )
+    if _contains(normalized, {"api included", "is api included", "api usage", "tokens"}):
+        return "API usage is separate from ChatGPT subscriptions where the official sources state that boundary. Are you asking about ChatGPT itself, the API, or both?"
+    if _signup_question(normalized):
+        return _signup_response(normalized, turns)
+    if _known_limit_pain(normalized, turns) or state.get("openai_limit_pain") is True:
+        return _avoid_duplicate_response(
+            candidate_response,
+            _limit_pain_recommendation_response(turns),
+            (
+                "That new limits signal points more toward Pro than Plus. "
+                "Plus is the lower-cost starting point; Pro is the path if avoiding limits matters most."
+            ),
+            turns,
+        )
+    if _known_use_case(normalized, turns) and (_known_heavy_use(normalized, turns) or state.get("openai_usage_intensity") == "heavy"):
+        return _avoid_duplicate_response(
+            candidate_response,
+            _plus_sufficiency_response(normalized, turns),
+            (
+                "Since you already gave the use case and intensity, I would not ask that again. "
+                "For coding and writing on the heavy side, Plus is lower cost; Pro is the comparison if limits become the blocker."
+            ),
+            turns,
+        )
+    if _known_use_case(normalized, turns):
+        return (
+            "You already gave the use case. For coding and writing, Plus is the lower-cost paid starting point; "
+            "Pro is the comparison if heavier usage or limits are already frustrating."
+        )
+    if state.get("openai_usage_intensity") == "heavy":
+        return (
+            "You already gave the usage level. Heavy personal use can make Plus or Pro relevant; "
+            "the missing piece is whether the work is coding, writing, research, files, or team use."
+        )
+    return None
 
 
 def _followup_route_question(normalized: str) -> bool:
@@ -1046,6 +1508,15 @@ def classify_turn(
             polarity="boundary",
         )
 
+    if _pro_tier_question(normalized):
+        return _frame(
+            **base,
+            semantic="public_plan_pro_tier_comparison_answered",
+            response=_pro_tier_response(campaign, normalized, turns),
+            dialogue_focus="plan_fit",
+            polarity="answer",
+        )
+
     if _price_question(normalized) or _price_followup_complaint(normalized, turns):
         return _frame(
             **base,
@@ -1072,7 +1543,7 @@ def classify_turn(
         return _frame(
             **base,
             semantic="public_plan_self_serve_next_step_answered",
-            response=_signup_response(turns),
+            response=_signup_response(normalized, turns),
             dialogue_focus="self_serve_close",
             polarity="close",
         )
@@ -1090,7 +1561,7 @@ def classify_turn(
         return _frame(
             **base,
             semantic="public_plan_self_serve_next_step_answered",
-            response=_signup_response(turns),
+            response=_signup_response(normalized, turns),
             dialogue_focus="self_serve_close",
             polarity="close",
         )
@@ -1228,6 +1699,36 @@ def classify_turn(
             polarity="low_pressure",
         )
 
+    if _contains(
+        normalized,
+        {
+            "we have a team",
+            "team",
+            "for a team",
+            "this is for a team",
+            "actually this is for a team",
+            "small team",
+            "team admin",
+            "team workspace",
+            "workspace controls",
+            "enterprise controls",
+            "sso",
+            "scim",
+            "procurement",
+        },
+    ):
+        return _frame(
+            **base,
+            semantic="public_plan_team_context",
+            response=(
+                "For team use, Business is the self-serve workspace route and Enterprise is for organization-level controls. "
+                "Are you looking for basic team workspace controls, or Enterprise requirements like SSO, SCIM, procurement, or security review?"
+            ),
+            target_gap="team_use_case",
+            dialogue_focus="team_plan_fit",
+            polarity="progress",
+        )
+
     if _self_serve_close(normalized) and not _plan_fit_established(turns):
         return _frame(
             **base,
@@ -1281,6 +1782,26 @@ def classify_turn(
             ),
             dialogue_focus="competitive_objection",
             polarity="objection",
+        )
+
+    if _known_limit_pain(normalized, turns):
+        return _frame(
+            **base,
+            semantic="public_plan_limit_pain_answered",
+            response=_limit_pain_recommendation_response(turns),
+            target_gap="usage_intensity",
+            dialogue_focus="plan_fit",
+            polarity="recommendation",
+        )
+
+    if _choosing_before_upgrade(normalized):
+        return _frame(
+            **base,
+            semantic="public_plan_choosing_before_upgrade_answered",
+            response=_choosing_before_upgrade_response(turns),
+            target_gap="usage_intensity",
+            dialogue_focus="plan_fit",
+            polarity="recommendation",
         )
 
     if _already_told(normalized):

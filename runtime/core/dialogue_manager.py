@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from runtime.campaigns import public_openai_chatgpt_plans_dialogue as public_openai_dialogue
 from runtime.core import live_voice_session_policy as session_policy
 from runtime.core import contextual_buyer_semantics
 from runtime.core import dialogue_pragmatics
@@ -1175,6 +1176,15 @@ def build_conversation_memory(
     if existing_cleared:
         memory["cleared_gaps"] = existing_cleared
         memory["no_pain_topics"] = existing_cleared
+    openai_state = public_openai_dialogue.memory_update_for_turn(
+        transcript=transcript,
+        turns=_turns(session_state),
+        final_response=final_response,
+        campaign=campaign,
+        current_memory=memory,
+    )
+    if openai_state:
+        memory[public_openai_dialogue.OPENAI_STATE_KEY] = openai_state
     return memory
 
 

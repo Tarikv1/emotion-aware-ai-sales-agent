@@ -1,0 +1,937 @@
+{
+  "checkpoint_id": "PUBLIC-OPENAI-MEMORY-PROGRESSION-001",
+  "creates_calendar_event": false,
+  "expectation_counts": {
+    "affiliation": 3,
+    "already_told_progresses": 20,
+    "api_boundary": 3,
+    "choosing_before_upgrade": 3,
+    "duplicate_repair_advances": 20,
+    "enterprise_branch": 3,
+    "free_branch": 3,
+    "heavy_known_use": 24,
+    "light_branch": 3,
+    "limit_answer_advances": 48,
+    "limit_without_use_case": 3,
+    "no_ai_branch": 3,
+    "other_ai_branch": 3,
+    "price_known_state": 21,
+    "pro_tier": 20,
+    "signup_known_state": 20,
+    "team_branch": 3
+  },
+  "failed_count": 0,
+  "failed_sample": [],
+  "failures": [],
+  "group_counts": {
+    "answered_intensity_question": 48,
+    "duplicate_response_repair_regression": 20,
+    "heavy_side_after_known_use_case": 24,
+    "negative_controls": 30,
+    "price_after_known_state": 21,
+    "pro_tier_comparison": 20,
+    "repeated_answer_already_told": 20,
+    "signup_after_known_recommendation": 20
+  },
+  "live_tts_calls_made": false,
+  "local_llm_calls_made": false,
+  "multi_turn_scenario_count": 162,
+  "opens_prod_102": false,
+  "provider_calls_made": false,
+  "scenario_count": 203,
+  "sends_email": false,
+  "status": "pass",
+  "status_by_group": {
+    "answered_intensity_question": {
+      "pass": 48
+    },
+    "duplicate_response_repair_regression": {
+      "pass": 20
+    },
+    "heavy_side_after_known_use_case": {
+      "pass": 24
+    },
+    "negative_controls": {
+      "pass": 30
+    },
+    "price_after_known_state": {
+      "pass": 21
+    },
+    "pro_tier_comparison": {
+      "pass": 20
+    },
+    "repeated_answer_already_told": {
+      "pass": 20
+    },
+    "signup_after_known_recommendation": {
+      "pass": 20
+    }
+  },
+  "trace_sample": [
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-001",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-002",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-003",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-004",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-005",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-006",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-007",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-008",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-009",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-010",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-011",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-012",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-013",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-014",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-015",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-016",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-017",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-018",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-019",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-020",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-021",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-022",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-023",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "duplicate_guard": null,
+      "expectation": "limit_answer_advances",
+      "failures": [],
+      "final_memory": {
+        "API_boundary_answered": false,
+        "known_usage_intensity": "heavy",
+        "known_use_case": [
+          "coding",
+          "writing"
+        ],
+        "last_agent_question_text": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "last_agent_question_type": "none",
+        "limit_pain": true,
+        "openai_adoption_state": "current_chatgpt_user",
+        "openai_api_boundary_answered": false,
+        "openai_budget_sensitivity": "unknown",
+        "openai_limit_pain": true,
+        "openai_next_best_action": "recommend_plan",
+        "openai_price_answered": false,
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy",
+        "openai_use_case": [
+          "coding",
+          "writing"
+        ],
+        "price_answered": false
+      },
+      "final_response": "Got it - if limits are already frustrating, Pro is the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "final_response_hash": "defbff9811bb",
+      "group": "answered_intensity_question",
+      "id": "answered-intensity-024",
+      "multi_turn": true,
+      "status": "pass",
+      "turn_count": 3
+    }
+  ],
+  "writes_crm": false
+}

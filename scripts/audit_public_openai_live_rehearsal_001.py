@@ -57,6 +57,13 @@ SOURCE_TRUST_TRANSCRIPT_RE = re.compile(
 )
 SOURCE_TRUST_RESPONSE_RE = re.compile(r"public-data simulation|official public openai|public pricing|help pages|not calling from openai", re.I)
 LOOP_RE = re.compile(r"current call scope.*keep checking|keep checking that, or stop|are you .*comparing plans", re.I)
+ANSWERED_LIMIT_TRANSCRIPT_RE = re.compile(r"mostly hitting limits|hitting limits|limits .*frustrating|already hitting limits|blocked by limits|running out", re.I)
+ANSWERED_LIMIT_REPEAT_RE = re.compile(r"are you mostly hitting limits, or just trying to choose before upgrading", re.I)
+KNOWN_USE_IGNORED_RE = re.compile(r"plan fit still needs the actual use case|actual use case|what would you mainly use", re.I)
+KNOWN_INTENSITY_IGNORED_RE = re.compile(r"occasionally or heavily every day|usage level.*deciding point", re.I)
+PRICE_CONTEXT_RESET_RE = re.compile(r"are you mainly comparing plus and pro|are you .*comparing plans|using chatgpt today.*another ai tool", re.I)
+SIGNUP_CONTEXT_TRANSCRIPT_RE = re.compile(r"how do i sign up|where do i upgrade|show me the official page|sounds good.*sign up", re.I)
+SIGNUP_CONTEXT_RESPONSE_RE = re.compile(r"official chatgpt plans page|profile upgrade flow", re.I)
 ASR_ALIAS_TRANSCRIPT_RE = re.compile(
     r"chachu\s*(pt|bt|p\s*t|b\s*t)|chachupt|chat\s*(jpt|gbt|gb\s*t|g\s*p\s*t|gpt)|chatgbt",
     re.I,
@@ -76,6 +83,13 @@ DIALOGUE_DEFECT_CLASSES = {
     "current_live_openai_internal_policy_language_leak",
     "current_live_openai_price_question_refusal",
     "current_live_openai_plan_recommendation_stall",
+    "current_live_openai_memory_progression_defect",
+    "current_live_openai_repeated_answered_question",
+    "current_live_openai_duplicate_repair_regression",
+    "current_live_openai_known_use_case_ignored",
+    "current_live_openai_known_intensity_ignored",
+    "current_live_openai_price_context_reset",
+    "current_live_openai_close_context_missing",
     "current_live_openai_legacy_field_leakage",
     "current_live_openai_routesignal_contamination",
     "current_live_openai_loop_or_repeated_prompt",
@@ -91,6 +105,10 @@ POST_PATCH_REPLAY_CASES = [
     ["__agent_open__", "yeah sure", "why would I switch to chat jpt"],
     ["__agent_open__", "yeah sure", "how much are the plans"],
     ["__agent_open__", "yeah sure", "I use it for coding and writing", "is Plus going to be enough for my use case", "a little bit on the heavy side"],
+    ["__agent_open__", "yeah sure", "I use it for coding and writing", "Is Plus enough?", "I am mostly hitting limits and it is frustrating"],
+    ["__agent_open__", "yeah sure", "I use it for coding and writing", "somewhere in the middle but is Plus enough", "a little bit on the heavy side"],
+    ["__agent_open__", "yeah sure", "I use it for coding and writing", "heavy", "hitting limits", "how much are the plans"],
+    ["__agent_open__", "yeah sure", "I use it for coding and writing", "heavy", "hitting limits", "how do I sign up"],
     ["__agent_open__", "yeah sure", "I use it for coding and writing", "so what do you want me to do what are you asking me"],
     ["__agent_open__", "yeah sure", "I use another LLM", "how much are the plans", "but I asked the price"],
     ["__agent_open__", "yeah sure", "I use it for coding and writing", "what did you mean by that"],
@@ -366,6 +384,7 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
     text = response_text(payload)
     trace_text = runtime_candidate_text(payload)
     transcript = transcript_text(payload)
+    payload_context_text = json.dumps(payload, sort_keys=True, default=str).lower()
     selected = selected_config(payload)
     delivery = tts(payload)
     classes: list[str] = []
@@ -393,6 +412,34 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
         classes.append("current_live_openai_plan_recommendation_stall")
     if LOOP_RE.search(text) or (re.search(r"asked.*price|why.*not answering", transcript, re.I) and not PRICE_RESPONSE_RE.search(text)):
         classes.append("current_live_openai_loop_or_repeated_prompt")
+    if ANSWERED_LIMIT_TRANSCRIPT_RE.search(transcript) and ANSWERED_LIMIT_REPEAT_RE.search(text):
+        classes.append("current_live_openai_repeated_answered_question")
+        classes.append("current_live_openai_memory_progression_defect")
+    if ANSWERED_LIMIT_TRANSCRIPT_RE.search(transcript) and not re.search(r"\bpro\b|limits?|higher usage", text, re.I):
+        classes.append("current_live_openai_known_intensity_ignored")
+        classes.append("current_live_openai_memory_progression_defect")
+    if re.search(r"heavy side|little heavy|use heavily|already told", transcript, re.I) and KNOWN_USE_IGNORED_RE.search(text):
+        classes.append("current_live_openai_known_use_case_ignored")
+        classes.append("current_live_openai_memory_progression_defect")
+    if re.search(r"coding and writing|coding|writing", transcript, re.I) and KNOWN_INTENSITY_IGNORED_RE.search(text):
+        classes.append("current_live_openai_known_intensity_ignored")
+        classes.append("current_live_openai_memory_progression_defect")
+    known_price_context = re.search(
+        r"hitting limits|heavy side|\"openai_limit_pain\": true|\"openai_usage_intensity\": \"heavy\"",
+        f"{transcript} {trace_text} {payload_context_text}",
+        re.I,
+    )
+    if PRICE_TRANSCRIPT_RE.search(transcript) and PRICE_RESPONSE_RE.search(text) and PRICE_CONTEXT_RESET_RE.search(text) and known_price_context:
+        classes.append("current_live_openai_price_context_reset")
+        classes.append("current_live_openai_memory_progression_defect")
+    if SIGNUP_CONTEXT_TRANSCRIPT_RE.search(transcript) and not SIGNUP_CONTEXT_RESPONSE_RE.search(text):
+        classes.append("current_live_openai_close_context_missing")
+        classes.append("current_live_openai_memory_progression_defect")
+    if str((payload.get("dialogue_manager") or {}).get("final_response_source") or "") == "duplicate_response_repair" and (
+        KNOWN_USE_IGNORED_RE.search(text) or PRICE_CONTEXT_RESET_RE.search(text) or ADOPTION_STATE_RE.search(text)
+    ):
+        classes.append("current_live_openai_duplicate_repair_regression")
+        classes.append("current_live_openai_memory_progression_defect")
     if LEGACY_FIELD_RE.search(trace_text) or LEGACY_RE.search(text) or OWNER_RE.search(text):
         classes.append("current_live_openai_legacy_field_leakage")
     if ROUTESIGNAL_TRACE_RE.search(trace_text):
@@ -766,6 +813,13 @@ def main() -> None:
         "current_live_openai_internal_policy_language_leak_count": replay_class_counts["current_live_openai_internal_policy_language_leak"],
         "current_live_openai_price_question_refusal_count": replay_class_counts["current_live_openai_price_question_refusal"],
         "current_live_openai_plan_recommendation_stall_count": replay_class_counts["current_live_openai_plan_recommendation_stall"],
+        "current_live_openai_memory_progression_defect_count": replay_class_counts["current_live_openai_memory_progression_defect"],
+        "current_live_openai_repeated_answered_question_count": replay_class_counts["current_live_openai_repeated_answered_question"],
+        "current_live_openai_duplicate_repair_regression_count": replay_class_counts["current_live_openai_duplicate_repair_regression"],
+        "current_live_openai_known_use_case_ignored_count": replay_class_counts["current_live_openai_known_use_case_ignored"],
+        "current_live_openai_known_intensity_ignored_count": replay_class_counts["current_live_openai_known_intensity_ignored"],
+        "current_live_openai_price_context_reset_count": replay_class_counts["current_live_openai_price_context_reset"],
+        "current_live_openai_close_context_missing_count": replay_class_counts["current_live_openai_close_context_missing"],
         "current_live_openai_legacy_field_leakage_count": replay_class_counts["current_live_openai_legacy_field_leakage"],
         "current_live_openai_routesignal_contamination_count": replay_class_counts["current_live_openai_routesignal_contamination"],
         "current_live_openai_sales_quality_defect_count": replay_class_counts["current_live_openai_sales_quality_defect"],
@@ -773,6 +827,13 @@ def main() -> None:
         "private_current_live_internal_policy_language_leak_count": counts["current_live_openai_internal_policy_language_leak"],
         "private_current_live_price_question_refusal_count": counts["current_live_openai_price_question_refusal"],
         "private_current_live_plan_recommendation_stall_count": counts["current_live_openai_plan_recommendation_stall"],
+        "private_current_live_openai_memory_progression_defect_count": counts["current_live_openai_memory_progression_defect"],
+        "private_current_live_openai_repeated_answered_question_count": counts["current_live_openai_repeated_answered_question"],
+        "private_current_live_openai_duplicate_repair_regression_count": counts["current_live_openai_duplicate_repair_regression"],
+        "private_current_live_openai_known_use_case_ignored_count": counts["current_live_openai_known_use_case_ignored"],
+        "private_current_live_openai_known_intensity_ignored_count": counts["current_live_openai_known_intensity_ignored"],
+        "private_current_live_openai_price_context_reset_count": counts["current_live_openai_price_context_reset"],
+        "private_current_live_openai_close_context_missing_count": counts["current_live_openai_close_context_missing"],
         "private_current_live_legacy_field_leakage_count": counts["current_live_openai_legacy_field_leakage"],
         "private_current_live_routesignal_contamination_count": counts["current_live_openai_routesignal_contamination"],
         "private_current_live_sales_quality_defect_count": counts["current_live_openai_sales_quality_defect"],
