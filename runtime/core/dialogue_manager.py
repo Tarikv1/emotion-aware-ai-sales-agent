@@ -649,6 +649,14 @@ def plan_dialogue_action(
         campaign,
         session_state=session_state,
     )
+    semantic_continuity = contextual_buyer_semantics.continuity_from_semantic_frame(contextual_semantics)
+    if semantic_continuity and contextual_semantics.get("campaign_response_priority"):
+        return _action_from_continuity(
+            state_before=state_before,
+            continuity=semantic_continuity,
+            source="contextual_buyer_semantics",
+            dialogue_reasoning=dialogue_reasoning or {},
+        )
     if universal_response_shape_continuity:
         enforced_policy_frame = dict(
             universal_response_shape_continuity.get("universal_policy_frame") or universal_policy_frame
@@ -670,7 +678,6 @@ def plan_dialogue_action(
             dialogue_reasoning=dialogue_reasoning or {},
         )
 
-    semantic_continuity = contextual_buyer_semantics.continuity_from_semantic_frame(contextual_semantics)
     if semantic_continuity:
         return _action_from_continuity(
             state_before=state_before,
@@ -1192,6 +1199,16 @@ def apply_stability_guard_if_needed(
     )
     universal_category = str(universal_frame.get("response_shape_enforced_category") or "")
     normalized_transcript = session_policy.normalize_transcript(transcript)
+    if (
+        (continuity(action).get("contextual_buyer_semantics") or {}).get("campaign_response_priority") is True
+    ):
+        return action, {
+            "applied": False,
+            "reason": "campaign_response_priority_stability_guard_skipped",
+            "violations": [],
+            "dialogue_focus": continuity(action).get("dialogue_focus"),
+            "selected_gap": continuity(action).get("selected_gap"),
+        }
     if (
         universal_frame.get("high_confidence_move_priority_protected") is True
         and not session_policy.is_new_trial_request_clarification(normalized_transcript)

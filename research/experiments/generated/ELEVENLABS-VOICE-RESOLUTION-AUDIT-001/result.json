@@ -1,0 +1,43 @@
+{
+  "campaign_specific_voice_override_present": false,
+  "checkpoint_id": "ELEVENLABS-VOICE-RESOLUTION-AUDIT-001",
+  "cli_voice_override_supported": false,
+  "effective_provider_model": "eleven_flash_v2_5",
+  "env_file": {
+    "keys_present": [
+      "ELEVENLABS_API_KEY"
+    ],
+    "path": "runtime/config/local/elevenlabs.env",
+    "present": true
+  },
+  "env_variables_used": [
+    "ELEVENLABS_API_KEY",
+    "ELEVENLABS_VOICE_ID_EN",
+    "ELEVENLABS_VOICE_ID"
+  ],
+  "hardcoded_voice_id_findings": [],
+  "language": "en",
+  "legacy_env_file_note": "The running server process reads its active process environment plus the configured env file loaded at startup; it does not read every .env file on disk.",
+  "live_tts_calls_made": false,
+  "precedence_chain": [
+    "ELEVENLABS_VOICE_ID_EN from active process environment",
+    "ELEVENLABS_VOICE_ID from active process environment",
+    "runtime/config/local/voice_ids.json if present",
+    "config/local/voice_ids.json legacy local fallback if runtime local file is absent",
+    "no documented fallback voice id if no env/config exists"
+  ],
+  "provider_calls_made": false,
+  "raw_value_logged": false,
+  "raw_voice_id_logging_findings": [],
+  "resolved_voice_config_source_path": "config/local/voice_ids.json",
+  "route_signal_vs_generic_resolution": "same resolver; different voice_consistency_mode affects settings, not voice id source",
+  "server_restart_required_for_env_changes": true,
+  "stale_env_can_override_config": false,
+  "status": "pass",
+  "voice_alias_or_label": null,
+  "voice_config_file_present": true,
+  "voice_id_hash": "433413ba",
+  "voice_id_length": 20,
+  "voice_id_present": true,
+  "voice_id_source": "local_voice_ids:elevenlabs.en"
+}

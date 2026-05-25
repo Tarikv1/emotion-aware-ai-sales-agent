@@ -1,0 +1,185 @@
+{
+  "RouteSignal_contamination_count": 0,
+  "checkpoint_id": "PUBLIC-OPENAI-LIVE-REHEARSAL-001",
+  "current_live_openai_asr_issue_count": 0,
+  "current_live_openai_runtime_defect_count": 11,
+  "current_live_openai_tts_audio_issue_count": 0,
+  "current_openai_live_records_found": 12,
+  "dry_run_count": 11,
+  "fake_side_effect_claim_count": 0,
+  "git_head_short": "09228e0",
+  "human_followup_owner_leakage_count": 3,
+  "legacy_compatibility_leakage_count": 3,
+  "live_tts_gate_issue_count": 11,
+  "live_tts_used_count": 0,
+  "local_llm_calls_made": false,
+  "needs_human_review_count": 11,
+  "provider_calls_made": false,
+  "raw_URL_spoken_count": 0,
+  "raw_private_transcript_copied_to_public_evidence": false,
+  "records": [
+    {
+      "dry_run": true,
+      "git_head_short": "5e1dc01",
+      "issues": [
+        "live_tts_gate_issue"
+      ],
+      "live_tts_used": false,
+      "mode": "dry-run",
+      "path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-010946.json",
+      "record_patch_status": "pre_patch_or_other_git_head",
+      "response_hash": "7cec99123676",
+      "selected_mode": "generic config dry-run"
+    },
+    {
+      "dry_run": true,
+      "git_head_short": "5e1dc01",
+      "issues": [
+        "live_tts_gate_issue"
+      ],
+      "live_tts_used": false,
+      "mode": "dry-run",
+      "path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-011043.json",
+      "record_patch_status": "pre_patch_or_other_git_head",
+      "response_hash": "7cec99123676",
+      "selected_mode": "generic config dry-run"
+    },
+    {
+      "dry_run": true,
+      "git_head_short": "5e1dc01",
+      "issues": [
+        "live_tts_gate_issue"
+      ],
+      "live_tts_used": false,
+      "mode": "dry-run",
+      "path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-011104.json",
+      "record_patch_status": "pre_patch_or_other_git_head",
+      "response_hash": "7cec99123676",
+      "selected_mode": "generic config dry-run"
+    },
+    {
+      "dry_run": true,
+      "git_head_short": "5e1dc01",
+      "issues": [
+        "live_tts_gate_issue",
+        "legacy_compatibility_leakage"
+      ],
+      "live_tts_used": false,
+      "mode": "dry-run",
+      "path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-011123.json",
+      "record_patch_status": "pre_patch_or_other_git_head",
+      "response_hash": "6cfec7235ae1",
+      "selected_mode": "generic config dry-run"
+    },
+    {
+      "dry_run": true,
+      "git_head_short": "5e1dc01",
+      "issues": [
+        "live_tts_gate_issue",
+        "human_followup_owner_leakage"
+      ],
+      "live_tts_used": false,
+      "mode": "dry-run",
+      "path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-011202.json",
+      "record_patch_status": "pre_patch_or_other_git_head",
+      "response_hash": "2e5801bee984",
+      "selected_mode": "generic config dry-run"
+    },
+    {
+      "dry_run": true,
+      "git_head_short": "5e1dc01",
+      "issues": [
+        "live_tts_gate_issue",
+        "human_followup_owner_leakage"
+      ],
+      "live_tts_used": false,
+      "mode": "dry-run",
+      "path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-011246.json",
+      "record_patch_status": "pre_patch_or_other_git_head",
+      "response_hash": "a8bed84e9f6b",
+      "selected_mode": "generic config dry-run"
+    },
+    {
+      "dry_run": true,
+      "git_head_short": "5e1dc01",
+      "issues": [
+        "live_tts_gate_issue"
+      ],
+      "live_tts_used": false,
+      "mode": "dry-run",
+      "path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-011330.json",
+      "record_patch_status": "pre_patch_or_other_git_head",
+      "response_hash": "cab8966e35ef",
+      "selected_mode": "generic config dry-run"
+    },
+    {
+      "dry_run": true,
+      "git_head_short": "5e1dc01",
+      "issues": [
+        "live_tts_gate_issue",
+        "legacy_compatibility_leakage",
+        "human_followup_owner_leakage"
+      ],
+      "live_tts_used": false,
+      "mode": "dry-run",
+      "path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-011352.json",
+      "record_patch_status": "pre_patch_or_other_git_head",
+      "response_hash": "fb60cffd5107",
+      "selected_mode": "generic config dry-run"
+    },
+    {
+      "dry_run": true,
+      "git_head_short": "5e1dc01",
+      "issues": [
+        "live_tts_gate_issue"
+      ],
+      "live_tts_used": false,
+      "mode": "dry-run",
+      "path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-011433.json",
+      "record_patch_status": "pre_patch_or_other_git_head",
+      "response_hash": "9a325167761b",
+      "selected_mode": "generic config dry-run"
+    },
+    {
+      "dry_run": true,
+      "git_head_short": "5e1dc01",
+      "issues": [
+        "live_tts_gate_issue"
+      ],
+      "live_tts_used": false,
+      "mode": "dry-run",
+      "path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-011449.json",
+      "record_patch_status": "pre_patch_or_other_git_head",
+      "response_hash": "430b6af53e54",
+      "selected_mode": "generic config dry-run"
+    },
+    {
+      "dry_run": true,
+      "git_head_short": "5e1dc01",
+      "issues": [
+        "live_tts_gate_issue",
+        "legacy_compatibility_leakage"
+      ],
+      "live_tts_used": false,
+      "mode": "dry-run",
+      "path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-011502.json",
+      "record_patch_status": "pre_patch_or_other_git_head",
+      "response_hash": "06060a6db951",
+      "selected_mode": "generic config dry-run"
+    },
+    {
+      "dry_run": false,
+      "git_head_short": null,
+      "issues": [],
+      "live_tts_used": false,
+      "mode": null,
+      "path": "data/private/live-demo-003/raw-turns/browser-transcript/LIVE-DEMO-001-ee5669f5-3152-4724-8132-c166192b6be4-transcript.json",
+      "record_patch_status": "pre_patch_or_other_git_head",
+      "response_hash": "e3b0c44298fc",
+      "selected_mode": null
+    }
+  ],
+  "source_claim_issue_count": 0,
+  "status": "pass",
+  "voice_resolution_issue_count": 0
+}

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "manifest_id": "runtime-boundary-001",
-  "updated_on": "2026-05-22",
+  "updated_on": "2026-05-25",
   "purpose": "Make runtime-affecting project files visible separately from research, generated evidence, checkpoint runners, and temporary files.",
   "status": "runtime-sources-and-docs-moved-with-legacy-wrappers",
   "runtime_home_policy": {
@@ -311,6 +311,18 @@
         "campaign profile shape",
         "approved field boundary",
         "campaign config examples"
+      ]
+    },
+    {
+      "path": "runtime/campaigns/public_openai_chatgpt_plans_dialogue.py",
+      "path_type": "file",
+      "tier": "campaign-runtime-dialogue-adapter",
+      "runtime_role": "Campaign-scoped public plan dialogue adapter that keeps source-grounded fixture responses out of universal sales runtime files while preserving dry-run provider boundaries.",
+      "behavior_surface": [
+        "campaign-specific dialogue repair",
+        "public plan-fit objection handling",
+        "self-serve close wording",
+        "side-effect boundary responses"
       ]
     },
     {

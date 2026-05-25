@@ -463,6 +463,11 @@ def generic_campaign_focus_text(
 
 def sales_opening_response(language: str, campaign: dict | None = None) -> str:
     if is_generic_campaign_config(campaign):
+        opening_options = (campaign or {}).get("opening_options")
+        if isinstance(opening_options, dict):
+            configured_opening = str(opening_options.get("preferred") or "").strip()
+            if configured_opening:
+                return configured_opening
         context = generic_campaign_context(campaign)
         client_name = context["client"]
         offer_name = context["offer"]

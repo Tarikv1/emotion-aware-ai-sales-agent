@@ -1,11 +1,11 @@
 {
   "elevenlabs": {
-    "en": "inGcvmoPgbvKUk9uCvHu",
-    "de": "z1EhmmPwF0ENGYE8dBE6",
+    "en": "paste-elevenlabs-english-voice-id-here",
+    "de": "paste-elevenlabs-german-voice-id-here",
     "default": "",
     "aliases": {
-      "english_sales_voice_v1": "inGcvmoPgbvKUk9uCvHu",
-      "german_sales_voice_v1": "z1EhmmPwF0ENGYE8dBE6"
+      "english_sales_voice_v1": "paste-elevenlabs-english-voice-id-here",
+      "german_sales_voice_v1": "paste-elevenlabs-german-voice-id-here"
     }
   }
 }

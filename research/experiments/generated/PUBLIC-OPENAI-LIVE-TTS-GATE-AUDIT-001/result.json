@@ -1,0 +1,60 @@
+{
+  "behavior_assessment": "intended_gate_behavior",
+  "campaign_config_path": "runtime/campaigns/examples/public-openai-chatgpt-plans.json",
+  "checkpoint_id": "PUBLIC-OPENAI-LIVE-TTS-GATE-AUDIT-001",
+  "classification": "missing_live_tts_flag",
+  "classification_reason": "The selected generic campaign option was dry-run; live TTS gate flags were not active for this run.",
+  "creates_calendar_event": false,
+  "gate_fields": {
+    "audio_file_created": false,
+    "fallback_reason": "dry-run-mode",
+    "generic_selected_campaign_live_tts_allowed": false,
+    "mode": "generic config dry-run",
+    "packet_mode": "dry-run",
+    "selected_live_tts_enabled": false,
+    "tts_live_call_requested": false,
+    "tts_provider_calls_made": false
+  },
+  "gate_fields_present_missing": {
+    "browser_payload_live_tts_flag_visible": false,
+    "campaign_config_path": true,
+    "selected_campaign_config": true,
+    "selected_config_live_tts_enabled": true,
+    "tts_fallback_reason": true,
+    "tts_live_call_requested": true
+  },
+  "git_head_short": "09228e0",
+  "latest_packet_path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-011502.json",
+  "live_tts_enabled": false,
+  "live_tts_used": false,
+  "local_llm_calls_made": false,
+  "matching_packet_count": 12,
+  "opens_prod_102": false,
+  "provider_boundary_flags": {
+    "audio_file_created": false,
+    "creates_calendar_event": false,
+    "customer_audio_uploaded_to_python_server": false,
+    "customer_audio_uploaded_to_tts_provider": false,
+    "local_llm_calls_made": false,
+    "opens_prod_102": false,
+    "provider_calls_made": false,
+    "sends_email": false,
+    "tts_provider_calls_made": false,
+    "writes_crm": false
+  },
+  "provider_calls_made": false,
+  "raw_private_transcript_copied_to_public_evidence": false,
+  "required_command": "python scripts\\run_live_demo_001_agent_voice_call.py --campaign-config runtime/campaigns/examples/public-openai-chatgpt-plans.json --live-tts --consent-confirmed --allow-generic-live-tts",
+  "required_env_or_config": [
+    "ELEVENLABS_API_KEY",
+    "ELEVENLABS_VOICE_ID_EN",
+    "ELEVENLABS_VOICE_ID",
+    "runtime/config/local/voice_ids.json",
+    "config/local/voice_ids.json"
+  ],
+  "selected_campaign_id": "public-openai-chatgpt-plans",
+  "selected_mode": "generic config dry-run",
+  "sends_email": false,
+  "status": "pass",
+  "writes_crm": false
+}

@@ -5,6 +5,7 @@ import re
 from difflib import SequenceMatcher
 from typing import Any
 
+from runtime.campaigns import public_openai_chatgpt_plans_dialogue as public_plan_dialogue
 from runtime.core import campaign_playbook_adapter as diagnostic_playbook
 from runtime.core import live_voice_session_policy as session_policy
 
@@ -1421,6 +1422,7 @@ def _frame(
     send_info_state_update: dict[str, Any] | None = None,
     lead_followup_state_update: dict[str, Any] | None = None,
     handoff_target_state_update: dict[str, Any] | None = None,
+    campaign_response_priority: bool = False,
     applied: bool = True,
 ) -> dict[str, Any]:
     candidate_gaps = list(candidate_gaps if candidate_gaps is not None else _candidate_gaps(previous_question_text, campaign))
@@ -1498,6 +1500,7 @@ def _frame(
         "send_info_state_update": dict(send_info_state_update or {}),
         "lead_followup_state_update": dict(lead_followup_state_update or {}),
         "handoff_target_state_update": dict(handoff_target_state_update or {}),
+        "campaign_response_priority": bool(campaign_response_priority),
         "applied": bool(applied and candidate_response and action_id),
         "provider_calls_made": False,
         "local_llm_calls_made": False,
@@ -2276,6 +2279,24 @@ def classify_contextual_buyer_semantics(
             action_id="end_call_stop_request",
             dialogue_focus=active_gap or "qualification",
         )
+
+    specialized_frame = public_plan_dialogue.classify_turn(
+        campaign=campaign,
+        transcript=transcript,
+        normalized=normalized,
+        turns=turns,
+        previous_question=previous_question,
+        previous_question_type=previous_question_type,
+        conversation_stage=stage,
+        active_gap=active_gap,
+        confirmed_gaps=confirmed_gaps,
+        cleared_gaps=cleared_gaps,
+        pending_callback=pending_callback,
+        pending_appointment=pending_appointment,
+        candidate_gaps=candidate_gaps,
+    )
+    if specialized_frame:
+        return _frame(**specialized_frame)
 
     if _is_routesignal_playbook(campaign) and _is_routesignal_scope_boundary_question(normalized):
         return _frame(
