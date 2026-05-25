@@ -1,9 +1,9 @@
 # COMMERCIAL-SALES-PERFORMANCE-001
 
 - Status: `pass`
-- Scenario count: `11`
-- Average score: `100.0`
-- Minimum score: `100`
+- Scenario count: `15`
+- Average score: `99.0`
+- Minimum score: `95`
 - Failed count: `0`
 - Critical failure count: `0`
 - Side effects false: `true`

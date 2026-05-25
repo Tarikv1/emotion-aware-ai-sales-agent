@@ -197,12 +197,34 @@ def _recommended_path_for_state(state: dict[str, Any]) -> str:
         return "pro"
     if intensity == "light" or budget == "high":
         return "free"
-    if use_text:
+    if use_text and use_text != "unknown":
         return "plus"
     return "unknown"
 
 
+def _prior_active_decision_frame(turns: list[dict[str, Any]]) -> str:
+    state = _prior_openai_state(turns)
+    return str(state.get("active_decision_frame") or state.get("last_decision_frame_given") or "")
+
+
+def _prior_buyer_decision_stage(turns: list[dict[str, Any]]) -> str:
+    state = _prior_openai_state(turns)
+    return str(state.get("buyer_decision_stage") or "")
+
+
+def _prior_pro_tier_context(turns: list[dict[str, Any]]) -> bool:
+    prior_text = _prior_customer_text(turns)
+    state = _prior_openai_state(turns)
+    return (
+        state.get("active_decision_frame") == "pro_100_vs_200"
+        or state.get("buyer_decision_stage") == "pro_tier_selection"
+        or _contains(prior_text, {"which pro", "pro tier", "100 dollar pro", "200 dollar pro", "version of pro"})
+    )
+
+
 def _next_best_action_for_state(state: dict[str, Any], normalized: str, final_response: str) -> str:
+    if state.get("active_decision_frame") == "pro_100_vs_200" or _pro_tier_question(normalized):
+        return "answer_pro_tier" if not _signup_question(normalized) else "self_serve_close"
     if _price_question(normalized):
         return "recommend_plan" if state.get("openai_price_answered") else "answer_price"
     if _contains(normalized, {"api included", "is api included", "api usage", "tokens", "developer app", "platform api"}):
@@ -234,12 +256,36 @@ def _commercial_sales_state(
     limit_pain = state.get("openai_limit_pain")
     budget = str(state.get("openai_budget_sensitivity") or "unknown")
     response = " ".join(str(final_response or "").lower().split())
+    active_frame = str(state.get("active_decision_frame") or "")
+    prior_stage = str(state.get("buyer_decision_stage") or "")
+    objection = _commercial_objection(normalized)
+
+    if _signup_question(normalized):
+        current_question_type = "signup"
+    elif active_frame == "pro_100_vs_200" or _pro_tier_question(normalized):
+        current_question_type = "which_pro_tier"
+    elif _plus_sufficiency_question(normalized):
+        current_question_type = "plus_enough"
+    elif objection in {"price", "subscription", "why_pro"}:
+        current_question_type = "worth_it" if _contains(normalized, {"why", "expensive", "worth", "pay"}) else "price"
+    elif _price_question(normalized):
+        current_question_type = "price"
+    elif _competitor_objection(normalized) or _another_ai_user(normalized):
+        current_question_type = "competitor_switch"
+    elif _current_tool_enough(normalized) or budget == "high":
+        current_question_type = "no_fit"
+    elif _pro_agreement_signal(normalized):
+        current_question_type = "pro_better"
+    else:
+        current_question_type = str(state.get("current_buyer_question_type") or "")
 
     if _signup_question(normalized) or "official chatgpt plans page" in response or "profile upgrade flow" in response:
         commercial_stage = "close"
+    elif active_frame == "pro_100_vs_200" or _pro_tier_question(normalized):
+        commercial_stage = "decision_frame"
     elif _price_question(normalized) or _plus_sufficiency_question(normalized) or _pro_agreement_signal(normalized):
         commercial_stage = "decision_frame"
-    elif _commercial_objection(normalized) or _competitor_objection(normalized):
+    elif objection or _competitor_objection(normalized):
         commercial_stage = "objection_handling"
     elif recommended != "unknown":
         commercial_stage = "recommendation"
@@ -261,7 +307,7 @@ def _commercial_sales_state(
 
     if _pro_agreement_signal(normalized) or _signup_question(normalized) or _self_serve_close(normalized):
         buyer_momentum = "buying_signal"
-    elif _commercial_objection(normalized) or _competitor_objection(normalized):
+    elif objection or _competitor_objection(normalized):
         buyer_momentum = "neutral"
     elif recommended != "unknown":
         buyer_momentum = "positive"
@@ -290,16 +336,39 @@ def _commercial_sales_state(
     else:
         value_hypothesis = "better_tools" if use_text and use_text != "unknown" else "no_fit"
 
-    if recommended in {"plus", "pro"} or _plus_sufficiency_question(normalized) or _pro_agreement_signal(normalized):
+    if active_frame == "pro_100_vs_200" or _pro_tier_question(normalized):
+        decision_frame = "pro_100_vs_200"
+    elif recommended in {"plus", "pro"} or _plus_sufficiency_question(normalized) or _pro_agreement_signal(normalized):
         decision_frame = "plus_vs_pro"
     elif recommended == "free" or budget == "high":
         decision_frame = "free_vs_paid"
     elif recommended in {"business", "enterprise"}:
         decision_frame = "business_vs_enterprise"
-    elif _competitor_objection(normalized) or _current_tool_enough(normalized):
-        decision_frame = "stay_with_current_tool"
+    elif _competitor_objection(normalized) or _current_tool_enough(normalized) or _another_ai_user(normalized):
+        decision_frame = "current_tool_vs_chatgpt"
     else:
         decision_frame = "no_fit"
+
+    if _signup_question(normalized):
+        buyer_decision_stage = "self_serve_close"
+    elif decision_frame == "pro_100_vs_200":
+        buyer_decision_stage = "pro_tier_selection"
+    elif objection:
+        buyer_decision_stage = "objection_handling"
+    elif _price_question(normalized):
+        buyer_decision_stage = "price_evaluation"
+    elif decision_frame == "plus_vs_pro":
+        buyer_decision_stage = "plus_vs_pro"
+    elif decision_frame == "current_tool_vs_chatgpt":
+        buyer_decision_stage = "use_case"
+    elif decision_frame == "free_vs_paid":
+        buyer_decision_stage = "no_fit" if budget == "high" else "price_evaluation"
+    elif use_text and use_text != "unknown":
+        buyer_decision_stage = "use_case"
+    elif state.get("openai_adoption_state") not in {None, "unknown"}:
+        buyer_decision_stage = "adoption_state"
+    else:
+        buyer_decision_stage = prior_stage or "adoption_state"
 
     if _signup_question(normalized) and recommended == "enterprise":
         close_readiness = "contact_sales"
@@ -312,8 +381,8 @@ def _commercial_sales_state(
     else:
         close_readiness = "none"
 
-    if _commercial_objection(normalized):
-        last_objection_handled = _commercial_objection(normalized)
+    if objection:
+        last_objection_handled = objection
     elif _competitor_objection(normalized) or _current_tool_enough(normalized):
         last_objection_handled = "competitor"
     else:
@@ -331,6 +400,15 @@ def _commercial_sales_state(
         "last_decision_frame_given": decision_frame,
         "last_objection_handled": last_objection_handled,
         "next_commercial_action": _next_best_action_for_state(state, normalized, response),
+        "buyer_decision_stage": buyer_decision_stage,
+        "active_decision_frame": decision_frame,
+        "last_decision_question_answered": current_question_type or state.get("last_decision_question_answered") or "",
+        "current_buyer_question_type": current_question_type,
+        "should_not_regress_to_prior_decision_stage": bool(
+            decision_frame == "pro_100_vs_200"
+            or active_frame == "pro_100_vs_200"
+            or buyer_decision_stage in {"pro_tier_selection", "self_serve_close"}
+        ),
     }
 
 
@@ -357,6 +435,11 @@ def memory_update_for_turn(
         "openai_api_boundary_answered": bool(prior.get("openai_api_boundary_answered")),
         "openai_recommended_path": prior.get("openai_recommended_path") or "unknown",
         "openai_next_best_action": prior.get("openai_next_best_action") or "unknown",
+        "buyer_decision_stage": prior.get("buyer_decision_stage") or "adoption_state",
+        "active_decision_frame": prior.get("active_decision_frame") or "",
+        "last_decision_question_answered": prior.get("last_decision_question_answered") or "",
+        "current_buyer_question_type": prior.get("current_buyer_question_type") or "",
+        "should_not_regress_to_prior_decision_stage": bool(prior.get("should_not_regress_to_prior_decision_stage")),
     }
 
     if _current_chatgpt_user(normalized) or _openai_use_case_tags(normalized):
@@ -393,6 +476,21 @@ def memory_update_for_turn(
         ) or state["openai_price_answered"]
     if _contains(normalized, {"api included", "is api included", "api usage", "tokens", "developer app", "platform api"}) or "api usage is separate" in response:
         state["openai_api_boundary_answered"] = True
+
+    if _signup_question(normalized):
+        state["buyer_decision_stage"] = "self_serve_close"
+        state["current_buyer_question_type"] = "signup"
+        state["last_decision_question_answered"] = "signup"
+        if state.get("active_decision_frame") == "pro_100_vs_200":
+            state["should_not_regress_to_prior_decision_stage"] = True
+    elif _pro_tier_question_for_context(normalized, turns) or (
+        state.get("active_decision_frame") == "pro_100_vs_200" and not _contains(normalized, {"plus or pro", "plus enough"})
+    ):
+        state["buyer_decision_stage"] = "pro_tier_selection"
+        state["active_decision_frame"] = "pro_100_vs_200"
+        state["current_buyer_question_type"] = "which_pro_tier"
+        state["last_decision_question_answered"] = "which_pro_tier"
+        state["should_not_regress_to_prior_decision_stage"] = True
 
     recommended = _recommended_path_for_state(state)
     if recommended != "unknown":
@@ -778,6 +876,8 @@ def _current_chatgpt_user(normalized: str) -> bool:
             "using chatgpt today",
             "current chatgpt user",
             "i use chatgpt",
+            "i used chatgpt",
+            "used chatgpt",
             "i'm using chatgpt",
             "i m using chatgpt",
             "already use chatgpt",
@@ -796,11 +896,22 @@ def _another_ai_user(normalized: str) -> bool:
             "another ai tool",
             "another ai tools",
             "other ai tools",
+            "other ai tool",
+            "other ai",
+            "other tools",
+            "ai tools already",
+            "already use ai tools",
+            "already using ai tools",
+            "already have an ai tool",
             "use claude",
+            "claude",
             "use gemini",
+            "gemini",
             "use copilot",
+            "copilot",
             "current tool",
             "current assistant",
+            "other assistants",
             "another subscription",
             "already pay for another tool",
         },
@@ -820,12 +931,8 @@ def _current_tool_enough(normalized: str) -> bool:
             "happy with my current tool",
             "stay with what i have",
             "i can stay with what i have",
-            "i do not want to pay",
-            "don't want to pay",
             "no paid plan",
-            "no subscription",
             "no budget",
-            "why pay",
         },
     )
 
@@ -843,6 +950,10 @@ def _commercial_objection(normalized: str) -> str:
             "why not start lower",
             "is pro really necessary",
             "what if pro is too much",
+            "why would pro be worth it",
+            "why pay 100",
+            "why pay 200",
+            "why 100 or 200",
         },
     ):
         return "why_pro"
@@ -850,14 +961,21 @@ def _commercial_objection(normalized: str) -> str:
         normalized,
         {
             "too expensive",
+            "expensive",
             "price sensitive",
             "do not want to overpay",
             "don't want to overpay",
             "worth paying",
+            "why would i pay",
+            "why would i pay that much",
+            "why pay that much",
             "why not just use free",
             "why pay",
             "is this worth paying",
             "paid is too much",
+            "that is a lot monthly",
+            "lot monthly",
+            "overpay",
         },
     ):
         return "price"
@@ -975,14 +1093,55 @@ def _pro_tier_question(normalized: str) -> bool:
         normalized,
         {
             "100 and 200 dollar pro",
+            "100 or 200 pro",
+            "100 or 200 dollar pro",
+            "100 or 200 dollars",
+            "$100 or $200 pro",
+            "$100 version",
+            "$200 version",
             "100 dollar pro",
             "200 dollar pro",
+            "100 version",
+            "200 version",
             "one hundred and two hundred dollar pro",
             "which pro should i use",
             "which pro",
+            "which pro version",
+            "pro version",
+            "version of pro",
             "pro tier",
             "pro tiers",
             "pro should i use",
+            "higher pro tier",
+            "higher pro",
+            "lower pro tier",
+            "lower pro",
+            "which paid pro level",
+            "which pro plan tier",
+            "choose between pro tiers",
+            "difference between pro tiers",
+            "between 100 and 200 pro",
+            "100 and 200 pro",
+            "200 dollar pro necessary",
+        },
+    )
+
+
+def _pro_tier_question_for_context(normalized: str, turns: list[dict[str, Any]]) -> bool:
+    if _pro_tier_question(normalized):
+        return True
+    if not (_known_heavy_use(normalized, turns) or _prior_pro_tier_context(turns)):
+        return False
+    return _contains(
+        normalized,
+        {
+            "do not know how heavy",
+            "don't know how heavy",
+            "not sure how heavy",
+            "which tier",
+            "which version",
+            "which level",
+            "how do i choose",
         },
     )
 
@@ -1071,6 +1230,10 @@ def _signup_question(normalized: str) -> bool:
             "where would i click",
             "how do i start",
             "how do i upgrade to pro",
+            "how do i upgrade now",
+            "how do i get it",
+            "where do i choose the pro tier",
+            "where do i choose pro",
             "where can i compare the plan",
             "what page should i use",
             "how do i move forward",
@@ -1188,6 +1351,11 @@ def _commercial_objection_response(normalized: str, turns: list[dict[str, Any]])
     objection = _commercial_objection(normalized)
     prior_text = _prior_customer_text(turns)
     if objection == "why_pro":
+        if _prior_pro_tier_context(turns) or _pro_tier_question(normalized):
+            return (
+                "That price concern is fair. For heavy coding and writing, the 100 versus 200 dollar Pro choice is about usage pressure. "
+                "If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom."
+            )
         if _another_ai_user(prior_text) or _competitor_objection(f"{prior_text} {normalized}"):
             return (
                 "No automatic switch: against your current tool, Pro only makes sense if ChatGPT fills a specific gap and you expect heavier usage. "
@@ -1204,8 +1372,8 @@ def _commercial_objection_response(normalized: str, turns: list[dict[str, Any]])
         )
     if objection == "subscription":
         return (
-            "I would not add another subscription unless ChatGPT fills a real gap. "
-            "For heavy coding and writing, the decision is Plus as the lower-cost test versus Pro if usage headroom matters."
+            "I understand the subscription concern. I would not add one unless ChatGPT removes real friction in your workflow. "
+            "For heavy coding and writing, start with Plus if price matters most; choose Pro only if usage headroom or limits justify the extra cost."
         )
     if objection == "competitor":
         return (
@@ -1213,9 +1381,16 @@ def _commercial_objection_response(normalized: str, turns: list[dict[str, Any]])
             "Compare ChatGPT only where your current tool is weakest; for heavy coding and writing, that means Plus as a low-cost test or Pro for more usage headroom."
         )
     if objection == "price":
+        if _prior_pro_tier_context(turns) or _pro_tier_question(normalized):
+            return (
+                "That price concern is fair. If you are already choosing between Pro tiers, start with the lower Pro tier unless you know you need maximum usage. "
+                "Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom."
+            )
         return (
-            "If price is the main concern, I would start lower. Plus is the lower-cost paid option; "
-            "Pro is only the better comparison if heavy coding and writing makes limits or usage headroom important. The decision is cost control versus usage headroom."
+            "That price concern is fair. If you are using it casually, I would not pay for Pro. "
+            "For heavy coding and writing, the question is whether extra usage headroom saves enough friction to justify the price. "
+            "If price matters most, start with Plus. If limits slow you down, Pro is the cleaner fit. "
+            "The official ChatGPT pricing page is the source of truth for exact current prices."
         )
     return (
         "The clean decision is value versus cost: Plus is the lower-cost start; Pro is the higher-usage comparison. "
@@ -1230,15 +1405,10 @@ def _pro_tier_response(campaign: dict | None, normalized: str, turns: list[dict[
         "The Pro help article describes 100 dollar and 200 dollar Pro tiers.",
     )
     caveat = _official_price_caveat()
-    if _known_limit_pain(normalized, turns) or _known_heavy_use(normalized, turns):
-        return (
-            f"{pro_price} At a high level, use the lower Pro tier first if it covers your heavy work; "
-            f"compare the higher Pro tier only if limits still block you. {caveat}"
-        )
     return (
-        f"{pro_price} At a high level, the choice is usage pressure: start lower if you are unsure, "
-        f"and compare the higher Pro tier only if heavy work keeps hitting limits. {caveat} "
-        "Are limits already blocking your work?"
+        f"{pro_price} Exact tier details should be checked against official OpenAI sources. "
+        "If you are unsure, start with the lower Pro tier. "
+        f"Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. {caveat}"
     )
 
 
@@ -1401,6 +1571,14 @@ def _signup_response(normalized: str, turns: list[dict[str, Any]]) -> str:
         return (
             "For Business, use the official ChatGPT plans page for the self-serve workspace route. "
             "For Enterprise requirements, use contact sales."
+        )
+    if _prior_pro_tier_context(turns):
+        suffix = " I cannot send a link from this fixture." if link_requested else ""
+        return (
+            "For individual plans, use the official ChatGPT plans page or profile upgrade flow. "
+            "Since you are deciding between Pro tiers, start with the lower Pro tier unless you already know you need maximum usage. "
+            "Move up only if you hit limits or need the most headroom."
+            f"{suffix}"
         )
     if _known_use_case("", turns):
         suffix = " I cannot send a link from this fixture." if link_requested else ""
@@ -1636,7 +1814,7 @@ def duplicate_repair_response(
     state = _prior_openai_state(turns, memory)
     if not state:
         return None
-    if _pro_tier_question(normalized):
+    if _pro_tier_question_for_context(normalized, turns):
         return _pro_tier_response(campaign, normalized, turns)
     if _price_question(normalized) or _price_followup_complaint(normalized, turns):
         return _avoid_duplicate_response(
@@ -1935,7 +2113,16 @@ def classify_turn(
             polarity="objection",
         )
 
-    if _pro_tier_question(normalized):
+    if _signup_question(normalized) and _prior_pro_tier_context(turns):
+        return _frame(
+            **base,
+            semantic="public_plan_self_serve_next_step_answered",
+            response=_signup_response(normalized, turns),
+            dialogue_focus="self_serve_close",
+            polarity="close",
+        )
+
+    if _pro_tier_question_for_context(normalized, turns):
         return _frame(
             **base,
             semantic="public_plan_pro_tier_comparison_answered",

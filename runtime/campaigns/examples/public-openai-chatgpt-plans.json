@@ -81,12 +81,12 @@
   "campaign_playbook_id": "public-openai-chatgpt-plans-playbook",
   "caller_identity": {
     "representative_name": "Maya",
-    "relationship_to_offer": "testing a public-data ChatGPT plan-fit advisor"
+    "relationship_to_offer": "helping buyers compare public ChatGPT plan categories using official public sources"
   },
   "language": "en",
   "opening_options": {
-    "preferred": "Hi, this is Maya. I'm testing a public-data ChatGPT plan-fit advisor. In one minute, I can help you decide whether Free, Plus, Pro, Business, or Enterprise is worth looking at for your use. Do you have a minute?",
-    "short": "Hi, this is Maya. I'm doing a quick ChatGPT plan-fit check - mainly whether Free, Go, Plus, Pro, Business, or Enterprise fits your use case. Do you have a minute?"
+    "preferred": "Hi, this is Maya. I can help you quickly decide whether Free, Plus, Pro, Business, or Enterprise is worth considering for how you use AI. Do you have a minute?",
+    "short": "Hi, this is Maya. I can help you quickly decide whether Free, Plus, Pro, Business, or Enterprise is worth considering for your AI use. Do you have a minute?"
   },
   "agent_can_say": [
     "This is a public-data simulation based on official public OpenAI plan information.",

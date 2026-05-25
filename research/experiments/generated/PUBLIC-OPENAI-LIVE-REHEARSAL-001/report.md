@@ -1,10 +1,10 @@
 # PUBLIC-OPENAI-LIVE-REHEARSAL-001
 
 - Status: `pass`
-- Total private records scanned: `590`
+- Total private records scanned: `604`
 - Current OpenAI live records found: `11`
 - Records after `b58aa53` or latest marker: `11`
-- Stale/historical OpenAI records ignored: `63`
+- Stale/historical OpenAI records ignored: `77`
 - Live TTS used count: `11`
 - Dry-run count: `0`
 - ElevenLabs call made count: `11`
@@ -27,6 +27,13 @@
 - False limit-pain count: `0`
 - Overqualified without recommendation count: `0`
 - Sales-performance defect count: `0`
+- Premature no-fit caveat count: `0`
+- Price objection repeated-price count: `0`
+- Wrong decision-stage count: `0`
+- Pro-tier selection defect count: `0`
+- Signup close stage-mismatch count: `0`
+- Stability guard owned sales-turn count: `0`
+- Sales momentum defect count: `0`
 - Legacy field leakage count: `0`
 - RouteSignal contamination count: `0`
 - ASR issue count: `0`
@@ -61,7 +68,7 @@
   "fixed_by_replay_after_patch": 8,
   "needs_human_review": 8,
   "pre_patch_current_live_defect": 8,
-  "stale_or_unknown_version_artifact": 52
+  "stale_or_unknown_version_artifact": 66
 }
 ```
 

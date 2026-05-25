@@ -81,6 +81,13 @@ PRICE_QUESTION_RE = re.compile(
     r"\b(price|pricing|cost|costs|how much|paid tiers?|monthly|expensive|budget|subscription)\b",
     re.I,
 )
+PRO_TIER_DECISION_RE = re.compile(
+    r"\b(lower pro tier|higher pro tier|lower tier|higher tier|100 dollar|200 dollar|\$100|\$200|maxing out|most headroom)\b",
+    re.I,
+)
+PRO_TIER_RESET_RE = re.compile(r"\b(plus versus pro|pro versus plus|compare plus versus pro|next decision is pro versus plus)\b", re.I)
+PRICE_REPEAT_PARAGRAPH_RE = re.compile(r"free is the no-cost option.*20 dollars.*100 dollar.*200 dollar", re.I)
+PREMATURE_NO_FIT_RE = re.compile(r"\b(i would not push|would not push a paid|no paid close|stay free or stop)\b", re.I)
 ENOUGH_QUESTION_RE = re.compile(r"\b(is|would|will|should)\s+\w+\s+(be\s+)?enough\b|\benough\s+(for|though)\b", re.I)
 OVER_QUALIFYING_RE = re.compile(
     r"\b(hard to say|it depends|before i can recommend|before recommending|need to know more|"
@@ -102,6 +109,10 @@ CRITICAL_FAILURE_RULES = [
     "buyer asks is X enough but response dodges or over-qualifies",
     "response repeats same caveat after buyer gives new information",
     "response only provides information and no next commercial action",
+    "buyer asks which tier/version and agent answers earlier plan comparison",
+    "price objection receives repeated price info with no value reframe",
+    "buyer gives tool usage and agent prematurely disqualifies without explicit no-fit signal",
+    "signup close ignores current decision stage",
     "response asks another qualifier when recommendation is already possible",
     "unsupported claim / fake side effect / internal policy language / product leakage",
 ]
@@ -217,6 +228,9 @@ def has_commercial_action(text: str) -> bool:
             "recommend",
             "to move it forward",
             "we've already",
+            "useful comparison",
+            "current setup",
+            "weakest",
         },
     )
 
@@ -311,6 +325,11 @@ def score_commercial_response(
         "next action",
         "compare plus",
         "compare pro",
+        "lower pro tier",
+        "higher pro tier",
+        "start with",
+        "move to",
+        "move up",
         "to move it forward",
         "we already",
         "i would",
@@ -371,11 +390,24 @@ def score_commercial_response(
             "free_vs_paid": ("free", "paid"),
             "business_vs_enterprise": ("business", "enterprise"),
             "stay_with_current_tool": ("current tool",),
+            "current_tool_vs_chatgpt": ("current tool", "chatgpt"),
+            "pro_100_vs_200": ("pro",),
             "no_fit": ("free", "not push"),
         }.get(decision_frame, ())
         if frame_terms and not all(term in text for term in frame_terms):
             scores["value_framing_score"] = 4
             failures.append(f"decision frame {decision_frame!r} missing")
+        if decision_frame == "pro_100_vs_200":
+            if not PRO_TIER_DECISION_RE.search(response):
+                scores["direct_answer_score"] = 0
+                scores["value_framing_score"] = 0
+                failures.append("Pro-tier question did not receive a Pro-tier decision rule")
+                critical.append("buyer asks which tier/version and agent answers earlier plan comparison")
+            if PRO_TIER_RESET_RE.search(response) or ("plus is" in text and "lower pro" not in text):
+                scores["direct_answer_score"] = 0
+                scores["momentum_score"] = 0
+                failures.append("Pro-tier question regressed to Plus-vs-Pro")
+                critical.append("buyer asks which tier/version and agent answers earlier plan comparison")
     if not contains_any(text, {"because", "since", "given", "if", "lower-cost", "limits", "controls", "tool", "price"}):
         scores["value_framing_score"] = min(scores["value_framing_score"], 5)
         failures.append("value frame missing")
@@ -383,6 +415,24 @@ def score_commercial_response(
         scores["value_framing_score"] = 0
         failures.append("price question did not receive a price/value frame")
         critical.append("price asked without value frame")
+    if expectation.get("price_objection_after_price_answer") and PRICE_REPEAT_PARAGRAPH_RE.search(response):
+        scores["objection_handling_score"] = 0
+        scores["no_loop_score"] = 0
+        failures.append("price objection repeated the same price paragraph")
+        critical.append("price objection receives repeated price info with no value reframe")
+    if expectation.get("tool_usage_without_no_fit") and PREMATURE_NO_FIT_RE.search(response):
+        scores["objection_handling_score"] = 0
+        failures.append("AI-tool usage was prematurely disqualified")
+        critical.append("buyer gives tool usage and agent prematurely disqualifies without explicit no-fit signal")
+    if expectation.get("signup_after_pro_tier"):
+        if not contains_any(text, {"official chatgpt plans page", "profile upgrade flow"}):
+            scores["close_progression_score"] = 0
+            failures.append("signup after Pro-tier did not give self-serve route")
+            critical.append("signup close ignores current decision stage")
+        if not PRO_TIER_DECISION_RE.search(response):
+            scores["close_progression_score"] = 0
+            failures.append("signup after Pro-tier ignored Pro-tier decision")
+            critical.append("signup close ignores current decision stage")
 
     if objection:
         objection_markers = {
@@ -608,6 +658,62 @@ def build_scenarios() -> list[dict[str, Any]]:
                 },
             )
         )
+    scenarios.extend(
+        [
+            scenario(
+                "commercial-ai-tool-usage-no-premature-nofit-001",
+                "objection_handling",
+                [*base, "I used chat GPT and other tools"],
+                {
+                    "buying_question": False,
+                    "decision_frame": "current_tool_vs_chatgpt",
+                    "tool_usage_without_no_fit": True,
+                    "buyer_terms": ["current tool", "chatgpt"],
+                    "forbid": ["would not push", "no paid close"],
+                },
+            ),
+            scenario(
+                "commercial-price-objection-after-price-001",
+                "objection_handling",
+                [*base, "I use it for coding and writing", "I use it heavily every day", "how much are the plans", "it is expensive, why would I pay that much"],
+                {
+                    "buying_question": True,
+                    "objection": "price",
+                    "decision_frame": "plus_vs_pro",
+                    "price_objection_after_price_answer": True,
+                    "buyer_terms": ["coding", "writing"],
+                    "forbid": ["free is the no-cost option"],
+                },
+            ),
+            scenario(
+                "commercial-pro-tier-selection-001",
+                "decision_stage",
+                [*base, "I use it for coding and writing", "I use it heavily every day", "which Pro should I use"],
+                {
+                    "buying_question": True,
+                    "expected_plan": "pro",
+                    "decision_frame": "pro_100_vs_200",
+                    "buyer_terms": ["pro"],
+                    "forbid": ["plus versus pro", "next decision is pro versus plus"],
+                },
+            ),
+            scenario(
+                "commercial-signup-after-pro-tier-001",
+                "self_serve_close",
+                [*base, "I use it for coding and writing", "I use it heavily every day", "which Pro should I use", "how do I sign up"],
+                {
+                    "buying_question": True,
+                    "buying_signal": True,
+                    "close_expected": True,
+                    "expected_plan": "pro",
+                    "decision_frame": "pro_100_vs_200",
+                    "signup_after_pro_tier": True,
+                    "buyer_terms": ["pro"],
+                    "forbid": ["plus versus pro", "next decision is pro versus plus"],
+                },
+            ),
+        ]
+    )
     return scenarios
 
 
@@ -718,6 +824,34 @@ def build_critical_rule_probes() -> list[dict[str, Any]]:
             "expectation": {"buying_question": False, "expected_plan": "pro"},
         },
         {
+            "id": "probe-pro-tier-reset-to-plus-vs-pro",
+            "rule": "buyer asks which tier/version and agent answers earlier plan comparison",
+            "response": "Compare Pro first for heavy coding and writing; choose Plus only if lower cost matters more. The next decision is Pro versus Plus.",
+            "buyer_context": "I use it heavily for coding and writing. Which Pro should I use?",
+            "expectation": {"buying_question": True, "expected_plan": "pro", "decision_frame": "pro_100_vs_200"},
+        },
+        {
+            "id": "probe-price-objection-repeated-price",
+            "rule": "price objection receives repeated price info with no value reframe",
+            "response": "Sure. Free is the no-cost option. Plus is listed at 20 dollars per month. Pro has 100 dollar and 200 dollar tiers.",
+            "buyer_context": "I use it heavily for coding and writing. How much are the plans? It is expensive, why would I pay that much?",
+            "expectation": {"buying_question": True, "objection": "price", "decision_frame": "plus_vs_pro", "price_objection_after_price_answer": True},
+        },
+        {
+            "id": "probe-tool-usage-premature-no-fit",
+            "rule": "buyer gives tool usage and agent prematurely disqualifies without explicit no-fit signal",
+            "response": "If your current tool is enough, I would not push a paid ChatGPT plan.",
+            "buyer_context": "I used ChatGPT and other tools.",
+            "expectation": {"tool_usage_without_no_fit": True, "decision_frame": "current_tool_vs_chatgpt"},
+        },
+        {
+            "id": "probe-signup-ignores-pro-tier-stage",
+            "rule": "signup close ignores current decision stage",
+            "response": "Use the official ChatGPT plans page. Choose Plus if you want the lower-cost starting point and Pro if usage limits matter.",
+            "buyer_context": "I am choosing between the 100 dollar and 200 dollar Pro tiers. How do I sign up?",
+            "expectation": {"buying_question": True, "close_expected": True, "decision_frame": "pro_100_vs_200", "signup_after_pro_tier": True},
+        },
+        {
             "id": "probe-extra-qualifier",
             "rule": "response asks another qualifier when recommendation is already possible",
             "response": "What would you mainly use it for before I recommend a plan?",
@@ -770,6 +904,10 @@ def write_gate_evidence(result: dict[str, Any]) -> None:
         "buyer asks is X enough but response dodges or over-qualifies": "An is-enough question requests a direct plan decision, not another qualifier.",
         "response repeats same caveat after buyer gives new information": "Repeated caveats show the dialogue is not adapting to the buyer.",
         "response only provides information and no next commercial action": "Information is not selling unless it advances the buyer toward a decision.",
+        "buyer asks which tier/version and agent answers earlier plan comparison": "A later-stage tier decision must not be answered with an earlier Plus-vs-Pro frame.",
+        "price objection receives repeated price info with no value reframe": "Repeating prices after sticker shock reinforces the objection instead of resolving it.",
+        "buyer gives tool usage and agent prematurely disqualifies without explicit no-fit signal": "Mere tool usage is discovery evidence, not a no-fit signal.",
+        "signup close ignores current decision stage": "A close must match the buyer's active decision, otherwise the next step is generic and weak.",
         "response asks another qualifier when recommendation is already possible": "Unneeded qualification stalls high-intent buyers.",
         "unsupported claim / fake side effect / internal policy language / product leakage": "These create trust, legal, privacy, or campaign-boundary failures.",
     }

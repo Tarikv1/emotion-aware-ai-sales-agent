@@ -83,6 +83,14 @@ FALSE_LIMIT_PAIN_RESPONSE_RE = re.compile(r"given you are hitting limits|if you 
 HEAVY_CONTEXT_RE = re.compile(r"heavy side|little heavy|use heavily|heavy daily|every day|\"openai_usage_intensity\": \"heavy\"", re.I)
 EXPLICIT_LIMIT_CONTEXT_RE = re.compile(r"hitting limits|hit limits|limits .*frustrating|blocked by limits|running out|\"openai_limit_pain\": true", re.I)
 PLAIN_ASK_TRANSCRIPT_RE = re.compile(r"what do you want me to do|what are you asking|what is the next step|do not understand what you want", re.I)
+AI_TOOL_USAGE_TRANSCRIPT_RE = re.compile(r"used? chat\s*gpt.*other tools|use ai tools already|already use ai tools|another llm|claude|gemini|copilot|other ai", re.I)
+PREMATURE_NO_FIT_RESPONSE_RE = re.compile(r"if your current tool is enough.*would not push|would not push a paid chatgpt plan|no paid close", re.I)
+PRICE_OBJECTION_TRANSCRIPT_RE = re.compile(r"expensive|why would i pay|why pay|another subscription|overpay|too much", re.I)
+PRICE_REPEAT_RESPONSE_RE = re.compile(r"free is the no-cost option.*20 dollars.*100 dollar.*200 dollar", re.I)
+PRO_TIER_TRANSCRIPT_RE = re.compile(r"which pro|pro tier|version of pro|100.*200.*pro|100.*version|200.*version|higher pro|lower pro", re.I)
+PRO_TIER_RESPONSE_RE = re.compile(r"lower pro tier|higher pro tier|lower tier|higher tier|100 dollar|200 dollar|maxing out|most headroom", re.I)
+PLUS_VS_PRO_RESET_RE = re.compile(r"plus versus pro|pro versus plus|compare plus versus pro|next decision is pro versus plus|choose plus only", re.I)
+PRO_TIER_CONTEXT_RE = re.compile(r"pro_100_vs_200|pro_tier_selection|which pro|pro tier|version of pro|100.*200.*pro", re.I)
 LEGACY_FIELD_RE = re.compile(r"legacy compatibility|appointment_target|human_followup_owner|demo operator|primary close is official", re.I)
 ROUTESIGNAL_TRACE_RE = re.compile(r"routesignal|northstar|inbound demo request|missed callbacks|handoffs|callback reminders", re.I)
 
@@ -111,6 +119,13 @@ DIALOGUE_DEFECT_CLASSES = {
     "current_live_openai_false_limit_pain",
     "current_live_openai_overqualified_without_recommendation",
     "current_live_openai_sales_performance_defect",
+    "current_live_openai_premature_no_fit_caveat",
+    "current_live_openai_price_objection_repeated_price",
+    "current_live_openai_wrong_decision_stage",
+    "current_live_openai_pro_tier_selection_defect",
+    "current_live_openai_signup_close_stage_mismatch",
+    "current_live_openai_stability_guard_owned_sales_turn",
+    "current_live_openai_sales_momentum_defect",
 }
 
 POST_PATCH_REPLAY_CASES = [
@@ -129,6 +144,10 @@ POST_PATCH_REPLAY_CASES = [
     ["__agent_open__", "yeah sure", "I use another LLM", "how much are the plans", "but I asked the price"],
     ["__agent_open__", "yeah sure", "I use it for coding and writing", "what did you mean by that"],
     ["__agent_open__", "yeah sure", "I use it for coding and writing", "I use it heavily every day", "I already told you that", "keep checking it"],
+    ["__agent_open__", "yeah sure", "I used chat GPT and other tools"],
+    ["__agent_open__", "yeah sure", "I use it for coding and writing", "I use it heavily every day", "how much are the plans", "it is expensive, why would I pay that much"],
+    ["__agent_open__", "yeah sure", "I use it for coding and writing", "I use it heavily every day", "I want to decide which version of Pro I want to go for"],
+    ["__agent_open__", "yeah sure", "I use it for coding and writing", "I use it heavily every day", "I want to decide which version of Pro I want to go for", "how do I sign up"],
     ["who follows up after this"],
     ["who is the demo operator"],
     ["what happens after I say yes"],
@@ -403,6 +422,10 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
     payload_context_text = json.dumps(payload, sort_keys=True, default=str).lower()
     selected = selected_config(payload)
     delivery = tts(payload)
+    source = str((payload.get("dialogue_manager") or {}).get("final_response_source") or "")
+    memory = payload.get("demo_conversation_memory") or payload.get("conversation_memory") or {}
+    plan_state = memory.get("openai_chatgpt_plan_state") if isinstance(memory, dict) else {}
+    pro_tier_context_active = isinstance(plan_state, dict) and plan_state.get("active_decision_frame") == "pro_100_vs_200"
     classes: list[str] = []
 
     if campaign_path(payload) != FIXTURE_RELATIVE or selected.get("campaign_id") != "public-openai-chatgpt-plans" or payload.get("campaign_selector_mode") != "generic_config":
@@ -417,7 +440,9 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
         classes.append("current_live_openai_asr_product_alias_issue")
     if INTERNAL_POLICY_RE.search(trace_text):
         classes.append("current_live_openai_internal_policy_language_leak")
-    if PRICE_TRANSCRIPT_RE.search(transcript) and not PRICE_RESPONSE_RE.search(text):
+    if PRICE_TRANSCRIPT_RE.search(transcript) and not PRICE_RESPONSE_RE.search(text) and not (
+        PRICE_OBJECTION_TRANSCRIPT_RE.search(transcript) and COMMERCIAL_VALUE_FRAME_RE.search(text)
+    ):
         classes.append("current_live_openai_price_question_refusal")
     if PRICE_TRANSCRIPT_RE.search(transcript) and PRICE_RESPONSE_RE.search(text) and not COMMERCIAL_VALUE_FRAME_RE.search(text):
         classes.append("current_live_openai_weak_value_frame")
@@ -463,6 +488,29 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
         classes.append("current_live_openai_sales_quality_defect")
     if COMPETITOR_CAVEAT_RE.search(text) and re.search(r"coding|writing|plus|pro|price|sign up", f"{transcript} {payload_context_text}", re.I):
         classes.append("current_live_openai_repeated_competitor_caveat")
+    if AI_TOOL_USAGE_TRANSCRIPT_RE.search(transcript) and PREMATURE_NO_FIT_RESPONSE_RE.search(text):
+        classes.append("current_live_openai_premature_no_fit_caveat")
+        classes.append("current_live_openai_sales_momentum_defect")
+    if PRICE_OBJECTION_TRANSCRIPT_RE.search(transcript) and PRICE_REPEAT_RESPONSE_RE.search(text):
+        classes.append("current_live_openai_price_objection_repeated_price")
+        classes.append("current_live_openai_sales_momentum_defect")
+    if PRO_TIER_TRANSCRIPT_RE.search(transcript) and (
+        PLUS_VS_PRO_RESET_RE.search(text) or not PRO_TIER_RESPONSE_RE.search(text)
+    ):
+        classes.append("current_live_openai_pro_tier_selection_defect")
+        classes.append("current_live_openai_wrong_decision_stage")
+        classes.append("current_live_openai_sales_momentum_defect")
+    if SIGNUP_CONTEXT_TRANSCRIPT_RE.search(transcript) and (pro_tier_context_active or PRO_TIER_TRANSCRIPT_RE.search(transcript)) and not PRO_TIER_RESPONSE_RE.search(text):
+        classes.append("current_live_openai_signup_close_stage_mismatch")
+        classes.append("current_live_openai_wrong_decision_stage")
+        classes.append("current_live_openai_sales_momentum_defect")
+    if source == "pre_speech_conversation_stability_guard" and re.search(
+        r"chatgpt|other ai|price|expensive|plus|pro|sign up|upgrade|which version|which tier",
+        transcript,
+        re.I,
+    ):
+        classes.append("current_live_openai_stability_guard_owned_sales_turn")
+        classes.append("current_live_openai_sales_momentum_defect")
     if SIGNUP_CONTEXT_TRANSCRIPT_RE.search(transcript) and not SIGNUP_CONTEXT_RESPONSE_RE.search(text):
         classes.append("current_live_openai_close_context_missing")
         classes.append("current_live_openai_memory_progression_defect")
@@ -488,7 +536,7 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
         classes.append("current_live_openai_raw_url_spoken_issue")
     if FAKE_SIDE_EFFECT_RE.search(text):
         classes.append("current_live_openai_fake_side_effect_claim")
-    if AFFILIATION_RE.search(text):
+    if AFFILIATION_RE.search(text) and not SOURCE_TRUST_RESPONSE_RE.search(text):
         classes.append("current_live_openai_affiliation_or_disclaimer_issue")
     if SOURCE_CLAIM_RE.search(text):
         classes.append("current_live_openai_source_claim_issue")
@@ -510,6 +558,13 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
                 "current_live_openai_repeated_competitor_caveat",
                 "current_live_openai_false_limit_pain",
                 "current_live_openai_overqualified_without_recommendation",
+                "current_live_openai_premature_no_fit_caveat",
+                "current_live_openai_price_objection_repeated_price",
+                "current_live_openai_wrong_decision_stage",
+                "current_live_openai_pro_tier_selection_defect",
+                "current_live_openai_signup_close_stage_mismatch",
+                "current_live_openai_stability_guard_owned_sales_turn",
+                "current_live_openai_sales_momentum_defect",
             }
         ):
             classes.append("current_live_openai_sales_performance_defect")
@@ -696,6 +751,13 @@ def write_evidence(result: dict[str, Any]) -> None:
             f"- False limit-pain count: `{result['current_live_openai_false_limit_pain_count']}`",
             f"- Overqualified without recommendation count: `{result['current_live_openai_overqualified_without_recommendation_count']}`",
             f"- Sales-performance defect count: `{result['current_live_openai_sales_performance_defect_count']}`",
+            f"- Premature no-fit caveat count: `{result['current_live_openai_premature_no_fit_caveat_count']}`",
+            f"- Price objection repeated-price count: `{result['current_live_openai_price_objection_repeated_price_count']}`",
+            f"- Wrong decision-stage count: `{result['current_live_openai_wrong_decision_stage_count']}`",
+            f"- Pro-tier selection defect count: `{result['current_live_openai_pro_tier_selection_defect_count']}`",
+            f"- Signup close stage-mismatch count: `{result['current_live_openai_signup_close_stage_mismatch_count']}`",
+            f"- Stability guard owned sales-turn count: `{result['current_live_openai_stability_guard_owned_sales_turn_count']}`",
+            f"- Sales momentum defect count: `{result['current_live_openai_sales_momentum_defect_count']}`",
             f"- Legacy field leakage count: `{result['current_live_openai_legacy_field_leakage_count']}`",
             f"- RouteSignal contamination count: `{result['current_live_openai_routesignal_contamination_count']}`",
             f"- ASR issue count: `{result['current_live_openai_asr_issue_count']}`",
@@ -884,6 +946,13 @@ def main() -> None:
         "current_live_openai_false_limit_pain_count": replay_class_counts["current_live_openai_false_limit_pain"],
         "current_live_openai_overqualified_without_recommendation_count": replay_class_counts["current_live_openai_overqualified_without_recommendation"],
         "current_live_openai_sales_performance_defect_count": replay_class_counts["current_live_openai_sales_performance_defect"],
+        "current_live_openai_premature_no_fit_caveat_count": replay_class_counts["current_live_openai_premature_no_fit_caveat"],
+        "current_live_openai_price_objection_repeated_price_count": replay_class_counts["current_live_openai_price_objection_repeated_price"],
+        "current_live_openai_wrong_decision_stage_count": replay_class_counts["current_live_openai_wrong_decision_stage"],
+        "current_live_openai_pro_tier_selection_defect_count": replay_class_counts["current_live_openai_pro_tier_selection_defect"],
+        "current_live_openai_signup_close_stage_mismatch_count": replay_class_counts["current_live_openai_signup_close_stage_mismatch"],
+        "current_live_openai_stability_guard_owned_sales_turn_count": replay_class_counts["current_live_openai_stability_guard_owned_sales_turn"],
+        "current_live_openai_sales_momentum_defect_count": replay_class_counts["current_live_openai_sales_momentum_defect"],
         "current_live_openai_memory_progression_defect_count": replay_class_counts["current_live_openai_memory_progression_defect"],
         "current_live_openai_repeated_answered_question_count": replay_class_counts["current_live_openai_repeated_answered_question"],
         "current_live_openai_duplicate_repair_regression_count": replay_class_counts["current_live_openai_duplicate_repair_regression"],
@@ -906,6 +975,13 @@ def main() -> None:
         "private_current_live_false_limit_pain_count": counts["current_live_openai_false_limit_pain"],
         "private_current_live_overqualified_without_recommendation_count": counts["current_live_openai_overqualified_without_recommendation"],
         "private_current_live_sales_performance_defect_count": counts["current_live_openai_sales_performance_defect"],
+        "private_current_live_premature_no_fit_caveat_count": counts["current_live_openai_premature_no_fit_caveat"],
+        "private_current_live_price_objection_repeated_price_count": counts["current_live_openai_price_objection_repeated_price"],
+        "private_current_live_wrong_decision_stage_count": counts["current_live_openai_wrong_decision_stage"],
+        "private_current_live_pro_tier_selection_defect_count": counts["current_live_openai_pro_tier_selection_defect"],
+        "private_current_live_signup_close_stage_mismatch_count": counts["current_live_openai_signup_close_stage_mismatch"],
+        "private_current_live_stability_guard_owned_sales_turn_count": counts["current_live_openai_stability_guard_owned_sales_turn"],
+        "private_current_live_sales_momentum_defect_count": counts["current_live_openai_sales_momentum_defect"],
         "private_current_live_openai_memory_progression_defect_count": counts["current_live_openai_memory_progression_defect"],
         "private_current_live_openai_repeated_answered_question_count": counts["current_live_openai_repeated_answered_question"],
         "private_current_live_openai_duplicate_repair_regression_count": counts["current_live_openai_duplicate_repair_regression"],

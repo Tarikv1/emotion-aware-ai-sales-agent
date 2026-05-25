@@ -631,15 +631,13 @@
     {
       "expectation": "asr_alias",
       "failures": [],
-      "final_response": "If your current tool is enough, I would not push a paid ChatGPT plan. The useful comparison is only whether ChatGPT covers a real gap in coding, files, research, writing, team controls, or privacy controls.",
-      "final_response_hash": "3c0ebaeeca20",
-      "final_response_source": "pre_speech_conversation_stability_guard",
+      "final_response": "A switch only makes sense if ChatGPT gives you something your current setup does not: stronger coding workflow, file handling, research, voice/images, or team controls. What is the one area where your current tool feels weakest?",
+      "final_response_hash": "02f152435240",
+      "final_response_source": "contextual_buyer_semantics",
       "group": "asr_alias_recognition",
       "id": "asr-alias-023",
       "multi_turn": true,
-      "repair_chain": [
-        "pre_speech_conversation_stability_guard"
-      ],
+      "repair_chain": [],
       "side_effects": {
         "audio_file_created": false,
         "creates_calendar_event": false,
@@ -653,7 +651,7 @@
         "tts_provider_calls_made": false,
         "writes_crm": false
       },
-      "stability_guard_reason": "conversation_stability_repaired",
+      "stability_guard_reason": "campaign_response_priority_stability_guard_skipped",
       "status": "pass",
       "turn_count": 3
     },
@@ -930,8 +928,8 @@
     {
       "expectation": "price_question",
       "failures": [],
-      "final_response": "Sure. Free is the no-cost option. Plus is listed at 20 dollars per month, billed monthly. The Pro help article lists 100 dollar and 200 dollar Pro tiers; the main difference is usage allowance. Business is for teams, and Enterprise routes to contact sales. The official ChatGPT pricing page is the source of truth for exact current prices. The decision frame is Free for no-cost use, Plus as the lower-cost individual start, Pro for heavier individual use, and Business or Enterprise when team controls matter.",
-      "final_response_hash": "5ca036a027ff",
+      "final_response": "That price concern is fair. If you are using it casually, I would not pay for Pro. For heavy coding and writing, the question is whether extra usage headroom saves enough friction to justify the price. If price matters most, start with Plus. If limits slow you down, Pro is the cleaner fit. The official ChatGPT pricing page is the source of truth for exact current prices.",
+      "final_response_hash": "d7ea08ce34b6",
       "final_response_source": "contextual_buyer_semantics",
       "group": "price_questions",
       "id": "price-question-006",
