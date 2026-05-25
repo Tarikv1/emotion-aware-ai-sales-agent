@@ -534,14 +534,24 @@ def validate_expectation(item: dict[str, Any], text: str, packet: dict[str, Any]
             failures.append("loop sequence repeated the immediately previous response")
 
     elif expectation == "premature_close_needs_fit":
-        if re.search(r"official chatgpt plans page|profile upgrade flow|contact sales", text, re.I):
-            failures.append("self-serve/contact close happened before fit evidence")
-        if not (ADOPTION_STATE_DISCOVERY_RE.search(text) or re.search(r"before fit is clear|plan before fit|first i need the adoption state", text, re.I)):
-            failures.append("premature close did not reset to adoption-state or fit discovery")
-        if PREMATURE_PLAN_COMPARISON_RE.search(text):
-            failures.append("premature close repair asked plan-comparison question")
-        if active_close_mode(text):
-            failures.append("active close mode should be absent before fit evidence")
+        direct_signup = re.search(r"how do i sign up|where do i upgrade", " ".join(item["turns"]), re.I)
+        if direct_signup:
+            if not re.search(r"official chatgpt plans page|profile upgrade flow|contact sales", text, re.I):
+                failures.append("direct sign-up question did not get voice-ready next-step route")
+            if RAW_URL_RE.search(text) or FAKE_SIDE_EFFECT_RE.search(text):
+                failures.append("direct sign-up question claimed unsafe side effect or raw URL")
+        else:
+            if re.search(r"official chatgpt plans page|profile upgrade flow|contact sales", text, re.I):
+                failures.append("self-serve/contact close happened before fit evidence")
+            if not (
+                ADOPTION_STATE_DISCOVERY_RE.search(text)
+                or re.search(r"before fit is clear|plan before fit|first i need the adoption state|useful next detail|use case", text, re.I)
+            ):
+                failures.append("premature close did not reset to adoption-state or fit discovery")
+            if PREMATURE_PLAN_COMPARISON_RE.search(text):
+                failures.append("premature close repair asked plan-comparison question")
+            if active_close_mode(text):
+                failures.append("active close mode should be absent before fit evidence")
 
     elif expectation == "self_serve_close":
         if not re.search(r"official chatgpt plans page|profile upgrade flow|contact sales", text, re.I):

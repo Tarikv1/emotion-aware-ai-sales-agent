@@ -1,7 +1,7 @@
 {
   "checkpoint_id": "CURRENT-LIVE-TRANSCRIPT-REPLAY-001",
   "failure_count": 0,
-  "generated_at": "2026-05-25T13:12:08.937431+00:00",
+  "generated_at": "2026-05-25T14:40:02.008308+00:00",
   "group_counts": {
     "A_routesignal_direct_product_question": 7,
     "B_routesignal_process_explanation": 5,

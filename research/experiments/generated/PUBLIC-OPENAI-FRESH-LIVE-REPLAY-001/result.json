@@ -82,8 +82,8 @@
       "call_control": "continue-call",
       "close_mode": "self_serve_purchase_link",
       "failures": [],
-      "final_response": "Same next step: use the official ChatGPT plans page or the profile upgrade flow. I still cannot send a link, book anything, or take payment here.",
-      "final_response_hash": "1d67bfc5cac3",
+      "final_response": "If you decide to upgrade, individual plans use the official ChatGPT plans page or profile upgrade flow. I cannot send a link, book anything, or take payment here. For coding and writing, choose Plus first unless limits are already frustrating; then compare Pro.",
+      "final_response_hash": "e5f63a80636f",
       "group": "self_serve_close",
       "id": "fresh-003-self-serve-close",
       "side_effects": {

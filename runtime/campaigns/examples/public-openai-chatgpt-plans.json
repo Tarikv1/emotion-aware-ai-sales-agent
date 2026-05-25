@@ -65,14 +65,14 @@
   },
   "focus_progression_options": {
     "default": [
-      "I can keep checking, but plan fit still needs the actual use case. If it is coding or writing, Plus versus Pro may be the comparison; if it is a team, Business or Enterprise is the path. The official ChatGPT plans page is the self-serve reference after fit is clear.",
-      "I can continue, but I should not assume buying intent. First I need the adoption state: ChatGPT today, another AI tool, or mostly no AI yet. After that, Plus, Pro, Business, or Enterprise only matter if the use case supports it."
+      "Got it. If you already use ChatGPT or another AI tool, the useful comparison is whether ChatGPT covers something your current setup does not. What matters most: coding, writing, research, files, team admin, or privacy controls?",
+      "For plan fit, use case matters more than buying intent. If this is coding or writing, Plus versus Pro is usually the comparison; if it is a team, Business or Enterprise is the path."
     ],
     "adoption_state_discovery": [
-      "I can continue, but I should not assume buying intent. First I need the adoption state: ChatGPT today, another AI tool, or mostly no AI yet. After that, Plus, Pro, Business, or Enterprise only matter if the use case supports it."
+      "Got it. Sounds like you may already use ChatGPT or another AI tool. The useful comparison is whether ChatGPT covers something your current setup does not. What matters most: coding, writing, research, files, team admin, or privacy controls?"
     ],
     "use_case_discovery": [
-      "I can keep checking, but plan fit still needs the actual use case. If it is coding or writing, Plus versus Pro may be the comparison; if it is a team, Business or Enterprise is the path. The official ChatGPT plans page is the self-serve reference after fit is clear."
+      "I can keep checking. If it is coding or writing, Plus versus Pro is usually the comparison; if it is a team, Business or Enterprise is the path. What would you mainly use ChatGPT for?"
     ],
     "self_serve_close": [
       "If Free is enough, no paid close is needed. If you later compare paid plans, use the official ChatGPT plans page or profile upgrade flow. I cannot send a link, book anything, or take payment here."

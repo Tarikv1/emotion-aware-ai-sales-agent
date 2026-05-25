@@ -57,21 +57,43 @@ SOURCE_TRUST_TRANSCRIPT_RE = re.compile(
 )
 SOURCE_TRUST_RESPONSE_RE = re.compile(r"public-data simulation|official public openai|public pricing|help pages|not calling from openai", re.I)
 LOOP_RE = re.compile(r"current call scope.*keep checking|keep checking that, or stop|are you .*comparing plans", re.I)
+ASR_ALIAS_TRANSCRIPT_RE = re.compile(
+    r"chachu\s*(pt|bt|p\s*t|b\s*t)|chachupt|chat\s*(jpt|gbt|gb\s*t|g\s*p\s*t|gpt)|chatgbt",
+    re.I,
+)
+ASR_ALIAS_GOOD_RESPONSE_RE = re.compile(r"chatgpt|current setup|current tool|switch|useful comparison", re.I)
+INTERNAL_POLICY_RE = re.compile(r"should not assume buying intent|first i need the adoption state|\badoption state\b", re.I)
+PRICE_TRANSCRIPT_RE = re.compile(r"how much|price|cost|20 dollars|twenty dollars|expensive|paid tiers", re.I)
+PRICE_RESPONSE_RE = re.compile(r"source of truth|official chatgpt pricing page|20 dollars|100 dollar|200 dollar|free is", re.I)
+PLAN_RECOMMENDATION_TRANSCRIPT_RE = re.compile(r"plus enough|plus going to be enough|pro worth|plus or pro|heavy side", re.I)
+PLAN_RECOMMENDATION_RESPONSE_RE = re.compile(r"\bplus\b.*\bpro\b|\bpro\b.*\bplus\b", re.I)
+PLAIN_ASK_TRANSCRIPT_RE = re.compile(r"what do you want me to do|what are you asking|what is the next step|do not understand what you want", re.I)
+LEGACY_FIELD_RE = re.compile(r"legacy compatibility|appointment_target|human_followup_owner|demo operator|primary close is official", re.I)
+ROUTESIGNAL_TRACE_RE = re.compile(r"routesignal|northstar|inbound demo request|missed callbacks|handoffs|callback reminders", re.I)
 
 DIALOGUE_DEFECT_CLASSES = {
-    "current_live_openai_premature_plan_comparison",
-    "current_live_openai_assumption_repair_defect",
-    "current_live_openai_legacy_compatibility_leakage",
-    "current_live_openai_human_followup_owner_leakage",
-    "current_live_openai_source_trust_answer_defect",
+    "current_live_openai_asr_product_alias_issue",
+    "current_live_openai_internal_policy_language_leak",
+    "current_live_openai_price_question_refusal",
+    "current_live_openai_plan_recommendation_stall",
+    "current_live_openai_legacy_field_leakage",
+    "current_live_openai_routesignal_contamination",
     "current_live_openai_loop_or_repeated_prompt",
     "current_live_openai_runtime_defect",
+    "current_live_openai_sales_quality_defect",
 }
 
 POST_PATCH_REPLAY_CASES = [
     ["__agent_open__", "yeah sure"],
     ["__agent_open__", "yeah sure", "why did you assume I was comparing plans"],
     ["__agent_open__", "yeah sure", "where are you getting this information"],
+    ["__agent_open__", "yeah sure", "I use chachu PT and other AI tools"],
+    ["__agent_open__", "yeah sure", "why would I switch to chat jpt"],
+    ["__agent_open__", "yeah sure", "how much are the plans"],
+    ["__agent_open__", "yeah sure", "I use it for coding and writing", "is Plus going to be enough for my use case", "a little bit on the heavy side"],
+    ["__agent_open__", "yeah sure", "I use it for coding and writing", "so what do you want me to do what are you asking me"],
+    ["__agent_open__", "yeah sure", "I use another LLM", "how much are the plans", "but I asked the price"],
+    ["__agent_open__", "yeah sure", "I use it for coding and writing", "what did you mean by that"],
     ["__agent_open__", "yeah sure", "I use it for coding and writing", "I use it heavily every day", "I already told you that", "keep checking it"],
     ["who follows up after this"],
     ["who is the demo operator"],
@@ -144,6 +166,21 @@ def response_text(payload: dict[str, Any]) -> str:
     packet = payload.get("packet") if isinstance(payload.get("packet"), dict) else {}
     manager = payload.get("dialogue_manager") if isinstance(payload.get("dialogue_manager"), dict) else {}
     return str(summary.get("final_response") or packet.get("final_response") or manager.get("final_response") or "")
+
+
+def runtime_candidate_text(payload: dict[str, Any]) -> str:
+    manager = payload.get("dialogue_manager") if isinstance(payload.get("dialogue_manager"), dict) else {}
+    stability = payload.get("demo_conversation_stability_guard") if isinstance(payload.get("demo_conversation_stability_guard"), dict) else {}
+    semantic = manager.get("contextual_buyer_semantics") if isinstance(manager.get("contextual_buyer_semantics"), dict) else {}
+    selected_action = manager.get("selected_action") if isinstance(manager.get("selected_action"), dict) else {}
+    values = [
+        response_text(payload),
+        str(manager.get("final_response") or ""),
+        str(selected_action.get("candidate_response") or ""),
+        str(semantic.get("candidate_response") or ""),
+        str(stability.get("candidate_response") or ""),
+    ]
+    return "\n".join(value for value in values if value)
 
 
 def transcript_text(payload: dict[str, Any]) -> str:
@@ -327,6 +364,7 @@ def source_fact_ids(payload: dict[str, Any]) -> list[str]:
 
 def classify_current(payload: dict[str, Any]) -> list[str]:
     text = response_text(payload)
+    trace_text = runtime_candidate_text(payload)
     transcript = transcript_text(payload)
     selected = selected_config(payload)
     delivery = tts(payload)
@@ -340,26 +378,25 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
         classes.append("current_live_openai_tts_audio_issue")
     if latency_issue(payload):
         classes.append("current_live_openai_latency_or_turn_taking_issue")
-    if PREMATURE_PLAN_COMPARISON_RE.search(text):
-        classes.append("current_live_openai_premature_plan_comparison")
-    if ASSUMPTION_CHALLENGE_RE.search(transcript) and (
-        "shouldn't assume" not in text.lower()
-        and "should not assume" not in text.lower()
-        and not ADOPTION_STATE_RE.search(text)
+    if ASR_ALIAS_TRANSCRIPT_RE.search(transcript) and not ASR_ALIAS_GOOD_RESPONSE_RE.search(text):
+        classes.append("current_live_openai_asr_product_alias_issue")
+    if INTERNAL_POLICY_RE.search(trace_text):
+        classes.append("current_live_openai_internal_policy_language_leak")
+    if PRICE_TRANSCRIPT_RE.search(transcript) and not PRICE_RESPONSE_RE.search(text):
+        classes.append("current_live_openai_price_question_refusal")
+    if PLAN_RECOMMENDATION_TRANSCRIPT_RE.search(transcript) and (
+        not PLAN_RECOMMENDATION_RESPONSE_RE.search(text)
+        or re.search(r"what would you mainly use|occasionally or heavily every day|actual work before plan fit", text, re.I)
     ):
-        classes.append("current_live_openai_assumption_repair_defect")
-    if SOURCE_TRUST_TRANSCRIPT_RE.search(transcript) and (
-        not SOURCE_TRUST_RESPONSE_RE.search(text) or re.search(r"current call scope.*keep checking", text, re.I)
-    ):
-        classes.append("current_live_openai_source_trust_answer_defect")
-    if LOOP_RE.search(text):
+        classes.append("current_live_openai_plan_recommendation_stall")
+    if PLAIN_ASK_TRANSCRIPT_RE.search(transcript) and not re.search(r"not asking you to do anything yet|helping you decide", text, re.I):
+        classes.append("current_live_openai_plan_recommendation_stall")
+    if LOOP_RE.search(text) or (re.search(r"asked.*price|why.*not answering", transcript, re.I) and not PRICE_RESPONSE_RE.search(text)):
         classes.append("current_live_openai_loop_or_repeated_prompt")
-    if LEGACY_RE.search(text):
-        classes.append("current_live_openai_legacy_compatibility_leakage")
-    if OWNER_RE.search(text):
-        classes.append("current_live_openai_human_followup_owner_leakage")
-    if ROUTESIGNAL_RE.search(text):
-        classes.append("current_live_openai_cross_campaign_contamination")
+    if LEGACY_FIELD_RE.search(trace_text) or LEGACY_RE.search(text) or OWNER_RE.search(text):
+        classes.append("current_live_openai_legacy_field_leakage")
+    if ROUTESIGNAL_TRACE_RE.search(trace_text):
+        classes.append("current_live_openai_routesignal_contamination")
     if RAW_URL_RE.search(text):
         classes.append("current_live_openai_raw_url_spoken_issue")
     if FAKE_SIDE_EFFECT_RE.search(text):
@@ -372,6 +409,10 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
         classes.append("current_live_openai_close_semantics_issue")
     if selected.get("should_speak_raw_url") is not False or selected.get("can_send_email") is not False:
         classes.append("current_live_openai_close_semantics_issue")
+    dialogue_specific = [item for item in classes if item in DIALOGUE_DEFECT_CLASSES and item not in {"current_live_openai_runtime_defect", "current_live_openai_sales_quality_defect"}]
+    if dialogue_specific:
+        classes.append("current_live_openai_sales_quality_defect")
+        classes.append("current_live_openai_runtime_defect")
     return list(dict.fromkeys(classes))
 
 
@@ -541,6 +582,12 @@ def write_evidence(result: dict[str, Any]) -> None:
             f"- Pre-patch private live defects: `{result['pre_patch_current_live_defect_count']}`",
             f"- Fixed by replay after patch: `{result['fixed_by_replay_after_patch_count']}`",
             f"- Post-patch replay defects: `{result['post_patch_current_live_defect_count']}`",
+            f"- ASR product alias issue count: `{result['current_live_openai_asr_product_alias_issue_count']}`",
+            f"- Internal policy language leak count: `{result['current_live_openai_internal_policy_language_leak_count']}`",
+            f"- Price question refusal count: `{result['current_live_openai_price_question_refusal_count']}`",
+            f"- Plan recommendation stall count: `{result['current_live_openai_plan_recommendation_stall_count']}`",
+            f"- Legacy field leakage count: `{result['current_live_openai_legacy_field_leakage_count']}`",
+            f"- RouteSignal contamination count: `{result['current_live_openai_routesignal_contamination_count']}`",
             f"- ASR issue count: `{result['current_live_openai_asr_issue_count']}`",
             f"- TTS/audio issue count: `{result['current_live_openai_tts_audio_issue_count']}`",
             f"- Latency/turn-taking issue count: `{result['current_live_openai_latency_or_turn_taking_issue_count']}`",
@@ -596,10 +643,13 @@ def main() -> None:
                 classification = "current_openai_live_success"
                 classes = [classification]
             else:
-                dialogue_classes = [item for item in classes if item in DIALOGUE_DEFECT_CLASSES]
+                dialogue_classes = [
+                    item
+                    for item in classes
+                    if item in DIALOGUE_DEFECT_CLASSES
+                    and item not in {"current_live_openai_runtime_defect", "current_live_openai_sales_quality_defect"}
+                ]
                 classification = dialogue_classes[0] if dialogue_classes else classes[0]
-                if dialogue_classes:
-                    counts["current_live_openai_runtime_defect"] += 1
                 if classes:
                     counts["needs_human_review"] += 1
         else:
@@ -615,12 +665,21 @@ def main() -> None:
             counts[item] += 1
         trace = safe_trace(record, current=current, classification=classification, classes=classes)
         traces.append(trace)
-        if current and any(item in DIALOGUE_DEFECT_CLASSES for item in classes):
+        if current and any(
+            item in DIALOGUE_DEFECT_CLASSES
+            and item not in {"current_live_openai_runtime_defect", "current_live_openai_sales_quality_defect"}
+            for item in classes
+        ):
             current_dialogue_defect_examples.append(
                 {
                     "source_file": trace["source_file"],
                     "generated_at": trace["generated_at"],
-                    "classifications": [item for item in classes if item in DIALOGUE_DEFECT_CLASSES],
+                    "classifications": [
+                        item
+                        for item in classes
+                        if item in DIALOGUE_DEFECT_CLASSES
+                        and item not in {"current_live_openai_runtime_defect", "current_live_openai_sales_quality_defect"}
+                    ],
                     "final_response": trace["final_response"],
                     "transcript_hash": trace["transcript_hash"],
                     "redacted_synthetic_replay_hint": trace["redacted_synthetic_replay_hint"],
@@ -703,6 +762,20 @@ def main() -> None:
         "fixed_by_replay_after_patch_count": fixed_by_replay_after_patch_count,
         "post_patch_current_live_defect_count": post_patch_current_live_defect_count,
         "post_patch_runtime_replay": replay,
+        "current_live_openai_asr_product_alias_issue_count": replay_class_counts["current_live_openai_asr_product_alias_issue"],
+        "current_live_openai_internal_policy_language_leak_count": replay_class_counts["current_live_openai_internal_policy_language_leak"],
+        "current_live_openai_price_question_refusal_count": replay_class_counts["current_live_openai_price_question_refusal"],
+        "current_live_openai_plan_recommendation_stall_count": replay_class_counts["current_live_openai_plan_recommendation_stall"],
+        "current_live_openai_legacy_field_leakage_count": replay_class_counts["current_live_openai_legacy_field_leakage"],
+        "current_live_openai_routesignal_contamination_count": replay_class_counts["current_live_openai_routesignal_contamination"],
+        "current_live_openai_sales_quality_defect_count": replay_class_counts["current_live_openai_sales_quality_defect"],
+        "private_current_live_asr_product_alias_issue_count": counts["current_live_openai_asr_product_alias_issue"],
+        "private_current_live_internal_policy_language_leak_count": counts["current_live_openai_internal_policy_language_leak"],
+        "private_current_live_price_question_refusal_count": counts["current_live_openai_price_question_refusal"],
+        "private_current_live_plan_recommendation_stall_count": counts["current_live_openai_plan_recommendation_stall"],
+        "private_current_live_legacy_field_leakage_count": counts["current_live_openai_legacy_field_leakage"],
+        "private_current_live_routesignal_contamination_count": counts["current_live_openai_routesignal_contamination"],
+        "private_current_live_sales_quality_defect_count": counts["current_live_openai_sales_quality_defect"],
         "premature_plan_comparison_count": counts["current_live_openai_premature_plan_comparison"],
         "assumption_repair_defect_count": counts["current_live_openai_assumption_repair_defect"],
         "source_trust_answer_defect_count": counts["current_live_openai_source_trust_answer_defect"],
@@ -725,12 +798,12 @@ def main() -> None:
         "private_current_live_cross_campaign_contamination_count": counts["current_live_openai_cross_campaign_contamination"],
         "pre_patch_legacy_compatibility_leakage_count": counts["current_live_openai_legacy_compatibility_leakage"] if fixed_by_replay_after_patch_count else 0,
         "pre_patch_human_followup_owner_leakage_count": counts["current_live_openai_human_followup_owner_leakage"] if fixed_by_replay_after_patch_count else 0,
-        "post_patch_legacy_compatibility_leakage_count": replay_class_counts["current_live_openai_legacy_compatibility_leakage"],
-        "post_patch_human_followup_owner_leakage_count": replay_class_counts["current_live_openai_human_followup_owner_leakage"],
-        "post_patch_cross_campaign_contamination_count": replay_class_counts["current_live_openai_cross_campaign_contamination"],
-        "legacy_compatibility_leakage_count": replay_class_counts["current_live_openai_legacy_compatibility_leakage"],
-        "human_followup_owner_leakage_count": replay_class_counts["current_live_openai_human_followup_owner_leakage"],
-        "cross_campaign_contamination_count": replay_class_counts["current_live_openai_cross_campaign_contamination"],
+        "post_patch_legacy_compatibility_leakage_count": replay_class_counts["current_live_openai_legacy_field_leakage"],
+        "post_patch_human_followup_owner_leakage_count": replay_class_counts["current_live_openai_legacy_field_leakage"],
+        "post_patch_cross_campaign_contamination_count": replay_class_counts["current_live_openai_routesignal_contamination"],
+        "legacy_compatibility_leakage_count": replay_class_counts["current_live_openai_legacy_field_leakage"],
+        "human_followup_owner_leakage_count": replay_class_counts["current_live_openai_legacy_field_leakage"],
+        "cross_campaign_contamination_count": replay_class_counts["current_live_openai_routesignal_contamination"],
         "needs_human_review_count": counts["needs_human_review"],
         "examples_requiring_human_review": current_dialogue_defect_examples[:5],
         "classification_counts": dict(sorted(counts.items())),

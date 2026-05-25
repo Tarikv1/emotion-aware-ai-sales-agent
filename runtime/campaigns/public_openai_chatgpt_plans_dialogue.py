@@ -4,6 +4,21 @@ from typing import Any
 
 
 CAMPAIGN_ID = "public-openai-chatgpt-plans"
+CHATGPT_ASR_ALIASES = {
+    "chachu pt",
+    "chachu bt",
+    "chachu p t",
+    "chachu b t",
+    "chachupt",
+    "chat jpt",
+    "chat gpt",
+    "chat g p t",
+    "chat gbt",
+    "chat gb t",
+    "chatgbt",
+    "chat gpt plan",
+    "chat jpt plan",
+}
 
 
 def applies(campaign: dict | None) -> bool:
@@ -12,6 +27,17 @@ def applies(campaign: dict | None) -> bool:
 
 def _contains(normalized: str, phrases: set[str]) -> bool:
     return any(phrase in normalized for phrase in phrases)
+
+
+def _normalize_openai_asr_aliases(normalized: str) -> str:
+    semantic = f" {normalized} "
+    for alias in sorted(CHATGPT_ASR_ALIASES, key=len, reverse=True):
+        semantic = semantic.replace(f" {alias} ", " chatgpt ")
+    return " ".join(semantic.split())
+
+
+def _mentions_chatgpt_product(normalized: str) -> bool:
+    return "chatgpt" in _normalize_openai_asr_aliases(normalized)
 
 
 def _prior_customer_text(turns: list[dict[str, Any]]) -> str:
@@ -24,7 +50,29 @@ def _prior_customer_text(turns: list[dict[str, Any]]) -> str:
         semantics = continuity.get("contextual_buyer_semantics") if isinstance(continuity.get("contextual_buyer_semantics"), dict) else {}
         evidence = semantics.get("evidence") if isinstance(semantics.get("evidence"), dict) else {}
         texts.append(str(evidence.get("buyer_utterance") or evidence.get("normalized_buyer_utterance") or ""))
-    return " ".join(text.lower() for text in texts if text)
+    return _normalize_openai_asr_aliases(" ".join(text.lower() for text in texts if text))
+
+
+def _source_claim(campaign: dict | None, fact_id: str) -> dict[str, Any] | None:
+    if not isinstance(campaign, dict):
+        return None
+    for item in campaign.get("source_grounded_claims") or []:
+        if not isinstance(item, dict):
+            continue
+        if item.get("fact_id") == fact_id and item.get("allowed_in_speech") is True:
+            return item
+    return None
+
+
+def _source_speech(campaign: dict | None, fact_id: str, fallback: str) -> str:
+    claim = _source_claim(campaign, fact_id)
+    if not claim:
+        return fallback
+    return str(claim.get("normalized_speech_version") or claim.get("claim") or fallback)
+
+
+def _official_price_caveat() -> str:
+    return "The official ChatGPT pricing page is the source of truth for exact current prices."
 
 
 def _frame(
@@ -229,6 +277,19 @@ def _competitor_objection(normalized: str) -> bool:
 
 def _known_use_case(normalized: str, turns: list[dict[str, Any]]) -> bool:
     prior = _prior_customer_text(turns)
+    prior_has_use_case = _contains(
+        prior,
+        {
+            "coding",
+            "code",
+            "writing",
+            "files",
+            "research",
+            "study",
+            "work documents",
+            "personal coding",
+        },
+    )
     return _contains(
         normalized,
         {
@@ -241,9 +302,7 @@ def _known_use_case(normalized: str, turns: list[dict[str, Any]]) -> bool:
             "work documents",
             "personal coding",
         },
-    ) or (
-        ("coding" in prior or "code" in prior) and "writing" in prior
-    )
+    ) or prior_has_use_case
 
 
 def _known_heavy_use(normalized: str, turns: list[dict[str, Any]]) -> bool:
@@ -257,6 +316,12 @@ def _known_heavy_use(normalized: str, turns: list[dict[str, Any]]) -> bool:
             "heavily for coding every day",
             "advanced tools all week",
             "every day",
+            "heavy side",
+            "a little bit on the heavy side",
+            "a little heavy",
+            "heavy",
+            "hit limits",
+            "hitting limits",
         },
     )
 
@@ -298,6 +363,7 @@ def _light_or_basic_use(normalized: str) -> bool:
 
 
 def _current_chatgpt_user(normalized: str) -> bool:
+    normalized = _normalize_openai_asr_aliases(normalized)
     return _contains(
         normalized,
         {
@@ -308,6 +374,9 @@ def _current_chatgpt_user(normalized: str) -> bool:
             "i use chatgpt",
             "i'm using chatgpt",
             "i m using chatgpt",
+            "already use chatgpt",
+            "chatgpt for coding",
+            "chatgpt handles",
         },
     )
 
@@ -319,6 +388,8 @@ def _another_ai_user(normalized: str) -> bool:
             "another llm",
             "different ai tool",
             "another ai tool",
+            "another ai tools",
+            "other ai tools",
             "use claude",
             "use gemini",
             "use copilot",
@@ -371,6 +442,265 @@ def _continue_request(normalized: str) -> bool:
     )
 
 
+def _price_question(normalized: str) -> bool:
+    if normalized in {"price", "cost", "costs", "money", "monthly price"}:
+        return True
+    return _contains(
+        normalized,
+        {
+            "how much",
+            "what are the prices",
+            "what is the price",
+            "what does plus cost",
+            "what does pro cost",
+            "what do i pay",
+            "what do the paid tiers cost",
+            "monthly price",
+            "paid plan price",
+            "tell me the cost",
+            "price before",
+            "want to know the price",
+            "would like to know the price",
+            "plan structure and price",
+            "asked the price",
+            "asked price",
+            "answer the price",
+            "not answering the price",
+            "20 dollars",
+            "twenty dollars",
+            "100 dollars",
+            "one hundred dollars",
+            "expensive",
+            "free option",
+            "really free",
+        },
+    )
+
+
+def _price_followup_complaint(normalized: str, turns: list[dict[str, Any]]) -> bool:
+    if not _contains(normalized, {"why not answer", "why are you not answering", "not answer"}):
+        return False
+    return "price" in _prior_customer_text(turns)
+
+
+def _plus_sufficiency_question(normalized: str) -> bool:
+    return _contains(
+        normalized,
+        {
+            "is plus enough",
+            "plus going to be enough",
+            "plus enough",
+            "plus or pro",
+            "start with plus",
+            "should i choose plus",
+            "should i start with plus",
+            "is pro worth it",
+            "pro worth it",
+            "why pro",
+            "which plan",
+            "what should i choose",
+            "plus enough",
+        },
+    )
+
+
+def _plain_ask_question(normalized: str) -> bool:
+    return _contains(
+        normalized,
+        {
+            "what do you want me to do",
+            "what are you asking me",
+            "what are you asking",
+            "what is the next step",
+            "what is your ask",
+            "what do you need from me",
+            "what are you trying to get me to do",
+            "what decision are you asking for",
+            "do you want me to buy now",
+            "are you asking me to sign up",
+            "plainly what do you want",
+            "what action do you expect",
+            "do not understand the ask",
+            "do not understand what you want",
+            "dont understand what you want",
+            "don t understand what you want",
+            "what is this call asking",
+            "what is the point here",
+            "what should i do next",
+        },
+    )
+
+
+def _signup_question(normalized: str) -> bool:
+    return _contains(
+        normalized,
+        {
+            "how do i sign up",
+            "where do i upgrade",
+            "show me the official page",
+            "where is the plan page",
+            "ready to start",
+            "what is the next step",
+            "what should i do next",
+            "sounds good how do i sign up",
+            "how do we sign up",
+            "can you send me a link",
+            "send me a link",
+        },
+    )
+
+
+def _prior_plan_selection(turns: list[dict[str, Any]]) -> bool:
+    prior = _prior_customer_text(turns)
+    return _contains(
+        prior,
+        {
+            "i want plus",
+            "plus sounds right",
+            "plus sounds good",
+            "i want pro",
+            "pro sounds right",
+            "free sounds enough",
+            "business sounds right",
+        },
+    )
+
+
+def _price_response(campaign: dict | None, normalized: str, turns: list[dict[str, Any]]) -> str:
+    plus_price = _source_speech(campaign, "plus_price_20_001", "Plus is an individual paid tier.")
+    plus_features = _source_speech(
+        campaign,
+        "plus_features_001",
+        "Plus gives more access than Free, with higher limits and expanded tools.",
+    )
+    pro_price = _source_speech(
+        campaign,
+        "pro_tiers_100_200_001",
+        "Pro is the heavier-use individual tier.",
+    )
+    business_price = _source_speech(
+        campaign,
+        "business_standard_seat_price_001",
+        "Business is for teams and pricing can vary by region.",
+    )
+    caveat = _official_price_caveat()
+    known_context = _known_use_case(normalized, turns)
+    heavy_context = _known_heavy_use(normalized, turns)
+
+    if _contains(normalized, {"what do i get for 20 dollars", "20 dollars", "twenty dollars"}):
+        suffix = (
+            " For coding and writing, Plus is usually the first paid plan to try; if limits are already frustrating, compare Pro."
+            if known_context
+            else ""
+        )
+        return f"{plus_price} {plus_features} {caveat}{suffix}"
+    if _contains(normalized, {"how much is plus", "plus cost", "pay for plus", "is plus twenty"}):
+        suffix = " Since your use sounds heavy, compare Pro if you regularly hit limits." if heavy_context else ""
+        return f"{plus_price} {caveat}{suffix}"
+    if _contains(normalized, {"how much is pro", "pro cost", "pay for pro", "pro one hundred"}):
+        return f"{pro_price} {caveat}"
+    if "business" in normalized:
+        return f"{business_price} {caveat}"
+    if "enterprise" in normalized:
+        return "Enterprise pricing is not a public fixed individual price in this fixture; the official route is contact sales. " + caveat
+    return (
+        f"Sure. Free is the no-cost option. {plus_price} {pro_price} "
+        "Business is for teams, and Enterprise routes to contact sales. "
+        f"{caveat} Are you mainly comparing Plus and Pro?"
+    )
+
+
+def _plus_sufficiency_response(normalized: str, turns: list[dict[str, Any]]) -> str:
+    if not _known_use_case(normalized, turns):
+        return (
+            "Plus is usually the first paid individual plan to compare when Free or Go feels limited. "
+            "Pro is for heavier individual usage, especially if limits, files, or advanced tools are already frustrating. "
+            "To choose cleanly, the deciding factor is whether your main use is coding, writing, research, files, or something lighter."
+        )
+    heavy = _known_heavy_use(normalized, turns)
+    if heavy:
+        return (
+            "For coding and writing, Plus is usually the first paid plan to try. "
+            "Since you said your use is a little heavy, Pro is worth comparing if you regularly hit limits, use files heavily, "
+            "or need the highest individual usage. If you want the safer starting point, Plus first; if limits are already frustrating, Pro. "
+            "Are you mostly hitting limits, or just trying to choose before upgrading?"
+        )
+    return (
+        "For coding and writing, Plus is usually the first paid plan to try. "
+        "Pro is worth comparing only if you regularly hit limits, use files heavily, or need the highest individual usage. "
+        "If you want the safer starting point, Plus first; if limits are already frustrating, Pro."
+    )
+
+
+def _plain_ask_response(turns: list[dict[str, Any]]) -> str:
+    if _known_use_case("", turns):
+        return (
+            "I'm not asking you to do anything yet. I'm helping you decide whether Free, Plus, Pro, Business, or Enterprise fits. "
+            "Since you mentioned coding and writing, the next useful choice is usually Plus versus Pro."
+        )
+    return (
+        "I'm not asking you to do anything yet. I'm helping you decide whether Free, Plus, Pro, Business, or Enterprise fits. "
+        "The useful next detail is whether this is for personal work, team use, API usage, or enterprise controls."
+    )
+
+
+def _signup_response(turns: list[dict[str, Any]]) -> str:
+    if _known_use_case("", turns):
+        return (
+            "If you decide to upgrade, individual plans use the official ChatGPT plans page or profile upgrade flow. "
+            "I cannot send a link, book anything, or take payment here. For coding and writing, choose Plus first unless limits are already frustrating; then compare Pro."
+        )
+    return (
+        "If you decide to upgrade, individual plans use the official ChatGPT plans page or profile upgrade flow, and Enterprise uses contact sales. "
+        "I cannot send a link, book anything, or take payment here."
+    )
+
+
+def _known_context_repeat_response(normalized: str, turns: list[dict[str, Any]], *, mode: str = "repeat") -> tuple[str, str, str]:
+    continuing = mode == "continue"
+    if _team_context(normalized, turns):
+        return (
+            "public_plan_team_context_continue_progress" if continuing else "public_plan_team_context_repeat_progress",
+            (
+                "To move the team path forward: Business is the self-serve workspace route; Enterprise is for SSO, SCIM, procurement, or security review."
+                if continuing
+                else "You already gave the team context. The useful next choice is Business for a self-serve workspace, or Enterprise if you need SSO, SCIM, procurement, or security review."
+            ),
+            "team_plan_fit",
+        )
+    if _known_use_case(normalized, turns) and _known_heavy_use(normalized, turns):
+        return (
+            "public_plan_known_use_and_heavy_continue_progress" if continuing else "public_plan_known_use_and_heavy_repeat_progress",
+            (
+                "To move it forward: start with Plus if you want the safer paid step; compare Pro if limits, files, or advanced tools are already blocking your coding and writing."
+                if continuing
+                else "You already gave both use case and intensity. For coding and writing on the heavy side, Plus is the safer paid starting point; Pro is the comparison if limits are already frustrating."
+            ),
+            "plan_fit",
+        )
+    if _known_use_case(normalized, turns):
+        return (
+            "public_plan_known_use_case_continue_progress" if continuing else "public_plan_known_use_case_repeat_progress",
+            (
+                "To move it forward: Plus is the safer first paid plan for that individual use; Pro is worth comparing only if limits, files, or heavier usage are already frustrating."
+                if continuing
+                else "You already gave the use case. For that kind of individual work, Plus is the safer first paid plan; Pro is the comparison if limits, files, or heavier usage are already frustrating."
+            ),
+            "plan_fit",
+        )
+    if _known_heavy_use(normalized, turns):
+        return (
+            "public_plan_heavy_use_continue_progress" if continuing else "public_plan_heavy_use_repeat_progress",
+            (
+                "To move it forward: heavy use can make Plus or Pro relevant; the remaining question is whether the work is coding, writing, research, files, or team use."
+                if continuing
+                else "You already gave the usage level. Heavy personal use can make Plus or Pro relevant; the missing piece is whether the work is coding, writing, research, files, or a team."
+            ),
+            "use_case_discovery",
+        )
+    return _context_progress_response(normalized, turns)
+
+
 def _trust_or_affiliation(normalized: str) -> bool:
     return _contains(
         normalized,
@@ -393,6 +723,7 @@ def _trust_or_affiliation(normalized: str) -> bool:
             "do you work for openai",
             "are you actually openai",
             "is openai behind this",
+            "do you represent openai",
             "why should i trust this",
         },
     )
@@ -459,6 +790,7 @@ def _self_serve_close(normalized: str) -> bool:
         {
             "i want plus",
             "plus sounds right",
+            "plus sounds good",
             "how do i sign up",
             "where do i upgrade",
             "show me the official page",
@@ -548,6 +880,8 @@ def classify_turn(
 ) -> dict[str, Any] | None:
     if not applies(campaign):
         return None
+
+    normalized = _normalize_openai_asr_aliases(normalized)
 
     base = {
         "transcript": transcript,
@@ -712,6 +1046,55 @@ def classify_turn(
             polarity="boundary",
         )
 
+    if _price_question(normalized) or _price_followup_complaint(normalized, turns):
+        return _frame(
+            **base,
+            semantic="public_plan_direct_price_answer",
+            response=_price_response(campaign, normalized, turns),
+            dialogue_focus="price",
+            polarity="answer",
+        )
+
+    if _plus_sufficiency_question(normalized):
+        return _frame(
+            **base,
+            semantic="public_plan_plus_sufficiency_answered",
+            response=_plus_sufficiency_response(normalized, turns),
+            target_gap="usage_intensity",
+            dialogue_focus="plan_fit",
+            polarity="recommendation",
+        )
+
+    if _signup_question(normalized) and (
+        _prior_plan_selection(turns)
+        or _contains(normalized, {"how do i sign up", "where do i upgrade", "show me the official page", "where is the plan page", "sounds good how do i sign up", "how do we sign up", "can you send me a link", "send me a link"})
+    ):
+        return _frame(
+            **base,
+            semantic="public_plan_self_serve_next_step_answered",
+            response=_signup_response(turns),
+            dialogue_focus="self_serve_close",
+            polarity="close",
+        )
+
+    if _plain_ask_question(normalized):
+        return _frame(
+            **base,
+            semantic="public_plan_plain_ask_explained",
+            response=_plain_ask_response(turns),
+            dialogue_focus="plain_ask",
+            polarity="clarification",
+        )
+
+    if _signup_question(normalized):
+        return _frame(
+            **base,
+            semantic="public_plan_self_serve_next_step_answered",
+            response=_signup_response(turns),
+            dialogue_focus="self_serve_close",
+            polarity="close",
+        )
+
     if _contains(normalized, {"building an app", "developer app", "is this api", "platform api"}):
         return _frame(
             **base,
@@ -794,6 +1177,19 @@ def classify_turn(
         )
 
     if _current_chatgpt_user(normalized):
+        if _another_ai_user(normalized):
+            return _frame(
+                **base,
+                semantic="public_plan_current_chatgpt_or_other_ai_user",
+                response=(
+                    "Got it - sounds like you're already using ChatGPT or another AI tool. "
+                    "The useful comparison is whether ChatGPT covers something your current setup does not. "
+                    "What matters most: coding, writing, research, files, team admin, or privacy controls?"
+                ),
+                target_gap="alternative_tool_gap",
+                dialogue_focus="competitive_objection",
+                polarity="progress",
+            )
         return _frame(
             **base,
             semantic="public_plan_current_chatgpt_user",
@@ -888,15 +1284,7 @@ def classify_turn(
         )
 
     if _already_told(normalized):
-        if _known_heavy_use(normalized, turns) and not _known_use_case(normalized, turns):
-            semantic = "public_plan_heavy_use_still_needs_use_case"
-            response = (
-                "You told me heavy daily use. I still need the actual work before plan fit; once I know that, Plus or Pro may be the comparison. "
-                "Is it coding, writing, study, files, research, or team work?"
-            )
-            focus = "use_case_discovery"
-        else:
-            semantic, response, focus = _context_progress_response(normalized, turns)
+        semantic, response, focus = _known_context_repeat_response(normalized, turns)
         return _frame(
             **base,
             semantic=f"{semantic}_already_answered",
@@ -907,7 +1295,7 @@ def classify_turn(
         )
 
     if _continue_request(normalized):
-        semantic, response, focus = _context_progress_response(normalized, turns)
+        semantic, response, focus = _known_context_repeat_response(normalized, turns, mode="continue")
         return _frame(
             **base,
             semantic=f"{semantic}_continue",
@@ -917,12 +1305,22 @@ def classify_turn(
             polarity="progress",
         )
 
+    if _known_use_case(normalized, turns) and _known_heavy_use(normalized, turns):
+        return _frame(
+            **base,
+            semantic="public_plan_known_use_and_heavy_answered",
+            response=_plus_sufficiency_response(normalized, turns),
+            target_gap="usage_intensity",
+            dialogue_focus="plan_fit",
+            polarity="recommendation",
+        )
+
     if _known_use_case(normalized, turns) and _contains(normalized, {"coding", "writing"}):
         return _frame(
             **base,
             semantic="public_plan_use_case_confirmed",
             response=(
-                "Right - coding and writing. Plus is usually the first paid plan to compare; Pro is for heavier use. "
+                "Right - ChatGPT for coding and writing. Plus is usually the first paid plan to compare; Pro is for heavier use. "
                 "Are you using it occasionally or heavily every day?"
             ),
             target_gap="individual_use_case",
@@ -935,7 +1333,7 @@ def classify_turn(
             **base,
             semantic="public_plan_use_case_confirmed",
             response=(
-                "That use case makes plan fit relevant. Plus is usually the first paid plan to compare; Pro is for heavier individual use. "
+                "That ChatGPT use case makes plan fit relevant. Plus is usually the first paid plan to compare; Pro is for heavier individual use. "
                 "Are you using it occasionally or heavily every day?"
             ),
             target_gap="individual_use_case",

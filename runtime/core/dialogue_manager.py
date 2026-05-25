@@ -781,6 +781,10 @@ def apply_duplicate_repair_if_needed(
         and universal_frame.get("response_shape_enforcement_enabled") is True
     ):
         return action
+    if (
+        (continuity(action).get("contextual_buyer_semantics") or {}).get("campaign_response_priority") is True
+    ):
+        return action
     repair = session_policy.duplicate_response_repair(
         transcript,
         session_state,
