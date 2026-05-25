@@ -1,7 +1,22 @@
 {
+  "active_evidence_source": "latest_current_private_openai_live_packet",
   "campaign_specific_voice_override_present": false,
   "checkpoint_id": "ELEVENLABS-VOICE-RESOLUTION-AUDIT-001",
   "cli_voice_override_supported": false,
+  "current_codex_process_voice_diagnostics": {
+    "raw_value_logged": false,
+    "voice_id_hash": "433413ba",
+    "voice_id_length": 20,
+    "voice_id_present": true,
+    "voice_id_source": "local_voice_ids:elevenlabs.en"
+  },
+  "current_packet_voice_diagnostics": {
+    "raw_value_logged": false,
+    "voice_id_hash": "433413ba",
+    "voice_id_length": 20,
+    "voice_id_present": true,
+    "voice_id_source": "local_voice_ids:elevenlabs.en"
+  },
   "effective_provider_model": "eleven_flash_v2_5",
   "env_file": {
     "keys_present": [
@@ -15,10 +30,15 @@
     "ELEVENLABS_VOICE_ID_EN",
     "ELEVENLABS_VOICE_ID"
   ],
+  "expected_env_voice_source": "ELEVENLABS_VOICE_ID_EN",
+  "failures": [],
   "hardcoded_voice_id_findings": [],
   "language": "en",
-  "legacy_env_file_note": "The running server process reads its active process environment plus the configured env file loaded at startup; it does not read every .env file on disk.",
-  "live_tts_calls_made": false,
+  "latest_current_packet_generated_at": "2026-05-25T01:02:05.741389+00:00",
+  "latest_current_packet_hash": "35358ec90615",
+  "latest_current_packet_path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-030205.json",
+  "legacy_env_file_note": "The live demo process uses its active process environment first, then local voice config fallback. This audit does not print raw values.",
+  "live_tts_calls_made_by_audit": false,
   "precedence_chain": [
     "ELEVENLABS_VOICE_ID_EN from active process environment",
     "ELEVENLABS_VOICE_ID from active process environment",
@@ -26,18 +46,24 @@
     "config/local/voice_ids.json legacy local fallback if runtime local file is absent",
     "no documented fallback voice id if no env/config exists"
   ],
-  "provider_calls_made": false,
+  "provider_calls_made_by_audit": false,
+  "raw_private_transcript_copied_to_public_evidence": false,
   "raw_value_logged": false,
+  "raw_voice_id_logged_count": 0,
   "raw_voice_id_logging_findings": [],
   "resolved_voice_config_source_path": "config/local/voice_ids.json",
-  "route_signal_vs_generic_resolution": "same resolver; different voice_consistency_mode affects settings, not voice id source",
+  "route_signal_vs_generic_resolution": "same resolver; generic voice_consistency_mode changes settings, not voice id precedence",
   "server_restart_required_for_env_changes": true,
   "stale_env_can_override_config": false,
   "status": "pass",
-  "voice_alias_or_label": null,
+  "voice_alias_or_label": [
+    "de",
+    "en"
+  ],
   "voice_config_file_present": true,
   "voice_id_hash": "433413ba",
   "voice_id_length": 20,
   "voice_id_present": true,
-  "voice_id_source": "local_voice_ids:elevenlabs.en"
+  "voice_id_source": "local_voice_ids:elevenlabs.en",
+  "voice_source_expectation_status": "non_env_source_observed_review_operator_environment"
 }

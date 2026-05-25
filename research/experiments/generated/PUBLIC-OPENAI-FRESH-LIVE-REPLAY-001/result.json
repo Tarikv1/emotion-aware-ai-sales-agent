@@ -1,0 +1,226 @@
+{
+  "affiliation_disclaimer_safe": true,
+  "allowed_claim_fact_id_count": 33,
+  "checkpoint_id": "PUBLIC-OPENAI-FRESH-LIVE-REPLAY-001",
+  "failed_count": 2,
+  "fake_side_effect_claim_count": 0,
+  "group_counts": {
+    "affiliation_disclaimer": 2,
+    "fresh_live_defect_replay": 2,
+    "self_serve_close": 1,
+    "side_effect_boundary": 1,
+    "source_grounded_api_boundary": 1,
+    "source_grounded_plan_categories": 1
+  },
+  "human_followup_owner_leakage_count": 0,
+  "legacy_compatibility_leakage_count": 2,
+  "live_tts_calls_made": false,
+  "missing_required_fact_ids": [],
+  "provider_calls_made": false,
+  "raw_URL_spoken_count": 0,
+  "raw_private_transcript_copied_to_public_evidence": false,
+  "required_fact_ids_checked": [
+    "business_api_separate_001",
+    "enterprise_api_membership_separate_001",
+    "plus_api_separate_001",
+    "pricing_plan_set_001"
+  ],
+  "scenario_count": 8,
+  "self_serve_close_voice_ready": true,
+  "side_effects_false": true,
+  "source_grounded_claim_count": 23,
+  "source_grounded_claim_ids_present": true,
+  "status": "fail",
+  "traces": [
+    {
+      "call_control": "continue-call",
+      "close_mode": "self_serve_purchase_link",
+      "failures": [],
+      "final_response": "Hi, this is Maya. I'm running a public-data ChatGPT plan-fit simulation. I can help compare ChatGPT plans at a high level using OpenAI's public plan information. Do you have a minute?",
+      "final_response_hash": "38e2f19668a9",
+      "group": "affiliation_disclaimer",
+      "id": "fresh-001-opening-disclaimer",
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass"
+    },
+    {
+      "call_control": "continue-call",
+      "close_mode": "self_serve_purchase_link",
+      "failures": [],
+      "final_response": "By plans, I mean Free, Go, Plus, Pro, Business, and Enterprise. Are you looking for personal use, team use, or enterprise controls?",
+      "final_response_hash": "f9c580460610",
+      "group": "source_grounded_plan_categories",
+      "id": "fresh-002-plan-categories",
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass"
+    },
+    {
+      "call_control": "continue-call",
+      "close_mode": "self_serve_purchase_link",
+      "failures": [],
+      "final_response": "Same next step: use the official ChatGPT plans page or the profile upgrade flow. I still cannot send a link, book anything, or take payment here.",
+      "final_response_hash": "1d67bfc5cac3",
+      "group": "self_serve_close",
+      "id": "fresh-003-self-serve-close",
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass"
+    },
+    {
+      "call_control": "continue-call",
+      "close_mode": "self_serve_purchase_link",
+      "failures": [],
+      "final_response": "I cannot send email from this fixture. I can only point you to the official ChatGPT plans page.",
+      "final_response_hash": "9906651c6511",
+      "group": "side_effect_boundary",
+      "id": "fresh-004-email-side-effect",
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass"
+    },
+    {
+      "call_control": "continue-call",
+      "close_mode": "self_serve_purchase_link",
+      "failures": [],
+      "final_response": "No. This is a public-data simulation, not an official OpenAI call. I can only use official public OpenAI plan information here. Do you want the high-level plan comparison, or should I stop?",
+      "final_response_hash": "975d7cd03caa",
+      "group": "affiliation_disclaimer",
+      "id": "fresh-005-affiliation-question",
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass"
+    },
+    {
+      "call_control": "continue-call",
+      "close_mode": "self_serve_purchase_link",
+      "failures": [],
+      "final_response": "API usage is separate from ChatGPT subscriptions where the official sources state that boundary. Are you asking about ChatGPT itself, the API, or both?",
+      "final_response_hash": "b3af147430ea",
+      "group": "source_grounded_api_boundary",
+      "id": "fresh-006-api-boundary",
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass"
+    },
+    {
+      "call_control": "continue-call",
+      "close_mode": "self_serve_purchase_link",
+      "failures": [
+        "forbidden phrase 'legacy compatibility'",
+        "legacy compatibility leakage"
+      ],
+      "final_response": "Quick check for a short legacy compatibility field only; primary close is official self-serve plan page or Enterprise contact-sales route: Are you mainly comparing plans for yourself, a small team, or a larger organization?",
+      "final_response_hash": "6cfec7235ae1",
+      "group": "fresh_live_defect_replay",
+      "id": "fresh-007-current-defect-follow-up-purpose",
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "fail"
+    },
+    {
+      "call_control": "continue-call",
+      "close_mode": "self_serve_purchase_link",
+      "failures": [
+        "forbidden phrase 'legacy compatibility'",
+        "legacy compatibility leakage"
+      ],
+      "final_response": "Quick check for a short legacy compatibility field only; primary close is official self-serve plan page or Enterprise contact-sales route: Are you mainly comparing plans for yourself, a small team, or a larger organization?",
+      "final_response_hash": "6cfec7235ae1",
+      "group": "fresh_live_defect_replay",
+      "id": "fresh-008-current-defect-operator-question",
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "fail"
+    }
+  ]
+}
