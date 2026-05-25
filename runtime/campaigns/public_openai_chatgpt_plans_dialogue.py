@@ -216,6 +216,42 @@ def _self_serve_close(normalized: str) -> bool:
     )
 
 
+def _followup_route_question(normalized: str) -> bool:
+    return _contains(
+        normalized,
+        {
+            "who follows up after this",
+            "who contacts me after this",
+            "who contact me after this",
+            "who will contact me",
+            "who follows up",
+            "who handles the follow up",
+            "who handles follow up",
+            "who owns the follow up",
+            "who owns follow up",
+            "who would contact me",
+            "who will follow up",
+            "what happens after i say yes",
+            "what happens if i say yes",
+            "what happens after yes",
+            "what happens next if i say yes",
+        },
+    )
+
+
+def _demo_operator_question(normalized: str) -> bool:
+    return _contains(
+        normalized,
+        {
+            "who is the demo operator",
+            "who runs this demo",
+            "who is running this demo",
+            "who operates this demo",
+            "who is behind this demo",
+        },
+    )
+
+
 def classify_turn(
     *,
     campaign: dict | None,
@@ -258,6 +294,42 @@ def classify_turn(
                 "I can only use official public OpenAI plan information here. Do you want the high-level plan comparison, or should I stop?"
             ),
             dialogue_focus="trust",
+            polarity="boundary",
+        )
+
+    if _demo_operator_question(normalized):
+        return _frame(
+            **base,
+            semantic="public_plan_demo_operator_boundary",
+            response=(
+                "This is an internal public-data simulation. I can explain the public plan information, "
+                "but I'm not representing OpenAI and not booking follow-up."
+            ),
+            dialogue_focus="operator_boundary",
+            polarity="boundary",
+        )
+
+    if _followup_route_question(normalized):
+        if _contains(normalized, {"what happens after i say yes", "what happens if i say yes", "what happens after yes", "what happens next if i say yes"}):
+            response = (
+                "After interest, individual plans stay self-serve: use the official ChatGPT plans page or profile upgrade flow. "
+                "For Enterprise, the official next step is contact sales. I cannot send email, book a meeting, or create a CRM record here."
+            )
+        elif _contains(normalized, {"who contacts me", "who contact me", "who will contact me", "who would contact me"}):
+            response = (
+                "No one contacts you from this demo. For individual plans, the next step is self-serve through the official ChatGPT plans page. "
+                "For Enterprise, the official next step is contact sales; I still cannot email, book, or create a CRM record."
+            )
+        else:
+            response = (
+                "For individual plans, there is no follow-up needed from this demo; I can point you to the official ChatGPT plans page. "
+                "For Enterprise, the official next step is contact sales."
+            )
+        return _frame(
+            **base,
+            semantic="public_plan_followup_route_boundary",
+            response=response,
+            dialogue_focus="next_step_route",
             polarity="boundary",
         )
 

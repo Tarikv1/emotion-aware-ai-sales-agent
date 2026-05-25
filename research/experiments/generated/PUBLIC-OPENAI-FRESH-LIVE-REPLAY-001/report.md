@@ -1,9 +1,9 @@
 # PUBLIC-OPENAI-FRESH-LIVE-REPLAY-001
 
-- Status: `fail`
+- Status: `pass`
 - Scenario count: `8`
-- Failed count: `2`
-- Legacy leakage count: `2`
+- Failed count: `0`
+- Legacy leakage count: `0`
 - Human owner leakage count: `0`
 - Raw URL spoken count: `0`
 - Fake side-effect claim count: `0`

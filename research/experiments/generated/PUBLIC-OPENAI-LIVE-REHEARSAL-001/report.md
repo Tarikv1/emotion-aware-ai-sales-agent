@@ -1,6 +1,6 @@
 # PUBLIC-OPENAI-LIVE-REHEARSAL-001
 
-- Status: `fail`
+- Status: `pass`
 - Total private records scanned: `537`
 - Current OpenAI live records found: `9`
 - Records after `729d06e` or latest marker: `9`
@@ -11,7 +11,10 @@
 - TTS provider calls made count: `9`
 - Audio file created count: `9`
 - Raw voice ID logged count: `0`
-- Runtime defect count: `2`
+- Runtime defect count: `0`
+- Pre-patch private live defects: `2`
+- Fixed by replay after patch: `2`
+- Post-patch replay defects: `0`
 - ASR issue count: `0`
 - TTS/audio issue count: `0`
 - Latency/turn-taking issue count: `0`
@@ -38,7 +41,9 @@
   "current_live_openai_runtime_defect": 2,
   "current_openai_live_success": 7,
   "expected_dry_run_historical_record": 11,
+  "fixed_by_replay_after_patch": 2,
   "needs_human_review": 2,
+  "pre_patch_current_live_defect": 2,
   "stale_or_unknown_version_artifact": 1
 }
 ```

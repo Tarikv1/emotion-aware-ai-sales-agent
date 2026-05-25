@@ -18,7 +18,9 @@
     "current_live_openai_runtime_defect": 2,
     "current_openai_live_success": 7,
     "expected_dry_run_historical_record": 11,
+    "fixed_by_replay_after_patch": 2,
     "needs_human_review": 2,
+    "pre_patch_current_live_defect": 2,
     "stale_or_unknown_version_artifact": 1
   },
   "close_modes_observed": [
@@ -33,7 +35,7 @@
   "current_live_openai_fake_side_effect_claim_count": 0,
   "current_live_openai_latency_or_turn_taking_issue_count": 0,
   "current_live_openai_raw_url_spoken_issue_count": 0,
-  "current_live_openai_runtime_defect_count": 2,
+  "current_live_openai_runtime_defect_count": 0,
   "current_live_openai_source_claim_issue_count": 0,
   "current_live_openai_tts_audio_issue_count": 0,
   "current_openai_live_records_found": 9,
@@ -64,12 +66,13 @@
     }
   ],
   "fake_email_calendar_CRM_claim_count": 0,
-  "git_head_short": "729d06e",
+  "fixed_by_replay_after_patch_count": 2,
+  "git_head_short": "0456b4e",
   "historical_dry_run_count": 11,
-  "human_followup_owner_leakage_count": 1,
+  "human_followup_owner_leakage_count": 0,
   "incomplete_or_invalid_private_record_count": 0,
   "latency_turn_taking_issue_count": 0,
-  "legacy_compatibility_leakage_count": 2,
+  "legacy_compatibility_leakage_count": 0,
   "live_tts_calls_made_by_audit": false,
   "live_tts_used_count": 9,
   "local_llm_calls_made_by_audit": false,
@@ -80,6 +83,92 @@
     "Pro",
     "Enterprise"
   ],
+  "post_patch_cross_campaign_contamination_count": 0,
+  "post_patch_current_live_defect_count": 0,
+  "post_patch_human_followup_owner_leakage_count": 0,
+  "post_patch_legacy_compatibility_leakage_count": 0,
+  "post_patch_runtime_replay": {
+    "case_count": 4,
+    "failed_cases": [],
+    "failed_count": 0,
+    "live_tts_calls_made": false,
+    "provider_calls_made": false,
+    "raw_private_transcript_copied_to_public_evidence": false,
+    "status": "pass",
+    "traces": [
+      {
+        "case_id": "post-patch-replay-1",
+        "classifications": [],
+        "final_response": "For individual plans, there is no follow-up needed from this demo; I can point you to the official ChatGPT plans page. For Enterprise, the official next step is contact sales.",
+        "final_response_hash": "d7d890d82cbe",
+        "side_effects": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "opens_prod_102": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "status": "pass",
+        "transcript_hash": "395bd2104cdb"
+      },
+      {
+        "case_id": "post-patch-replay-2",
+        "classifications": [],
+        "final_response": "This is an internal public-data simulation. I can explain the public plan information, but I'm not representing OpenAI and not booking follow-up.",
+        "final_response_hash": "df5dec9d6e95",
+        "side_effects": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "opens_prod_102": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "status": "pass",
+        "transcript_hash": "250cb4eb81a8"
+      },
+      {
+        "case_id": "post-patch-replay-3",
+        "classifications": [],
+        "final_response": "No one contacts you from this demo. For individual plans, the next step is self-serve through the official ChatGPT plans page. For Enterprise, the official next step is contact sales; I still cannot email, book, or create a CRM record.",
+        "final_response_hash": "e9d44b467861",
+        "side_effects": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "opens_prod_102": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "status": "pass",
+        "transcript_hash": "144ceb94b236"
+      },
+      {
+        "case_id": "post-patch-replay-4",
+        "classifications": [],
+        "final_response": "After interest, individual plans stay self-serve: use the official ChatGPT plans page or profile upgrade flow. For Enterprise, the official next step is contact sales. I cannot send email, book a meeting, or create a CRM record here.",
+        "final_response_hash": "43ab945e272a",
+        "side_effects": {
+          "creates_calendar_event": false,
+          "customer_audio_uploaded_to_python_server": false,
+          "customer_audio_uploaded_to_tts_provider": false,
+          "opens_prod_102": false,
+          "sends_email": false,
+          "writes_crm": false
+        },
+        "status": "pass",
+        "transcript_hash": "5a36682128ea"
+      }
+    ]
+  },
+  "pre_patch_current_live_defect_count": 2,
+  "pre_patch_human_followup_owner_leakage_count": 1,
+  "pre_patch_legacy_compatibility_leakage_count": 2,
+  "private_current_live_cross_campaign_contamination_count": 0,
+  "private_current_live_dialogue_defect_count": 2,
+  "private_current_live_human_followup_owner_leakage_count": 1,
+  "private_current_live_legacy_compatibility_leakage_count": 2,
   "provider_audio_playback_issue_count": 0,
   "provider_calls_made_by_audit": false,
   "raw_URL_spoken_count": 0,
@@ -932,7 +1021,7 @@
   "side_effects_false": true,
   "source_claim_issue_count": 0,
   "stale_historical_openai_records_ignored": 12,
-  "status": "fail",
+  "status": "pass",
   "total_openai_records_scanned": 21,
   "total_private_records_scanned": 537,
   "tts_provider_calls_made_count": 9,

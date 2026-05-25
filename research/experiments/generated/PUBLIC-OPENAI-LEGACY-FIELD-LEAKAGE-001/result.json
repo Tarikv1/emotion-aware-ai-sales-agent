@@ -1,0 +1,144 @@
+{
+  "checkpoint_id": "PUBLIC-OPENAI-LEGACY-FIELD-LEAKAGE-001",
+  "failed_response_case_count": 0,
+  "fake_side_effect_claim_count": 0,
+  "group_counts": {
+    "after_interest": 1,
+    "followup_route": 2,
+    "operator_boundary": 1
+  },
+  "human_followup_owner_leakage_count": 0,
+  "legacy_field_leakage_count": 0,
+  "live_tts_calls_made": false,
+  "local_llm_calls_made": false,
+  "negative_control_evidence": {
+    "generic_b2b": {
+      "campaign_id": "synthetic-b2b-saas-operations",
+      "response_hash": "916293c2e2ad",
+      "response_preview": "Got it, manual work is the issue. Is it mainly slowing the team down or creating extra admin?"
+    },
+    "routesignal": {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "response_hash": "8a80ccbd9a88",
+      "response_preview": "Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?"
+    }
+  },
+  "negative_control_failures": [],
+  "provider_calls_made": false,
+  "raw_URL_spoken_count": 0,
+  "raw_private_transcript_copied_to_public_evidence": false,
+  "response_case_count": 4,
+  "side_effects_false": true,
+  "static_fixture_evidence": {
+    "customer_facing_next_step_keys": [
+      "after_interest",
+      "contact_sales_route",
+      "enterprise_questions_owner",
+      "no_side_effect_reason",
+      "self_serve_close"
+    ],
+    "field_visibility": {
+      "appointment_target": {
+        "customer_facing": false,
+        "purpose": "legacy compatibility metadata for generic campaign contracts only; do not render in OpenAI public fixture speech"
+      },
+      "human_followup_owner": {
+        "customer_facing": false,
+        "purpose": "internal simulation routing metadata only; do not render as a buyer-facing OpenAI representative or follow-up owner"
+      }
+    }
+  },
+  "static_fixture_failures": [],
+  "status": "pass",
+  "traces": [
+    {
+      "failures": [],
+      "final_response": "For individual plans, there is no follow-up needed from this demo; I can point you to the official ChatGPT plans page. For Enterprise, the official next step is contact sales.",
+      "final_response_hash": "d7d890d82cbe",
+      "group": "followup_route",
+      "id": "openai-follow-up-after-this",
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "utterance_label": "who follows up after this"
+    },
+    {
+      "failures": [],
+      "final_response": "This is an internal public-data simulation. I can explain the public plan information, but I'm not representing OpenAI and not booking follow-up.",
+      "final_response_hash": "df5dec9d6e95",
+      "group": "operator_boundary",
+      "id": "openai-demo-operator",
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "utterance_label": "who is the demo operator"
+    },
+    {
+      "failures": [],
+      "final_response": "No one contacts you from this demo. For individual plans, the next step is self-serve through the official ChatGPT plans page. For Enterprise, the official next step is contact sales; I still cannot email, book, or create a CRM record.",
+      "final_response_hash": "e9d44b467861",
+      "group": "followup_route",
+      "id": "openai-who-contacts-me",
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "utterance_label": "who contacts me after this"
+    },
+    {
+      "failures": [],
+      "final_response": "After interest, individual plans stay self-serve: use the official ChatGPT plans page or profile upgrade flow. For Enterprise, the official next step is contact sales. I cannot send email, book a meeting, or create a CRM record here.",
+      "final_response_hash": "43ab945e272a",
+      "group": "after_interest",
+      "id": "openai-what-happens-after-yes",
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "utterance_label": "what happens after I say yes"
+    }
+  ],
+  "unsafe_affiliation_claim_count": 0
+}

@@ -34,6 +34,16 @@
   ],
   "human_followup_owner": "demo operator for simulation notes; official OpenAI sales team for Enterprise",
   "appointment_target": "legacy compatibility field only; primary close is official self-serve plan page or Enterprise contact-sales route",
+  "field_visibility": {
+    "appointment_target": {
+      "customer_facing": false,
+      "purpose": "legacy compatibility metadata for generic campaign contracts only; do not render in OpenAI public fixture speech"
+    },
+    "human_followup_owner": {
+      "customer_facing": false,
+      "purpose": "internal simulation routing metadata only; do not render as a buyer-facing OpenAI representative or follow-up owner"
+    }
+  },
   "self_serve_close_target": "https://chatgpt.com/pricing/",
   "self_serve_close_url": "https://chatgpt.com/pricing/",
   "self_serve_close_spoken_label": "the official ChatGPT plans page",
@@ -46,6 +56,13 @@
   "link_available_in_packet": true,
   "can_send_email": false,
   "contact_sales_target": "https://openai.com/contact-sales/",
+  "customer_facing_next_steps": {
+    "self_serve_close": "For individual plans, use the official ChatGPT plans page or profile upgrade flow.",
+    "contact_sales_route": "For Enterprise, the official next step is contact sales.",
+    "after_interest": "After interest, individual plans stay self-serve and Enterprise routes to contact sales.",
+    "enterprise_questions_owner": "Enterprise questions should use the official contact-sales route, not this simulation as a representative.",
+    "no_side_effect_reason": "This public fixture cannot send email, book meetings, create CRM records, or collect payment."
+  },
   "campaign_playbook_id": "public-openai-chatgpt-plans-playbook",
   "caller_identity": {
     "representative_name": "Maya",

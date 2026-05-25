@@ -2,7 +2,7 @@
   "affiliation_disclaimer_safe": true,
   "allowed_claim_fact_id_count": 33,
   "checkpoint_id": "PUBLIC-OPENAI-FRESH-LIVE-REPLAY-001",
-  "failed_count": 2,
+  "failed_count": 0,
   "fake_side_effect_claim_count": 0,
   "group_counts": {
     "affiliation_disclaimer": 2,
@@ -13,7 +13,7 @@
     "source_grounded_plan_categories": 1
   },
   "human_followup_owner_leakage_count": 0,
-  "legacy_compatibility_leakage_count": 2,
+  "legacy_compatibility_leakage_count": 0,
   "live_tts_calls_made": false,
   "missing_required_fact_ids": [],
   "provider_calls_made": false,
@@ -30,7 +30,7 @@
   "side_effects_false": true,
   "source_grounded_claim_count": 23,
   "source_grounded_claim_ids_present": true,
-  "status": "fail",
+  "status": "pass",
   "traces": [
     {
       "call_control": "continue-call",
@@ -173,12 +173,9 @@
     {
       "call_control": "continue-call",
       "close_mode": "self_serve_purchase_link",
-      "failures": [
-        "forbidden phrase 'legacy compatibility'",
-        "legacy compatibility leakage"
-      ],
-      "final_response": "Quick check for a short legacy compatibility field only; primary close is official self-serve plan page or Enterprise contact-sales route: Are you mainly comparing plans for yourself, a small team, or a larger organization?",
-      "final_response_hash": "6cfec7235ae1",
+      "failures": [],
+      "final_response": "For individual plans, there is no follow-up needed from this demo; I can point you to the official ChatGPT plans page. For Enterprise, the official next step is contact sales.",
+      "final_response_hash": "d7d890d82cbe",
       "group": "fresh_live_defect_replay",
       "id": "fresh-007-current-defect-follow-up-purpose",
       "side_effects": {
@@ -194,17 +191,14 @@
         "tts_provider_calls_made": false,
         "writes_crm": false
       },
-      "status": "fail"
+      "status": "pass"
     },
     {
       "call_control": "continue-call",
       "close_mode": "self_serve_purchase_link",
-      "failures": [
-        "forbidden phrase 'legacy compatibility'",
-        "legacy compatibility leakage"
-      ],
-      "final_response": "Quick check for a short legacy compatibility field only; primary close is official self-serve plan page or Enterprise contact-sales route: Are you mainly comparing plans for yourself, a small team, or a larger organization?",
-      "final_response_hash": "6cfec7235ae1",
+      "failures": [],
+      "final_response": "This is an internal public-data simulation. I can explain the public plan information, but I'm not representing OpenAI and not booking follow-up.",
+      "final_response_hash": "df5dec9d6e95",
       "group": "fresh_live_defect_replay",
       "id": "fresh-008-current-defect-operator-question",
       "side_effects": {
@@ -220,7 +214,7 @@
         "tts_provider_calls_made": false,
         "writes_crm": false
       },
-      "status": "fail"
+      "status": "pass"
     }
   ]
 }
