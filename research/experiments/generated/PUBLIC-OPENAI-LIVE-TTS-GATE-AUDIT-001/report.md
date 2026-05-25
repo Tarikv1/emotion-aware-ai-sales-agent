@@ -4,7 +4,7 @@
 - Classification: `none`
 - Reason: Live TTS gate, ElevenLabs call, and audio artifact evidence are present.
 - Latest current packet: `data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-030205.json`
-- Matching packet count: `21`
+- Matching packet count: `33`
 - Current packet count: `9`
 - Live TTS enabled: `true`
 - Live TTS used: `true`

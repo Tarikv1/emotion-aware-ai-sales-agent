@@ -20,7 +20,7 @@ import scripts.run_live_demo_001_agent_voice_call as demo  # noqa: E402
 
 
 CHECKPOINT_ID = "PUBLIC-OPENAI-LIVE-REHEARSAL-001"
-CURRENT_COMMIT = "729d06e"
+CURRENT_COMMIT = "b58aa53"
 FIXTURE_RELATIVE = "runtime/campaigns/examples/public-openai-chatgpt-plans.json"
 FIXTURE_PATH = ROOT / FIXTURE_RELATIVE
 PRIVATE_ROOT = ROOT / "data" / "private"
@@ -40,24 +40,42 @@ SOURCE_CLAIM_RE = re.compile(
     r"\b(guarantee|guaranteed|better than|superior|gpt-5\.5|exact enterprise price|enterprise costs \$)\b",
     re.I,
 )
+PREMATURE_PLAN_COMPARISON_RE = re.compile(
+    r"are you (mainly )?comparing plans for yourself,? a small team,? or (a )?larger organization|"
+    r"are you looking for personal use,? team use,? or enterprise controls",
+    re.I,
+)
+ADOPTION_STATE_RE = re.compile(r"using chatgpt.*another ai tool.*not using ai|chatgpt today.*another ai tool", re.I)
+ASSUMPTION_CHALLENGE_RE = re.compile(
+    r"why did you assume|i never said|just said yes|asking about plans already|do not assume|don't assume|comparing plants",
+    re.I,
+)
+SOURCE_TRUST_TRANSCRIPT_RE = re.compile(
+    r"where .*getting this information|getting this information|calling from open\s*ai|authorized by openai|"
+    r"authorised by openai|authorised by opening eyes|official|from openai",
+    re.I,
+)
+SOURCE_TRUST_RESPONSE_RE = re.compile(r"public-data simulation|official public openai|public pricing|help pages|not calling from openai", re.I)
+LOOP_RE = re.compile(r"current call scope.*keep checking|keep checking that, or stop|are you .*comparing plans", re.I)
 
 DIALOGUE_DEFECT_CLASSES = {
-    "current_live_openai_campaign_selector_issue",
-    "current_live_openai_source_claim_issue",
-    "current_live_openai_close_semantics_issue",
-    "current_live_openai_affiliation_or_disclaimer_issue",
-    "current_live_openai_raw_url_spoken_issue",
-    "current_live_openai_fake_side_effect_claim",
+    "current_live_openai_premature_plan_comparison",
+    "current_live_openai_assumption_repair_defect",
     "current_live_openai_legacy_compatibility_leakage",
     "current_live_openai_human_followup_owner_leakage",
-    "current_live_openai_cross_campaign_contamination",
+    "current_live_openai_source_trust_answer_defect",
+    "current_live_openai_loop_or_repeated_prompt",
+    "current_live_openai_runtime_defect",
 }
 
 POST_PATCH_REPLAY_CASES = [
-    "who follows up after this",
-    "who is the demo operator",
-    "who contacts me after this",
-    "what happens after I say yes",
+    ["__agent_open__", "yeah sure"],
+    ["__agent_open__", "yeah sure", "why did you assume I was comparing plans"],
+    ["__agent_open__", "yeah sure", "where are you getting this information"],
+    ["__agent_open__", "yeah sure", "I use it for coding and writing", "I use it heavily every day", "I already told you that", "keep checking it"],
+    ["who follows up after this"],
+    ["who is the demo operator"],
+    ["what happens after I say yes"],
 ]
 
 
@@ -309,6 +327,7 @@ def source_fact_ids(payload: dict[str, Any]) -> list[str]:
 
 def classify_current(payload: dict[str, Any]) -> list[str]:
     text = response_text(payload)
+    transcript = transcript_text(payload)
     selected = selected_config(payload)
     delivery = tts(payload)
     classes: list[str] = []
@@ -321,6 +340,20 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
         classes.append("current_live_openai_tts_audio_issue")
     if latency_issue(payload):
         classes.append("current_live_openai_latency_or_turn_taking_issue")
+    if PREMATURE_PLAN_COMPARISON_RE.search(text):
+        classes.append("current_live_openai_premature_plan_comparison")
+    if ASSUMPTION_CHALLENGE_RE.search(transcript) and (
+        "shouldn't assume" not in text.lower()
+        and "should not assume" not in text.lower()
+        and not ADOPTION_STATE_RE.search(text)
+    ):
+        classes.append("current_live_openai_assumption_repair_defect")
+    if SOURCE_TRUST_TRANSCRIPT_RE.search(transcript) and (
+        not SOURCE_TRUST_RESPONSE_RE.search(text) or re.search(r"current call scope.*keep checking", text, re.I)
+    ):
+        classes.append("current_live_openai_source_trust_answer_defect")
+    if LOOP_RE.search(text):
+        classes.append("current_live_openai_loop_or_repeated_prompt")
     if LEGACY_RE.search(text):
         classes.append("current_live_openai_legacy_compatibility_leakage")
     if OWNER_RE.search(text):
@@ -402,13 +435,13 @@ def append_turn(state: dict[str, Any], turn: dict[str, Any]) -> None:
     )
 
 
-def build_replay_turn(transcript: str, session_id: str) -> dict[str, Any]:
+def build_replay_sequence(transcripts: list[str], session_id: str) -> dict[str, Any]:
     state: dict[str, Any] = {"turns": []}
     turn = demo.build_browser_demo_turn_packet(
-        transcript=transcript,
+        transcript=transcripts[0],
         campaign_id=demo.DEFAULT_CAMPAIGN_ID,
         stage=demo.DEFAULT_STAGE,
-        input_type="speech-final",
+        input_type="agent-open" if transcripts[0] == "__agent_open__" else "speech-final",
         silence_count=0,
         cases_path=demo.DEFAULT_CASES_PATH,
         private_out=TMP_DIR / session_id,
@@ -422,13 +455,33 @@ def build_replay_turn(transcript: str, session_id: str) -> dict[str, Any]:
         generic_live_tts_allowed=False,
     )
     append_turn(state, turn)
+    for transcript in transcripts[1:]:
+        turn = demo.build_browser_demo_turn_packet(
+            transcript=transcript,
+            campaign_id=demo.DEFAULT_CAMPAIGN_ID,
+            stage=demo.DEFAULT_STAGE,
+            input_type="agent-open" if transcript == "__agent_open__" else "speech-final",
+            silence_count=0,
+            cases_path=demo.DEFAULT_CASES_PATH,
+            private_out=TMP_DIR / session_id,
+            live_tts=False,
+            force_key_missing=True,
+            timeout_seconds=8.0,
+            campaign_config_path=FIXTURE_PATH,
+            session_id=session_id,
+            session_state=state,
+            asr_confidence=0.94,
+            generic_live_tts_allowed=False,
+        )
+        append_turn(state, turn)
     return turn
 
 
 def current_runtime_replay() -> dict[str, Any]:
     traces: list[dict[str, Any]] = []
-    for index, transcript in enumerate(POST_PATCH_REPLAY_CASES, start=1):
-        turn = build_replay_turn(transcript, f"post-patch-replay-{index}")
+    for index, case in enumerate(POST_PATCH_REPLAY_CASES, start=1):
+        transcripts = case if isinstance(case, list) else [case]
+        turn = build_replay_sequence(transcripts, f"post-patch-replay-{index}")
         classes = classify_current(turn)
         dialogue_classes = [item for item in classes if item in DIALOGUE_DEFECT_CLASSES]
         text = response_text(turn)
@@ -445,7 +498,7 @@ def current_runtime_replay() -> dict[str, Any]:
         traces.append(
             {
                 "case_id": f"post-patch-replay-{index}",
-                "transcript_hash": sha256_text(transcript)[:12],
+                "transcript_hash": sha256_text(" | ".join(transcripts))[:12],
                 "final_response": text,
                 "final_response_hash": sha256_text(text)[:12],
                 "classifications": list(dict.fromkeys(dialogue_classes)),
@@ -476,7 +529,7 @@ def write_evidence(result: dict[str, Any]) -> None:
             f"- Status: `{result['status']}`",
             f"- Total private records scanned: `{result['total_private_records_scanned']}`",
             f"- Current OpenAI live records found: `{result['current_openai_live_records_found']}`",
-            f"- Records after `{CURRENT_COMMIT}` or latest marker: `{result['records_after_729d06e_or_latest_current_marker']}`",
+            f"- Records after `{CURRENT_COMMIT}` or latest marker: `{result['records_after_current_marker_or_latest_current_marker']}`",
             f"- Stale/historical OpenAI records ignored: `{result['stale_historical_openai_records_ignored']}`",
             f"- Live TTS used count: `{result['live_tts_used_count']}`",
             f"- Dry-run count: `{result['dry_run_count']}`",
@@ -580,6 +633,7 @@ def main() -> None:
     voice_hashes = sorted({str(trace["voice_id_hash"]) for trace in current_traces if trace["voice_id_hash"]})
     close_modes = sorted({str(trace["close_mode"]) for trace in current_traces if trace["close_mode"]})
     plan_categories_seen = sorted({plan for trace in current_traces for plan in plan_categories(trace["final_response"])}, key=PLAN_NAMES.index)
+    all_source_fact_ids = sorted({fact_id for trace in current_traces for fact_id in trace["source_fact_ids"]})
     selector_ok = all(
         trace["campaign_config_path"] == FIXTURE_RELATIVE
         and trace["campaign_id"] == "public-openai-chatgpt-plans"
@@ -613,7 +667,8 @@ def main() -> None:
         "total_private_records_scanned": total_scanned,
         "total_openai_records_scanned": len(records),
         "current_openai_live_records_found": len(current_records),
-        "records_after_729d06e_or_latest_current_marker": len(current_records),
+        "fresh_openai_live_records": len(current_records),
+        "records_after_current_marker_or_latest_current_marker": len(current_records),
         "stale_historical_openai_records_ignored": len(stale_records),
         "incomplete_or_invalid_private_record_count": invalid_count,
         "live_tts_used_count": sum(1 for trace in current_traces if trace["live_tts_used"]),
@@ -636,8 +691,10 @@ def main() -> None:
         "close_modes_observed": close_modes,
         "raw_URL_spoken_count": counts["current_live_openai_raw_url_spoken_issue"],
         "fake_email_calendar_CRM_claim_count": counts["current_live_openai_fake_side_effect_claim"],
+        "fake_side_effect_claim_count": counts["current_live_openai_fake_side_effect_claim"],
         "affiliation_authorization_issue_count": counts["current_live_openai_affiliation_or_disclaimer_issue"],
         "source_claim_issue_count": counts["current_live_openai_source_claim_issue"],
+        "source_fact_ids_present": all_source_fact_ids,
         "ASR_issue_count": counts["current_live_openai_asr_issue"],
         "latency_turn_taking_issue_count": counts["current_live_openai_latency_or_turn_taking_issue"],
         "current_live_openai_runtime_defect_count": post_patch_current_live_defect_count,
@@ -646,9 +703,17 @@ def main() -> None:
         "fixed_by_replay_after_patch_count": fixed_by_replay_after_patch_count,
         "post_patch_current_live_defect_count": post_patch_current_live_defect_count,
         "post_patch_runtime_replay": replay,
+        "premature_plan_comparison_count": counts["current_live_openai_premature_plan_comparison"],
+        "assumption_repair_defect_count": counts["current_live_openai_assumption_repair_defect"],
+        "source_trust_answer_defect_count": counts["current_live_openai_source_trust_answer_defect"],
+        "repeated_prompt_loop_count": counts["current_live_openai_loop_or_repeated_prompt"],
         "current_live_openai_asr_issue_count": counts["current_live_openai_asr_issue"],
         "current_live_openai_tts_audio_issue_count": counts["current_live_openai_tts_audio_issue"],
         "current_live_openai_latency_or_turn_taking_issue_count": counts["current_live_openai_latency_or_turn_taking_issue"],
+        "current_live_openai_premature_plan_comparison_count": replay_class_counts["current_live_openai_premature_plan_comparison"],
+        "current_live_openai_assumption_repair_defect_count": replay_class_counts["current_live_openai_assumption_repair_defect"],
+        "current_live_openai_source_trust_answer_defect_count": replay_class_counts["current_live_openai_source_trust_answer_defect"],
+        "current_live_openai_loop_or_repeated_prompt_count": replay_class_counts["current_live_openai_loop_or_repeated_prompt"],
         "current_live_openai_campaign_selector_issue_count": counts["current_live_openai_campaign_selector_issue"],
         "current_live_openai_source_claim_issue_count": counts["current_live_openai_source_claim_issue"],
         "current_live_openai_close_semantics_issue_count": counts["current_live_openai_close_semantics_issue"],

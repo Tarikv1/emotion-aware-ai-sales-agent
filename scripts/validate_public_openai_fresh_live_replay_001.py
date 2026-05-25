@@ -88,7 +88,15 @@ def build_scenarios() -> list[dict[str, Any]]:
         scenario(
             "fresh-003-self-serve-close",
             "self_serve_close",
-            ["I want Plus", "sounds good, how do I sign up"],
+            [
+                "__agent_open__",
+                "yes",
+                "I already use ChatGPT",
+                "I use it for coding and writing",
+                "I use it heavily every day",
+                "I want Plus",
+                "sounds good, how do I sign up",
+            ],
             must_include=["official ChatGPT plans page"],
             forbid=["http", "sent", "emailed", "booked", "calendar", "CRM"],
         ),

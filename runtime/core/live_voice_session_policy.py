@@ -1998,6 +1998,19 @@ def unique_progressive_focus_text(
     seen: set[str],
     campaign: dict | None = None,
 ) -> str:
+    if isinstance(campaign, dict):
+        campaign_options = campaign.get("focus_progression_options")
+        if isinstance(campaign_options, dict):
+            raw_options = campaign_options.get(focus) or campaign_options.get("default") or []
+            if isinstance(raw_options, str):
+                raw_options = [raw_options]
+            if isinstance(raw_options, list):
+                options = [str(item) for item in raw_options if str(item or "").strip()]
+                for candidate in options:
+                    if candidate not in seen:
+                        return candidate
+                if options:
+                    return options[-1]
     if is_generic_campaign_config(campaign):
         options = [
             generic_campaign_focus_text(language, focus, campaign, normalized=normalized),
@@ -3224,6 +3237,21 @@ def current_focus_followup_response(
     }
     if not normalized_contains_any(normalized, continuation_signals):
         return None
+    if isinstance(campaign, dict):
+        campaign_options = campaign.get("focus_progression_options")
+        if isinstance(campaign_options, dict):
+            raw_options = campaign_options.get(resolved_focus) or campaign_options.get("default") or []
+            if isinstance(raw_options, str):
+                raw_options = [raw_options]
+            if isinstance(raw_options, list):
+                options = [str(item) for item in raw_options if str(item or "").strip()]
+                if options:
+                    return {
+                        "applied": True,
+                        "reason": f"campaign_{resolved_focus}_focus_followup",
+                        "dialogue_focus": resolved_focus,
+                        "candidate_response": options[0],
+                    }
     progression = same_focus_progression_response(normalized, resolved_focus, language, turns, campaign)
     if progression:
         return progression

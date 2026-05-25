@@ -25,7 +25,7 @@
     "tts_provider_calls_made": true
   },
   "generic_live_tts_allowed": true,
-  "git_head_short": "0456b4e",
+  "git_head_short": "b58aa53",
   "latest_current_generated_at": "2026-05-25T01:02:05.741389+00:00",
   "latest_current_packet_hash": "35358ec90615",
   "latest_current_packet_path": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-030205.json",
@@ -33,7 +33,7 @@
   "live_tts_enabled": true,
   "live_tts_used": true,
   "local_llm_calls_made_by_audit": false,
-  "matching_packet_count": 21,
+  "matching_packet_count": 33,
   "opens_prod_102": false,
   "provider_calls_made_by_audit": false,
   "raw_private_transcript_copied_to_public_evidence": false,

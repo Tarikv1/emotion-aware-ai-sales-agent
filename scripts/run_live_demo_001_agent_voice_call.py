@@ -1078,7 +1078,13 @@ def progressive_focus_text(language: str, focus: str, normalized: str, step: int
     return options[min(step, len(options) - 1)]
 
 
-def unique_progressive_focus_text(language: str, focus: str, normalized: str, step: int, seen: set[str]) -> str:
+def unique_progressive_focus_text(
+    language: str,
+    focus: str,
+    normalized: str,
+    step: int,
+    seen: set[str],
+) -> str:
     for offset in range(4):
         candidate = progressive_focus_text(language, focus, normalized, step + offset)
         if candidate not in seen:
@@ -1126,7 +1132,13 @@ def duplicate_response_repair(transcript: str, session_state: dict | None, langu
     }
 
 
-def current_focus_followup_response(normalized: str, resolved_focus: str | None, language: str) -> dict | None:
+def current_focus_followup_response(
+    normalized: str,
+    resolved_focus: str | None,
+    language: str,
+    campaign: dict | None = None,
+    session_state: dict | None = None,
+) -> dict | None:
     if not resolved_focus:
         return None
     continuation_signals = {
@@ -1160,6 +1172,20 @@ def current_focus_followup_response(normalized: str, resolved_focus: str | None,
     }
     if not normalized_contains_any(normalized, continuation_signals):
         return None
+    campaign_options = (campaign or {}).get("focus_progression_options") if isinstance(campaign, dict) else None
+    if isinstance(campaign_options, dict):
+        raw_options = campaign_options.get(resolved_focus) or campaign_options.get("default") or []
+        if isinstance(raw_options, str):
+            raw_options = [raw_options]
+        if isinstance(raw_options, list):
+            options = [str(item) for item in raw_options if str(item or "").strip()]
+            if options:
+                return {
+                    "applied": True,
+                    "reason": f"campaign_{resolved_focus}_focus_followup",
+                    "dialogue_focus": resolved_focus,
+                    "candidate_response": options[0],
+                }
     return {
         "applied": True,
         "reason": f"resolved_{resolved_focus}_focus_followup",
@@ -1352,7 +1378,7 @@ def continuity_response(transcript: str, session_state: dict | None, campaign: d
             "dialogue_focus": selected_focus,
             "candidate_response": continuity_text(language, selected_focus),
         }
-    current_focus_followup = current_focus_followup_response(normalized, resolved_focus, language)
+    current_focus_followup = current_focus_followup_response(normalized, resolved_focus, language, campaign, session_state)
     if current_focus_followup:
         return current_focus_followup
     if resolved_focus == "price" and normalized_contains_any(

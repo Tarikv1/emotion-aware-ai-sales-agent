@@ -63,6 +63,21 @@
     "enterprise_questions_owner": "Enterprise questions should use the official contact-sales route, not this simulation as a representative.",
     "no_side_effect_reason": "This public fixture cannot send email, book meetings, create CRM records, or collect payment."
   },
+  "focus_progression_options": {
+    "default": [
+      "I can keep checking, but plan fit still needs the actual use case. If it is coding or writing, Plus versus Pro may be the comparison; if it is a team, Business or Enterprise is the path. The official ChatGPT plans page is the self-serve reference after fit is clear.",
+      "I can continue, but I should not assume buying intent. First I need the adoption state: ChatGPT today, another AI tool, or mostly no AI yet. After that, Plus, Pro, Business, or Enterprise only matter if the use case supports it."
+    ],
+    "adoption_state_discovery": [
+      "I can continue, but I should not assume buying intent. First I need the adoption state: ChatGPT today, another AI tool, or mostly no AI yet. After that, Plus, Pro, Business, or Enterprise only matter if the use case supports it."
+    ],
+    "use_case_discovery": [
+      "I can keep checking, but plan fit still needs the actual use case. If it is coding or writing, Plus versus Pro may be the comparison; if it is a team, Business or Enterprise is the path. The official ChatGPT plans page is the self-serve reference after fit is clear."
+    ],
+    "self_serve_close": [
+      "If Free is enough, no paid close is needed. If you later compare paid plans, use the official ChatGPT plans page or profile upgrade flow. I cannot send a link, book anything, or take payment here."
+    ]
+  },
   "campaign_playbook_id": "public-openai-chatgpt-plans-playbook",
   "caller_identity": {
     "representative_name": "Maya",
