@@ -75,6 +75,70 @@ DEFAULT_FORBIDDEN_PATTERNS = [
     "invented ROI or revenue claim",
 ]
 
+COMMERCIAL_SALES_SKILL_PRINCIPLES = [
+    {
+        "id": "recommend_after_enough_context",
+        "principle": "If the buyer provides enough context to choose between options, form a point of view instead of continuing discovery.",
+        "must_do": ["recommend a path", "name the buyer context", "avoid another generic qualifier"],
+    },
+    {
+        "id": "direct_buying_question_priority",
+        "principle": "Price, plan-fit, signup, option sufficiency, and which-should-I-choose questions must be answered directly before more discovery.",
+        "must_do": ["answer first", "then frame tradeoff", "choose one next action"],
+    },
+    {
+        "id": "context_summary_before_recommendation",
+        "principle": "When recommending, summarize known buyer context before the recommendation.",
+        "must_do": ["use Given X and Y", "tie recommendation to a reason", "do not expose internal field names"],
+    },
+    {
+        "id": "decision_frame_contrast",
+        "principle": "Offer a contrast close that lets the buyer choose between the meaningful tradeoffs.",
+        "must_do": ["choose A if one priority matters", "choose B if the other priority matters", "avoid vague plan-fit wording"],
+    },
+    {
+        "id": "competitor_reframe",
+        "principle": "Do not collapse into repeated passive caveats when a competitor exists; reframe around the gap the current tool does not solve.",
+        "must_do": ["acknowledge current solution", "ask or state the specific gap", "avoid unsupported superiority claims"],
+    },
+    {
+        "id": "buying_signal_close",
+        "principle": "When the buyer shows intent, move to a close or decision frame instead of restarting qualification.",
+        "must_do": ["confirm the point of view", "state next action", "do not ask another generic discovery question"],
+    },
+    {
+        "id": "avoid_over_caveating",
+        "principle": "Safety caveats should be present when needed but must not dominate a close or replace a recommendation.",
+        "must_do": ["state the boundary once", "keep momentum", "avoid limitation blocks unless the buyer asks"],
+    },
+    {
+        "id": "no_repeated_qualification",
+        "principle": "Do not ask another qualifying question if known context is enough for a recommendation.",
+        "must_do": ["advance from discovery to recommendation", "preserve known state", "avoid repeating the same qualifier"],
+    },
+    {
+        "id": "information_must_advance",
+        "principle": "A response that only gives facts but does not answer, recommend, reframe, qualify, disqualify, or close is weak.",
+        "must_do": ["answer", "frame value", "advance one commercial action"],
+    },
+    {
+        "id": "sales_ready_means_selling",
+        "principle": "Sales-ready means able to sell, not merely explain safely.",
+        "must_do": ["create buyer momentum", "handle resistance", "close or no-fit close cleanly"],
+    },
+]
+
+COMMERCIAL_BUYING_QUESTION_TYPES = [
+    "price",
+    "plan_fit",
+    "signup",
+    "which_should_i_choose",
+    "is_this_enough",
+    "competitor_comparison",
+    "expensive_or_budget",
+    "current_solution_enough",
+]
+
 
 def _shape(
     shape_id: str,
@@ -1205,6 +1269,62 @@ RESPONSE_SHAPE_LIBRARY.update(
                 "ask whether one allowed fit area is still worth reviewing",
             ],
         ),
+        "commercial_recommendation_after_context": _shape(
+            "commercial_recommendation_after_context",
+            allowed_fact_slots=["product_or_offer_name", "allowed_claims", "blocked_claims", "gap_label", "gap_value_bridge"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["generic qualifier after enough context", "internal fit-state wording"],
+            appointment_pressure_level="low",
+            example_outline=[
+                "summarize known buyer context",
+                "recommend the best-fit option using allowed campaign facts",
+                "give one decision frame and one next action",
+            ],
+        ),
+        "commercial_direct_buying_answer": _shape(
+            "commercial_direct_buying_answer",
+            allowed_fact_slots=["product_or_offer_name", "allowed_claims", "blocked_claims", "gap_value_bridge"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["dodge price", "restart qualification", "raw URL"],
+            appointment_pressure_level="low",
+            example_outline=[
+                "answer the buying question first",
+                "tie the answer to known buyer context",
+                "advance to recommendation, decision frame, close, or no-fit",
+            ],
+        ),
+        "commercial_competitor_gap_reframe": _shape(
+            "commercial_competitor_gap_reframe",
+            allowed_fact_slots=["product_or_offer_name", "allowed_claims", "blocked_claims", "gap_label", "gap_value_bridge"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["repeat passive switch caveat", "bash competitor", "unsupported superiority"],
+            appointment_pressure_level="low",
+            example_outline=[
+                "acknowledge the current solution may be enough",
+                "state that comparison is only useful if this offer solves a gap",
+                "ask or frame the single gap that would justify switching",
+            ],
+        ),
+        "commercial_buying_signal_close": _shape(
+            "commercial_buying_signal_close",
+            allowed_fact_slots=["product_or_offer_name", "allowed_claims", "blocked_claims", "appointment_target", "human_followup_owner"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["ask generic discovery after buying signal", "over-caveat close", "fake side effect"],
+            appointment_pressure_level="direct",
+            example_outline=[
+                "confirm the buyer's direction",
+                "state why it fits known context",
+                "give the configured close route without claiming external action",
+            ],
+        ),
+        "commercial_no_fit_close": _shape(
+            "commercial_no_fit_close",
+            allowed_fact_slots=["product_or_offer_name", "allowed_claims", "blocked_claims", "language"],
+            forbidden_patterns=DEFAULT_FORBIDDEN_PATTERNS + ["push paid option after no-fit", "restart qualification", "invent free benefit"],
+            allowed_call_control=["continue-call", "end-call"],
+            appointment_pressure_level="none",
+            example_outline=[
+                "acknowledge current solution or low need",
+                "state no paid or active close is needed now",
+                "name the condition that would make comparison relevant later",
+            ],
+        ),
         "price_boundary_without_quote": _shape(
             "price_boundary_without_quote",
             allowed_fact_slots=["allowed_claims", "blocked_claims", "appointment_target", "human_followup_owner", "gap_review_focus"],
@@ -1740,6 +1860,14 @@ def forbidden_customer_patterns() -> list[dict[str, Any]]:
     return deepcopy(FORBIDDEN_CUSTOMER_FACING_PATTERNS)
 
 
+def commercial_sales_skill_principles() -> list[dict[str, Any]]:
+    return deepcopy(COMMERCIAL_SALES_SKILL_PRINCIPLES)
+
+
+def commercial_buying_question_types() -> list[str]:
+    return list(COMMERCIAL_BUYING_QUESTION_TYPES)
+
+
 def validator_matrix() -> dict[str, Any]:
     return deepcopy(VALIDATOR_MATRIX)
 
@@ -1795,6 +1923,38 @@ def validate_universal_sales_conversation_knowledge() -> dict[str, Any]:
         if not shape.get("example_outline"):
             failures.append(f"{shape_id}: example outline required")
 
+    required_commercial_principles = {
+        "recommend_after_enough_context",
+        "direct_buying_question_priority",
+        "context_summary_before_recommendation",
+        "decision_frame_contrast",
+        "competitor_reframe",
+        "buying_signal_close",
+        "avoid_over_caveating",
+        "no_repeated_qualification",
+        "information_must_advance",
+        "sales_ready_means_selling",
+    }
+    principle_ids = {str(item.get("id")) for item in COMMERCIAL_SALES_SKILL_PRINCIPLES if isinstance(item, dict)}
+    missing_principles = sorted(required_commercial_principles - principle_ids)
+    if missing_principles:
+        failures.append(f"commercial sales skill principles missing {missing_principles}")
+    for item in COMMERCIAL_SALES_SKILL_PRINCIPLES:
+        if not isinstance(item.get("principle"), str) or len(item["principle"]) < 30:
+            failures.append(f"{item.get('id')}: commercial principle must be specific")
+        if not item.get("must_do"):
+            failures.append(f"{item.get('id')}: commercial principle needs must_do actions")
+    required_commercial_shapes = {
+        "commercial_recommendation_after_context",
+        "commercial_direct_buying_answer",
+        "commercial_competitor_gap_reframe",
+        "commercial_buying_signal_close",
+        "commercial_no_fit_close",
+    }
+    missing_commercial_shapes = sorted(required_commercial_shapes - set(RESPONSE_SHAPE_LIBRARY))
+    if missing_commercial_shapes:
+        failures.append(f"commercial response shapes missing {missing_commercial_shapes}")
+
     for rule_id, rule in UNIVERSAL_REPAIR_RULES.items():
         if rule.get("buyer_move_id") not in buyer_move_ids:
             failures.append(f"{rule_id}: unknown buyer move")
@@ -1820,6 +1980,8 @@ def validate_universal_sales_conversation_knowledge() -> dict[str, Any]:
             "repair_rules": len(UNIVERSAL_REPAIR_RULES),
             "campaign_fact_slots": len(CAMPAIGN_FACT_SLOTS),
             "asr_cases": len(ASR_REPAIR_BOUNDARY.get("cases") or {}),
+            "commercial_sales_skill_principles": len(COMMERCIAL_SALES_SKILL_PRINCIPLES),
+            "commercial_buying_question_types": len(COMMERCIAL_BUYING_QUESTION_TYPES),
         },
         "declarative_only": True,
         "no_dialogue_manager_import": True,

@@ -146,6 +146,13 @@ def _limit_pain_from_text(text: str) -> bool | None:
             "running out",
             "blocked by limits",
             "already hitting limits",
+            "i run out of limits",
+            "run out of limits",
+            "limits are the problem",
+            "hit the cap",
+            "usage limits block",
+            "need fewer limits",
+            "want to avoid limits",
             "a bit frustrating",
             "frustrating",
         },
@@ -213,6 +220,118 @@ def _next_best_action_for_state(state: dict[str, Any], normalized: str, final_re
     if _contains(final_response.lower(), {"official chatgpt plans page", "profile upgrade flow"}):
         return "self_serve_close"
     return "recommend_plan"
+
+
+def _commercial_sales_state(
+    *,
+    state: dict[str, Any],
+    normalized: str,
+    final_response: str,
+) -> dict[str, Any]:
+    recommended = _recommended_path_for_state(state)
+    use_text = _state_text_value(state, "openai_use_case").lower()
+    intensity = str(state.get("openai_usage_intensity") or "unknown")
+    limit_pain = state.get("openai_limit_pain")
+    budget = str(state.get("openai_budget_sensitivity") or "unknown")
+    response = " ".join(str(final_response or "").lower().split())
+
+    if _signup_question(normalized) or "official chatgpt plans page" in response or "profile upgrade flow" in response:
+        commercial_stage = "close"
+    elif _price_question(normalized) or _plus_sufficiency_question(normalized) or _pro_agreement_signal(normalized):
+        commercial_stage = "decision_frame"
+    elif _commercial_objection(normalized) or _competitor_objection(normalized):
+        commercial_stage = "objection_handling"
+    elif recommended != "unknown":
+        commercial_stage = "recommendation"
+    elif use_text and use_text != "unknown":
+        commercial_stage = "value_mapping"
+    elif state.get("openai_adoption_state") not in {None, "unknown"}:
+        commercial_stage = "use_case_discovery"
+    else:
+        commercial_stage = "adoption_discovery"
+
+    if budget == "high" or _current_tool_enough(normalized):
+        buyer_fit_level = "low"
+    elif recommended in {"pro", "business", "enterprise"}:
+        buyer_fit_level = "high"
+    elif recommended in {"plus", "free"}:
+        buyer_fit_level = "medium"
+    else:
+        buyer_fit_level = "unknown"
+
+    if _pro_agreement_signal(normalized) or _signup_question(normalized) or _self_serve_close(normalized):
+        buyer_momentum = "buying_signal"
+    elif _commercial_objection(normalized) or _competitor_objection(normalized):
+        buyer_momentum = "neutral"
+    elif recommended != "unknown":
+        buyer_momentum = "positive"
+    else:
+        buyer_momentum = "neutral"
+
+    if recommended in {"pro", "business", "enterprise"} or _pro_agreement_signal(normalized):
+        recommendation_confidence = "strong"
+    elif recommended in {"plus", "free"}:
+        recommendation_confidence = "moderate"
+    elif use_text and use_text != "unknown":
+        recommendation_confidence = "tentative"
+    else:
+        recommendation_confidence = "none"
+
+    if recommended == "enterprise" or "privacy" in use_text:
+        value_hypothesis = "privacy_controls"
+    elif recommended == "business" or "team" in use_text:
+        value_hypothesis = "team_controls"
+    elif limit_pain is True or intensity == "heavy":
+        value_hypothesis = "fewer_limits"
+    elif budget == "high" or recommended == "free":
+        value_hypothesis = "no_fit"
+    elif recommended in {"plus", "pro"}:
+        value_hypothesis = "lower_cost_entry"
+    else:
+        value_hypothesis = "better_tools" if use_text and use_text != "unknown" else "no_fit"
+
+    if recommended in {"plus", "pro"} or _plus_sufficiency_question(normalized) or _pro_agreement_signal(normalized):
+        decision_frame = "plus_vs_pro"
+    elif recommended == "free" or budget == "high":
+        decision_frame = "free_vs_paid"
+    elif recommended in {"business", "enterprise"}:
+        decision_frame = "business_vs_enterprise"
+    elif _competitor_objection(normalized) or _current_tool_enough(normalized):
+        decision_frame = "stay_with_current_tool"
+    else:
+        decision_frame = "no_fit"
+
+    if _signup_question(normalized) and recommended == "enterprise":
+        close_readiness = "contact_sales"
+    elif _signup_question(normalized) or _pro_agreement_signal(normalized):
+        close_readiness = "self_serve"
+    elif recommended != "unknown":
+        close_readiness = "direct"
+    elif use_text and use_text != "unknown":
+        close_readiness = "soft"
+    else:
+        close_readiness = "none"
+
+    if _commercial_objection(normalized):
+        last_objection_handled = _commercial_objection(normalized)
+    elif _competitor_objection(normalized) or _current_tool_enough(normalized):
+        last_objection_handled = "competitor"
+    else:
+        last_objection_handled = state.get("last_objection_handled") or ""
+
+    return {
+        "commercial_stage": commercial_stage,
+        "buyer_fit_level": buyer_fit_level,
+        "buyer_momentum": buyer_momentum,
+        "recommendation_confidence": recommendation_confidence,
+        "value_hypothesis": value_hypothesis,
+        "decision_frame": decision_frame,
+        "close_readiness": close_readiness,
+        "last_recommendation_given": recommended if recommended != "unknown" else state.get("last_recommendation_given") or "",
+        "last_decision_frame_given": decision_frame,
+        "last_objection_handled": last_objection_handled,
+        "next_commercial_action": _next_best_action_for_state(state, normalized, response),
+    }
 
 
 def memory_update_for_turn(
@@ -287,6 +406,7 @@ def memory_update_for_turn(
     state["API_boundary_answered"] = state["openai_api_boundary_answered"]
     state["last_agent_question_type"] = "none"
     state["last_agent_question_text"] = final_response if "?" in final_response else ""
+    state.update(_commercial_sales_state(state=state, normalized=normalized, final_response=final_response))
     return state
 
 
@@ -430,6 +550,10 @@ def _low_or_unclear_intent(normalized: str) -> bool:
             "not buying",
             "do not want to buy",
             "don't want to buy",
+            "do not want to pay",
+            "don't want to pay",
+            "no paid plan",
+            "no subscription",
             "not deciding today",
             "only wanted to know what this is",
         },
@@ -499,6 +623,11 @@ def _competitor_objection(normalized: str) -> bool:
             "another llm",
             "why would i switch",
             "why switch",
+            "why use chatgpt",
+            "why compare chatgpt",
+            "what gap would",
+            "what would be different",
+            "convince me",
             "use claude",
             "use gemini",
             "another ai tool",
@@ -508,6 +637,11 @@ def _competitor_objection(normalized: str) -> bool:
             "use copilot",
             "reason to switch",
             "instead of what i have",
+            "why would i add chatgpt",
+            "why would i add this",
+            "why add chatgpt",
+            "why add this",
+            "why not stay",
         },
     )
 
@@ -609,6 +743,7 @@ def _light_or_basic_use(normalized: str) -> bool:
         {
             "once in a while",
             "occasionally",
+            "lightly",
             "only need basic",
             "basic use",
             "studying",
@@ -658,8 +793,78 @@ def _another_ai_user(normalized: str) -> bool:
             "use gemini",
             "use copilot",
             "current tool",
+            "current assistant",
+            "another subscription",
+            "already pay for another tool",
         },
     )
+
+
+def _current_tool_enough(normalized: str) -> bool:
+    return _contains(
+        normalized,
+        {
+            "current tool works fine",
+            "current tool is fine",
+            "current setup is enough",
+            "current setup works",
+            "current tool covers everything",
+            "my current tool covers everything",
+            "happy with my current tool",
+            "stay with what i have",
+            "i can stay with what i have",
+            "i do not want to pay",
+            "don't want to pay",
+            "no paid plan",
+            "no subscription",
+            "no budget",
+        },
+    )
+
+
+def _commercial_objection(normalized: str) -> str:
+    if _contains(
+        normalized,
+        {
+            "why pro over plus",
+            "why pro",
+            "why pay more than plus",
+            "why would pro be safer",
+            "plus is cheaper",
+            "plus seems cheaper",
+            "why not start lower",
+            "is pro really necessary",
+            "what if pro is too much",
+        },
+    ):
+        return "why_pro"
+    if _contains(
+        normalized,
+        {
+            "too expensive",
+            "price sensitive",
+            "do not want to overpay",
+            "don't want to overpay",
+            "worth paying",
+            "why not just use free",
+            "is this worth paying",
+            "paid is too much",
+        },
+    ):
+        return "price"
+    if _contains(
+        normalized,
+        {
+            "another subscription",
+            "do not want another subscription",
+            "don't want another subscription",
+            "subscription is annoying",
+        },
+    ):
+        return "subscription"
+    if _contains(normalized, {"already pay for another tool", "current tool is already paid"}):
+        return "competitor"
+    return ""
 
 
 def _no_ai_user(normalized: str) -> bool:
@@ -719,9 +924,18 @@ def _price_question(normalized: str) -> bool:
             "what does pro cost",
             "what do i pay",
             "what do the paid tiers cost",
+            "what does it cost monthly",
+            "monthly",
             "monthly price",
             "paid plan price",
+            "paid tiers",
             "tell me the cost",
+            "tell me the pricing",
+            "pricing",
+            "current prices",
+            "what should i budget",
+            "how expensive",
+            "difference in price",
             "price before",
             "want to know the price",
             "want the price",
@@ -779,6 +993,9 @@ def _plus_sufficiency_question(normalized: str) -> bool:
             "is pro worth it",
             "pro worth it",
             "why pro",
+            "would plus cover that",
+            "is plus the right plan",
+            "right plan",
             "which plan",
             "what should i choose",
             "plus enough",
@@ -828,6 +1045,14 @@ def _signup_question(normalized: str) -> bool:
             "how do we sign up",
             "can you send me a link",
             "send me a link",
+            "how would i get pro",
+            "where would i click",
+            "how do i start",
+            "how do i upgrade to pro",
+            "where can i compare the plan",
+            "what page should i use",
+            "how do i move forward",
+            "where do i buy it",
         },
     )
 
@@ -842,8 +1067,47 @@ def _prior_plan_selection(turns: list[dict[str, Any]]) -> bool:
             "plus sounds good",
             "i want pro",
             "pro sounds right",
+            "pro seems better",
+            "pro is better",
+            "pro is probably right",
+            "pro makes more sense",
+            "pro is safer",
+            "pro first",
+            "leaning pro",
             "free sounds enough",
             "business sounds right",
+        },
+    )
+
+
+def _pro_agreement_signal(normalized: str) -> bool:
+    return _contains(
+        normalized,
+        {
+            "pro is better",
+            "pro seems better",
+            "pro probably",
+            "pro is probably",
+            "pro makes more sense",
+            "pro is safer",
+            "pro is the stronger",
+            "pro sounds right",
+            "sounds like pro",
+            "then pro",
+            "i guess pro",
+            "pro fits",
+            "pro probably works",
+            "i should compare pro",
+            "compare pro first",
+            "pro for me",
+            "that means pro",
+            "i think pro",
+            "not plus pro",
+            "look at pro",
+            "leaning pro",
+            "pushes me to pro",
+            "pro first",
+            "i need pro",
         },
     )
 
@@ -870,6 +1134,61 @@ def _choosing_before_upgrade_response(turns: list[dict[str, Any]]) -> str:
     return (
         "Got it - if you are just choosing before upgrading, I would start with the use case before pushing a tier. "
         "Is this mainly coding, writing, research, files, or team use?"
+    )
+
+
+def _pro_agreement_response(turns: list[dict[str, Any]]) -> str:
+    if _known_use_case("", turns) and (_known_heavy_use("", turns) or _known_limit_pain("", turns)):
+        if _known_limit_pain("", turns):
+            return (
+                "Yes - based on coding and writing with explicit limit pain, Pro is the stronger fit to compare. "
+                "Plus is cheaper, but Pro is safer if avoiding limits matters. The next step is the official ChatGPT plans page."
+            )
+        return (
+            "Yes - based on heavy coding and writing, Pro is the stronger fit to compare. "
+            "Plus is cheaper, but Pro is safer if usage limits matter. The next step is the official ChatGPT plans page."
+        )
+    if _known_use_case("", turns):
+        return (
+            "Yes - Pro is worth comparing if the coding and writing workload is heavy or limits matter. "
+            "Plus is the lower-cost start; Pro is the safer higher-usage option. The next step is the official ChatGPT plans page."
+        )
+    return (
+        "Pro can be the right comparison for heavier individual use, but I would tie that to the actual work before pushing it. "
+        "If the workload is heavy, compare Pro; if it is moderate, Plus is the lower-cost start."
+    )
+
+
+def _commercial_objection_response(normalized: str, turns: list[dict[str, Any]]) -> str:
+    objection = _commercial_objection(normalized)
+    if objection == "why_pro":
+        if _known_limit_pain(normalized, turns):
+            return (
+                "The reason to compare Pro over Plus is limits. Plus is the lower-cost paid start; "
+                "Pro is the safer choice if limits are already interrupting coding and writing."
+            )
+        return (
+            "Pro over Plus is mainly a usage decision. Plus is cheaper and often enough for moderate coding and writing; "
+            "Pro is safer for heavy use if avoiding limits matters. Choose Plus for lower cost, Pro for more usage headroom."
+        )
+    if objection == "subscription":
+        return (
+            "I would not add another subscription unless ChatGPT fills a real gap. "
+            "For heavy coding and writing, the decision is Plus as the lower-cost test versus Pro if usage headroom matters."
+        )
+    if objection == "competitor":
+        return (
+            "If the paid tool you already have covers the job, I would not push a switch. "
+            "Compare ChatGPT only where your current tool is weakest; for heavy coding and writing, that means Plus as a low-cost test or Pro for more usage headroom."
+        )
+    if objection == "price":
+        return (
+            "If price is the main concern, start lower. Plus is the lower-cost paid option; "
+            "Pro is only the better comparison if heavy coding and writing makes limits or usage headroom important."
+        )
+    return (
+        "The clean decision is value versus cost: Plus is the lower-cost start; Pro is the higher-usage comparison. "
+        "I would choose Pro only if the heavier workload makes limits matter."
     )
 
 
@@ -940,24 +1259,44 @@ def _price_response(campaign: dict | None, normalized: str, turns: list[dict[str
         )
         return f"{plus_price} {plus_features} {caveat}{suffix}"
     if _contains(normalized, {"how much is plus", "plus cost", "pay for plus", "is plus twenty"}):
-        suffix = " Given your limits/heavy-use context, compare Pro if Plus still blocks the work." if heavy_context or limit_context else ""
+        if limit_context:
+            suffix = (
+                " Given you are hitting limits, compare Plus against Pro: "
+                "Plus is the lower-cost start; Pro is safer if avoiding limits matters."
+            )
+        elif heavy_context:
+            suffix = (
+                " Given coding and heavy use, I would compare Pro first if usage headroom matters; "
+                "Plus is the lower-cost start."
+            )
+        else:
+            suffix = ""
         return f"{plus_price} {caveat}{suffix}"
     if _contains(normalized, {"how much is pro", "pro cost", "pay for pro", "pro one hundred"}):
         suffix = (
             " Given you are hitting limits, compare that against Plus at 20 dollars per month: Plus is cheaper; Pro is for higher usage."
-            if known_context and (limit_context or heavy_context)
-            else (" That is the relevant comparison if limits are the main frustration." if limit_context else "")
+            if known_context and limit_context
+            else (
+                " Given coding and heavy use, compare that against Plus at 20 dollars per month: Plus is cheaper; Pro is for higher usage."
+                if known_context and heavy_context
+                else (" That is the relevant comparison if limits are the main frustration." if limit_context else "")
+            )
         )
         return f"{pro_price} {caveat}{suffix}"
     if "business" in normalized:
         return f"{business_price} {caveat}"
     if "enterprise" in normalized:
         return "Enterprise pricing is not a public fixed individual price in this fixture; the official route is contact sales. " + caveat
-    if known_context and (heavy_context or limit_context):
+    if known_context and limit_context:
         return (
             f"Sure. Free is the no-cost option. {plus_price} {pro_price} "
             f"{caveat} Given you are hitting limits, the relevant comparison is Plus at 20 dollars per month versus the Pro tiers. "
-            "Plus is cheaper; Pro is for higher usage."
+            "I would compare Pro first if avoiding limits matters. Plus is cheaper; Pro is safer."
+        )
+    if known_context and heavy_context:
+        return (
+            f"Sure. Free is the no-cost option. {plus_price} {pro_price} "
+            f"{caveat} Given coding and heavy use, I would compare Pro first. The real decision is Plus as the lower-cost start versus Pro as the higher-usage option."
         )
     if known_context:
         return (
@@ -967,18 +1306,19 @@ def _price_response(campaign: dict | None, normalized: str, turns: list[dict[str
     return (
         f"Sure. Free is the no-cost option. {plus_price} {pro_price} "
         "Business is for teams, and Enterprise routes to contact sales. "
-        f"{caveat} Are you mainly comparing Plus and Pro?"
+        f"{caveat} The decision frame is Free for no-cost use, Plus as the lower-cost individual start, "
+        "Pro for heavier individual use, and Business or Enterprise when team controls matter."
     )
 
 
 def _plus_sufficiency_response(normalized: str, turns: list[dict[str, Any]]) -> str:
     prior_state = _prior_openai_state(turns)
-    if prior_state.get("openai_adoption_state") == "other_ai_user" or _another_ai_user(_prior_customer_text(turns)):
-        return (
-            "If you already use another AI tool, you may not need to switch. "
-            "Plus is worth comparing only if ChatGPT covers a real gap in your current setup; Pro is for heavier individual usage."
-        )
     if not _known_use_case(normalized, turns):
+        if prior_state.get("openai_adoption_state") == "other_ai_user" or _another_ai_user(_prior_customer_text(turns)):
+            return (
+                "If your current tool covers everything, I would not push a paid ChatGPT plan. "
+                "The reason to compare ChatGPT is a real gap in coding, files, research, writing, voice/images, or team controls."
+            )
         return (
             "Plus is usually the first paid individual plan to compare when Free or Go feels limited. "
             "Pro is for heavier individual usage, especially if limits, files, or advanced tools are already frustrating. "
@@ -991,14 +1331,14 @@ def _plus_sufficiency_response(normalized: str, turns: list[dict[str, Any]]) -> 
     heavy = _known_heavy_use(normalized, turns)
     if heavy:
         return (
-            "For coding and writing on the heavy side, Plus is the lower-cost paid starting point. "
-            "Pro is the plan to compare if limits, files, or advanced tools are already frequent. "
-            "Do you want the lower-cost starting point, or the plan least likely to hit limits?"
+            "For coding and writing, Plus is usually enough if use is moderate. "
+            "Since your use is heavy, I would compare Pro seriously. Plus is the lower-cost starting point; "
+            "Pro is safer if usage limits matter. The next step is the official ChatGPT plans page."
         )
     return (
-        "For coding and writing, Plus is usually the first paid plan to try. "
-        "Pro is worth comparing only if you regularly hit limits, use files heavily, or need the highest individual usage. "
-        "If you want the safer starting point, Plus first; if limits are already frustrating, Pro."
+        "For coding and writing, Plus is usually enough if use is moderate. "
+        "Plus is the lower-cost starting point; Pro is safer if usage limits matter. "
+        "The next action is to compare Plus versus Pro on the official ChatGPT plans page."
     )
 
 
@@ -1024,10 +1364,16 @@ def _signup_response(normalized: str, turns: list[dict[str, Any]]) -> str:
     if _known_use_case("", turns):
         suffix = " I cannot send a link from this fixture." if link_requested else ""
         if _known_limit_pain(normalized, turns) or _known_heavy_use(normalized, turns):
+            basis = (
+                "coding/writing and hitting limits"
+                if _known_limit_pain(normalized, turns)
+                else "heavy coding/writing"
+            )
+            value = "fewer limits" if _known_limit_pain(normalized, turns) else "more usage headroom"
             return (
-                "For individual plans, use the official ChatGPT plans page or profile upgrade flow. "
-                "Based on what you said - coding/writing and hitting limits - compare Pro if you want fewer limits; "
-                "choose Plus first if you want the lower-cost starting point."
+                "Yes - for individual plans, use the official ChatGPT plans page or profile upgrade flow. "
+                f"Based on what you said - {basis} - compare Pro first if you want {value}; "
+                "choose Plus if you want the lower-cost starting point."
                 f"{suffix}"
             )
         return (
@@ -1064,9 +1410,9 @@ def _known_context_repeat_response(normalized: str, turns: list[dict[str, Any]],
         return (
             "public_plan_known_use_and_heavy_continue_progress" if continuing else "public_plan_known_use_and_heavy_repeat_progress",
             (
-                "To move it forward: start with Plus if you want the safer paid step; compare Pro if limits, files, or advanced tools are already blocking your coding and writing."
+                "To move it forward: compare Pro first for heavy coding and writing; choose Plus only if lower cost matters more than usage headroom."
                 if continuing
-                else "You already gave both use case and intensity. For coding and writing on the heavy side, Plus is the safer paid starting point; Pro is the comparison if limits are already frustrating."
+                else "You already gave both use case and intensity. For heavy coding and writing, Pro is the stronger fit to compare; Plus is the lower-cost starting point."
             ),
             "plan_fit",
         )
@@ -1144,8 +1490,8 @@ def _context_progress_response(normalized: str, turns: list[dict[str, Any]]) -> 
         return (
             "public_plan_known_use_and_heavy_progress",
             (
-                "Right - coding and writing with heavier use. Plus is the lower-cost paid starting point, and Pro is the heavier individual tier. "
-                "Do you want the lower-cost starting point, or the plan least likely to hit limits?"
+                "Right - coding and writing with heavier use. I would compare Pro first because usage headroom matters more here. "
+                "Plus is the lower-cost starting point; Pro is safer if usage limits matter."
             ),
             "plan_fit",
         )
@@ -1195,6 +1541,16 @@ def _self_serve_close(normalized: str) -> bool:
             "show me the official page",
             "i want pro",
             "i want go",
+            "pro seems better",
+            "pro is better",
+            "pro makes more sense",
+            "pro sounds right",
+            "pro first",
+            "then pro",
+            "i guess pro",
+            "pro fits",
+            "pro probably works",
+            "pro is the plan",
             "where is the plan page",
             "ready to start",
             "what is the next step",
@@ -1270,8 +1626,8 @@ def duplicate_repair_response(
             candidate_response,
             _plus_sufficiency_response(normalized, turns),
             (
-                "Since you already gave the use case and intensity, I would not ask that again. "
-                "For coding and writing on the heavy side, Plus is lower cost; Pro is the comparison if limits become the blocker."
+                "Since you already gave the use case and intensity, I would compare Pro first for heavy coding and writing. "
+                "Plus is lower cost; Pro is safer if usage headroom matters. The next step is the official ChatGPT plans page."
             ),
             turns,
         )
@@ -1508,6 +1864,36 @@ def classify_turn(
             polarity="boundary",
         )
 
+    if _pro_agreement_signal(normalized):
+        return _frame(
+            **base,
+            semantic="public_plan_pro_agreement_closed",
+            response=_pro_agreement_response(turns),
+            dialogue_focus="self_serve_close",
+            polarity="close",
+        )
+
+    if _commercial_objection(normalized):
+        prior_text = _prior_customer_text(turns)
+        if _light_or_basic_use(prior_text) or _current_tool_enough(f"{prior_text} {normalized}"):
+            return _frame(
+                **base,
+                semantic="public_plan_objection_no_fit_close",
+                response=(
+                    "Then I would not push a paid ChatGPT plan. Free or staying with your current tool may be enough "
+                    "unless you hit limits, need a missing tool, or need team controls. The next action is no paid close."
+                ),
+                dialogue_focus="no_fit",
+                polarity="low_pressure",
+            )
+        return _frame(
+            **base,
+            semantic="public_plan_commercial_objection_handled",
+            response=_commercial_objection_response(normalized, turns),
+            dialogue_focus="objection_handling",
+            polarity="objection",
+        )
+
     if _pro_tier_question(normalized):
         return _frame(
             **base,
@@ -1640,11 +2026,42 @@ def classify_turn(
             semantic="public_plan_low_unclear_intent",
             response=(
                 "No problem. Then I would keep it simple: Free may be enough for light use; paid plans are mainly worth comparing "
-                "if limits, tools, or team needs matter. I can explain Free versus paid only if that would be useful, or I can stop here."
+                "if limits, tools, or team needs matter. I would not push a paid plan; the next action is stay free or stop here."
             ),
             target_gap="openai_adoption_state",
             dialogue_focus="low_intent",
             polarity="low_pressure",
+        )
+
+    if _current_tool_enough(normalized):
+        return _frame(
+            **base,
+            semantic="public_plan_current_tool_no_fit",
+            response=(
+                "Then I would not push a paid ChatGPT plan. Free or staying with your current tool may be enough "
+                "unless you hit limits, need tools your current setup lacks, or need team controls."
+            ),
+            dialogue_focus="no_fit",
+            polarity="low_pressure",
+        )
+
+    if _competitor_objection(normalized):
+        if _known_use_case(normalized, turns):
+            response = (
+                "A switch only makes sense if ChatGPT improves a specific gap in your current tool: "
+                "coding workflow, files, research, writing, voice/images, or team controls. For coding and writing, compare Plus as the lower-cost test and Pro if heavier usage matters."
+            )
+        else:
+            response = (
+                "A switch only makes sense if ChatGPT covers something your current tool does not: "
+                "coding workflow, files, research, voice/images, team admin, or privacy controls. What is the one area where your current tool feels weakest?"
+            )
+        return _frame(
+            **base,
+            semantic="public_plan_competitor_objection",
+            response=response,
+            dialogue_focus="competitive_objection",
+            polarity="objection",
         )
 
     if _current_chatgpt_user(normalized):
@@ -1655,7 +2072,7 @@ def classify_turn(
                 response=(
                     "Got it - sounds like you're already using ChatGPT or another AI tool. "
                     "The useful comparison is whether ChatGPT covers something your current setup does not. "
-                    "What matters most: coding, writing, research, files, team admin, or privacy controls?"
+                    "What is the one area where your current tool feels weakest: coding, files, research, writing, voice/images, or team controls?"
                 ),
                 target_gap="alternative_tool_gap",
                 dialogue_focus="competitive_objection",
@@ -1678,8 +2095,8 @@ def classify_turn(
             **base,
             semantic="public_plan_another_ai_user",
             response=(
-                "You may not need to switch. The useful comparison is what your current tool does not cover. "
-                "What matters most: coding, files, research, writing, privacy controls, or team admin?"
+                "A switch only makes sense if ChatGPT gives you something your current setup does not: "
+                "stronger coding workflow, file handling, research, voice/images, or team controls. What is the one area where your current tool feels weakest?"
             ),
             target_gap="alternative_tool_gap",
             dialogue_focus="competitive_objection",
@@ -1773,12 +2190,23 @@ def classify_turn(
         )
 
     if _competitor_objection(normalized):
+        if _known_use_case(normalized, turns):
+            return _frame(
+                **base,
+                semantic="public_plan_competitor_objection_with_use_case",
+                response=(
+                    "A switch only makes sense if ChatGPT improves a specific gap in your current tool: "
+                    "coding workflow, files, research, writing, voice/images, or team controls. For coding and writing, compare Plus as the lower-cost test and Pro if heavier usage matters."
+                ),
+                dialogue_focus="competitive_objection",
+                polarity="objection",
+            )
         return _frame(
             **base,
             semantic="public_plan_competitor_objection",
             response=(
-                "You may not need to switch. The question is whether ChatGPT's plan features, tools, or business controls fit something your current tool does not cover. "
-                "What matters most: coding, files, research, voice/images, team admin, or privacy controls?"
+                "A switch only makes sense if ChatGPT covers something your current tool does not: "
+                "coding workflow, files, research, voice/images, team admin, or privacy controls. What is the one area where your current tool feels weakest?"
             ),
             dialogue_focus="competitive_objection",
             polarity="objection",
@@ -1830,7 +2258,10 @@ def classify_turn(
         return _frame(
             **base,
             semantic="public_plan_known_use_and_heavy_answered",
-            response=_plus_sufficiency_response(normalized, turns),
+            response=(
+                "Right - coding and writing with heavy use. I would compare Pro first because usage headroom matters here. "
+                "Plus is the lower-cost starting point; Pro is safer if usage limits matter."
+            ),
             target_gap="usage_intensity",
             dialogue_focus="plan_fit",
             polarity="recommendation",

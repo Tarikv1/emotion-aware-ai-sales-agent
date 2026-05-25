@@ -65,11 +65,11 @@
   },
   "focus_progression_options": {
     "default": [
-      "Got it. If you already use ChatGPT or another AI tool, the useful comparison is whether ChatGPT covers something your current setup does not. What matters most: coding, writing, research, files, team admin, or privacy controls?",
+      "If your current tool is enough or you do not want to pay, I would not push a paid ChatGPT plan. Free or staying with your current tool may be enough unless you hit limits, need a missing tool, or need team controls.",
       "For plan fit, use case matters more than buying intent. If this is coding or writing, Plus versus Pro is usually the comparison; if it is a team, Business or Enterprise is the path."
     ],
     "adoption_state_discovery": [
-      "Got it. Sounds like you may already use ChatGPT or another AI tool. The useful comparison is whether ChatGPT covers something your current setup does not. What matters most: coding, writing, research, files, team admin, or privacy controls?"
+      "If your current tool is enough, I would not push a paid ChatGPT plan. The useful comparison is only whether ChatGPT covers a real gap in coding, files, research, writing, team controls, or privacy controls."
     ],
     "use_case_discovery": [
       "I can keep checking. If it is coding or writing, Plus versus Pro is usually the comparison; if it is a team, Business or Enterprise is the path. What would you mainly use ChatGPT for?"
@@ -81,11 +81,11 @@
   "campaign_playbook_id": "public-openai-chatgpt-plans-playbook",
   "caller_identity": {
     "representative_name": "Maya",
-    "relationship_to_offer": "running a public-data ChatGPT plan-fit simulation"
+    "relationship_to_offer": "testing a public-data ChatGPT plan-fit advisor"
   },
   "language": "en",
   "opening_options": {
-    "preferred": "Hi, this is Maya. I'm running a public-data ChatGPT plan-fit simulation. I can help compare ChatGPT plans at a high level using OpenAI's public plan information. Do you have a minute?",
+    "preferred": "Hi, this is Maya. I'm testing a public-data ChatGPT plan-fit advisor. In one minute, I can help you decide whether Free, Plus, Pro, Business, or Enterprise is worth looking at for your use. Do you have a minute?",
     "short": "Hi, this is Maya. I'm doing a quick ChatGPT plan-fit check - mainly whether Free, Go, Plus, Pro, Business, or Enterprise fits your use case. Do you have a minute?"
   },
   "agent_can_say": [
