@@ -1,0 +1,119 @@
+{
+  "experiment_id": "LOCAL-LLM-CONVERSATION-BRAIN-FEASIBILITY-001",
+  "generated_at": "2026-05-26T23:06:17.766120+00:00",
+  "schema_status": "defined",
+  "required_top_level_fields": [
+    "semantic_frame",
+    "state_update",
+    "sales_strategy",
+    "response_plan",
+    "draft_response",
+    "safety_flags",
+    "confidence",
+    "reasons"
+  ],
+  "required_semantic_frame_fields": [
+    "semantic_family",
+    "speech_act",
+    "sub_intent",
+    "object_type",
+    "object_mentions",
+    "conjunction_relation",
+    "negation_scope",
+    "buyer_state",
+    "buyer_emotion_hint",
+    "commercial_intent",
+    "current_utterance_fidelity_notes"
+  ],
+  "required_state_update_fields": [
+    "should_update_adoption_state",
+    "should_update_use_case",
+    "use_case_values",
+    "should_update_usage_intensity",
+    "usage_intensity",
+    "should_update_team_state",
+    "should_update_recommendation",
+    "should_update_close_readiness",
+    "blocked_updates",
+    "reason"
+  ],
+  "required_sales_strategy_fields": [
+    "next_action",
+    "should_answer_directly",
+    "should_ask_question",
+    "should_recommend",
+    "should_reframe_objection",
+    "should_close",
+    "should_disqualify",
+    "persuasion_strategy",
+    "one_next_step"
+  ],
+  "required_response_plan_fields": [
+    "must_include",
+    "must_not_include",
+    "campaign_facts_needed",
+    "buyer_words_to_preserve",
+    "response_tone",
+    "max_sentence_count"
+  ],
+  "required_safety_flag_fields": [
+    "needs_fact_check",
+    "unsupported_product_claim_risk",
+    "side_effect_claim_risk",
+    "affiliation_claim_risk",
+    "internal_policy_language_risk",
+    "raw_url_risk",
+    "campaign_leakage_risk"
+  ],
+  "gold_case_count": 80,
+  "source_type_counts": {
+    "live_sanitized": 30,
+    "synthetic_paraphrase": 30,
+    "negative_control": 20
+  },
+  "mock_planner_output_count": 80,
+  "verifier_passed": true,
+  "verifier_regression_probes": {
+    "voice_not_writing": true,
+    "and_or_fidelity": true,
+    "not_team_no_team_update": true,
+    "internal_policy_language": true,
+    "side_effect_safety": true,
+    "unsupported_claim": true,
+    "raw_url": true,
+    "affiliation_claim": true,
+    "campaign_leakage": true
+  },
+  "local_brain_config": {
+    "provider": "none",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "device": "auto",
+    "quantization_mode": "none",
+    "max_input_tokens": 4096,
+    "max_output_tokens": 768,
+    "timeout_ms": 30000,
+    "structured_output_required": true,
+    "enabled": false,
+    "requires_provider_secret": false,
+    "provider_secret_logged": false
+  },
+  "local_model_experiment_env_enabled": false,
+  "local_model_inference_attempted": false,
+  "local_model_calls_made": false,
+  "provider_calls_made": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "raw_private_transcript_copied_to_public_evidence": false,
+  "model_candidates": [
+    "Qwen/Qwen2.5-7B-Instruct",
+    "Qwen/Qwen3-8B",
+    "mistralai/Mistral-7B-Instruct-v0.3"
+  ],
+  "primary_model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "fallback_model_candidates": [
+    "Qwen/Qwen3-8B",
+    "mistralai/Mistral-7B-Instruct-v0.3"
+  ],
+  "active_model_comparison_this_phase": false,
+  "failures": []
+}

@@ -198,6 +198,65 @@
       ]
     },
     {
+      "path": "runtime/llm_brain/conversation_brain_schema.py",
+      "path_type": "file",
+      "tier": "local-llm-conversation-brain-contract",
+      "runtime_role": "Disabled-by-default strict JSON schema and local model configuration contract for future local open-source LLM sales conversation planning.",
+      "behavior_surface": [
+        "local LLM planner schema",
+        "structured semantic frame contract",
+        "disabled default config",
+        "model candidate documentation"
+      ]
+    },
+    {
+      "path": "runtime/llm_brain/conversation_brain_prompts.py",
+      "path_type": "file",
+      "tier": "local-llm-conversation-brain-contract",
+      "runtime_role": "Prompt contract for local-only conversation-brain planning that keeps product truth, campaign facts, side effects, and spoken delivery outside the model boundary.",
+      "behavior_surface": [
+        "local planner prompt",
+        "architecture boundary statement",
+        "structured JSON instruction",
+        "current-utterance fidelity instruction"
+      ]
+    },
+    {
+      "path": "runtime/llm_brain/conversation_brain_verifier.py",
+      "path_type": "file",
+      "tier": "local-llm-conversation-brain-guard",
+      "runtime_role": "Deterministic verifier for local conversation-brain planner output before any downstream response is allowed in offline feasibility tests.",
+      "behavior_surface": [
+        "planner output verification",
+        "current wording preservation",
+        "negation and conjunction fidelity",
+        "side-effect and unsupported-claim block"
+      ]
+    },
+    {
+      "path": "runtime/llm_brain/local_conversation_brain.py",
+      "path_type": "file",
+      "tier": "local-llm-conversation-brain-provider-boundary",
+      "runtime_role": "Disabled-by-default local LLM conversation-brain interface with none, local_transformers, and local_llama_cpp provider placeholders and fixture fallback support.",
+      "behavior_surface": [
+        "local LLM enablement gate",
+        "fixture planner fallback",
+        "local inference side-effect flags",
+        "provider placeholder boundary"
+      ]
+    },
+    {
+      "path": "runtime/llm_brain/__init__.py",
+      "path_type": "file",
+      "tier": "local-llm-conversation-brain-package",
+      "runtime_role": "Package export surface for the disabled local conversation-brain schema, verifier, and planning interface.",
+      "behavior_surface": [
+        "local brain package exports",
+        "schema import boundary",
+        "planning interface import boundary"
+      ]
+    },
+    {
       "path": "runtime/entrypoints/realtime_turn_cli.py",
       "path_type": "file",
       "tier": "core-runtime-entrypoint",
