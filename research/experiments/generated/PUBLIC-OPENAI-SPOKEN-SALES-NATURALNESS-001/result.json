@@ -2925,13 +2925,13 @@
         "openai_recommended_path": "unknown",
         "openai_usage_intensity": "unknown"
       },
-      "final_response": "This is about ChatGPT subscription plans, using OpenAI's public plan information. Free is the no-cost option, Plus and Pro are individual paid plans, Business is for teams, and Enterprise is for larger organizations. Are you looking for personal use, team use, or just trying to understand the options?",
-      "final_response_hash": "2f750efecb33",
+      "final_response": "This is a call about ChatGPT subscription plans. I can help you understand whether any of the public plan options are worth considering.",
+      "final_response_hash": "cd9871bb023b",
       "group": "internal_process_wording_banned",
       "id": "internal-wording-007",
       "multi_turn": true,
       "response_hashes": [
-        "2f750efecb33"
+        "cd9871bb023b"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -2997,13 +2997,13 @@
         "openai_recommended_path": "unknown",
         "openai_usage_intensity": "unknown"
       },
-      "final_response": "A switch only makes sense if ChatGPT covers something your current tool does not: coding workflow, files, research, voice/images, team admin, or privacy controls. What is the one area where your current tool feels weakest?",
-      "final_response_hash": "cdc41f7d7dde",
+      "final_response": "A switch only makes sense if ChatGPT gives you something your current setup does not: stronger coding workflow, file handling, research, voice/images, or team controls. What is the one area where your current tool feels weakest?",
+      "final_response_hash": "02f152435240",
       "group": "internal_process_wording_banned",
       "id": "internal-wording-009",
       "multi_turn": true,
       "response_hashes": [
-        "cdc41f7d7dde"
+        "02f152435240"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -3248,15 +3248,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "This is about ChatGPT subscription plans, using OpenAI's public plan information. Free is the no-cost option, Plus and Pro are individual paid plans, Business is for teams, and Enterprise is for larger organizations. Are you looking for personal use, team use, or just trying to understand the options?",
-      "final_response_hash": "2f750efecb33",
+      "final_response": "Free, Plus, and Pro are individual plan labels. Business is for teams, and Enterprise is for larger organizations with sales-led needs like security, admin, or procurement review.",
+      "final_response_hash": "4f2ff1b37819",
       "group": "internal_process_wording_banned",
       "id": "internal-wording-016",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "2f750efecb33"
+        "4f2ff1b37819"
       ],
       "side_effects": {
         "audio_file_created": false,

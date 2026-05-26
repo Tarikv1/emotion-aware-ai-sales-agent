@@ -15,6 +15,7 @@
   "checkpoint_id": "PUBLIC-OPENAI-LIVE-REHEARSAL-001",
   "classification_counts": {
     "current_live_openai_intent_priority_defect": 1,
+    "current_live_openai_internal_policy_spoken": 7,
     "current_live_openai_internal_process_wording": 7,
     "current_live_openai_legacy_field_leakage": 2,
     "current_live_openai_loop_or_repeated_prompt": 8,
@@ -82,6 +83,19 @@
   "current_live_openai_sales_momentum_defect_count": 0,
   "current_live_openai_sales_performance_defect_count": 0,
   "current_live_openai_sales_quality_defect_count": 0,
+  "current_live_openai_semantic_4h6_classification_counts": {
+    "current_live_openai_asr_alias_not_normalized": 0,
+    "current_live_openai_blank_response_passed_validator": 0,
+    "current_live_openai_conjunction_fidelity_error": 0,
+    "current_live_openai_entity_keyword_overrode_intent": 0,
+    "current_live_openai_internal_policy_spoken": 0,
+    "current_live_openai_response_variation_failure": 0,
+    "current_live_openai_semantic_generalization_defect": 0,
+    "current_live_openai_semantic_misclassification": 0,
+    "current_live_openai_speech_act_priority_failure": 0,
+    "current_live_openai_stability_guard_generated_commercial_speech": 0,
+    "current_live_openai_state_mutation_from_explanation": 0
+  },
   "current_live_openai_signup_close_stage_mismatch_count": 0,
   "current_live_openai_source_claim_issue_count": 0,
   "current_live_openai_source_note_spoken_count": 0,
@@ -129,6 +143,7 @@
         "current_live_openai_internal_process_wording",
         "current_live_openai_loop_or_repeated_prompt",
         "current_live_openai_legacy_field_leakage",
+        "current_live_openai_internal_policy_spoken",
         "current_live_openai_spoken_sales_naturalness_defect",
         "current_live_openai_sales_performance_defect"
       ],
@@ -144,6 +159,7 @@
         "current_live_openai_loop_or_repeated_prompt",
         "current_live_openai_missed_recommendation",
         "current_live_openai_legacy_field_leakage",
+        "current_live_openai_internal_policy_spoken",
         "current_live_openai_spoken_sales_naturalness_defect",
         "current_live_openai_sales_performance_defect"
       ],
@@ -158,6 +174,7 @@
         "current_live_openai_internal_process_wording",
         "current_live_openai_loop_or_repeated_prompt",
         "current_live_openai_missed_recommendation",
+        "current_live_openai_internal_policy_spoken",
         "current_live_openai_spoken_sales_naturalness_defect",
         "current_live_openai_sales_performance_defect"
       ],
@@ -172,7 +189,7 @@
   "fake_side_effect_claim_count": 0,
   "fixed_by_replay_after_patch_count": 9,
   "fresh_openai_live_records": 11,
-  "git_head_short": "7328c16",
+  "git_head_short": "8be5501",
   "historical_dry_run_count": 11,
   "human_followup_owner_leakage_count": 0,
   "incomplete_or_invalid_private_record_count": 0,
@@ -372,8 +389,8 @@
       {
         "case_id": "post-patch-replay-3",
         "classifications": [],
-        "final_response": "This is about ChatGPT subscription plans, using OpenAI's public plan information. Free is the no-cost option, Plus and Pro are individual paid plans, Business is for teams, and Enterprise is for larger organizations. Are you looking for personal use, team use, or just trying to understand the options?",
-        "final_response_hash": "2f750efecb33",
+        "final_response": "They are subscription options: Free is no-cost, Plus and Pro are individual plans, Business is for teams, and Enterprise is for larger organizations.",
+        "final_response_hash": "c37e019b950a",
         "side_effects": {
           "creates_calendar_event": false,
           "customer_audio_uploaded_to_python_server": false,
@@ -388,8 +405,8 @@
       {
         "case_id": "post-patch-replay-4",
         "classifications": [],
-        "final_response": "This is about ChatGPT subscription plans, using OpenAI's public plan information. Free is the no-cost option, Plus and Pro are individual paid plans, Business is for teams, and Enterprise is for larger organizations. Are you looking for personal use, team use, or just trying to understand the options?",
-        "final_response_hash": "2f750efecb33",
+        "final_response": "Free is the no-cost option. Plus is the lower-cost paid individual plan. Pro is for heavier individual use.",
+        "final_response_hash": "faae5d28655b",
         "side_effects": {
           "creates_calendar_event": false,
           "customer_audio_uploaded_to_python_server": false,
@@ -404,8 +421,8 @@
       {
         "case_id": "post-patch-replay-5",
         "classifications": [],
-        "final_response": "Simpler version: these are ChatGPT subscription plans. Free is the no-cost option; Plus and Pro are individual paid plans; Business is for teams; Enterprise is for larger organizations. Do you want personal use, team use, or just the basic explanation?",
-        "final_response_hash": "7a2e64fb71bc",
+        "final_response": "Simple version: this is about choosing the right ChatGPT plan, or deciding that Free is enough.",
+        "final_response_hash": "99a566fdf9eb",
         "side_effects": {
           "creates_calendar_event": false,
           "customer_audio_uploaded_to_python_server": false,
@@ -420,8 +437,8 @@
       {
         "case_id": "post-patch-replay-6",
         "classifications": [],
-        "final_response": "Simpler version: these are ChatGPT subscription plans. Free is the no-cost option; Plus and Pro are individual paid plans; Business is for teams; Enterprise is for larger organizations. Do you want personal use, team use, or just the basic explanation?",
-        "final_response_hash": "7a2e64fb71bc",
+        "final_response": "Simple version: this is about choosing the right ChatGPT plan, or deciding that Free is enough.",
+        "final_response_hash": "99a566fdf9eb",
         "side_effects": {
           "creates_calendar_event": false,
           "customer_audio_uploaded_to_python_server": false,
@@ -436,8 +453,8 @@
       {
         "case_id": "post-patch-replay-7",
         "classifications": [],
-        "final_response": "This is about ChatGPT subscription plans, using OpenAI's public plan information. Free is the no-cost option, Plus and Pro are individual paid plans, Business is for teams, and Enterprise is for larger organizations. Are you looking for personal use, team use, or just trying to understand the options?",
-        "final_response_hash": "2f750efecb33",
+        "final_response": "Free, Plus, and Pro are individual plan labels. Business is for teams, and Enterprise is for larger organizations with sales-led needs like security, admin, or procurement review.",
+        "final_response_hash": "4f2ff1b37819",
         "side_effects": {
           "creates_calendar_event": false,
           "customer_audio_uploaded_to_python_server": false,
@@ -452,8 +469,8 @@
       {
         "case_id": "post-patch-replay-8",
         "classifications": [],
-        "final_response": "This is about ChatGPT subscription plans, using OpenAI's public plan information. Free is the no-cost option, Plus and Pro are individual paid plans, Business is for teams, and Enterprise is for larger organizations. Are you looking for personal use, team use, or just trying to understand the options?",
-        "final_response_hash": "2f750efecb33",
+        "final_response": "Free is the no-cost option. Plus is the lower-cost paid individual plan. Pro is for heavier individual use.",
+        "final_response_hash": "faae5d28655b",
         "side_effects": {
           "creates_calendar_event": false,
           "customer_audio_uploaded_to_python_server": false,
@@ -500,8 +517,8 @@
       {
         "case_id": "post-patch-replay-11",
         "classifications": [],
-        "final_response": "Got it - sounds like you're already using ChatGPT or another AI tool. The useful comparison is whether ChatGPT covers something your current setup does not. What is the one area where your current tool feels weakest: coding, files, research, writing, voice/images, or team controls?",
-        "final_response_hash": "49193c2e3708",
+        "final_response": "Got it - you're using ChatGPT and other AI tools. The useful comparison is where the current setup still falls short: coding, files, research, writing, voice/images, or team controls.",
+        "final_response_hash": "6ec4361667c1",
         "side_effects": {
           "creates_calendar_event": false,
           "customer_audio_uploaded_to_python_server": false,
@@ -692,8 +709,8 @@
       {
         "case_id": "post-patch-replay-23",
         "classifications": [],
-        "final_response": "Got it - sounds like you're already using ChatGPT or another AI tool. The useful comparison is whether ChatGPT covers something your current setup does not. What is the one area where your current tool feels weakest: coding, files, research, writing, voice/images, or team controls?",
-        "final_response_hash": "49193c2e3708",
+        "final_response": "Got it - you're using ChatGPT and other AI tools. The useful comparison is where the current setup still falls short: coding, files, research, writing, voice/images, or team controls.",
+        "final_response_hash": "6ec4361667c1",
         "side_effects": {
           "creates_calendar_event": false,
           "customer_audio_uploaded_to_python_server": false,
@@ -910,6 +927,19 @@
   "private_current_live_sales_momentum_defect_count": 0,
   "private_current_live_sales_performance_defect_count": 8,
   "private_current_live_sales_quality_defect_count": 9,
+  "private_current_live_semantic_4h6_classification_counts": {
+    "current_live_openai_asr_alias_not_normalized": 0,
+    "current_live_openai_blank_response_passed_validator": 0,
+    "current_live_openai_conjunction_fidelity_error": 0,
+    "current_live_openai_entity_keyword_overrode_intent": 0,
+    "current_live_openai_internal_policy_spoken": 7,
+    "current_live_openai_response_variation_failure": 0,
+    "current_live_openai_semantic_generalization_defect": 0,
+    "current_live_openai_semantic_misclassification": 0,
+    "current_live_openai_speech_act_priority_failure": 0,
+    "current_live_openai_stability_guard_generated_commercial_speech": 0,
+    "current_live_openai_state_mutation_from_explanation": 0
+  },
   "private_current_live_signup_close_stage_mismatch_count": 0,
   "private_current_live_source_note_spoken_count": 0,
   "private_current_live_source_of_truth_spoken_count": 0,
@@ -1905,6 +1935,7 @@
         "current_live_openai_internal_process_wording",
         "current_live_openai_loop_or_repeated_prompt",
         "current_live_openai_legacy_field_leakage",
+        "current_live_openai_internal_policy_spoken",
         "current_live_openai_spoken_sales_naturalness_defect",
         "current_live_openai_sales_performance_defect",
         "current_live_openai_sales_quality_defect",
@@ -1992,6 +2023,7 @@
         "current_live_openai_loop_or_repeated_prompt",
         "current_live_openai_missed_recommendation",
         "current_live_openai_legacy_field_leakage",
+        "current_live_openai_internal_policy_spoken",
         "current_live_openai_spoken_sales_naturalness_defect",
         "current_live_openai_sales_performance_defect",
         "current_live_openai_sales_quality_defect",
@@ -2038,6 +2070,7 @@
         "current_live_openai_internal_process_wording",
         "current_live_openai_loop_or_repeated_prompt",
         "current_live_openai_missed_recommendation",
+        "current_live_openai_internal_policy_spoken",
         "current_live_openai_spoken_sales_naturalness_defect",
         "current_live_openai_sales_performance_defect",
         "current_live_openai_sales_quality_defect",
@@ -2083,6 +2116,7 @@
       "classifications": [
         "current_live_openai_internal_process_wording",
         "current_live_openai_loop_or_repeated_prompt",
+        "current_live_openai_internal_policy_spoken",
         "current_live_openai_spoken_sales_naturalness_defect",
         "current_live_openai_sales_performance_defect",
         "current_live_openai_sales_quality_defect",
@@ -2128,6 +2162,7 @@
       "classifications": [
         "current_live_openai_internal_process_wording",
         "current_live_openai_loop_or_repeated_prompt",
+        "current_live_openai_internal_policy_spoken",
         "current_live_openai_spoken_sales_naturalness_defect",
         "current_live_openai_sales_performance_defect",
         "current_live_openai_sales_quality_defect",
@@ -2173,6 +2208,7 @@
       "classifications": [
         "current_live_openai_internal_process_wording",
         "current_live_openai_loop_or_repeated_prompt",
+        "current_live_openai_internal_policy_spoken",
         "current_live_openai_spoken_sales_naturalness_defect",
         "current_live_openai_sales_performance_defect",
         "current_live_openai_sales_quality_defect",
@@ -2218,6 +2254,7 @@
       "classifications": [
         "current_live_openai_internal_process_wording",
         "current_live_openai_loop_or_repeated_prompt",
+        "current_live_openai_internal_policy_spoken",
         "current_live_openai_spoken_sales_naturalness_defect",
         "current_live_openai_sales_performance_defect",
         "current_live_openai_sales_quality_defect",

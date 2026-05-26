@@ -18,8 +18,19 @@ CHATGPT_ASR_ALIASES = {
     "chat gbt",
     "chat gb t",
     "chatgbt",
+    "chad gpt",
+    "chat gee pee tee",
+    "chat gp t",
+    "chat g p tee",
     "chat gpt plan",
     "chat jpt plan",
+}
+PLAN_LABELS = {
+    "free": "Free",
+    "plus": "Plus",
+    "pro": "Pro",
+    "business": "Business",
+    "enterprise": "Enterprise",
 }
 
 
@@ -513,12 +524,11 @@ def memory_update_for_turn(
         "should_not_regress_to_prior_decision_stage": bool(prior.get("should_not_regress_to_prior_decision_stage")),
     }
 
-    if not explanation_intent and (_current_chatgpt_user(normalized) or _openai_use_case_tags(normalized)):
+    buyer_state = _buyer_state_from_text(normalized)
+    if not explanation_intent and buyer_state != "unknown":
+        state["openai_adoption_state"] = buyer_state
+    elif not explanation_intent and _openai_use_case_tags(normalized):
         state["openai_adoption_state"] = "current_chatgpt_user"
-    elif not explanation_intent and _another_ai_user(normalized):
-        state["openai_adoption_state"] = "other_ai_user"
-    elif not explanation_intent and _no_ai_user(normalized):
-        state["openai_adoption_state"] = "no_ai_user"
 
     prior_tags = state["openai_use_case"] if isinstance(state["openai_use_case"], list) else []
     tags = list(prior_tags)
@@ -614,6 +624,432 @@ def _official_price_caveat() -> str:
     return "Exact current terms can change, so check the plan page before upgrading."
 
 
+def _plan_label_mentions(normalized: str) -> list[str]:
+    return [label for key, label in PLAN_LABELS.items() if re.search(rf"\b{key}\b", normalized)]
+
+
+def _object_mentions(normalized: str) -> list[str]:
+    mentions = _plan_label_mentions(normalized)
+    if _mentions_chatgpt_product(normalized):
+        mentions.append("ChatGPT")
+    for term, label in [
+        ("claude", "Claude"),
+        ("gemini", "Gemini"),
+        ("copilot", "Copilot"),
+        ("another llm", "other AI tool"),
+        ("another ai tool", "other AI tool"),
+        ("other ai tools", "other AI tools"),
+        ("subscription", "subscription"),
+        ("model", "model"),
+        ("product", "product"),
+        ("api", "API"),
+        ("tokens", "API"),
+        ("team", "team"),
+        ("company", "company"),
+        ("sso", "SSO"),
+        ("procurement", "procurement"),
+        ("security review", "security review"),
+    ]:
+        if term in normalized and label not in mentions:
+            mentions.append(label)
+    return mentions
+
+
+def _conjunction_relation(normalized: str) -> str:
+    normalized = _normalize_openai_asr_aliases(normalized)
+    chatgpt_and_other = re.search(
+        r"\bchatgpt\b.*\b(and|plus)\b.*\b(other ai|other tool|other tools|claude|gemini|copilot|llm)",
+        normalized,
+    ) or re.search(r"\b(claude|gemini|copilot|llm|other ai|other tools)\b.*\band\b.*\bchatgpt\b", normalized)
+    if "both" in normalized and _mentions_chatgpt_product(normalized) and _another_ai_user(normalized):
+        return "both"
+    if chatgpt_and_other:
+        return "and"
+    chatgpt_or_other = re.search(
+        r"\bchatgpt\b.*\bor\b.*\b(another ai|other ai|claude|gemini|copilot|llm|tool)",
+        normalized,
+    ) or re.search(r"\b(claude|gemini|copilot|llm|tool)\b.*\bor\b.*\bchatgpt\b", normalized)
+    if chatgpt_or_other:
+        if _contains(normalized, {"or maybe", "may be using", "not sure", "either"}):
+            return "either_or"
+        return "or"
+    return "unknown"
+
+
+def _buyer_state_from_text(normalized: str) -> str:
+    normalized = _normalize_openai_asr_aliases(normalized)
+    if _no_ai_user(normalized):
+        return "no_ai_user"
+    relation = _conjunction_relation(normalized)
+    has_chatgpt = _current_chatgpt_user(normalized) or _mentions_chatgpt_product(normalized)
+    has_other = _another_ai_user(normalized)
+    if has_other and _contains(normalized, {"not chatgpt", "not using chatgpt", "do not use chatgpt", "don't use chatgpt"}):
+        return "current_other_ai_user"
+    if has_chatgpt and has_other and relation in {"and", "both"}:
+        return "current_chatgpt_and_other_ai_user"
+    if has_chatgpt and has_other and relation in {"or", "either_or"}:
+        return "current_chatgpt_or_other_ai_unknown"
+    if has_chatgpt and has_other:
+        return "current_chatgpt_and_other_ai_user"
+    if has_chatgpt:
+        return "current_chatgpt_user"
+    if has_other:
+        return "current_other_ai_user"
+    return "unknown"
+
+
+def _orientation_sub_intent(normalized: str) -> str:
+    mentions = set(_plan_label_mentions(normalized))
+    if _trust_or_affiliation(normalized) or _contains(
+        normalized,
+        {"source", "where did you get", "whose information", "who are you with", "are you affiliated", "is openai calling me"},
+    ):
+        return "source_disclosure" if not _trust_or_affiliation(normalized) else "affiliation_boundary"
+    if _contains(normalized, {"why are you mentioning enterprise", "why mention plans", "why mention paid plans"}):
+        return "call_orientation"
+    if _contains(normalized, {"what is the quick version"}):
+        return "call_orientation"
+    if _contains(normalized, {"subscription", "monthly", "one off", "one-off", "paying monthly"}):
+        return "subscription_model_question"
+    if _contains(normalized, {"model", "models", "product", "products"}):
+        return "model_vs_product_question"
+    if _contains(
+        normalized,
+        {
+            "don't understand",
+            "do not understand",
+            "don t understand",
+            "confused",
+            "lost",
+            "simpler",
+            "simple",
+            "plain english",
+            "quick version",
+            "one sentence",
+            "say that simply",
+            "make it simple",
+            "what is it in one sentence",
+            "explain this simply",
+        },
+    ):
+        return "simpler_explanation_request"
+    if len(mentions) >= 4 or _contains(
+        normalized,
+        {
+            "what are these plans",
+            "what are the plans",
+            "what are those plans",
+            "which plans",
+            "plans are available",
+            "explain the plans",
+            "what do you mean by plans",
+            "plan names",
+        },
+    ):
+        return "plan_category_explanation"
+    if mentions:
+        return "specific_plan_label_explanation"
+    if _contains(normalized, {"do you mean chatgpt", "you mean chatgpt"}):
+        return "model_vs_product_question"
+    return "call_orientation"
+
+
+def _orientation_response(normalized: str) -> tuple[str, str]:
+    sub_intent = _orientation_sub_intent(normalized)
+    mentions = set(_plan_label_mentions(normalized))
+    if sub_intent == "affiliation_boundary":
+        return (
+            sub_intent,
+            "I'm not calling from OpenAI. This is a public-data simulation using OpenAI's public plan information. I can summarize the public plan options, but check the official pages before upgrading.",
+        )
+    if sub_intent == "source_disclosure":
+        return (
+            sub_intent,
+            "I'm not calling from OpenAI. This is based on public OpenAI plan information. I can summarize the public plan options, but check the official pages before upgrading.",
+        )
+    if sub_intent == "subscription_model_question":
+        return sub_intent, "Yes - this is about ChatGPT subscription plans, not a one-off product purchase."
+    if sub_intent == "model_vs_product_question":
+        return (
+            sub_intent,
+            "They are plan options, not model names. The plan controls what level of ChatGPT access and features you get.",
+        )
+    if sub_intent == "simpler_explanation_request":
+        return (
+            sub_intent,
+            "Simple version: this is about choosing the right ChatGPT plan, or deciding that Free is enough.",
+        )
+    if sub_intent == "specific_plan_label_explanation":
+        if mentions <= {"Business", "Enterprise"} and mentions:
+            return (
+                sub_intent,
+                "Free, Plus, and Pro are individual plan labels. Business is for teams, and Enterprise is for larger organizations with sales-led needs like security, admin, or procurement review.",
+            )
+        return (
+            sub_intent,
+            "Free is the no-cost option. Plus is the lower-cost paid individual plan. Pro is for heavier individual use.",
+        )
+    if sub_intent == "plan_category_explanation":
+        if {"Free", "Plus", "Pro", "Business", "Enterprise"}.issubset(mentions):
+            return (
+                sub_intent,
+                "They are subscription options: Free is no-cost, Plus and Pro are individual plans, Business is for teams, and Enterprise is for larger organizations.",
+            )
+        return (
+            sub_intent,
+            "They are subscription options for ChatGPT: Free, Plus, Pro, Business, and Enterprise.",
+        )
+    return (
+        sub_intent,
+        "This is a call about ChatGPT subscription plans. I can help you understand whether any of the public plan options are worth considering.",
+    )
+
+
+def _semantic_family_for(semantic: str, normalized: str, dialogue_focus: str, polarity: str) -> str:
+    if semantic in {"no_contextual_semantic"}:
+        return "unknown"
+    if semantic.startswith("public_plan_orientation_") or semantic in {
+        "public_plan_explanation_first",
+        "public_plan_plain_explanation",
+        "public_plan_plain_ask_explained",
+        "public_plan_affiliation_boundary",
+        "public_plan_demo_operator_boundary",
+        "public_plan_followup_route_boundary",
+    }:
+        return "orientation_or_explanation"
+    if "price" in semantic or "budget" in semantic or _price_question(normalized):
+        return "price"
+    if "api_boundary" in semantic:
+        return "plan_fit"
+    if "pro_tier" in semantic or _pro_tier_question(normalized):
+        return "pro_tier_selection"
+    if "change_followup" in semantic or _plan_change_followup_question(normalized):
+        return "plan_change_or_upgrade"
+    if "signup" in semantic or "self_serve" in semantic or _signup_question(normalized):
+        return "signup_or_close"
+    if "current_chatgpt" in semantic or "no_ai" in semantic or "adoption" in semantic or "another_ai_user" in semantic:
+        return "adoption_state"
+    if "competitor" in semantic or "another_ai" in semantic:
+        return "competitor_or_current_tool"
+    if "team_context" in semantic:
+        return "plan_fit"
+    if "use_case" in semantic:
+        return "use_case"
+    if "heavy_use" in semantic or "limit_pain" in semantic:
+        return "usage_intensity"
+    if "assumption_repair" in semantic:
+        return "objection"
+    if "objection" in semantic:
+        return "objection"
+    if "no_fit" in semantic or "low_unclear" in semantic or "hardship" in semantic:
+        return "no_fit" if "hardship" not in semantic else "stop_or_hardship"
+    if polarity in {"stop", "refusal"}:
+        return "stop_or_hardship"
+    if dialogue_focus in {"team_plan_fit", "plan_fit"}:
+        return "plan_fit"
+    return "unknown"
+
+
+def _speech_act_for(semantic: str, normalized: str, sub_intent: str, polarity: str) -> str:
+    if polarity == "stop":
+        return "stop_or_refusal"
+    if sub_intent in {
+        "call_orientation",
+        "plan_category_explanation",
+        "specific_plan_label_explanation",
+        "subscription_model_question",
+        "model_vs_product_question",
+        "simpler_explanation_request",
+    }:
+        return "explanation_request"
+    if sub_intent == "affiliation_boundary":
+        return "identity_or_affiliation_question"
+    if sub_intent == "source_disclosure":
+        return "source_question"
+    if sub_intent == "direct_price_question":
+        return "direct_price_question"
+    if sub_intent in {"plus_sufficiency", "pro_tier_choice"}:
+        return "direct_plan_fit_question"
+    if sub_intent in {"signup_path", "terminal_acceptance"}:
+        return "terminal_acceptance" if sub_intent == "terminal_acceptance" else "direct_signup_question"
+    if sub_intent == "midcycle_upgrade_question":
+        return "plan_change_question"
+    if sub_intent in {"current_other_ai_user", "current_chatgpt_and_other_ai_user", "current_chatgpt_or_other_ai_unknown", "competitor_switch_question"}:
+        return "competitor_statement" if sub_intent != "competitor_switch_question" else "objection"
+    if sub_intent in {"current_chatgpt_user", "no_ai_user"}:
+        return "use_case_disclosure" if sub_intent == "current_chatgpt_user" else "no_fit_signal"
+    if sub_intent == "price_objection":
+        return "objection"
+    if sub_intent == "assumption_repair":
+        return "correction"
+    if _contains(normalized, {"confused", "lost", "understand"}):
+        return "confusion"
+    return "unknown"
+
+
+def _sub_intent_for(semantic: str, normalized: str) -> str:
+    if semantic.startswith("public_plan_orientation_"):
+        return semantic.replace("public_plan_orientation_", "")
+    if "affiliation_boundary" in semantic:
+        return "affiliation_boundary"
+    buyer_state = _buyer_state_from_text(normalized)
+    if "current_chatgpt_and_other_ai" in semantic:
+        return "current_chatgpt_and_other_ai_user"
+    if "current_chatgpt_or_other_ai" in semantic:
+        return "current_chatgpt_or_other_ai_unknown"
+    if "current_chatgpt_user" in semantic:
+        return "current_chatgpt_user"
+    if "another_ai_user" in semantic:
+        return "current_other_ai_user"
+    if "no_ai_user" in semantic:
+        return "no_ai_user"
+    if "competitor" in semantic:
+        return "competitor_switch_question"
+    if _plus_sufficiency_question(normalized):
+        return "plus_sufficiency"
+    if "direct_price" in semantic or (_price_question(normalized) and "objection" not in semantic):
+        return "direct_price_question"
+    if "commercial_objection" in semantic:
+        return "price_objection" if _commercial_objection(normalized) == "price" else "objection"
+    if "assumption_repair" in semantic:
+        return "assumption_repair"
+    if "plus_sufficiency" in semantic:
+        return "plus_sufficiency"
+    if "pro_tier" in semantic:
+        return "pro_tier_choice"
+    if "change_followup" in semantic or _plan_change_followup_question(normalized):
+        return "midcycle_upgrade_question"
+    if "api_boundary" in semantic:
+        return "api_boundary"
+    if "signup" in semantic or "self_serve" in semantic:
+        return "signup_path"
+    if "terminal_acceptance" in semantic or _terminal_acceptance(normalized):
+        return "terminal_acceptance"
+    if "team_context" in semantic:
+        return "team_or_enterprise_fit"
+    if buyer_state != "unknown":
+        return buyer_state
+    return "unknown"
+
+
+def _response_strategy_for(sub_intent: str, semantic_family: str) -> str:
+    if sub_intent in {
+        "call_orientation",
+        "plan_category_explanation",
+        "specific_plan_label_explanation",
+        "subscription_model_question",
+        "model_vs_product_question",
+        "simpler_explanation_request",
+        "current_chatgpt_and_other_ai_user",
+        "current_chatgpt_or_other_ai_unknown",
+        "competitor_switch_question",
+        "direct_price_question",
+        "pro_tier_choice",
+        "midcycle_upgrade_question",
+        "assumption_repair",
+        "terminal_acceptance",
+    }:
+        return sub_intent
+    if semantic_family == "price":
+        return "answer_price_before_discovery"
+    if semantic_family == "signup_or_close":
+        return "close_or_route_self_serve"
+    if semantic_family == "adoption_state":
+        return "acknowledge_adoption_then_ask_gap"
+    if semantic_family == "plan_fit":
+        return "route_only_when_team_intent_exists"
+    return "continue_sales_conversation"
+
+
+def _tone_levels(normalized: str) -> dict[str, Any]:
+    confusion = "medium" if _contains(normalized, {"confused", "lost", "don't understand", "do not understand", "don t understand"}) else "low"
+    skepticism = "medium" if _contains(normalized, {"why", "not sure", "is this worth", "convince me"}) else "low"
+    friction = "medium" if _contains(normalized, {"expensive", "hardship", "cannot afford", "stop", "do not call"}) else "low"
+    engagement = "high" if _contains(normalized, {"sign up", "upgrade", "which", "how much", "i want"}) else "medium"
+    return {
+        "buyer_friction_level": friction,
+        "buyer_confusion_level": confusion,
+        "buyer_skepticism_level": skepticism,
+        "buyer_engagement_level": engagement,
+        "buyer_affect_source": "transcript_only",
+    }
+
+
+def _semantic_frame_details(
+    *,
+    semantic: str,
+    transcript: str,
+    normalized: str,
+    response: str,
+    dialogue_focus: str,
+    target_gap: str | None,
+    polarity: str,
+) -> dict[str, Any]:
+    semantic_family = _semantic_family_for(semantic, normalized, dialogue_focus, polarity)
+    sub_intent = _sub_intent_for(semantic, normalized)
+    speech_act = _speech_act_for(semantic, normalized, sub_intent, polarity)
+    buyer_state = _buyer_state_from_text(normalized)
+    object_mentions = _object_mentions(normalized)
+    relation = _conjunction_relation(normalized)
+    response_strategy = _response_strategy_for(sub_intent, semantic_family)
+    should_close = semantic_family == "signup_or_close" or sub_intent == "terminal_acceptance"
+    should_disqualify = semantic_family in {"no_fit", "stop_or_hardship"} or sub_intent == "no_ai_user"
+    should_recommend = semantic_family in {"plan_fit", "pro_tier_selection"} and not should_disqualify
+    should_answer_directly = speech_act in {
+        "explanation_request",
+        "direct_price_question",
+        "direct_plan_fit_question",
+        "direct_signup_question",
+        "plan_change_question",
+        "identity_or_affiliation_question",
+        "source_question",
+    } or sub_intent in {"api_boundary", "competitor_switch_question", "price_objection", "plus_sufficiency", "pro_tier_choice", "midcycle_upgrade_question"}
+    state_updates: dict[str, Any] = {}
+    if buyer_state != "unknown":
+        state_updates["openai_adoption_state"] = buyer_state
+    if target_gap:
+        state_updates["target_gap"] = target_gap
+    commercial_intent = "high" if should_close else "medium" if should_recommend or should_answer_directly else "low"
+    meaning_summary = f"Buyer {speech_act.replace('_', ' ')}; sub-intent {sub_intent.replace('_', ' ')}."
+    buyer_summary = response.split(".")[0].strip() if response else ""
+    return {
+        "semantic_family": semantic_family,
+        "speech_act": speech_act,
+        "sub_intent": sub_intent,
+        "object_type": "plan" if any(item in object_mentions for item in PLAN_LABELS.values()) else "tool" if object_mentions else "unknown",
+        "object_mentions": object_mentions,
+        "relation_type": "comparison" if relation != "unknown" or "versus" in normalized or "vs" in normalized else "reference",
+        "conjunction_relation": relation,
+        "negation_scope": "ai_tools" if _no_ai_user(normalized) else "none",
+        "buyer_state": buyer_state,
+        "commercial_intent": commercial_intent,
+        "evidence_terms": _object_mentions(normalized)[:8],
+        "normalized_entities": {
+            "chatgpt": "ChatGPT" if _mentions_chatgpt_product(normalized) else "",
+            "plans": _plan_label_mentions(normalized),
+            "other_ai_tools": [item for item in object_mentions if item in {"Claude", "Gemini", "Copilot", "other AI tool", "other AI tools"}],
+        },
+        "raw_buyer_meaning_summary": meaning_summary,
+        "buyer_facing_summary": buyer_summary,
+        "state_updates": state_updates,
+        "forbidden_routes": [
+            "team_or_enterprise" if semantic_family == "orientation_or_explanation" else "",
+            "stability_guard_commercial_speech",
+            "internal_policy_language",
+        ],
+        "response_strategy": response_strategy,
+        "response_variation_key": f"{semantic_family}:{sub_intent}:{relation}",
+        "next_best_sales_action": response_strategy,
+        "should_answer_directly": should_answer_directly,
+        "should_ask_clarifying_question": bool("?" in response and not should_close),
+        "should_recommend": should_recommend,
+        "should_close": should_close,
+        "should_disqualify": should_disqualify,
+        "should_not_route_to_stability_guard": True,
+        **_tone_levels(normalized),
+    }
+
+
 def _frame(
     *,
     semantic: str,
@@ -634,7 +1070,79 @@ def _frame(
     target_gap: str | None = None,
     polarity: str = "neutral",
     confidence: float = 0.94,
+    semantic_family: str | None = None,
+    speech_act: str | None = None,
+    sub_intent: str | None = None,
+    object_type: str | None = None,
+    object_mentions: list[str] | None = None,
+    relation_type: str | None = None,
+    conjunction_relation: str | None = None,
+    negation_scope: str | None = None,
+    buyer_state: str | None = None,
+    commercial_intent: str | None = None,
+    evidence_terms: list[str] | None = None,
+    normalized_entities: dict[str, Any] | None = None,
+    raw_buyer_meaning_summary: str | None = None,
+    buyer_facing_summary: str | None = None,
+    state_updates: dict[str, Any] | None = None,
+    forbidden_routes: list[str] | None = None,
+    response_strategy: str | None = None,
+    response_variation_key: str | None = None,
+    next_best_sales_action: str | None = None,
+    should_answer_directly: bool | None = None,
+    should_ask_clarifying_question: bool | None = None,
+    should_recommend: bool | None = None,
+    should_close: bool | None = None,
+    should_disqualify: bool | None = None,
+    should_not_route_to_stability_guard: bool | None = None,
+    buyer_friction_level: str | None = None,
+    buyer_confusion_level: str | None = None,
+    buyer_skepticism_level: str | None = None,
+    buyer_engagement_level: str | None = None,
+    buyer_affect_source: str | None = None,
 ) -> dict[str, Any]:
+    details = _semantic_frame_details(
+        semantic=semantic,
+        transcript=transcript,
+        normalized=normalized,
+        response=response,
+        dialogue_focus=dialogue_focus,
+        target_gap=target_gap,
+        polarity=polarity,
+    )
+    overrides = {
+        "semantic_family": semantic_family,
+        "speech_act": speech_act,
+        "sub_intent": sub_intent,
+        "object_type": object_type,
+        "object_mentions": object_mentions,
+        "relation_type": relation_type,
+        "conjunction_relation": conjunction_relation,
+        "negation_scope": negation_scope,
+        "buyer_state": buyer_state,
+        "commercial_intent": commercial_intent,
+        "evidence_terms": evidence_terms,
+        "normalized_entities": normalized_entities,
+        "raw_buyer_meaning_summary": raw_buyer_meaning_summary,
+        "buyer_facing_summary": buyer_facing_summary,
+        "state_updates": state_updates,
+        "forbidden_routes": forbidden_routes,
+        "response_strategy": response_strategy,
+        "response_variation_key": response_variation_key,
+        "next_best_sales_action": next_best_sales_action,
+        "should_answer_directly": should_answer_directly,
+        "should_ask_clarifying_question": should_ask_clarifying_question,
+        "should_recommend": should_recommend,
+        "should_close": should_close,
+        "should_disqualify": should_disqualify,
+        "should_not_route_to_stability_guard": should_not_route_to_stability_guard,
+        "buyer_friction_level": buyer_friction_level,
+        "buyer_confusion_level": buyer_confusion_level,
+        "buyer_skepticism_level": buyer_skepticism_level,
+        "buyer_engagement_level": buyer_engagement_level,
+        "buyer_affect_source": buyer_affect_source,
+    }
+    details.update({key: value for key, value in overrides.items() if value is not None})
     return {
         "semantic": semantic,
         "transcript": transcript,
@@ -651,6 +1159,7 @@ def _frame(
         "target_gap": target_gap,
         "polarity": polarity,
         "confidence": confidence,
+        **details,
         "next_action_hint": "use_campaign_specific_public_plan_response",
         "must_not_do": [
             "claim affiliation",
@@ -727,6 +1236,8 @@ def _low_or_unclear_intent(normalized: str) -> bool:
         {
             "not comparing anything",
             "just curious",
+            "just trying to understand",
+            "trying to understand",
             "just doing the work myself",
             "not buying anything yet",
             "not buying",
@@ -782,6 +1293,8 @@ def _explicit_team_or_enterprise_need(normalized: str) -> bool:
             "team workspace",
             "team admin",
             "team controls",
+            "employees",
+            "employees need",
             "shared workspace",
             "workspace controls",
             "member management",
@@ -792,12 +1305,15 @@ def _explicit_team_or_enterprise_need(normalized: str) -> bool:
             "for our company",
             "company needs",
             "buying for a company",
+            "business users",
             "admin controls",
             "sso",
             "scim",
+            "domain verification",
             "procurement",
             "security review",
             "legal review",
+            "organization needs",
             "organization-level controls",
             "organization level controls",
             "enterprise requirements",
@@ -829,6 +1345,34 @@ def _explanation_question(normalized: str) -> bool:
         return False
     if _pro_tier_question(normalized):
         return False
+    if _contains(
+        normalized,
+        {
+            "subscription thing",
+            "subscription based",
+            "subscription model",
+            "monthly plans",
+            "paying monthly",
+            "monthly subscription",
+            "one off purchase",
+            "one-off purchase",
+            "product purchase or subscription",
+            "are these subscriptions",
+            "are these models",
+            "are those models",
+            "are these products",
+            "models or products",
+            "products or plans",
+            "model names",
+            "model name",
+            "product or a plan",
+            "model or a plan",
+            "do these plans mean subscription",
+            "explain this simply",
+            "what are you trying to explain",
+        },
+    ):
+        return True
     if _price_question(normalized) and not _contains(normalized, {"what are these plans", "what are the plans", "what is this"}):
         return False
     if _contains(
@@ -858,8 +1402,18 @@ def _explanation_question(normalized: str) -> bool:
             "what is this",
             "what is this about",
             "what are you calling about",
+            "why are you calling",
+            "why are you calling me",
+            "why this call",
             "what is this for",
             "what is this for exactly",
+            "why are you mentioning enterprise",
+            "why did you bring up chatgpt plans",
+            "why mention plans",
+            "why mention paid plans",
+            "what is the topic",
+            "what should i understand first",
+            "what are you asking me",
             "what are these plans",
             "what are the plans",
             "what are those plans",
@@ -920,6 +1474,16 @@ def _explanation_question(normalized: str) -> bool:
             "what these models are",
             "what are those models",
             "what are the paid plan labels",
+            "do you mean chatgpt",
+            "you mean chatgpt",
+            "where did you get this from",
+            "what source is this",
+            "whose information is this based on",
+            "what is the source",
+            "who are you with",
+            "are you affiliated with openai",
+            "is openai calling me",
+            "what is the quick version",
         },
     ):
         return True
@@ -946,6 +1510,7 @@ def _explanation_question(normalized: str) -> bool:
             "names",
             "versus",
             "what exactly",
+            "is this",
             "are what",
         },
     ):
@@ -1383,6 +1948,31 @@ def _continue_request(normalized: str) -> bool:
     )
 
 
+def _plain_adoption_statement(normalized: str) -> bool:
+    buyer_state = _buyer_state_from_text(normalized)
+    if buyer_state not in {
+        "current_chatgpt_and_other_ai_user",
+        "current_chatgpt_or_other_ai_unknown",
+        "current_other_ai_user",
+    }:
+        return False
+    return not _contains(
+        normalized,
+        {
+            "why switch",
+            "why would",
+            "why use",
+            "why compare",
+            "reason to switch",
+            "reason to compare",
+            "should i switch",
+            "convince me",
+            "what gap",
+            "what would be different",
+        },
+    )
+
+
 def _price_question(normalized: str) -> bool:
     if normalized in {"price", "cost", "costs", "money", "monthly price"}:
         return True
@@ -1526,6 +2116,9 @@ def _plus_sufficiency_question(normalized: str) -> bool:
         normalized,
         {
             "is plus enough",
+            "would plus be enough",
+            "will plus be enough",
+            "should plus be enough",
             "plus going to be enough",
             "plus enough",
             "plus or pro",
@@ -1916,7 +2509,7 @@ def _price_response(campaign: dict | None, normalized: str, turns: list[dict[str
 def _plus_sufficiency_response(normalized: str, turns: list[dict[str, Any]]) -> str:
     prior_state = _prior_openai_state(turns)
     if not _known_use_case(normalized, turns):
-        if prior_state.get("openai_adoption_state") == "other_ai_user" or _another_ai_user(_prior_customer_text(turns)):
+        if prior_state.get("openai_adoption_state") in {"other_ai_user", "current_other_ai_user"} or _another_ai_user(_prior_customer_text(turns)):
             return (
                 "If your current tool covers everything, I would not push a paid ChatGPT plan. "
                 "The reason to compare ChatGPT is a real gap in coding, files, research, writing, voice/images, or team controls."
@@ -2551,13 +3144,46 @@ def classify_turn(
             polarity="clarification",
         )
 
-    if _explanation_question(normalized) and not _explicit_team_or_enterprise_need(normalized):
+    if (
+        _known_use_case(normalized, turns)
+        and _contextual_plan_comparison_question(normalized)
+        and not _prior_pro_tier_context(turns)
+        and not _pro_tier_question_for_context(normalized, turns)
+        and not _explicit_team_or_enterprise_need(normalized)
+    ):
         return _frame(
             **base,
-            semantic="public_plan_explanation_first",
+            semantic="public_plan_contextual_plan_comparison_answered",
             response=_plan_category_explanation_response(campaign, normalized, turns),
+            target_gap="usage_intensity",
+            dialogue_focus="plan_fit",
+            polarity="recommendation",
+            semantic_family="plan_fit",
+            speech_act="direct_plan_fit_question",
+            sub_intent="plus_sufficiency",
+            response_strategy="plus_sufficiency",
+        )
+
+    if _explanation_question(normalized) and not _explicit_team_or_enterprise_need(normalized):
+        sub_intent, response = _orientation_response(normalized)
+        if sub_intent == "simpler_explanation_request" and _contains(
+            " ".join(str((turn.get("summary") or {}).get("final_response") or "") for turn in turns[-3:]).lower(),
+            {"simple version"},
+        ):
+            response = (
+                "Even simpler: Free is the basic no-cost option, Plus and Pro are paid personal upgrades, "
+                "and Business or Enterprise are for organizations."
+            )
+        return _frame(
+            **base,
+            semantic=f"public_plan_orientation_{sub_intent}",
+            response=response,
             dialogue_focus="plan_explanation",
             polarity="clarification",
+            semantic_family="orientation_or_explanation",
+            speech_act=_speech_act_for(f"public_plan_orientation_{sub_intent}", normalized, sub_intent, "clarification"),
+            sub_intent=sub_intent,
+            response_strategy=sub_intent,
         )
 
     if _pro_agreement_signal(normalized) and not _pro_tier_question_for_context(normalized, turns):
@@ -2776,7 +3402,7 @@ def classify_turn(
             polarity="low_pressure",
         )
 
-    if _competitor_objection(normalized):
+    if _competitor_objection(normalized) and not _plain_adoption_statement(normalized):
         if _known_use_case(normalized, turns):
             proposed = (
                 "A switch only makes sense if ChatGPT improves a specific gap in your current tool: "
@@ -2805,20 +3431,48 @@ def classify_turn(
             polarity="objection",
         )
 
-    if _current_chatgpt_user(normalized):
-        if _another_ai_user(normalized):
+    buyer_state = _buyer_state_from_text(normalized)
+    if buyer_state in {"current_chatgpt_and_other_ai_user", "current_chatgpt_or_other_ai_unknown"}:
+        if buyer_state == "current_chatgpt_and_other_ai_user":
+            relation = _conjunction_relation(normalized)
+            response = (
+                "Got it - you're using both ChatGPT and another AI tool. "
+                "The useful comparison is where the current setup still falls short: coding, files, research, writing, voice/images, or team controls."
+                if relation == "both"
+                else (
+                    "Got it - you're using ChatGPT and other AI tools. "
+                    "The useful comparison is where the current setup still falls short: coding, files, research, writing, voice/images, or team controls."
+                )
+            )
             return _frame(
                 **base,
-                semantic="public_plan_current_chatgpt_or_other_ai_user",
-                response=(
-                    "Got it - sounds like you're already using ChatGPT or another AI tool. "
-                    "The useful comparison is whether ChatGPT covers something your current setup does not. "
-                    "What is the one area where your current tool feels weakest: coding, files, research, writing, voice/images, or team controls?"
-                ),
+                semantic="public_plan_current_chatgpt_and_other_ai_user",
+                response=response,
                 target_gap="alternative_tool_gap",
                 dialogue_focus="competitive_objection",
                 polarity="progress",
+                sub_intent="current_chatgpt_and_other_ai_user",
+                buyer_state="current_chatgpt_and_other_ai_user",
+                conjunction_relation=relation,
+                response_strategy="current_chatgpt_and_other_ai_user",
             )
+        return _frame(
+            **base,
+            semantic="public_plan_current_chatgpt_or_other_ai_unknown",
+            response=(
+                "Got it - it sounds like it may be ChatGPT or another AI tool. "
+                "Which one are you using today, and what gap are you trying to solve?"
+            ),
+            target_gap="alternative_tool_gap",
+            dialogue_focus="competitive_objection",
+            polarity="progress",
+            sub_intent="current_chatgpt_or_other_ai_unknown",
+            buyer_state="current_chatgpt_or_other_ai_unknown",
+            conjunction_relation=_conjunction_relation(normalized),
+            response_strategy="current_chatgpt_or_other_ai_unknown",
+        )
+
+    if _current_chatgpt_user(normalized):
         return _frame(
             **base,
             semantic="public_plan_current_chatgpt_user",
@@ -2935,7 +3589,7 @@ def classify_turn(
             polarity="close",
         )
 
-    if _competitor_objection(normalized):
+    if _competitor_objection(normalized) and not _plain_adoption_statement(normalized):
         if _known_use_case(normalized, turns):
             return _frame(
                 **base,

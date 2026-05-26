@@ -3,7 +3,7 @@
 - Status: `pass`
 - Scenario count: `118`
 - Multi-turn scenario count: `118`
-- Average score: `99.7`
+- Average score: `99.76`
 - Minimum score: `88`
 - Failed count: `0`
 - Critical failure count: `0`
@@ -35,16 +35,16 @@
 
 ```json
 {
-  "buyer_specificity_score": 9.9,
+  "buyer_specificity_score": 9.95,
   "close_progression_score": 10.0,
   "direct_answer_score": 10.0,
   "momentum_score": 10.0,
   "naturalness_score": 10.0,
   "no_loop_score": 10.0,
   "objection_handling_score": 10.0,
-  "recommendation_strength_score": 9.96,
+  "recommendation_strength_score": 9.92,
   "safety_grounding_score": 10.0,
-  "value_framing_score": 9.85
+  "value_framing_score": 9.9
 }
 ```
 

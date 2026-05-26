@@ -50,6 +50,13 @@ INTERNAL_POLICY_RE = re.compile(
     r"i should not assume buying intent|first i need the adoption state|\badoption state\b",
     re.I,
 )
+SOURCE_SCAFFOLD_RE = re.compile(
+    r"article lists|article describes|according to|source of truth|source-grounded|"
+    r"official sources state|official sources say|the official page says|"
+    r"exact tier details should be checked against official openai sources",
+    re.I,
+)
+TERMINAL_NO_SPEECH_CONTROLS = {"end-call", "hang-up", "schedule-and-end"}
 NO_FIT_CAVEAT_RE = re.compile(
     r"if your current tool is enough.*would not push|would not push a paid chatgpt plan|no paid close",
     re.I,
@@ -70,9 +77,31 @@ ADOPTION_LOOP_RE = re.compile(
 )
 CLOSE_PRESSURE_RE = re.compile(r"official chatgpt plans page|profile upgrade flow|contact sales|sign up|upgrade now", re.I)
 SIMPLE_EXPLANATION_RE = re.compile(
-    r"simpler|plainly|plain terms|chatgpt subscription plans|free costs nothing|free is the no-cost",
+    r"simple version|simpler|plainly|plain terms|chatgpt subscription plans|free costs nothing|free is the no-cost",
     re.I,
 )
+EXPLANATION_RESPONSE_BY_SUB_INTENT = {
+    "call_orientation": re.compile(r"call about chatgpt subscription plans|chatgpt subscription plans.*worth considering", re.I),
+    "plan_category_explanation": re.compile(
+        r"subscription options for chatgpt.*free.*plus.*pro.*business.*enterprise|"
+        r"free is no-cost.*plus and pro.*individual.*business.*teams.*enterprise.*larger",
+        re.I,
+    ),
+    "specific_plan_label_explanation": re.compile(
+        r"free is .*no-cost.*plus is .*paid individual.*pro is .*heavier|"
+        r"free, plus, and pro are individual plan labels.*business is for teams.*enterprise is for larger",
+        re.I,
+    ),
+    "subscription_model_question": re.compile(r"chatgpt subscription plans.*not a one-off product purchase", re.I),
+    "model_vs_product_question": re.compile(r"plan options, not model names|plan options, not product names", re.I),
+    "simpler_explanation_request": re.compile(
+        r"simple version.*choosing the right chatgpt plan|"
+        r"even simpler.*free .*no-cost.*plus and pro.*paid personal.*business or enterprise.*organizations",
+        re.I,
+    ),
+    "source_disclosure": re.compile(r"public openai|pricing and help information|not calling from openai", re.I),
+    "affiliation_boundary": re.compile(r"not calling from openai|not representing openai", re.I),
+}
 TEAM_POSITIVE_RE = re.compile(
     r"\b(team|company|workspace|admin controls|sso|scim|procurement|security review|legal review|organization-level)\b",
     re.I,
@@ -414,10 +443,18 @@ def question_count(text: str) -> int:
 
 def validate_common(text: str, packet: dict[str, Any]) -> list[str]:
     failures: list[str] = []
+    manager = dialogue_manager(packet)
+    call_control = str(manager.get("call_control") or (packet.get("summary") or {}).get("call_control") or "")
+    if not text.strip() and call_control not in TERMINAL_NO_SPEECH_CONTROLS:
+        failures.append("blank final_response without documented terminal call_control")
     if RAW_URL_RE.search(text):
         failures.append("raw URL spoken")
     if UNSAFE_AFFILIATION_RE.search(text) and not re.search(r"\bnot (calling from|calling as|representing) openai\b", text, re.I):
         failures.append("unsafe OpenAI affiliation claim")
+    if INTERNAL_POLICY_RE.search(text):
+        failures.append("internal policy wording leaked")
+    if SOURCE_SCAFFOLD_RE.search(text):
+        failures.append("source/scaffold wording spoken in normal sales answer")
     for key, value in side_effect_flags(packet).items():
         if key in SIDE_EFFECT_KEYS and value:
             failures.append(f"{key} must be false")
@@ -446,11 +483,15 @@ def validate_explanation_first(text: str, packet: dict[str, Any], *, trap: bool 
     failures: list[str] = []
     frame = semantic_frame(packet)
     state = openai_state(packet)
-    lowered = normalize(text)
-    if "chatgpt subscription plans" not in lowered:
-        failures.append("explanation response did not name ChatGPT subscription plans")
-    if not EXPLANATION_RE.search(text):
-        failures.append("response did not plainly explain Free/Plus/Pro/Business/Enterprise categories")
+    sub_intent = str(frame.get("sub_intent") or "")
+    family = str(frame.get("semantic_family") or "")
+    if family not in {"orientation_or_explanation", "source_or_identity"}:
+        failures.append(f"explanation question produced semantic_family {family or '<missing>'}")
+    expected_shape = EXPLANATION_RESPONSE_BY_SUB_INTENT.get(sub_intent)
+    if expected_shape is None:
+        failures.append(f"explanation question produced unsupported sub_intent {sub_intent or '<missing>'}")
+    elif not expected_shape.search(text):
+        failures.append(f"response did not match {sub_intent} answer shape")
     if ADOPTION_LOOP_RE.search(text):
         failures.append("explanation regressed to adoption-state loop instead of answering first")
     if CLOSE_PRESSURE_RE.search(text):
@@ -524,7 +565,8 @@ def validate_neutral_state(packet: dict[str, Any]) -> list[str]:
 
 def validate_repeated_confusion(text: str, responses: list[str], packet: dict[str, Any]) -> list[str]:
     failures = validate_explanation_first(text, packet, trap=True)
-    if not SIMPLE_EXPLANATION_RE.search(text):
+    sub_intent = str(semantic_frame(packet).get("sub_intent") or "")
+    if sub_intent == "simpler_explanation_request" and not SIMPLE_EXPLANATION_RE.search(text):
         failures.append("repeated confusion did not simplify the explanation")
     normalized_responses = [normalize(response) for response in responses if response]
     if len(normalized_responses) >= 2 and normalized_responses[-1] == normalized_responses[-2]:

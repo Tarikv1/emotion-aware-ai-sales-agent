@@ -51,6 +51,7 @@ SIDE_EFFECT_KEYS = [
     "customer_audio_uploaded_to_python_server",
     "customer_audio_uploaded_to_tts_provider",
 ]
+TERMINAL_NO_SPEECH_CONTROLS = {"end-call", "hang-up", "schedule-and-end"}
 
 SOURCE_NOTE_RE = re.compile(
     r"\b(article lists|article describes|according to|source of truth|source-grounded|"
@@ -113,6 +114,18 @@ REPEATED_CAVEAT_RE = re.compile(
     r"first i need the adoption state|cannot recommend yet)\b",
     re.I,
 )
+EXPLANATION_CONTEXT_RE = re.compile(
+    r"\b(what is this|what are these plans|what are the plans|what are free|what is free|"
+    r"explain .*plans|are these models|are these products|subscription thing|don't understand|do not understand|confused)\b",
+    re.I,
+)
+PLAN_LABEL_QUESTION_RE = re.compile(
+    r"\b(what is|what are|explain|are these|is this|do not understand|don't understand)\b.*\b(free|plus|pro|business|enterprise)\b",
+    re.I,
+)
+TEAM_ROUTE_RE = re.compile(r"team_plan_fit|basic team workspace|enterprise requirements like|for team use", re.I)
+AND_TO_OR_FAILURE_RE = re.compile(r"\bchatgpt and other ai tools\b.*\bor another ai tool\b|\bor another ai tool\b", re.I)
+OR_TO_AND_FAILURE_RE = re.compile(r"\bchatgpt or another ai tool\b.*\band other ai tools\b|\band other ai tools\b", re.I)
 
 CRITICAL_FAILURE_RULES = [
     "no_loop_score == 0",
@@ -134,6 +147,13 @@ CRITICAL_FAILURE_RULES = [
     "terminal acceptance followed by a new sales pitch",
     "buyer asks plan-change timing and agent repeats tier-selection answer",
     "state downgrades Pro-tier buyer to Plus without buyer preference for lower cost",
+    "blank final_response marked pass",
+    "explanation question routed to recommendation/team/close",
+    "plan label question treated as plan-selection/team intent",
+    "buyer conjunction fidelity changed",
+    "stability guard owns recognized commercial turn",
+    "state mutates from explanation into recommendation/no-fit/team intent",
+    "same response used for different sub-intents requiring a specific answer",
 ]
 
 
@@ -858,6 +878,65 @@ def build_scenarios() -> list[dict[str, Any]]:
     return scenarios
 
 
+def semantic_gate_failures(
+    *,
+    packet: dict[str, Any],
+    scenario: dict[str, Any],
+    final_response: str,
+    prior_responses: list[str],
+) -> tuple[list[str], list[str]]:
+    failures: list[str] = []
+    critical: list[str] = []
+    manager = packet.get("dialogue_manager") if isinstance(packet.get("dialogue_manager"), dict) else {}
+    semantic = manager.get("contextual_buyer_semantics") if isinstance(manager.get("contextual_buyer_semantics"), dict) else {}
+    memory = packet.get("demo_conversation_memory") or packet.get("conversation_memory") or {}
+    if not isinstance(memory, dict):
+        memory = {}
+    plan_state = memory.get("openai_chatgpt_plan_state") if isinstance(memory.get("openai_chatgpt_plan_state"), dict) else {}
+    context = " ".join(turn for turn in scenario["turns"] if turn != "__agent_open__")
+    normalized_context = normalize(context)
+    normalized_response = normalize(final_response)
+    source = str(manager.get("final_response_source") or "")
+    call_control = str(manager.get("call_control") or "")
+
+    if not final_response.strip() and call_control not in TERMINAL_NO_SPEECH_CONTROLS:
+        failures.append("blank final_response without terminal call_control")
+        critical.append("blank final_response marked pass")
+    if INTERNAL_POLICY_RE.search(final_response):
+        failures.append("internal semantic policy language spoken")
+        critical.append("unsupported claim / fake side effect / internal policy language / product leakage")
+    if EXPLANATION_CONTEXT_RE.search(normalized_context):
+        if TEAM_ROUTE_RE.search(final_response) or plan_state.get("decision_frame") == "business_vs_enterprise":
+            failures.append("explanation question routed to team/Enterprise")
+            critical.append("explanation question routed to recommendation/team/close")
+        if plan_state.get("openai_recommended_path") not in {None, "", "unknown"}:
+            failures.append("explanation question created recommendation state")
+            critical.append("state mutates from explanation into recommendation/no-fit/team intent")
+    if PLAN_LABEL_QUESTION_RE.search(normalized_context):
+        if TEAM_ROUTE_RE.search(final_response) or plan_state.get("decision_frame") == "business_vs_enterprise":
+            failures.append("plan-label question triggered team or plan-selection route")
+            critical.append("plan label question treated as plan-selection/team intent")
+    if "chatgpt and other ai tools" in normalized_context and AND_TO_OR_FAILURE_RE.search(normalized_response):
+        failures.append("buyer said ChatGPT and other AI tools but response used OR")
+        critical.append("buyer conjunction fidelity changed")
+    if "chatgpt or another ai tool" in normalized_context and OR_TO_AND_FAILURE_RE.search(normalized_response):
+        failures.append("buyer said OR/uncertain but response used AND")
+        critical.append("buyer conjunction fidelity changed")
+    if (
+        source == "pre_speech_conversation_stability_guard"
+        and float(semantic.get("confidence") or 0.0) >= 0.7
+        and str(semantic.get("response_strategy") or "")
+    ):
+        failures.append("stability guard owned recognized semantic commercial turn")
+        critical.append("stability guard owns recognized commercial turn")
+    final_signature = compact_signature(final_response)
+    prior_signatures = [compact_signature(item) for item in prior_responses if item]
+    if final_signature and final_signature in prior_signatures and semantic.get("sub_intent") not in {"repeat_request"}:
+        failures.append("same response repeated after different semantic object")
+        critical.append("same response used for different sub-intents requiring a specific answer")
+    return failures, critical
+
+
 def run_scenario(item: dict[str, Any]) -> dict[str, Any]:
     state: dict[str, Any] = {"turns": []}
     packet: dict[str, Any] = {}
@@ -877,10 +956,22 @@ def run_scenario(item: dict[str, Any]) -> dict[str, Any]:
     side_effect_failures = [key for key in SIDE_EFFECT_KEYS if flags.get(key)]
     if flags["live_tts_used"] or flags["tts_provider_calls_made"] or flags["audio_file_created"]:
         side_effect_failures.append("validator must not use live TTS, provider calls, or audio files")
+    semantic_failures, semantic_critical = semantic_gate_failures(
+        packet=packet,
+        scenario=item,
+        final_response=final,
+        prior_responses=prior,
+    )
     status = "pass" if score["status"] == "pass" and not side_effect_failures else "fail"
     failures = list(score["failures"])
+    critical_failures = list(score["critical_failures"])
+    if semantic_failures:
+        failures.extend(semantic_failures)
+        critical_failures.extend(semantic_critical)
+        status = "fail"
     if side_effect_failures:
         failures.extend(side_effect_failures)
+        critical_failures.extend(side_effect_failures)
     return {
         "id": item["id"],
         "group": item["group"],
@@ -890,7 +981,7 @@ def run_scenario(item: dict[str, Any]) -> dict[str, Any]:
         "score": score["score"],
         "dimension_scores": score["scores"],
         "failures": failures,
-        "critical_failures": score["critical_failures"],
+        "critical_failures": critical_failures,
         "final_response": final,
         "final_response_hash": sha12(final),
         "side_effects": flags,

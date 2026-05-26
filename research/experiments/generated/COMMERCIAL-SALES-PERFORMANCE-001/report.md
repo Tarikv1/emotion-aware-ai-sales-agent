@@ -2,8 +2,8 @@
 
 - Status: `pass`
 - Scenario count: `18`
-- Average score: `98.61`
-- Minimum score: `95`
+- Average score: `98.28`
+- Minimum score: `89`
 - Failed count: `0`
 - Critical failure count: `0`
 - Side effects false: `true`

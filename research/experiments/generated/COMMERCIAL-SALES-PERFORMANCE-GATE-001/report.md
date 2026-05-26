@@ -3,8 +3,8 @@
 - Status: `pass`
 - Scenario count: `18`
 - Multi-turn count: `18`
-- Average score: `98.61`
-- Minimum score: `95`
+- Average score: `98.28`
+- Minimum score: `89`
 - Critical failure count: `0`
 - Zero-dimension-score count: `0`
 - Strict enough to catch previous live failures: `true`
@@ -22,7 +22,7 @@
   "objection_handling_score": 10.0,
   "recommendation_strength_score": 8.61,
   "safety_grounding_score": 10.0,
-  "value_framing_score": 10.0
+  "value_framing_score": 9.67
 }
 ```
 
@@ -48,7 +48,14 @@
   "same response after follow-up question",
   "terminal acceptance followed by a new sales pitch",
   "buyer asks plan-change timing and agent repeats tier-selection answer",
-  "state downgrades Pro-tier buyer to Plus without buyer preference for lower cost"
+  "state downgrades Pro-tier buyer to Plus without buyer preference for lower cost",
+  "blank final_response marked pass",
+  "explanation question routed to recommendation/team/close",
+  "plan label question treated as plan-selection/team intent",
+  "buyer conjunction fidelity changed",
+  "stability guard owns recognized commercial turn",
+  "state mutates from explanation into recommendation/no-fit/team intent",
+  "same response used for different sub-intents requiring a specific answer"
 ]
 ```
 
@@ -100,15 +107,16 @@
       "objection_handling_score": 10,
       "recommendation_strength_score": 5,
       "safety_grounding_score": 10,
-      "value_framing_score": 10
+      "value_framing_score": 4
     },
     "failures": [
-      "recommendation was present but weak"
+      "recommendation was present but weak",
+      "decision frame 'current_tool_vs_chatgpt' missing"
     ],
-    "final_response_hash": "49193c2e3708",
+    "final_response_hash": "6ec4361667c1",
     "group": "objection_handling",
     "id": "commercial-ai-tool-usage-no-premature-nofit-001",
-    "score": 95
+    "score": 89
   },
   {
     "critical_failures": [],

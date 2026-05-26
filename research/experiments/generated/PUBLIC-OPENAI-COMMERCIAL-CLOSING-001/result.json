@@ -1,18 +1,18 @@
 {
-  "average_score": 99.7,
+  "average_score": 99.76,
   "checkpoint_id": "PUBLIC-OPENAI-COMMERCIAL-CLOSING-001",
   "critical_failure_count": 0,
   "dimension_score_averages": {
-    "buyer_specificity_score": 9.9,
+    "buyer_specificity_score": 9.95,
     "close_progression_score": 10.0,
     "direct_answer_score": 10.0,
     "momentum_score": 10.0,
     "naturalness_score": 10.0,
     "no_loop_score": 10.0,
     "objection_handling_score": 10.0,
-    "recommendation_strength_score": 9.96,
+    "recommendation_strength_score": 9.92,
     "safety_grounding_score": 10.0,
-    "value_framing_score": 9.85
+    "value_framing_score": 9.9
   },
   "failed_cases": [],
   "failed_count": 0,
@@ -3053,24 +3053,24 @@
     {
       "critical_failures": [],
       "dimension_scores": {
-        "buyer_specificity_score": 4,
+        "buyer_specificity_score": 10,
         "close_progression_score": 10,
         "direct_answer_score": 10,
         "momentum_score": 10,
         "naturalness_score": 10,
         "no_loop_score": 10,
         "objection_handling_score": 10,
-        "recommendation_strength_score": 10,
+        "recommendation_strength_score": 5,
         "safety_grounding_score": 10,
-        "value_framing_score": 4
+        "value_framing_score": 10
       },
       "failures": [],
-      "final_response": "We've already covered the current-tool question. Do not switch if it covers the job; compare ChatGPT only against one concrete gap such as coding workflow, files, research, voice/images, team admin, or privacy controls.",
-      "final_response_hash": "819db67dc63c",
+      "final_response": "A switch only makes sense if ChatGPT covers something your current tool does not: coding workflow, files, research, voice/images, team admin, or privacy controls. What is the one area where your current tool feels weakest?",
+      "final_response_hash": "cdc41f7d7dde",
       "group": "current_tool_competitor_path",
       "id": "competitor-path-011",
       "multi_turn": true,
-      "score": 88,
+      "score": 95,
       "side_effects": {
         "audio_file_created": false,
         "creates_calendar_event": false,
@@ -4101,8 +4101,8 @@
         "value_framing_score": 10
       },
       "failures": [],
-      "final_response": "For coding and writing, Plus is usually enough if use is moderate. Plus is the lower-cost starting point; Pro is safer if usage limits matter. The next action is to compare Plus versus Pro on the official ChatGPT plans page.",
-      "final_response_hash": "437593def519",
+      "final_response": "This is still about ChatGPT subscription plans: Free is the no-cost option, Plus is the lower-cost paid individual plan, Pro is for heavier individual use, and Business or Enterprise are for teams. Given your coding, writing, or research use, start with Plus unless limits are already frustrating; compare Pro if you need more usage headroom. The next step is the official ChatGPT plans page or profile upgrade flow.",
+      "final_response_hash": "672dba08f73e",
       "group": "information_must_advance",
       "id": "info-advance-moderate-plus-002",
       "multi_turn": true,
@@ -4175,8 +4175,8 @@
         "value_framing_score": 10
       },
       "failures": [],
-      "final_response": "For coding and writing, Plus is usually enough if use is moderate. Since your use is heavy, I would compare Pro seriously. Plus is the lower-cost starting point; Pro is safer if usage limits matter. The next step is the official ChatGPT plans page.",
-      "final_response_hash": "dfd4e4ed4934",
+      "final_response": "This is still about ChatGPT subscription plans: Free is the no-cost option, Plus is the lower-cost paid individual plan, Pro is for heavier individual use, and Business or Enterprise are for teams. Given your heavy coding and writing use, compare Pro first for usage headroom, with Plus as the lower-cost starting point. The next step is the official ChatGPT plans page or profile upgrade flow.",
+      "final_response_hash": "066690e8ebd9",
       "group": "information_must_advance",
       "id": "info-advance-moderate-plus-004",
       "multi_turn": true,
@@ -4286,8 +4286,8 @@
         "value_framing_score": 10
       },
       "failures": [],
-      "final_response": "Based on what you told me - heavy coding and writing - compare Pro first for usage headroom; choose Plus only if the lower monthly cost matters more. The next decision is Pro versus Plus, not more discovery.",
-      "final_response_hash": "0da663ce43eb",
+      "final_response": "This is still about ChatGPT subscription plans: Free is the no-cost option, Plus is the lower-cost paid individual plan, Pro is for heavier individual use, and Business or Enterprise are for teams. Given your heavy coding and writing use, compare Pro first for usage headroom, with Plus as the lower-cost starting point. The next step is the official ChatGPT plans page or profile upgrade flow.",
+      "final_response_hash": "066690e8ebd9",
       "group": "information_must_advance",
       "id": "info-advance-heavy-pro-002",
       "multi_turn": true,
@@ -4397,8 +4397,8 @@
         "value_framing_score": 10
       },
       "failures": [],
-      "final_response": "For coding and writing, Plus is usually enough if use is moderate. Since your use is heavy, I would compare Pro seriously. Plus is the lower-cost starting point; Pro is safer if usage limits matter. The next step is the official ChatGPT plans page.",
-      "final_response_hash": "dfd4e4ed4934",
+      "final_response": "This is still about ChatGPT subscription plans: Free is the no-cost option, Plus is the lower-cost paid individual plan, Pro is for heavier individual use, and Business or Enterprise are for teams. Given your heavy coding and writing use, compare Pro first for usage headroom, with Plus as the lower-cost starting point. The next step is the official ChatGPT plans page or profile upgrade flow.",
+      "final_response_hash": "066690e8ebd9",
       "group": "information_must_advance",
       "id": "info-advance-heavy-pro-005",
       "multi_turn": true,

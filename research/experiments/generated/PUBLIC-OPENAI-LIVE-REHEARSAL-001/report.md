@@ -42,6 +42,7 @@
 - Stability guard owned adapter-turn count: `0`
 - Intent-priority defect count: `0`
 - Logic-generalization defect count: `0`
+- Semantic 4H6 classification counts: `{"current_live_openai_asr_alias_not_normalized": 0, "current_live_openai_blank_response_passed_validator": 0, "current_live_openai_conjunction_fidelity_error": 0, "current_live_openai_entity_keyword_overrode_intent": 0, "current_live_openai_internal_policy_spoken": 0, "current_live_openai_response_variation_failure": 0, "current_live_openai_semantic_generalization_defect": 0, "current_live_openai_semantic_misclassification": 0, "current_live_openai_speech_act_priority_failure": 0, "current_live_openai_stability_guard_generated_commercial_speech": 0, "current_live_openai_state_mutation_from_explanation": 0}`
 - Spoken sales naturalness defect count: `0`
 - Uploaded transcript spoken naturalness defect count: `6`
 - Sales momentum defect count: `0`
@@ -69,6 +70,7 @@
 ```json
 {
   "current_live_openai_intent_priority_defect": 1,
+  "current_live_openai_internal_policy_spoken": 7,
   "current_live_openai_internal_process_wording": 7,
   "current_live_openai_legacy_field_leakage": 2,
   "current_live_openai_loop_or_repeated_prompt": 8,
@@ -250,6 +252,7 @@
       "current_live_openai_internal_process_wording",
       "current_live_openai_loop_or_repeated_prompt",
       "current_live_openai_legacy_field_leakage",
+      "current_live_openai_internal_policy_spoken",
       "current_live_openai_spoken_sales_naturalness_defect",
       "current_live_openai_sales_performance_defect"
     ],
@@ -265,6 +268,7 @@
       "current_live_openai_loop_or_repeated_prompt",
       "current_live_openai_missed_recommendation",
       "current_live_openai_legacy_field_leakage",
+      "current_live_openai_internal_policy_spoken",
       "current_live_openai_spoken_sales_naturalness_defect",
       "current_live_openai_sales_performance_defect"
     ],
@@ -279,6 +283,7 @@
       "current_live_openai_internal_process_wording",
       "current_live_openai_loop_or_repeated_prompt",
       "current_live_openai_missed_recommendation",
+      "current_live_openai_internal_policy_spoken",
       "current_live_openai_spoken_sales_naturalness_defect",
       "current_live_openai_sales_performance_defect"
     ],

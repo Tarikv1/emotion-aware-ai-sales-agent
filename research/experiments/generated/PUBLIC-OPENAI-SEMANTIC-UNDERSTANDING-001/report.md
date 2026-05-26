@@ -1,0 +1,211 @@
+# PUBLIC-OPENAI-SEMANTIC-UNDERSTANDING-001
+
+- Status: `pass`
+- Scenario count: `630`
+- Multi-turn scenario count: `590`
+- Failed count: `0`
+- Side effects false: `true`
+
+## Group Counts
+
+{
+  "and_or_fidelity": 60,
+  "asr_product_alias_generalization": 80,
+  "direct_question_priority": 80,
+  "internal_policy_leak_ban": 50,
+  "orientation_explanation_sub_intents": 80,
+  "plan_label_trap_fuzzing": 100,
+  "positive_team_intent_controls": 30,
+  "response_variation_no_canned_repetition": 50,
+  "stability_guard_pass_through": 40,
+  "state_transition_invariants": 60
+}
+
+## Group Results
+
+{
+  "and_or_fidelity": {
+    "failed_count": 0,
+    "passed_count": 60,
+    "scenario_count": 60
+  },
+  "asr_product_alias_generalization": {
+    "failed_count": 0,
+    "passed_count": 80,
+    "scenario_count": 80
+  },
+  "direct_question_priority": {
+    "failed_count": 0,
+    "passed_count": 80,
+    "scenario_count": 80
+  },
+  "internal_policy_leak_ban": {
+    "failed_count": 0,
+    "passed_count": 50,
+    "scenario_count": 50
+  },
+  "orientation_explanation_sub_intents": {
+    "failed_count": 0,
+    "passed_count": 80,
+    "scenario_count": 80
+  },
+  "plan_label_trap_fuzzing": {
+    "failed_count": 0,
+    "passed_count": 100,
+    "scenario_count": 100
+  },
+  "positive_team_intent_controls": {
+    "failed_count": 0,
+    "passed_count": 30,
+    "scenario_count": 30
+  },
+  "response_variation_no_canned_repetition": {
+    "failed_count": 0,
+    "passed_count": 50,
+    "scenario_count": 50
+  },
+  "stability_guard_pass_through": {
+    "failed_count": 0,
+    "passed_count": 40,
+    "scenario_count": 40
+  },
+  "state_transition_invariants": {
+    "failed_count": 0,
+    "passed_count": 60,
+    "scenario_count": 60
+  }
+}
+
+## Orientation Response Variation
+
+{
+  "affiliation_boundary": 1,
+  "call_orientation": 1,
+  "model_vs_product_question": 1,
+  "plan_category_explanation": 2,
+  "simpler_explanation_request": 1,
+  "source_disclosure": 1,
+  "specific_plan_label_explanation": 2,
+  "subscription_model_question": 1
+}
+
+## Representative Frame Evidence
+
+[
+  {
+    "conjunction_relation": "unknown",
+    "final_response": "This is a call about ChatGPT subscription plans. I can help you understand whether any of the public plan options are worth considering.",
+    "final_response_source": "contextual_buyer_semantics",
+    "label": "orientation-call",
+    "next_best_sales_action": "call_orientation",
+    "normalized_buyer_text": "what is this",
+    "object_type": "unknown",
+    "raw_buyer_text": "what is this",
+    "response_strategy": "call_orientation",
+    "semantic_family": "orientation_or_explanation",
+    "speech_act": "explanation_request",
+    "sub_intent": "call_orientation"
+  },
+  {
+    "conjunction_relation": "unknown",
+    "final_response": "They are subscription options for ChatGPT: Free, Plus, Pro, Business, and Enterprise.",
+    "final_response_source": "contextual_buyer_semantics",
+    "label": "orientation-plans",
+    "next_best_sales_action": "plan_category_explanation",
+    "normalized_buyer_text": "what are these plans",
+    "object_type": "unknown",
+    "raw_buyer_text": "what are these plans",
+    "response_strategy": "plan_category_explanation",
+    "semantic_family": "orientation_or_explanation",
+    "speech_act": "explanation_request",
+    "sub_intent": "plan_category_explanation"
+  },
+  {
+    "conjunction_relation": "unknown",
+    "final_response": "Free is the no-cost option. Plus is the lower-cost paid individual plan. Pro is for heavier individual use.",
+    "final_response_source": "contextual_buyer_semantics",
+    "label": "specific-labels",
+    "next_best_sales_action": "specific_plan_label_explanation",
+    "normalized_buyer_text": "what is free plus",
+    "object_type": "plan",
+    "raw_buyer_text": "what is Free Plus",
+    "response_strategy": "specific_plan_label_explanation",
+    "semantic_family": "orientation_or_explanation",
+    "speech_act": "explanation_request",
+    "sub_intent": "specific_plan_label_explanation"
+  },
+  {
+    "conjunction_relation": "and",
+    "final_response": "Got it - you're using ChatGPT and other AI tools. The useful comparison is where the current setup still falls short: coding, files, research, writing, voice/images, or team controls.",
+    "final_response_source": "contextual_buyer_semantics",
+    "label": "and-fidelity",
+    "next_best_sales_action": "current_chatgpt_and_other_ai_user",
+    "normalized_buyer_text": "i use chatgpt and other ai tools",
+    "object_type": "tool",
+    "raw_buyer_text": "I use ChatGPT and other AI tools",
+    "response_strategy": "current_chatgpt_and_other_ai_user",
+    "semantic_family": "adoption_state",
+    "speech_act": "competitor_statement",
+    "sub_intent": "current_chatgpt_and_other_ai_user"
+  },
+  {
+    "conjunction_relation": "and",
+    "final_response": "Got it - you're using ChatGPT and other AI tools. The useful comparison is where the current setup still falls short: coding, files, research, writing, voice/images, or team controls.",
+    "final_response_source": "contextual_buyer_semantics",
+    "label": "or-fidelity",
+    "next_best_sales_action": "current_chatgpt_and_other_ai_user",
+    "normalized_buyer_text": "i use chatgpt and other ai tools",
+    "object_type": "tool",
+    "raw_buyer_text": "I use ChatGPT and other AI tools",
+    "response_strategy": "current_chatgpt_and_other_ai_user",
+    "semantic_family": "adoption_state",
+    "speech_act": "competitor_statement",
+    "sub_intent": "current_chatgpt_and_other_ai_user"
+  },
+  {
+    "conjunction_relation": "unknown",
+    "final_response": "Got it - since you already use ChatGPT, the next question is use case and intensity. Do you mostly use it for coding, writing, study, files, research, work, or something else?",
+    "final_response_source": "contextual_buyer_semantics",
+    "label": "asr-alias",
+    "next_best_sales_action": "acknowledge_adoption_then_ask_gap",
+    "normalized_buyer_text": "i use chachu pt",
+    "object_type": "tool",
+    "raw_buyer_text": "I use chachu PT",
+    "response_strategy": "acknowledge_adoption_then_ask_gap",
+    "semantic_family": "adoption_state",
+    "speech_act": "use_case_disclosure",
+    "sub_intent": "current_chatgpt_user"
+  },
+  {
+    "conjunction_relation": "unknown",
+    "final_response": "Plus is listed at 20 dollars per month, billed monthly. Exact current terms can change, so check the plan page before upgrading. Given coding and heavy use, I would compare Pro first if usage headroom matters; Plus is the lower-cost start.",
+    "final_response_source": "contextual_buyer_semantics",
+    "label": "direct-price",
+    "next_best_sales_action": "direct_price_question",
+    "normalized_buyer_text": "how much does plus cost",
+    "object_type": "plan",
+    "raw_buyer_text": "how much does Plus cost",
+    "response_strategy": "direct_price_question",
+    "semantic_family": "price",
+    "speech_act": "direct_price_question",
+    "sub_intent": "direct_price_question"
+  },
+  {
+    "conjunction_relation": "unknown",
+    "final_response": "This is a call about ChatGPT subscription plans. I can help you understand whether any of the public plan options are worth considering.",
+    "final_response_source": "contextual_buyer_semantics",
+    "label": "stability-pass-through",
+    "next_best_sales_action": "call_orientation",
+    "normalized_buyer_text": "what is this",
+    "object_type": "unknown",
+    "raw_buyer_text": "what is this",
+    "response_strategy": "call_orientation",
+    "semantic_family": "orientation_or_explanation",
+    "speech_act": "explanation_request",
+    "sub_intent": "call_orientation"
+  }
+]
+
+## Failed Cases
+
+[]
