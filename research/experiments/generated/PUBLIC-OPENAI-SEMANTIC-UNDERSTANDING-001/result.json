@@ -126,7 +126,7 @@
     },
     {
       "conjunction_relation": "and",
-      "final_response": "Got it - you're using ChatGPT and other AI tools. The useful comparison is where the current setup still falls short: coding, files, research, writing, voice/images, or team controls.",
+      "final_response": "Got it - you're using ChatGPT and other AI tools. The useful comparison is where the current setup still falls short: coding workflow, files, research, writing, voice/images, or team controls.",
       "final_response_source": "contextual_buyer_semantics",
       "label": "and-fidelity",
       "next_best_sales_action": "current_chatgpt_and_other_ai_user",
@@ -140,7 +140,7 @@
     },
     {
       "conjunction_relation": "and",
-      "final_response": "Got it - you're using ChatGPT and other AI tools. The useful comparison is where the current setup still falls short: coding, files, research, writing, voice/images, or team controls.",
+      "final_response": "Got it - you're using ChatGPT and other AI tools. The useful comparison is where the current setup still falls short: coding workflow, files, research, writing, voice/images, or team controls.",
       "final_response_source": "contextual_buyer_semantics",
       "label": "or-fidelity",
       "next_best_sales_action": "current_chatgpt_and_other_ai_user",

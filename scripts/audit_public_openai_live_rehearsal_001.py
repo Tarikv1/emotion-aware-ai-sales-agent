@@ -28,6 +28,11 @@ OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
 RESULT_PATH = OUT_DIR / "result.json"
 REPORT_PATH = OUT_DIR / "report.md"
 TMP_DIR = ROOT / ".tmp" / CHECKPOINT_ID
+CURRENT_LIVE_EVIDENCE_TRANSCRIPT_NAMES = {
+    "LIVE-DEMO-001-adc8611a-34ab-4155-9285-e461bf597f5a-transcript.json",
+    "LIVE-DEMO-001-4680965d-f60e-4186-bfe3-4eaceb0ad183-transcript.json",
+    "LIVE-DEMO-001-3c465ff1-c5e7-4211-8e70-8e1bdc789af5-transcript.json",
+}
 
 PLAN_NAMES = ["Free", "Go", "Plus", "Pro", "Business", "Enterprise"]
 LEGACY_RE = re.compile(r"legacy compatibility|appointment_target", re.I)
@@ -65,10 +70,17 @@ PRICE_CONTEXT_RESET_RE = re.compile(r"are you mainly comparing plus and pro|are 
 SIGNUP_CONTEXT_TRANSCRIPT_RE = re.compile(r"how do i sign up|where do i upgrade|show me the official page|sounds good.*sign up", re.I)
 SIGNUP_CONTEXT_RESPONSE_RE = re.compile(r"official chatgpt plans page|profile upgrade flow", re.I)
 ASR_ALIAS_TRANSCRIPT_RE = re.compile(
-    r"chachu\s*(pt|bt|p\s*t|b\s*t)|chachupt|chat\s*(jpt|gbt|gb\s*t|g\s*p\s*t|gpt)|chatgbt",
+    r"chacha\s*(pt|bt|p\s*t|b\s*t|gpt)|chachu\s*(pt|bt|p\s*t|b\s*t)|chachupt|"
+    r"check\s*gpt|touch\s*(gpt|your\s*p\s*t|your\s*pt)|chat\s*(jpt|gbt|gb\s*t|g\s*p\s*t|gpt)|chatgbt",
     re.I,
 )
 ASR_ALIAS_GOOD_RESPONSE_RE = re.compile(r"chatgpt|current setup|current tool|switch|useful comparison", re.I)
+CHACHA_PT_ALIAS_RE = re.compile(r"chacha\s*(pt|bt|p\s*t|b\s*t|gpt)|check\s*gpt|touch\s*(gpt|your\s*p\s*t|your\s*pt)", re.I)
+CLOUD_CLAUDE_CONTEXT_RE = re.compile(
+    r"\bcloud\b.*\b(ai|tool|llm|coding|code|writing|current setup|use|using|maybe)\b|"
+    r"\b(ai|tool|llm|coding|code|writing|current setup|use|using|maybe)\b.*\bcloud\b",
+    re.I,
+)
 INTERNAL_POLICY_RE = re.compile(r"should not assume buying intent|first i need the adoption state|\badoption state\b", re.I)
 PRICE_TRANSCRIPT_RE = re.compile(r"how much|price|cost|20 dollars|twenty dollars|expensive|paid tiers", re.I)
 PRICE_RESPONSE_RE = re.compile(r"source of truth|official chatgpt pricing page|20 dollars|100 dollar|200 dollar|free is", re.I)
@@ -131,8 +143,8 @@ PLAN_CHANGE_TRANSCRIPT_RE = re.compile(
 )
 PLAN_CHANGE_RESPONSE_RE = re.compile(r"billing|proration|plan terms|current terms|before switching|depends on|cannot promise|can't promise", re.I)
 TERMINAL_ACCEPTANCE_TRANSCRIPT_RE = re.compile(
-    r"ok i will do that thank you|sounds good thanks|okay i'll check|okay i will check|got it,? thanks|"
-    r"i will start there|thank you,? that answers it|i will do that",
+    r"ok i will do that thank you|sounds good thanks|okay i'll check|okay i will check|ok i will check|got it,? thanks|"
+    r"i'?ll check it|i will check that|i will start there|thanks that helps|thank you,? that answers it|i will do that",
     re.I,
 )
 TERMINAL_REOPEN_RESPONSE_RE = re.compile(r"\?\s*$|what would you mainly|are you using|which plan are you|do you want me|should i explain|can i help", re.I)
@@ -178,10 +190,30 @@ REPEATED_CONFUSION_TRANSCRIPT_RE = re.compile(
     r"what are free|what are these plans|what is this again",
     re.I,
 )
-NO_BUYER_CONTEXT_RE = re.compile(r"^(__agent_open__|yes|yeah|yeah sure|sure|okay|ok|go ahead|tell me|yeah tell me)$", re.I)
+NO_BUYER_CONTEXT_RE = re.compile(r"^(__agent_open__|yes|yeah|yeah sure|sure yeah|sure|okay|ok|go ahead|tell me|yeah tell me)$", re.I)
+NEGATED_ORG_TRANSCRIPT_RE = re.compile(
+    r"not a team|not team|no team|just myself|by myself|just me|personal use only|individual use|"
+    r"no enterprise|not enterprise|no company|not for a company|no business needs|not business",
+    re.I,
+)
+EXPLICIT_ORG_TRANSCRIPT_RE = re.compile(
+    r"we have a team|our team|my team|for a team|team workspace|team admin|admin controls|"
+    r"our company|my company|for our company|for my company|sso|scim|procurement|security review|enterprise requirements",
+    re.I,
+)
 
 DIALOGUE_DEFECT_CLASSES = {
     "current_live_openai_asr_product_alias_issue",
+    "current_live_openai_live_semantic_bypass",
+    "current_live_openai_legacy_field_post_permission",
+    "current_live_openai_negation_scope_ignored",
+    "current_live_openai_team_state_poisoned_by_negation",
+    "current_live_openai_business_enterprise_false_route",
+    "current_live_openai_asr_alias_gap_chacha_pt",
+    "current_live_openai_cloud_claude_alias_gap",
+    "current_live_openai_stability_guard_owned_recognized_turn",
+    "current_live_openai_state_mutation_invariant_failed",
+    "current_live_openai_live_pipeline_integration_defect",
     "current_live_openai_semantic_misclassification",
     "current_live_openai_speech_act_priority_failure",
     "current_live_openai_entity_keyword_overrode_intent",
@@ -244,6 +276,16 @@ DIALOGUE_DEFECT_CLASSES = {
 }
 
 SEMANTIC_DEFECT_CLASSES = {
+    "current_live_openai_live_semantic_bypass",
+    "current_live_openai_legacy_field_post_permission",
+    "current_live_openai_negation_scope_ignored",
+    "current_live_openai_team_state_poisoned_by_negation",
+    "current_live_openai_business_enterprise_false_route",
+    "current_live_openai_asr_alias_gap_chacha_pt",
+    "current_live_openai_cloud_claude_alias_gap",
+    "current_live_openai_stability_guard_owned_recognized_turn",
+    "current_live_openai_state_mutation_invariant_failed",
+    "current_live_openai_live_pipeline_integration_defect",
     "current_live_openai_semantic_misclassification",
     "current_live_openai_speech_act_priority_failure",
     "current_live_openai_entity_keyword_overrode_intent",
@@ -255,6 +297,18 @@ SEMANTIC_DEFECT_CLASSES = {
     "current_live_openai_conjunction_fidelity_error",
     "current_live_openai_response_variation_failure",
     "current_live_openai_semantic_generalization_defect",
+}
+
+LIVE_SEMANTIC_PIPELINE_DEFECT_CLASSES = {
+    "current_live_openai_live_semantic_bypass",
+    "current_live_openai_legacy_field_post_permission",
+    "current_live_openai_negation_scope_ignored",
+    "current_live_openai_team_state_poisoned_by_negation",
+    "current_live_openai_business_enterprise_false_route",
+    "current_live_openai_asr_alias_gap_chacha_pt",
+    "current_live_openai_cloud_claude_alias_gap",
+    "current_live_openai_stability_guard_owned_recognized_turn",
+    "current_live_openai_state_mutation_invariant_failed",
 }
 
 POST_PATCH_REPLAY_CASES = [
@@ -612,6 +666,139 @@ def source_fact_ids(payload: dict[str, Any]) -> list[str]:
     return sorted(found)
 
 
+def openai_semantic_source_missing(
+    *,
+    source: str,
+    semantic_name: str,
+    semantic_family: str,
+    response_strategy: str,
+) -> bool:
+    return (
+        source not in {"contextual_buyer_semantics", "openai_campaign_adapter"}
+        or semantic_name in {"", "no_contextual_semantic"}
+        or semantic_family in {"", "unknown", "no_contextual_semantic"}
+        or response_strategy in {"", "unknown", "no_contextual_semantic"}
+    )
+
+
+def plan_state_has_org_route(plan_state: dict[str, Any]) -> bool:
+    if not isinstance(plan_state, dict):
+        return False
+    state_text = json.dumps(plan_state, sort_keys=True, default=str).lower()
+    return bool(
+        plan_state.get("openai_recommended_path") in {"business", "enterprise"}
+        or plan_state.get("active_decision_frame") == "business_vs_enterprise"
+        or plan_state.get("decision_frame") == "business_vs_enterprise"
+        or plan_state.get("last_decision_frame_given") == "business_vs_enterprise"
+        or plan_state.get("value_hypothesis") == "team_controls"
+        or re.search(r'"openai_use_case": \[(?:[^\]]*)"(team|enterprise)"', state_text)
+    )
+
+
+def rendered_business_enterprise_route(text: str, trace_text: str = "") -> bool:
+    combined = f"{text}\n{trace_text}"
+    return bool(
+        TEAM_ROUTE_RESPONSE_RE.search(combined)
+        or re.search(r"business is .*self-serve.*workspace|enterprise is .*organization|for team use", combined, re.I)
+    )
+
+
+def post_permission_ack(normalized_transcript: str, prior_responses: list[str]) -> bool:
+    if normalized_transcript == "__agent_open__" or not NO_BUYER_CONTEXT_RE.search(normalized_transcript):
+        return False
+    return any(
+        re.search(r"do you have a minute|have a minute|can help you decide", response, re.I)
+        for response in prior_responses
+    )
+
+
+def recognized_openai_commercial_turn(transcript: str) -> bool:
+    return bool(
+        RECOGNIZED_SEMANTIC_TERMS_RE.search(transcript)
+        or ASR_ALIAS_TRANSCRIPT_RE.search(transcript)
+        or CLOUD_CLAUDE_CONTEXT_RE.search(transcript)
+        or PRICE_TRANSCRIPT_RE.search(transcript)
+        or PLAN_RECOMMENDATION_TRANSCRIPT_RE.search(transcript)
+        or TERMINAL_ACCEPTANCE_TRANSCRIPT_RE.search(transcript)
+    )
+
+
+def add_semantic_aliases_and_pipeline(classes: list[str]) -> list[str]:
+    semantic_aliases = {
+        "current_live_openai_asr_product_alias_issue": ["current_live_openai_asr_alias_not_normalized"],
+        "current_live_openai_live_semantic_bypass": [
+            "current_live_openai_semantic_misclassification",
+            "current_live_openai_speech_act_priority_failure",
+        ],
+        "current_live_openai_legacy_field_post_permission": [
+            "current_live_openai_legacy_field_leakage",
+            "current_live_openai_internal_policy_spoken",
+        ],
+        "current_live_openai_negation_scope_ignored": [
+            "current_live_openai_semantic_generalization_defect",
+            "current_live_openai_entity_keyword_overrode_intent",
+        ],
+        "current_live_openai_team_state_poisoned_by_negation": [
+            "current_live_openai_semantic_generalization_defect",
+            "current_live_openai_entity_keyword_overrode_intent",
+        ],
+        "current_live_openai_business_enterprise_false_route": [
+            "current_live_openai_semantic_generalization_defect",
+            "current_live_openai_entity_keyword_overrode_intent",
+        ],
+        "current_live_openai_asr_alias_gap_chacha_pt": ["current_live_openai_asr_alias_not_normalized"],
+        "current_live_openai_cloud_claude_alias_gap": ["current_live_openai_asr_alias_not_normalized"],
+        "current_live_openai_stability_guard_owned_recognized_turn": [
+            "current_live_openai_stability_guard_generated_commercial_speech",
+            "current_live_openai_speech_act_priority_failure",
+        ],
+        "current_live_openai_state_mutation_invariant_failed": [
+            "current_live_openai_semantic_generalization_defect",
+            "current_live_openai_entity_keyword_overrode_intent",
+        ],
+        "current_live_openai_internal_policy_language_leak": ["current_live_openai_internal_policy_spoken"],
+        "current_live_openai_internal_process_wording": ["current_live_openai_internal_policy_spoken"],
+        "current_live_openai_price_question_refusal": ["current_live_openai_speech_act_priority_failure"],
+        "current_live_openai_plan_recommendation_stall": ["current_live_openai_speech_act_priority_failure"],
+        "current_live_openai_followup_question_not_answered": ["current_live_openai_speech_act_priority_failure"],
+        "current_live_openai_close_context_missing": ["current_live_openai_speech_act_priority_failure"],
+        "current_live_openai_explanation_question_misrouted": [
+            "current_live_openai_semantic_misclassification",
+            "current_live_openai_speech_act_priority_failure",
+        ],
+        "current_live_openai_plan_label_trap": [
+            "current_live_openai_entity_keyword_overrode_intent",
+            "current_live_openai_semantic_misclassification",
+        ],
+        "current_live_openai_team_context_false_positive": [
+            "current_live_openai_entity_keyword_overrode_intent",
+            "current_live_openai_semantic_generalization_defect",
+        ],
+        "current_live_openai_repeated_wrong_explanation": [
+            "current_live_openai_response_variation_failure",
+            "current_live_openai_semantic_generalization_defect",
+        ],
+        "current_live_openai_repeated_exact_response_after_new_question": [
+            "current_live_openai_response_variation_failure",
+        ],
+        "current_live_openai_stability_guard_owned_sales_turn": [
+            "current_live_openai_stability_guard_generated_commercial_speech",
+        ],
+        "current_live_openai_stability_guard_owned_adapter_turn": [
+            "current_live_openai_stability_guard_generated_commercial_speech",
+        ],
+        "current_live_openai_logic_generalization_defect": [
+            "current_live_openai_semantic_generalization_defect",
+        ],
+    }
+    expanded = list(classes)
+    for item in list(expanded):
+        expanded.extend(semantic_aliases.get(item, []))
+    if any(item in expanded for item in LIVE_SEMANTIC_PIPELINE_DEFECT_CLASSES):
+        expanded.append("current_live_openai_live_pipeline_integration_defect")
+    return list(dict.fromkeys(expanded))
+
+
 def classify_current(payload: dict[str, Any]) -> list[str]:
     text = response_text(payload)
     trace_text = runtime_candidate_text(payload)
@@ -621,6 +808,7 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
     delivery = tts(payload)
     source = str((payload.get("dialogue_manager") or {}).get("final_response_source") or "")
     semantic = semantic_frame(payload)
+    semantic_name = str(semantic.get("semantic") or "")
     semantic_family = str(semantic.get("semantic_family") or "")
     speech_act = str(semantic.get("speech_act") or "")
     response_strategy = str(semantic.get("response_strategy") or "")
@@ -641,6 +829,10 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
     plan_state_text = json.dumps(plan_state, sort_keys=True, default=str).lower() if isinstance(plan_state, dict) else ""
     explanation_question = bool(EXPLANATION_TRANSCRIPT_RE.search(transcript))
     plan_label_trap = bool(PLAN_LABEL_EXPLANATION_RE.search(transcript))
+    negated_org_turn = bool(NEGATED_ORG_TRANSCRIPT_RE.search(transcript))
+    explicit_org_turn = bool(EXPLICIT_ORG_TRANSCRIPT_RE.search(transcript) and not negated_org_turn)
+    org_route_state = plan_state_has_org_route(plan_state if isinstance(plan_state, dict) else {})
+    org_route_rendered = rendered_business_enterprise_route(text, trace_text)
     team_false_positive = bool(
         plan_label_trap
         and (
@@ -662,6 +854,7 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
         or PRO_TIER_TRANSCRIPT_RE.search(transcript)
         or re.search(r"deciding between pro tiers|100.*200.*pro|pro_100_vs_200|pro_tier_selection", f"{transcript} {plan_state_text}", re.I)
     )
+    permission_ack_after_open = post_permission_ack(normalized_transcript, prior_responses)
 
     if campaign_path(payload) != FIXTURE_RELATIVE or selected.get("campaign_id") != "public-openai-chatgpt-plans" or payload.get("campaign_selector_mode") != "generic_config":
         classes.append("current_live_openai_campaign_selector_issue")
@@ -673,6 +866,53 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
         classes.append("current_live_openai_latency_or_turn_taking_issue")
     if not text.strip() and call_control(payload) not in {"end-call", "hang-up", "schedule-and-end"}:
         classes.append("current_live_openai_blank_response_passed_validator")
+    if permission_ack_after_open and (
+        openai_semantic_source_missing(
+            source=source,
+            semantic_name=semantic_name,
+            semantic_family=semantic_family,
+            response_strategy=response_strategy,
+        )
+        or PREMATURE_PLAN_COMPARISON_RE.search(text)
+        or (GENERIC_DISCOVERY_RE.search(text) and not ADOPTION_STATE_RE.search(text))
+    ):
+        classes.append("current_live_openai_live_semantic_bypass")
+    if permission_ack_after_open and (
+        LEGACY_FIELD_RE.search(trace_text)
+        or LEGACY_FIELD_RE.search(text)
+        or PREMATURE_PLAN_COMPARISON_RE.search(text)
+        or org_route_rendered
+    ):
+        classes.append("current_live_openai_legacy_field_post_permission")
+    if negated_org_turn and not explicit_org_turn and (org_route_state or org_route_rendered):
+        classes.append("current_live_openai_negation_scope_ignored")
+        classes.append("current_live_openai_state_mutation_invariant_failed")
+        if org_route_state:
+            classes.append("current_live_openai_team_state_poisoned_by_negation")
+        if org_route_rendered or (isinstance(plan_state, dict) and plan_state.get("openai_recommended_path") in {"business", "enterprise"}):
+            classes.append("current_live_openai_business_enterprise_false_route")
+    if CHACHA_PT_ALIAS_RE.search(transcript) and (
+        openai_semantic_source_missing(
+            source=source,
+            semantic_name=semantic_name,
+            semantic_family=semantic_family,
+            response_strategy=response_strategy,
+        )
+        or source == "pre_speech_conversation_stability_guard"
+        or not ASR_ALIAS_GOOD_RESPONSE_RE.search(text)
+    ):
+        classes.append("current_live_openai_asr_alias_gap_chacha_pt")
+    if CLOUD_CLAUDE_CONTEXT_RE.search(transcript) and (
+        openai_semantic_source_missing(
+            source=source,
+            semantic_name=semantic_name,
+            semantic_family=semantic_family,
+            response_strategy=response_strategy,
+        )
+        or source == "pre_speech_conversation_stability_guard"
+        or not re.search(r"claude|current setup|current tool|useful comparison", text, re.I)
+    ):
+        classes.append("current_live_openai_cloud_claude_alias_gap")
     if ASR_ALIAS_TRANSCRIPT_RE.search(transcript) and not ASR_ALIAS_GOOD_RESPONSE_RE.search(text):
         classes.append("current_live_openai_asr_product_alias_issue")
     if RECOGNIZED_SEMANTIC_TERMS_RE.search(transcript) and semantic_family == "unknown":
@@ -843,6 +1083,8 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
     if source == "pre_speech_conversation_stability_guard" and recognized_semantic_turn:
         classes.append("current_live_openai_stability_guard_generated_commercial_speech")
         classes.append("current_live_openai_speech_act_priority_failure")
+    if source == "pre_speech_conversation_stability_guard" and recognized_openai_commercial_turn(transcript):
+        classes.append("current_live_openai_stability_guard_owned_recognized_turn")
     if source == "pre_speech_conversation_stability_guard" and (
         explanation_question
         or plan_label_trap
@@ -901,45 +1143,7 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
     } and GENERIC_DISCOVERY_RE.search(text):
         classes.append("current_live_openai_speech_act_priority_failure")
 
-    semantic_aliases = {
-        "current_live_openai_asr_product_alias_issue": ["current_live_openai_asr_alias_not_normalized"],
-        "current_live_openai_internal_policy_language_leak": ["current_live_openai_internal_policy_spoken"],
-        "current_live_openai_internal_process_wording": ["current_live_openai_internal_policy_spoken"],
-        "current_live_openai_price_question_refusal": ["current_live_openai_speech_act_priority_failure"],
-        "current_live_openai_plan_recommendation_stall": ["current_live_openai_speech_act_priority_failure"],
-        "current_live_openai_followup_question_not_answered": ["current_live_openai_speech_act_priority_failure"],
-        "current_live_openai_close_context_missing": ["current_live_openai_speech_act_priority_failure"],
-        "current_live_openai_explanation_question_misrouted": [
-            "current_live_openai_semantic_misclassification",
-            "current_live_openai_speech_act_priority_failure",
-        ],
-        "current_live_openai_plan_label_trap": [
-            "current_live_openai_entity_keyword_overrode_intent",
-            "current_live_openai_semantic_misclassification",
-        ],
-        "current_live_openai_team_context_false_positive": [
-            "current_live_openai_entity_keyword_overrode_intent",
-            "current_live_openai_semantic_generalization_defect",
-        ],
-        "current_live_openai_repeated_wrong_explanation": [
-            "current_live_openai_response_variation_failure",
-            "current_live_openai_semantic_generalization_defect",
-        ],
-        "current_live_openai_repeated_exact_response_after_new_question": [
-            "current_live_openai_response_variation_failure",
-        ],
-        "current_live_openai_stability_guard_owned_sales_turn": [
-            "current_live_openai_stability_guard_generated_commercial_speech",
-        ],
-        "current_live_openai_stability_guard_owned_adapter_turn": [
-            "current_live_openai_stability_guard_generated_commercial_speech",
-        ],
-        "current_live_openai_logic_generalization_defect": [
-            "current_live_openai_semantic_generalization_defect",
-        ],
-    }
-    for item in list(classes):
-        classes.extend(semantic_aliases.get(item, []))
+    classes = add_semantic_aliases_and_pipeline(classes)
     spoken_naturalness_specific = {
         "current_live_openai_source_note_spoken",
         "current_live_openai_article_says_spoken",
@@ -1002,6 +1206,16 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
                 "current_live_openai_terminal_acceptance_not_closed",
                 "current_live_openai_internal_process_wording",
                 "current_live_openai_state_downgrade_after_headroom",
+                "current_live_openai_live_semantic_bypass",
+                "current_live_openai_legacy_field_post_permission",
+                "current_live_openai_negation_scope_ignored",
+                "current_live_openai_team_state_poisoned_by_negation",
+                "current_live_openai_business_enterprise_false_route",
+                "current_live_openai_asr_alias_gap_chacha_pt",
+                "current_live_openai_cloud_claude_alias_gap",
+                "current_live_openai_stability_guard_owned_recognized_turn",
+                "current_live_openai_state_mutation_invariant_failed",
+                "current_live_openai_live_pipeline_integration_defect",
             }
         ):
             classes.append("current_live_openai_sales_performance_defect")
@@ -1041,6 +1255,12 @@ def classify_uploaded_transcript_record(record: dict[str, Any]) -> dict[str, Any
         customer = str(turn.get("customer_transcript") or "")
         agent = str(turn.get("agent_response") or "")
         plan_state = transcript_plan_state(turn)
+        manager = turn.get("dialogue_manager") if isinstance(turn.get("dialogue_manager"), dict) else {}
+        semantic = manager.get("contextual_buyer_semantics") if isinstance(manager.get("contextual_buyer_semantics"), dict) else {}
+        source = str(manager.get("final_response_source") or "")
+        semantic_name = str(semantic.get("semantic") or "")
+        semantic_family = str(semantic.get("semantic_family") or "")
+        response_strategy = str(semantic.get("response_strategy") or "")
         combined_prior = f"{prior_customer_text} {customer}"
         pro_tier_buying_context = bool(
             plan_state.get("active_decision_frame") == "pro_100_vs_200"
@@ -1049,6 +1269,60 @@ def classify_uploaded_transcript_record(record: dict[str, Any]) -> dict[str, Any
         )
         classes: list[str] = []
         classes.extend(source_note_subclasses(agent))
+        normalized_customer = normalize_text(customer)
+        permission_ack_after_open = post_permission_ack(normalized_customer, prior_agent_responses)
+        negated_org_turn = bool(NEGATED_ORG_TRANSCRIPT_RE.search(customer))
+        explicit_org_turn = bool(EXPLICIT_ORG_TRANSCRIPT_RE.search(customer) and not negated_org_turn)
+        org_route_state = plan_state_has_org_route(plan_state)
+        org_route_rendered = rendered_business_enterprise_route(agent)
+        if permission_ack_after_open and (
+            openai_semantic_source_missing(
+                source=source,
+                semantic_name=semantic_name,
+                semantic_family=semantic_family,
+                response_strategy=response_strategy,
+            )
+            or PREMATURE_PLAN_COMPARISON_RE.search(agent)
+            or (GENERIC_DISCOVERY_RE.search(agent) and not ADOPTION_STATE_RE.search(agent))
+        ):
+            classes.append("current_live_openai_live_semantic_bypass")
+        if permission_ack_after_open and (
+            LEGACY_FIELD_RE.search(agent)
+            or PREMATURE_PLAN_COMPARISON_RE.search(agent)
+            or org_route_rendered
+        ):
+            classes.append("current_live_openai_legacy_field_post_permission")
+        if negated_org_turn and not explicit_org_turn and (org_route_state or org_route_rendered):
+            classes.append("current_live_openai_negation_scope_ignored")
+            classes.append("current_live_openai_state_mutation_invariant_failed")
+            if org_route_state:
+                classes.append("current_live_openai_team_state_poisoned_by_negation")
+            if org_route_rendered or plan_state.get("openai_recommended_path") in {"business", "enterprise"}:
+                classes.append("current_live_openai_business_enterprise_false_route")
+        if CHACHA_PT_ALIAS_RE.search(customer) and (
+            openai_semantic_source_missing(
+                source=source,
+                semantic_name=semantic_name,
+                semantic_family=semantic_family,
+                response_strategy=response_strategy,
+            )
+            or source == "pre_speech_conversation_stability_guard"
+            or not ASR_ALIAS_GOOD_RESPONSE_RE.search(agent)
+        ):
+            classes.append("current_live_openai_asr_alias_gap_chacha_pt")
+        if CLOUD_CLAUDE_CONTEXT_RE.search(customer) and (
+            openai_semantic_source_missing(
+                source=source,
+                semantic_name=semantic_name,
+                semantic_family=semantic_family,
+                response_strategy=response_strategy,
+            )
+            or source == "pre_speech_conversation_stability_guard"
+            or not re.search(r"claude|current setup|current tool|useful comparison", agent, re.I)
+        ):
+            classes.append("current_live_openai_cloud_claude_alias_gap")
+        if source == "pre_speech_conversation_stability_guard" and recognized_openai_commercial_turn(customer):
+            classes.append("current_live_openai_stability_guard_owned_recognized_turn")
         if INTERNAL_PROCESS_SPOKEN_RE.search(agent):
             classes.append("current_live_openai_internal_process_wording")
         if prior_agent_responses and any(normalize_text(agent) == normalize_text(previous) for previous in prior_agent_responses):
@@ -1069,19 +1343,33 @@ def classify_uploaded_transcript_record(record: dict[str, Any]) -> dict[str, Any
             and (PLUS_DOWNGRADE_AFTER_PRO_RE.search(agent) or plan_state.get("openai_recommended_path") == "plus")
         ):
             classes.append("current_live_openai_state_downgrade_after_headroom")
+        classes = add_semantic_aliases_and_pipeline(classes)
         if classes:
             classes.append("current_live_openai_spoken_sales_naturalness_defect")
             trace_classes.extend(classes)
+            sanitized_agent_markers = (
+                source_note_subclasses(agent)
+                + (["internal/process wording"] if INTERNAL_PROCESS_SPOKEN_RE.search(agent) else [])
+                + (["terminal close reopened"] if TERMINAL_ACCEPTANCE_TRANSCRIPT_RE.search(customer) and TERMINAL_REOPEN_RESPONSE_RE.search(agent) else [])
+                + (["plan-change follow-up not answered"] if PLAN_CHANGE_TRANSCRIPT_RE.search(customer) and not PLAN_CHANGE_RESPONSE_RE.search(agent) else [])
+                + (["legacy field after permission"] if "current_live_openai_legacy_field_post_permission" in classes else [])
+                + (["semantic bypass after permission"] if "current_live_openai_live_semantic_bypass" in classes else [])
+                + (["negation scope ignored"] if "current_live_openai_negation_scope_ignored" in classes else [])
+                + (["team state poisoned by negation"] if "current_live_openai_team_state_poisoned_by_negation" in classes else [])
+                + (["business-enterprise false route"] if "current_live_openai_business_enterprise_false_route" in classes else [])
+                + (["chacha/chatgpt alias gap"] if "current_live_openai_asr_alias_gap_chacha_pt" in classes else [])
+                + (["cloud/claude alias gap"] if "current_live_openai_cloud_claude_alias_gap" in classes else [])
+                + (["stability guard owned recognized turn"] if "current_live_openai_stability_guard_owned_recognized_turn" in classes else [])
+                + (["state mutation invariant failed"] if "current_live_openai_state_mutation_invariant_failed" in classes else [])
+                + (["live pipeline integration defect"] if "current_live_openai_live_pipeline_integration_defect" in classes else [])
+            )
             turn_evidence.append(
                 {
                     "turn_index": turn.get("turn_index"),
                     "customer_transcript_hash": sha256_text(customer)[:12] if customer else None,
                     "agent_response_hash": sha256_text(agent)[:12] if agent else None,
                     "classes": list(dict.fromkeys(classes)),
-                    "sanitized_agent_markers": source_note_subclasses(agent)
-                    + (["internal/process wording"] if INTERNAL_PROCESS_SPOKEN_RE.search(agent) else [])
-                    + (["terminal close reopened"] if TERMINAL_ACCEPTANCE_TRANSCRIPT_RE.search(customer) and TERMINAL_REOPEN_RESPONSE_RE.search(agent) else [])
-                    + (["plan-change follow-up not answered"] if PLAN_CHANGE_TRANSCRIPT_RE.search(customer) and not PLAN_CHANGE_RESPONSE_RE.search(agent) else []),
+                    "sanitized_agent_markers": list(dict.fromkeys(sanitized_agent_markers)),
                 }
             )
         if agent:
@@ -1113,14 +1401,30 @@ def latest_uploaded_transcript_audit() -> dict[str, Any]:
             "records": [],
             "raw_private_transcript_copied_to_public_evidence": False,
         }
-    latest = records[-1]
-    analyzed = classify_uploaded_transcript_record(latest)
+    target_records = [
+        record
+        for record in records
+        if Path(record["path"]).name in CURRENT_LIVE_EVIDENCE_TRANSCRIPT_NAMES
+    ]
+    selected_records = target_records or [records[-1]]
+    analyzed_records = [classify_uploaded_transcript_record(record) for record in selected_records]
+    aggregated_counts = Counter(
+        {
+            key: 0
+            for key in LIVE_SEMANTIC_PIPELINE_DEFECT_CLASSES | {"current_live_openai_live_pipeline_integration_defect"}
+        }
+    )
+    for analyzed in analyzed_records:
+        aggregated_counts.update(analyzed.get("classification_counts") or {})
     return {
-        "status": "pass" if not analyzed["classifications"] else "classified_pre_patch_live_defects",
+        "status": "pass" if not any(item["classifications"] for item in analyzed_records) else "classified_pre_patch_live_defects",
         "record_count": len(records),
-        "latest_source_file": analyzed["source_file"],
-        "classification_counts": analyzed["classification_counts"],
-        "records": [analyzed],
+        "selected_record_count": len(selected_records),
+        "target_record_count": len(target_records),
+        "latest_source_file": analyzed_records[-1]["source_file"],
+        "target_source_files": [item["source_file"] for item in analyzed_records],
+        "classification_counts": dict(sorted(aggregated_counts.items())),
+        "records": analyzed_records,
         "raw_private_transcript_copied_to_public_evidence": False,
     }
 
@@ -1324,6 +1628,7 @@ def write_evidence(result: dict[str, Any]) -> None:
             f"- Intent-priority defect count: `{result['current_live_openai_intent_priority_defect_count']}`",
             f"- Logic-generalization defect count: `{result['current_live_openai_logic_generalization_defect_count']}`",
             f"- Semantic 4H6 classification counts: `{json.dumps(result['current_live_openai_semantic_4h6_classification_counts'], sort_keys=True)}`",
+            f"- 4H7 live semantic pipeline counts: `{json.dumps(result['current_live_openai_4h7_pipeline_classification_counts'], sort_keys=True)}`",
             f"- Spoken sales naturalness defect count: `{result['current_live_openai_spoken_sales_naturalness_defect_count']}`",
             f"- Uploaded transcript spoken naturalness defect count: `{result['uploaded_transcript_spoken_sales_naturalness_defect_count']}`",
             f"- Sales momentum defect count: `{result['current_live_openai_sales_momentum_defect_count']}`",
@@ -1544,6 +1849,10 @@ def main() -> None:
         "current_live_openai_semantic_4h6_classification_counts": {
             key: replay_class_counts[key] for key in sorted(SEMANTIC_DEFECT_CLASSES)
         },
+        "current_live_openai_4h7_pipeline_classification_counts": {
+            key: replay_class_counts[key]
+            for key in sorted(LIVE_SEMANTIC_PIPELINE_DEFECT_CLASSES | {"current_live_openai_live_pipeline_integration_defect"})
+        },
         "current_live_openai_source_note_spoken_count": replay_class_counts["current_live_openai_source_note_spoken"],
         "current_live_openai_article_says_spoken_count": replay_class_counts["current_live_openai_article_says_spoken"],
         "current_live_openai_source_of_truth_spoken_count": replay_class_counts["current_live_openai_source_of_truth_spoken"],
@@ -1594,6 +1903,10 @@ def main() -> None:
         "private_current_live_semantic_4h6_classification_counts": {
             key: counts[key] for key in sorted(SEMANTIC_DEFECT_CLASSES)
         },
+        "private_current_live_4h7_pipeline_classification_counts": {
+            key: counts[key]
+            for key in sorted(LIVE_SEMANTIC_PIPELINE_DEFECT_CLASSES | {"current_live_openai_live_pipeline_integration_defect"})
+        },
         "private_current_live_source_note_spoken_count": counts["current_live_openai_source_note_spoken"],
         "private_current_live_article_says_spoken_count": counts["current_live_openai_article_says_spoken"],
         "private_current_live_source_of_truth_spoken_count": counts["current_live_openai_source_of_truth_spoken"],
@@ -1612,6 +1925,10 @@ def main() -> None:
         "uploaded_transcript_internal_process_wording_count": uploaded_transcript_class_counts["current_live_openai_internal_process_wording"],
         "uploaded_transcript_state_downgrade_after_headroom_count": uploaded_transcript_class_counts["current_live_openai_state_downgrade_after_headroom"],
         "uploaded_transcript_spoken_sales_naturalness_defect_count": uploaded_transcript_class_counts["current_live_openai_spoken_sales_naturalness_defect"],
+        "uploaded_transcript_4h7_pipeline_classification_counts": {
+            key: uploaded_transcript_class_counts[key]
+            for key in sorted(LIVE_SEMANTIC_PIPELINE_DEFECT_CLASSES | {"current_live_openai_live_pipeline_integration_defect"})
+        },
         "private_current_live_openai_memory_progression_defect_count": counts["current_live_openai_memory_progression_defect"],
         "private_current_live_openai_repeated_answered_question_count": counts["current_live_openai_repeated_answered_question"],
         "private_current_live_openai_duplicate_repair_regression_count": counts["current_live_openai_duplicate_repair_regression"],

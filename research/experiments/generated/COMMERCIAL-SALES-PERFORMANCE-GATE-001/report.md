@@ -113,7 +113,7 @@
       "recommendation was present but weak",
       "decision frame 'current_tool_vs_chatgpt' missing"
     ],
-    "final_response_hash": "6ec4361667c1",
+    "final_response_hash": "6462d5ab2985",
     "group": "objection_handling",
     "id": "commercial-ai-tool-usage-no-premature-nofit-001",
     "score": 89

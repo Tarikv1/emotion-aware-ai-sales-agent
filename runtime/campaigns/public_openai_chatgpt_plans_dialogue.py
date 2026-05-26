@@ -7,11 +7,17 @@ from typing import Any
 CAMPAIGN_ID = "public-openai-chatgpt-plans"
 OPENAI_STATE_KEY = "openai_chatgpt_plan_state"
 CHATGPT_ASR_ALIASES = {
+    "chacha pt",
+    "chacha bt",
+    "chacha p t",
+    "chacha b t",
+    "chacha gpt",
     "chachu pt",
     "chachu bt",
     "chachu p t",
     "chachu b t",
     "chachupt",
+    "check gpt",
     "chat jpt",
     "chat gpt",
     "chat g p t",
@@ -24,6 +30,9 @@ CHATGPT_ASR_ALIASES = {
     "chat g p tee",
     "chat gpt plan",
     "chat jpt plan",
+    "touch gpt",
+    "touch your pt",
+    "touch your p t",
 }
 PLAN_LABELS = {
     "free": "Free",
@@ -42,10 +51,45 @@ def _contains(normalized: str, phrases: set[str]) -> bool:
     return any(phrase in normalized for phrase in phrases)
 
 
+def _cloud_as_claude_context(normalized: str) -> bool:
+    if not re.search(r"\bcloud\b", normalized):
+        return False
+    if _contains(
+        normalized,
+        {
+            "chatgpt",
+            "ai tool",
+            "ai tools",
+            "llm",
+            "coding",
+            "code",
+            "writing",
+            "current setup",
+            "current tool",
+            "another ai",
+            "maybe cloud",
+            "using cloud",
+            "use cloud",
+        },
+    ):
+        return True
+    return bool(
+        re.search(
+            r"\b(use|using|used|maybe|tool|assistant|setup|coding|code|writing)\b.{0,28}\bcloud\b|"
+            r"\bcloud\b.{0,28}\b(tool|assistant|setup|coding|code|writing)\b",
+            normalized,
+        )
+    )
+
+
 def _normalize_openai_asr_aliases(normalized: str) -> str:
-    semantic = f" {normalized} "
+    semantic = f" {' '.join(str(normalized or '').lower().split())} "
     for alias in sorted(CHATGPT_ASR_ALIASES, key=len, reverse=True):
         semantic = semantic.replace(f" {alias} ", " chatgpt ")
+    compact = " ".join(semantic.split())
+    if _cloud_as_claude_context(compact):
+        compact = re.sub(r"\bcloud\b", "claude", compact)
+    semantic = f" {compact} "
     return " ".join(semantic.split())
 
 
@@ -92,8 +136,68 @@ def _state_has_use_case(state: dict[str, Any], value: str) -> bool:
     return value in _state_text_value(state, "openai_use_case").lower()
 
 
+def _negated_team_or_enterprise_scope(normalized: str) -> bool:
+    normalized = _normalize_openai_asr_aliases(normalized)
+    return _contains(
+        normalized,
+        {
+            "not a team",
+            "not team",
+            "not for a team",
+            "not team use",
+            "no team",
+            "no team or anything",
+            "just myself",
+            "by myself",
+            "just me",
+            "for myself only",
+            "personal use only",
+            "individual use",
+            "solo use",
+            "no enterprise",
+            "not enterprise",
+            "no company",
+            "not a company",
+            "not for a company",
+            "no business needs",
+            "not business",
+            "no team workspace",
+            "not buying for a company",
+            "not for work admin",
+        },
+    )
+
+
+def _explicit_org_need_overrides_negation(normalized: str) -> bool:
+    normalized = _normalize_openai_asr_aliases(normalized)
+    return _contains(
+        normalized,
+        {
+            "actually this is for a team",
+            "actually for a team",
+            "we have a team",
+            "our team needs",
+            "my team needs",
+            "we need admin",
+            "we need sso",
+            "our company needs",
+            "for our company",
+            "for my company",
+        },
+    )
+
+
+def _blocked_org_use_cases(normalized: str) -> set[str]:
+    if _explicit_org_need_overrides_negation(normalized):
+        return set()
+    if _negated_team_or_enterprise_scope(normalized):
+        return {"team", "enterprise"}
+    return set()
+
+
 def _openai_use_case_tags(text: str) -> list[str]:
     normalized = _normalize_openai_asr_aliases(" ".join(str(text or "").lower().split()))
+    blocked = _blocked_org_use_cases(normalized)
     tags: list[str] = []
     checks = [
         ("coding", {"coding", "code", "developer", "programming"}),
@@ -105,6 +209,8 @@ def _openai_use_case_tags(text: str) -> list[str]:
         ("enterprise", {"enterprise", "security review", "legal", "compliance"}),
     ]
     for tag, phrases in checks:
+        if tag in blocked:
+            continue
         if _contains(normalized, phrases):
             tags.append(tag)
     return tags
@@ -258,12 +364,13 @@ def _plan_change_question_type(normalized: str) -> str:
 
 def _recommended_path_for_state(state: dict[str, Any]) -> str:
     use_text = _state_text_value(state, "openai_use_case").lower()
+    blocked = {str(item) for item in state.get("blocked_openai_use_cases") or []}
     intensity = str(state.get("openai_usage_intensity") or "unknown")
     limit_pain = state.get("openai_limit_pain")
     budget = str(state.get("openai_budget_sensitivity") or "unknown")
-    if "enterprise" in use_text:
+    if "enterprise" in use_text and "enterprise" not in blocked:
         return "enterprise"
-    if "team" in use_text:
+    if "team" in use_text and "team" not in blocked:
         return "business"
     if limit_pain is True or intensity in {"heavy", "medium_heavy"}:
         return "pro"
@@ -507,6 +614,13 @@ def memory_update_for_turn(
     response = " ".join(str(final_response or "").lower().split())
     prior = _prior_openai_state(turns, current_memory)
     explanation_intent = _explanation_question(normalized) and not _explicit_team_or_enterprise_need(normalized)
+    blocked_use_cases = {str(item) for item in prior.get("blocked_openai_use_cases") or []}
+    current_blocked = _blocked_org_use_cases(normalized)
+    if current_blocked:
+        blocked_use_cases.update(current_blocked)
+    elif _explicit_org_need_overrides_negation(normalized):
+        blocked_use_cases.difference_update({"team", "enterprise"})
+    individual_context = bool(prior.get("openai_individual_context")) or bool(current_blocked) or _self_use(normalized)
     state: dict[str, Any] = {
         "openai_adoption_state": prior.get("openai_adoption_state") or "unknown",
         "openai_use_case": prior.get("openai_use_case") or [],
@@ -522,21 +636,28 @@ def memory_update_for_turn(
         "last_decision_question_answered": prior.get("last_decision_question_answered") or "",
         "current_buyer_question_type": prior.get("current_buyer_question_type") or "",
         "should_not_regress_to_prior_decision_stage": bool(prior.get("should_not_regress_to_prior_decision_stage")),
+        "blocked_openai_use_cases": sorted(blocked_use_cases),
+        "openai_individual_context": individual_context,
     }
 
     buyer_state = _buyer_state_from_text(normalized)
+    tags_for_turn = _openai_use_case_tags(normalized)
     if not explanation_intent and buyer_state != "unknown":
         state["openai_adoption_state"] = buyer_state
-    elif not explanation_intent and _openai_use_case_tags(normalized):
+    elif not explanation_intent and tags_for_turn and _mentions_chatgpt_product(normalized):
         state["openai_adoption_state"] = "current_chatgpt_user"
 
     prior_tags = state["openai_use_case"] if isinstance(state["openai_use_case"], list) else []
-    tags = list(prior_tags)
+    tags = [tag for tag in prior_tags if str(tag) not in blocked_use_cases]
     if not explanation_intent:
-        for tag in _openai_use_case_tags(normalized):
+        for tag in tags_for_turn:
             if tag not in tags:
                 tags.append(tag)
     state["openai_use_case"] = tags or "unknown"
+    if blocked_use_cases and state.get("openai_recommended_path") in {"business", "enterprise"}:
+        state["openai_recommended_path"] = "unknown"
+    if blocked_use_cases and state.get("active_decision_frame") == "business_vs_enterprise":
+        state["active_decision_frame"] = ""
 
     intensity = _usage_intensity_from_text(normalized)
     if intensity != "unknown":
@@ -587,6 +708,8 @@ def memory_update_for_turn(
     recommended = _recommended_path_for_state(state)
     if recommended != "unknown":
         state["openai_recommended_path"] = recommended
+    elif blocked_use_cases and state.get("openai_recommended_path") in {"business", "enterprise"}:
+        state["openai_recommended_path"] = "unknown"
 
     state["openai_next_best_action"] = _next_best_action_for_state(state, normalized, response)
     state["known_use_case"] = state["openai_use_case"]
@@ -597,6 +720,37 @@ def memory_update_for_turn(
     state["last_agent_question_type"] = "none"
     state["last_agent_question_text"] = final_response if "?" in final_response else ""
     state.update(_commercial_sales_state(state=state, normalized=normalized, final_response=final_response))
+    if explanation_intent and state.get("openai_adoption_state") == "unknown":
+        state["openai_recommended_path"] = "unknown"
+        state["recommendation_confidence"] = "none"
+        state["commercial_stage"] = "education"
+        state["buyer_fit_level"] = "unknown"
+        state["buyer_momentum"] = "neutral"
+        state["value_hypothesis"] = "unknown"
+        state["decision_frame"] = "unknown"
+        state["active_decision_frame"] = "unknown"
+        state["close_readiness"] = "none"
+        state["next_commercial_action"] = "answer_question"
+        state["openai_next_best_action"] = "answer_question"
+        state["buyer_decision_stage"] = "adoption_state"
+    if blocked_use_cases:
+        state["blocked_openai_use_cases"] = sorted(blocked_use_cases)
+        state["openai_individual_context"] = True
+        if state.get("openai_recommended_path") in {"business", "enterprise"}:
+            state["openai_recommended_path"] = "unknown"
+        if state.get("active_decision_frame") == "business_vs_enterprise":
+            state["active_decision_frame"] = "unknown"
+        if state.get("decision_frame") == "business_vs_enterprise":
+            state["decision_frame"] = "unknown"
+        if state.get("last_decision_frame_given") == "business_vs_enterprise":
+            state["last_decision_frame_given"] = "unknown"
+        if state.get("value_hypothesis") == "team_controls":
+            state["value_hypothesis"] = "better_tools" if state.get("openai_use_case") != "unknown" else "unknown"
+        if state.get("last_recommendation_given") in {"business", "enterprise"}:
+            state["last_recommendation_given"] = ""
+        tags_after = state["openai_use_case"] if isinstance(state["openai_use_case"], list) else []
+        state["openai_use_case"] = [tag for tag in tags_after if str(tag) not in blocked_use_cases] or "unknown"
+        state["known_use_case"] = state["openai_use_case"]
     return state
 
 
@@ -657,6 +811,13 @@ def _object_mentions(normalized: str) -> list[str]:
 
 def _conjunction_relation(normalized: str) -> str:
     normalized = _normalize_openai_asr_aliases(normalized)
+    uncertain_tool_pair = (
+        _mentions_chatgpt_product(normalized)
+        and _another_ai_user(normalized)
+        and _contains(normalized, {"maybe", "may be", "not sure", "possibly"})
+    )
+    if uncertain_tool_pair:
+        return "either_or"
     chatgpt_and_other = re.search(
         r"\bchatgpt\b.*\b(and|plus)\b.*\b(other ai|other tool|other tools|claude|gemini|copilot|llm)",
         normalized,
@@ -1009,6 +1170,10 @@ def _semantic_frame_details(
         state_updates["openai_adoption_state"] = buyer_state
     if target_gap:
         state_updates["target_gap"] = target_gap
+    blocked_org = _blocked_org_use_cases(normalized)
+    if blocked_org:
+        state_updates["blocked_openai_use_cases"] = sorted(blocked_org)
+        state_updates["openai_individual_context"] = True
     commercial_intent = "high" if should_close else "medium" if should_recommend or should_answer_directly else "low"
     meaning_summary = f"Buyer {speech_act.replace('_', ' ')}; sub-intent {sub_intent.replace('_', ' ')}."
     buyer_summary = response.split(".")[0].strip() if response else ""
@@ -1020,7 +1185,7 @@ def _semantic_frame_details(
         "object_mentions": object_mentions,
         "relation_type": "comparison" if relation != "unknown" or "versus" in normalized or "vs" in normalized else "reference",
         "conjunction_relation": relation,
-        "negation_scope": "ai_tools" if _no_ai_user(normalized) else "none",
+        "negation_scope": "team_or_enterprise" if blocked_org else "ai_tools" if _no_ai_user(normalized) else "none",
         "buyer_state": buyer_state,
         "commercial_intent": commercial_intent,
         "evidence_terms": _object_mentions(normalized)[:8],
@@ -1033,7 +1198,7 @@ def _semantic_frame_details(
         "buyer_facing_summary": buyer_summary,
         "state_updates": state_updates,
         "forbidden_routes": [
-            "team_or_enterprise" if semantic_family == "orientation_or_explanation" else "",
+            "team_or_enterprise" if semantic_family == "orientation_or_explanation" or blocked_org else "",
             "stability_guard_commercial_speech",
             "internal_policy_language",
         ],
@@ -1180,19 +1345,51 @@ def _permission_ack(normalized: str) -> bool:
         "yes",
         "yes i do",
         "yes sure",
+        "yes go ahead",
+        "yes i have a minute",
         "yeah",
         "yeah i do",
         "yeah sure",
+        "yeah go ahead",
         "okay",
+        "okay go ahead",
         "ok",
+        "ok go ahead",
         "go ahead",
         "sure",
+        "sure yeah",
+        "sure go ahead",
         "sure quick",
+        "sure tell me",
         "tell me",
         "yeah tell me",
         "sounds fine",
+        "fine go ahead",
+        "alright go ahead",
+        "all right go ahead",
+        "yep go ahead",
         "i have a minute",
     }
+
+
+def _post_opening_permission_ack(
+    *,
+    normalized: str,
+    previous_question_type: str,
+    previous_question_text: str | None,
+    turns: list[dict[str, Any]],
+) -> bool:
+    if not _permission_ack(normalized):
+        return False
+    if previous_question_type == "permission_check":
+        return True
+    previous = " ".join(
+        [
+            str(previous_question_text or ""),
+            str(((turns[-1].get("summary") or {}).get("final_response") if turns else "") or ""),
+        ]
+    ).lower()
+    return _contains(previous, {"do you have a minute", "have a minute", "can help you decide"})
 
 
 def _adoption_state_discovery_response() -> str:
@@ -1613,15 +1810,23 @@ def _self_use(normalized: str) -> bool:
         {
             "just me",
             "personal use",
+            "personal use only",
             "work alone",
             "using it myself",
             "not for a team",
+            "not a team",
+            "not team use",
             "just my own writing",
             "solo coding",
+            "solo use",
             "personal research",
             "not comparing anything",
             "do the work myself",
             "myself",
+            "by myself",
+            "for myself only",
+            "only me",
+            "individual use",
         },
     )
 
@@ -1743,11 +1948,34 @@ def _known_heavy_use(normalized: str, turns: list[dict[str, Any]]) -> bool:
 def _team_context(normalized: str, turns: list[dict[str, Any]]) -> bool:
     prior = _prior_customer_text(turns)
     state = _prior_openai_state(turns)
+    if _blocked_org_use_cases(normalized):
+        return False
     if _explanation_question(normalized) and not _explicit_team_or_enterprise_need(normalized):
         return False
-    if any(_state_has_use_case(state, tag) for tag in {"team", "enterprise"}):
+    blocked = {str(item) for item in state.get("blocked_openai_use_cases") or []}
+    if blocked and not _explicit_org_need_overrides_negation(normalized):
+        return False
+    if any(_state_has_use_case(state, tag) for tag in {"team", "enterprise"} if tag not in blocked):
         return True
     return _explicit_team_or_enterprise_need(f"{prior} {normalized}")
+
+
+def _org_route_blocked_for_context(normalized: str, turns: list[dict[str, Any]]) -> bool:
+    state = _prior_openai_state(turns)
+    blocked = {str(item) for item in state.get("blocked_openai_use_cases") or []}
+    return bool(_blocked_org_use_cases(normalized) or (blocked and not _explicit_org_need_overrides_negation(normalized)))
+
+
+def _current_tool_gap_list(normalized: str, turns: list[dict[str, Any]]) -> str:
+    if _org_route_blocked_for_context(normalized, turns):
+        return "coding workflow, files, research, writing, voice/images, or individual usage limits"
+    return "coding workflow, files, research, writing, voice/images, or team controls"
+
+
+def _current_tool_unknown_gap_list(normalized: str, turns: list[dict[str, Any]]) -> str:
+    if _org_route_blocked_for_context(normalized, turns):
+        return "coding workflow, files, research, voice/images, privacy settings, or usage limits"
+    return "coding workflow, files, research, voice/images, team admin, or privacy controls"
 
 
 def _light_or_basic_use(normalized: str) -> bool:
@@ -1798,6 +2026,7 @@ def _current_chatgpt_user(normalized: str) -> bool:
 
 
 def _another_ai_user(normalized: str) -> bool:
+    normalized = _normalize_openai_asr_aliases(normalized)
     return _contains(
         normalized,
         {
@@ -2692,11 +2921,28 @@ def _terminal_acceptance(normalized: str) -> bool:
             "ok i will do that thank you",
             "okay i will do that thank you",
             "sounds good thanks",
+            "sounds good thank you",
             "okay i'll check it",
+            "okay i ll check it",
             "okay i will check it",
+            "ok i will check it",
+            "ok i will check that",
+            "okay i will check that",
+            "ok i'll check it",
+            "ok i ll check it",
+            "ok i'll check that thanks",
+            "ok i ll check that thanks",
+            "ok i will check that thanks",
             "got it thanks",
             "got it, thanks",
+            "got it thank you",
+            "i'll check it",
+            "i ll check it",
+            "i'll check that",
+            "i ll check that",
+            "i will check that",
             "i will start there",
+            "thanks that helps",
             "that is clear thank you",
             "okay i will use the plan page",
             "thanks i will start lower",
@@ -2706,6 +2952,7 @@ def _terminal_acceptance(normalized: str) -> bool:
             "cool i will do that",
             "thank you that answers it",
             "thank you, that answers it",
+            "that helps thanks",
         },
     )
 
@@ -2713,12 +2960,12 @@ def _terminal_acceptance(normalized: str) -> bool:
 def _terminal_acceptance_response(turns: list[dict[str, Any]]) -> str:
     if _prior_pro_tier_context(turns):
         return (
-            "Sounds good. Start with the ChatGPT plans page, and if you are unsure between Pro tiers, "
+            "Sounds good. Start with the official ChatGPT plans page, and if you are unsure between Pro tiers, "
             "start lower and move up only if you hit limits. That is the cleanest path."
         )
     return (
-        "Sounds good. Start with the ChatGPT plans page, choose the lowest plan that fits the work, "
-        "and move up only if limits or team needs make it necessary."
+        "Sounds good. Start with the official ChatGPT plans page, and if you are unsure between paid individual tiers, "
+        "start lower and move up only if you need more headroom."
     )
 
 
@@ -3349,7 +3596,12 @@ def classify_turn(
             polarity="boundary",
         )
 
-    if previous_question_type == "permission_check" and _permission_ack(normalized):
+    if _post_opening_permission_ack(
+        normalized=normalized,
+        previous_question_type=previous_question_type,
+        previous_question_text=previous_question,
+        turns=turns,
+    ):
         return _frame(
             **base,
             semantic="public_plan_adoption_state_discovery",
@@ -3406,7 +3658,7 @@ def classify_turn(
         if _known_use_case(normalized, turns):
             proposed = (
                 "A switch only makes sense if ChatGPT improves a specific gap in your current tool: "
-                "coding workflow, files, research, writing, voice/images, or team controls. For coding and writing, compare Plus as the lower-cost test and Pro if heavier usage matters."
+                f"{_current_tool_gap_list(normalized, turns)}. For coding and writing, compare Plus as the lower-cost test and Pro if heavier usage matters."
             )
             fallback = (
                 "We've already framed the switch: compare ChatGPT only against a current-tool gap. "
@@ -3416,11 +3668,11 @@ def classify_turn(
         else:
             proposed = (
                 "A switch only makes sense if ChatGPT covers something your current tool does not: "
-                "coding workflow, files, research, voice/images, team admin, or privacy controls. What is the one area where your current tool feels weakest?"
+                f"{_current_tool_unknown_gap_list(normalized, turns)}. What is the one area where your current tool feels weakest?"
             )
             fallback = (
                 "We've already covered the current-tool question. Do not switch if it covers the job; "
-                "compare ChatGPT only against one concrete gap such as coding workflow, files, research, voice/images, team admin, or privacy controls."
+                f"compare ChatGPT only against one concrete gap such as {_current_tool_unknown_gap_list(normalized, turns)}."
             )
             response = _avoid_duplicate_response("", proposed, fallback, turns)
         return _frame(
@@ -3435,13 +3687,14 @@ def classify_turn(
     if buyer_state in {"current_chatgpt_and_other_ai_user", "current_chatgpt_or_other_ai_unknown"}:
         if buyer_state == "current_chatgpt_and_other_ai_user":
             relation = _conjunction_relation(normalized)
+            gap_list = _current_tool_gap_list(normalized, turns)
             response = (
                 "Got it - you're using both ChatGPT and another AI tool. "
-                "The useful comparison is where the current setup still falls short: coding, files, research, writing, voice/images, or team controls."
+                f"The useful comparison is where the current setup still falls short: {gap_list}."
                 if relation == "both"
                 else (
                     "Got it - you're using ChatGPT and other AI tools. "
-                    "The useful comparison is where the current setup still falls short: coding, files, research, writing, voice/images, or team controls."
+                    f"The useful comparison is where the current setup still falls short: {gap_list}."
                 )
             )
             return _frame(
@@ -3460,8 +3713,13 @@ def classify_turn(
             **base,
             semantic="public_plan_current_chatgpt_or_other_ai_unknown",
             response=(
-                "Got it - it sounds like it may be ChatGPT or another AI tool. "
-                "Which one are you using today, and what gap are you trying to solve?"
+                "Got it - sounds like you may be using ChatGPT and maybe Claude. "
+                "The useful comparison is where your current setup falls short: coding workflow, files, research, writing, voice/images, or limits."
+                if "claude" in normalized
+                else (
+                    "Got it - it sounds like it may be ChatGPT or another AI tool. "
+                    "Which one are you using today, and what gap are you trying to solve?"
+                )
             ),
             target_gap="alternative_tool_gap",
             dialogue_focus="competitive_objection",
@@ -3490,8 +3748,13 @@ def classify_turn(
             **base,
             semantic="public_plan_another_ai_user",
             response=(
-                "A switch only makes sense if ChatGPT gives you something your current setup does not: "
-                "stronger coding workflow, file handling, research, voice/images, or team controls. What is the one area where your current tool feels weakest?"
+                "Got it - sounds like you may be using Claude or another AI tool. "
+                "The useful comparison is where your current setup falls short: coding workflow, files, research, writing, voice/images, or limits."
+                if _contains(normalized, {"maybe", "may be", "not sure", "possibly"})
+                else (
+                    "A switch only makes sense if ChatGPT gives you something your current setup does not: "
+                    "stronger coding workflow, file handling, research, voice/images, or team controls. What is the one area where your current tool feels weakest?"
+                )
             ),
             target_gap="alternative_tool_gap",
             dialogue_focus="competitive_objection",
@@ -3596,7 +3859,7 @@ def classify_turn(
                 semantic="public_plan_competitor_objection_with_use_case",
                 response=(
                     "A switch only makes sense if ChatGPT improves a specific gap in your current tool: "
-                    "coding workflow, files, research, writing, voice/images, or team controls. For coding and writing, compare Plus as the lower-cost test and Pro if heavier usage matters."
+                    f"{_current_tool_gap_list(normalized, turns)}. For coding and writing, compare Plus as the lower-cost test and Pro if heavier usage matters."
                 ),
                 dialogue_focus="competitive_objection",
                 polarity="objection",
@@ -3606,7 +3869,7 @@ def classify_turn(
             semantic="public_plan_competitor_objection",
             response=(
                 "A switch only makes sense if ChatGPT covers something your current tool does not: "
-                "coding workflow, files, research, voice/images, team admin, or privacy controls. What is the one area where your current tool feels weakest?"
+                f"{_current_tool_unknown_gap_list(normalized, turns)}. What is the one area where your current tool feels weakest?"
             ),
             dialogue_focus="competitive_objection",
             polarity="objection",

@@ -165,6 +165,14 @@ def customer_campaign_value(campaign: dict | None, customer_key: str, legacy_key
     return campaign_value(campaign, customer_key, campaign_value(campaign, legacy_key, fallback))
 
 
+def customer_visible_campaign_value(campaign: dict | None, key: str, fallback: str) -> str:
+    visibility = (campaign or {}).get("field_visibility") or {}
+    field = visibility.get(key) if isinstance(visibility, dict) else {}
+    if isinstance(field, dict) and field.get("customer_facing") is False:
+        return fallback
+    return campaign_value(campaign, key, fallback)
+
+
 def nested_campaign_value(campaign: dict | None, section: str, key: str, fallback: str) -> str:
     data = (campaign or {}).get(section) or {}
     value = str(data.get(key) or "").strip() if isinstance(data, dict) else ""
@@ -216,7 +224,7 @@ def sentence_start(text: str) -> str:
 
 
 def generic_campaign_context(campaign: dict | None) -> dict[str, str]:
-    owner = campaign_value(campaign, "human_followup_owner", "qualified specialist")
+    owner = customer_visible_campaign_value(campaign, "human_followup_owner", "qualified specialist")
     owner_phrase = generic_campaign_role_phrase(owner)
     offer = customer_campaign_value(campaign, "customer_facing_offer_name", "product_or_offer_name", campaign_value(campaign, "product_name", "this review"))
     return {
@@ -225,7 +233,7 @@ def generic_campaign_context(campaign: dict | None) -> dict[str, str]:
         "owner": owner,
         "owner_phrase": owner_phrase,
         "owner_sentence": sentence_start(owner_phrase),
-        "target": campaign_value(campaign, "appointment_target", "human review"),
+        "target": customer_visible_campaign_value(campaign, "appointment_target", "human review"),
         "gaps": generic_campaign_gap_clause(campaign),
         "summary": customer_campaign_value(campaign, "customer_facing_offer_summary", "product_or_offer_summary", f"a high-level {offer}"),
         "scope": customer_campaign_value(campaign, "customer_facing_human_review_scope", "human_review_scope", generic_campaign_gap_clause(campaign)),
@@ -1155,7 +1163,7 @@ def call_purpose_response(language: str, campaign: dict | None = None) -> str:
     if is_generic_campaign_config(campaign):
         client_name = campaign_value(campaign, "client_name", "the campaign team")
         offer_name = campaign_value(campaign, "product_or_offer_name", campaign_value(campaign, "product_name", "this review"))
-        appointment_target = campaign_value(campaign, "appointment_target", "human review")
+        appointment_target = customer_visible_campaign_value(campaign, "appointment_target", "human review")
         gaps = generic_campaign_gap_clause(campaign)
         if language.startswith("de"):
             return (
