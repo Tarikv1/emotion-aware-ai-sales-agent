@@ -1,10 +1,10 @@
 # PUBLIC-OPENAI-LIVE-REHEARSAL-001
 
 - Status: `pass`
-- Total private records scanned: `604`
+- Total private records scanned: `623`
 - Current OpenAI live records found: `11`
 - Records after `b58aa53` or latest marker: `11`
-- Stale/historical OpenAI records ignored: `77`
+- Stale/historical OpenAI records ignored: `96`
 - Live TTS used count: `11`
 - Dry-run count: `0`
 - ElevenLabs call made count: `11`
@@ -12,8 +12,8 @@
 - Audio file created count: `11`
 - Raw voice ID logged count: `0`
 - Runtime defect count: `0`
-- Pre-patch private live defects: `8`
-- Fixed by replay after patch: `8`
+- Pre-patch private live defects: `9`
+- Fixed by replay after patch: `9`
 - Post-patch replay defects: `0`
 - ASR product alias issue count: `0`
 - Internal policy language leak count: `0`
@@ -33,6 +33,15 @@
 - Pro-tier selection defect count: `0`
 - Signup close stage-mismatch count: `0`
 - Stability guard owned sales-turn count: `0`
+- Opening origin missing count: `0`
+- Explanation question misrouted count: `0`
+- Plan-label trap count: `0`
+- Team-context false-positive count: `0`
+- Repeated wrong explanation count: `0`
+- State initialized with recommendation count: `0`
+- Stability guard owned adapter-turn count: `0`
+- Intent-priority defect count: `0`
+- Logic-generalization defect count: `0`
 - Sales momentum defect count: `0`
 - Legacy field leakage count: `0`
 - RouteSignal contamination count: `0`
@@ -57,18 +66,20 @@
 
 ```json
 {
+  "current_live_openai_intent_priority_defect": 1,
   "current_live_openai_legacy_field_leakage": 2,
   "current_live_openai_loop_or_repeated_prompt": 8,
   "current_live_openai_missed_recommendation": 2,
-  "current_live_openai_runtime_defect": 8,
-  "current_live_openai_sales_performance_defect": 2,
-  "current_live_openai_sales_quality_defect": 8,
-  "current_openai_live_success": 3,
+  "current_live_openai_opening_origin_missing": 1,
+  "current_live_openai_runtime_defect": 9,
+  "current_live_openai_sales_performance_defect": 3,
+  "current_live_openai_sales_quality_defect": 9,
+  "current_openai_live_success": 2,
   "expected_dry_run_historical_record": 11,
-  "fixed_by_replay_after_patch": 8,
-  "needs_human_review": 8,
-  "pre_patch_current_live_defect": 8,
-  "stale_or_unknown_version_artifact": 66
+  "fixed_by_replay_after_patch": 9,
+  "needs_human_review": 9,
+  "pre_patch_current_live_defect": 9,
+  "stale_or_unknown_version_artifact": 85
 }
 ```
 
@@ -76,6 +87,18 @@
 
 ```json
 [
+  {
+    "classifications": [
+      "current_live_openai_opening_origin_missing",
+      "current_live_openai_intent_priority_defect",
+      "current_live_openai_sales_performance_defect"
+    ],
+    "final_response": "Hi, this is Maya. I'm running a public-data ChatGPT plan-fit simulation. I can help compare ChatGPT plans at a high level using OpenAI's public plan information. Do you have a minute?",
+    "generated_at": "2026-05-25T12:07:17.190656+00:00",
+    "redacted_synthetic_replay_hint": "Private buyer transcript withheld; use synthetic replay validator if a current dialogue defect is listed.",
+    "source_file": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-140717.json",
+    "transcript_hash": "58f0d512c6ee"
+  },
   {
     "classifications": [
       "current_live_openai_loop_or_repeated_prompt"
@@ -121,16 +144,6 @@
     "redacted_synthetic_replay_hint": "Private buyer transcript withheld; use synthetic replay validator if a current dialogue defect is listed.",
     "source_file": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-140923.json",
     "transcript_hash": "e06e309b66b3"
-  },
-  {
-    "classifications": [
-      "current_live_openai_loop_or_repeated_prompt"
-    ],
-    "final_response": "I can only keep this to the current call scope. Should I keep checking that, or stop here?",
-    "generated_at": "2026-05-25T12:09:33.994316+00:00",
-    "redacted_synthetic_replay_hint": "Private buyer transcript withheld; use synthetic replay validator if a current dialogue defect is listed.",
-    "source_file": "data/private/live-demo-001/LIVE-DEMO-001-turn-20260525-140933.json",
-    "transcript_hash": "9c4507eaa88a"
   }
 ]
 ```

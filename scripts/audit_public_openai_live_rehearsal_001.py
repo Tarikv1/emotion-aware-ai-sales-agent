@@ -93,6 +93,37 @@ PLUS_VS_PRO_RESET_RE = re.compile(r"plus versus pro|pro versus plus|compare plus
 PRO_TIER_CONTEXT_RE = re.compile(r"pro_100_vs_200|pro_tier_selection|which pro|pro tier|version of pro|100.*200.*pro", re.I)
 LEGACY_FIELD_RE = re.compile(r"legacy compatibility|appointment_target|human_followup_owner|demo operator|primary close is official", re.I)
 ROUTESIGNAL_TRACE_RE = re.compile(r"routesignal|northstar|inbound demo request|missed callbacks|handoffs|callback reminders", re.I)
+OPENING_ORIGIN_RE = re.compile(r"chatgpt subscription plans", re.I)
+OPENING_PUBLIC_RE = re.compile(r"public-data|public plan|public information|public openai|openai.?s public|official public", re.I)
+OPENING_NON_AFFILIATION_RE = re.compile(r"not calling (as|from) openai|not representing openai|not an official openai call", re.I)
+EXPLANATION_TRANSCRIPT_RE = re.compile(
+    r"what is this|what are you calling about|what is this for|what are these plans|what are the plans|"
+    r"what (is|are|does|do).*(free|plus|pro|business|enterprise)|"
+    r"(free|plus|pro|business|enterprise).*(what exactly|mean|products?|plans?|models?|labels?|names?)|"
+    r"i (still )?(do not|don't|don t) understand|don't really understand|confused|lost|"
+    r"explain (free|plus|pro|business|enterprise|simpler|that|plans)|plain english|simpler please|"
+    r"are these products or plans|is (business|enterprise) a product or a plan",
+    re.I,
+)
+PLAN_LABEL_EXPLANATION_RE = re.compile(
+    r"(free|plus|pro|business|enterprise).*(what|mean|product|plan|model|label|name|versus|what exactly|are what)|"
+    r"(what|mean|product|plan|model|label|name|versus).*(free|plus|pro|business|enterprise)",
+    re.I,
+)
+EXPLANATION_RESPONSE_RE = re.compile(
+    r"chatgpt subscription plans.*free .*no-cost.*plus and pro .*individual.*business .*teams.*enterprise .*larger",
+    re.I,
+)
+TEAM_ROUTE_RESPONSE_RE = re.compile(
+    r"for team use, business is|basic team workspace controls|enterprise requirements like sso|team_plan_fit",
+    re.I,
+)
+REPEATED_CONFUSION_TRANSCRIPT_RE = re.compile(
+    r"still (do not|don't|don t) understand|still (do not|don't|don t) get it|explain simpler|simpler please|"
+    r"what are free|what are these plans|what is this again",
+    re.I,
+)
+NO_BUYER_CONTEXT_RE = re.compile(r"^(__agent_open__|yes|yeah|yeah sure|sure|okay|ok|go ahead|tell me|yeah tell me)$", re.I)
 
 DIALOGUE_DEFECT_CLASSES = {
     "current_live_openai_asr_product_alias_issue",
@@ -126,10 +157,26 @@ DIALOGUE_DEFECT_CLASSES = {
     "current_live_openai_signup_close_stage_mismatch",
     "current_live_openai_stability_guard_owned_sales_turn",
     "current_live_openai_sales_momentum_defect",
+    "current_live_openai_opening_origin_missing",
+    "current_live_openai_explanation_question_misrouted",
+    "current_live_openai_plan_label_trap",
+    "current_live_openai_team_context_false_positive",
+    "current_live_openai_repeated_wrong_explanation",
+    "current_live_openai_state_initialized_with_recommendation",
+    "current_live_openai_stability_guard_owned_adapter_turn",
+    "current_live_openai_intent_priority_defect",
+    "current_live_openai_logic_generalization_defect",
 }
 
 POST_PATCH_REPLAY_CASES = [
+    ["__agent_open__"],
     ["__agent_open__", "yeah sure"],
+    ["__agent_open__", "yeah sure", "yeah sure but what is this what is Free Plus Pro Business or Enterprise"],
+    ["__agent_open__", "yeah sure", "I don't really understand what you're talking about, what are Free Pro Plus"],
+    ["__agent_open__", "yeah sure", "what is this?", "I still don't understand"],
+    ["__agent_open__", "yeah sure", "what are these plans?", "explain simpler"],
+    ["__agent_open__", "yeah sure", "I heard Business and Enterprise, what does that mean?"],
+    ["__agent_open__", "yeah sure", "what is the difference between Free and Business?"],
     ["__agent_open__", "yeah sure", "why did you assume I was comparing plans"],
     ["__agent_open__", "yeah sure", "where are you getting this information"],
     ["__agent_open__", "yeah sure", "I use chachu PT and other AI tools"],
@@ -426,6 +473,20 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
     memory = payload.get("demo_conversation_memory") or payload.get("conversation_memory") or {}
     plan_state = memory.get("openai_chatgpt_plan_state") if isinstance(memory, dict) else {}
     pro_tier_context_active = isinstance(plan_state, dict) and plan_state.get("active_decision_frame") == "pro_100_vs_200"
+    normalized_transcript = re.sub(r"\s+", " ", str(transcript or "").strip().lower())
+    plan_state_text = json.dumps(plan_state, sort_keys=True, default=str).lower() if isinstance(plan_state, dict) else ""
+    explanation_question = bool(EXPLANATION_TRANSCRIPT_RE.search(transcript))
+    plan_label_trap = bool(PLAN_LABEL_EXPLANATION_RE.search(transcript))
+    team_false_positive = bool(
+        plan_label_trap
+        and (
+            TEAM_ROUTE_RESPONSE_RE.search(text)
+            or "team_plan_fit" in trace_text.lower()
+            or (isinstance(plan_state, dict) and plan_state.get("openai_recommended_path") in {"business", "enterprise"})
+            or (isinstance(plan_state, dict) and plan_state.get("decision_frame") == "business_vs_enterprise")
+            or re.search(r'"openai_use_case": \[(?:[^\]]*)"(team|enterprise)"', plan_state_text)
+        )
+    )
     classes: list[str] = []
 
     if campaign_path(payload) != FIXTURE_RELATIVE or selected.get("campaign_id") != "public-openai-chatgpt-plans" or payload.get("campaign_selector_mode") != "generic_config":
@@ -440,6 +501,50 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
         classes.append("current_live_openai_asr_product_alias_issue")
     if INTERNAL_POLICY_RE.search(trace_text):
         classes.append("current_live_openai_internal_policy_language_leak")
+    if normalized_transcript == "__agent_open__" and (
+        not OPENING_ORIGIN_RE.search(text)
+        or not OPENING_PUBLIC_RE.search(text)
+        or not OPENING_NON_AFFILIATION_RE.search(text)
+    ):
+        classes.append("current_live_openai_opening_origin_missing")
+        classes.append("current_live_openai_intent_priority_defect")
+    if explanation_question and (
+        not EXPLANATION_RESPONSE_RE.search(text)
+        or ADOPTION_STATE_RE.search(text)
+        or TEAM_ROUTE_RESPONSE_RE.search(text)
+        or "team_plan_fit" in trace_text.lower()
+    ):
+        classes.append("current_live_openai_explanation_question_misrouted")
+        classes.append("current_live_openai_intent_priority_defect")
+    if plan_label_trap and (
+        not EXPLANATION_RESPONSE_RE.search(text)
+        or team_false_positive
+        or ADOPTION_STATE_RE.search(text)
+    ):
+        classes.append("current_live_openai_plan_label_trap")
+        classes.append("current_live_openai_intent_priority_defect")
+    if team_false_positive:
+        classes.append("current_live_openai_team_context_false_positive")
+        classes.append("current_live_openai_logic_generalization_defect")
+    if REPEATED_CONFUSION_TRANSCRIPT_RE.search(transcript) and (
+        not EXPLANATION_RESPONSE_RE.search(text)
+        or TEAM_ROUTE_RESPONSE_RE.search(text)
+        or source == "pre_speech_conversation_stability_guard"
+    ):
+        classes.append("current_live_openai_repeated_wrong_explanation")
+        classes.append("current_live_openai_intent_priority_defect")
+    if isinstance(plan_state, dict) and NO_BUYER_CONTEXT_RE.search(normalized_transcript):
+        if (
+            plan_state.get("openai_recommended_path") not in {None, "", "unknown"}
+            or plan_state.get("buyer_fit_level") not in {None, "", "unknown"}
+            or plan_state.get("recommendation_confidence") not in {None, "", "none"}
+            or plan_state.get("value_hypothesis") not in {None, "", "unknown", "none"}
+            or plan_state.get("decision_frame") not in {None, "", "unknown", "none"}
+            or plan_state.get("close_readiness") not in {None, "", "none"}
+            or plan_state.get("commercial_stage") == "recommendation"
+        ):
+            classes.append("current_live_openai_state_initialized_with_recommendation")
+            classes.append("current_live_openai_intent_priority_defect")
     if PRICE_TRANSCRIPT_RE.search(transcript) and not PRICE_RESPONSE_RE.search(text) and not (
         PRICE_OBJECTION_TRANSCRIPT_RE.search(transcript) and COMMERCIAL_VALUE_FRAME_RE.search(text)
     ):
@@ -511,6 +616,15 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
     ):
         classes.append("current_live_openai_stability_guard_owned_sales_turn")
         classes.append("current_live_openai_sales_momentum_defect")
+    if source == "pre_speech_conversation_stability_guard" and (
+        explanation_question
+        or plan_label_trap
+        or AI_TOOL_USAGE_TRANSCRIPT_RE.search(transcript)
+        or re.search(r"chatgpt|other ai|price|expensive|plus|pro|business|enterprise|sign up|upgrade|which version|which tier", transcript, re.I)
+    ):
+        classes.append("current_live_openai_stability_guard_owned_adapter_turn")
+        classes.append("current_live_openai_intent_priority_defect")
+        classes.append("current_live_openai_sales_momentum_defect")
     if SIGNUP_CONTEXT_TRANSCRIPT_RE.search(transcript) and not SIGNUP_CONTEXT_RESPONSE_RE.search(text):
         classes.append("current_live_openai_close_context_missing")
         classes.append("current_live_openai_memory_progression_defect")
@@ -565,6 +679,15 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
                 "current_live_openai_signup_close_stage_mismatch",
                 "current_live_openai_stability_guard_owned_sales_turn",
                 "current_live_openai_sales_momentum_defect",
+                "current_live_openai_opening_origin_missing",
+                "current_live_openai_explanation_question_misrouted",
+                "current_live_openai_plan_label_trap",
+                "current_live_openai_team_context_false_positive",
+                "current_live_openai_repeated_wrong_explanation",
+                "current_live_openai_state_initialized_with_recommendation",
+                "current_live_openai_stability_guard_owned_adapter_turn",
+                "current_live_openai_intent_priority_defect",
+                "current_live_openai_logic_generalization_defect",
             }
         ):
             classes.append("current_live_openai_sales_performance_defect")
@@ -757,6 +880,15 @@ def write_evidence(result: dict[str, Any]) -> None:
             f"- Pro-tier selection defect count: `{result['current_live_openai_pro_tier_selection_defect_count']}`",
             f"- Signup close stage-mismatch count: `{result['current_live_openai_signup_close_stage_mismatch_count']}`",
             f"- Stability guard owned sales-turn count: `{result['current_live_openai_stability_guard_owned_sales_turn_count']}`",
+            f"- Opening origin missing count: `{result['current_live_openai_opening_origin_missing_count']}`",
+            f"- Explanation question misrouted count: `{result['current_live_openai_explanation_question_misrouted_count']}`",
+            f"- Plan-label trap count: `{result['current_live_openai_plan_label_trap_count']}`",
+            f"- Team-context false-positive count: `{result['current_live_openai_team_context_false_positive_count']}`",
+            f"- Repeated wrong explanation count: `{result['current_live_openai_repeated_wrong_explanation_count']}`",
+            f"- State initialized with recommendation count: `{result['current_live_openai_state_initialized_with_recommendation_count']}`",
+            f"- Stability guard owned adapter-turn count: `{result['current_live_openai_stability_guard_owned_adapter_turn_count']}`",
+            f"- Intent-priority defect count: `{result['current_live_openai_intent_priority_defect_count']}`",
+            f"- Logic-generalization defect count: `{result['current_live_openai_logic_generalization_defect_count']}`",
             f"- Sales momentum defect count: `{result['current_live_openai_sales_momentum_defect_count']}`",
             f"- Legacy field leakage count: `{result['current_live_openai_legacy_field_leakage_count']}`",
             f"- RouteSignal contamination count: `{result['current_live_openai_routesignal_contamination_count']}`",
@@ -953,6 +1085,15 @@ def main() -> None:
         "current_live_openai_signup_close_stage_mismatch_count": replay_class_counts["current_live_openai_signup_close_stage_mismatch"],
         "current_live_openai_stability_guard_owned_sales_turn_count": replay_class_counts["current_live_openai_stability_guard_owned_sales_turn"],
         "current_live_openai_sales_momentum_defect_count": replay_class_counts["current_live_openai_sales_momentum_defect"],
+        "current_live_openai_opening_origin_missing_count": replay_class_counts["current_live_openai_opening_origin_missing"],
+        "current_live_openai_explanation_question_misrouted_count": replay_class_counts["current_live_openai_explanation_question_misrouted"],
+        "current_live_openai_plan_label_trap_count": replay_class_counts["current_live_openai_plan_label_trap"],
+        "current_live_openai_team_context_false_positive_count": replay_class_counts["current_live_openai_team_context_false_positive"],
+        "current_live_openai_repeated_wrong_explanation_count": replay_class_counts["current_live_openai_repeated_wrong_explanation"],
+        "current_live_openai_state_initialized_with_recommendation_count": replay_class_counts["current_live_openai_state_initialized_with_recommendation"],
+        "current_live_openai_stability_guard_owned_adapter_turn_count": replay_class_counts["current_live_openai_stability_guard_owned_adapter_turn"],
+        "current_live_openai_intent_priority_defect_count": replay_class_counts["current_live_openai_intent_priority_defect"],
+        "current_live_openai_logic_generalization_defect_count": replay_class_counts["current_live_openai_logic_generalization_defect"],
         "current_live_openai_memory_progression_defect_count": replay_class_counts["current_live_openai_memory_progression_defect"],
         "current_live_openai_repeated_answered_question_count": replay_class_counts["current_live_openai_repeated_answered_question"],
         "current_live_openai_duplicate_repair_regression_count": replay_class_counts["current_live_openai_duplicate_repair_regression"],
@@ -982,6 +1123,15 @@ def main() -> None:
         "private_current_live_signup_close_stage_mismatch_count": counts["current_live_openai_signup_close_stage_mismatch"],
         "private_current_live_stability_guard_owned_sales_turn_count": counts["current_live_openai_stability_guard_owned_sales_turn"],
         "private_current_live_sales_momentum_defect_count": counts["current_live_openai_sales_momentum_defect"],
+        "private_current_live_opening_origin_missing_count": counts["current_live_openai_opening_origin_missing"],
+        "private_current_live_explanation_question_misrouted_count": counts["current_live_openai_explanation_question_misrouted"],
+        "private_current_live_plan_label_trap_count": counts["current_live_openai_plan_label_trap"],
+        "private_current_live_team_context_false_positive_count": counts["current_live_openai_team_context_false_positive"],
+        "private_current_live_repeated_wrong_explanation_count": counts["current_live_openai_repeated_wrong_explanation"],
+        "private_current_live_state_initialized_with_recommendation_count": counts["current_live_openai_state_initialized_with_recommendation"],
+        "private_current_live_stability_guard_owned_adapter_turn_count": counts["current_live_openai_stability_guard_owned_adapter_turn"],
+        "private_current_live_intent_priority_defect_count": counts["current_live_openai_intent_priority_defect"],
+        "private_current_live_logic_generalization_defect_count": counts["current_live_openai_logic_generalization_defect"],
         "private_current_live_openai_memory_progression_defect_count": counts["current_live_openai_memory_progression_defect"],
         "private_current_live_openai_repeated_answered_question_count": counts["current_live_openai_repeated_answered_question"],
         "private_current_live_openai_duplicate_repair_regression_count": counts["current_live_openai_duplicate_repair_regression"],

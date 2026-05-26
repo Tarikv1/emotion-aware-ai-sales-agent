@@ -4064,8 +4064,8 @@
         "value_framing_score": 10
       },
       "failures": [],
-      "final_response": "For coding and writing, Plus is usually enough if use is moderate. Plus is the lower-cost starting point; Pro is safer if usage limits matter. The next action is to compare Plus versus Pro on the official ChatGPT plans page.",
-      "final_response_hash": "437593def519",
+      "final_response": "This is still about ChatGPT subscription plans: Free is the no-cost option, Plus is the lower-cost paid individual plan, Pro is for heavier individual use, and Business or Enterprise are for teams. Given your coding, writing, or research use, start with Plus unless limits are already frustrating; compare Pro if you need more usage headroom. The next step is the official ChatGPT plans page or profile upgrade flow.",
+      "final_response_hash": "672dba08f73e",
       "group": "information_must_advance",
       "id": "info-advance-moderate-plus-001",
       "multi_turn": true,
@@ -4212,8 +4212,8 @@
         "value_framing_score": 10
       },
       "failures": [],
-      "final_response": "For coding and writing, Plus is usually enough if use is moderate. Plus is the lower-cost starting point; Pro is safer if usage limits matter. The next action is to compare Plus versus Pro on the official ChatGPT plans page.",
-      "final_response_hash": "437593def519",
+      "final_response": "This is still about ChatGPT subscription plans: Free is the no-cost option, Plus is the lower-cost paid individual plan, Pro is for heavier individual use, and Business or Enterprise are for teams. Given your coding, writing, or research use, start with Plus unless limits are already frustrating; compare Pro if you need more usage headroom. The next step is the official ChatGPT plans page or profile upgrade flow.",
+      "final_response_hash": "672dba08f73e",
       "group": "information_must_advance",
       "id": "info-advance-moderate-plus-005",
       "multi_turn": true,
@@ -4249,8 +4249,8 @@
         "value_framing_score": 10
       },
       "failures": [],
-      "final_response": "For coding and writing, Plus is usually enough if use is moderate. Since your use is heavy, I would compare Pro seriously. Plus is the lower-cost starting point; Pro is safer if usage limits matter. The next step is the official ChatGPT plans page.",
-      "final_response_hash": "dfd4e4ed4934",
+      "final_response": "This is still about ChatGPT subscription plans: Free is the no-cost option, Plus is the lower-cost paid individual plan, Pro is for heavier individual use, and Business or Enterprise are for teams. Given your heavy coding and writing use, compare Pro first for usage headroom, with Plus as the lower-cost starting point. The next step is the official ChatGPT plans page or profile upgrade flow.",
+      "final_response_hash": "066690e8ebd9",
       "group": "information_must_advance",
       "id": "info-advance-heavy-pro-001",
       "multi_turn": true,

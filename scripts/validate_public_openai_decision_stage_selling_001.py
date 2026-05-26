@@ -348,15 +348,23 @@ def validate_opening(run: dict[str, Any]) -> list[str]:
     failures = common_failures(text, run)
     if "hi, this is maya" not in lowered:
         failures.append("opening did not identify Maya directly")
-    if not contains_any(lowered, {"help you quickly decide", "quickly decide whether"}):
-        failures.append("opening lacked strong buyer-value decision frame")
+    if "chatgpt subscription plans" not in lowered:
+        failures.append("opening did not say this is about ChatGPT subscription plans")
+    if not contains_any(lowered, {"public plan information", "public-data", "public data", "public openai"}):
+        failures.append("opening did not disclose public-source basis")
+    if not contains_any(lowered, {"not calling as openai", "not calling from openai", "not representing openai", "not affiliated with openai"}):
+        failures.append("opening did not avoid official OpenAI affiliation")
+    if not contains_any(lowered, {"help you decide", "worth considering"}):
+        failures.append("opening lacked buyer-value decision frame")
     if not all(plan in text for plan in ["Free", "Plus", "Pro", "Business", "Enterprise"]):
         failures.append("opening did not name the buyer's plan decision")
     if "do you have a minute" not in lowered:
         failures.append("opening did not ask concise time permission")
     if "testing a public-data" in lowered:
         failures.append("opening used weak testing wording")
-    if len(text.split()) > 42:
+    if "http" in lowered or "www." in lowered:
+        failures.append("opening spoke a raw URL")
+    if len(text.split()) > 58:
         failures.append("opening carried an overlong caveat")
     return failures
 

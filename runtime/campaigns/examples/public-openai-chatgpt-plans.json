@@ -85,8 +85,8 @@
   },
   "language": "en",
   "opening_options": {
-    "preferred": "Hi, this is Maya. I can help you quickly decide whether Free, Plus, Pro, Business, or Enterprise is worth considering for how you use AI. Do you have a minute?",
-    "short": "Hi, this is Maya. I can help you quickly decide whether Free, Plus, Pro, Business, or Enterprise is worth considering for your AI use. Do you have a minute?"
+    "preferred": "Hi, this is Maya. I'm calling about ChatGPT subscription plans using OpenAI's public plan information. I'm not calling as OpenAI, but I can help you decide whether Free, Plus, Pro, Business, or Enterprise is worth considering. Do you have a minute?",
+    "short": "Hi, this is Maya. I'm calling about ChatGPT subscription plans using OpenAI's public plan information. I'm not calling as OpenAI, but I can help you decide whether any plan is worth considering. Do you have a minute?"
   },
   "agent_can_say": [
     "This is a public-data simulation based on official public OpenAI plan information.",

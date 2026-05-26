@@ -222,6 +222,11 @@ def _prior_pro_tier_context(turns: list[dict[str, Any]]) -> bool:
     )
 
 
+def _prior_self_serve_decision_context(turns: list[dict[str, Any]]) -> bool:
+    prior_text = _prior_customer_text(turns)
+    return _pro_agreement_signal(prior_text) or _prior_plan_selection(turns)
+
+
 def _next_best_action_for_state(state: dict[str, Any], normalized: str, final_response: str) -> str:
     if state.get("active_decision_frame") == "pro_100_vs_200" or _pro_tier_question(normalized):
         return "answer_pro_tier" if not _signup_question(normalized) else "self_serve_close"
@@ -334,7 +339,7 @@ def _commercial_sales_state(
     elif recommended in {"plus", "pro"}:
         value_hypothesis = "lower_cost_entry"
     else:
-        value_hypothesis = "better_tools" if use_text and use_text != "unknown" else "no_fit"
+        value_hypothesis = "better_tools" if use_text and use_text != "unknown" else "unknown"
 
     if active_frame == "pro_100_vs_200" or _pro_tier_question(normalized):
         decision_frame = "pro_100_vs_200"
@@ -347,7 +352,7 @@ def _commercial_sales_state(
     elif _competitor_objection(normalized) or _current_tool_enough(normalized) or _another_ai_user(normalized):
         decision_frame = "current_tool_vs_chatgpt"
     else:
-        decision_frame = "no_fit"
+        decision_frame = "unknown"
 
     if _signup_question(normalized):
         buyer_decision_stage = "self_serve_close"
@@ -425,6 +430,7 @@ def memory_update_for_turn(
     normalized = _normalize_openai_asr_aliases(" ".join(str(transcript or "").lower().split()))
     response = " ".join(str(final_response or "").lower().split())
     prior = _prior_openai_state(turns, current_memory)
+    explanation_intent = _explanation_question(normalized) and not _explicit_team_or_enterprise_need(normalized)
     state: dict[str, Any] = {
         "openai_adoption_state": prior.get("openai_adoption_state") or "unknown",
         "openai_use_case": prior.get("openai_use_case") or [],
@@ -442,18 +448,19 @@ def memory_update_for_turn(
         "should_not_regress_to_prior_decision_stage": bool(prior.get("should_not_regress_to_prior_decision_stage")),
     }
 
-    if _current_chatgpt_user(normalized) or _openai_use_case_tags(normalized):
+    if not explanation_intent and (_current_chatgpt_user(normalized) or _openai_use_case_tags(normalized)):
         state["openai_adoption_state"] = "current_chatgpt_user"
-    elif _another_ai_user(normalized):
+    elif not explanation_intent and _another_ai_user(normalized):
         state["openai_adoption_state"] = "other_ai_user"
-    elif _no_ai_user(normalized):
+    elif not explanation_intent and _no_ai_user(normalized):
         state["openai_adoption_state"] = "no_ai_user"
 
     prior_tags = state["openai_use_case"] if isinstance(state["openai_use_case"], list) else []
     tags = list(prior_tags)
-    for tag in _openai_use_case_tags(normalized):
-        if tag not in tags:
-            tags.append(tag)
+    if not explanation_intent:
+        for tag in _openai_use_case_tags(normalized):
+            if tag not in tags:
+                tags.append(tag)
     state["openai_use_case"] = tags or "unknown"
 
     intensity = _usage_intensity_from_text(normalized)
@@ -679,6 +686,269 @@ def _plain_plan_question(normalized: str) -> bool:
     )
 
 
+def _has_plan_label(normalized: str) -> bool:
+    return bool(re.search(r"\b(free|plus|pro|business|enterprise)\b", normalized))
+
+
+def _explicit_team_or_enterprise_need(normalized: str) -> bool:
+    if _contains(
+        normalized,
+        {
+            "we have a team",
+            "we have a small team",
+            "my team",
+            "our team",
+            "for a team",
+            "this is for a team",
+            "actually this is for a team",
+            "small team",
+            "team workspace",
+            "team admin",
+            "team controls",
+            "shared workspace",
+            "workspace controls",
+            "member management",
+            "billing management",
+            "my company",
+            "our company",
+            "for my company",
+            "for our company",
+            "company needs",
+            "buying for a company",
+            "admin controls",
+            "sso",
+            "scim",
+            "procurement",
+            "security review",
+            "legal review",
+            "organization-level controls",
+            "organization level controls",
+            "enterprise requirements",
+            "sales-led procurement",
+        },
+    ):
+        return True
+    company_context = _contains(normalized, {"we need", "we have", "our legal", "our procurement", "our security"})
+    enterprise_context = _contains(
+        normalized,
+        {
+            "enterprise controls",
+            "admin",
+            "sso",
+            "scim",
+            "procurement",
+            "security",
+            "legal",
+            "workspace",
+            "company",
+            "organization",
+        },
+    )
+    return company_context and enterprise_context
+
+
+def _explanation_question(normalized: str) -> bool:
+    if not normalized:
+        return False
+    if _pro_tier_question(normalized):
+        return False
+    if _price_question(normalized) and not _contains(normalized, {"what are these plans", "what are the plans", "what is this"}):
+        return False
+    if _contains(
+        normalized,
+        {
+            "how much",
+            "what is the price",
+            "what are the prices",
+            "price",
+            "cost",
+            "pricing",
+            "sign up",
+            "upgrade",
+            "which plan should i choose",
+            "what should i choose",
+            "plus enough",
+            "is pro worth",
+            "pro worth",
+        },
+    ) and not _contains(normalized, {"what are these plans", "what are the plans", "what is this"}):
+        return False
+    if _plain_plan_question(normalized):
+        return True
+    if _contains(
+        normalized,
+        {
+            "what is this",
+            "what is this about",
+            "what are you calling about",
+            "what is this for",
+            "what is this for exactly",
+            "what are these plans",
+            "what are the plans",
+            "what are those plans",
+            "what are all those plan names",
+            "what are the chatgpt plan names",
+            "what do you mean by subscription plans",
+            "what do you mean",
+            "are these products or plans",
+            "are these chatgpt products or plans",
+            "are these products",
+            "are these plans",
+            "is enterprise a product or a plan",
+            "are these subscriptions or models",
+            "is business a company plan name",
+            "company plan name",
+            "i do not know what",
+            "i don't know what",
+            "i don t know what",
+            "i don't understand",
+            "i do not understand",
+            "i don t understand",
+            "i still don't understand",
+            "i still do not understand",
+            "i still don t understand",
+            "dont understand",
+            "don't really understand",
+            "still confused",
+            "still don't get it",
+            "still do not get it",
+            "still don t get it",
+            "i am confused",
+            "i'm confused",
+            "i m confused",
+            "i am lost",
+            "i'm lost",
+            "i m lost",
+            "what are you talking about",
+            "what you're talking about",
+            "what you are talking about",
+            "explain simpler",
+            "explain that",
+            "explain that first",
+            "explain in plain english",
+            "plain english",
+            "simpler please",
+            "tell me plainly",
+            "say that simply",
+            "make it simple",
+            "what are these",
+            "what are those",
+            "what exactly",
+            "what is it in one sentence",
+            "what is this again",
+            "what is this call asking",
+            "what is the point here",
+            "what is the point of this",
+            "what are these models",
+            "what these models are",
+            "what are those models",
+            "what are the paid plan labels",
+        },
+    ):
+        return True
+    if _has_plan_label(normalized) and _contains(
+        normalized,
+        {
+            "what is",
+            "what are",
+            "what does",
+            "what do",
+            "what's",
+            "whats",
+            "difference between",
+            "explain",
+            "products",
+            "plans",
+            "models",
+            "lost",
+            "confused",
+            "understand",
+            "heard",
+            "list",
+            "labels",
+            "names",
+            "versus",
+            "what exactly",
+            "are what",
+        },
+    ):
+        return True
+    return False
+
+
+def _prior_explained_plans(turns: list[dict[str, Any]]) -> bool:
+    prior_responses = " ".join(
+        str((turn.get("summary") or {}).get("final_response") or "").lower() for turn in turns[-4:]
+    )
+    return (
+        "free is the no-cost" in prior_responses
+        and "business is for teams" in prior_responses
+        and "enterprise is for larger" in prior_responses
+    )
+
+
+def _contextual_plan_comparison_question(normalized: str) -> bool:
+    if _contains(
+        normalized,
+        {
+            "difference between plus and pro",
+            "difference between free and paid",
+            "free versus paid",
+            "free vs paid",
+            "free versus plus",
+            "plus versus pro",
+            "plus vs pro",
+            "free versus plus versus pro",
+            "paid plans",
+            "paid plan",
+            "paid tiers",
+            "what do the plans include",
+            "what do i get with paid plans",
+            "what should i know before paying",
+            "practical plan comparison",
+            "plan comparison",
+        },
+    ):
+        return True
+    return _has_plan_label(normalized) and _contains(normalized, {"versus", "vs", "difference between"})
+
+
+def _plan_category_explanation_response(
+    campaign: dict | None,
+    normalized: str,
+    turns: list[dict[str, Any]],
+) -> str:
+    if _known_use_case(normalized, turns) and _price_question(normalized):
+        return _price_response(campaign, normalized, turns)
+    if _known_use_case(normalized, turns) and _contextual_plan_comparison_question(normalized):
+        if _known_heavy_use(normalized, turns) or _known_limit_pain(normalized, turns):
+            return (
+                "This is still about ChatGPT subscription plans: Free is the no-cost option, Plus is the lower-cost "
+                "paid individual plan, Pro is for heavier individual use, and Business or Enterprise are for teams. "
+                "Given your heavy coding and writing use, compare Pro first for usage headroom, with Plus as the "
+                "lower-cost starting point. The next step is the official ChatGPT plans page or profile upgrade flow."
+            )
+        return (
+            "This is still about ChatGPT subscription plans: Free is the no-cost option, Plus is the lower-cost "
+            "paid individual plan, Pro is for heavier individual use, and Business or Enterprise are for teams. "
+            "Given your coding, writing, or research use, start with Plus unless limits are already frustrating; "
+            "compare Pro if you need more usage headroom. The next step is the official ChatGPT plans page or profile upgrade flow."
+        )
+    if _prior_explained_plans(turns):
+        return (
+            "Simpler version: these are ChatGPT subscription plans. "
+            "Free is the no-cost option; Plus and Pro are individual paid plans; "
+            "Business is for teams; Enterprise is for larger organizations. "
+            "Do you want personal use, team use, or just the basic explanation?"
+        )
+    return (
+        "This is about ChatGPT subscription plans, using OpenAI's public plan information. "
+        "Free is the no-cost option, Plus and Pro are individual paid plans, "
+        "Business is for teams, and Enterprise is for larger organizations. "
+        "Are you looking for personal use, team use, or just trying to understand the options?"
+    )
+
+
 def _explain_request(normalized: str) -> bool:
     return normalized in {
         "explain",
@@ -817,27 +1087,11 @@ def _known_heavy_use(normalized: str, turns: list[dict[str, Any]]) -> bool:
 def _team_context(normalized: str, turns: list[dict[str, Any]]) -> bool:
     prior = _prior_customer_text(turns)
     state = _prior_openai_state(turns)
+    if _explanation_question(normalized) and not _explicit_team_or_enterprise_need(normalized):
+        return False
     if any(_state_has_use_case(state, tag) for tag in {"team", "enterprise"}):
         return True
-    return _contains(
-        f"{prior} {normalized}",
-        {
-            "we have a team",
-            "team",
-            "for a team",
-            "this is for a team",
-            "actually this is for a team",
-            "small team",
-            "team admin",
-            "team workspace",
-            "workspace controls",
-            "business sounds right",
-            "business",
-            "enterprise controls",
-            "sso",
-            "scim",
-        },
-    )
+    return _explicit_team_or_enterprise_need(f"{prior} {normalized}")
 
 
 def _light_or_basic_use(normalized: str) -> bool:
@@ -2083,6 +2337,29 @@ def classify_turn(
             polarity="boundary",
         )
 
+    if (
+        _plain_ask_question(normalized)
+        and _known_use_case(normalized, turns)
+        and not _prior_pro_tier_context(turns)
+        and not _prior_self_serve_decision_context(turns)
+    ):
+        return _frame(
+            **base,
+            semantic="public_plan_plain_ask_explained",
+            response=_plain_ask_response(turns),
+            dialogue_focus="plain_ask",
+            polarity="clarification",
+        )
+
+    if _explanation_question(normalized) and not _explicit_team_or_enterprise_need(normalized):
+        return _frame(
+            **base,
+            semantic="public_plan_explanation_first",
+            response=_plan_category_explanation_response(campaign, normalized, turns),
+            dialogue_focus="plan_explanation",
+            polarity="clarification",
+        )
+
     if _pro_agreement_signal(normalized):
         return _frame(
             **base,
@@ -2174,7 +2451,7 @@ def classify_turn(
             polarity="close",
         )
 
-    if _plain_ask_question(normalized):
+    if _plain_ask_question(normalized) and not _prior_pro_tier_context(turns) and not _prior_self_serve_decision_context(turns):
         return _frame(
             **base,
             semantic="public_plan_plain_ask_explained",
@@ -2371,24 +2648,29 @@ def classify_turn(
             polarity="low_pressure",
         )
 
-    if _contains(
-        normalized,
-        {
-            "we have a team",
-            "team",
-            "for a team",
-            "this is for a team",
-            "actually this is for a team",
-            "small team",
-            "team admin",
-            "team workspace",
-            "workspace controls",
-            "enterprise controls",
-            "sso",
-            "scim",
-            "procurement",
-        },
-    ):
+    if _already_told(normalized):
+        semantic, response, focus = _known_context_repeat_response(normalized, turns)
+        return _frame(
+            **base,
+            semantic=f"{semantic}_already_answered",
+            response=response,
+            target_gap="openai_use_case",
+            dialogue_focus=focus,
+            polarity="progress",
+        )
+
+    if _continue_request(normalized):
+        semantic, response, focus = _known_context_repeat_response(normalized, turns, mode="continue")
+        return _frame(
+            **base,
+            semantic=f"{semantic}_continue",
+            response=response,
+            target_gap="openai_use_case",
+            dialogue_focus=focus,
+            polarity="progress",
+        )
+
+    if _team_context(normalized, turns):
         return _frame(
             **base,
             semantic="public_plan_team_context",
