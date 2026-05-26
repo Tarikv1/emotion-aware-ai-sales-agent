@@ -1,0 +1,4470 @@
+{
+  "checkpoint_id": "PUBLIC-OPENAI-SPOKEN-SALES-NATURALNESS-001",
+  "failed_cases": [],
+  "failed_count": 0,
+  "group_counts": {
+    "heavy_headroom_state_preservation": 16,
+    "internal_process_wording_banned": 20,
+    "midcycle_plan_change_followup": 16,
+    "pro_tier_answer_naturalness": 16,
+    "repeated_answer_prevention": 20,
+    "source_note_wording_banned": 20,
+    "terminal_acceptance_polite_close": 12
+  },
+  "live_tts_calls_made": false,
+  "local_llm_calls_made": false,
+  "multi_turn_scenario_count": 120,
+  "provider_calls_made": false,
+  "raw_private_transcript_copied_to_public_evidence": false,
+  "required_group_counts": {
+    "heavy_headroom_state_preservation": 16,
+    "internal_process_wording_banned": 20,
+    "midcycle_plan_change_followup": 16,
+    "pro_tier_answer_naturalness": 16,
+    "repeated_answer_prevention": 20,
+    "source_note_wording_banned": 20,
+    "terminal_acceptance_polite_close": 12
+  },
+  "scenario_count": 120,
+  "side_effects_false": true,
+  "status": "pass",
+  "structural_failures": [],
+  "traces": [
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "price_evaluation",
+        "current_buyer_question_type": "price",
+        "openai_next_best_action": "recommend_plan",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "Sure. Free is the no-cost option. Plus is listed at 20 dollars per month, billed monthly. Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Business is for teams, and Enterprise routes to contact sales. Exact current terms can change, so check the plan page before upgrading. The decision frame is Free for no-cost use, Plus as the lower-cost individual start, Pro for heavier individual use, and Business or Enterprise when team controls matter.",
+      "final_response_hash": "a2adfdf3f2b9",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-001",
+      "multi_turn": true,
+      "response_hashes": [
+        "a2adfdf3f2b9"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "plus_vs_pro",
+        "buyer_decision_stage": "price_evaluation",
+        "current_buyer_question_type": "price",
+        "openai_next_best_action": "recommend_plan",
+        "openai_recommended_path": "plus",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8d3dd892b398",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-002",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "8d3dd892b398"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 4
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-003",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "adoption_state",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "answer_api_boundary",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "API usage is separate from ChatGPT subscriptions. Are you asking about ChatGPT itself, the API, or both?",
+      "final_response_hash": "893b6e92d3d5",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-004",
+      "multi_turn": true,
+      "response_hashes": [
+        "893b6e92d3d5"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "adoption_state",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "ask_adoption_state",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "",
+      "final_response_hash": "e3b0c44298fc",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-005",
+      "multi_turn": true,
+      "response_hashes": [
+        "e3b0c44298fc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "adoption_state",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "ask_adoption_state",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "I'm not calling from OpenAI. This is a public-data simulation using OpenAI's public pricing and help pages. I can summarize those public pages, but check them before upgrading. What are you trying to decide about ChatGPT?",
+      "final_response_hash": "51d729690b59",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-006",
+      "multi_turn": true,
+      "response_hashes": [
+        "51d729690b59"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "adoption_state",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "ask_adoption_state",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "I'm not calling from OpenAI. This is a public-data simulation using OpenAI's public pricing and help pages. I can summarize those public pages, but check them before upgrading. What are you trying to decide about ChatGPT?",
+      "final_response_hash": "51d729690b59",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-007",
+      "multi_turn": true,
+      "response_hashes": [
+        "51d729690b59"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "adoption_state",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "ask_adoption_state",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "I'm not calling from OpenAI. This is a public-data simulation using OpenAI's public pricing and help pages. I can summarize those public pages, but check them before upgrading. What are you trying to decide about ChatGPT?",
+      "final_response_hash": "51d729690b59",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-008",
+      "multi_turn": true,
+      "response_hashes": [
+        "51d729690b59"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "adoption_state",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "ask_adoption_state",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "",
+      "final_response_hash": "e3b0c44298fc",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-009",
+      "multi_turn": true,
+      "response_hashes": [
+        "e3b0c44298fc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "adoption_state",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "ask_adoption_state",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "",
+      "final_response_hash": "e3b0c44298fc",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-010",
+      "multi_turn": true,
+      "response_hashes": [
+        "e3b0c44298fc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "plus_vs_pro",
+        "buyer_decision_stage": "price_evaluation",
+        "current_buyer_question_type": "price",
+        "openai_next_best_action": "recommend_plan",
+        "openai_recommended_path": "plus",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "Sure. Free is the no-cost option. Plus is listed at 20 dollars per month, billed monthly. Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Exact current terms can change, so check the plan page before upgrading. For coding and writing, Plus is the lower-cost paid starting point; Pro is for heavier usage.",
+      "final_response_hash": "0ff8bc13a8c2",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-011",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "0ff8bc13a8c2"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 4
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "plus_vs_pro",
+        "buyer_decision_stage": "plus_vs_pro",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "ask_adoption_state",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Heavy daily use makes Pro worth comparing, with Plus as the lower-cost fallback. The next action is to tie that to the work type only if the use case is still unknown.",
+      "final_response_hash": "cdc5b137b054",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-012",
+      "multi_turn": true,
+      "response_hashes": [
+        "cdc5b137b054",
+        "cdc5b137b054"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 4
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-013",
+      "multi_turn": true,
+      "response_hashes": [
+        "cdc5b137b054",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 4
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "price_evaluation",
+        "current_buyer_question_type": "price",
+        "openai_next_best_action": "recommend_plan",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "For most countries, Business standard ChatGPT seats are listed at 25 dollars monthly or 20 dollars monthly when billed annually, with regional caveats. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "35ad37dd7a54",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-014",
+      "multi_turn": true,
+      "response_hashes": [
+        "35ad37dd7a54"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "business_vs_enterprise",
+        "buyer_decision_stage": "price_evaluation",
+        "current_buyer_question_type": "price",
+        "openai_next_best_action": "answer_price",
+        "openai_recommended_path": "enterprise",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "Enterprise pricing is not a public fixed individual price here; the route is contact sales. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "73d8360a1bb1",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-015",
+      "multi_turn": true,
+      "response_hashes": [
+        "73d8360a1bb1"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "adoption_state",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "answer_api_boundary",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "API usage is separate from ChatGPT subscriptions. Are you asking about ChatGPT itself, the API, or both?",
+      "final_response_hash": "893b6e92d3d5",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-016",
+      "multi_turn": true,
+      "response_hashes": [
+        "893b6e92d3d5"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "price_evaluation",
+        "current_buyer_question_type": "price",
+        "openai_next_best_action": "recommend_plan",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "Plus is listed at 20 dollars per month, billed monthly. Plus is for more access than Free or Go: higher limits, faster responses, and expanded tools like voice, images, file analysis, deep research where available, and custom GPTs. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "9e0d26a1e099",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-017",
+      "multi_turn": true,
+      "response_hashes": [
+        "9e0d26a1e099"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "objection_handling",
+        "current_buyer_question_type": "worth_it",
+        "openai_next_best_action": "answer_price",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "That price concern is fair. If you are using it casually, I would not pay for Pro. For heavy coding and writing, the question is whether extra usage headroom saves enough friction to justify the price. If price matters most, start with Plus. If limits slow you down, Pro is the cleaner fit. Check the plan page for exact current prices.",
+      "final_response_hash": "e5247089f878",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-018",
+      "multi_turn": true,
+      "response_hashes": [
+        "e5247089f878"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "medium_heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-019",
+      "multi_turn": true,
+      "response_hashes": [
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "adoption_state",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "ask_adoption_state",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "Got it - if you are just choosing before upgrading, I would start with the use case before pushing a tier. Is this mainly coding, writing, research, files, or team use?",
+      "final_response_hash": "3ee5a4b7860c",
+      "group": "source_note_wording_banned",
+      "id": "source-note-banned-020",
+      "multi_turn": true,
+      "response_hashes": [
+        "3ee5a4b7860c"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-001",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-002",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-003",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-004",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-005",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-006",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-007",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-008",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-009",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-010",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-011",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-012",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-013",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-014",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-015",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "pro_tier_answer_naturalness",
+      "id": "pro-tier-natural-016",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "upgrade_timing_question",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-001",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "plan_change_followup",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-002",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "billing_change_question",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-003",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "077aee9aad29",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-004",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "077aee9aad29"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "upgrade_timing_question",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "plus",
+        "openai_usage_intensity": "medium"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-005",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "upgrade_timing_question",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-006",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "billing_change_question",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-007",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "plan_change_followup",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-008",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "plan_change_followup",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-009",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "plan_change_followup",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-010",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "billing_change_question",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-011",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "plan_change_followup",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-012",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "plan_change_followup",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-013",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "plan_change_followup",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-014",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "proration_or_midcycle_question",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-015",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "proration_or_midcycle_question",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "midcycle_plan_change_followup",
+      "id": "midcycle-followup-016",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "077aee9aad29",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-001",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "077aee9aad29"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "077aee9aad29",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-002",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "077aee9aad29"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "077aee9aad29",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-003",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "077aee9aad29"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "upgrade_timing_question",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-004",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "plan_change_followup",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-005",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "billing_change_question",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-006",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "proration_or_midcycle_question",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-007",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "077aee9aad29",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-008",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "077aee9aad29"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "plan_change_followup",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-009",
+      "multi_turn": true,
+      "response_hashes": [
+        "02f152435240",
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 7
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-010",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "dfd4e4ed4934",
+        "0da663ce43eb",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 7
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "077aee9aad29",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-011",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "668def6d152c",
+        "077aee9aad29"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Based on what you told me - heavy coding and writing - compare Pro first for usage headroom; choose Plus only if the lower monthly cost matters more. The next decision is Pro versus Plus, not more discovery.",
+      "final_response_hash": "0da663ce43eb",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-012",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "0da663ce43eb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "077aee9aad29",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-013",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "077aee9aad29"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "medium_heavy"
+      },
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "077aee9aad29",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-014",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "f2fe1b23b364",
+        "8aab91f0b6cb",
+        "077aee9aad29"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "billing_change_question",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-015",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "plan_change_followup",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-016",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "defbff9811bb",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "077aee9aad29",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-017",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "077aee9aad29"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "plan_change_followup",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-018",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Based on what you told me - heavy coding and writing - compare Pro first for usage headroom; choose Plus only if the lower monthly cost matters more. The next decision is Pro versus Plus, not more discovery.",
+      "final_response_hash": "0da663ce43eb",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-019",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "0da663ce43eb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "proration_or_midcycle_question",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "repeated_answer_prevention",
+      "id": "repeat-prevention-020",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "7104eb1d01dc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "plus_vs_pro",
+        "buyer_decision_stage": "plus_vs_pro",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "ask_usage_intensity",
+        "openai_recommended_path": "plus",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "Right - ChatGPT for coding and writing. Plus is usually the first paid plan to compare; Pro is for heavier use. Are you using it occasionally or heavily every day?",
+      "final_response_hash": "edbc21e28021",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-001",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "plus_vs_pro",
+        "buyer_decision_stage": "price_evaluation",
+        "current_buyer_question_type": "price",
+        "openai_next_best_action": "recommend_plan",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Sure. Free is the no-cost option. Plus is listed at 20 dollars per month, billed monthly. Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Exact current terms can change, so check the plan page before upgrading. Given coding and heavy use, I would compare Pro first. The real decision is Plus as the lower-cost start versus Pro as the higher-usage option.",
+      "final_response_hash": "668def6d152c",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-002",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "668def6d152c"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "self_serve_close",
+        "current_buyer_question_type": "signup",
+        "openai_next_best_action": "self_serve_close",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "If you decide to upgrade, individual plans use the official ChatGPT plans page or profile upgrade flow, and Enterprise uses contact sales. Choose the plan only after the use case is clear.",
+      "final_response_hash": "51b79bfbb762",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-003",
+      "multi_turn": true,
+      "response_hashes": [
+        "51b79bfbb762"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-004",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "adoption_state",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "ask_adoption_state",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "",
+      "final_response_hash": "e3b0c44298fc",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-005",
+      "multi_turn": true,
+      "response_hashes": [
+        "e3b0c44298fc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "plus_vs_pro",
+        "buyer_decision_stage": "plus_vs_pro",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "self_serve_close",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Since you said heavy coding and writing, Pro is the stronger fit to compare; Plus is the lower-cost starting point. The next step is the official ChatGPT plans page.",
+      "final_response_hash": "cebfcefb4dce",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-006",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "cebfcefb4dce"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "adoption_state",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "ask_adoption_state",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "This is about ChatGPT subscription plans, using OpenAI's public plan information. Free is the no-cost option, Plus and Pro are individual paid plans, Business is for teams, and Enterprise is for larger organizations. Are you looking for personal use, team use, or just trying to understand the options?",
+      "final_response_hash": "2f750efecb33",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-007",
+      "multi_turn": true,
+      "response_hashes": [
+        "2f750efecb33"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "plus_vs_pro",
+        "buyer_decision_stage": "self_serve_close",
+        "current_buyer_question_type": "signup",
+        "openai_next_best_action": "self_serve_close",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "I'm not asking you to do anything yet. I'm helping you decide whether Free, Plus, Pro, Business, or Enterprise fits. Since you mentioned coding and writing, the next useful choice is usually Plus versus Pro.",
+      "final_response_hash": "80efbb337ddc",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-008",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "80efbb337ddc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "current_tool_vs_chatgpt",
+        "buyer_decision_stage": "use_case",
+        "current_buyer_question_type": "competitor_switch",
+        "openai_next_best_action": "ask_use_case",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "A switch only makes sense if ChatGPT covers something your current tool does not: coding workflow, files, research, voice/images, team admin, or privacy controls. What is the one area where your current tool feels weakest?",
+      "final_response_hash": "cdc41f7d7dde",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-009",
+      "multi_turn": true,
+      "response_hashes": [
+        "cdc41f7d7dde"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "plus_vs_pro",
+        "buyer_decision_stage": "plus_vs_pro",
+        "current_buyer_question_type": "plus_enough",
+        "openai_next_best_action": "self_serve_close",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "For coding and writing, Plus is usually enough if use is moderate. Since your use is heavy, I would compare Pro seriously. Plus is the lower-cost starting point; Pro is safer if usage limits matter. The next step is the official ChatGPT plans page.",
+      "final_response_hash": "dfd4e4ed4934",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-010",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "dfd4e4ed4934"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "plus_vs_pro",
+        "buyer_decision_stage": "plus_vs_pro",
+        "current_buyer_question_type": "pro_better",
+        "openai_next_best_action": "ask_adoption_state",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "Pro can be the right comparison for heavier individual use, but I would tie that to the actual work before pushing it. If the workload is heavy, compare Pro; if it is moderate, Plus is the lower-cost start.",
+      "final_response_hash": "a740527147eb",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-011",
+      "multi_turn": true,
+      "response_hashes": [
+        "a740527147eb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "plus_vs_pro",
+        "buyer_decision_stage": "self_serve_close",
+        "current_buyer_question_type": "signup",
+        "openai_next_best_action": "self_serve_close",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Yes - for individual plans, use the official ChatGPT plans page or profile upgrade flow. Based on what you said - heavy coding/writing - compare Pro first if you want more usage headroom; choose Plus if you want the lower-cost starting point.",
+      "final_response_hash": "f97566014c66",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-012",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "f97566014c66"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "self_serve_close",
+        "current_buyer_question_type": "signup",
+        "openai_next_best_action": "self_serve_close",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "If you decide to upgrade, individual plans use the official ChatGPT plans page or profile upgrade flow, and Enterprise uses contact sales. Choose the plan only after the use case is clear. I cannot send a link here.",
+      "final_response_hash": "8ff73225f9a8",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-013",
+      "multi_turn": true,
+      "response_hashes": [
+        "8ff73225f9a8"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "plus_vs_pro",
+        "buyer_decision_stage": "plus_vs_pro",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "self_serve_close",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "After interest, individual plans stay self-serve: use the official ChatGPT plans page or profile upgrade flow. For Enterprise, the official next step is contact sales. I cannot send email, book a meeting, or create a CRM record here.",
+      "final_response_hash": "43ab945e272a",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-014",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "43ab945e272a"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "unknown",
+        "buyer_decision_stage": "adoption_state",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "answer_api_boundary",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "API usage is separate from ChatGPT subscriptions. Are you asking about ChatGPT itself, the API, or both?",
+      "final_response_hash": "893b6e92d3d5",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-015",
+      "multi_turn": true,
+      "response_hashes": [
+        "893b6e92d3d5"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "plus_vs_pro",
+        "buyer_decision_stage": "plus_vs_pro",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "recommend_plan",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "This is about ChatGPT subscription plans, using OpenAI's public plan information. Free is the no-cost option, Plus and Pro are individual paid plans, Business is for teams, and Enterprise is for larger organizations. Are you looking for personal use, team use, or just trying to understand the options?",
+      "final_response_hash": "2f750efecb33",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-016",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "2f750efecb33"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "plus_vs_pro",
+        "buyer_decision_stage": "plus_vs_pro",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "ask_adoption_state",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Heavy daily use makes Pro worth comparing, with Plus as the lower-cost fallback. The next action is to tie that to the work type only if the use case is still unknown.",
+      "final_response_hash": "cdc5b137b054",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-017",
+      "multi_turn": true,
+      "response_hashes": [
+        "cdc5b137b054"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "plus_vs_pro",
+        "buyer_decision_stage": "plus_vs_pro",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "recommend_plan",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Based on what you told me - heavy coding and writing - compare Pro first for usage headroom; choose Plus only if the lower monthly cost matters more. The next decision is Pro versus Plus, not more discovery.",
+      "final_response_hash": "0da663ce43eb",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-018",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "0da663ce43eb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "current_tool_vs_chatgpt",
+        "buyer_decision_stage": "use_case",
+        "current_buyer_question_type": "competitor_switch",
+        "openai_next_best_action": "ask_use_case",
+        "openai_recommended_path": "unknown",
+        "openai_usage_intensity": "unknown"
+      },
+      "final_response": "A switch only makes sense if ChatGPT gives you something your current setup does not: stronger coding workflow, file handling, research, voice/images, or team controls. What is the one area where your current tool feels weakest?",
+      "final_response_hash": "02f152435240",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-019",
+      "multi_turn": true,
+      "response_hashes": [
+        "02f152435240"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 3
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "plus_vs_pro",
+        "buyer_decision_stage": "plus_vs_pro",
+        "current_buyer_question_type": "",
+        "openai_next_best_action": "recommend_plan",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Based on what you told me - heavy coding and writing - compare Pro first for usage headroom; choose Plus only if the lower monthly cost matters more. The next decision is Pro versus Plus, not more discovery.",
+      "final_response_hash": "0da663ce43eb",
+      "group": "internal_process_wording_banned",
+      "id": "internal-wording-020",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "0da663ce43eb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "end-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Sounds good. Start with the ChatGPT plans page, and if you are unsure between Pro tiers, start lower and move up only if you hit limits. That is the cleanest path.",
+      "final_response_hash": "2eaf772430cc",
+      "group": "terminal_acceptance_polite_close",
+      "id": "terminal-acceptance-001",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "2eaf772430cc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "end-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Sounds good. Start with the ChatGPT plans page, and if you are unsure between Pro tiers, start lower and move up only if you hit limits. That is the cleanest path.",
+      "final_response_hash": "2eaf772430cc",
+      "group": "terminal_acceptance_polite_close",
+      "id": "terminal-acceptance-002",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "2eaf772430cc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "end-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Sounds good. Start with the ChatGPT plans page, and if you are unsure between Pro tiers, start lower and move up only if you hit limits. That is the cleanest path.",
+      "final_response_hash": "2eaf772430cc",
+      "group": "terminal_acceptance_polite_close",
+      "id": "terminal-acceptance-003",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "2eaf772430cc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "end-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Sounds good. Start with the ChatGPT plans page, and if you are unsure between Pro tiers, start lower and move up only if you hit limits. That is the cleanest path.",
+      "final_response_hash": "2eaf772430cc",
+      "group": "terminal_acceptance_polite_close",
+      "id": "terminal-acceptance-004",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "2eaf772430cc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "end-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Sounds good. Start with the ChatGPT plans page, and if you are unsure between Pro tiers, start lower and move up only if you hit limits. That is the cleanest path.",
+      "final_response_hash": "2eaf772430cc",
+      "group": "terminal_acceptance_polite_close",
+      "id": "terminal-acceptance-005",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "2eaf772430cc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "end-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Sounds good. Start with the ChatGPT plans page, and if you are unsure between Pro tiers, start lower and move up only if you hit limits. That is the cleanest path.",
+      "final_response_hash": "2eaf772430cc",
+      "group": "terminal_acceptance_polite_close",
+      "id": "terminal-acceptance-006",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "2eaf772430cc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "end-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Sounds good. Start with the ChatGPT plans page, and if you are unsure between Pro tiers, start lower and move up only if you hit limits. That is the cleanest path.",
+      "final_response_hash": "2eaf772430cc",
+      "group": "terminal_acceptance_polite_close",
+      "id": "terminal-acceptance-007",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "2eaf772430cc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "end-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "plan_change_followup",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Sounds good. Start with the ChatGPT plans page, and if you are unsure between Pro tiers, start lower and move up only if you hit limits. That is the cleanest path.",
+      "final_response_hash": "2eaf772430cc",
+      "group": "terminal_acceptance_polite_close",
+      "id": "terminal-acceptance-008",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "2eaf772430cc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "end-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Sounds good. Start with the ChatGPT plans page, and if you are unsure between Pro tiers, start lower and move up only if you hit limits. That is the cleanest path.",
+      "final_response_hash": "2eaf772430cc",
+      "group": "terminal_acceptance_polite_close",
+      "id": "terminal-acceptance-009",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "2eaf772430cc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "end-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Sounds good. Start with the ChatGPT plans page, and if you are unsure between Pro tiers, start lower and move up only if you hit limits. That is the cleanest path.",
+      "final_response_hash": "2eaf772430cc",
+      "group": "terminal_acceptance_polite_close",
+      "id": "terminal-acceptance-010",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "2eaf772430cc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "end-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Sounds good. Start with the ChatGPT plans page, and if you are unsure between Pro tiers, start lower and move up only if you hit limits. That is the cleanest path.",
+      "final_response_hash": "2eaf772430cc",
+      "group": "terminal_acceptance_polite_close",
+      "id": "terminal-acceptance-011",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "2eaf772430cc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "end-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Sounds good. Start with the ChatGPT plans page, and if you are unsure between Pro tiers, start lower and move up only if you hit limits. That is the cleanest path.",
+      "final_response_hash": "2eaf772430cc",
+      "group": "terminal_acceptance_polite_close",
+      "id": "terminal-acceptance-012",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb",
+        "2eaf772430cc"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-001",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-002",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-003",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "medium_heavy"
+      },
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "077aee9aad29",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-004",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "8aab91f0b6cb",
+        "077aee9aad29"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-005",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-006",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "medium_heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-007",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-008",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-009",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "medium_heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-010",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "f2fe1b23b364",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-011",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "edbc21e28021",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-012",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "defbff9811bb",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "plan_change_followup",
+        "openai_next_best_action": "answer_plan_change_followup",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-013",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-014",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-015",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "2a0399884c1a",
+        "8aab91f0b6cb"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    },
+    {
+      "call_control": "continue-call",
+      "failures": [],
+      "final_memory": {
+        "active_decision_frame": "pro_100_vs_200",
+        "buyer_decision_stage": "pro_tier_selection",
+        "current_buyer_question_type": "which_pro_tier",
+        "openai_next_best_action": "answer_pro_tier",
+        "openai_recommended_path": "pro",
+        "openai_usage_intensity": "heavy"
+      },
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "077aee9aad29",
+      "group": "heavy_headroom_state_preservation",
+      "id": "heavy-headroom-016",
+      "multi_turn": true,
+      "response_hashes": [
+        "edbc21e28021",
+        "8aab91f0b6cb",
+        "077aee9aad29"
+      ],
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 5
+    }
+  ]
+}

@@ -88,9 +88,37 @@ PREMATURE_NO_FIT_RESPONSE_RE = re.compile(r"if your current tool is enough.*woul
 PRICE_OBJECTION_TRANSCRIPT_RE = re.compile(r"expensive|why would i pay|why pay|another subscription|overpay|too much", re.I)
 PRICE_REPEAT_RESPONSE_RE = re.compile(r"free is the no-cost option.*20 dollars.*100 dollar.*200 dollar", re.I)
 PRO_TIER_TRANSCRIPT_RE = re.compile(r"which pro|pro tier|version of pro|100.*200.*pro|100.*version|200.*version|higher pro|lower pro", re.I)
-PRO_TIER_RESPONSE_RE = re.compile(r"lower pro tier|higher pro tier|lower tier|higher tier|100 dollar|200 dollar|maxing out|most headroom", re.I)
+PRO_TIER_RESPONSE_RE = re.compile(
+    r"lower pro tier|higher pro tier|lower tier|higher tier|100 dollar|200 dollar|start with 100|move to 200|100 becomes limiting|maxing out|most headroom",
+    re.I,
+)
 PLUS_VS_PRO_RESET_RE = re.compile(r"plus versus pro|pro versus plus|compare plus versus pro|next decision is pro versus plus|choose plus only", re.I)
 PRO_TIER_CONTEXT_RE = re.compile(r"pro_100_vs_200|pro_tier_selection|which pro|pro tier|version of pro|100.*200.*pro", re.I)
+SOURCE_NOTE_SPOKEN_RE = re.compile(
+    r"article lists|article describes|according to|source of truth|source-grounded|official sources state|"
+    r"official sources say|the official page says|exact tier details should be checked against official openai sources",
+    re.I,
+)
+ARTICLE_SAYS_SPOKEN_RE = re.compile(r"article lists|article says|according to the article|the article", re.I)
+SOURCE_OF_TRUTH_SPOKEN_RE = re.compile(r"source of truth", re.I)
+INTERNAL_PROCESS_SPOKEN_RE = re.compile(
+    r"we already have the use case|adoption state|i should not assume buying intent|plan fit still needs|"
+    r"current call scope|internal policy|legacy compatibility|human_followup_owner|appointment_target",
+    re.I,
+)
+PLAN_CHANGE_TRANSCRIPT_RE = re.compile(
+    r"move to 200.*mid-?month|mid-?month|upgrade later|start at 100.*upgrade|choose 100.*move up|"
+    r"switch tiers|change tiers|proration|billing mechanics|billing treatment",
+    re.I,
+)
+PLAN_CHANGE_RESPONSE_RE = re.compile(r"billing|proration|plan terms|current terms|before switching|depends on|cannot promise|can't promise", re.I)
+TERMINAL_ACCEPTANCE_TRANSCRIPT_RE = re.compile(
+    r"ok i will do that thank you|sounds good thanks|okay i'll check|okay i will check|got it,? thanks|"
+    r"i will start there|thank you,? that answers it|i will do that",
+    re.I,
+)
+TERMINAL_REOPEN_RESPONSE_RE = re.compile(r"\?\s*$|what would you mainly|are you using|which plan are you|do you want me|should i explain|can i help", re.I)
+PLUS_DOWNGRADE_AFTER_PRO_RE = re.compile(r"plus is enough|plus is usually enough|choose plus|start with plus|recommend plus", re.I)
 LEGACY_FIELD_RE = re.compile(r"legacy compatibility|appointment_target|human_followup_owner|demo operator|primary close is official", re.I)
 ROUTESIGNAL_TRACE_RE = re.compile(r"routesignal|northstar|inbound demo request|missed callbacks|handoffs|callback reminders", re.I)
 OPENING_ORIGIN_RE = re.compile(r"chatgpt subscription plans", re.I)
@@ -166,6 +194,15 @@ DIALOGUE_DEFECT_CLASSES = {
     "current_live_openai_stability_guard_owned_adapter_turn",
     "current_live_openai_intent_priority_defect",
     "current_live_openai_logic_generalization_defect",
+    "current_live_openai_source_note_spoken",
+    "current_live_openai_article_says_spoken",
+    "current_live_openai_source_of_truth_spoken",
+    "current_live_openai_repeated_exact_response_after_new_question",
+    "current_live_openai_followup_question_not_answered",
+    "current_live_openai_terminal_acceptance_not_closed",
+    "current_live_openai_internal_process_wording",
+    "current_live_openai_state_downgrade_after_headroom",
+    "current_live_openai_spoken_sales_naturalness_defect",
 }
 
 POST_PATCH_REPLAY_CASES = [
@@ -195,6 +232,10 @@ POST_PATCH_REPLAY_CASES = [
     ["__agent_open__", "yeah sure", "I use it for coding and writing", "I use it heavily every day", "how much are the plans", "it is expensive, why would I pay that much"],
     ["__agent_open__", "yeah sure", "I use it for coding and writing", "I use it heavily every day", "I want to decide which version of Pro I want to go for"],
     ["__agent_open__", "yeah sure", "I use it for coding and writing", "I use it heavily every day", "I want to decide which version of Pro I want to go for", "how do I sign up"],
+    ["__agent_open__", "yeah sure", "I use it for coding and writing", "I do use my tools a little heavily maybe more than a little", "should I use 100 or 200 Pro", "what happens if I move to 200 mid-month"],
+    ["__agent_open__", "yeah sure", "I use it for coding and writing", "I do use my tools a little heavily maybe more than a little", "should I use 100 or 200 Pro", "what happens if I move to 200 mid-month", "ok I will do that thank you"],
+    ["__agent_open__", "yeah sure", "I use it for coding and writing", "I do use my tools a little heavily maybe more than a little", "which Pro should I use", "which Pro should I use"],
+    ["__agent_open__", "yeah sure", "I use it for coding and writing", "I need headroom", "I am deciding between Pro tiers", "do I need the 200 dollar one"],
     ["who follows up after this"],
     ["who is the demo operator"],
     ["what happens after I say yes"],
@@ -216,6 +257,39 @@ def sha256_text(value: str) -> str:
 
 def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def normalize_text(value: Any) -> str:
+    return re.sub(r"\s+", " ", str(value or "").strip().lower())
+
+
+def compact_signature(value: Any) -> str:
+    tokens = [
+        token
+        for token in re.findall(r"[a-z0-9]+", normalize_text(value))
+        if token
+        not in {
+            "the",
+            "a",
+            "an",
+            "and",
+            "or",
+            "to",
+            "for",
+            "of",
+            "if",
+            "you",
+            "are",
+            "is",
+            "it",
+            "with",
+            "that",
+            "this",
+            "i",
+            "would",
+        }
+    ]
+    return " ".join(tokens[:28])
 
 
 def load_json(path: Path) -> dict[str, Any] | None:
@@ -391,6 +465,18 @@ def private_records() -> tuple[int, list[dict[str, Any]], int]:
     return scanned, sorted(records, key=record_sort_dt), invalid
 
 
+def uploaded_transcript_records() -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    if not PRIVATE_ROOT.exists():
+        return records
+    for json_path in PRIVATE_ROOT.glob("live-demo-*/*/browser-transcript/*.json"):
+        payload = load_json(json_path)
+        if not payload or campaign_path(payload) != FIXTURE_RELATIVE or not isinstance(payload.get("turns"), list):
+            continue
+        records.append({"path": json_path, "payload": payload, "mtime": json_path.stat().st_mtime})
+    return sorted(records, key=record_sort_dt)
+
+
 def current_threshold(records: list[dict[str, Any]]) -> datetime | None:
     current_times = [
         record_sort_dt(record)
@@ -488,6 +574,16 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
         )
     )
     classes: list[str] = []
+    prior_responses = [
+        str(item)
+        for item in payload.get("_audit_replay_prior_responses", [])
+        if isinstance(item, str) and item.strip()
+    ]
+    pro_tier_buying_context = bool(
+        pro_tier_context_active
+        or PRO_TIER_TRANSCRIPT_RE.search(transcript)
+        or re.search(r"deciding between pro tiers|100.*200.*pro|pro_100_vs_200|pro_tier_selection", f"{transcript} {plan_state_text}", re.I)
+    )
 
     if campaign_path(payload) != FIXTURE_RELATIVE or selected.get("campaign_id") != "public-openai-chatgpt-plans" or payload.get("campaign_selector_mode") != "generic_config":
         classes.append("current_live_openai_campaign_selector_issue")
@@ -501,6 +597,34 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
         classes.append("current_live_openai_asr_product_alias_issue")
     if INTERNAL_POLICY_RE.search(trace_text):
         classes.append("current_live_openai_internal_policy_language_leak")
+    if SOURCE_NOTE_SPOKEN_RE.search(text):
+        classes.append("current_live_openai_source_note_spoken")
+    if ARTICLE_SAYS_SPOKEN_RE.search(text):
+        classes.append("current_live_openai_article_says_spoken")
+    if SOURCE_OF_TRUTH_SPOKEN_RE.search(text):
+        classes.append("current_live_openai_source_of_truth_spoken")
+    if INTERNAL_PROCESS_SPOKEN_RE.search(text):
+        classes.append("current_live_openai_internal_process_wording")
+    if (PRO_TIER_TRANSCRIPT_RE.search(transcript) or PLAN_CHANGE_TRANSCRIPT_RE.search(transcript)) and prior_responses and any(
+        normalize_text(text) == normalize_text(previous) for previous in prior_responses
+    ):
+        classes.append("current_live_openai_repeated_exact_response_after_new_question")
+    if prior_responses and PLAN_CHANGE_TRANSCRIPT_RE.search(transcript) and any(
+        compact_signature(text) == compact_signature(previous) for previous in prior_responses
+    ):
+        classes.append("current_live_openai_repeated_exact_response_after_new_question")
+    if PLAN_CHANGE_TRANSCRIPT_RE.search(transcript) and not PLAN_CHANGE_RESPONSE_RE.search(text):
+        classes.append("current_live_openai_followup_question_not_answered")
+    if TERMINAL_ACCEPTANCE_TRANSCRIPT_RE.search(transcript) and (
+        TERMINAL_REOPEN_RESPONSE_RE.search(text) or len(text.split()) > 65
+    ):
+        classes.append("current_live_openai_terminal_acceptance_not_closed")
+    if (
+        pro_tier_buying_context
+        and re.search(r"little heavily|more than a little|need headroom|headroom|deciding between pro tiers|which pro|100.*200.*pro", f"{transcript} {payload_context_text}", re.I)
+        and (PLUS_DOWNGRADE_AFTER_PRO_RE.search(text) or (isinstance(plan_state, dict) and plan_state.get("openai_recommended_path") == "plus"))
+    ):
+        classes.append("current_live_openai_state_downgrade_after_headroom")
     if normalized_transcript == "__agent_open__" and (
         not OPENING_ORIGIN_RE.search(text)
         or not OPENING_PUBLIC_RE.search(text)
@@ -634,6 +758,8 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
     if (
         re.search(r"coding|writing", f"{transcript} {payload_context_text}", re.I)
         and HEAVY_CONTEXT_RE.search(f"{transcript} {payload_context_text}")
+        and not pro_tier_context_active
+        and not PRO_TIER_RESPONSE_RE.search(text)
         and not re.search(r"\bpro\b", text, re.I)
     ):
         classes.append("current_live_openai_missed_recommendation")
@@ -658,6 +784,18 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
         classes.append("current_live_openai_close_semantics_issue")
     if selected.get("should_speak_raw_url") is not False or selected.get("can_send_email") is not False:
         classes.append("current_live_openai_close_semantics_issue")
+    spoken_naturalness_specific = {
+        "current_live_openai_source_note_spoken",
+        "current_live_openai_article_says_spoken",
+        "current_live_openai_source_of_truth_spoken",
+        "current_live_openai_repeated_exact_response_after_new_question",
+        "current_live_openai_followup_question_not_answered",
+        "current_live_openai_terminal_acceptance_not_closed",
+        "current_live_openai_internal_process_wording",
+        "current_live_openai_state_downgrade_after_headroom",
+    }
+    if any(item in classes for item in spoken_naturalness_specific):
+        classes.append("current_live_openai_spoken_sales_naturalness_defect")
     dialogue_specific = [item for item in classes if item in DIALOGUE_DEFECT_CLASSES and item not in {"current_live_openai_runtime_defect", "current_live_openai_sales_quality_defect"}]
     if dialogue_specific:
         if any(
@@ -688,12 +826,136 @@ def classify_current(payload: dict[str, Any]) -> list[str]:
                 "current_live_openai_stability_guard_owned_adapter_turn",
                 "current_live_openai_intent_priority_defect",
                 "current_live_openai_logic_generalization_defect",
+                "current_live_openai_spoken_sales_naturalness_defect",
+                "current_live_openai_source_note_spoken",
+                "current_live_openai_article_says_spoken",
+                "current_live_openai_source_of_truth_spoken",
+                "current_live_openai_repeated_exact_response_after_new_question",
+                "current_live_openai_followup_question_not_answered",
+                "current_live_openai_terminal_acceptance_not_closed",
+                "current_live_openai_internal_process_wording",
+                "current_live_openai_state_downgrade_after_headroom",
             }
         ):
             classes.append("current_live_openai_sales_performance_defect")
         classes.append("current_live_openai_sales_quality_defect")
         classes.append("current_live_openai_runtime_defect")
     return list(dict.fromkeys(classes))
+
+
+def transcript_plan_state(turn: dict[str, Any]) -> dict[str, Any]:
+    memory = turn.get("demo_conversation_memory") or turn.get("conversation_memory") or {}
+    if not isinstance(memory, dict):
+        return {}
+    state = memory.get("openai_chatgpt_plan_state")
+    return state if isinstance(state, dict) else {}
+
+
+def source_note_subclasses(text: str) -> list[str]:
+    classes: list[str] = []
+    if SOURCE_NOTE_SPOKEN_RE.search(text):
+        classes.append("current_live_openai_source_note_spoken")
+    if ARTICLE_SAYS_SPOKEN_RE.search(text):
+        classes.append("current_live_openai_article_says_spoken")
+    if SOURCE_OF_TRUTH_SPOKEN_RE.search(text):
+        classes.append("current_live_openai_source_of_truth_spoken")
+    return classes
+
+
+def classify_uploaded_transcript_record(record: dict[str, Any]) -> dict[str, Any]:
+    payload = record["payload"]
+    turns = [item for item in payload.get("turns", []) if isinstance(item, dict)]
+    prior_agent_responses: list[str] = []
+    prior_customer_text = ""
+    trace_classes: list[str] = []
+    turn_evidence: list[dict[str, Any]] = []
+
+    for turn in turns:
+        customer = str(turn.get("customer_transcript") or "")
+        agent = str(turn.get("agent_response") or "")
+        plan_state = transcript_plan_state(turn)
+        combined_prior = f"{prior_customer_text} {customer}"
+        pro_tier_buying_context = bool(
+            plan_state.get("active_decision_frame") == "pro_100_vs_200"
+            or PRO_TIER_TRANSCRIPT_RE.search(combined_prior)
+            or re.search(r"deciding between pro tiers|100.*200.*pro|pro_100_vs_200|pro_tier_selection", json.dumps(plan_state, sort_keys=True), re.I)
+        )
+        classes: list[str] = []
+        classes.extend(source_note_subclasses(agent))
+        if INTERNAL_PROCESS_SPOKEN_RE.search(agent):
+            classes.append("current_live_openai_internal_process_wording")
+        if prior_agent_responses and any(normalize_text(agent) == normalize_text(previous) for previous in prior_agent_responses):
+            classes.append("current_live_openai_repeated_exact_response_after_new_question")
+        if PLAN_CHANGE_TRANSCRIPT_RE.search(customer) and not PLAN_CHANGE_RESPONSE_RE.search(agent):
+            classes.append("current_live_openai_followup_question_not_answered")
+        if PLAN_CHANGE_TRANSCRIPT_RE.search(customer) and prior_agent_responses and any(
+            compact_signature(agent) == compact_signature(previous) for previous in prior_agent_responses
+        ):
+            classes.append("current_live_openai_repeated_exact_response_after_new_question")
+        if TERMINAL_ACCEPTANCE_TRANSCRIPT_RE.search(customer) and (
+            TERMINAL_REOPEN_RESPONSE_RE.search(agent) or len(agent.split()) > 65
+        ):
+            classes.append("current_live_openai_terminal_acceptance_not_closed")
+        if (
+            pro_tier_buying_context
+            and re.search(r"little heavily|more than a little|need headroom|headroom|deciding between pro tiers|which pro|100.*200.*pro", combined_prior, re.I)
+            and (PLUS_DOWNGRADE_AFTER_PRO_RE.search(agent) or plan_state.get("openai_recommended_path") == "plus")
+        ):
+            classes.append("current_live_openai_state_downgrade_after_headroom")
+        if classes:
+            classes.append("current_live_openai_spoken_sales_naturalness_defect")
+            trace_classes.extend(classes)
+            turn_evidence.append(
+                {
+                    "turn_index": turn.get("turn_index"),
+                    "customer_transcript_hash": sha256_text(customer)[:12] if customer else None,
+                    "agent_response_hash": sha256_text(agent)[:12] if agent else None,
+                    "classes": list(dict.fromkeys(classes)),
+                    "sanitized_agent_markers": source_note_subclasses(agent)
+                    + (["internal/process wording"] if INTERNAL_PROCESS_SPOKEN_RE.search(agent) else [])
+                    + (["terminal close reopened"] if TERMINAL_ACCEPTANCE_TRANSCRIPT_RE.search(customer) and TERMINAL_REOPEN_RESPONSE_RE.search(agent) else [])
+                    + (["plan-change follow-up not answered"] if PLAN_CHANGE_TRANSCRIPT_RE.search(customer) and not PLAN_CHANGE_RESPONSE_RE.search(agent) else []),
+                }
+            )
+        if agent:
+            prior_agent_responses.append(agent)
+        if customer:
+            prior_customer_text = f"{prior_customer_text} {customer}".strip()
+
+    unique_classes = list(dict.fromkeys(trace_classes))
+    return {
+        "source_file": project_relative(record["path"]),
+        "source_file_hash": sha256_file(record["path"])[:12],
+        "generated_at": record_generated_at(payload),
+        "session_id_hash": sha256_text(str(payload.get("session_id") or ""))[:12] if payload.get("session_id") else None,
+        "turn_count": len(turns),
+        "classification_counts": dict(sorted(Counter(trace_classes).items())),
+        "classifications": unique_classes,
+        "evidence": turn_evidence[:12],
+        "raw_private_transcript_copied_to_public_evidence": False,
+    }
+
+
+def latest_uploaded_transcript_audit() -> dict[str, Any]:
+    records = uploaded_transcript_records()
+    if not records:
+        return {
+            "status": "not_found",
+            "record_count": 0,
+            "classification_counts": {},
+            "records": [],
+            "raw_private_transcript_copied_to_public_evidence": False,
+        }
+    latest = records[-1]
+    analyzed = classify_uploaded_transcript_record(latest)
+    return {
+        "status": "pass" if not analyzed["classifications"] else "classified_pre_patch_live_defects",
+        "record_count": len(records),
+        "latest_source_file": analyzed["source_file"],
+        "classification_counts": analyzed["classification_counts"],
+        "records": [analyzed],
+        "raw_private_transcript_copied_to_public_evidence": False,
+    }
 
 
 def safe_trace(record: dict[str, Any], *, current: bool, classification: str, classes: list[str]) -> dict[str, Any]:
@@ -795,6 +1057,11 @@ def build_replay_sequence(transcripts: list[str], session_id: str) -> dict[str, 
             generic_live_tts_allowed=False,
         )
         append_turn(state, turn)
+    turn["_audit_replay_prior_responses"] = [
+        str((item.get("summary") or {}).get("final_response") or "")
+        for item in state.get("turns", [])[:-1]
+        if isinstance(item, dict)
+    ]
     return turn
 
 
@@ -889,6 +1156,8 @@ def write_evidence(result: dict[str, Any]) -> None:
             f"- Stability guard owned adapter-turn count: `{result['current_live_openai_stability_guard_owned_adapter_turn_count']}`",
             f"- Intent-priority defect count: `{result['current_live_openai_intent_priority_defect_count']}`",
             f"- Logic-generalization defect count: `{result['current_live_openai_logic_generalization_defect_count']}`",
+            f"- Spoken sales naturalness defect count: `{result['current_live_openai_spoken_sales_naturalness_defect_count']}`",
+            f"- Uploaded transcript spoken naturalness defect count: `{result['uploaded_transcript_spoken_sales_naturalness_defect_count']}`",
             f"- Sales momentum defect count: `{result['current_live_openai_sales_momentum_defect_count']}`",
             f"- Legacy field leakage count: `{result['current_live_openai_legacy_field_leakage_count']}`",
             f"- RouteSignal contamination count: `{result['current_live_openai_routesignal_contamination_count']}`",
@@ -913,6 +1182,12 @@ def write_evidence(result: dict[str, Any]) -> None:
             "",
             "```json",
             json.dumps(result["classification_counts"], indent=2, sort_keys=True),
+            "```",
+            "",
+            "## Latest Uploaded Transcript Audit",
+            "",
+            "```json",
+            json.dumps(result["latest_uploaded_transcript_audit"], indent=2, sort_keys=True),
             "```",
             "",
             "## Human Review Examples",
@@ -1010,6 +1285,8 @@ def main() -> None:
         for trace in replay["failed_cases"]
         for item in trace.get("classifications", [])
     )
+    uploaded_transcript_audit = latest_uploaded_transcript_audit()
+    uploaded_transcript_class_counts = Counter(uploaded_transcript_audit.get("classification_counts") or {})
     private_current_dialogue_defect_count = counts["current_live_openai_runtime_defect"]
     post_patch_current_live_defect_count = int(replay["failed_count"])
     fixed_by_replay_after_patch_count = private_current_dialogue_defect_count if post_patch_current_live_defect_count == 0 else 0
@@ -1066,6 +1343,8 @@ def main() -> None:
         "fixed_by_replay_after_patch_count": fixed_by_replay_after_patch_count,
         "post_patch_current_live_defect_count": post_patch_current_live_defect_count,
         "post_patch_runtime_replay": replay,
+        "latest_uploaded_transcript_audit": uploaded_transcript_audit,
+        "latest_uploaded_transcript_classification_counts": dict(sorted(uploaded_transcript_class_counts.items())),
         "current_live_openai_asr_product_alias_issue_count": replay_class_counts["current_live_openai_asr_product_alias_issue"],
         "current_live_openai_internal_policy_language_leak_count": replay_class_counts["current_live_openai_internal_policy_language_leak"],
         "current_live_openai_price_question_refusal_count": replay_class_counts["current_live_openai_price_question_refusal"],
@@ -1094,6 +1373,15 @@ def main() -> None:
         "current_live_openai_stability_guard_owned_adapter_turn_count": replay_class_counts["current_live_openai_stability_guard_owned_adapter_turn"],
         "current_live_openai_intent_priority_defect_count": replay_class_counts["current_live_openai_intent_priority_defect"],
         "current_live_openai_logic_generalization_defect_count": replay_class_counts["current_live_openai_logic_generalization_defect"],
+        "current_live_openai_source_note_spoken_count": replay_class_counts["current_live_openai_source_note_spoken"],
+        "current_live_openai_article_says_spoken_count": replay_class_counts["current_live_openai_article_says_spoken"],
+        "current_live_openai_source_of_truth_spoken_count": replay_class_counts["current_live_openai_source_of_truth_spoken"],
+        "current_live_openai_repeated_exact_response_after_new_question_count": replay_class_counts["current_live_openai_repeated_exact_response_after_new_question"],
+        "current_live_openai_followup_question_not_answered_count": replay_class_counts["current_live_openai_followup_question_not_answered"],
+        "current_live_openai_terminal_acceptance_not_closed_count": replay_class_counts["current_live_openai_terminal_acceptance_not_closed"],
+        "current_live_openai_internal_process_wording_count": replay_class_counts["current_live_openai_internal_process_wording"],
+        "current_live_openai_state_downgrade_after_headroom_count": replay_class_counts["current_live_openai_state_downgrade_after_headroom"],
+        "current_live_openai_spoken_sales_naturalness_defect_count": replay_class_counts["current_live_openai_spoken_sales_naturalness_defect"],
         "current_live_openai_memory_progression_defect_count": replay_class_counts["current_live_openai_memory_progression_defect"],
         "current_live_openai_repeated_answered_question_count": replay_class_counts["current_live_openai_repeated_answered_question"],
         "current_live_openai_duplicate_repair_regression_count": replay_class_counts["current_live_openai_duplicate_repair_regression"],
@@ -1132,6 +1420,24 @@ def main() -> None:
         "private_current_live_stability_guard_owned_adapter_turn_count": counts["current_live_openai_stability_guard_owned_adapter_turn"],
         "private_current_live_intent_priority_defect_count": counts["current_live_openai_intent_priority_defect"],
         "private_current_live_logic_generalization_defect_count": counts["current_live_openai_logic_generalization_defect"],
+        "private_current_live_source_note_spoken_count": counts["current_live_openai_source_note_spoken"],
+        "private_current_live_article_says_spoken_count": counts["current_live_openai_article_says_spoken"],
+        "private_current_live_source_of_truth_spoken_count": counts["current_live_openai_source_of_truth_spoken"],
+        "private_current_live_repeated_exact_response_after_new_question_count": counts["current_live_openai_repeated_exact_response_after_new_question"],
+        "private_current_live_followup_question_not_answered_count": counts["current_live_openai_followup_question_not_answered"],
+        "private_current_live_terminal_acceptance_not_closed_count": counts["current_live_openai_terminal_acceptance_not_closed"],
+        "private_current_live_internal_process_wording_count": counts["current_live_openai_internal_process_wording"],
+        "private_current_live_state_downgrade_after_headroom_count": counts["current_live_openai_state_downgrade_after_headroom"],
+        "private_current_live_spoken_sales_naturalness_defect_count": counts["current_live_openai_spoken_sales_naturalness_defect"],
+        "uploaded_transcript_source_note_spoken_count": uploaded_transcript_class_counts["current_live_openai_source_note_spoken"],
+        "uploaded_transcript_article_says_spoken_count": uploaded_transcript_class_counts["current_live_openai_article_says_spoken"],
+        "uploaded_transcript_source_of_truth_spoken_count": uploaded_transcript_class_counts["current_live_openai_source_of_truth_spoken"],
+        "uploaded_transcript_repeated_exact_response_after_new_question_count": uploaded_transcript_class_counts["current_live_openai_repeated_exact_response_after_new_question"],
+        "uploaded_transcript_followup_question_not_answered_count": uploaded_transcript_class_counts["current_live_openai_followup_question_not_answered"],
+        "uploaded_transcript_terminal_acceptance_not_closed_count": uploaded_transcript_class_counts["current_live_openai_terminal_acceptance_not_closed"],
+        "uploaded_transcript_internal_process_wording_count": uploaded_transcript_class_counts["current_live_openai_internal_process_wording"],
+        "uploaded_transcript_state_downgrade_after_headroom_count": uploaded_transcript_class_counts["current_live_openai_state_downgrade_after_headroom"],
+        "uploaded_transcript_spoken_sales_naturalness_defect_count": uploaded_transcript_class_counts["current_live_openai_spoken_sales_naturalness_defect"],
         "private_current_live_openai_memory_progression_defect_count": counts["current_live_openai_memory_progression_defect"],
         "private_current_live_openai_repeated_answered_question_count": counts["current_live_openai_repeated_answered_question"],
         "private_current_live_openai_duplicate_repair_regression_count": counts["current_live_openai_duplicate_repair_regression"],

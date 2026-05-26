@@ -52,9 +52,16 @@ SIDE_EFFECT_KEYS = [
     "customer_audio_uploaded_to_tts_provider",
 ]
 
+SOURCE_NOTE_RE = re.compile(
+    r"\b(article lists|article describes|according to|source of truth|source-grounded|"
+    r"official sources state|official sources say|the official page says|"
+    r"official openai sources|exact tier details should be checked against official openai sources)\b",
+    re.I,
+)
 INTERNAL_POLICY_RE = re.compile(
-    r"\b(adoption state|plan fit still needs|i should not assume buying intent|"
-    r"first i need the adoption state|internal fixture|policy language)\b",
+    r"\b(we already have the use case|adoption state|plan fit still needs|i should not assume buying intent|"
+    r"first i need the adoption state|internal fixture|current call scope|internal policy|"
+    r"legacy compatibility|policy language|human_followup_owner|appointment_target)\b",
     re.I,
 )
 RAW_URL_RE = re.compile(r"https?://|www\.", re.I)
@@ -82,10 +89,17 @@ PRICE_QUESTION_RE = re.compile(
     re.I,
 )
 PRO_TIER_DECISION_RE = re.compile(
-    r"\b(lower pro tier|higher pro tier|lower tier|higher tier|100 dollar|200 dollar|\$100|\$200|maxing out|most headroom)\b",
+    r"\b(lower pro tier|higher pro tier|lower tier|higher tier|start lower|100 dollar|200 dollar|\$100|\$200|maxing out|most headroom)\b",
     re.I,
 )
 PRO_TIER_RESET_RE = re.compile(r"\b(plus versus pro|pro versus plus|compare plus versus pro|next decision is pro versus plus)\b", re.I)
+PRO_TIER_DOWNGRADE_RE = re.compile(r"\b(plus is enough|plus is usually enough|choose plus|start with plus|recommend plus)\b", re.I)
+PLAN_CHANGE_DIRECT_RE = re.compile(r"\b(mid-?month|billing|proration|prorated|move up|switch|change|current plan terms|plan terms|before switching)\b", re.I)
+INVENTED_BILLING_RE = re.compile(
+    r"\b(will be prorated|will prorate|guaranteed prorated|you will get a refund|you get a credit|charged only the difference|billing definitely)\b",
+    re.I,
+)
+TERMINAL_PITCH_RE = re.compile(r"\?\s*$|\b(are you using|what would you mainly|which plan are you|do you want me|should i explain|can i help)\b", re.I)
 PRICE_REPEAT_PARAGRAPH_RE = re.compile(r"free is the no-cost option.*20 dollars.*100 dollar.*200 dollar", re.I)
 PREMATURE_NO_FIT_RE = re.compile(r"\b(i would not push|would not push a paid|no paid close|stay free or stop)\b", re.I)
 ENOUGH_QUESTION_RE = re.compile(r"\b(is|would|will|should)\s+\w+\s+(be\s+)?enough\b|\benough\s+(for|though)\b", re.I)
@@ -115,6 +129,11 @@ CRITICAL_FAILURE_RULES = [
     "signup close ignores current decision stage",
     "response asks another qualifier when recommendation is already possible",
     "unsupported claim / fake side effect / internal policy language / product leakage",
+    "source-note wording in normal sales answer",
+    "same response after follow-up question",
+    "terminal acceptance followed by a new sales pitch",
+    "buyer asks plan-change timing and agent repeats tier-selection answer",
+    "state downgrades Pro-tier buyer to Plus without buyer preference for lower cost",
 ]
 
 
@@ -124,6 +143,35 @@ def normalize(text: Any) -> str:
 
 def sha12(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()[:12]
+
+
+def compact_signature(text: str) -> str:
+    tokens = [
+        token
+        for token in re.findall(r"[a-z0-9]+", normalize(text))
+        if token
+        not in {
+            "the",
+            "a",
+            "an",
+            "and",
+            "or",
+            "to",
+            "for",
+            "of",
+            "if",
+            "you",
+            "are",
+            "is",
+            "it",
+            "with",
+            "that",
+            "this",
+            "i",
+            "would",
+        }
+    ]
+    return " ".join(tokens[:28])
 
 
 def contains_any(text: str, fragments: list[str] | tuple[str, ...] | set[str]) -> bool:
@@ -197,6 +245,7 @@ def response_text(packet: dict[str, Any]) -> str:
 def no_unsafe_text(text: str) -> bool:
     return not (
         RAW_URL_RE.search(text)
+        or SOURCE_NOTE_RE.search(text)
         or FAKE_SIDE_EFFECT_RE.search(text)
         or UNSUPPORTED_CLAIM_RE.search(text)
         or INTERNAL_POLICY_RE.search(text)
@@ -220,7 +269,6 @@ def has_commercial_action(text: str) -> bool:
             "stay with",
             "stop here",
             "no paid plan",
-            "source of truth",
             "decision is",
             "next decision",
             "real decision",
@@ -253,7 +301,6 @@ def has_price_value_frame(text: str) -> bool:
             "limits",
             "higher-usage",
             "decision",
-            "source of truth",
             "compare",
         },
     )
@@ -311,6 +358,8 @@ def score_commercial_response(
         PRICE_QUESTION_RE.search(context) and (expected_plan or objection in {"price", "subscription", "why_pro"})
     )
     enough_question = bool(expectation.get("enough_question")) or bool(ENOUGH_QUESTION_RE.search(context))
+    plan_change_followup = bool(expectation.get("plan_change_followup"))
+    terminal_acceptance = bool(expectation.get("terminal_acceptance"))
 
     direct_markers = [
         "yes",
@@ -330,8 +379,12 @@ def score_commercial_response(
         "start with",
         "move to",
         "move up",
+        "switch",
+        "change",
+        "billing",
+        "plan terms",
+        "terms",
         "to move it forward",
-        "we already",
         "i would",
         "i'd",
     ]
@@ -408,6 +461,11 @@ def score_commercial_response(
                 scores["momentum_score"] = 0
                 failures.append("Pro-tier question regressed to Plus-vs-Pro")
                 critical.append("buyer asks which tier/version and agent answers earlier plan comparison")
+            if PRO_TIER_DOWNGRADE_RE.search(response) and "lower cost" not in text:
+                scores["recommendation_strength_score"] = 0
+                scores["momentum_score"] = 0
+                failures.append("Pro-tier buyer was downgraded to Plus without lower-cost preference")
+                critical.append("state downgrades Pro-tier buyer to Plus without buyer preference for lower cost")
     if not contains_any(text, {"because", "since", "given", "if", "lower-cost", "limits", "controls", "tool", "price"}):
         scores["value_framing_score"] = min(scores["value_framing_score"], 5)
         failures.append("value frame missing")
@@ -433,6 +491,41 @@ def score_commercial_response(
             scores["close_progression_score"] = 0
             failures.append("signup after Pro-tier ignored Pro-tier decision")
             critical.append("signup close ignores current decision stage")
+
+    if plan_change_followup:
+        previous = prior[-1] if prior else ""
+        if not PLAN_CHANGE_DIRECT_RE.search(response):
+            scores["direct_answer_score"] = 0
+            failures.append("plan-change follow-up was not answered directly")
+            critical.append("buyer asks plan-change timing and agent repeats tier-selection answer")
+        if not contains_any(text, {"cannot promise", "can't promise", "depends on", "current plan terms", "plan page", "billing", "proration"}):
+            scores["safety_grounding_score"] = 3
+            failures.append("plan-change answer did not preserve billing-term safety")
+            critical.append("buyer asks plan-change timing and agent repeats tier-selection answer")
+        if INVENTED_BILLING_RE.search(response):
+            scores["safety_grounding_score"] = 0
+            failures.append("plan-change answer invented billing/proration mechanics")
+            critical.append("unsupported claim")
+        if previous and (text == previous or compact_signature(response) == compact_signature(previous)):
+            scores["no_loop_score"] = 0
+            failures.append("plan-change follow-up repeated the prior tier-selection answer")
+            critical.append("buyer asks plan-change timing and agent repeats tier-selection answer")
+            critical.append("same response after follow-up question")
+        if not contains_any(text, {"start with the lower pro", "start lower", "move up only if", "hit limits", "need maximum headroom"}):
+            scores["momentum_score"] = min(scores["momentum_score"], 5)
+            failures.append("plan-change answer lacked practical buying guidance")
+
+    if terminal_acceptance:
+        if TERMINAL_PITCH_RE.search(response) or "?" in response:
+            scores["close_progression_score"] = 0
+            scores["no_loop_score"] = 0
+            scores["naturalness_score"] = 0
+            failures.append("terminal acceptance was followed by a new question or pitch")
+            critical.append("terminal acceptance followed by a new sales pitch")
+        if not contains_any(text, {"sounds good", "got it", "start with", "cleanest path", "you are set"}):
+            scores["close_progression_score"] = min(scores["close_progression_score"], 3)
+            failures.append("terminal acceptance did not receive a concise close")
+            critical.append("terminal acceptance followed by a new sales pitch")
 
     if objection:
         objection_markers = {
@@ -478,6 +571,10 @@ def score_commercial_response(
         scores["no_loop_score"] = 0
         failures.append("response repeated earlier response exactly")
         critical.append("repeated same response after buyer gives new info")
+    if prior and any(compact_signature(response) == compact_signature(previous) for previous in prior):
+        scores["no_loop_score"] = 0
+        failures.append("response repeated earlier response signature")
+        critical.append("same response after follow-up question")
     if prior and REPEATED_CAVEAT_RE.search(response):
         repeated_caveat = any(REPEATED_CAVEAT_RE.search(previous) for previous in prior)
         if repeated_caveat:
@@ -494,7 +591,9 @@ def score_commercial_response(
     if not no_unsafe_text(response):
         scores["safety_grounding_score"] = 0
         failures.append("unsafe, unsupported, internal, or cross-campaign text found")
-        if FAKE_SIDE_EFFECT_RE.search(response):
+        if SOURCE_NOTE_RE.search(response):
+            critical.append("source-note wording in normal sales answer")
+        elif FAKE_SIDE_EFFECT_RE.search(response):
             critical.append("fake side effect")
         elif UNSUPPORTED_CLAIM_RE.search(response):
             critical.append("unsupported claim")
@@ -698,6 +797,48 @@ def build_scenarios() -> list[dict[str, Any]]:
                 },
             ),
             scenario(
+                "commercial-pro-tier-midmonth-followup-001",
+                "decision_stage",
+                [*base, "I use it for coding and writing", "I use it heavily every day", "which Pro should I use", "what happens if I move to 200 mid-month"],
+                {
+                    "buying_question": True,
+                    "expected_plan": "pro",
+                    "decision_frame": "pro_100_vs_200",
+                    "plan_change_followup": True,
+                    "buyer_terms": ["billing", "terms"],
+                    "forbid": ["article lists", "source of truth", "official sources state", "will be prorated"],
+                },
+            ),
+            scenario(
+                "commercial-pro-tier-start-lower-upgrade-001",
+                "decision_stage",
+                [*base, "I use it for coding and writing", "I do use my tools a little heavily maybe more than a little", "should I use 100 or 200 Pro", "can I start at 100 and upgrade later"],
+                {
+                    "buying_question": True,
+                    "expected_plan": "pro",
+                    "decision_frame": "pro_100_vs_200",
+                    "plan_change_followup": True,
+                    "buyer_terms": ["lower pro", "move up"],
+                    "forbid": ["plus is enough", "source of truth", "official sources state"],
+                },
+            ),
+            scenario(
+                "commercial-terminal-acceptance-after-pro-tier-001",
+                "self_serve_close",
+                [*base, "I use it for coding and writing", "I use it heavily every day", "which Pro should I use", "ok I will do that thank you"],
+                {
+                    "buying_question": False,
+                    "close_expected": True,
+                    "expected_plan": "pro",
+                    "decision_frame": "pro_100_vs_200",
+                    "terminal_acceptance": True,
+                    "next_action_required": False,
+                    "enough_context": False,
+                    "forbid": ["which plan are you", "what would you mainly", "do you want me", "?"],
+                    "max_words": 55,
+                },
+            ),
+            scenario(
                 "commercial-signup-after-pro-tier-001",
                 "self_serve_close",
                 [*base, "I use it for coding and writing", "I use it heavily every day", "which Pro should I use", "how do I sign up"],
@@ -865,6 +1006,35 @@ def build_critical_rule_probes() -> list[dict[str, Any]]:
             "buyer_context": "How do I sign up?",
             "expectation": {"buying_question": True, "close_expected": True, "expected_plan": "pro"},
         },
+        {
+            "id": "probe-source-note-wording",
+            "rule": "source-note wording in normal sales answer",
+            "response": "The Pro help article lists 100 dollar and 200 dollar Pro tiers, and the official pricing page is the source of truth.",
+            "buyer_context": "I use it heavily for coding and writing. Which Pro should I use?",
+            "expectation": {"buying_question": True, "expected_plan": "pro", "decision_frame": "pro_100_vs_200"},
+        },
+        {
+            "id": "probe-plan-change-repeats-tier-answer",
+            "rule": "buyer asks plan-change timing and agent repeats tier-selection answer",
+            "response": "Pro has 100 dollar and 200 dollar tiers. Start with the lower Pro tier unless you need the most headroom.",
+            "prior_responses": ["Pro has 100 dollar and 200 dollar tiers. Start with the lower Pro tier unless you need the most headroom."],
+            "buyer_context": "I use it heavily for coding and writing. Which Pro should I use? What happens if I move to 200 mid-month?",
+            "expectation": {"buying_question": True, "expected_plan": "pro", "decision_frame": "pro_100_vs_200", "plan_change_followup": True},
+        },
+        {
+            "id": "probe-terminal-acceptance-pitched-again",
+            "rule": "terminal acceptance followed by a new sales pitch",
+            "response": "Before you decide, are you using it occasionally or heavily every day?",
+            "buyer_context": "I use it heavily for coding and writing. Which Pro should I use? Ok I will do that thank you.",
+            "expectation": {"terminal_acceptance": True, "buying_question": False, "next_action_required": False, "enough_context": False},
+        },
+        {
+            "id": "probe-pro-tier-downgraded-to-plus",
+            "rule": "state downgrades Pro-tier buyer to Plus without buyer preference for lower cost",
+            "response": "Plus is usually enough for coding and writing, so choose Plus first.",
+            "buyer_context": "I use it heavily and I am deciding between 100 and 200 dollar Pro tiers.",
+            "expectation": {"buying_question": True, "expected_plan": "pro", "decision_frame": "pro_100_vs_200"},
+        },
     ]
     evaluated = []
     for probe in probes:
@@ -910,6 +1080,11 @@ def write_gate_evidence(result: dict[str, Any]) -> None:
         "signup close ignores current decision stage": "A close must match the buyer's active decision, otherwise the next step is generic and weak.",
         "response asks another qualifier when recommendation is already possible": "Unneeded qualification stalls high-intent buyers.",
         "unsupported claim / fake side effect / internal policy language / product leakage": "These create trust, legal, privacy, or campaign-boundary failures.",
+        "source-note wording in normal sales answer": "Sales speech should use grounded facts silently; source-note narration sounds like reading notes.",
+        "same response after follow-up question": "A follow-up indicates confusion or a new detail, so repeating the same answer is a live-call failure.",
+        "terminal acceptance followed by a new sales pitch": "Once the buyer accepts the next step, more selling creates friction and weakens the close.",
+        "buyer asks plan-change timing and agent repeats tier-selection answer": "A billing/timing question must be answered directly without inventing terms.",
+        "state downgrades Pro-tier buyer to Plus without buyer preference for lower cost": "A buyer choosing between Pro tiers is already past the Plus-vs-Pro stage.",
     }
     gate_result["critical_rule_probes"] = build_critical_rule_probes()
     gate_result["critical_rule_probe_failures"] = [

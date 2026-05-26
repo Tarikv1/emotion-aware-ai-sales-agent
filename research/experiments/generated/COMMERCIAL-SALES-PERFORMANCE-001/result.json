@@ -1,5 +1,5 @@
 {
-  "average_score": 99.0,
+  "average_score": 98.61,
   "checkpoint_id": "COMMERCIAL-SALES-PERFORMANCE-001",
   "critical_failure_count": 0,
   "dimension_score_averages": {
@@ -10,21 +10,21 @@
     "naturalness_score": 10.0,
     "no_loop_score": 10.0,
     "objection_handling_score": 10.0,
-    "recommendation_strength_score": 9.0,
+    "recommendation_strength_score": 8.61,
     "safety_grounding_score": 10.0,
     "value_framing_score": 10.0
   },
   "failed_cases": [],
   "failed_count": 0,
   "group_counts": {
-    "decision_stage": 1,
+    "decision_stage": 3,
     "direct_recommendation": 2,
     "momentum_close": 1,
     "no_fit_close": 1,
     "objection_handling": 6,
     "objection_reframe": 1,
     "price_value_frame": 1,
-    "self_serve_close": 2
+    "self_serve_close": 3
   },
   "live_tts_calls_made": false,
   "local_llm_calls_made": false,
@@ -68,9 +68,53 @@
       "failures": [
         "recommendation was present but weak"
       ],
-      "final_response_hash": "394779b76aab",
+      "final_response_hash": "8aab91f0b6cb",
       "group": "decision_stage",
       "id": "commercial-pro-tier-selection-001",
+      "score": 95
+    },
+    {
+      "critical_failures": [],
+      "dimension_scores": {
+        "buyer_specificity_score": 10,
+        "close_progression_score": 10,
+        "direct_answer_score": 10,
+        "momentum_score": 10,
+        "naturalness_score": 10,
+        "no_loop_score": 10,
+        "objection_handling_score": 10,
+        "recommendation_strength_score": 5,
+        "safety_grounding_score": 10,
+        "value_framing_score": 10
+      },
+      "failures": [
+        "recommendation was present but weak"
+      ],
+      "final_response_hash": "7104eb1d01dc",
+      "group": "decision_stage",
+      "id": "commercial-pro-tier-midmonth-followup-001",
+      "score": 95
+    },
+    {
+      "critical_failures": [],
+      "dimension_scores": {
+        "buyer_specificity_score": 10,
+        "close_progression_score": 10,
+        "direct_answer_score": 10,
+        "momentum_score": 10,
+        "naturalness_score": 10,
+        "no_loop_score": 10,
+        "objection_handling_score": 10,
+        "recommendation_strength_score": 5,
+        "safety_grounding_score": 10,
+        "value_framing_score": 10
+      },
+      "failures": [
+        "recommendation was present but weak"
+      ],
+      "final_response_hash": "7104eb1d01dc",
+      "group": "decision_stage",
+      "id": "commercial-pro-tier-start-lower-upgrade-001",
       "score": 95
     },
     {
@@ -170,7 +214,7 @@
         "value_framing_score": 10
       },
       "failures": [],
-      "final_response_hash": "29e68776c62e",
+      "final_response_hash": "668def6d152c",
       "group": "price_value_frame",
       "id": "commercial-price-known-heavy-001",
       "score": 100
@@ -194,46 +238,6 @@
       "group": "self_serve_close",
       "id": "commercial-signup-known-heavy-001",
       "score": 100
-    },
-    {
-      "critical_failures": [],
-      "dimension_scores": {
-        "buyer_specificity_score": 10,
-        "close_progression_score": 10,
-        "direct_answer_score": 10,
-        "momentum_score": 10,
-        "naturalness_score": 10,
-        "no_loop_score": 10,
-        "objection_handling_score": 10,
-        "recommendation_strength_score": 10,
-        "safety_grounding_score": 10,
-        "value_framing_score": 10
-      },
-      "failures": [],
-      "final_response_hash": "f09571a999b4",
-      "group": "objection_reframe",
-      "id": "commercial-competitor-gap-001",
-      "score": 100
-    },
-    {
-      "critical_failures": [],
-      "dimension_scores": {
-        "buyer_specificity_score": 10,
-        "close_progression_score": 10,
-        "direct_answer_score": 10,
-        "momentum_score": 10,
-        "naturalness_score": 10,
-        "no_loop_score": 10,
-        "objection_handling_score": 10,
-        "recommendation_strength_score": 10,
-        "safety_grounding_score": 10,
-        "value_framing_score": 10
-      },
-      "failures": [],
-      "final_response_hash": "61cccbea609b",
-      "group": "no_fit_close",
-      "id": "commercial-no-fit-001",
-      "score": 100
     }
   ],
   "minimum_score": 95,
@@ -246,7 +250,7 @@
     "objection_handling_score": 8,
     "zero_dimension_score_count": 0
   },
-  "multi_turn_scenario_count": 15,
+  "multi_turn_scenario_count": 18,
   "provider_calls_made": false,
   "raw_private_transcript_copied_to_public_evidence": false,
   "rubric_dimensions": [
@@ -261,7 +265,7 @@
     "safety_grounding_score",
     "naturalness_score"
   ],
-  "scenario_count": 15,
+  "scenario_count": 18,
   "side_effects_false": true,
   "status": "pass",
   "traces": [
@@ -391,8 +395,8 @@
         "value_framing_score": 10
       },
       "failures": [],
-      "final_response": "Sure. Free is the no-cost option. Plus is listed at 20 dollars per month, billed monthly. The Pro help article lists 100 dollar and 200 dollar Pro tiers; the main difference is usage allowance. The official ChatGPT pricing page is the source of truth for exact current prices. Given coding and heavy use, I would compare Pro first. The real decision is Plus as the lower-cost start versus Pro as the higher-usage option.",
-      "final_response_hash": "29e68776c62e",
+      "final_response": "Sure. Free is the no-cost option. Plus is listed at 20 dollars per month, billed monthly. Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Exact current terms can change, so check the plan page before upgrading. Given coding and heavy use, I would compare Pro first. The real decision is Plus as the lower-cost start versus Pro as the higher-usage option.",
+      "final_response_hash": "668def6d152c",
       "group": "price_value_frame",
       "id": "commercial-price-known-heavy-001",
       "multi_turn": true,
@@ -539,8 +543,8 @@
         "value_framing_score": 10
       },
       "failures": [],
-      "final_response": "That price concern is fair. If you are using it casually, I would not pay for Pro. For heavy coding and writing, the question is whether extra usage headroom saves enough friction to justify the price. If price matters most, start with Plus. If limits slow you down, Pro is the cleaner fit. The official ChatGPT pricing page is the source of truth for exact current prices.",
-      "final_response_hash": "d7ea08ce34b6",
+      "final_response": "That price concern is fair. If you are using it casually, I would not pay for Pro. For heavy coding and writing, the question is whether extra usage headroom saves enough friction to justify the price. If price matters most, start with Plus. If limits slow you down, Pro is the cleaner fit. Check the plan page for exact current prices.",
+      "final_response_hash": "e5247089f878",
       "group": "objection_handling",
       "id": "commercial-objection-001",
       "multi_turn": true,
@@ -726,8 +730,8 @@
         "value_framing_score": 10
       },
       "failures": [],
-      "final_response": "That price concern is fair. If you are using it casually, I would not pay for Pro. For heavy coding and writing, the question is whether extra usage headroom saves enough friction to justify the price. If price matters most, start with Plus. If limits slow you down, Pro is the cleaner fit. The official ChatGPT pricing page is the source of truth for exact current prices.",
-      "final_response_hash": "d7ea08ce34b6",
+      "final_response": "That price concern is fair. If you are using it casually, I would not pay for Pro. For heavy coding and writing, the question is whether extra usage headroom saves enough friction to justify the price. If price matters most, start with Plus. If limits slow you down, Pro is the cleaner fit. Check the plan page for exact current prices.",
+      "final_response_hash": "e5247089f878",
       "group": "objection_handling",
       "id": "commercial-price-objection-after-price-001",
       "multi_turn": true,
@@ -765,8 +769,8 @@
       "failures": [
         "recommendation was present but weak"
       ],
-      "final_response": "The Pro help article lists 100 dollar and 200 dollar Pro tiers; the main difference is usage allowance. Exact tier details should be checked against official OpenAI sources. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. The official ChatGPT pricing page is the source of truth for exact current prices.",
-      "final_response_hash": "394779b76aab",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
+      "final_response_hash": "8aab91f0b6cb",
       "group": "decision_stage",
       "id": "commercial-pro-tier-selection-001",
       "multi_turn": true,
@@ -786,6 +790,121 @@
       },
       "status": "pass",
       "turn_count": 5
+    },
+    {
+      "critical_failures": [],
+      "dimension_scores": {
+        "buyer_specificity_score": 10,
+        "close_progression_score": 10,
+        "direct_answer_score": 10,
+        "momentum_score": 10,
+        "naturalness_score": 10,
+        "no_loop_score": 10,
+        "objection_handling_score": 10,
+        "recommendation_strength_score": 5,
+        "safety_grounding_score": 10,
+        "value_framing_score": 10
+      },
+      "failures": [
+        "recommendation was present but weak"
+      ],
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "decision_stage",
+      "id": "commercial-pro-tier-midmonth-followup-001",
+      "multi_turn": true,
+      "score": 95,
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "critical_failures": [],
+      "dimension_scores": {
+        "buyer_specificity_score": 10,
+        "close_progression_score": 10,
+        "direct_answer_score": 10,
+        "momentum_score": 10,
+        "naturalness_score": 10,
+        "no_loop_score": 10,
+        "objection_handling_score": 10,
+        "recommendation_strength_score": 5,
+        "safety_grounding_score": 10,
+        "value_framing_score": 10
+      },
+      "failures": [
+        "recommendation was present but weak"
+      ],
+      "final_response": "If you move up mid-month, I cannot promise the exact billing treatment here; it depends on the current plan terms. For the buying decision, start with the lower Pro tier if you are unsure, then move up only if you hit limits or need maximum headroom. Before switching tiers, check the plan page for the exact billing or proration terms.",
+      "final_response_hash": "7104eb1d01dc",
+      "group": "decision_stage",
+      "id": "commercial-pro-tier-start-lower-upgrade-001",
+      "multi_turn": true,
+      "score": 95,
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
+    },
+    {
+      "critical_failures": [],
+      "dimension_scores": {
+        "buyer_specificity_score": 10,
+        "close_progression_score": 10,
+        "direct_answer_score": 10,
+        "momentum_score": 10,
+        "naturalness_score": 10,
+        "no_loop_score": 10,
+        "objection_handling_score": 10,
+        "recommendation_strength_score": 10,
+        "safety_grounding_score": 10,
+        "value_framing_score": 10
+      },
+      "failures": [],
+      "final_response": "Sounds good. Start with the ChatGPT plans page, and if you are unsure between Pro tiers, start lower and move up only if you hit limits. That is the cleanest path.",
+      "final_response_hash": "2eaf772430cc",
+      "group": "self_serve_close",
+      "id": "commercial-terminal-acceptance-after-pro-tier-001",
+      "multi_turn": true,
+      "score": 100,
+      "side_effects": {
+        "audio_file_created": false,
+        "creates_calendar_event": false,
+        "customer_audio_uploaded_to_python_server": false,
+        "customer_audio_uploaded_to_tts_provider": false,
+        "live_tts_used": false,
+        "local_llm_calls_made": false,
+        "opens_prod_102": false,
+        "provider_calls_made": false,
+        "sends_email": false,
+        "tts_provider_calls_made": false,
+        "writes_crm": false
+      },
+      "status": "pass",
+      "turn_count": 6
     },
     {
       "critical_failures": [],

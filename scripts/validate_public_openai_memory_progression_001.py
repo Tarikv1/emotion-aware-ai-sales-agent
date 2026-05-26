@@ -372,8 +372,8 @@ def check_expectation(item: dict[str, Any], run: dict[str, Any]) -> list[str]:
     elif expectation == "price_known_state":
         if "20" not in lowered and "100" not in lowered and "200" not in lowered:
             failures.append("price answer did not answer price directly")
-        if "source of truth" not in lowered:
-            failures.append("price answer missed source-of-truth caveat")
+        if not ("check the plan page" in lowered or "exact current" in lowered or "current terms" in lowered):
+            failures.append("price answer missed current-terms caveat")
         if "limit" not in lowered or "pro" not in lowered or "plus" not in lowered:
             failures.append("price answer did not tie price to known Plus/Pro state")
         if ADOPTION_RESET_RE.search(text):

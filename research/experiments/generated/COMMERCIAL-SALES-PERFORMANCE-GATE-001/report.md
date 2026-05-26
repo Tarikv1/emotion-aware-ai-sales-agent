@@ -1,9 +1,9 @@
 # COMMERCIAL-SALES-PERFORMANCE-GATE-001
 
 - Status: `pass`
-- Scenario count: `15`
-- Multi-turn count: `15`
-- Average score: `99.0`
+- Scenario count: `18`
+- Multi-turn count: `18`
+- Average score: `98.61`
 - Minimum score: `95`
 - Critical failure count: `0`
 - Zero-dimension-score count: `0`
@@ -20,7 +20,7 @@
   "naturalness_score": 10.0,
   "no_loop_score": 10.0,
   "objection_handling_score": 10.0,
-  "recommendation_strength_score": 9.0,
+  "recommendation_strength_score": 8.61,
   "safety_grounding_score": 10.0,
   "value_framing_score": 10.0
 }
@@ -43,7 +43,12 @@
   "buyer gives tool usage and agent prematurely disqualifies without explicit no-fit signal",
   "signup close ignores current decision stage",
   "response asks another qualifier when recommendation is already possible",
-  "unsupported claim / fake side effect / internal policy language / product leakage"
+  "unsupported claim / fake side effect / internal policy language / product leakage",
+  "source-note wording in normal sales answer",
+  "same response after follow-up question",
+  "terminal acceptance followed by a new sales pitch",
+  "buyer asks plan-change timing and agent repeats tier-selection answer",
+  "state downgrades Pro-tier buyer to Plus without buyer preference for lower cost"
 ]
 ```
 
@@ -52,6 +57,7 @@
 ```json
 {
   "buyer asks is X enough but response dodges or over-qualifies": "An is-enough question requests a direct plan decision, not another qualifier.",
+  "buyer asks plan-change timing and agent repeats tier-selection answer": "A billing/timing question must be answered directly without inventing terms.",
   "buyer asks price but response gives no value frame": "Price without value creates sticker-shock instead of a commercial decision.",
   "buyer asks which tier/version and agent answers earlier plan comparison": "A later-stage tier decision must not be answered with an earlier Plus-vs-Pro frame.",
   "buyer gives buying signal but no close/decision step follows": "Buying signals must be converted into a next decision, comparison, or close.",
@@ -63,7 +69,11 @@
   "response asks another qualifier when recommendation is already possible": "Unneeded qualification stalls high-intent buyers.",
   "response only provides information and no next commercial action": "Information is not selling unless it advances the buyer toward a decision.",
   "response repeats same caveat after buyer gives new information": "Repeated caveats show the dialogue is not adapting to the buyer.",
+  "same response after follow-up question": "A follow-up indicates confusion or a new detail, so repeating the same answer is a live-call failure.",
   "signup close ignores current decision stage": "A close must match the buyer's active decision, otherwise the next step is generic and weak.",
+  "source-note wording in normal sales answer": "Sales speech should use grounded facts silently; source-note narration sounds like reading notes.",
+  "state downgrades Pro-tier buyer to Plus without buyer preference for lower cost": "A buyer choosing between Pro tiers is already past the Plus-vs-Pro stage.",
+  "terminal acceptance followed by a new sales pitch": "Once the buyer accepts the next step, more selling creates friction and weakens the close.",
   "unsupported claim / fake side effect / internal policy language / product leakage": "These create trust, legal, privacy, or campaign-boundary failures."
 }
 ```
@@ -117,9 +127,53 @@
     "failures": [
       "recommendation was present but weak"
     ],
-    "final_response_hash": "394779b76aab",
+    "final_response_hash": "8aab91f0b6cb",
     "group": "decision_stage",
     "id": "commercial-pro-tier-selection-001",
+    "score": 95
+  },
+  {
+    "critical_failures": [],
+    "dimension_scores": {
+      "buyer_specificity_score": 10,
+      "close_progression_score": 10,
+      "direct_answer_score": 10,
+      "momentum_score": 10,
+      "naturalness_score": 10,
+      "no_loop_score": 10,
+      "objection_handling_score": 10,
+      "recommendation_strength_score": 5,
+      "safety_grounding_score": 10,
+      "value_framing_score": 10
+    },
+    "failures": [
+      "recommendation was present but weak"
+    ],
+    "final_response_hash": "7104eb1d01dc",
+    "group": "decision_stage",
+    "id": "commercial-pro-tier-midmonth-followup-001",
+    "score": 95
+  },
+  {
+    "critical_failures": [],
+    "dimension_scores": {
+      "buyer_specificity_score": 10,
+      "close_progression_score": 10,
+      "direct_answer_score": 10,
+      "momentum_score": 10,
+      "naturalness_score": 10,
+      "no_loop_score": 10,
+      "objection_handling_score": 10,
+      "recommendation_strength_score": 5,
+      "safety_grounding_score": 10,
+      "value_framing_score": 10
+    },
+    "failures": [
+      "recommendation was present but weak"
+    ],
+    "final_response_hash": "7104eb1d01dc",
+    "group": "decision_stage",
+    "id": "commercial-pro-tier-start-lower-upgrade-001",
     "score": 95
   },
   {
@@ -219,7 +273,7 @@
       "value_framing_score": 10
     },
     "failures": [],
-    "final_response_hash": "29e68776c62e",
+    "final_response_hash": "668def6d152c",
     "group": "price_value_frame",
     "id": "commercial-price-known-heavy-001",
     "score": 100
@@ -243,46 +297,6 @@
     "group": "self_serve_close",
     "id": "commercial-signup-known-heavy-001",
     "score": 100
-  },
-  {
-    "critical_failures": [],
-    "dimension_scores": {
-      "buyer_specificity_score": 10,
-      "close_progression_score": 10,
-      "direct_answer_score": 10,
-      "momentum_score": 10,
-      "naturalness_score": 10,
-      "no_loop_score": 10,
-      "objection_handling_score": 10,
-      "recommendation_strength_score": 10,
-      "safety_grounding_score": 10,
-      "value_framing_score": 10
-    },
-    "failures": [],
-    "final_response_hash": "f09571a999b4",
-    "group": "objection_reframe",
-    "id": "commercial-competitor-gap-001",
-    "score": 100
-  },
-  {
-    "critical_failures": [],
-    "dimension_scores": {
-      "buyer_specificity_score": 10,
-      "close_progression_score": 10,
-      "direct_answer_score": 10,
-      "momentum_score": 10,
-      "naturalness_score": 10,
-      "no_loop_score": 10,
-      "objection_handling_score": 10,
-      "recommendation_strength_score": 10,
-      "safety_grounding_score": 10,
-      "value_framing_score": 10
-    },
-    "failures": [],
-    "final_response_hash": "61cccbea609b",
-    "group": "no_fit_close",
-    "id": "commercial-no-fit-001",
-    "score": 100
   }
 ]
 ```
@@ -296,6 +310,7 @@
     "critical_failures": [
       "information-only response without commercial action",
       "repeated same response after buyer gives new info",
+      "same response after follow-up question",
       "zero dimension score",
       "no_loop_score == 0"
     ],
@@ -312,7 +327,7 @@
       "value_framing_score": 4
     },
     "expected_status": "fail",
-    "failure_count": 7,
+    "failure_count": 8,
     "id": "probe-no-loop-zero",
     "response_hash": "f2a22ca5b568",
     "rule": "no_loop_score == 0",
@@ -459,6 +474,7 @@
     "critical_failures": [
       "enough context exists but no recommendation",
       "repeated same response after buyer gives new info",
+      "same response after follow-up question",
       "repeated same caveat after buyer gives new info",
       "zero dimension score",
       "no_loop_score == 0"
@@ -476,7 +492,7 @@
       "value_framing_score": 10
     },
     "expected_status": "fail",
-    "failure_count": 6,
+    "failure_count": 7,
     "id": "probe-repeated-caveat",
     "response_hash": "792c795ac5b2",
     "rule": "response repeats same caveat after buyer gives new information",
@@ -592,6 +608,7 @@
     "critical_failures": [
       "direct buying question dodged",
       "buyer asks which tier/version and agent answers earlier plan comparison",
+      "state downgrades Pro-tier buyer to Plus without buyer preference for lower cost",
       "signup close ignores current decision stage",
       "zero dimension score",
       "close opportunity missed"
@@ -600,20 +617,20 @@
       "buyer_specificity_score": 6,
       "close_progression_score": 0,
       "direct_answer_score": 0,
-      "momentum_score": 10,
+      "momentum_score": 0,
       "naturalness_score": 10,
       "no_loop_score": 10,
       "objection_handling_score": 10,
-      "recommendation_strength_score": 10,
+      "recommendation_strength_score": 0,
       "safety_grounding_score": 10,
       "value_framing_score": 0
     },
     "expected_status": "fail",
-    "failure_count": 7,
+    "failure_count": 8,
     "id": "probe-signup-ignores-pro-tier-stage",
     "response_hash": "c46f3e215c7d",
     "rule": "signup close ignores current decision stage",
-    "score": 66
+    "score": 46
   },
   {
     "actual_status": "fail",
@@ -670,6 +687,115 @@
     "response_hash": "9115e02f624f",
     "rule": "unsupported claim / fake side effect / internal policy language / product leakage",
     "score": 53
+  },
+  {
+    "actual_status": "fail",
+    "critical_failures": [
+      "direct buying question dodged",
+      "source-note wording in normal sales answer",
+      "zero dimension score"
+    ],
+    "dimension_scores": {
+      "buyer_specificity_score": 6,
+      "close_progression_score": 10,
+      "direct_answer_score": 0,
+      "momentum_score": 10,
+      "naturalness_score": 10,
+      "no_loop_score": 10,
+      "objection_handling_score": 10,
+      "recommendation_strength_score": 5,
+      "safety_grounding_score": 0,
+      "value_framing_score": 5
+    },
+    "expected_status": "fail",
+    "failure_count": 7,
+    "id": "probe-source-note-wording",
+    "response_hash": "0aba24bd7257",
+    "rule": "source-note wording in normal sales answer",
+    "score": 66
+  },
+  {
+    "actual_status": "fail",
+    "critical_failures": [
+      "buyer asks plan-change timing and agent repeats tier-selection answer",
+      "same response after follow-up question",
+      "repeated same response after buyer gives new info",
+      "zero dimension score",
+      "no_loop_score == 0",
+      "direct buying question dodged"
+    ],
+    "dimension_scores": {
+      "buyer_specificity_score": 6,
+      "close_progression_score": 10,
+      "direct_answer_score": 0,
+      "momentum_score": 10,
+      "naturalness_score": 10,
+      "no_loop_score": 0,
+      "objection_handling_score": 10,
+      "recommendation_strength_score": 5,
+      "safety_grounding_score": 3,
+      "value_framing_score": 5
+    },
+    "expected_status": "fail",
+    "failure_count": 11,
+    "id": "probe-plan-change-repeats-tier-answer",
+    "response_hash": "b21c561467f9",
+    "rule": "buyer asks plan-change timing and agent repeats tier-selection answer",
+    "score": 59
+  },
+  {
+    "actual_status": "fail",
+    "critical_failures": [
+      "terminal acceptance followed by a new sales pitch",
+      "zero dimension score",
+      "no_loop_score == 0"
+    ],
+    "dimension_scores": {
+      "buyer_specificity_score": 10,
+      "close_progression_score": 0,
+      "direct_answer_score": 10,
+      "momentum_score": 10,
+      "naturalness_score": 0,
+      "no_loop_score": 0,
+      "objection_handling_score": 10,
+      "recommendation_strength_score": 10,
+      "safety_grounding_score": 10,
+      "value_framing_score": 5
+    },
+    "expected_status": "fail",
+    "failure_count": 5,
+    "id": "probe-terminal-acceptance-pitched-again",
+    "response_hash": "a9946419c8e4",
+    "rule": "terminal acceptance followed by a new sales pitch",
+    "score": 65
+  },
+  {
+    "actual_status": "fail",
+    "critical_failures": [
+      "enough context exists but no recommendation",
+      "buyer asks which tier/version and agent answers earlier plan comparison",
+      "state downgrades Pro-tier buyer to Plus without buyer preference for lower cost",
+      "zero dimension score",
+      "direct buying question dodged"
+    ],
+    "dimension_scores": {
+      "buyer_specificity_score": 10,
+      "close_progression_score": 10,
+      "direct_answer_score": 0,
+      "momentum_score": 0,
+      "naturalness_score": 10,
+      "no_loop_score": 10,
+      "objection_handling_score": 10,
+      "recommendation_strength_score": 0,
+      "safety_grounding_score": 10,
+      "value_framing_score": 0
+    },
+    "expected_status": "fail",
+    "failure_count": 8,
+    "id": "probe-pro-tier-downgraded-to-plus",
+    "response_hash": "078b1642536a",
+    "rule": "state downgrades Pro-tier buyer to Plus without buyer preference for lower cost",
+    "score": 60
   }
 ]
 ```

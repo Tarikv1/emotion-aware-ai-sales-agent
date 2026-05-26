@@ -58,7 +58,7 @@ UNSAFE_AFFILIATION_RE = re.compile(
 )
 ASR_REPAIR_RE = re.compile(r"only caught part|repeat the question|asr|audio was unclear", re.I)
 ADOPTION_LOOP_RE = re.compile(r"using chatgpt today.*another ai tool.*not using ai|first i need", re.I)
-OFFICIAL_SOURCE_RE = re.compile(r"official .*pricing page|source of truth|official chatgpt pricing page", re.I)
+OFFICIAL_SOURCE_RE = re.compile(r"check the plan page|exact current|current terms|exact current prices", re.I)
 PLUS_PRO_RE = re.compile(r"\bplus\b.*\bpro\b|\bpro\b.*\bplus\b", re.I)
 
 
@@ -504,7 +504,7 @@ def validate_expectation(item: dict[str, Any], text: str, packet: dict[str, Any]
 
     elif expectation == "price_question":
         if not OFFICIAL_SOURCE_RE.search(text):
-            failures.append("price answer lacks official source-of-truth caveat")
+            failures.append("price answer lacks current-terms caveat")
         if not re.search(r"free|plus|pro|business|enterprise|20|100|200|25", text, re.I):
             failures.append("price question did not answer plan price/category directly")
         if ADOPTION_LOOP_RE.search(text):
@@ -550,7 +550,7 @@ def validate_expectation(item: dict[str, Any], text: str, packet: dict[str, Any]
             failures.append("loop sequence repeated adoption-state discovery")
         if ASR_REPAIR_RE.search(text):
             failures.append("loop sequence fell into ASR repair")
-        if "price" in " ".join(item["turns"]).lower() and not re.search(r"source of truth|20|100|200|free|plus|pro", text, re.I):
+        if "price" in " ".join(item["turns"]).lower() and not re.search(r"check the plan page|20|100|200|free|plus|pro", text, re.I):
             failures.append("loop sequence did not answer repeated price request")
         prior_responses = [str((turn.get("summary") or {}).get("final_response") or "") for turn in (packet.get("session_state") or {}).get("turns", [])]
         if text and prior_responses.count(text) > 1:
