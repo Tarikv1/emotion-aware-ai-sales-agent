@@ -20,10 +20,24 @@ LOCAL_LLM_MODEL_PATH_ENV_VAR = "LOCAL_LLM_MODEL_PATH"
 LOCAL_LLM_CACHE_DIR_ENV_VAR = "LOCAL_LLM_CACHE_DIR"
 LOCAL_LLM_QUANTIZATION_ENV_VAR = "LOCAL_LLM_QUANTIZATION"
 LOCAL_LLM_DEVICE_ENV_VAR = "LOCAL_LLM_DEVICE"
+LOCAL_LLM_MAX_INPUT_TOKENS_ENV_VAR = "LOCAL_LLM_MAX_INPUT_TOKENS"
+LOCAL_LLM_MAX_OUTPUT_TOKENS_ENV_VAR = "LOCAL_LLM_MAX_OUTPUT_TOKENS"
+LOCAL_LLM_TIMEOUT_MS_ENV_VAR = "LOCAL_LLM_TIMEOUT_MS"
 
 
 def _env_flag(value: str | None) -> bool:
     return str(value or "").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_positive_int(source: dict[str, str] | os._Environ[str], name: str, default: int) -> int:
+    raw = source.get(name)
+    if raw is None or str(raw).strip() == "":
+        return default
+    try:
+        value = int(str(raw).strip())
+    except ValueError:
+        return default
+    return value if value > 0 else default
 
 
 @dataclass(frozen=True)
@@ -31,6 +45,8 @@ class ConversationBrainRequest:
     normalized_transcript: str
     prior_state: dict[str, Any]
     approved_campaign_fact_ids: list[str]
+    approved_campaign_fact_summaries: dict[str, str] | None = None
+    smoke_contract: dict[str, Any] | None = None
     last_agent_question: str = ""
     campaign_id: str = ""
 
@@ -39,6 +55,8 @@ class ConversationBrainRequest:
             "normalized_transcript": self.normalized_transcript,
             "prior_state": self.prior_state,
             "approved_campaign_fact_ids": self.approved_campaign_fact_ids,
+            "approved_campaign_fact_summaries": self.approved_campaign_fact_summaries or {},
+            "smoke_contract": self.smoke_contract or {},
             "last_agent_question": self.last_agent_question,
             "campaign_id": self.campaign_id,
         }
@@ -84,9 +102,9 @@ def local_conversation_brain_config_from_env(
         cache_dir=source.get(LOCAL_LLM_CACHE_DIR_ENV_VAR, defaults.cache_dir),
         device=source.get(LOCAL_LLM_DEVICE_ENV_VAR, defaults.device),
         quantization_mode=source.get(LOCAL_LLM_QUANTIZATION_ENV_VAR, defaults.quantization_mode),
-        max_input_tokens=defaults.max_input_tokens,
-        max_output_tokens=defaults.max_output_tokens,
-        timeout_ms=defaults.timeout_ms,
+        max_input_tokens=_env_positive_int(source, LOCAL_LLM_MAX_INPUT_TOKENS_ENV_VAR, defaults.max_input_tokens),
+        max_output_tokens=_env_positive_int(source, LOCAL_LLM_MAX_OUTPUT_TOKENS_ENV_VAR, defaults.max_output_tokens),
+        timeout_ms=_env_positive_int(source, LOCAL_LLM_TIMEOUT_MS_ENV_VAR, defaults.timeout_ms),
         structured_output_required=defaults.structured_output_required,
         enabled=_env_flag(source.get(LOCAL_LLM_ENABLED_ENV_VAR)),
     )

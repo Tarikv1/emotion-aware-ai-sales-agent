@@ -19,6 +19,10 @@ from runtime.llm_brain.conversation_brain_schema import (  # noqa: E402
 from runtime.llm_brain.local_conversation_brain import (  # noqa: E402
     default_local_conversation_brain_config,
 )
+try:
+    from runtime.llm_brain.local_transformers_runner import parse_and_repair_planner_output  # noqa: E402
+except ImportError:  # pragma: no cover - reported by validator
+    parse_and_repair_planner_output = None  # type: ignore[assignment]
 
 
 EXPERIMENT_ID = "LOCAL-QWEN-CONVERSATION-BRAIN-SMOKE-001"
@@ -28,6 +32,7 @@ REPORT_PATH = OUT_DIR / "report.md"
 SMOKE_SCRIPT = ROOT / "scripts" / "run_local_qwen_conversation_brain_smoke_001.py"
 
 REQUIRED_GITIGNORE_PATTERNS = {
+    ".venv-llm/",
     "local_artifacts/",
     "models/",
     "hf-cache/",
@@ -75,6 +80,112 @@ LIVE_RUNTIME_WIRING_PATTERNS = (
     "ENABLE_LOCAL_LLM_BRAIN_EXPERIMENT",
     "LOCAL_LLM_ENABLED",
 )
+
+
+def repair_probe_payload() -> dict[str, Any]:
+    return {
+        "semantic_frame": {
+            "semantic_family": "use_case_scope",
+            "speech_act": "use_case_statement",
+            "sub_intent": "workflow_need",
+            "object_type": "use_case",
+            "object_mentions": "voice",
+            "conjunction_relation": "and",
+            "negation_scope": "none",
+            "buyer_state": "evaluating",
+            "buyer_emotion_hint": "neutral",
+            "commercial_intent": "medium",
+            "current_utterance_fidelity_notes": "preserve current buyer words exactly",
+        },
+        "state_update": {
+            "should_update_adoption_state": "false",
+            "should_update_use_case": "true",
+            "use_case_values": "voice",
+            "should_update_usage_intensity": "false",
+            "usage_intensity": "unknown",
+            "should_update_team_state": "false",
+            "should_update_recommendation": "false",
+            "should_update_close_readiness": "false",
+            "blocked_updates": [],
+            "reason": "buyer named use case scope",
+        },
+        "sales_strategy": {
+            "next_action": "ask_usage_intensity",
+            "should_answer_directly": "true",
+            "should_ask_question": "true",
+            "should_recommend": "false",
+            "should_reframe_objction": "false",
+            "should_close": "false",
+            "should_disqualify": "false",
+            "persuasion_strategy": "diagnose before recommending",
+            "one_next_step": "ask_usage_intensity",
+        },
+        "response_plan": {
+            "must_include": "usage intensity",
+            "must_not_include": "writing",
+            "campaign_facts_needed": "public_plan_names",
+            "buyer_words_to_preserve": "voice",
+            "response_tone": "plain spoken sales; direct_price_question 1-2 sentences; explanation_request 2-4",
+            "max_sentence_count": 2,
+        },
+        "draft_response": "I hear voice. The next useful step is usage intensity.",
+        "safety_flags": {
+            "needs_fact_check": "false",
+            "unsupported_product_claim_risk": "false",
+            "side_effect_claim_risk": "false",
+            "affiliation_claim_risk": "false",
+            "internal_policy_language_risk": "false",
+            "raw_url_risk": "false",
+            "campaign_leakage_risk": "false",
+        },
+        "confidence": "0.75",
+        "reasons": "current utterance wording is preserved",
+    }
+
+
+def validate_repair_layer(failures: list[str]) -> None:
+    if parse_and_repair_planner_output is None:
+        failures.append("missing repair API: runtime.llm_brain.local_transformers_runner.parse_and_repair_planner_output")
+        return
+    raw = "```json\n" + json.dumps(repair_probe_payload(), ensure_ascii=False) + "\n```\ntrailing text"
+    repaired, diagnostics = parse_and_repair_planner_output(raw)
+    if repaired is None:
+        failures.append(f"repair probe returned no payload: {diagnostics.to_dict()!r}")
+        return
+    schema_errors = validate_conversation_brain_output(repaired)
+    if schema_errors:
+        failures.append(f"repair probe schema errors after repair: {schema_errors!r}")
+    expected_repair_types = {
+        "markdown_code_fence_removed",
+        "first_json_object_extracted",
+        "known_key_typo:sales_strategy.should_reframe_objction->should_reframe_objection",
+        "list_coercion:semantic_frame.object_mentions",
+        "list_coercion:state_update.use_case_values",
+        "list_coercion:response_plan.must_include",
+        "list_coercion:response_plan.must_not_include",
+        "list_coercion:response_plan.campaign_facts_needed",
+        "list_coercion:response_plan.buyer_words_to_preserve",
+        "list_coercion:reasons",
+        "boolean_string_coercion:sales_strategy.should_reframe_objection",
+        "confidence_number_string_coercion",
+    }
+    actual_repair_types = set(diagnostics.repair_types)
+    missing = sorted(expected_repair_types - actual_repair_types)
+    if missing:
+        failures.append(f"repair probe missing repair type(s): {missing}")
+    if repaired["draft_response"] != repair_probe_payload()["draft_response"]:
+        failures.append("repair probe must not rewrite draft_response semantics")
+    if repaired["semantic_frame"]["conjunction_relation"] != "and":
+        failures.append("repair probe must not flip conjunction_relation")
+    if repaired["response_plan"]["buyer_words_to_preserve"] != ["voice"]:
+        failures.append("repair probe must not add missing buyer words")
+    incomplete_outer = '{"semantic_frame":{"semantic_family":"partial"}'
+    nested_payload, nested_diagnostics = parse_and_repair_planner_output(incomplete_outer)
+    if nested_payload is not None:
+        failures.append(
+            "repair parser must not extract a nested object from an incomplete top-level JSON object: "
+            f"{nested_payload!r}; diagnostics={nested_diagnostics.to_dict()!r}"
+        )
 
 
 def rel(path: Path) -> str:
@@ -184,12 +295,26 @@ def validate_evidence(failures: list[str]) -> str:
         "inference_attempted",
         "model_loaded",
         "dependency_status",
+        "dependency_install_attempted",
+        "dependency_install_succeeded",
+        "dependency_versions",
         "cuda_available",
         "gpu_name",
         "quantization_mode",
+        "quantization_mode_requested",
+        "quantization_mode_actually_used",
+        "fallback_used",
         "smoke_case_count",
         "schema_valid_count",
         "verifier_pass_count",
+        "schema_valid_before_repair_count",
+        "schema_valid_after_repair_count",
+        "repair_applied_count",
+        "repair_types",
+        "needs_fact_check_before_repair_count",
+        "needs_fact_check_after_repair_count",
+        "buyer_word_preservation_errors_before_repair",
+        "buyer_word_preservation_errors_after_repair",
         "failed_cases",
         "latency_metrics",
         "local_model_calls_made",
@@ -240,6 +365,18 @@ def validate_evidence(failures: list[str]) -> str:
             continue
         planner_output = case_result.get("planner_output")
         schema_errors = case_result.get("schema_errors", [])
+        raw_schema_errors = case_result.get("raw_schema_errors_before_repair", [])
+        schema_errors_after_repair = case_result.get("schema_errors_after_repair", schema_errors)
+        if not isinstance(raw_schema_errors, list):
+            failures.append(f"cases[{index}].raw_schema_errors_before_repair must be a list")
+        if schema_errors_after_repair != schema_errors:
+            failures.append(f"cases[{index}].schema_errors_after_repair must match schema_errors")
+        if "repair_applied" not in case_result:
+            failures.append(f"cases[{index}].repair_applied is required")
+        if not isinstance(case_result.get("repair_types", []), list):
+            failures.append(f"cases[{index}].repair_types must be a list")
+        if "verifier_errors_after_repair" not in case_result:
+            failures.append(f"cases[{index}].verifier_errors_after_repair is required")
         if planner_output is not None:
             if not isinstance(planner_output, dict):
                 failures.append(f"cases[{index}].planner_output must be an object or null")
@@ -255,6 +392,7 @@ def validate_evidence(failures: list[str]) -> str:
 
 def main() -> int:
     failures: list[str] = []
+    validate_repair_layer(failures)
     validate_static_contract(failures)
     validate_no_provider_calls(failures)
     validate_no_live_runtime_wiring(failures)

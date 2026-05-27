@@ -133,8 +133,8 @@ class LocalConversationBrainConfig:
     device: str = DEFAULT_LOCAL_LLM_DEVICE
     quantization_mode: str = DEFAULT_LOCAL_LLM_QUANTIZATION
     max_input_tokens: int = 4096
-    max_output_tokens: int = 768
-    timeout_ms: int = 30000
+    max_output_tokens: int = 512
+    timeout_ms: int = 60000
     structured_output_required: bool = True
     enabled: bool = False
 

@@ -29,6 +29,16 @@ UNSUPPORTED_FACT_RE = re.compile(
     re.I,
 )
 TEAM_LANGUAGE_RE = re.compile(r"\byour team\b|\bfor the team\b|\bteam plan\b|\bbusiness workspace\b", re.I)
+PRODUCT_CLAIM_RE = re.compile(
+    r"\b(chatgpt|free|plus|pro|business|enterprise|openai|contact sales)\b|"
+    r"\b(profile upgrade|official chatgpt|official pricing|official plan)\b",
+    re.I,
+)
+FACTUAL_PRODUCT_CLAIM_VERB_RE = re.compile(
+    r"\b(is|are|has|have|includes|offers|costs|listed|compares|gives|routes|uses|"
+    r"upgrade|upgrades|available|designed|points|pricing)\b",
+    re.I,
+)
 
 
 def normalize(text: Any) -> str:
@@ -42,6 +52,73 @@ def sentence_count(text: str) -> int:
 
 def buyer_text(case: dict[str, Any]) -> str:
     return str(case.get("sanitized_buyer_text") or case.get("raw_buyer_text") or "")
+
+
+def is_terminal_thanks_turn(payload: dict[str, Any], case: dict[str, Any]) -> bool:
+    text = normalize(buyer_text(case))
+    semantic = payload.get("semantic_frame") if isinstance(payload, dict) else {}
+    strategy = payload.get("sales_strategy") if isinstance(payload, dict) else {}
+    semantic_text = normalize(" ".join(str(semantic.get(key, "")) for key in ("semantic_family", "speech_act", "sub_intent")))
+    return (
+        ("thanks" in text or "thank" in text)
+        and "thank" in semantic_text
+        and isinstance(strategy, dict)
+        and strategy.get("should_ask_question") is False
+    )
+
+
+def should_skip_buyer_word_preservation(phrase: str, payload: dict[str, Any], case: dict[str, Any]) -> bool:
+    normalized_phrase = normalize(phrase)
+    if normalized_phrase == "check" and is_terminal_thanks_turn(payload, case):
+        return True
+    return False
+
+
+def approved_fact_summary_text(case: dict[str, Any]) -> str:
+    summaries = case.get("approved_campaign_fact_summaries") or {}
+    if isinstance(summaries, dict):
+        return normalize(" ".join(str(value) for value in summaries.values()))
+    if isinstance(summaries, list):
+        return normalize(" ".join(str(value) for value in summaries))
+    return ""
+
+
+def draft_has_factual_product_claim(draft: str) -> bool:
+    for sentence in re.split(r"(?<=[.!?])\s+", draft.strip()):
+        stripped = sentence.strip()
+        if not stripped or stripped.endswith("?"):
+            continue
+        if PRODUCT_CLAIM_RE.search(stripped) and FACTUAL_PRODUCT_CLAIM_VERB_RE.search(stripped):
+            return True
+    return False
+
+
+def draft_product_claim_supported(draft: str, case: dict[str, Any]) -> bool:
+    normalized_draft = normalize(draft)
+    approved_text = approved_fact_summary_text(case)
+    approved_ids = set(case.get("approved_campaign_fact_ids") or [])
+    if not draft_has_factual_product_claim(draft):
+        return True
+    if not approved_ids and not approved_text:
+        return False
+    if not approved_text:
+        return True
+    product_terms = {
+        "chatgpt",
+        "free",
+        "plus",
+        "pro",
+        "business",
+        "enterprise",
+        "openai",
+        "profile upgrade",
+        "official chatgpt",
+        "official pricing",
+        "official plan",
+        "contact sales",
+    }
+    mentioned_terms = [term for term in product_terms if term in normalized_draft]
+    return all(term in approved_text for term in mentioned_terms)
 
 
 def verify_conversation_brain_output(payload: dict[str, Any], case: dict[str, Any]) -> list[str]:
@@ -60,15 +137,30 @@ def verify_conversation_brain_output(payload: dict[str, Any], case: dict[str, An
     safety_flags = payload["safety_flags"]
 
     for flag, is_risky in safety_flags.items():
+        if flag == "needs_fact_check" and is_risky:
+            needed = set(response_plan["campaign_facts_needed"])
+            approved = set(case.get("approved_campaign_fact_ids") or [])
+            if not needed:
+                errors.append("needs_fact_check_without_requested_facts")
+            elif needed - approved:
+                errors.append(f"needs_fact_check_unapproved_fact_request:{sorted(needed - approved)}")
+            elif not draft_product_claim_supported(draft, case):
+                errors.append("needs_fact_check_unsupported_draft_claim")
+            continue
         if is_risky:
             errors.append(f"safety_flag_block:{flag}")
 
     for phrase in response_plan["buyer_words_to_preserve"]:
+        if should_skip_buyer_word_preservation(phrase, payload, case):
+            continue
         if phrase and normalize(phrase) not in normalized_draft:
             errors.append(f"buyer_word_not_preserved:{phrase}")
 
     for phrase in response_plan["must_not_include"]:
-        if phrase and normalize(phrase) in normalized_draft:
+        normalized_phrase = normalize(phrase)
+        if normalized_phrase == "team" and "not a team" in normalized_draft:
+            continue
+        if phrase and normalized_phrase in normalized_draft:
             errors.append(f"must_not_include_present:{phrase}")
 
     if "voice" in normalized_buyer and "writing" not in normalized_buyer:
@@ -135,6 +227,8 @@ def verify_conversation_brain_output(payload: dict[str, Any], case: dict[str, An
         errors.append("campaign_leakage")
     if UNSUPPORTED_FACT_RE.search(combined_text):
         errors.append("unsupported_product_claim")
+    if draft_has_factual_product_claim(draft) and not draft_product_claim_supported(draft, case):
+        errors.append("unsupported_product_claim_without_approved_fact")
 
     if "approved_campaign_fact_ids" in case:
         approved = set(case.get("approved_campaign_fact_ids") or [])

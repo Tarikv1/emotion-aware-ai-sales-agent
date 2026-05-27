@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import fnmatch
 import json
+import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -354,7 +355,12 @@ BINARY_EXTENSIONS = {
 SKIP_DIRS = {
     ".git",
     ".tmp",
+    ".venv-llm",
     "__pycache__",
+    "hf-cache",
+    "llm-checkpoints",
+    "local_artifacts",
+    "models",
 }
 
 SKIP_DIR_PREFIXES = {
@@ -476,16 +482,39 @@ def should_skip_path(relative_path: Path) -> bool:
 
 def iter_scan_files(root: Path) -> list[Path]:
     files: list[Path] = []
-    for path in root.rglob("*"):
-        if not path.is_file():
-            continue
-        relative_path = path.relative_to(root)
-        if should_skip_path(relative_path):
-            continue
-        suffix = path.suffix.lower()
-        if suffix and suffix not in TEXT_EXTENSIONS:
-            continue
-        files.append(path)
+    for dirpath, dirnames, filenames in os.walk(root):
+        current_dir = Path(dirpath)
+        relative_dir = current_dir.relative_to(root)
+        dirnames[:] = [
+            dirname
+            for dirname in dirnames
+            if not should_skip_path(relative_dir / dirname)
+        ]
+        for filename in filenames:
+            path = current_dir / filename
+            relative_path = path.relative_to(root)
+            if should_skip_path(relative_path):
+                continue
+            suffix = path.suffix.lower()
+            if suffix and suffix not in TEXT_EXTENSIONS:
+                continue
+            files.append(path)
+    return sorted(files)
+
+
+def iter_generated_files(root: Path, generated_root: Path) -> list[Path]:
+    files: list[Path] = []
+    for dirpath, dirnames, filenames in os.walk(generated_root):
+        current_dir = Path(dirpath)
+        relative_dir = current_dir.relative_to(root)
+        dirnames[:] = [
+            dirname
+            for dirname in dirnames
+            if not should_skip_path(relative_dir / dirname)
+        ]
+        for filename in filenames:
+            path = current_dir / filename
+            files.append(path)
     return sorted(files)
 
 
@@ -501,7 +530,7 @@ def build_generated_artifact_lookup(root: Path) -> dict[str, list[str]]:
     lookup: dict[str, list[str]] = {}
     if not generated_root.is_dir():
         return lookup
-    for path in sorted(generated_root.rglob("*")):
+    for path in iter_generated_files(root, generated_root):
         if not path.is_file() or path.parent == generated_root:
             continue
         lookup.setdefault(path.name, []).append(relative_to_root(root, path))
@@ -645,7 +674,7 @@ def detect_unignored_generated_audio(root: Path) -> list[Issue]:
         return []
     patterns = load_gitignore_patterns(root)
     issues: list[Issue] = []
-    for path in sorted(generated_root.rglob("*")):
+    for path in iter_generated_files(root, generated_root):
         if not path.is_file() or path.suffix.lower() not in AUDIO_EXTENSIONS:
             continue
         relative_path = relative_to_root(root, path)

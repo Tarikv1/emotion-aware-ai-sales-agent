@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-LLM-CONVERSATION-BRAIN-FEASIBILITY-001",
-  "generated_at": "2026-05-27T00:00:18.504023+00:00",
+  "generated_at": "2026-05-27T02:58:11.249550+00:00",
   "schema_status": "defined",
   "required_top_level_fields": [
     "semantic_frame",
@@ -92,8 +92,8 @@
     "device": "cuda",
     "quantization_mode": "4bit",
     "max_input_tokens": 4096,
-    "max_output_tokens": 768,
-    "timeout_ms": 30000,
+    "max_output_tokens": 512,
+    "timeout_ms": 60000,
     "structured_output_required": true,
     "enabled": false,
     "requires_provider_secret": false,
