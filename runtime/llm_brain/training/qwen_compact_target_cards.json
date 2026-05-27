@@ -237,7 +237,7 @@
       "facts_policy": {"fact_ids": []},
       "preserve_policy": {"mode": "objects", "required_meaning": "Preserve not-team wording; do not route to team plans."},
       "avoid_policy": {"phrases": ["team plan", "business workspace", "Enterprise route"]},
-      "say_style_policy": {"template": "Understood - {objects}. I would keep this on an individual-use path first."},
+      "say_style_policy": {"template": "Understood - {objects}. How heavily do you expect to use it?"},
       "safety_policy": {"no_not_team_to_team_drift": true},
       "examples": [
         {"buyer_text": "I'm by myself, not a team.", "objects": ["by myself", "not a team"], "rel": "and"},

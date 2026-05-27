@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-QWEN-NEXT-MIXED-REPLAY-TRAINING-PLAN-001",
-  "generated_at": "2026-05-27T22:31:37.661095+00:00",
+  "generated_at": "2026-05-27T23:10:18.114119+00:00",
   "status": "pass",
   "plan_path": "runtime/llm_brain/training/qwen_mixed_replay_training_plan.json",
   "equivalence_policy_path": "runtime/llm_brain/training/qwen_eval_equivalence_policy.json",
