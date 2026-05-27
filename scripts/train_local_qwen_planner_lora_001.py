@@ -25,6 +25,10 @@ from runtime.llm_brain.conversation_brain_schema import (  # noqa: E402
     PRIMARY_MODEL_ID,
     REQUIRED_COMPACT_PLANNER_FIELDS,
 )
+from runtime.llm_brain.compact_planner_contract import (  # noqa: E402
+    COMPACT_VALUE_CONTRACT_VERSION,
+    allowed_values_for,
+)
 from runtime.llm_brain.local_transformers_runner import hardware_summary  # noqa: E402
 
 
@@ -35,6 +39,11 @@ RESULT_PATH = OUT_DIR / "result.json"
 REPORT_PATH = OUT_DIR / "report.md"
 SFT_EXPERIMENT_ID = "LOCAL-QWEN-SFT-DATASET-001"
 WEIGHT_SUFFIXES = (".safetensors", ".bin", ".gguf", ".pt", ".pth", ".ckpt")
+
+
+def compact_allowed_values_instruction() -> str:
+    fields = ("act", "sub", "action", "strategy")
+    return "\n".join(f"- {field}: {', '.join(allowed_values_for(field))}" for field in fields)
 
 
 SYSTEM_MESSAGE = (
@@ -48,6 +57,10 @@ SYSTEM_MESSAGE = (
 USER_INSTRUCTION = (
     "Use the sanitized input context below to produce compact planner JSON only. "
     f"Required compact keys in order: {', '.join(REQUIRED_COMPACT_PLANNER_FIELDS)}. "
+    f"Active compact value contract: {COMPACT_VALUE_CONTRACT_VERSION}. "
+    "Allowed compact semantic labels:\n"
+    f"{compact_allowed_values_instruction()}\n"
+    "act, sub, action, and strategy must use one listed value exactly. "
     "The assistant response must be the target compact JSON object and nothing else."
 )
 

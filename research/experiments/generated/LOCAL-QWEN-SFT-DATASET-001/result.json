@@ -1,11 +1,11 @@
 {
   "experiment_id": "LOCAL-QWEN-SFT-DATASET-001",
-  "generated_at": "2026-05-27T13:38:00.001464+00:00",
+  "generated_at": "2026-05-27T16:26:37.731569+00:00",
   "status": "pass",
   "source_experiment_id": "LOCAL-LLM-CONVERSATION-BRAIN-FEASIBILITY-001",
   "qwen_eval_experiment_id": "LOCAL-QWEN-GOLDSET-EVAL-001",
   "failure_audit_experiment_id": "LOCAL-QWEN-GOLDSET-FAILURE-AUDIT-001",
-  "compact_value_contract_version": "LOCAL-QWEN-COMPACT-PLANNER-CONTRACT-001",
+  "compact_value_contract_version": "LOCAL-QWEN-COMPACT-PLANNER-CONTRACT-002",
   "row_count": 80,
   "splits": {
     "train": {
@@ -32,7 +32,8 @@
     "failed_qwen_case_rows": 28,
     "repair_counts": {
       "safe_price_reframe": 2
-    }
+    },
+    "target_quality_issue_counts": {}
   },
   "target_fields": [
     "act",
@@ -56,6 +57,7 @@
   "target_repairs": {
     "safe_price_reframe": 2
   },
+  "target_quality_issue_counts": {},
   "failed_qwen_outputs_used_as_targets": false,
   "privacy_level": "sanitized_only",
   "raw_private_transcript_included": false,

@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-QWEN-QLORA-TRAINING-DRY-RUN-001",
-  "generated_at": "2026-05-27T14:10:08.365345+00:00",
+  "generated_at": "2026-05-27T15:38:12.135059+00:00",
   "status": "completed",
   "config_path": "runtime/llm_brain/training/qwen_qlora_planner_config.json",
   "config": {
@@ -8,7 +8,7 @@
     "base_model_id": "Qwen/Qwen2.5-7B-Instruct",
     "base_model_path": "local_artifacts/models/qwen2.5-7b-instruct",
     "dataset_dir": "research/experiments/generated/LOCAL-QWEN-SFT-DATASET-001",
-    "output_adapter_dir": "local_artifacts/adapters/qwen2.5-sales-brain-lora-001",
+    "output_adapter_dir": "local_artifacts/adapters/qwen2.5-sales-brain-lora-002",
     "cache_dir": "local_artifacts/cache/huggingface",
     "quantization": "4bit",
     "target": "compact planner JSON",
@@ -122,7 +122,7 @@
   "exact_blocker": null,
   "model_loaded": true,
   "adapter_saved": true,
-  "adapter_path": "local_artifacts/adapters/qwen2.5-sales-brain-lora-001",
+  "adapter_path": "local_artifacts/adapters/qwen2.5-sales-brain-lora-002",
   "adapter_files_committed": false,
   "train_row_count": 60,
   "validation_row_count": 10,
@@ -131,27 +131,27 @@
     "train": {
       "row_count": 60,
       "max_prompt_tokens": 419,
-      "max_full_tokens": 555,
-      "max_target_tokens": 138,
-      "min_target_tokens": 110,
+      "max_full_tokens": 557,
+      "max_target_tokens": 148,
+      "min_target_tokens": 109,
       "truncated_example_count": 0,
-      "label_token_count": 7309
+      "label_token_count": 7374
     },
     "validation": {
       "row_count": 10,
       "max_prompt_tokens": 411,
       "max_full_tokens": 537,
-      "max_target_tokens": 128,
-      "min_target_tokens": 115,
+      "max_target_tokens": 130,
+      "min_target_tokens": 114,
       "truncated_example_count": 0,
-      "label_token_count": 1217
+      "label_token_count": 1215
     },
     "max_seq_length": 1536
   },
   "train_steps_completed": 20,
-  "train_loss": 0.9283706557005644,
-  "eval_loss": 0.3574617803096771,
-  "peak_gpu_memory_bytes": 10452374016,
+  "train_loss": 1.0341696918010712,
+  "eval_loss": 0.4279744029045105,
+  "peak_gpu_memory_bytes": 10476538880,
   "local_model_calls_made": true,
   "provider_calls_made": false,
   "openai_api_calls_made": false,

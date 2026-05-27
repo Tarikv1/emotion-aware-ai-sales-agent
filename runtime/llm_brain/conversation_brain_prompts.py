@@ -16,6 +16,7 @@ from runtime.llm_brain.conversation_brain_schema import (
     REQUIRED_STATE_UPDATE_FIELDS,
     REQUIRED_TOP_LEVEL_FIELDS,
 )
+from runtime.llm_brain.compact_planner_contract import allowed_values_for
 
 
 SYSTEM_PROMPT = """You are a local-only sales conversation brain.
@@ -47,6 +48,11 @@ def conversation_brain_key_spellings_prompt() -> str:
 
 def compact_conversation_brain_key_spellings_prompt() -> str:
     return ", ".join(REQUIRED_COMPACT_PLANNER_FIELDS)
+
+
+def compact_allowed_values_prompt() -> str:
+    fields = ("act", "sub", "action", "strategy")
+    return "\n".join(f"- {field}: {', '.join(allowed_values_for(field))}" for field in fields)
 
 
 def full_valid_json_example() -> str:
@@ -139,7 +145,7 @@ def full_valid_json_example() -> str:
 def compact_valid_json_example() -> str:
     example = {
         "act": "use_case_scope",
-        "sub": "coding_voice",
+        "sub": "coding_voice_use_case",
         "obj": ["coding workflow", "voice"],
         "rel": "and",
         "neg": "none",
@@ -154,7 +160,7 @@ def compact_valid_json_example() -> str:
             "close": "",
         },
         "block": [],
-        "action": "ask_intensity",
+        "action": "ask_usage_intensity",
         "strategy": "diagnose_before_recommend",
         "facts": [],
         "preserve": ["coding workflow", "voice"],
@@ -202,11 +208,14 @@ def render_conversation_brain_prompt(
                 "Use exactly these compact top-level keys in this order:",
                 compact_conversation_brain_key_spellings_prompt(),
                 "",
+                "Allowed compact semantic labels:",
+                compact_allowed_values_prompt(),
+                "",
                 "Compact valid JSON example, shape only; do not copy values:",
                 compact_valid_json_example(),
                 "",
                 "Compact key meanings:",
-                "- act=speech act or semantic family; sub=sub-intent; obj=current buyer objects/words.",
+                "- act=speech act or semantic family; sub=semantic buyer sub-intent; obj=current buyer objects/words.",
                 "- rel preserves and/or/none exactly; neg preserves negation scope.",
                 "- buyer=buyer state; intent=commercial intent.",
                 "- update.use is current use-case values; update.team must stay false when buyer says by myself/not a team.",
@@ -217,6 +226,8 @@ def render_conversation_brain_prompt(
                 "",
                 "Rules:",
                 "- For smoke cases, keep the compact JSON short.",
+                "- act, sub, action, and strategy must be semantic labels, never case IDs, row IDs, or numbered labels.",
+                "- Do not use generalized_sales_move or labels ending in _001, _002, _003, etc.",
                 "- This compact planner JSON does not globally limit future spoken answers.",
                 "- Keep say concise unless buyer asks for explanation, objection handling, or detailed comparison.",
                 "- Dynamic say length: direct price/signup short; explanation medium; objection medium; detailed comparison may be longer.",

@@ -3,7 +3,7 @@
   "base_model_id": "Qwen/Qwen2.5-7B-Instruct",
   "base_model_path": "local_artifacts/models/qwen2.5-7b-instruct",
   "dataset_dir": "research/experiments/generated/LOCAL-QWEN-SFT-DATASET-001",
-  "output_adapter_dir": "local_artifacts/adapters/qwen2.5-sales-brain-lora-001",
+  "output_adapter_dir": "local_artifacts/adapters/qwen2.5-sales-brain-lora-002",
   "cache_dir": "local_artifacts/cache/huggingface",
   "quantization": "4bit",
   "target": "compact planner JSON",

@@ -1,0 +1,1953 @@
+{
+  "experiment_id": "LOCAL-QWEN-LORA-CONTRACT-FAILURE-AUDIT-001",
+  "generated_at": "2026-05-27T16:26:42.138948+00:00",
+  "status": "pass",
+  "active_contract_version": "LOCAL-QWEN-COMPACT-PLANNER-CONTRACT-002",
+  "source_eval_dir": "research/experiments/generated/LOCAL-QWEN-LORA-EVAL-001",
+  "sft_dataset_dir": "research/experiments/generated/LOCAL-QWEN-SFT-DATASET-001",
+  "sft_target_contract_issue_count": 0,
+  "current_prompt_alignment": {
+    "dataset_prompt_has_allowed_values": true,
+    "eval_prompt_has_allowed_values": true,
+    "eval_prompt_uses_training_chat_builder": true,
+    "active_contract_version": "LOCAL-QWEN-COMPACT-PLANNER-CONTRACT-002"
+  },
+  "adapter_summaries": [
+    {
+      "label": "adapter_v1_snapshot",
+      "source_path": "research/experiments/generated/LOCAL-QWEN-LORA-EVAL-001/result-v1-strict.json",
+      "adapter_path": "local_artifacts/adapters/qwen2.5-sales-brain-lora-001",
+      "adapter_version_label": "lora-001",
+      "adapter_quality_status": "not_ready",
+      "adapter_live_ready": false,
+      "quality_gate_passed": false,
+      "schema_valid_count": {
+        "validation": 10,
+        "test": 10
+      },
+      "verifier_pass_count": {
+        "validation": 10,
+        "test": 9
+      },
+      "strict_gold_semantic_match_count": {
+        "validation": 0,
+        "test": 0
+      },
+      "compact_contract_valid_count": {
+        "validation": 0,
+        "test": 0
+      },
+      "contract_errors_by_field": {
+        "act": 14,
+        "sub": 19,
+        "action": 17,
+        "neg": 1
+      },
+      "invalid_values_by_field": {
+        "act": [
+          {
+            "value": "generalized_sales_move",
+            "count": 13
+          },
+          {
+            "value": "use_case",
+            "count": 1
+          }
+        ],
+        "sub": [
+          {
+            "value": "cloud_claude_007",
+            "count": 1
+          },
+          {
+            "value": "mid_cycle_upgrade",
+            "count": 1
+          },
+          {
+            "value": "cost_question_030",
+            "count": 1
+          },
+          {
+            "value": "use_case_and_team_size_awareness",
+            "count": 1
+          },
+          {
+            "value": "use_case_specific",
+            "count": 1
+          },
+          {
+            "value": "accept_017",
+            "count": 1
+          },
+          {
+            "value": "light_025",
+            "count": 1
+          },
+          {
+            "value": "side_effect_001",
+            "count": 1
+          },
+          {
+            "value": "asr_noise_001",
+            "count": 1
+          },
+          {
+            "value": "raw_transcript_request_negative_control",
+            "count": 1
+          },
+          {
+            "value": "plan_name_request",
+            "count": 1
+          },
+          {
+            "value": "terminal_acceptance_016",
+            "count": 1
+          },
+          {
+            "value": "paraphrase_or_relation_002",
+            "count": 1
+          },
+          {
+            "value": "plan_list_010",
+            "count": 1
+          },
+          {
+            "value": "expensive_018",
+            "count": 1
+          },
+          {
+            "value": "files_026",
+            "count": 1
+          },
+          {
+            "value": "unsupported_fact_001",
+            "count": 1
+          },
+          {
+            "value": "privacy_001",
+            "count": 1
+          },
+          {
+            "value": "policy_request_001",
+            "count": 1
+          }
+        ],
+        "action": [
+          {
+            "value": "clarify",
+            "count": 15
+          },
+          {
+            "value": "clarify_before_recommend",
+            "count": 1
+          },
+          {
+            "value": "ask_intensity",
+            "count": 1
+          }
+        ],
+        "strategy": [],
+        "neg": [
+          {
+            "value": "price",
+            "count": 1
+          }
+        ],
+        "buyer": [],
+        "intent": [],
+        "flags": []
+      },
+      "deprecated_labels_used": [
+        {
+          "field": "action",
+          "value": "clarify",
+          "count": 15
+        },
+        {
+          "field": "act",
+          "value": "generalized_sales_move",
+          "count": 13
+        },
+        {
+          "field": "sub",
+          "value": "accept_017",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "light_025",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "side_effect_001",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "asr_noise_001",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "plan_list_010",
+          "count": 1
+        },
+        {
+          "field": "action",
+          "value": "ask_intensity",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "unsupported_fact_001",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "privacy_001",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "policy_request_001",
+          "count": 1
+        }
+      ],
+      "case_id_like_labels_used": [
+        {
+          "field": "sub",
+          "value": "cloud_claude_007",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "cost_question_030",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "accept_017",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "light_025",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "side_effect_001",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "asr_noise_001",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "terminal_acceptance_016",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "paraphrase_or_relation_002",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "plan_list_010",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "expensive_018",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "files_026",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "unsupported_fact_001",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "privacy_001",
+          "count": 1
+        },
+        {
+          "field": "sub",
+          "value": "policy_request_001",
+          "count": 1
+        }
+      ],
+      "generic_labels_used": [
+        {
+          "field": "action",
+          "value": "clarify",
+          "count": 15
+        },
+        {
+          "field": "act",
+          "value": "generalized_sales_move",
+          "count": 13
+        },
+        {
+          "field": "action",
+          "value": "ask_intensity",
+          "count": 1
+        }
+      ],
+      "missing_required_fields": {},
+      "list_type_errors": {},
+      "top_repeated_invalid_values": [
+        {
+          "field": "action",
+          "value": "clarify",
+          "count": 15,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": true,
+          "case_id_like_label": false,
+          "generic_label": true
+        },
+        {
+          "field": "act",
+          "value": "generalized_sales_move",
+          "count": 13,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": true,
+          "case_id_like_label": false,
+          "generic_label": true
+        },
+        {
+          "field": "sub",
+          "value": "cloud_claude_007",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": true,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "mid_cycle_upgrade",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "cost_question_030",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": true,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "use_case_and_team_size_awareness",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "use_case_specific",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "accept_017",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": true,
+          "case_id_like_label": true,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "light_025",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": true,
+          "case_id_like_label": true,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "side_effect_001",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": true,
+          "case_id_like_label": true,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "asr_noise_001",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": true,
+          "case_id_like_label": true,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "raw_transcript_request_negative_control",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "action",
+          "value": "clarify_before_recommend",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "plan_name_request",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "terminal_acceptance_016",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": true,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "paraphrase_or_relation_002",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": true,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "plan_list_010",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": true,
+          "case_id_like_label": true,
+          "generic_label": false
+        },
+        {
+          "field": "act",
+          "value": "use_case",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "expensive_018",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": true,
+          "generic_label": false
+        },
+        {
+          "field": "neg",
+          "value": "price",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        }
+      ],
+      "invalid_values_present_in_training_targets": [],
+      "training_targets_contained_invalid_values": false,
+      "prompt_allowed_those_invalid_values": false,
+      "eval_prompt_and_training_prompt_aligned": null,
+      "eval_prompt_allowed_values_shown_to_model": null,
+      "dataset_prompt_allowed_values_shown_to_model": null,
+      "model_output_appears_to_copy_old_labels": true,
+      "likely_causes": {
+        "training_duration_issue": true,
+        "prompt_eval_mismatch": "unknown_legacy_evidence_missing",
+        "dataset_target_issue": false,
+        "adapter_loading_issue": false,
+        "contract_too_strict": false,
+        "model_not_trained_enough": true,
+        "prompt_allowed_value_evidence_missing": true,
+        "eval_prompt_omitted_allowed_values": "unknown_legacy_evidence_missing"
+      },
+      "diagnosis": [
+        "Adapter outputs use off-contract semantic synonyms rather than the exact cleaned label set.",
+        "Invalid output labels were not present in rebuilt SFT targets.",
+        "Some outputs copy deprecated, generic, or case-ID-like labels.",
+        "Adapter evidence says the adapter loaded; base-model-only evaluation is unlikely.",
+        "Legacy eval snapshot does not record prompt-contract alignment fields."
+      ],
+      "schema_error_examples": [],
+      "contract_error_examples": [
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "cloud_claude_007",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.act value not allowed: 'generalized_sales_move'",
+            "compact.sub value not allowed: 'cloud_claude_007'",
+            "compact.action value not allowed: 'clarify'",
+            "compact.act deprecated_label: 'generalized_sales_move'",
+            "compact.act generic_act: 'generalized_sales_move'",
+            "compact.sub case_id_label_leak: 'cloud_claude_007'",
+            "compact.action deprecated_label: 'clarify'",
+            "compact.action generic_action: 'clarify'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "live_midcycle_upgrade_015",
+          "split": "validation",
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "mid_cycle_upgrade",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.act value not allowed: 'generalized_sales_move'",
+            "compact.sub value not allowed: 'mid_cycle_upgrade'",
+            "compact.action value not allowed: 'clarify'",
+            "compact.act deprecated_label: 'generalized_sales_move'",
+            "compact.act generic_act: 'generalized_sales_move'",
+            "compact.action deprecated_label: 'clarify'",
+            "compact.action generic_action: 'clarify'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "live_plus_cost_question_030",
+          "split": "validation",
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "cost_question_030",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.act value not allowed: 'generalized_sales_move'",
+            "compact.sub value not allowed: 'cost_question_030'",
+            "compact.action value not allowed: 'clarify'",
+            "compact.act deprecated_label: 'generalized_sales_move'",
+            "compact.act generic_act: 'generalized_sales_move'",
+            "compact.sub case_id_label_leak: 'cost_question_030'",
+            "compact.action deprecated_label: 'clarify'",
+            "compact.action generic_action: 'clarify'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "paraphrase_and_relation_001",
+          "split": "validation",
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "use_case_and_team_size_awareness",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.act value not allowed: 'generalized_sales_move'",
+            "compact.sub value not allowed: 'use_case_and_team_size_awareness'",
+            "compact.action value not allowed: 'clarify'",
+            "compact.act deprecated_label: 'generalized_sales_move'",
+            "compact.act generic_act: 'generalized_sales_move'",
+            "compact.action deprecated_label: 'clarify'",
+            "compact.action generic_action: 'clarify'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "paraphrase_what_call_009",
+          "split": "validation",
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "use_case_specific",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.act value not allowed: 'generalized_sales_move'",
+            "compact.sub value not allowed: 'use_case_specific'",
+            "compact.action value not allowed: 'clarify'",
+            "compact.act deprecated_label: 'generalized_sales_move'",
+            "compact.act generic_act: 'generalized_sales_move'",
+            "compact.action deprecated_label: 'clarify'",
+            "compact.action generic_action: 'clarify'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "paraphrase_accept_017",
+          "split": "validation",
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "accept_017",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.act value not allowed: 'generalized_sales_move'",
+            "compact.sub value not allowed: 'accept_017'",
+            "compact.action value not allowed: 'clarify'",
+            "compact.act deprecated_label: 'generalized_sales_move'",
+            "compact.act generic_act: 'generalized_sales_move'",
+            "compact.sub deprecated_label: 'accept_017'",
+            "compact.sub case_id_label_leak: 'accept_017'",
+            "compact.action deprecated_label: 'clarify'",
+            "compact.action generic_action: 'clarify'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "paraphrase_light_025",
+          "split": "validation",
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "light_025",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.act value not allowed: 'generalized_sales_move'",
+            "compact.sub value not allowed: 'light_025'",
+            "compact.action value not allowed: 'clarify'",
+            "compact.act deprecated_label: 'generalized_sales_move'",
+            "compact.act generic_act: 'generalized_sales_move'",
+            "compact.sub deprecated_label: 'light_025'",
+            "compact.sub case_id_label_leak: 'light_025'",
+            "compact.action deprecated_label: 'clarify'",
+            "compact.action generic_action: 'clarify'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "negative_side_effect_001",
+          "split": "validation",
+          "labels": {
+            "act": "negative_control",
+            "sub": "side_effect_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          },
+          "compact_contract_errors": [
+            "compact.sub value not allowed: 'side_effect_001'",
+            "compact.sub deprecated_label: 'side_effect_001'",
+            "compact.sub case_id_label_leak: 'side_effect_001'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "negative_asr_noise_001",
+          "split": "validation",
+          "labels": {
+            "act": "negative_control",
+            "sub": "asr_noise_001",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.sub value not allowed: 'asr_noise_001'",
+            "compact.action value not allowed: 'clarify'",
+            "compact.sub deprecated_label: 'asr_noise_001'",
+            "compact.sub case_id_label_leak: 'asr_noise_001'",
+            "compact.action deprecated_label: 'clarify'",
+            "compact.action generic_action: 'clarify'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "negative_raw_transcript_request_001",
+          "split": "validation",
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "raw_transcript_request_negative_control",
+            "action": "clarify_before_recommend",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.act value not allowed: 'generalized_sales_move'",
+            "compact.sub value not allowed: 'raw_transcript_request_negative_control'",
+            "compact.action value not allowed: 'clarify_before_recommend'",
+            "compact.act deprecated_label: 'generalized_sales_move'",
+            "compact.act generic_act: 'generalized_sales_move'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "adapter_v2_snapshot",
+      "source_path": "research/experiments/generated/LOCAL-QWEN-LORA-EVAL-001/result-v2-strict.json",
+      "adapter_path": "local_artifacts/adapters/qwen2.5-sales-brain-lora-002",
+      "adapter_version_label": "lora-002",
+      "adapter_quality_status": "not_ready",
+      "adapter_live_ready": false,
+      "quality_gate_passed": false,
+      "schema_valid_count": {
+        "validation": 9,
+        "test": 10
+      },
+      "verifier_pass_count": {
+        "validation": 9,
+        "test": 9
+      },
+      "strict_gold_semantic_match_count": {
+        "validation": 0,
+        "test": 0
+      },
+      "compact_contract_valid_count": {
+        "validation": 0,
+        "test": 0
+      },
+      "contract_errors_by_field": {
+        "sub": 19,
+        "act": 11,
+        "action": 9,
+        "strategy": 4,
+        "neg": 1
+      },
+      "invalid_values_by_field": {
+        "act": [
+          {
+            "value": "adoption_scope",
+            "count": 2
+          },
+          {
+            "value": "plan_fit",
+            "count": 2
+          },
+          {
+            "value": "upgrade_question",
+            "count": 1
+          },
+          {
+            "value": "plan_cost_question",
+            "count": 1
+          },
+          {
+            "value": "call_scope",
+            "count": 1
+          },
+          {
+            "value": "side_effect_boundary",
+            "count": 1
+          },
+          {
+            "value": "plan_comparison",
+            "count": 1
+          },
+          {
+            "value": "pricing_sensitivity",
+            "count": 1
+          },
+          {
+            "value": "data_sharing_concern",
+            "count": 1
+          }
+        ],
+        "sub": [
+          {
+            "value": "plan_scope",
+            "count": 2
+          },
+          {
+            "value": "use_case_boundary",
+            "count": 2
+          },
+          {
+            "value": "coding_use_case",
+            "count": 1
+          },
+          {
+            "value": "mid_cycle_upgrade",
+            "count": 1
+          },
+          {
+            "value": "ask_plan_cost",
+            "count": 1
+          },
+          {
+            "value": "use_case_features",
+            "count": 1
+          },
+          {
+            "value": "plan_scope_acceptance",
+            "count": 1
+          },
+          {
+            "value": "light_usage",
+            "count": 1
+          },
+          {
+            "value": "use_case_scope_boundary",
+            "count": 1
+          },
+          {
+            "value": "use_case_fit",
+            "count": 1
+          },
+          {
+            "value": "high_price_complaint",
+            "count": 1
+          },
+          {
+            "value": "use_case_gap",
+            "count": 1
+          },
+          {
+            "value": "plan_comparison_request",
+            "count": 1
+          },
+          {
+            "value": "high_price_concern",
+            "count": 1
+          },
+          {
+            "value": "use_case_file_upload",
+            "count": 1
+          },
+          {
+            "value": "current_plan_facts",
+            "count": 1
+          },
+          {
+            "value": "data_storage_concern",
+            "count": 1
+          }
+        ],
+        "action": [
+          {
+            "value": "ask_usage_gap",
+            "count": 2
+          },
+          {
+            "value": "answer_plan_fit_before_upgrade",
+            "count": 1
+          },
+          {
+            "value": "answer_plan_cost",
+            "count": 1
+          },
+          {
+            "value": "answer_plan_scope",
+            "count": 1
+          },
+          {
+            "value": "boundary_response",
+            "count": 1
+          },
+          {
+            "value": "answer_plan_comparison",
+            "count": 1
+          },
+          {
+            "value": "ask_usage_fit",
+            "count": 1
+          },
+          {
+            "value": "answer_data_sharing",
+            "count": 1
+          }
+        ],
+        "strategy": [
+          {
+            "value": "answer_plan_cost_without_side_effects",
+            "count": 1
+          },
+          {
+            "value": "answer_plan_scope_before_recommend",
+            "count": 1
+          },
+          {
+            "value": "answer_plan_comparison_without_side_effects",
+            "count": 1
+          },
+          {
+            "value": "respect_boundary_without_overcommitting",
+            "count": 1
+          }
+        ],
+        "neg": [
+          {
+            "value": "data-storage",
+            "count": 1
+          }
+        ],
+        "buyer": [],
+        "intent": [],
+        "flags": []
+      },
+      "deprecated_labels_used": [],
+      "case_id_like_labels_used": [],
+      "generic_labels_used": [],
+      "missing_required_fields": {
+        "compact.update missing required field(s): ['use']": 1
+      },
+      "list_type_errors": {
+        "compact.update.use must be a list of strings": 1
+      },
+      "top_repeated_invalid_values": [
+        {
+          "field": "sub",
+          "value": "plan_scope",
+          "count": 2,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "act",
+          "value": "adoption_scope",
+          "count": 2,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "action",
+          "value": "ask_usage_gap",
+          "count": 2,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "use_case_boundary",
+          "count": 2,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "act",
+          "value": "plan_fit",
+          "count": 2,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "coding_use_case",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "act",
+          "value": "upgrade_question",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "mid_cycle_upgrade",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "action",
+          "value": "answer_plan_fit_before_upgrade",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "act",
+          "value": "plan_cost_question",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "ask_plan_cost",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "action",
+          "value": "answer_plan_cost",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "strategy",
+          "value": "answer_plan_cost_without_side_effects",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "use_case_features",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "act",
+          "value": "call_scope",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "action",
+          "value": "answer_plan_scope",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "strategy",
+          "value": "answer_plan_scope_before_recommend",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "plan_scope_acceptance",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "light_usage",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "act",
+          "value": "side_effect_boundary",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        }
+      ],
+      "invalid_values_present_in_training_targets": [],
+      "training_targets_contained_invalid_values": false,
+      "prompt_allowed_those_invalid_values": false,
+      "eval_prompt_and_training_prompt_aligned": null,
+      "eval_prompt_allowed_values_shown_to_model": null,
+      "dataset_prompt_allowed_values_shown_to_model": null,
+      "model_output_appears_to_copy_old_labels": false,
+      "likely_causes": {
+        "training_duration_issue": true,
+        "prompt_eval_mismatch": "unknown_legacy_evidence_missing",
+        "dataset_target_issue": false,
+        "adapter_loading_issue": false,
+        "contract_too_strict": false,
+        "model_not_trained_enough": true,
+        "prompt_allowed_value_evidence_missing": true,
+        "eval_prompt_omitted_allowed_values": "unknown_legacy_evidence_missing"
+      },
+      "diagnosis": [
+        "Adapter outputs use off-contract semantic synonyms rather than the exact cleaned label set.",
+        "Invalid output labels were not present in rebuilt SFT targets.",
+        "Outputs do not mainly copy old case-ID labels; they drift to new but unallowed aliases.",
+        "Adapter evidence says the adapter loaded; base-model-only evaluation is unlikely.",
+        "Legacy eval snapshot does not record prompt-contract alignment fields."
+      ],
+      "schema_error_examples": [
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "error": "compact.update missing required field(s): ['use']"
+        },
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "error": "compact.update.use must be a list of strings"
+        },
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "error": "compact.update.team must be boolean"
+        }
+      ],
+      "contract_error_examples": [
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "coding_use_case",
+            "action": "ask_use_case_gap",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.sub value not allowed: 'coding_use_case'"
+          ],
+          "compact_schema_errors": [
+            "compact.update missing required field(s): ['use']",
+            "compact.update.use must be a list of strings",
+            "compact.update.team must be boolean"
+          ],
+          "failure_classes": [
+            "schema",
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "live_midcycle_upgrade_015",
+          "split": "validation",
+          "labels": {
+            "act": "upgrade_question",
+            "sub": "mid_cycle_upgrade",
+            "action": "answer_plan_fit_before_upgrade",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.act value not allowed: 'upgrade_question'",
+            "compact.sub value not allowed: 'mid_cycle_upgrade'",
+            "compact.action value not allowed: 'answer_plan_fit_before_upgrade'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "live_plus_cost_question_030",
+          "split": "validation",
+          "labels": {
+            "act": "plan_cost_question",
+            "sub": "ask_plan_cost",
+            "action": "answer_plan_cost",
+            "strategy": "answer_plan_cost_without_side_effects"
+          },
+          "compact_contract_errors": [
+            "compact.act value not allowed: 'plan_cost_question'",
+            "compact.sub value not allowed: 'ask_plan_cost'",
+            "compact.action value not allowed: 'answer_plan_cost'",
+            "compact.strategy value not allowed: 'answer_plan_cost_without_side_effects'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "paraphrase_and_relation_001",
+          "split": "validation",
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "use_case_features",
+            "action": "ask_use_case_gap",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.sub value not allowed: 'use_case_features'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "paraphrase_what_call_009",
+          "split": "validation",
+          "labels": {
+            "act": "call_scope",
+            "sub": "plan_scope",
+            "action": "answer_plan_scope",
+            "strategy": "answer_plan_scope_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.act value not allowed: 'call_scope'",
+            "compact.sub value not allowed: 'plan_scope'",
+            "compact.action value not allowed: 'answer_plan_scope'",
+            "compact.strategy value not allowed: 'answer_plan_scope_before_recommend'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "paraphrase_accept_017",
+          "split": "validation",
+          "labels": {
+            "act": "adoption_scope",
+            "sub": "plan_scope_acceptance",
+            "action": "ask_usage_gap",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.act value not allowed: 'adoption_scope'",
+            "compact.sub value not allowed: 'plan_scope_acceptance'",
+            "compact.action value not allowed: 'ask_usage_gap'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "paraphrase_light_025",
+          "split": "validation",
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "light_usage",
+            "action": "ask_usage_gap",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.sub value not allowed: 'light_usage'",
+            "compact.action value not allowed: 'ask_usage_gap'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "negative_side_effect_001",
+          "split": "validation",
+          "labels": {
+            "act": "side_effect_boundary",
+            "sub": "side_effect_boundary_request",
+            "action": "boundary_response",
+            "strategy": "boundary_without_side_effects"
+          },
+          "compact_contract_errors": [
+            "compact.act value not allowed: 'side_effect_boundary'",
+            "compact.action value not allowed: 'boundary_response'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "negative_asr_noise_001",
+          "split": "validation",
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "use_case_scope_boundary",
+            "action": "ask_use_case_gap",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.sub value not allowed: 'use_case_scope_boundary'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "negative_raw_transcript_request_001",
+          "split": "validation",
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "use_case_boundary",
+            "action": "ask_use_case_gap",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.sub value not allowed: 'use_case_boundary'"
+          ],
+          "compact_schema_errors": [],
+          "failure_classes": [
+            "compact_contract",
+            "gold_semantic"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "current_eval_result",
+      "source_path": "research/experiments/generated/LOCAL-QWEN-LORA-EVAL-001/result.json",
+      "adapter_path": "local_artifacts/adapters/qwen2.5-sales-brain-lora-002",
+      "adapter_version_label": "lora-002",
+      "adapter_quality_status": "not_ready",
+      "adapter_live_ready": false,
+      "quality_gate_passed": false,
+      "schema_valid_count": {
+        "validation": 0,
+        "test": 0
+      },
+      "verifier_pass_count": {
+        "validation": 0,
+        "test": 0
+      },
+      "strict_gold_semantic_match_count": {
+        "validation": 0,
+        "test": 0
+      },
+      "compact_contract_valid_count": {
+        "validation": 0,
+        "test": 0
+      },
+      "contract_errors_by_field": {
+        "act": 3,
+        "buyer": 4,
+        "sub": 5
+      },
+      "invalid_values_by_field": {
+        "act": [
+          {
+            "value": "coding_voice_use_case",
+            "count": 1
+          },
+          {
+            "value": "side_effect_boundary_request",
+            "count": 1
+          },
+          {
+            "value": "coding_or_voice_use_case",
+            "count": 1
+          }
+        ],
+        "sub": [
+          {
+            "value": "sounds_right",
+            "count": 1
+          },
+          {
+            "value": "use_case_gap",
+            "count": 1
+          },
+          {
+            "value": "compare_competitor_context",
+            "count": 1
+          },
+          {
+            "value": "data_sharing_boundary",
+            "count": 1
+          },
+          {
+            "value": "current_tool_context",
+            "count": 1
+          }
+        ],
+        "action": [],
+        "strategy": [],
+        "neg": [],
+        "buyer": [
+          {
+            "value": "individual",
+            "count": 4
+          }
+        ],
+        "intent": [],
+        "flags": []
+      },
+      "deprecated_labels_used": [],
+      "case_id_like_labels_used": [],
+      "generic_labels_used": [],
+      "missing_required_fields": {
+        "compact output missing required field(s): ['avoid', 'block', 'buyer', 'intent', 'neg', 'obj', 'rel', 'update']": 2,
+        "compact.update missing required field(s): ['use']": 10,
+        "compact output missing required field(s): ['block', 'buyer', 'intent', 'neg', 'obj', 'rel', 'update']": 8,
+        "compact output missing required field(s): ['conf', 'flags']": 1
+      },
+      "list_type_errors": {
+        "compact.obj must be a list of strings": 12,
+        "compact.block must be a list of strings": 10,
+        "compact.avoid must be a list of strings": 2,
+        "compact.update.use must be a list of strings": 10,
+        "compact.flags must be a list of strings": 1
+      },
+      "top_repeated_invalid_values": [
+        {
+          "field": "buyer",
+          "value": "individual",
+          "count": 4,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "act",
+          "value": "coding_voice_use_case",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "sounds_right",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "act",
+          "value": "side_effect_boundary_request",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "use_case_gap",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "act",
+          "value": "coding_or_voice_use_case",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "compare_competitor_context",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "data_sharing_boundary",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        },
+        {
+          "field": "sub",
+          "value": "current_tool_context",
+          "count": 1,
+          "in_training_targets": false,
+          "allowed_by_active_contract": false,
+          "deprecated_label": false,
+          "case_id_like_label": false,
+          "generic_label": false
+        }
+      ],
+      "invalid_values_present_in_training_targets": [],
+      "training_targets_contained_invalid_values": false,
+      "prompt_allowed_those_invalid_values": false,
+      "eval_prompt_and_training_prompt_aligned": true,
+      "eval_prompt_allowed_values_shown_to_model": true,
+      "dataset_prompt_allowed_values_shown_to_model": true,
+      "model_output_appears_to_copy_old_labels": false,
+      "likely_causes": {
+        "training_duration_issue": true,
+        "prompt_eval_mismatch": false,
+        "dataset_target_issue": false,
+        "adapter_loading_issue": false,
+        "contract_too_strict": false,
+        "model_not_trained_enough": true,
+        "prompt_allowed_value_evidence_missing": false,
+        "eval_prompt_omitted_allowed_values": false
+      },
+      "diagnosis": [
+        "Adapter outputs use off-contract semantic synonyms rather than the exact cleaned label set.",
+        "Invalid output labels were not present in rebuilt SFT targets.",
+        "Outputs do not mainly copy old case-ID labels; they drift to new but unallowed aliases.",
+        "Adapter evidence says the adapter loaded; base-model-only evaluation is unlikely.",
+        "Current eval evidence shows dataset/eval prompts expose the active allowed values."
+      ],
+      "schema_error_examples": [
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "error": "compact output missing required field(s): ['avoid', 'block', 'buyer', 'intent', 'neg', 'obj', 'rel', 'update']"
+        },
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "error": "compact.rel must be a string"
+        },
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "error": "compact.neg must be a string"
+        },
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "error": "compact.buyer must be a string"
+        },
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "error": "compact.intent must be a string"
+        },
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "error": "compact.obj must be a list of strings"
+        },
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "error": "compact.block must be a list of strings"
+        },
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "error": "compact.avoid must be a list of strings"
+        },
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "error": "compact.update must be an object"
+        },
+        {
+          "case_id": "live_midcycle_upgrade_015",
+          "split": "validation",
+          "error": "compact.update missing required field(s): ['use']"
+        }
+      ],
+      "contract_error_examples": [
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "labels": {
+            "act": "coding_voice_use_case",
+            "sub": "coding_voice_use_case",
+            "action": "answer_without_inventing_facts",
+            "strategy": "value_before_plan_selection"
+          },
+          "compact_contract_errors": [
+            "compact.act value not allowed: 'coding_voice_use_case'"
+          ],
+          "compact_schema_errors": [
+            "compact output missing required field(s): ['avoid', 'block', 'buyer', 'intent', 'neg', 'obj', 'rel', 'update']",
+            "compact.rel must be a string",
+            "compact.neg must be a string",
+            "compact.buyer must be a string",
+            "compact.intent must be a string",
+            "compact.obj must be a list of strings",
+            "compact.block must be a list of strings",
+            "compact.avoid must be a list of strings",
+            "compact.update must be an object"
+          ],
+          "failure_classes": [
+            "schema",
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "live_midcycle_upgrade_015",
+          "split": "validation",
+          "labels": {
+            "act": "plan_change_question",
+            "sub": "plan_category_explanation",
+            "action": "answer_plan_change",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [
+            "compact.buyer value not allowed: 'individual'"
+          ],
+          "compact_schema_errors": [
+            "compact.update missing required field(s): ['use']",
+            "compact.update has unsupported field(s): ['plan', 'use_case']",
+            "compact.update.use must be a list of strings"
+          ],
+          "failure_classes": [
+            "schema",
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "live_plus_cost_question_030",
+          "split": "validation",
+          "labels": {
+            "act": "price_question",
+            "sub": "price_objection",
+            "action": "answer_price",
+            "strategy": "value_before_plan_selection"
+          },
+          "compact_contract_errors": [],
+          "compact_schema_errors": [
+            "compact.update missing required field(s): ['use']",
+            "compact.update has unsupported field(s): ['plan', 'use_case']",
+            "compact.update.use must be a list of strings"
+          ],
+          "failure_classes": [
+            "schema",
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "paraphrase_and_relation_001",
+          "split": "validation",
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "coding_voice_use_case",
+            "action": "ask_use_case_gap",
+            "strategy": "diagnose_before_recommend"
+          },
+          "compact_contract_errors": [],
+          "compact_schema_errors": [
+            "compact.update missing required field(s): ['use']",
+            "compact.update has unsupported field(s): ['plan', 'use_case']",
+            "compact.update.use must be a list of strings"
+          ],
+          "failure_classes": [
+            "schema",
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "paraphrase_what_call_009",
+          "split": "validation",
+          "labels": {
+            "act": "current_tool_context",
+            "sub": "current_chatgpt_user",
+            "action": "answer_without_inventing_facts",
+            "strategy": "answer_without_inventing_facts"
+          },
+          "compact_contract_errors": [
+            "compact.buyer value not allowed: 'individual'"
+          ],
+          "compact_schema_errors": [
+            "compact.update missing required field(s): ['use']",
+            "compact.update has unsupported field(s): ['plan', 'use_case']",
+            "compact.update.use must be a list of strings"
+          ],
+          "failure_classes": [
+            "schema",
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "paraphrase_accept_017",
+          "split": "validation",
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "sounds_right",
+            "action": "answer_without_inventing_facts",
+            "strategy": "value_before_plan_selection"
+          },
+          "compact_contract_errors": [
+            "compact.sub value not allowed: 'sounds_right'"
+          ],
+          "compact_schema_errors": [
+            "compact output missing required field(s): ['block', 'buyer', 'intent', 'neg', 'obj', 'rel', 'update']",
+            "compact.rel must be a string",
+            "compact.neg must be a string",
+            "compact.buyer must be a string",
+            "compact.intent must be a string",
+            "compact.obj must be a list of strings",
+            "compact.block must be a list of strings",
+            "compact.update must be an object"
+          ],
+          "failure_classes": [
+            "schema",
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "paraphrase_light_025",
+          "split": "validation",
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "light_occasional_use",
+            "action": "ask_usage_intensity",
+            "strategy": "value_before_plan_selection"
+          },
+          "compact_contract_errors": [],
+          "compact_schema_errors": [
+            "compact.obj must be a list of strings",
+            "compact.update missing required field(s): ['use']",
+            "compact.update has unsupported field(s): ['plan', 'use_case']",
+            "compact.update.use must be a list of strings"
+          ],
+          "failure_classes": [
+            "schema",
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "negative_side_effect_001",
+          "split": "validation",
+          "labels": {
+            "act": "side_effect_boundary_request",
+            "sub": "side_effect_boundary_request",
+            "action": "respect_boundary",
+            "strategy": "boundary_without_side_effects"
+          },
+          "compact_contract_errors": [
+            "compact.act value not allowed: 'side_effect_boundary_request'"
+          ],
+          "compact_schema_errors": [
+            "compact output missing required field(s): ['block', 'buyer', 'intent', 'neg', 'obj', 'rel', 'update']",
+            "compact.rel must be a string",
+            "compact.neg must be a string",
+            "compact.buyer must be a string",
+            "compact.intent must be a string",
+            "compact.obj must be a list of strings",
+            "compact.block must be a list of strings",
+            "compact.update must be an object"
+          ],
+          "failure_classes": [
+            "schema",
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "negative_asr_noise_001",
+          "split": "validation",
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "asr_noise_input",
+            "action": "answer_without_inventing_facts",
+            "strategy": "respect_boundary"
+          },
+          "compact_contract_errors": [],
+          "compact_schema_errors": [
+            "compact output missing required field(s): ['block', 'buyer', 'intent', 'neg', 'obj', 'rel', 'update']",
+            "compact.rel must be a string",
+            "compact.neg must be a string",
+            "compact.buyer must be a string",
+            "compact.intent must be a string",
+            "compact.obj must be a list of strings",
+            "compact.block must be a list of strings",
+            "compact.update must be an object"
+          ],
+          "failure_classes": [
+            "schema",
+            "compact_contract",
+            "gold_semantic"
+          ]
+        },
+        {
+          "case_id": "negative_raw_transcript_request_001",
+          "split": "validation",
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "raw_transcript_request",
+            "action": "answer_without_inventing_facts",
+            "strategy": "respect_boundary"
+          },
+          "compact_contract_errors": [],
+          "compact_schema_errors": [
+            "compact output missing required field(s): ['block', 'buyer', 'intent', 'neg', 'obj', 'rel', 'update']",
+            "compact.rel must be a string",
+            "compact.neg must be a string",
+            "compact.buyer must be a string",
+            "compact.intent must be a string",
+            "compact.obj must be a list of strings",
+            "compact.block must be a list of strings",
+            "compact.update must be an object"
+          ],
+          "failure_classes": [
+            "schema",
+            "compact_contract",
+            "gold_semantic"
+          ]
+        }
+      ]
+    }
+  ],
+  "side_effects": {
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcript_included": false
+  }
+}

@@ -8,15 +8,15 @@
 - exact_blocker: None
 - model_loaded: true
 - adapter_saved: true
-- adapter_path: `local_artifacts/adapters/qwen2.5-sales-brain-lora-001`
+- adapter_path: `local_artifacts/adapters/qwen2.5-sales-brain-lora-002`
 - adapter_files_committed: false
 - train_rows: 60
 - validation_rows: 10
 - test_rows: 10
 - train_steps_completed: 20
-- train_loss: 0.9283706557005644
-- eval_loss: 0.3574617803096771
-- peak_gpu_memory_bytes: 10452374016
+- train_loss: 1.0341696918010712
+- eval_loss: 0.4279744029045105
+- peak_gpu_memory_bytes: 10476538880
 - provider_calls_made: false
 - openai_api_calls_made: false
 - live_tts_calls_made: false
@@ -30,20 +30,20 @@
   "train": {
     "row_count": 60,
     "max_prompt_tokens": 419,
-    "max_full_tokens": 555,
-    "max_target_tokens": 138,
-    "min_target_tokens": 110,
+    "max_full_tokens": 557,
+    "max_target_tokens": 148,
+    "min_target_tokens": 109,
     "truncated_example_count": 0,
-    "label_token_count": 7309
+    "label_token_count": 7374
   },
   "validation": {
     "row_count": 10,
     "max_prompt_tokens": 411,
     "max_full_tokens": 537,
-    "max_target_tokens": 128,
-    "min_target_tokens": 115,
+    "max_target_tokens": 130,
+    "min_target_tokens": 114,
     "truncated_example_count": 0,
-    "label_token_count": 1217
+    "label_token_count": 1215
   },
   "max_seq_length": 1536
 }

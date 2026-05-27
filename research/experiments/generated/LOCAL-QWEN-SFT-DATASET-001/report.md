@@ -7,6 +7,10 @@
 - Validation: 10
 - Test: 10
 - Target format: compact JSON
+- Target compact contract valid: true
+- Deprecated target labels: 0
+- Case-ID-like target labels: 0
+- Generic target labels: 0
 - Failed Qwen outputs used as targets: false
 - Local model calls made: false
 - Provider/API/TTS calls made: false

@@ -1,0 +1,5379 @@
+{
+  "experiment_id": "LOCAL-QWEN-COMPACT-CONTRACT-AUDIT-001",
+  "generated_at": "2026-05-27T16:27:40.400244+00:00",
+  "status": "pass",
+  "current": {
+    "contract": {
+      "contract_version": "LOCAL-QWEN-COMPACT-PLANNER-CONTRACT-002",
+      "deprecated_allowed_count": 0,
+      "case_id_like_allowed_count": 0,
+      "generic_allowed_count": 0,
+      "deprecated_allowed": [],
+      "case_id_like_allowed": [],
+      "generic_allowed": []
+    },
+    "dataset": {
+      "payload_count": 80,
+      "issue_counts": {},
+      "flagged_payload_count": 0,
+      "top_flagged_labels": {},
+      "label_occurrences": {
+        "act=use_case_scope": 10,
+        "sub=coding_writing_use_case": 1,
+        "action=ask_usage_intensity": 10,
+        "strategy=diagnose_before_recommend": 36,
+        "act=adoption_state": 6,
+        "sub=current_chatgpt_and_other_ai_user": 3,
+        "action=ask_use_case_gap": 17,
+        "sub=current_chatgpt_user": 5,
+        "act=orientation_or_explanation": 6,
+        "sub=plan_category_explanation": 4,
+        "action=answer_plan_category": 6,
+        "strategy=explain_without_overclaiming": 6,
+        "sub=model_vs_subscription_question": 2,
+        "act=team_scope": 10,
+        "sub=not_team_personal_use": 4,
+        "action=ask_individual_usage_intensity": 7,
+        "sub=personal_use": 3,
+        "act=pro_tier_question": 2,
+        "sub=pro_tier_choice": 2,
+        "action=answer_plan_fit": 3,
+        "strategy=value_before_plan_selection": 7,
+        "act=competitor_objection": 1,
+        "sub=current_competitor_tool": 1,
+        "action=compare_competitor_context": 1,
+        "strategy=compare_options": 1,
+        "act=signup_question": 2,
+        "sub=signup_path_question": 2,
+        "action=terminal_close": 4,
+        "act=source_question": 2,
+        "sub=source_disclosure_question": 2,
+        "action=answer_source": 2,
+        "strategy=answer_without_inventing_facts": 6,
+        "act=affiliation_question": 2,
+        "sub=affiliation_boundary_question": 3,
+        "action=answer_affiliation_boundary": 2,
+        "sub=team_controls_question": 2,
+        "action=answer_team_controls": 3,
+        "act=plan_fit_question": 1,
+        "sub=plus_sufficiency_question": 1,
+        "sub=coding_voice_use_case": 4,
+        "sub=coding_research_use_case": 5,
+        "act=usage_intensity": 4,
+        "sub=heavy_daily_use": 2,
+        "sub=occasional_use": 1,
+        "act=current_tool_context": 7,
+        "sub=current_other_ai_user": 4,
+        "act=plan_change_question": 2,
+        "sub=midcycle_upgrade_question": 2,
+        "action=answer_plan_change": 2,
+        "sub=current_chatgpt_or_other_ai_unknown": 1,
+        "action=answer_signup_path": 1,
+        "act=terminal_acceptance": 3,
+        "sub=terminal_thanks_acceptance": 3,
+        "strategy=terminal_close": 3,
+        "sub=enterprise_security_question": 1,
+        "act=safety_boundary": 17,
+        "sub=internal_policy_request": 2,
+        "action=respect_boundary": 17,
+        "strategy=boundary_without_side_effects": 17,
+        "sub=raw_url_request": 1,
+        "sub=campaign_leakage_boundary": 1,
+        "act=no_fit": 2,
+        "sub=no_interest": 1,
+        "action=disqualify_no_fit": 2,
+        "strategy=no_fit_close": 2,
+        "sub=wrong_product_question": 1,
+        "sub=silence_or_unclear_audio": 1,
+        "sub=no_calendar_request": 1,
+        "sub=no_crm_request": 1,
+        "sub=tts_boundary_request": 1,
+        "sub=hallucination_pressure_request": 1,
+        "sub=unsupported_fact_request": 2,
+        "sub=disallowed_purchase_request": 1,
+        "act=price_question": 1,
+        "sub=plus_price_question": 1,
+        "action=answer_price": 1,
+        "sub=light_occasional_use": 1,
+        "sub=side_effect_boundary_request": 1,
+        "sub=asr_noise_input": 1,
+        "sub=raw_transcript_request": 1,
+        "act=price_objection": 2,
+        "sub=price_objection": 2,
+        "action=reframe_price_objection": 2,
+        "strategy=value_reframe": 2,
+        "sub=privacy_question": 1
+      },
+      "flagged_items": [],
+      "split_counts": {
+        "train": 60,
+        "validation": 10,
+        "test": 10
+      },
+      "target_contains_case_id_count": 0
+    },
+    "eval": {
+      "payload_count": 20,
+      "issue_counts": {
+        "not_allowed": 8
+      },
+      "flagged_payload_count": 8,
+      "top_flagged_labels": {
+        "act=coding_voice_use_case": 1,
+        "sub=sounds_right": 1,
+        "act=side_effect_boundary_request": 1,
+        "sub=use_case_gap": 1,
+        "act=coding_or_voice_use_case": 1,
+        "sub=compare_competitor_context": 1,
+        "sub=data_sharing_boundary": 1,
+        "sub=current_tool_context": 1
+      },
+      "label_occurrences": {
+        "act=coding_voice_use_case": 1,
+        "sub=coding_voice_use_case": 3,
+        "action=answer_without_inventing_facts": 8,
+        "strategy=value_before_plan_selection": 8,
+        "act=plan_change_question": 1,
+        "sub=plan_category_explanation": 1,
+        "action=answer_plan_change": 1,
+        "strategy=diagnose_before_recommend": 5,
+        "act=price_question": 1,
+        "sub=price_objection": 3,
+        "action=answer_price": 2,
+        "act=use_case_scope": 8,
+        "action=ask_use_case_gap": 2,
+        "act=current_tool_context": 1,
+        "sub=current_chatgpt_user": 1,
+        "strategy=answer_without_inventing_facts": 1,
+        "sub=sounds_right": 1,
+        "sub=light_occasional_use": 1,
+        "action=ask_usage_intensity": 1,
+        "act=side_effect_boundary_request": 1,
+        "sub=side_effect_boundary_request": 1,
+        "action=respect_boundary": 2,
+        "strategy=boundary_without_side_effects": 3,
+        "sub=asr_noise_input": 1,
+        "strategy=respect_boundary": 2,
+        "sub=raw_transcript_request": 1,
+        "sub=use_case_gap": 1,
+        "act=terminal_acceptance": 1,
+        "sub=terminal_thanks_acceptance": 1,
+        "action=terminal_close": 1,
+        "strategy=terminal_close": 1,
+        "act=price_objection": 2,
+        "act=coding_or_voice_use_case": 1,
+        "act=plan_fit_question": 1,
+        "sub=compare_competitor_context": 1,
+        "action=answer_plan_fit": 1,
+        "action=reframe_price_objection": 1,
+        "sub=coding_writing_use_case": 1,
+        "sub=unsupported_fact_request": 1,
+        "act=safety_boundary": 1,
+        "sub=data_sharing_boundary": 1,
+        "action=answer_affiliation_boundary": 1,
+        "act=adoption_state": 1,
+        "sub=current_tool_context": 1
+      },
+      "flagged_items": [
+        {
+          "source": "eval_output",
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "coding_voice_use_case",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "coding_voice_use_case",
+            "sub": "coding_voice_use_case",
+            "action": "answer_without_inventing_facts",
+            "strategy": "value_before_plan_selection"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "paraphrase_accept_017",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "sounds_right",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "sounds_right",
+            "action": "answer_without_inventing_facts",
+            "strategy": "value_before_plan_selection"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "negative_side_effect_001",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "side_effect_boundary_request",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "side_effect_boundary_request",
+            "sub": "side_effect_boundary_request",
+            "action": "respect_boundary",
+            "strategy": "boundary_without_side_effects"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "live_what_is_this_008",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "use_case_gap",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "use_case_gap",
+            "action": "ask_use_case_gap",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "paraphrase_or_relation_002",
+          "split": "test",
+          "issues": [
+            {
+              "field": "act",
+              "value": "coding_or_voice_use_case",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "coding_or_voice_use_case",
+            "sub": "coding_voice_use_case",
+            "action": "answer_without_inventing_facts",
+            "strategy": "value_before_plan_selection"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "paraphrase_plan_list_010",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "compare_competitor_context",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "plan_fit_question",
+            "sub": "compare_competitor_context",
+            "action": "answer_plan_fit",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "negative_privacy_001",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "data_sharing_boundary",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "safety_boundary",
+            "sub": "data_sharing_boundary",
+            "action": "answer_affiliation_boundary",
+            "strategy": "boundary_without_side_effects"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "negative_policy_request_001",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "current_tool_context",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "adoption_state",
+            "sub": "current_tool_context",
+            "action": "answer_without_inventing_facts",
+            "strategy": "diagnose_before_recommend"
+          }
+        }
+      ],
+      "status": "completed",
+      "adapter_path": "local_artifacts/adapters/qwen2.5-sales-brain-lora-002",
+      "verifier_pass_gold_section_fail_count": 0,
+      "verifier_pass_gold_section_failures": [],
+      "latency_metrics": {
+        "model_load_time_ms": 9352.53,
+        "total_generation_latency_ms": 302076.373,
+        "average_generation_latency_ms": 15103.819,
+        "p50_generation_latency_ms": 14645.001,
+        "p90_generation_latency_ms": 19578.748,
+        "average_first_output_latency_ms": 9054.949,
+        "peak_gpu_memory_bytes": 6147833856
+      }
+    },
+    "summary_counts": {
+      "deprecated_label_count": 0,
+      "case_id_label_leak_count": 0,
+      "generic_label_count": 0,
+      "generalized_sales_move_count": 0,
+      "verifier_pass_gold_section_fail_count": 0
+    }
+  },
+  "baseline_current": {
+    "contract": {
+      "contract_version": "LOCAL-QWEN-COMPACT-PLANNER-CONTRACT-002",
+      "deprecated_allowed_count": 0,
+      "case_id_like_allowed_count": 0,
+      "generic_allowed_count": 0,
+      "deprecated_allowed": [],
+      "case_id_like_allowed": [],
+      "generic_allowed": []
+    },
+    "dataset": {
+      "payload_count": 80,
+      "issue_counts": {
+        "case_id_label_leak": 40,
+        "deprecated_label": 152,
+        "generic_act": 21,
+        "generic_action": 58,
+        "generic_sub_intent": 18,
+        "not_allowed": 152
+      },
+      "flagged_payload_count": 79,
+      "top_flagged_labels": {
+        "action=clarify": 81,
+        "act=generalized_sales_move": 63,
+        "action=ask_intensity": 51,
+        "sub=workflow_need": 30,
+        "sub=current_ai_tool_user": 18,
+        "action=ask_gap": 18,
+        "action=close": 9,
+        "action=reframe_objection": 9,
+        "action=disqualify": 6,
+        "act=price": 6,
+        "sub=pricing_or_value": 6,
+        "act=plan_selection": 4,
+        "sub=chatgpt_plus_claude_003": 3,
+        "sub=another_ai_004": 3,
+        "sub=chad_gpt_005": 3,
+        "sub=chat_gbt_006": 3,
+        "sub=cloud_007": 3,
+        "sub=clawed_008": 3,
+        "sub=subscription_011": 3,
+        "sub=pro_need_015": 3,
+        "sub=upgrade_016": 3,
+        "sub=current_tool_019": 3,
+        "sub=signup_020": 3,
+        "sub=source_021": 3,
+        "sub=affiliation_022": 3,
+        "sub=terminal_023": 3,
+        "sub=heavy_024": 3,
+        "sub=team_admin_029": 3,
+        "sub=security_030": 3,
+        "sub=internal_policy_001": 3
+      },
+      "label_occurrences": {
+        "act=use_case_scope": 10,
+        "sub=workflow_need": 10,
+        "action=ask_intensity": 17,
+        "strategy=diagnose_before_recommend": 49,
+        "act=adoption_state": 6,
+        "sub=current_ai_tool_user": 6,
+        "action=ask_gap": 6,
+        "act=orientation_or_explanation": 3,
+        "sub=explain_plan_set": 1,
+        "action=clarify": 27,
+        "sub=model_vs_subscription": 1,
+        "action=answer_plan_change": 4,
+        "act=team_scope": 8,
+        "sub=personal_use": 7,
+        "act=plan_selection": 2,
+        "sub=pro_tier_interest": 1,
+        "strategy=answer_without_inventing_facts": 10,
+        "act=competitor_objection": 1,
+        "sub=current_competitor_tool": 1,
+        "act=signup_question": 1,
+        "sub=direct_signup_question": 1,
+        "action=close": 3,
+        "act=source_question": 1,
+        "sub=source_disclosure_question": 1,
+        "act=affiliation_question": 1,
+        "sub=affiliation_boundary": 1,
+        "sub=team_controls_question": 1,
+        "sub=free_plan_fit": 1,
+        "act=usage_intensity": 2,
+        "sub=heavy_daily_use": 1,
+        "action=answer_plan_fit": 1,
+        "sub=occasional_use": 1,
+        "act=generalized_sales_move": 21,
+        "sub=chatgpt_plus_claude_003": 1,
+        "sub=another_ai_004": 1,
+        "sub=chad_gpt_005": 1,
+        "sub=chat_gbt_006": 1,
+        "sub=cloud_007": 1,
+        "sub=clawed_008": 1,
+        "sub=subscription_011": 1,
+        "sub=pro_need_015": 1,
+        "sub=upgrade_016": 1,
+        "sub=current_tool_019": 1,
+        "sub=signup_020": 1,
+        "sub=source_021": 1,
+        "sub=affiliation_022": 1,
+        "sub=terminal_023": 1,
+        "sub=heavy_024": 1,
+        "sub=team_admin_029": 1,
+        "sub=security_030": 1,
+        "act=negative_control": 19,
+        "sub=internal_policy_001": 1,
+        "action=respect_boundary": 17,
+        "strategy=respect_boundary": 19,
+        "sub=raw_url_001": 1,
+        "sub=affiliation_001": 1,
+        "sub=campaign_leakage_001": 1,
+        "sub=no_interest_001": 1,
+        "action=disqualify": 2,
+        "sub=wrong_product_001": 1,
+        "sub=silence_001": 1,
+        "sub=no_calendar_001": 1,
+        "sub=no_crm_001": 1,
+        "sub=no_tts_001": 1,
+        "sub=hallucination_pressure_001": 1,
+        "sub=price_trap_001": 1,
+        "sub=disallowed_action_001": 1,
+        "act=subscription_change": 1,
+        "sub=midcycle_upgrade_question": 1,
+        "act=price": 3,
+        "sub=plus_price_question": 1,
+        "action=reframe_objection": 3,
+        "sub=what_call_009": 1,
+        "sub=accept_017": 1,
+        "sub=light_025": 1,
+        "sub=side_effect_001": 1,
+        "sub=asr_noise_001": 1,
+        "sub=raw_transcript_request_001": 1,
+        "sub=explain_call_scope": 1,
+        "act=close_readiness": 1,
+        "sub=terminal_acceptance": 1,
+        "sub=pricing_or_value": 2,
+        "strategy=value_reframe": 2,
+        "sub=plan_list_010": 1,
+        "sub=unsupported_fact_001": 1,
+        "sub=privacy_001": 1,
+        "sub=policy_request_001": 1
+      },
+      "flagged_items": [
+        {
+          "source": "dataset_target",
+          "case_id": "live_voice_not_writing_001",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "workflow_need",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_current_tools_002",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "adoption_state",
+            "sub": "current_ai_tool_user",
+            "action": "ask_gap",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_current_tools_003",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "adoption_state",
+            "sub": "current_ai_tool_user",
+            "action": "ask_gap",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_asr_chachu_004",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "adoption_state",
+            "sub": "current_ai_tool_user",
+            "action": "ask_gap",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_asr_chacha_005",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "adoption_state",
+            "sub": "current_ai_tool_user",
+            "action": "ask_gap",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_asr_check_gpt_006",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "adoption_state",
+            "sub": "current_ai_tool_user",
+            "action": "ask_gap",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_plans_009",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "explain_plan_set",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "explain_plan_set",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "orientation_or_explanation",
+            "sub": "explain_plan_set",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_model_subscription_010",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "model_vs_subscription",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "model_vs_subscription",
+              "issue": "deprecated_label"
+            }
+          ],
+          "labels": {
+            "act": "orientation_or_explanation",
+            "sub": "model_vs_subscription",
+            "action": "answer_plan_change",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_not_team_011",
+          "split": "train",
+          "issues": [
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "team_scope",
+            "sub": "personal_use",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_by_myself_012",
+          "split": "train",
+          "issues": [
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "team_scope",
+            "sub": "personal_use",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_personal_use_013",
+          "split": "train",
+          "issues": [
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "team_scope",
+            "sub": "personal_use",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_pro_tier_014",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "plan_selection",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "plan_selection",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "pro_tier_interest",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "pro_tier_interest",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "plan_selection",
+            "sub": "pro_tier_interest",
+            "action": "clarify",
+            "strategy": "answer_without_inventing_facts"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_competitor_objection_018",
+          "split": "train",
+          "issues": [
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "competitor_objection",
+            "sub": "current_competitor_tool",
+            "action": "clarify",
+            "strategy": "answer_without_inventing_facts"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_signup_question_019",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "direct_signup_question",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "direct_signup_question",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "close",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "close",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "close",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "signup_question",
+            "sub": "direct_signup_question",
+            "action": "close",
+            "strategy": "answer_without_inventing_facts"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_source_question_020",
+          "split": "train",
+          "issues": [
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "source_question",
+            "sub": "source_disclosure_question",
+            "action": "clarify",
+            "strategy": "answer_without_inventing_facts"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_affiliation_question_021",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "affiliation_boundary",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "affiliation_boundary",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "affiliation_question",
+            "sub": "affiliation_boundary",
+            "action": "clarify",
+            "strategy": "answer_without_inventing_facts"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_team_controls_question_026",
+          "split": "train",
+          "issues": [
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "team_scope",
+            "sub": "team_controls_question",
+            "action": "clarify",
+            "strategy": "answer_without_inventing_facts"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_free_plan_question_029",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "plan_selection",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "plan_selection",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "free_plan_fit",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "free_plan_fit",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "plan_selection",
+            "sub": "free_plan_fit",
+            "action": "clarify",
+            "strategy": "answer_without_inventing_facts"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_use_case_voice_022",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "workflow_need",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_coding_research_023",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "workflow_need",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_files_workflow_024",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "workflow_need",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_image_voice_025",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "workflow_need",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_occasional_use_028",
+          "split": "train",
+          "issues": [
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "usage_intensity",
+            "sub": "occasional_use",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_chatgpt_plus_claude_003",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "chatgpt_plus_claude_003",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "chatgpt_plus_claude_003",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "chatgpt_plus_claude_003",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "chatgpt_plus_claude_003",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_another_ai_004",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "another_ai_004",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "another_ai_004",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "another_ai_004",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "another_ai_004",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_chad_gpt_005",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "chad_gpt_005",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "chad_gpt_005",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "chad_gpt_005",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "chad_gpt_005",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_chat_gbt_006",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "chat_gbt_006",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "chat_gbt_006",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "chat_gbt_006",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "chat_gbt_006",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_cloud_007",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "cloud_007",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "cloud_007",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "cloud_007",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "cloud_007",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_clawed_008",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "clawed_008",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "clawed_008",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "clawed_008",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "clawed_008",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_subscription_011",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "subscription_011",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "subscription_011",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "subscription_011",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "subscription_011",
+            "action": "answer_plan_change",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_self_use_012",
+          "split": "train",
+          "issues": [
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "team_scope",
+            "sub": "personal_use",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_no_team_013",
+          "split": "train",
+          "issues": [
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "team_scope",
+            "sub": "personal_use",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_individual_014",
+          "split": "train",
+          "issues": [
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "team_scope",
+            "sub": "personal_use",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_pro_need_015",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "pro_need_015",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "pro_need_015",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "pro_need_015",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "pro_need_015",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_upgrade_016",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "upgrade_016",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "upgrade_016",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "upgrade_016",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "upgrade_016",
+            "action": "answer_plan_change",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_current_tool_019",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "current_tool_019",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "current_tool_019",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "current_tool_019",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "current_tool_019",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_signup_020",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "signup_020",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "signup_020",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "signup_020",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "signup_020",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_source_021",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "source_021",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "source_021",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "source_021",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "source_021",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_affiliation_022",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "affiliation_022",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "affiliation_022",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "affiliation_022",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "affiliation_022",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_terminal_023",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "terminal_023",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "terminal_023",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "terminal_023",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "close",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "close",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "close",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "terminal_023",
+            "action": "close",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_heavy_024",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "heavy_024",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "heavy_024",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "heavy_024",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "heavy_024",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_research_027",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "workflow_need",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_images_028",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "workflow_need",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_team_admin_029",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "team_admin_029",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "team_admin_029",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "team_admin_029",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "team_admin_029",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_security_030",
+          "split": "train",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "security_030",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "security_030",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "security_030",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "security_030",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_not_team_001",
+          "split": "train",
+          "issues": [
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "team_scope",
+            "sub": "personal_use",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_internal_policy_001",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "internal_policy_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "internal_policy_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "internal_policy_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "internal_policy_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_raw_url_001",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "raw_url_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "raw_url_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "raw_url_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "raw_url_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_affiliation_001",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "affiliation_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "affiliation_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "affiliation_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "affiliation_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_campaign_leakage_001",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "campaign_leakage_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "campaign_leakage_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "campaign_leakage_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "campaign_leakage_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_no_interest_001",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "no_interest_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "no_interest_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "no_interest_001",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "disqualify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "disqualify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "disqualify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "no_interest_001",
+            "action": "disqualify",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_wrong_product_001",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "wrong_product_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "wrong_product_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "wrong_product_001",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "disqualify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "disqualify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "disqualify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "wrong_product_001",
+            "action": "disqualify",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_silence_001",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "silence_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "silence_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "silence_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "silence_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_no_calendar_001",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "no_calendar_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "no_calendar_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "no_calendar_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "no_calendar_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_no_crm_001",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "no_crm_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "no_crm_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "no_crm_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "no_crm_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_no_tts_001",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "no_tts_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "no_tts_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "no_tts_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "no_tts_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_hallucination_pressure_001",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "hallucination_pressure_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "hallucination_pressure_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "hallucination_pressure_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "hallucination_pressure_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_price_trap_001",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "price_trap_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "price_trap_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "price_trap_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "price_trap_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_disallowed_action_001",
+          "split": "train",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "disallowed_action_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "disallowed_action_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "disallowed_action_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "disallowed_action_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "current_ai_tool_user",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_gap",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "adoption_state",
+            "sub": "current_ai_tool_user",
+            "action": "ask_gap",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_midcycle_upgrade_015",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "subscription_change",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "subscription_change",
+              "issue": "deprecated_label"
+            }
+          ],
+          "labels": {
+            "act": "subscription_change",
+            "sub": "midcycle_upgrade_question",
+            "action": "answer_plan_change",
+            "strategy": "answer_without_inventing_facts"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_plus_cost_question_030",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "price",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "price",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "reframe_objection",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "reframe_objection",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "reframe_objection",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "price",
+            "sub": "plus_price_question",
+            "action": "reframe_objection",
+            "strategy": "answer_without_inventing_facts"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_and_relation_001",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "workflow_need",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_what_call_009",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "what_call_009",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "what_call_009",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "what_call_009",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "what_call_009",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_accept_017",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "accept_017",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "accept_017",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "accept_017",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "accept_017",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_light_025",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "light_025",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "light_025",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "light_025",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "light_025",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_side_effect_001",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "side_effect_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "side_effect_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "side_effect_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "side_effect_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_asr_noise_001",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "asr_noise_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "asr_noise_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "asr_noise_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "asr_noise_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_raw_transcript_request_001",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "raw_transcript_request_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "raw_transcript_request_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "raw_transcript_request_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "raw_transcript_request_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_what_is_this_008",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "explain_call_scope",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "explain_call_scope",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "orientation_or_explanation",
+            "sub": "explain_call_scope",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_terminal_acceptance_016",
+          "split": "test",
+          "issues": [
+            {
+              "field": "act",
+              "value": "close_readiness",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "close_readiness",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "terminal_acceptance",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "terminal_acceptance",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "close",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "close",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "close",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "close_readiness",
+            "sub": "terminal_acceptance",
+            "action": "close",
+            "strategy": "answer_without_inventing_facts"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "live_price_objection_017",
+          "split": "test",
+          "issues": [
+            {
+              "field": "act",
+              "value": "price",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "price",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "pricing_or_value",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "pricing_or_value",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "pricing_or_value",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "reframe_objection",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "reframe_objection",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "reframe_objection",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "price",
+            "sub": "pricing_or_value",
+            "action": "reframe_objection",
+            "strategy": "value_reframe"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_or_relation_002",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "workflow_need",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_plan_list_010",
+          "split": "test",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "plan_list_010",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "plan_list_010",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "plan_list_010",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "plan_list_010",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_expensive_018",
+          "split": "test",
+          "issues": [
+            {
+              "field": "act",
+              "value": "price",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "price",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "pricing_or_value",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "pricing_or_value",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "pricing_or_value",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "reframe_objection",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "reframe_objection",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "reframe_objection",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "price",
+            "sub": "pricing_or_value",
+            "action": "reframe_objection",
+            "strategy": "value_reframe"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "paraphrase_files_026",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "workflow_need",
+              "issue": "generic_sub_intent"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "workflow_need",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_unsupported_fact_001",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "unsupported_fact_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "unsupported_fact_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "unsupported_fact_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "unsupported_fact_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_privacy_001",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "privacy_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "privacy_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "privacy_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "privacy_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "dataset_target",
+          "case_id": "negative_policy_request_001",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "policy_request_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "policy_request_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "policy_request_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "policy_request_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        }
+      ],
+      "split_counts": {
+        "train": 60,
+        "validation": 10,
+        "test": 10
+      },
+      "target_contains_case_id_count": 0
+    },
+    "eval": {
+      "payload_count": 20,
+      "issue_counts": {
+        "case_id_label_leak": 14,
+        "deprecated_label": 37,
+        "generic_act": 13,
+        "generic_action": 16,
+        "not_allowed": 50
+      },
+      "flagged_payload_count": 20,
+      "top_flagged_labels": {
+        "action=clarify": 45,
+        "act=generalized_sales_move": 39,
+        "sub=accept_017": 3,
+        "sub=light_025": 3,
+        "sub=side_effect_001": 3,
+        "sub=asr_noise_001": 3,
+        "sub=plan_list_010": 3,
+        "action=ask_intensity": 3,
+        "sub=unsupported_fact_001": 3,
+        "sub=privacy_001": 3,
+        "sub=policy_request_001": 3,
+        "sub=cloud_claude_007": 2,
+        "sub=cost_question_030": 2,
+        "sub=terminal_acceptance_016": 2,
+        "sub=paraphrase_or_relation_002": 2,
+        "sub=expensive_018": 2,
+        "sub=files_026": 2,
+        "sub=mid_cycle_upgrade": 1,
+        "sub=use_case_and_team_size_awareness": 1,
+        "sub=use_case_specific": 1,
+        "sub=raw_transcript_request_negative_control": 1,
+        "action=clarify_before_recommend": 1,
+        "sub=plan_name_request": 1,
+        "act=use_case": 1
+      },
+      "label_occurrences": {
+        "act=generalized_sales_move": 13,
+        "sub=cloud_claude_007": 1,
+        "action=clarify": 15,
+        "strategy=diagnose_before_recommend": 16,
+        "sub=mid_cycle_upgrade": 1,
+        "sub=cost_question_030": 1,
+        "sub=use_case_and_team_size_awareness": 1,
+        "sub=use_case_specific": 1,
+        "sub=accept_017": 1,
+        "sub=light_025": 1,
+        "act=negative_control": 5,
+        "sub=side_effect_001": 1,
+        "action=respect_boundary": 3,
+        "strategy=respect_boundary": 4,
+        "sub=asr_noise_001": 1,
+        "sub=raw_transcript_request_negative_control": 1,
+        "action=clarify_before_recommend": 1,
+        "sub=plan_name_request": 1,
+        "sub=terminal_acceptance_016": 1,
+        "act=use_case_scope": 1,
+        "sub=price_objection": 1,
+        "sub=paraphrase_or_relation_002": 1,
+        "sub=plan_list_010": 1,
+        "act=use_case": 1,
+        "sub=expensive_018": 1,
+        "action=ask_intensity": 1,
+        "sub=files_026": 1,
+        "sub=unsupported_fact_001": 1,
+        "sub=privacy_001": 1,
+        "sub=policy_request_001": 1
+      },
+      "flagged_items": [
+        {
+          "source": "eval_output",
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "cloud_claude_007",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "cloud_claude_007",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "cloud_claude_007",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "live_midcycle_upgrade_015",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "mid_cycle_upgrade",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "mid_cycle_upgrade",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "live_plus_cost_question_030",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "cost_question_030",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "cost_question_030",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "cost_question_030",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "paraphrase_and_relation_001",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "use_case_and_team_size_awareness",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "use_case_and_team_size_awareness",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "paraphrase_what_call_009",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "use_case_specific",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "use_case_specific",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "paraphrase_accept_017",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "accept_017",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "accept_017",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "accept_017",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "accept_017",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "paraphrase_light_025",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "light_025",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "light_025",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "light_025",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "light_025",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "negative_side_effect_001",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "side_effect_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "side_effect_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "side_effect_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "side_effect_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "negative_asr_noise_001",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "asr_noise_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "asr_noise_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "asr_noise_001",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "asr_noise_001",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "negative_raw_transcript_request_001",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "raw_transcript_request_negative_control",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify_before_recommend",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "raw_transcript_request_negative_control",
+            "action": "clarify_before_recommend",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "live_what_is_this_008",
+          "split": "test",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "plan_name_request",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "plan_name_request",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "live_terminal_acceptance_016",
+          "split": "test",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "terminal_acceptance_016",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "terminal_acceptance_016",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "terminal_acceptance_016",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "live_price_objection_017",
+          "split": "test",
+          "issues": [
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "price_objection",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "paraphrase_or_relation_002",
+          "split": "test",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "paraphrase_or_relation_002",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "paraphrase_or_relation_002",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "paraphrase_or_relation_002",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "paraphrase_plan_list_010",
+          "split": "test",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "plan_list_010",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "plan_list_010",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "plan_list_010",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "plan_list_010",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "paraphrase_expensive_018",
+          "split": "test",
+          "issues": [
+            {
+              "field": "act",
+              "value": "use_case",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "expensive_018",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "expensive_018",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "ask_intensity",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "use_case",
+            "sub": "expensive_018",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "paraphrase_files_026",
+          "split": "test",
+          "issues": [
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "act",
+              "value": "generalized_sales_move",
+              "issue": "generic_act"
+            },
+            {
+              "field": "sub",
+              "value": "files_026",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "files_026",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "files_026",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "negative_unsupported_fact_001",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "unsupported_fact_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "unsupported_fact_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "unsupported_fact_001",
+              "issue": "case_id_label_leak"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "action",
+              "value": "clarify",
+              "issue": "generic_action"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "unsupported_fact_001",
+            "action": "clarify",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "negative_privacy_001",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "privacy_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "privacy_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "privacy_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "privacy_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "negative_policy_request_001",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "policy_request_001",
+              "issue": "not_allowed"
+            },
+            {
+              "field": "sub",
+              "value": "policy_request_001",
+              "issue": "deprecated_label"
+            },
+            {
+              "field": "sub",
+              "value": "policy_request_001",
+              "issue": "case_id_label_leak"
+            }
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "policy_request_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        }
+      ],
+      "status": "completed",
+      "adapter_path": "local_artifacts/adapters/qwen2.5-sales-brain-lora-001",
+      "verifier_pass_gold_section_fail_count": 15,
+      "verifier_pass_gold_section_failures": [
+        {
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "semantic_mismatches": [
+            "response_plan.buyer_words_to_preserve",
+            "response_plan.campaign_facts_needed",
+            "response_plan.must_include",
+            "sales_strategy.next_action",
+            "sales_strategy.one_next_step",
+            "semantic_frame.object_mentions",
+            "semantic_frame.object_type",
+            "semantic_frame.semantic_family",
+            "semantic_frame.speech_act",
+            "semantic_frame.sub_intent",
+            "state_update.should_update_adoption_state"
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "cloud_claude_007",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "case_id": "live_midcycle_upgrade_015",
+          "split": "validation",
+          "semantic_mismatches": [
+            "sales_strategy.next_action",
+            "sales_strategy.one_next_step",
+            "sales_strategy.persuasion_strategy",
+            "sales_strategy.should_recommend",
+            "semantic_frame.commercial_intent",
+            "semantic_frame.object_type",
+            "semantic_frame.semantic_family",
+            "semantic_frame.speech_act",
+            "semantic_frame.sub_intent"
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "mid_cycle_upgrade",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "case_id": "live_plus_cost_question_030",
+          "split": "validation",
+          "semantic_mismatches": [
+            "sales_strategy.next_action",
+            "sales_strategy.one_next_step",
+            "sales_strategy.persuasion_strategy",
+            "sales_strategy.should_recommend",
+            "sales_strategy.should_reframe_objection",
+            "semantic_frame.commercial_intent",
+            "semantic_frame.object_type",
+            "semantic_frame.semantic_family",
+            "semantic_frame.speech_act",
+            "semantic_frame.sub_intent"
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "cost_question_030",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "case_id": "paraphrase_and_relation_001",
+          "split": "validation",
+          "semantic_mismatches": [
+            "sales_strategy.next_action",
+            "sales_strategy.one_next_step",
+            "semantic_frame.object_type",
+            "semantic_frame.semantic_family",
+            "semantic_frame.speech_act",
+            "semantic_frame.sub_intent",
+            "state_update.should_update_use_case",
+            "state_update.use_case_values"
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "use_case_and_team_size_awareness",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "case_id": "paraphrase_what_call_009",
+          "split": "validation",
+          "semantic_mismatches": [
+            "semantic_frame.object_type",
+            "semantic_frame.sub_intent"
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "use_case_specific",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "case_id": "negative_side_effect_001",
+          "split": "validation",
+          "semantic_mismatches": [
+            "response_plan.must_not_include"
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "side_effect_001",
+            "action": "respect_boundary",
+            "strategy": "respect_boundary"
+          }
+        },
+        {
+          "case_id": "negative_asr_noise_001",
+          "split": "validation",
+          "semantic_mismatches": [
+            "sales_strategy.next_action",
+            "sales_strategy.one_next_step",
+            "sales_strategy.persuasion_strategy",
+            "sales_strategy.should_ask_question",
+            "sales_strategy.should_recommend",
+            "state_update.blocked_updates"
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "asr_noise_001",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "case_id": "negative_raw_transcript_request_001",
+          "split": "validation",
+          "semantic_mismatches": [
+            "response_plan.max_sentence_count",
+            "sales_strategy.next_action",
+            "sales_strategy.one_next_step",
+            "sales_strategy.persuasion_strategy",
+            "sales_strategy.should_recommend",
+            "semantic_frame.object_type",
+            "semantic_frame.semantic_family",
+            "semantic_frame.speech_act",
+            "semantic_frame.sub_intent",
+            "state_update.blocked_updates"
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "raw_transcript_request_negative_control",
+            "action": "clarify_before_recommend",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "case_id": "live_what_is_this_008",
+          "split": "test",
+          "semantic_mismatches": [
+            "response_plan.buyer_words_to_preserve",
+            "response_plan.must_include",
+            "semantic_frame.object_mentions",
+            "semantic_frame.object_type",
+            "semantic_frame.semantic_family",
+            "semantic_frame.speech_act",
+            "semantic_frame.sub_intent"
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "plan_name_request",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "case_id": "live_terminal_acceptance_016",
+          "split": "test",
+          "semantic_mismatches": [
+            "sales_strategy.next_action",
+            "sales_strategy.one_next_step",
+            "sales_strategy.persuasion_strategy",
+            "sales_strategy.should_close",
+            "sales_strategy.should_recommend",
+            "semantic_frame.commercial_intent",
+            "semantic_frame.object_type",
+            "semantic_frame.semantic_family",
+            "semantic_frame.speech_act",
+            "semantic_frame.sub_intent",
+            "state_update.should_update_close_readiness"
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "terminal_acceptance_016",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "case_id": "live_price_objection_017",
+          "split": "test",
+          "semantic_mismatches": [
+            "response_plan.max_sentence_count",
+            "sales_strategy.next_action",
+            "sales_strategy.one_next_step",
+            "sales_strategy.persuasion_strategy",
+            "sales_strategy.should_recommend",
+            "sales_strategy.should_reframe_objection",
+            "semantic_frame.buyer_state",
+            "semantic_frame.commercial_intent",
+            "semantic_frame.object_type",
+            "semantic_frame.semantic_family",
+            "semantic_frame.speech_act",
+            "semantic_frame.sub_intent"
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "price_objection",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "case_id": "paraphrase_or_relation_002",
+          "split": "test",
+          "semantic_mismatches": [
+            "sales_strategy.next_action",
+            "sales_strategy.one_next_step",
+            "semantic_frame.conjunction_relation",
+            "semantic_frame.object_type",
+            "semantic_frame.semantic_family",
+            "semantic_frame.speech_act",
+            "semantic_frame.sub_intent",
+            "state_update.should_update_use_case",
+            "state_update.use_case_values"
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "paraphrase_or_relation_002",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "case_id": "paraphrase_expensive_018",
+          "split": "test",
+          "semantic_mismatches": [
+            "sales_strategy.next_action",
+            "sales_strategy.one_next_step",
+            "sales_strategy.persuasion_strategy",
+            "sales_strategy.should_recommend",
+            "sales_strategy.should_reframe_objection",
+            "semantic_frame.buyer_state",
+            "semantic_frame.commercial_intent",
+            "semantic_frame.negation_scope",
+            "semantic_frame.object_type",
+            "semantic_frame.semantic_family",
+            "semantic_frame.speech_act",
+            "semantic_frame.sub_intent",
+            "state_update.blocked_updates"
+          ],
+          "labels": {
+            "act": "use_case",
+            "sub": "expensive_018",
+            "action": "ask_intensity",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "case_id": "paraphrase_files_026",
+          "split": "test",
+          "semantic_mismatches": [
+            "sales_strategy.next_action",
+            "sales_strategy.one_next_step",
+            "semantic_frame.object_type",
+            "semantic_frame.semantic_family",
+            "semantic_frame.speech_act",
+            "semantic_frame.sub_intent",
+            "state_update.should_update_use_case",
+            "state_update.use_case_values"
+          ],
+          "labels": {
+            "act": "generalized_sales_move",
+            "sub": "files_026",
+            "action": "clarify",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "case_id": "negative_unsupported_fact_001",
+          "split": "test",
+          "semantic_mismatches": [
+            "sales_strategy.next_action",
+            "sales_strategy.one_next_step",
+            "state_update.blocked_updates"
+          ],
+          "labels": {
+            "act": "negative_control",
+            "sub": "unsupported_fact_001",
+            "action": "clarify",
+            "strategy": "respect_boundary"
+          }
+        }
+      ],
+      "latency_metrics": {
+        "model_load_time_ms": 10119.008,
+        "total_generation_latency_ms": 396543.416,
+        "average_generation_latency_ms": 19827.171,
+        "p50_generation_latency_ms": 19619.458,
+        "p90_generation_latency_ms": 20932.229,
+        "average_first_output_latency_ms": 12390.263,
+        "peak_gpu_memory_bytes": 6073434112
+      }
+    },
+    "summary_counts": {
+      "deprecated_label_count": 189,
+      "case_id_label_leak_count": 54,
+      "generic_label_count": 126,
+      "generalized_sales_move_count": 34,
+      "verifier_pass_gold_section_fail_count": 15
+    }
+  },
+  "previous_current": {
+    "contract": {
+      "contract_version": "LOCAL-QWEN-COMPACT-PLANNER-CONTRACT-002",
+      "deprecated_allowed_count": 0,
+      "case_id_like_allowed_count": 0,
+      "generic_allowed_count": 0,
+      "deprecated_allowed": [],
+      "case_id_like_allowed": [],
+      "generic_allowed": []
+    },
+    "dataset": {
+      "payload_count": 80,
+      "issue_counts": {},
+      "flagged_payload_count": 0,
+      "top_flagged_labels": {},
+      "label_occurrences": {
+        "act=use_case_scope": 10,
+        "sub=coding_writing_use_case": 1,
+        "action=ask_usage_intensity": 10,
+        "strategy=diagnose_before_recommend": 36,
+        "act=adoption_state": 6,
+        "sub=current_chatgpt_and_other_ai_user": 3,
+        "action=ask_use_case_gap": 17,
+        "sub=current_chatgpt_user": 5,
+        "act=orientation_or_explanation": 6,
+        "sub=plan_category_explanation": 4,
+        "action=answer_plan_category": 6,
+        "strategy=explain_without_overclaiming": 6,
+        "sub=model_vs_subscription_question": 2,
+        "act=team_scope": 10,
+        "sub=not_team_personal_use": 4,
+        "action=ask_individual_usage_intensity": 7,
+        "sub=personal_use": 3,
+        "act=pro_tier_question": 2,
+        "sub=pro_tier_choice": 2,
+        "action=answer_plan_fit": 3,
+        "strategy=value_before_plan_selection": 7,
+        "act=competitor_objection": 1,
+        "sub=current_competitor_tool": 1,
+        "action=compare_competitor_context": 1,
+        "strategy=compare_options": 1,
+        "act=signup_question": 2,
+        "sub=signup_path_question": 2,
+        "action=terminal_close": 4,
+        "act=source_question": 2,
+        "sub=source_disclosure_question": 2,
+        "action=answer_source": 2,
+        "strategy=answer_without_inventing_facts": 6,
+        "act=affiliation_question": 2,
+        "sub=affiliation_boundary_question": 3,
+        "action=answer_affiliation_boundary": 2,
+        "sub=team_controls_question": 2,
+        "action=answer_team_controls": 3,
+        "act=plan_fit_question": 1,
+        "sub=plus_sufficiency_question": 1,
+        "sub=coding_voice_use_case": 4,
+        "sub=coding_research_use_case": 5,
+        "act=usage_intensity": 4,
+        "sub=heavy_daily_use": 2,
+        "sub=occasional_use": 1,
+        "act=current_tool_context": 7,
+        "sub=current_other_ai_user": 4,
+        "act=plan_change_question": 2,
+        "sub=midcycle_upgrade_question": 2,
+        "action=answer_plan_change": 2,
+        "sub=current_chatgpt_or_other_ai_unknown": 1,
+        "action=answer_signup_path": 1,
+        "act=terminal_acceptance": 3,
+        "sub=terminal_thanks_acceptance": 3,
+        "strategy=terminal_close": 3,
+        "sub=enterprise_security_question": 1,
+        "act=safety_boundary": 17,
+        "sub=internal_policy_request": 2,
+        "action=respect_boundary": 17,
+        "strategy=boundary_without_side_effects": 17,
+        "sub=raw_url_request": 1,
+        "sub=campaign_leakage_boundary": 1,
+        "act=no_fit": 2,
+        "sub=no_interest": 1,
+        "action=disqualify_no_fit": 2,
+        "strategy=no_fit_close": 2,
+        "sub=wrong_product_question": 1,
+        "sub=silence_or_unclear_audio": 1,
+        "sub=no_calendar_request": 1,
+        "sub=no_crm_request": 1,
+        "sub=tts_boundary_request": 1,
+        "sub=hallucination_pressure_request": 1,
+        "sub=unsupported_fact_request": 2,
+        "sub=disallowed_purchase_request": 1,
+        "act=price_question": 1,
+        "sub=plus_price_question": 1,
+        "action=answer_price": 1,
+        "sub=light_occasional_use": 1,
+        "sub=side_effect_boundary_request": 1,
+        "sub=asr_noise_input": 1,
+        "sub=raw_transcript_request": 1,
+        "act=price_objection": 2,
+        "sub=price_objection": 2,
+        "action=reframe_price_objection": 2,
+        "strategy=value_reframe": 2,
+        "sub=privacy_question": 1
+      },
+      "flagged_items": [],
+      "split_counts": {
+        "train": 60,
+        "validation": 10,
+        "test": 10
+      },
+      "target_contains_case_id_count": 0
+    },
+    "eval": {
+      "payload_count": 20,
+      "issue_counts": {
+        "not_allowed": 8
+      },
+      "flagged_payload_count": 8,
+      "top_flagged_labels": {
+        "act=coding_voice_use_case": 1,
+        "sub=sounds_right": 1,
+        "act=side_effect_boundary_request": 1,
+        "sub=use_case_gap": 1,
+        "act=coding_or_voice_use_case": 1,
+        "sub=compare_competitor_context": 1,
+        "sub=data_sharing_boundary": 1,
+        "sub=current_tool_context": 1
+      },
+      "label_occurrences": {
+        "act=coding_voice_use_case": 1,
+        "sub=coding_voice_use_case": 3,
+        "action=answer_without_inventing_facts": 8,
+        "strategy=value_before_plan_selection": 8,
+        "act=plan_change_question": 1,
+        "sub=plan_category_explanation": 1,
+        "action=answer_plan_change": 1,
+        "strategy=diagnose_before_recommend": 5,
+        "act=price_question": 1,
+        "sub=price_objection": 3,
+        "action=answer_price": 2,
+        "act=use_case_scope": 8,
+        "action=ask_use_case_gap": 2,
+        "act=current_tool_context": 1,
+        "sub=current_chatgpt_user": 1,
+        "strategy=answer_without_inventing_facts": 1,
+        "sub=sounds_right": 1,
+        "sub=light_occasional_use": 1,
+        "action=ask_usage_intensity": 1,
+        "act=side_effect_boundary_request": 1,
+        "sub=side_effect_boundary_request": 1,
+        "action=respect_boundary": 2,
+        "strategy=boundary_without_side_effects": 3,
+        "sub=asr_noise_input": 1,
+        "strategy=respect_boundary": 2,
+        "sub=raw_transcript_request": 1,
+        "sub=use_case_gap": 1,
+        "act=terminal_acceptance": 1,
+        "sub=terminal_thanks_acceptance": 1,
+        "action=terminal_close": 1,
+        "strategy=terminal_close": 1,
+        "act=price_objection": 2,
+        "act=coding_or_voice_use_case": 1,
+        "act=plan_fit_question": 1,
+        "sub=compare_competitor_context": 1,
+        "action=answer_plan_fit": 1,
+        "action=reframe_price_objection": 1,
+        "sub=coding_writing_use_case": 1,
+        "sub=unsupported_fact_request": 1,
+        "act=safety_boundary": 1,
+        "sub=data_sharing_boundary": 1,
+        "action=answer_affiliation_boundary": 1,
+        "act=adoption_state": 1,
+        "sub=current_tool_context": 1
+      },
+      "flagged_items": [
+        {
+          "source": "eval_output",
+          "case_id": "live_cloud_claude_007",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "coding_voice_use_case",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "coding_voice_use_case",
+            "sub": "coding_voice_use_case",
+            "action": "answer_without_inventing_facts",
+            "strategy": "value_before_plan_selection"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "paraphrase_accept_017",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "sounds_right",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "sounds_right",
+            "action": "answer_without_inventing_facts",
+            "strategy": "value_before_plan_selection"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "negative_side_effect_001",
+          "split": "validation",
+          "issues": [
+            {
+              "field": "act",
+              "value": "side_effect_boundary_request",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "side_effect_boundary_request",
+            "sub": "side_effect_boundary_request",
+            "action": "respect_boundary",
+            "strategy": "boundary_without_side_effects"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "live_what_is_this_008",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "use_case_gap",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "use_case_scope",
+            "sub": "use_case_gap",
+            "action": "ask_use_case_gap",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "paraphrase_or_relation_002",
+          "split": "test",
+          "issues": [
+            {
+              "field": "act",
+              "value": "coding_or_voice_use_case",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "coding_or_voice_use_case",
+            "sub": "coding_voice_use_case",
+            "action": "answer_without_inventing_facts",
+            "strategy": "value_before_plan_selection"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "paraphrase_plan_list_010",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "compare_competitor_context",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "plan_fit_question",
+            "sub": "compare_competitor_context",
+            "action": "answer_plan_fit",
+            "strategy": "diagnose_before_recommend"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "negative_privacy_001",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "data_sharing_boundary",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "safety_boundary",
+            "sub": "data_sharing_boundary",
+            "action": "answer_affiliation_boundary",
+            "strategy": "boundary_without_side_effects"
+          }
+        },
+        {
+          "source": "eval_output",
+          "case_id": "negative_policy_request_001",
+          "split": "test",
+          "issues": [
+            {
+              "field": "sub",
+              "value": "current_tool_context",
+              "issue": "not_allowed"
+            }
+          ],
+          "labels": {
+            "act": "adoption_state",
+            "sub": "current_tool_context",
+            "action": "answer_without_inventing_facts",
+            "strategy": "diagnose_before_recommend"
+          }
+        }
+      ],
+      "status": "completed",
+      "adapter_path": "local_artifacts/adapters/qwen2.5-sales-brain-lora-002",
+      "verifier_pass_gold_section_fail_count": 0,
+      "verifier_pass_gold_section_failures": [],
+      "latency_metrics": {
+        "model_load_time_ms": 9352.53,
+        "total_generation_latency_ms": 302076.373,
+        "average_generation_latency_ms": 15103.819,
+        "p50_generation_latency_ms": 14645.001,
+        "p90_generation_latency_ms": 19578.748,
+        "average_first_output_latency_ms": 9054.949,
+        "peak_gpu_memory_bytes": 6147833856
+      }
+    },
+    "summary_counts": {
+      "deprecated_label_count": 0,
+      "case_id_label_leak_count": 0,
+      "generic_label_count": 0,
+      "generalized_sales_move_count": 0,
+      "verifier_pass_gold_section_fail_count": 0
+    }
+  },
+  "side_effects": {
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcript_included": false
+  }
+}

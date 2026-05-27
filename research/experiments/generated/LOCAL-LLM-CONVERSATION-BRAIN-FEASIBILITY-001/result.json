@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-LLM-CONVERSATION-BRAIN-FEASIBILITY-001",
-  "generated_at": "2026-05-27T10:24:51.103322+00:00",
+  "generated_at": "2026-05-27T16:26:56.481396+00:00",
   "schema_status": "defined",
   "required_top_level_fields": [
     "semantic_frame",

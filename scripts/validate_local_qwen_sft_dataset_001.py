@@ -17,6 +17,8 @@ if str(ROOT) not in sys.path:
 
 from runtime.llm_brain.compact_planner_contract import (  # noqa: E402
     COMPACT_VALUE_CONTRACT_VERSION,
+    compact_label_quality_issues,
+    is_case_id_like_label,
     validate_compact_value_contract,
 )
 from runtime.llm_brain.conversation_brain_schema import (  # noqa: E402
@@ -158,6 +160,7 @@ def git_model_weights_committed() -> bool:
 def validate_no_provider_calls(failures: list[str]) -> None:
     for relative in (
         "scripts/audit_local_qwen_goldset_failures_001.py",
+        "scripts/audit_local_qwen_compact_contract_001.py",
         "scripts/build_local_qwen_sft_dataset_001.py",
         "scripts/validate_local_qwen_sft_dataset_001.py",
     ):
@@ -174,6 +177,7 @@ def validate_no_provider_calls(failures: list[str]) -> None:
 def validate_row(row: dict[str, Any], split_name: str, index: int, gold_lookup: dict[str, dict[str, Any]]) -> list[str]:
     failures: list[str] = []
     row_label = f"{split_name}[{index}]"
+    case_id = str(row.get("case_id") or "")
     missing = sorted(REQUIRED_ROW_FIELDS - set(row))
     if missing:
         failures.append(f"{row_label} missing required field(s): {missing}")
@@ -195,7 +199,22 @@ def validate_row(row: dict[str, Any], split_name: str, index: int, gold_lookup: 
     if tuple(target.keys()) != REQUIRED_COMPACT_PLANNER_FIELDS:
         failures.append(f"{row_label}.target_compact_json fields/order must match compact schema")
     failures.extend(f"{row_label}: {error}" for error in validate_compact_conversation_brain_output(target))
-    failures.extend(f"{row_label}: {error}" for error in validate_compact_value_contract(target))
+    contract_errors = validate_compact_value_contract(target)
+    failures.extend(f"{row_label}: {error}" for error in contract_errors)
+    quality_issues = compact_label_quality_issues(target)
+    for issue in quality_issues:
+        failures.append(
+            f"{row_label}.target_compact_json.{issue['field']} violates compact value contract "
+            f"({issue['issue']}): {issue['value']!r}"
+        )
+    for field_name in ("act", "sub", "action", "strategy"):
+        value = target.get(field_name)
+        if is_case_id_like_label(value):
+            failures.append(f"{row_label}.target_compact_json.{field_name} contains case-ID-like value: {value!r}")
+        if isinstance(value, str) and case_id and (value == case_id or case_id in value):
+            failures.append(f"{row_label}.target_compact_json.{field_name} contains case_id: {case_id}")
+        if value == "generalized_sales_move":
+            failures.append(f"{row_label}.target_compact_json.{field_name} uses generalized_sales_move")
 
     approved_ids = set((row.get("approved_campaign_fact_summaries") or {}).keys())
     fact_ids = set(string_list(target.get("facts")))
@@ -215,7 +234,6 @@ def validate_row(row: dict[str, Any], split_name: str, index: int, gold_lookup: 
     if row.get("target_full_json") != expanded:
         failures.append(f"{row_label}.target_full_json must equal compact adapter expansion")
 
-    case_id = str(row.get("case_id") or "")
     gold = gold_lookup.get(case_id)
     if not isinstance(gold, dict):
         failures.append(f"{row_label} case_id not found in gold set: {case_id}")
@@ -223,6 +241,8 @@ def validate_row(row: dict[str, Any], split_name: str, index: int, gold_lookup: 
     verifier_errors = verify_conversation_brain_output(expanded, verifier_case(gold, row))
     if verifier_errors:
         failures.append(f"{row_label} expanded target failed verifier: {verifier_errors}")
+    if not verifier_errors and (contract_errors or quality_issues):
+        failures.append(f"{row_label} target passes verifier but violates compact value contract")
     return failures
 
 
@@ -314,6 +334,9 @@ def main() -> None:
         "compact_json_valid": not any("compact." in failure or "compact-to-full" in failure for failure in failures),
         "expanded_targets_pass_verifier": not any("failed verifier" in failure for failure in failures),
         "allowed_enum_values_respected": not any("value not allowed" in failure for failure in failures),
+        "no_deprecated_compact_labels": not any("deprecated_label" in failure for failure in failures),
+        "no_case_id_label_leaks": not any("case-ID-like" in failure or "contains case_id" in failure for failure in failures),
+        "no_generic_compact_labels": not any("generic_" in failure or "generalized_sales_move" in failure for failure in failures),
         "no_raw_private_transcripts": not any("raw" in failure.lower() and "transcript" in failure.lower() for failure in failures),
         "no_provider_api_calls": not any("provider/API pattern" in failure for failure in failures),
         "no_model_weights_committed": not any("model weights" in failure for failure in failures),
