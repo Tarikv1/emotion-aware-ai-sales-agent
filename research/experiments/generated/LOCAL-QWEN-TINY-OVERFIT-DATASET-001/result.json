@@ -1,0 +1,59 @@
+{
+  "experiment_id": "LOCAL-QWEN-TINY-OVERFIT-DATASET-001",
+  "generated_at": "2026-05-27T16:48:28.104391+00:00",
+  "status": "pass",
+  "case_count": 8,
+  "train_path": "research/experiments/generated/LOCAL-QWEN-TINY-OVERFIT-DATASET-001/train.jsonl",
+  "categories": [
+    "current tool with AND",
+    "current tool with OR",
+    "negated team",
+    "use case fidelity",
+    "plan category explanation",
+    "midcycle upgrade",
+    "terminal acceptance",
+    "safety boundary"
+  ],
+  "case_ids": [
+    "tiny_current_tool_and_001",
+    "tiny_current_tool_or_002",
+    "tiny_negated_team_003",
+    "tiny_use_case_fidelity_004",
+    "tiny_plan_category_005",
+    "tiny_midcycle_upgrade_006",
+    "tiny_terminal_acceptance_007",
+    "tiny_safety_boundary_008"
+  ],
+  "prompt_sha256_by_case": {
+    "tiny_current_tool_and_001": "cd5daaf0705f4136fb26ce177a6b7623b3b1a8104060219cf798f46a823adaf6",
+    "tiny_current_tool_or_002": "18d5f06c08c13321648e15cbfb06902df72985f4e3f8c1b9197aad725afb16eb",
+    "tiny_negated_team_003": "172f16bceaf870257cfa0184c8656ff3fefa88c5dbe0ed54c582d77460348f6d",
+    "tiny_use_case_fidelity_004": "6f3ab163a71085fdd812878390c265ceca183668823fb906f5e8fc4139ea8de8",
+    "tiny_plan_category_005": "a06d54fb4a4d1fe1482a8c4f7e22c24f5578c6cb5c7dba02419fc4fd5f4e32b1",
+    "tiny_midcycle_upgrade_006": "d726b918b5a115b9b571d2ce79b8c7e8cf31846c8cc6ba1285ae2c27a1066304",
+    "tiny_terminal_acceptance_007": "4801b39116cf095b7494b85c2fb99ed0b3ba5214c59fa834eddf11474109b041",
+    "tiny_safety_boundary_008": "9469daa88714e4834f8a2e58bb8906970c37d31d759a367fed9c5cb56b14b3fc"
+  },
+  "compact_value_contract_version": "LOCAL-QWEN-COMPACT-PLANNER-CONTRACT-002",
+  "target_schema_issue_count": 0,
+  "target_contract_issue_count": 0,
+  "target_verifier_issue_count": 0,
+  "target_label_quality_issue_count": 0,
+  "case_errors": {},
+  "raw_private_transcript_included": false,
+  "failed_qwen_outputs_used_as_targets": false,
+  "side_effects": {
+    "local_model_calls_made": false,
+    "local_model_call_count": 0,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "model_download_attempted": false,
+    "model_redownloaded": false,
+    "model_weights_committed": false,
+    "adapter_weights_committed": false
+  }
+}

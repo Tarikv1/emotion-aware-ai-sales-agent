@@ -1,0 +1,103 @@
+{
+  "experiment_id": "LOCAL-QWEN-LORA-TRAINING-PIPELINE-AUDIT-001",
+  "generated_at": "2026-05-27T17:25:55.446145+00:00",
+  "status": "pass",
+  "dataset_experiment_id": "LOCAL-QWEN-TINY-OVERFIT-DATASET-001",
+  "dataset_path": "research/experiments/generated/LOCAL-QWEN-TINY-OVERFIT-DATASET-001/train.jsonl",
+  "row_count": 8,
+  "compact_value_contract_version": "LOCAL-QWEN-COMPACT-PLANNER-CONTRACT-002",
+  "planner_schema_mode": "compact",
+  "checks": {
+    "train_script": "scripts/train_local_qwen_planner_lora_tiny_overfit_001.py",
+    "eval_script": "scripts/evaluate_local_qwen_planner_lora_tiny_overfit_001.py",
+    "planned_new_adapter_path": "local_artifacts/adapters/qwen2.5-sales-brain-lora-tiny-overfit-001",
+    "training_adapter_path_is_tiny_path": true,
+    "eval_script_references_tiny_adapter_path": true,
+    "adapter_path_evaluated_is_newly_trained_path": true,
+    "base_model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "base_model_path": "local_artifacts/models/qwen2.5-7b-instruct",
+    "base_model_and_adapter_loaded_together": true,
+    "generation_prompt_excludes_target_by_design": false,
+    "train_uses_assistant_only_tokenizer": true,
+    "no_provider_imports": true,
+    "target_compact_json_is_assistant_message": true,
+    "assistant_target_failures": [],
+    "labels_mask_prompt_tokens": true,
+    "labels_train_only_assistant_tokens": true,
+    "full_sequence_trained": false,
+    "eos_token_appended_count": 8,
+    "pad_eos_ids_sane": true,
+    "generation_prompt_excludes_target_answer": true,
+    "target_text_present_in_training_render": true,
+    "target_text_present_in_unmasked_labels": true,
+    "targets_validate_before_training": true
+  },
+  "target_validation": {
+    "counts": {
+      "row_count": 8,
+      "schema_error_count": 0,
+      "contract_error_count": 0,
+      "label_quality_issue_count": 0,
+      "adapter_error_count": 0,
+      "verifier_error_count": 0
+    },
+    "case_errors": {}
+  },
+  "prompt_hashes": {
+    "dataset_prompt_sha256_sample": "cd5daaf0705f4136fb26ce177a6b7623b3b1a8104060219cf798f46a823adaf6",
+    "train_prompt_sha256_sample": "452ddd2907b871aaab5c4637b22095da5f8dccba1d07ec395a9dfd1aa82d07a3",
+    "eval_prompt_sha256_sample": "cd4acd35dc86d5b3ce56b453794820fe3589244507c4394402f2a29d6493b2bc",
+    "chat_template_sha256": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f"
+  },
+  "prompt_samples": {
+    "train_prompt_exact_text_sample": "<|im_start|>system\nYou are a local-only compact planner. Return one strict minified JSON object only. No prose, markdown, provider calls, OpenAI API calls, email, calendar, CRM, TTS, or side effects.<|im_end|>\n<|im_start|>user\nContract=LOCAL-QWEN-COMPACT-PLANNER-CONTRACT-002\nRequired keys=act,sub,obj,rel,neg,buyer,intent,update,block,action,strategy,facts,preserve,avoid,say,flags,conf\nAllowed values:\nact=adoption_state,affiliation_question,competitor_objection,current_tool_context,negative_control,no_fit,orientation_or_explanation,plan_change_question,plan_fit_question,price_objection,price_question,pro_tier_question,safety_boundary,signup_question,source_question,team_scope,terminal_acceptance,usage_intensity,use_case_scope\nsub=affiliation_boundary_question,asr_noise_input,campaign_leakage_boundary,coding_research_use_case,coding_voice_use_case,coding_writing_use_case,current_chatgpt_and_other_ai_user,current_chatgpt_or_other_ai_unknown,current_chatgpt_user,current_competitor_tool,current_other_ai_user,disallowed_purchase_request,enterprise_security_question,hallucination_pressure_request,heavy_daily_use,internal_policy_request,light_occasional_use,midcycle_upgrade_question,model_vs_subscription_question,no_calendar_request,no_crm_request,no_interest,not_team_personal_use,occasional_use,personal_use,plan_category_explanation,plus_price_question,plus_sufficiency_question,price_objection,privacy_question,pro_tier_choice,raw_transcript_request,raw_url_request,side_effect_boundary_request,signup_path_question,silence_or_unclear_audio,source_disclosure_question,team_controls_question,terminal_thanks_acceptance,tts_boundary_request,unsupported_fact_request,wrong_product_question\nbuyer=evaluating,high_usage,individual_user,light_usage,price_sensitive,skeptical,confused,not_interested,unknown\nintent=high,medium,low,evaluation,information,boundary,unknown,none\nrel=and,or,both,unknown,none\nneg=team_state,unknown,none\naction=answer_affiliation_boundary,answer_plan_category,answer_plan_change,answer_plan_fit,answer_price,answer_signup_path,answer_source,answer_team_controls,answer_without_inventing_facts,ask_individual_usage_intensity,ask_usage_intensity,ask_use_case_gap,compare_competitor_context,disqualify_no_fit,recommend_plan,reframe_price_objection,respect_boundary,terminal_close\nstrategy=answer_without_inventing_facts,boundary_without_side_effects,choice_close,compare_options,diagnose_before_recommend,explain_without_overclaiming,no_fit_close,preserve_buyer_words,respect_boundary,terminal_close,value_before_plan_selection,value_reframe\nRules: preserve buyer words, and/or, negation, and safety boundaries. Use listed labels only.\nReturn compact JSON only. No extra keys. No case IDs or generic labels.\nInput={\"buyer_text\":\"I use ChatGPT and other AI tools.\",\"prior_state\":{\"adoption_state\":\"unknown\",\"campaign_id\":\"public-openai-chatgpt-plans\",\"team_state\":\"unknown\",\"usage_intensity\":\"unknown\"},\"approved_fact_ids\":[\"public_plan_names\"],\"campaign_id\":\"public-openai-chatgpt-plans\"}<|im_end|>\n<|im_start|>assistant\n{\"act\":\"adoption_state\",\"sub\":\"current_chatgpt_and_other_ai_user\",\"obj\":[\"ChatGPT\",\"other AI tools\"],\"rel\":\"and\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"current_chatgpt_and_other_ai_user\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_use_case_gap\",\"strategy\":\"preserve_buyer_words\",\"facts\":[],\"preserve\":[\"ChatGPT\",\"other AI tools\"],\"avoid\":[],\"say\":\"Got it - you already use ChatGPT and other AI tools. The useful next detail is where the gap is.\",\"flags\":[],\"conf\":0.91}<|im_end|>\n",
+    "eval_prompt_exact_text_sample": "<|im_start|>system\nYou are a local-only compact planner. Return one strict minified JSON object only. No prose, markdown, provider calls, OpenAI API calls, email, calendar, CRM, TTS, or side effects.<|im_end|>\n<|im_start|>user\nContract=LOCAL-QWEN-COMPACT-PLANNER-CONTRACT-002\nRequired keys=act,sub,obj,rel,neg,buyer,intent,update,block,action,strategy,facts,preserve,avoid,say,flags,conf\nAllowed values:\nact=adoption_state,affiliation_question,competitor_objection,current_tool_context,negative_control,no_fit,orientation_or_explanation,plan_change_question,plan_fit_question,price_objection,price_question,pro_tier_question,safety_boundary,signup_question,source_question,team_scope,terminal_acceptance,usage_intensity,use_case_scope\nsub=affiliation_boundary_question,asr_noise_input,campaign_leakage_boundary,coding_research_use_case,coding_voice_use_case,coding_writing_use_case,current_chatgpt_and_other_ai_user,current_chatgpt_or_other_ai_unknown,current_chatgpt_user,current_competitor_tool,current_other_ai_user,disallowed_purchase_request,enterprise_security_question,hallucination_pressure_request,heavy_daily_use,internal_policy_request,light_occasional_use,midcycle_upgrade_question,model_vs_subscription_question,no_calendar_request,no_crm_request,no_interest,not_team_personal_use,occasional_use,personal_use,plan_category_explanation,plus_price_question,plus_sufficiency_question,price_objection,privacy_question,pro_tier_choice,raw_transcript_request,raw_url_request,side_effect_boundary_request,signup_path_question,silence_or_unclear_audio,source_disclosure_question,team_controls_question,terminal_thanks_acceptance,tts_boundary_request,unsupported_fact_request,wrong_product_question\nbuyer=evaluating,high_usage,individual_user,light_usage,price_sensitive,skeptical,confused,not_interested,unknown\nintent=high,medium,low,evaluation,information,boundary,unknown,none\nrel=and,or,both,unknown,none\nneg=team_state,unknown,none\naction=answer_affiliation_boundary,answer_plan_category,answer_plan_change,answer_plan_fit,answer_price,answer_signup_path,answer_source,answer_team_controls,answer_without_inventing_facts,ask_individual_usage_intensity,ask_usage_intensity,ask_use_case_gap,compare_competitor_context,disqualify_no_fit,recommend_plan,reframe_price_objection,respect_boundary,terminal_close\nstrategy=answer_without_inventing_facts,boundary_without_side_effects,choice_close,compare_options,diagnose_before_recommend,explain_without_overclaiming,no_fit_close,preserve_buyer_words,respect_boundary,terminal_close,value_before_plan_selection,value_reframe\nRules: preserve buyer words, and/or, negation, and safety boundaries. Use listed labels only.\nReturn compact JSON only. No extra keys. No case IDs or generic labels.\nInput={\"buyer_text\":\"I use ChatGPT and other AI tools.\",\"prior_state\":{\"adoption_state\":\"unknown\",\"campaign_id\":\"public-openai-chatgpt-plans\",\"team_state\":\"unknown\",\"usage_intensity\":\"unknown\"},\"approved_fact_ids\":[\"public_plan_names\"],\"campaign_id\":\"public-openai-chatgpt-plans\"}<|im_end|>\n<|im_start|>assistant\n"
+  },
+  "tokenization": {
+    "tokenizer_class": "Qwen2Tokenizer",
+    "chat_template_available": true,
+    "chat_template_sha256": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f",
+    "train_chat_template_used": "tokenizer.apply_chat_template",
+    "eval_chat_template_used": "tokenizer.apply_chat_template",
+    "generation_prompt_excludes_target_answer": true,
+    "target_text_present_in_training_render": true,
+    "target_text_present_in_unmasked_labels": true,
+    "labels_mask_prompt_tokens": true,
+    "labels_train_only_assistant_tokens": true,
+    "full_sequence_trained": false,
+    "tokenization_lengths": {
+      "row_count": 8,
+      "max_prompt_tokens": 700,
+      "max_full_tokens": 844,
+      "max_target_tokens": 146,
+      "min_target_tokens": 111,
+      "truncated_example_count": 0,
+      "label_token_count": 1060,
+      "labels_mask_prompt_tokens": true,
+      "labels_train_only_assistant_tokens": true,
+      "full_sequence_trained": false,
+      "eos_token_appended_count": 8
+    },
+    "sample_prompt_token_count": 696,
+    "sample_full_token_count": 842,
+    "sample_unmasked_label_token_count": 146,
+    "sample_eos_token_appended": true,
+    "eos_token_appended_count": 8,
+    "eos_token_id": 151645,
+    "pad_token_id": 151643,
+    "pad_eos_ids_sane": true,
+    "pad_equals_eos": false
+  },
+  "side_effects": {
+    "local_model_calls_made": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "model_download_attempted": false,
+    "model_redownloaded": false
+  },
+  "failures": []
+}
