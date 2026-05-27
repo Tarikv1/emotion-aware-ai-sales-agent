@@ -268,6 +268,8 @@ def build_training_arguments(config: dict[str, Any], max_steps: int, output_dir:
         kwargs["evaluation_strategy"] = "steps"
     if "gradient_checkpointing" in params:
         kwargs["gradient_checkpointing"] = bool(config.get("gradient_checkpointing", True))
+    if "overwrite_output_dir" in params:
+        kwargs["overwrite_output_dir"] = bool(config.get("overwrite_output_dir", False))
     return TrainingArguments(**kwargs)
 
 

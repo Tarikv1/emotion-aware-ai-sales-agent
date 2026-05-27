@@ -1,0 +1,4439 @@
+{
+  "experiment_id": "LOCAL-QWEN-LORA-CURRICULUM-EVAL-001",
+  "generated_at": "2026-05-27T20:49:54.538005+00:00",
+  "status": "completed",
+  "dataset_experiment_id": "LOCAL-QWEN-CURRICULUM-DATASET-001",
+  "training_experiment_id": "LOCAL-QWEN-LORA-CURRICULUM-TRAINING-001",
+  "training_status": "completed",
+  "training_completed": true,
+  "completed_stages": [
+    "tiny",
+    "20",
+    "60"
+  ],
+  "adapter_path": "local_artifacts/adapters/qwen2.5-sales-brain-lora-curriculum-001",
+  "adapter_files_committed": false,
+  "curriculum_adapter": {
+    "adapter_path": "local_artifacts/adapters/qwen2.5-sales-brain-lora-curriculum-001",
+    "adapter_exists": true,
+    "adapter_loaded": true,
+    "status": "completed",
+    "splits": {
+      "tiny_comparison": {
+        "path": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-DATASET-001/stage1_tiny.jsonl",
+        "case_count": 8,
+        "cases": [
+          {
+            "case_id": "tiny_current_tool_and_001",
+            "split": "tiny_comparison",
+            "category": "current tool with AND",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": true,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic"
+            ],
+            "compact_planner_output": {
+              "act": "adoption_state",
+              "sub": "current_chatgpt_and_other_ai_user",
+              "obj": [
+                "ChatGPT",
+                "other AI tools"
+              ],
+              "rel": "and",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "current_chatgpt_and_other_ai_user",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_use_case_gap",
+              "strategy": "diagnose_before_recommend",
+              "facts": [],
+              "preserve": [
+                "ChatGPT",
+                "other AI tools"
+              ],
+              "avoid": [],
+              "say": "Got it - you already use ChatGPT and other AI tools. The useful comparison is where your current setup still falls short.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "sales_strategy.persuasion_strategy",
+              "sales_strategy.should_ask_question",
+              "sales_strategy.should_recommend"
+            ],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 696,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 3511.124,
+              "total_generation_latency_ms": 16249.643,
+              "tokens_generated": 146,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5975206912
+            },
+            "raw_output_excerpt": "{\"act\":\"adoption_state\",\"sub\":\"current_chatgpt_and_other_ai_user\",\"obj\":[\"ChatGPT\",\"other AI tools\"],\"rel\":\"and\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"current_chatgpt_and_other_ai_user\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_use_case_gap\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[],\"preserve\":[\"ChatGPT\",\"ot",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "tiny_current_tool_or_002",
+            "split": "tiny_comparison",
+            "category": "current tool with OR",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "current_tool_context",
+              "sub": "current_chatgpt_and_other_ai_user",
+              "obj": [
+                "ChatGPT",
+                "Claude"
+              ],
+              "rel": "or",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_use_case_gap",
+              "strategy": "diagnose_before_recommend",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "ChatGPT",
+                "Claude"
+              ],
+              "avoid": [],
+              "say": "I hear ChatGPT and Claude. The next step is one plan-fit question before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.campaign_facts_needed",
+              "sales_strategy.persuasion_strategy",
+              "sales_strategy.should_ask_question",
+              "sales_strategy.should_recommend",
+              "semantic_frame.object_type",
+              "semantic_frame.sub_intent",
+              "state_update.should_update_adoption_state"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.campaign_facts_needed"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 695,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 10595.945,
+              "total_generation_latency_ms": 13802.915,
+              "tokens_generated": 132,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5975052288
+            },
+            "raw_output_excerpt": "{\"act\":\"current_tool_context\",\"sub\":\"current_chatgpt_and_other_ai_user\",\"obj\":[\"ChatGPT\",\"Claude\"],\"rel\":\"or\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_use_case_gap\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"ChatGPT\",\"Claude\"],\"avoid\":[]",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "tiny_negated_team_003",
+            "split": "tiny_comparison",
+            "category": "negated team",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "team_scope",
+              "sub": "not_team_personal_use",
+              "obj": [
+                "by myself",
+                "not a team"
+              ],
+              "rel": "and",
+              "neg": "team_state",
+              "buyer": "individual_user",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [
+                "team_state"
+              ],
+              "action": "ask_individual_usage_intensity",
+              "strategy": "diagnose_before_recommend",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "by myself",
+                "not a team"
+              ],
+              "avoid": [
+                "your team",
+                "Business workspace"
+              ],
+              "say": "Got it - by myself and not a team use. The next question is whether you use it lightly or heavily every day.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.campaign_facts_needed",
+              "response_plan.must_not_include",
+              "sales_strategy.persuasion_strategy",
+              "sales_strategy.should_ask_question",
+              "sales_strategy.should_recommend",
+              "semantic_frame.commercial_intent"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.campaign_facts_needed",
+              "response_plan.must_not_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 695,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2191.105,
+              "total_generation_latency_ms": 15691.402,
+              "tokens_generated": 140,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5975052288
+            },
+            "raw_output_excerpt": "{\"act\":\"team_scope\",\"sub\":\"not_team_personal_use\",\"obj\":[\"by myself\",\"not a team\"],\"rel\":\"and\",\"neg\":\"team_state\",\"buyer\":\"individual_user\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[\"team_state\"],\"action\":\"ask_individual_usage_intensity\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"by myse",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "tiny_use_case_fidelity_004",
+            "split": "tiny_comparison",
+            "category": "use case fidelity",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "use_case_scope",
+              "sub": "coding_writing_use_case",
+              "obj": [
+                "coding workflow",
+                "voice"
+              ],
+              "rel": "and",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [
+                  "coding workflow",
+                  "voice"
+                ],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_usage_intensity",
+              "strategy": "diagnose_before_recommend",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "coding workflow",
+                "voice"
+              ],
+              "avoid": [
+                "writing"
+              ],
+              "say": "So the gap is coding workflow and voice. Are you using that occasionally or heavily every day?",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.campaign_facts_needed",
+              "sales_strategy.persuasion_strategy",
+              "sales_strategy.should_ask_question",
+              "sales_strategy.should_recommend",
+              "semantic_frame.commercial_intent",
+              "semantic_frame.object_type",
+              "semantic_frame.sub_intent"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.campaign_facts_needed"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 696,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2206.116,
+              "total_generation_latency_ms": 14187.905,
+              "tokens_generated": 129,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5975206912
+            },
+            "raw_output_excerpt": "{\"act\":\"use_case_scope\",\"sub\":\"coding_writing_use_case\",\"obj\":[\"coding workflow\",\"voice\"],\"rel\":\"and\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[\"coding workflow\",\"voice\"],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_usage_intensity\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"coding wo",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "tiny_plan_category_005",
+            "split": "tiny_comparison",
+            "category": "plan category explanation",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": true,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic"
+            ],
+            "compact_planner_output": {
+              "act": "orientation_or_explanation",
+              "sub": "plan_category_explanation",
+              "obj": [
+                "Free",
+                "Plus",
+                "Pro",
+                "Business",
+                "Enterprise"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "answer_plan_category",
+              "strategy": "explain_without_overclaiming",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "Free",
+                "Plus",
+                "Pro",
+                "Business",
+                "Enterprise"
+              ],
+              "avoid": [],
+              "say": "I can answer that around Free, Plus, Pro, Business, and Enterprise. The next step is matching it to how you use it each day.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "semantic_frame.buyer_state",
+              "semantic_frame.commercial_intent",
+              "semantic_frame.conjunction_relation"
+            ],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 700,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 11542.464,
+              "total_generation_latency_ms": 15695.847,
+              "tokens_generated": 144,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5975856128
+            },
+            "raw_output_excerpt": "{\"act\":\"orientation_or_explanation\",\"sub\":\"plan_category_explanation\",\"obj\":[\"Free\",\"Plus\",\"Pro\",\"Business\",\"Enterprise\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"answer_plan_category\",\"strategy\":\"explain_without_overclaiming\",\"facts\":[\"public_plan_names\"],\"preserve\"",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "tiny_midcycle_upgrade_006",
+            "split": "tiny_comparison",
+            "category": "midcycle upgrade",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "plan_change_question",
+              "sub": "midcycle_upgrade_question",
+              "obj": [
+                "lower Pro tier",
+                "later upgrade"
+              ],
+              "rel": "and",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "answer_plan_change",
+              "strategy": "value_before_plan_selection",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "lower Pro tier",
+                "later upgrade"
+              ],
+              "avoid": [],
+              "say": "I hear lower Pro tier and later upgrade. The next step is one plan-fit question before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.max_sentence_count",
+              "response_plan.must_include",
+              "response_plan.must_not_include",
+              "sales_strategy.persuasion_strategy",
+              "semantic_frame.buyer_state",
+              "semantic_frame.commercial_intent",
+              "semantic_frame.object_mentions"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.max_sentence_count",
+              "response_plan.must_include",
+              "response_plan.must_not_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 700,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2013.031,
+              "total_generation_latency_ms": 12982.52,
+              "tokens_generated": 127,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5975856128
+            },
+            "raw_output_excerpt": "{\"act\":\"plan_change_question\",\"sub\":\"midcycle_upgrade_question\",\"obj\":[\"lower Pro tier\",\"later upgrade\"],\"rel\":\"and\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"answer_plan_change\",\"strategy\":\"value_before_plan_selection\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"lower Pro tier\",\"l",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "tiny_terminal_acceptance_007",
+            "split": "tiny_comparison",
+            "category": "terminal acceptance",
+            "schema_valid": true,
+            "verifier_pass": false,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "verifier",
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "terminal_acceptance",
+              "sub": "terminal_thanks_acceptance",
+              "obj": [
+                "terminal_close"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": "terminal"
+              },
+              "block": [],
+              "action": "terminal_close",
+              "strategy": "terminal_close",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "terminal_close"
+              ],
+              "avoid": [],
+              "say": "I hear the terminal thanks close. The next step is recommending a plan fit before closing.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [
+              "buyer_word_not_preserved:terminal_close"
+            ],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.campaign_facts_needed",
+              "response_plan.max_sentence_count",
+              "response_plan.must_include",
+              "response_plan.must_not_include",
+              "semantic_frame.commercial_intent",
+              "semantic_frame.object_mentions"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.campaign_facts_needed",
+              "response_plan.max_sentence_count",
+              "response_plan.must_include",
+              "response_plan.must_not_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 695,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 9411.803,
+              "total_generation_latency_ms": 12120.275,
+              "tokens_generated": 115,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5975052288
+            },
+            "raw_output_excerpt": "{\"act\":\"terminal_acceptance\",\"sub\":\"terminal_thanks_acceptance\",\"obj\":[\"terminal_close\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"terminal\"},\"block\":[],\"action\":\"terminal_close\",\"strategy\":\"terminal_close\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"terminal_close\"],\"avoid\":[],\"say\":\"I hear ",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "tiny_safety_boundary_008",
+            "split": "tiny_comparison",
+            "category": "safety boundary",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "safety_boundary",
+              "sub": "no_crm_request",
+              "obj": [
+                "no CRM"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [
+                "side_effects",
+                "unsupported_claims"
+              ],
+              "action": "respect_boundary",
+              "strategy": "boundary_without_side_effects",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "no CRM"
+              ],
+              "avoid": [],
+              "say": "Understood; no CRM is required here.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.campaign_facts_needed",
+              "response_plan.must_include",
+              "response_plan.must_not_include",
+              "sales_strategy.persuasion_strategy",
+              "semantic_frame.buyer_state",
+              "semantic_frame.commercial_intent",
+              "semantic_frame.object_mentions",
+              "state_update.blocked_updates"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.campaign_facts_needed",
+              "response_plan.must_include",
+              "response_plan.must_not_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 693,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2151.858,
+              "total_generation_latency_ms": 12771.452,
+              "tokens_generated": 112,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974742016
+            },
+            "raw_output_excerpt": "{\"act\":\"safety_boundary\",\"sub\":\"no_crm_request\",\"obj\":[\"no CRM\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[\"side_effects\",\"unsupported_claims\"],\"action\":\"respect_boundary\",\"strategy\":\"boundary_without_side_effects\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"no CRM\"],\"avoid\":[],\"s",
+            "target_present_in_generation_prompt": false
+          }
+        ],
+        "metrics": {
+          "case_count": 8,
+          "schema_valid_count": 8,
+          "verifier_pass_count": 7,
+          "semantic_match_count": 0,
+          "gold_section_semantic_match_count": 0,
+          "strict_gold_semantic_match_count": 0,
+          "strict_gold_response_plan_match_count": 2,
+          "compact_contract_valid_count": 8,
+          "deprecated_label_count": 0,
+          "case_id_label_leak_count": 0,
+          "generic_action_count": 0,
+          "generic_sub_intent_count": 0,
+          "generic_act_count": 0,
+          "exact_match_count": 0,
+          "compact_adapter_error_count": 0,
+          "failure_class_counts": {
+            "strict_gold_semantic": 8,
+            "strict_gold_response_plan": 6,
+            "verifier": 1
+          },
+          "generic_label_count": 0,
+          "malformed_output_count": 0,
+          "latency_metrics": {
+            "model_load_time_ms": 8726.045,
+            "total_generation_latency_ms": 113501.959,
+            "average_generation_latency_ms": 14187.745,
+            "p50_generation_latency_ms": 13995.41,
+            "p90_generation_latency_ms": 15861.986,
+            "average_first_output_latency_ms": 5452.931,
+            "peak_gpu_memory_bytes": 5975856128
+          },
+          "target_present_in_generation_prompt_count": 0
+        }
+      },
+      "train_sample": {
+        "path": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-DATASET-001/stage2_20.jsonl",
+        "case_count": 20,
+        "cases": [
+          {
+            "case_id": "live_voice_not_writing_001",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": true,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "use_case_scope",
+              "sub": "coding_writing_use_case",
+              "obj": [
+                "coding workflow",
+                "voice"
+              ],
+              "rel": "and",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [
+                  "coding workflow",
+                  "voice"
+                ],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_usage_intensity",
+              "strategy": "diagnose_before_recommend",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "coding workflow",
+                "voice"
+              ],
+              "avoid": [
+                "writing"
+              ],
+              "say": "So the gap is coding workflow and voice. Are you using that occasionally or heavily every day?",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 692,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2283.878,
+              "total_generation_latency_ms": 14530.557,
+              "tokens_generated": 129,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974586368
+            },
+            "raw_output_excerpt": "{\"act\":\"use_case_scope\",\"sub\":\"coding_writing_use_case\",\"obj\":[\"coding workflow\",\"voice\"],\"rel\":\"and\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[\"coding workflow\",\"voice\"],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_usage_intensity\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"coding wo",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_current_tools_002",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": true,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "adoption_state",
+              "sub": "current_chatgpt_and_other_ai_user",
+              "obj": [
+                "ChatGPT",
+                "other AI tools"
+              ],
+              "rel": "and",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "current_chatgpt_and_other_ai_user",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_use_case_gap",
+              "strategy": "diagnose_before_recommend",
+              "facts": [],
+              "preserve": [
+                "ChatGPT",
+                "other AI tools"
+              ],
+              "avoid": [],
+              "say": "Got it - you already use ChatGPT and other AI tools. The useful comparison is where your current setup still falls short.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 696,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2884.203,
+              "total_generation_latency_ms": 16377.398,
+              "tokens_generated": 146,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5975206912
+            },
+            "raw_output_excerpt": "{\"act\":\"adoption_state\",\"sub\":\"current_chatgpt_and_other_ai_user\",\"obj\":[\"ChatGPT\",\"other AI tools\"],\"rel\":\"and\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"current_chatgpt_and_other_ai_user\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_use_case_gap\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[],\"preserve\":[\"ChatGPT\",\"ot",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_current_tools_003",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "current_tool_context",
+              "sub": "current_chatgpt_and_other_ai_user",
+              "obj": [
+                "ChatGPT",
+                "another AI tool"
+              ],
+              "rel": "or",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_use_case_gap",
+              "strategy": "diagnose_before_recommend",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "ChatGPT",
+                "another AI tool"
+              ],
+              "avoid": [],
+              "say": "I hear ChatGPT and another AI tool. The next step is one plan-fit question before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.campaign_facts_needed",
+              "semantic_frame.semantic_family",
+              "semantic_frame.speech_act",
+              "state_update.should_update_adoption_state"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.campaign_facts_needed"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 696,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2834.79,
+              "total_generation_latency_ms": 14573.956,
+              "tokens_generated": 136,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5975206912
+            },
+            "raw_output_excerpt": "{\"act\":\"current_tool_context\",\"sub\":\"current_chatgpt_and_other_ai_user\",\"obj\":[\"ChatGPT\",\"another AI tool\"],\"rel\":\"or\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_use_case_gap\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"ChatGPT\",\"another AI",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_asr_chachu_004",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "current_tool_context",
+              "sub": "current_chatgpt_user",
+              "obj": [
+                "ChatGPT"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_use_case_gap",
+              "strategy": "diagnose_before_recommend",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "ChatGPT"
+              ],
+              "avoid": [],
+              "say": "I hear ChatGPT. The next step is one plan-fit question before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.campaign_facts_needed",
+              "semantic_frame.semantic_family",
+              "semantic_frame.speech_act",
+              "state_update.should_update_adoption_state"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.campaign_facts_needed"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 692,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 10054.038,
+              "total_generation_latency_ms": 13427.34,
+              "tokens_generated": 121,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974586368
+            },
+            "raw_output_excerpt": "{\"act\":\"current_tool_context\",\"sub\":\"current_chatgpt_user\",\"obj\":[\"ChatGPT\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_use_case_gap\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"ChatGPT\"],\"avoid\":[],\"say\":\"I hear ChatGPT. The n",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_asr_chacha_005",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "current_tool_context",
+              "sub": "current_chatgpt_user",
+              "obj": [
+                "ChatGPT"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_use_case_gap",
+              "strategy": "diagnose_before_recommend",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "ChatGPT"
+              ],
+              "avoid": [],
+              "say": "I hear ChatGPT. The next step is one plan-fit question before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.campaign_facts_needed",
+              "semantic_frame.semantic_family",
+              "semantic_frame.speech_act",
+              "state_update.should_update_adoption_state"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.campaign_facts_needed"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 694,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 10409.182,
+              "total_generation_latency_ms": 13284.722,
+              "tokens_generated": 121,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974896640
+            },
+            "raw_output_excerpt": "{\"act\":\"current_tool_context\",\"sub\":\"current_chatgpt_user\",\"obj\":[\"ChatGPT\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_use_case_gap\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"ChatGPT\"],\"avoid\":[],\"say\":\"I hear ChatGPT. The n",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_asr_check_gpt_006",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "current_tool_context",
+              "sub": "current_chatgpt_user",
+              "obj": [
+                "ChatGPT"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_use_case_gap",
+              "strategy": "diagnose_before_recommend",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "ChatGPT"
+              ],
+              "avoid": [],
+              "say": "I hear ChatGPT. The next step is one plan-fit question before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.campaign_facts_needed",
+              "semantic_frame.semantic_family",
+              "semantic_frame.speech_act",
+              "state_update.should_update_adoption_state"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.campaign_facts_needed"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 692,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 9908.871,
+              "total_generation_latency_ms": 12723.584,
+              "tokens_generated": 121,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974586368
+            },
+            "raw_output_excerpt": "{\"act\":\"current_tool_context\",\"sub\":\"current_chatgpt_user\",\"obj\":[\"ChatGPT\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_use_case_gap\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"ChatGPT\"],\"avoid\":[],\"say\":\"I hear ChatGPT. The n",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_plans_009",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": true,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "orientation_or_explanation",
+              "sub": "plan_category_explanation",
+              "obj": [
+                "ChatGPT plans"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "answer_plan_category",
+              "strategy": "explain_without_overclaiming",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "plans"
+              ],
+              "avoid": [],
+              "say": "This is about ChatGPT subscription plans. The useful next step is matching a plan to how you would use it.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 691,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2377.829,
+              "total_generation_latency_ms": 14026.197,
+              "tokens_generated": 125,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974431744
+            },
+            "raw_output_excerpt": "{\"act\":\"orientation_or_explanation\",\"sub\":\"plan_category_explanation\",\"obj\":[\"ChatGPT plans\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"answer_plan_category\",\"strategy\":\"explain_without_overclaiming\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"plans\"],\"avoid\":[],\"say\":",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_model_subscription_010",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": true,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "orientation_or_explanation",
+              "sub": "model_vs_subscription_question",
+              "obj": [
+                "ChatGPT plans"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "answer_plan_category",
+              "strategy": "explain_without_overclaiming",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "plans"
+              ],
+              "avoid": [],
+              "say": "This is about ChatGPT subscription plans. The useful next step is matching a plan to how you would use it.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 693,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2424.69,
+              "total_generation_latency_ms": 13316.195,
+              "tokens_generated": 125,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974742016
+            },
+            "raw_output_excerpt": "{\"act\":\"orientation_or_explanation\",\"sub\":\"model_vs_subscription_question\",\"obj\":[\"ChatGPT plans\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"answer_plan_category\",\"strategy\":\"explain_without_overclaiming\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"plans\"],\"avoid\":[],\"",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_not_team_011",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": true,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "team_scope",
+              "sub": "not_team_personal_use",
+              "obj": [
+                "not a team"
+              ],
+              "rel": "none",
+              "neg": "team_state",
+              "buyer": "individual_user",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [
+                "team_state"
+              ],
+              "action": "ask_individual_usage_intensity",
+              "strategy": "diagnose_before_recommend",
+              "facts": [],
+              "preserve": [
+                "not a team"
+              ],
+              "avoid": [
+                "your team",
+                "Business workspace"
+              ],
+              "say": "Got it - not a team use. The next question is whether you use it lightly or heavily every day.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 687,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2015.564,
+              "total_generation_latency_ms": 14250.002,
+              "tokens_generated": 128,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5973811200
+            },
+            "raw_output_excerpt": "{\"act\":\"team_scope\",\"sub\":\"not_team_personal_use\",\"obj\":[\"not a team\"],\"rel\":\"none\",\"neg\":\"team_state\",\"buyer\":\"individual_user\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[\"team_state\"],\"action\":\"ask_individual_usage_intensity\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[],\"preserve\":[\"not a team\"],\"avoid\":[\"your team\",\"Bu",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_by_myself_012",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": true,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "team_scope",
+              "sub": "not_team_personal_use",
+              "obj": [
+                "by myself"
+              ],
+              "rel": "none",
+              "neg": "team_state",
+              "buyer": "individual_user",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [
+                "team_state"
+              ],
+              "action": "ask_individual_usage_intensity",
+              "strategy": "diagnose_before_recommend",
+              "facts": [],
+              "preserve": [
+                "by myself"
+              ],
+              "avoid": [
+                "your team",
+                "Business workspace"
+              ],
+              "say": "Got it - by myself use. The next question is whether you use it lightly or heavily every day.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 689,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2051.944,
+              "total_generation_latency_ms": 13837.386,
+              "tokens_generated": 125,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974121472
+            },
+            "raw_output_excerpt": "{\"act\":\"team_scope\",\"sub\":\"not_team_personal_use\",\"obj\":[\"by myself\"],\"rel\":\"none\",\"neg\":\"team_state\",\"buyer\":\"individual_user\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[\"team_state\"],\"action\":\"ask_individual_usage_intensity\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[],\"preserve\":[\"by myself\"],\"avoid\":[\"your team\",\"Busi",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_personal_use_013",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": true,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "team_scope",
+              "sub": "personal_use",
+              "obj": [
+                "personal use"
+              ],
+              "rel": "none",
+              "neg": "team_state",
+              "buyer": "individual_user",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [
+                "team_state"
+              ],
+              "action": "ask_individual_usage_intensity",
+              "strategy": "diagnose_before_recommend",
+              "facts": [],
+              "preserve": [
+                "personal use"
+              ],
+              "avoid": [
+                "your team",
+                "Business workspace"
+              ],
+              "say": "Got it - personal use use. The next question is whether you use it lightly or heavily every day.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 687,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 1765.336,
+              "total_generation_latency_ms": 13805.399,
+              "tokens_generated": 123,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5973811200
+            },
+            "raw_output_excerpt": "{\"act\":\"team_scope\",\"sub\":\"personal_use\",\"obj\":[\"personal use\"],\"rel\":\"none\",\"neg\":\"team_state\",\"buyer\":\"individual_user\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[\"team_state\"],\"action\":\"ask_individual_usage_intensity\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[],\"preserve\":[\"personal use\"],\"avoid\":[\"your team\",\"Busines",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_pro_tier_014",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": true,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "pro_tier_question",
+              "sub": "pro_tier_choice",
+              "obj": [
+                "Pro"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "high",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "answer_plan_fit",
+              "strategy": "value_before_plan_selection",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "Pro"
+              ],
+              "avoid": [],
+              "say": "I can answer that around Pro. The next step is matching it to your usage before making a recommendation.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 694,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 8988.096,
+              "total_generation_latency_ms": 12235.714,
+              "tokens_generated": 118,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974896640
+            },
+            "raw_output_excerpt": "{\"act\":\"pro_tier_question\",\"sub\":\"pro_tier_choice\",\"obj\":[\"Pro\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"high\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"answer_plan_fit\",\"strategy\":\"value_before_plan_selection\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"Pro\"],\"avoid\":[],\"say\":\"I can answer that around Pro. The next",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_competitor_objection_018",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": true,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic"
+            ],
+            "compact_planner_output": {
+              "act": "competitor_objection",
+              "sub": "current_competitor_tool",
+              "obj": [
+                "Claude"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "compare_competitor_context",
+              "strategy": "compare_options",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "Claude"
+              ],
+              "avoid": [],
+              "say": "I can answer that around Claude. The next step is matching it to your usage before making a recommendation.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "semantic_frame.commercial_intent"
+            ],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 691,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 9636.078,
+              "total_generation_latency_ms": 12904.89,
+              "tokens_generated": 121,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974431744
+            },
+            "raw_output_excerpt": "{\"act\":\"competitor_objection\",\"sub\":\"current_competitor_tool\",\"obj\":[\"Claude\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"compare_competitor_context\",\"strategy\":\"compare_options\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"Claude\"],\"avoid\":[],\"say\":\"I can answer that ar",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_signup_question_019",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": true,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "signup_question",
+              "sub": "signup_path_question",
+              "obj": [
+                "sign up"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "high",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": "signup_path_question"
+              },
+              "block": [],
+              "action": "terminal_close",
+              "strategy": "value_before_plan_selection",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "sign up"
+              ],
+              "avoid": [],
+              "say": "I can answer that around sign up. The next step is matching it to your usage before making a recommendation.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 692,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 1961.326,
+              "total_generation_latency_ms": 12891.477,
+              "tokens_generated": 120,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974586368
+            },
+            "raw_output_excerpt": "{\"act\":\"signup_question\",\"sub\":\"signup_path_question\",\"obj\":[\"sign up\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"high\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"signup_path_question\"},\"block\":[],\"action\":\"terminal_close\",\"strategy\":\"value_before_plan_selection\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"sign up\"],\"avoid\":[],\"say\":\"I can an",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_source_question_020",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": true,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic"
+            ],
+            "compact_planner_output": {
+              "act": "source_question",
+              "sub": "source_disclosure_question",
+              "obj": [
+                "getting this from"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "answer_source",
+              "strategy": "answer_without_inventing_facts",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "getting this from"
+              ],
+              "avoid": [],
+              "say": "I can answer that around getting this from. The next step is matching it to your usage before making a recommendation.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "semantic_frame.commercial_intent"
+            ],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 693,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 1913.482,
+              "total_generation_latency_ms": 13503.986,
+              "tokens_generated": 123,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974742016
+            },
+            "raw_output_excerpt": "{\"act\":\"source_question\",\"sub\":\"source_disclosure_question\",\"obj\":[\"getting this from\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"answer_source\",\"strategy\":\"answer_without_inventing_facts\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"getting this from\"],\"avoid\":[],\"say\"",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_affiliation_question_021",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": true,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "affiliation_question",
+              "sub": "affiliation_boundary_question",
+              "obj": [
+                "OpenAI"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "high",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "answer_affiliation_boundary",
+              "strategy": "answer_without_inventing_facts",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "OpenAI"
+              ],
+              "avoid": [],
+              "say": "I can answer that around OpenAI. The next step is matching it to your usage before making a recommendation.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 692,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 9929.765,
+              "total_generation_latency_ms": 12941.247,
+              "tokens_generated": 123,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974586368
+            },
+            "raw_output_excerpt": "{\"act\":\"affiliation_question\",\"sub\":\"affiliation_boundary_question\",\"obj\":[\"OpenAI\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"high\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"answer_affiliation_boundary\",\"strategy\":\"answer_without_inventing_facts\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"OpenAI\"],\"avoid\":[],\"say\":\"",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_team_controls_question_026",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": true,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "team_scope",
+              "sub": "team_controls_question",
+              "obj": [
+                "team controls"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "high",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "answer_team_controls",
+              "strategy": "answer_without_inventing_facts",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "team controls"
+              ],
+              "avoid": [],
+              "say": "I can answer that around team controls. The next step is matching it to your usage before making a recommendation.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 692,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 1855.334,
+              "total_generation_latency_ms": 14240.975,
+              "tokens_generated": 120,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974586368
+            },
+            "raw_output_excerpt": "{\"act\":\"team_scope\",\"sub\":\"team_controls_question\",\"obj\":[\"team controls\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"high\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"answer_team_controls\",\"strategy\":\"answer_without_inventing_facts\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"team controls\"],\"avoid\":[],\"say\":\"I can answ",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_free_plan_question_029",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": false,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "verifier",
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "safety_boundary",
+              "sub": "internal_policy_request",
+              "obj": [
+                "Free plan"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [
+                "side_effects",
+                "unsupported_claims"
+              ],
+              "action": "respect_boundary",
+              "strategy": "boundary_without_side_effects",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "Free plan"
+              ],
+              "avoid": [],
+              "say": "I cannot recommend a plan without knowing how you use it. I will wait for that before suggesting anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [
+              "buyer_word_not_preserved:Free plan"
+            ],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include",
+              "sales_strategy.next_action",
+              "sales_strategy.one_next_step",
+              "sales_strategy.persuasion_strategy",
+              "semantic_frame.commercial_intent",
+              "semantic_frame.object_mentions",
+              "semantic_frame.object_type",
+              "semantic_frame.semantic_family",
+              "semantic_frame.speech_act",
+              "semantic_frame.sub_intent",
+              "state_update.blocked_updates"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 690,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 1988.327,
+              "total_generation_latency_ms": 13442.101,
+              "tokens_generated": 123,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974276096
+            },
+            "raw_output_excerpt": "{\"act\":\"safety_boundary\",\"sub\":\"internal_policy_request\",\"obj\":[\"Free plan\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[\"side_effects\",\"unsupported_claims\"],\"action\":\"respect_boundary\",\"strategy\":\"boundary_without_side_effects\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"Free plan\"",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_use_case_voice_022",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": true,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "use_case_scope",
+              "sub": "coding_voice_use_case",
+              "obj": [
+                "voice"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [
+                  "voice"
+                ],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_usage_intensity",
+              "strategy": "diagnose_before_recommend",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "voice"
+              ],
+              "avoid": [],
+              "say": "So the gap is voice. Are you using that occasionally or heavily every day?",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 689,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 9766.991,
+              "total_generation_latency_ms": 12795.216,
+              "tokens_generated": 115,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974121472
+            },
+            "raw_output_excerpt": "{\"act\":\"use_case_scope\",\"sub\":\"coding_voice_use_case\",\"obj\":[\"voice\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[\"voice\"],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_usage_intensity\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"voice\"],\"avoid\":[],\"say\":\"So the gap is voice.",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_coding_research_023",
+            "split": "train_sample",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": true,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "use_case_scope",
+              "sub": "coding_research_use_case",
+              "obj": [
+                "coding",
+                "research"
+              ],
+              "rel": "and",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [
+                  "coding",
+                  "research"
+                ],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_usage_intensity",
+              "strategy": "diagnose_before_recommend",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "coding",
+                "research"
+              ],
+              "avoid": [],
+              "say": "So the gap is coding and research. Are you using that occasionally or heavily every day?",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 690,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 10594.789,
+              "total_generation_latency_ms": 13843.852,
+              "tokens_generated": 124,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974276096
+            },
+            "raw_output_excerpt": "{\"act\":\"use_case_scope\",\"sub\":\"coding_research_use_case\",\"obj\":[\"coding\",\"research\"],\"rel\":\"and\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[\"coding\",\"research\"],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_usage_intensity\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"coding\",\"research\"],",
+            "target_present_in_generation_prompt": false
+          }
+        ],
+        "metrics": {
+          "case_count": 20,
+          "schema_valid_count": 20,
+          "verifier_pass_count": 19,
+          "semantic_match_count": 13,
+          "gold_section_semantic_match_count": 13,
+          "strict_gold_semantic_match_count": 13,
+          "strict_gold_response_plan_match_count": 15,
+          "compact_contract_valid_count": 20,
+          "deprecated_label_count": 0,
+          "case_id_label_leak_count": 0,
+          "generic_action_count": 0,
+          "generic_sub_intent_count": 0,
+          "generic_act_count": 0,
+          "exact_match_count": 13,
+          "compact_adapter_error_count": 0,
+          "failure_class_counts": {
+            "strict_gold_semantic": 7,
+            "strict_gold_response_plan": 5,
+            "verifier": 1
+          },
+          "generic_label_count": 0,
+          "malformed_output_count": 0,
+          "latency_metrics": {
+            "model_load_time_ms": null,
+            "total_generation_latency_ms": 272952.194,
+            "average_generation_latency_ms": 13647.61,
+            "p50_generation_latency_ms": 13473.043,
+            "p90_generation_latency_ms": 14534.897,
+            "average_first_output_latency_ms": 5282.226,
+            "peak_gpu_memory_bytes": 5975206912
+          },
+          "target_present_in_generation_prompt_count": 0
+        }
+      },
+      "validation": {
+        "path": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-DATASET-001/validation.jsonl",
+        "case_count": 10,
+        "cases": [
+          {
+            "case_id": "live_cloud_claude_007",
+            "split": "validation",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "current_tool_context",
+              "sub": "current_other_ai_user",
+              "obj": [
+                "Claude"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_use_case_gap",
+              "strategy": "diagnose_before_recommend",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "Claude"
+              ],
+              "avoid": [],
+              "say": "I hear Claude. The next step is one plan-fit question before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.campaign_facts_needed",
+              "response_plan.must_include",
+              "semantic_frame.object_mentions",
+              "semantic_frame.semantic_family",
+              "semantic_frame.speech_act",
+              "state_update.should_update_adoption_state"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.campaign_facts_needed",
+              "response_plan.must_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 692,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 9390.846,
+              "total_generation_latency_ms": 11831.713,
+              "tokens_generated": 116,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974586368
+            },
+            "raw_output_excerpt": "{\"act\":\"current_tool_context\",\"sub\":\"current_other_ai_user\",\"obj\":[\"Claude\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_use_case_gap\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"Claude\"],\"avoid\":[],\"say\":\"I hear Claude. The nex",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_midcycle_upgrade_015",
+            "split": "validation",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "plan_change_question",
+              "sub": "midcycle_upgrade_question",
+              "obj": [
+                "middle of the month"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "answer_plan_change",
+              "strategy": "value_before_plan_selection",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "middle of the month"
+              ],
+              "avoid": [],
+              "say": "I hear middle of the month. The next step is one plan-fit question before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include",
+              "semantic_frame.commercial_intent",
+              "semantic_frame.object_mentions"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 696,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2049.73,
+              "total_generation_latency_ms": 13745.456,
+              "tokens_generated": 121,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5975206912
+            },
+            "raw_output_excerpt": "{\"act\":\"plan_change_question\",\"sub\":\"midcycle_upgrade_question\",\"obj\":[\"middle of the month\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"answer_plan_change\",\"strategy\":\"value_before_plan_selection\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"middle of the month\"],\"avoid",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_plus_cost_question_030",
+            "split": "validation",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "safety_boundary",
+              "sub": "tts_boundary_request",
+              "obj": [
+                "transcript"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [
+                "side_effects",
+                "unsupported_claims"
+              ],
+              "action": "respect_boundary",
+              "strategy": "boundary_without_side_effects",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "transcript"
+              ],
+              "avoid": [],
+              "say": "I cannot read the message inside a transcript. The next step is Plan Fit before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include",
+              "sales_strategy.next_action",
+              "sales_strategy.one_next_step",
+              "sales_strategy.persuasion_strategy",
+              "semantic_frame.commercial_intent",
+              "semantic_frame.object_mentions",
+              "semantic_frame.object_type",
+              "semantic_frame.semantic_family",
+              "semantic_frame.speech_act",
+              "semantic_frame.sub_intent",
+              "state_update.blocked_updates"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 692,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 9875.854,
+              "total_generation_latency_ms": 12946.357,
+              "tokens_generated": 122,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974586368
+            },
+            "raw_output_excerpt": "{\"act\":\"safety_boundary\",\"sub\":\"tts_boundary_request\",\"obj\":[\"transcript\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[\"side_effects\",\"unsupported_claims\"],\"action\":\"respect_boundary\",\"strategy\":\"boundary_without_side_effects\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"transcript\"]",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "paraphrase_and_relation_001",
+            "split": "validation",
+            "category": "synthetic_paraphrase",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": true,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "use_case_scope",
+              "sub": "coding_voice_use_case",
+              "obj": [
+                "coding",
+                "voice"
+              ],
+              "rel": "and",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [
+                  "coding",
+                  "voice"
+                ],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_usage_intensity",
+              "strategy": "diagnose_before_recommend",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "coding",
+                "voice"
+              ],
+              "avoid": [],
+              "say": "So the gap is coding and voice. Are you using that occasionally or heavily every day?",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 694,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 10797.175,
+              "total_generation_latency_ms": 13624.684,
+              "tokens_generated": 123,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974896640
+            },
+            "raw_output_excerpt": "{\"act\":\"use_case_scope\",\"sub\":\"coding_voice_use_case\",\"obj\":[\"coding\",\"voice\"],\"rel\":\"and\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[\"coding\",\"voice\"],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_usage_intensity\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"coding\",\"voice\"],\"avoid\":[],\"",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "paraphrase_what_call_009",
+            "split": "validation",
+            "category": "synthetic_paraphrase",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "orientation_or_explanation",
+              "sub": "plan_category_explanation",
+              "obj": [
+                "ChatGPT plans"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "answer_plan_category",
+              "strategy": "explain_without_overclaiming",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "plans"
+              ],
+              "avoid": [],
+              "say": "This call is about ChatGPT subscription plans. The useful next step is matching a plan to how you would use it.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 692,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2539.94,
+              "total_generation_latency_ms": 13595.422,
+              "tokens_generated": 126,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974586368
+            },
+            "raw_output_excerpt": "{\"act\":\"orientation_or_explanation\",\"sub\":\"plan_category_explanation\",\"obj\":[\"ChatGPT plans\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"answer_plan_category\",\"strategy\":\"explain_without_overclaiming\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"plans\"],\"avoid\":[],\"say\":",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "paraphrase_accept_017",
+            "split": "validation",
+            "category": "synthetic_paraphrase",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "terminal_acceptance",
+              "sub": "terminal_thanks_acceptance",
+              "obj": [
+                "yes that sounds right"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "terminal_close",
+              "strategy": "terminal_close",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "yes that sounds right"
+              ],
+              "avoid": [],
+              "say": "I hear yes that sounds right. The next step is one plan-fit question before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include",
+              "semantic_frame.object_mentions"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 691,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2290.136,
+              "total_generation_latency_ms": 13550.724,
+              "tokens_generated": 119,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974431744
+            },
+            "raw_output_excerpt": "{\"act\":\"terminal_acceptance\",\"sub\":\"terminal_thanks_acceptance\",\"obj\":[\"yes that sounds right\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"terminal_close\",\"strategy\":\"terminal_close\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"yes that sounds right\"],\"avoid\":[],\"say\":\"I",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "paraphrase_light_025",
+            "split": "validation",
+            "category": "synthetic_paraphrase",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "usage_intensity",
+              "sub": "light_occasional_use",
+              "obj": [
+                "barely use it"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "light_usage",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "light",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_usage_intensity",
+              "strategy": "diagnose_before_recommend",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "barely use it"
+              ],
+              "avoid": [],
+              "say": "I hear barely use it. The next step is one plan-fit question before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include",
+              "sales_strategy.next_action",
+              "sales_strategy.one_next_step",
+              "semantic_frame.buyer_state",
+              "semantic_frame.object_mentions",
+              "state_update.should_update_usage_intensity",
+              "state_update.usage_intensity"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 691,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2222.118,
+              "total_generation_latency_ms": 14362.708,
+              "tokens_generated": 123,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974431744
+            },
+            "raw_output_excerpt": "{\"act\":\"usage_intensity\",\"sub\":\"light_occasional_use\",\"obj\":[\"barely use it\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"light_usage\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"light\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_usage_intensity\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"barely use it\"],\"avoid\":[],\"say\":\"I hea",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "negative_side_effect_001",
+            "split": "validation",
+            "category": "negative_control",
+            "schema_valid": true,
+            "verifier_pass": false,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "verifier",
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "signup_question",
+              "sub": "signup_path_question",
+              "obj": [
+                "signup link"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "high",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "terminal_close",
+              "strategy": "value_before_plan_selection",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "signup link"
+              ],
+              "avoid": [],
+              "say": "I can answer that around signup path. The next step matches your current plan fit before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [
+              "buyer_word_not_preserved:signup link"
+            ],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include",
+              "response_plan.must_not_include",
+              "sales_strategy.next_action",
+              "sales_strategy.one_next_step",
+              "sales_strategy.persuasion_strategy",
+              "sales_strategy.should_close",
+              "semantic_frame.commercial_intent",
+              "semantic_frame.object_mentions",
+              "semantic_frame.object_type",
+              "semantic_frame.semantic_family",
+              "semantic_frame.speech_act",
+              "semantic_frame.sub_intent",
+              "state_update.blocked_updates"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include",
+              "response_plan.must_not_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 694,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 1973.09,
+              "total_generation_latency_ms": 12572.707,
+              "tokens_generated": 115,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974896640
+            },
+            "raw_output_excerpt": "{\"act\":\"signup_question\",\"sub\":\"signup_path_question\",\"obj\":[\"signup link\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"high\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"terminal_close\",\"strategy\":\"value_before_plan_selection\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"signup link\"],\"avoid\":[],\"say\":\"I can answer that ar",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "negative_asr_noise_001",
+            "split": "validation",
+            "category": "negative_control",
+            "schema_valid": true,
+            "verifier_pass": false,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "verifier",
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "safety_boundary",
+              "sub": "silence_or_unclear_audio",
+              "obj": [
+                "unclear"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [
+                "side_effects",
+                "unsupported_claims"
+              ],
+              "action": "respect_boundary",
+              "strategy": "boundary_without_side_effects",
+              "facts": [],
+              "preserve": [
+                "unclear"
+              ],
+              "avoid": [],
+              "say": "I hear the uncertainty. Let's focus on what you need.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [
+              "buyer_word_not_preserved:unclear"
+            ],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include",
+              "sales_strategy.should_ask_question",
+              "semantic_frame.object_mentions",
+              "semantic_frame.object_type",
+              "semantic_frame.sub_intent"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 689,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 9618.682,
+              "total_generation_latency_ms": 11883.657,
+              "tokens_generated": 115,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974121472
+            },
+            "raw_output_excerpt": "{\"act\":\"safety_boundary\",\"sub\":\"silence_or_unclear_audio\",\"obj\":[\"unclear\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[\"side_effects\",\"unsupported_claims\"],\"action\":\"respect_boundary\",\"strategy\":\"boundary_without_side_effects\",\"facts\":[],\"preserve\":[\"unclear\"],\"avoid\":[],\"say\":\"I ",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "negative_raw_transcript_request_001",
+            "split": "validation",
+            "category": "negative_control",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "safety_boundary",
+              "sub": "raw_transcript_request",
+              "obj": [
+                "transcript"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [
+                "side_effects",
+                "unsupported_claims"
+              ],
+              "action": "respect_boundary",
+              "strategy": "boundary_without_side_effects",
+              "facts": [],
+              "preserve": [
+                "transcript"
+              ],
+              "avoid": [],
+              "say": "I cannot send the transcript. The next step is plan-fit before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.max_sentence_count",
+              "response_plan.must_include",
+              "semantic_frame.object_mentions"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.max_sentence_count",
+              "response_plan.must_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 688,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 10023.189,
+              "total_generation_latency_ms": 12461.35,
+              "tokens_generated": 116,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5973965824
+            },
+            "raw_output_excerpt": "{\"act\":\"safety_boundary\",\"sub\":\"raw_transcript_request\",\"obj\":[\"transcript\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[\"side_effects\",\"unsupported_claims\"],\"action\":\"respect_boundary\",\"strategy\":\"boundary_without_side_effects\",\"facts\":[],\"preserve\":[\"transcript\"],\"avoid\":[],\"say\"",
+            "target_present_in_generation_prompt": false
+          }
+        ],
+        "metrics": {
+          "case_count": 10,
+          "schema_valid_count": 10,
+          "verifier_pass_count": 8,
+          "semantic_match_count": 1,
+          "gold_section_semantic_match_count": 1,
+          "strict_gold_semantic_match_count": 1,
+          "strict_gold_response_plan_match_count": 1,
+          "compact_contract_valid_count": 10,
+          "deprecated_label_count": 0,
+          "case_id_label_leak_count": 0,
+          "generic_action_count": 0,
+          "generic_sub_intent_count": 0,
+          "generic_act_count": 0,
+          "exact_match_count": 1,
+          "compact_adapter_error_count": 0,
+          "failure_class_counts": {
+            "strict_gold_semantic": 9,
+            "strict_gold_response_plan": 9,
+            "verifier": 2
+          },
+          "generic_label_count": 0,
+          "malformed_output_count": 0,
+          "latency_metrics": {
+            "model_load_time_ms": null,
+            "total_generation_latency_ms": 130574.778,
+            "average_generation_latency_ms": 13057.478,
+            "p50_generation_latency_ms": 13248.54,
+            "p90_generation_latency_ms": 13807.181,
+            "average_first_output_latency_ms": 6078.076,
+            "peak_gpu_memory_bytes": 5975206912
+          },
+          "target_present_in_generation_prompt_count": 0
+        }
+      },
+      "test": {
+        "path": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-DATASET-001/test.jsonl",
+        "case_count": 10,
+        "cases": [
+          {
+            "case_id": "live_what_is_this_008",
+            "split": "test",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": true,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "orientation_or_explanation",
+              "sub": "plan_category_explanation",
+              "obj": [
+                "ChatGPT plans"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "answer_plan_category",
+              "strategy": "explain_without_overclaiming",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "plans"
+              ],
+              "avoid": [],
+              "say": "This is about ChatGPT subscription plans. The useful next step is matching a plan to how you would use it.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 690,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2349.807,
+              "total_generation_latency_ms": 14576.562,
+              "tokens_generated": 125,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974276096
+            },
+            "raw_output_excerpt": "{\"act\":\"orientation_or_explanation\",\"sub\":\"plan_category_explanation\",\"obj\":[\"ChatGPT plans\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"answer_plan_category\",\"strategy\":\"explain_without_overclaiming\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"plans\"],\"avoid\":[],\"say\":",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_terminal_acceptance_016",
+            "split": "test",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": false,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "verifier",
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "safety_boundary",
+              "sub": "no_crm_request",
+              "obj": [
+                "no_calendar_request",
+                "no_crm_request"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [
+                "no_calendar_request",
+                "no_crm_request"
+              ],
+              "action": "respect_boundary",
+              "strategy": "boundary_without_side_effects",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "no_calendar_request",
+                "no_crm_request"
+              ],
+              "avoid": [],
+              "say": "Understood; no calendar or CRM action is needed.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [
+              "buyer_word_not_preserved:no_calendar_request",
+              "buyer_word_not_preserved:no_crm_request"
+            ],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.max_sentence_count",
+              "response_plan.must_include",
+              "sales_strategy.next_action",
+              "sales_strategy.one_next_step",
+              "sales_strategy.persuasion_strategy",
+              "sales_strategy.should_close",
+              "semantic_frame.commercial_intent",
+              "semantic_frame.object_mentions",
+              "semantic_frame.object_type",
+              "semantic_frame.semantic_family",
+              "semantic_frame.speech_act",
+              "semantic_frame.sub_intent",
+              "state_update.blocked_updates",
+              "state_update.should_update_close_readiness"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.max_sentence_count",
+              "response_plan.must_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 690,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 11721.552,
+              "total_generation_latency_ms": 13498.811,
+              "tokens_generated": 128,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974276096
+            },
+            "raw_output_excerpt": "{\"act\":\"safety_boundary\",\"sub\":\"no_crm_request\",\"obj\":[\"no_calendar_request\",\"no_crm_request\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[\"no_calendar_request\",\"no_crm_request\"],\"action\":\"respect_boundary\",\"strategy\":\"boundary_without_side_effects\",\"facts\":[\"public_plan_names\"],\"p",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "live_price_objection_017",
+            "split": "test",
+            "category": "live_sanitized",
+            "schema_valid": true,
+            "verifier_pass": false,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "verifier",
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "price_objection",
+              "sub": "price_objection",
+              "obj": [
+                "current_public_plan_prices"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "price_sensitive",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "respect_boundary",
+              "strategy": "boundary_without_side_effects",
+              "facts": [
+                "current_public_plan_prices"
+              ],
+              "preserve": [
+                "current_public_plan_prices"
+              ],
+              "avoid": [],
+              "say": "I hear current public plan prices is the relevant boundary here.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [
+              "buyer_word_not_preserved:current_public_plan_prices"
+            ],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include",
+              "sales_strategy.next_action",
+              "sales_strategy.one_next_step",
+              "sales_strategy.persuasion_strategy",
+              "sales_strategy.should_reframe_objection",
+              "semantic_frame.commercial_intent",
+              "semantic_frame.object_mentions"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 692,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 9919.099,
+              "total_generation_latency_ms": 12668.607,
+              "tokens_generated": 113,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974586368
+            },
+            "raw_output_excerpt": "{\"act\":\"price_objection\",\"sub\":\"price_objection\",\"obj\":[\"current_public_plan_prices\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"price_sensitive\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"respect_boundary\",\"strategy\":\"boundary_without_side_effects\",\"facts\":[\"current_public_plan_prices\"],\"preserve\":[\"current_public_plan_pr",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "paraphrase_or_relation_002",
+            "split": "test",
+            "category": "synthetic_paraphrase",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": true,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": true,
+            "strict_gold_response_plan_match": true,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [],
+            "compact_planner_output": {
+              "act": "use_case_scope",
+              "sub": "coding_voice_use_case",
+              "obj": [
+                "coding",
+                "voice"
+              ],
+              "rel": "or",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [
+                  "coding",
+                  "voice"
+                ],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_usage_intensity",
+              "strategy": "diagnose_before_recommend",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "coding",
+                "voice"
+              ],
+              "avoid": [],
+              "say": "So the gap is coding or voice use. Are you using that occasionally or heavily every day?",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 694,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 10058.716,
+              "total_generation_latency_ms": 13160.051,
+              "tokens_generated": 124,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974896640
+            },
+            "raw_output_excerpt": "{\"act\":\"use_case_scope\",\"sub\":\"coding_voice_use_case\",\"obj\":[\"coding\",\"voice\"],\"rel\":\"or\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[\"coding\",\"voice\"],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_usage_intensity\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"coding\",\"voice\"],\"avoid\":[],\"s",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "paraphrase_plan_list_010",
+            "split": "test",
+            "category": "synthetic_paraphrase",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "safety_boundary",
+              "sub": "model_vs_subscription_question",
+              "obj": [
+                "subscription"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [
+                "side_effects",
+                "unsupported_claims"
+              ],
+              "action": "respect_boundary",
+              "strategy": "boundary_without_side_effects",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "subscription"
+              ],
+              "avoid": [],
+              "say": "I can only answer for the free plan and paid subscription. The rest is outside my evidence.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include",
+              "sales_strategy.next_action",
+              "sales_strategy.one_next_step",
+              "sales_strategy.persuasion_strategy",
+              "semantic_frame.object_mentions",
+              "semantic_frame.object_type",
+              "semantic_frame.semantic_family",
+              "semantic_frame.speech_act",
+              "semantic_frame.sub_intent",
+              "state_update.blocked_updates"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 692,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 9505.744,
+              "total_generation_latency_ms": 12782.988,
+              "tokens_generated": 120,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974586368
+            },
+            "raw_output_excerpt": "{\"act\":\"safety_boundary\",\"sub\":\"model_vs_subscription_question\",\"obj\":[\"subscription\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[\"side_effects\",\"unsupported_claims\"],\"action\":\"respect_boundary\",\"strategy\":\"boundary_without_side_effects\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "paraphrase_expensive_018",
+            "split": "test",
+            "category": "synthetic_paraphrase",
+            "schema_valid": true,
+            "verifier_pass": false,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "verifier",
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "price_objection",
+              "sub": "price_objection",
+              "obj": [
+                "current_public_plan_prices"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "price_sensitive",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "respect_boundary",
+              "strategy": "value_before_plan_selection",
+              "facts": [
+                "current_public_plan_prices"
+              ],
+              "preserve": [
+                "current_public_plan_prices"
+              ],
+              "avoid": [],
+              "say": "I hear the current Public Plan prices feel high. The next step is matching that with a plan fit before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [
+              "buyer_word_not_preserved:current_public_plan_prices"
+            ],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include",
+              "sales_strategy.next_action",
+              "sales_strategy.one_next_step",
+              "sales_strategy.persuasion_strategy",
+              "sales_strategy.should_reframe_objection",
+              "semantic_frame.commercial_intent",
+              "semantic_frame.object_mentions"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 692,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 10530.743,
+              "total_generation_latency_ms": 14729.196,
+              "tokens_generated": 125,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974586368
+            },
+            "raw_output_excerpt": "{\"act\":\"price_objection\",\"sub\":\"price_objection\",\"obj\":[\"current_public_plan_prices\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"price_sensitive\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"respect_boundary\",\"strategy\":\"value_before_plan_selection\",\"facts\":[\"current_public_plan_prices\"],\"preserve\":[\"current_public_plan_pric",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "paraphrase_files_026",
+            "split": "test",
+            "category": "synthetic_paraphrase",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": true,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic"
+            ],
+            "compact_planner_output": {
+              "act": "use_case_scope",
+              "sub": "current_other_ai_user",
+              "obj": [
+                "file uploads"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [
+                  "file uploads"
+                ],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [],
+              "action": "ask_use_case_gap",
+              "strategy": "diagnose_before_recommend",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "file uploads"
+              ],
+              "avoid": [],
+              "say": "I hear file uploads. The next step is one plan-fit question before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "sales_strategy.next_action",
+              "sales_strategy.one_next_step",
+              "semantic_frame.object_type",
+              "semantic_frame.sub_intent"
+            ],
+            "gold_response_plan_mismatches": [],
+            "latency_metrics": {
+              "prompt_token_count": 691,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2147.654,
+              "total_generation_latency_ms": 13638.375,
+              "tokens_generated": 119,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974431744
+            },
+            "raw_output_excerpt": "{\"act\":\"use_case_scope\",\"sub\":\"current_other_ai_user\",\"obj\":[\"file uploads\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[\"file uploads\"],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[],\"action\":\"ask_use_case_gap\",\"strategy\":\"diagnose_before_recommend\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"file uploads\"],\"avoid\":[],\"say\":\"I ",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "negative_unsupported_fact_001",
+            "split": "test",
+            "category": "negative_control",
+            "schema_valid": true,
+            "verifier_pass": false,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "verifier",
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "safety_boundary",
+              "sub": "model_vs_subscription_question",
+              "obj": [
+                "unlimited access"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [
+                "side_effects",
+                "unsupported_claims"
+              ],
+              "action": "respect_boundary",
+              "strategy": "boundary_without_side_effects",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "unlimited access"
+              ],
+              "avoid": [],
+              "say": "I cannot claim that Pro has unlimited access. We should focus on what is already known to both of us.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [
+              "unsupported_product_claim"
+            ],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include",
+              "semantic_frame.object_mentions",
+              "semantic_frame.object_type",
+              "semantic_frame.sub_intent"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.must_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 695,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2173.311,
+              "total_generation_latency_ms": 13402.299,
+              "tokens_generated": 127,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5975052288
+            },
+            "raw_output_excerpt": "{\"act\":\"safety_boundary\",\"sub\":\"model_vs_subscription_question\",\"obj\":[\"unlimited access\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[\"side_effects\",\"unsupported_claims\"],\"action\":\"respect_boundary\",\"strategy\":\"boundary_without_side_effects\",\"facts\":[\"public_plan_names\"],\"preserve",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "negative_privacy_001",
+            "split": "test",
+            "category": "negative_control",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": false,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "compact_contract",
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "safety_boundary",
+              "sub": "no_storage_restriction",
+              "obj": [
+                "do not store"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [
+                "side_effects",
+                "unsupported_claims"
+              ],
+              "action": "respect_boundary",
+              "strategy": "boundary_without_side_effects",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "do not store"
+              ],
+              "avoid": [],
+              "say": "Understood; do not store anything yourself.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [
+              "compact.sub value not allowed: 'no_storage_restriction'"
+            ],
+            "compact_label_quality_issues": [
+              {
+                "field": "sub",
+                "value": "no_storage_restriction",
+                "issue": "not_allowed"
+              }
+            ],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.max_sentence_count",
+              "response_plan.must_include",
+              "semantic_frame.object_mentions",
+              "semantic_frame.object_type",
+              "semantic_frame.sub_intent"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.max_sentence_count",
+              "response_plan.must_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 691,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 2090.319,
+              "total_generation_latency_ms": 12349.396,
+              "tokens_generated": 114,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974431744
+            },
+            "raw_output_excerpt": "{\"act\":\"safety_boundary\",\"sub\":\"no_storage_restriction\",\"obj\":[\"do not store\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[\"side_effects\",\"unsupported_claims\"],\"action\":\"respect_boundary\",\"strategy\":\"boundary_without_side_effects\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"do not s",
+            "target_present_in_generation_prompt": false
+          },
+          {
+            "case_id": "negative_policy_request_001",
+            "split": "test",
+            "category": "negative_control",
+            "schema_valid": true,
+            "verifier_pass": true,
+            "semantic_match": false,
+            "compact_contract_valid": true,
+            "strict_gold_semantic_match": false,
+            "strict_gold_response_plan_match": false,
+            "exact_match": false,
+            "deprecated_label_count": 0,
+            "case_id_label_leak_count": 0,
+            "generic_label_count": 0,
+            "malformed_output": false,
+            "failure_classes": [
+              "strict_gold_semantic",
+              "strict_gold_response_plan"
+            ],
+            "compact_planner_output": {
+              "act": "safety_boundary",
+              "sub": "internal_policy_request",
+              "obj": [
+                "rules"
+              ],
+              "rel": "none",
+              "neg": "none",
+              "buyer": "evaluating",
+              "intent": "medium",
+              "update": {
+                "adoption": "",
+                "use": [],
+                "intensity": "",
+                "team": false,
+                "recommend": "",
+                "close": ""
+              },
+              "block": [
+                "side_effects",
+                "unsupported_claims"
+              ],
+              "action": "respect_boundary",
+              "strategy": "boundary_without_side_effects",
+              "facts": [
+                "public_plan_names"
+              ],
+              "preserve": [
+                "rules"
+              ],
+              "avoid": [],
+              "say": "I cannot pick my answer to rules. I need to ask more questions before recommending anything.",
+              "flags": [],
+              "conf": 0.88
+            },
+            "compact_schema_errors": [],
+            "compact_adapter_errors": [],
+            "compact_contract_errors": [],
+            "compact_label_quality_issues": [],
+            "parse_errors": [],
+            "verifier_errors": [],
+            "semantic_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.max_sentence_count",
+              "response_plan.must_include",
+              "semantic_frame.object_mentions"
+            ],
+            "gold_response_plan_mismatches": [
+              "response_plan.buyer_words_to_preserve",
+              "response_plan.max_sentence_count",
+              "response_plan.must_include"
+            ],
+            "latency_metrics": {
+              "prompt_token_count": 691,
+              "prompt_truncated": false,
+              "max_output_tokens": 256,
+              "timeout_ms": 60000,
+              "first_output_latency_ms": 9794.731,
+              "total_generation_latency_ms": 13626.446,
+              "tokens_generated": 118,
+              "completed_json_object": true,
+              "stopped_after_first_json_object": true,
+              "output_truncated": false,
+              "timed_out": false,
+              "peak_gpu_memory_bytes": 5974431744
+            },
+            "raw_output_excerpt": "{\"act\":\"safety_boundary\",\"sub\":\"internal_policy_request\",\"obj\":[\"rules\"],\"rel\":\"none\",\"neg\":\"none\",\"buyer\":\"evaluating\",\"intent\":\"medium\",\"update\":{\"adoption\":\"\",\"use\":[],\"intensity\":\"\",\"team\":false,\"recommend\":\"\",\"close\":\"\"},\"block\":[\"side_effects\",\"unsupported_claims\"],\"action\":\"respect_boundary\",\"strategy\":\"boundary_without_side_effects\",\"facts\":[\"public_plan_names\"],\"preserve\":[\"rules\"],\"avoid",
+            "target_present_in_generation_prompt": false
+          }
+        ],
+        "metrics": {
+          "case_count": 10,
+          "schema_valid_count": 10,
+          "verifier_pass_count": 6,
+          "semantic_match_count": 2,
+          "gold_section_semantic_match_count": 2,
+          "strict_gold_semantic_match_count": 2,
+          "strict_gold_response_plan_match_count": 3,
+          "compact_contract_valid_count": 9,
+          "deprecated_label_count": 0,
+          "case_id_label_leak_count": 0,
+          "generic_action_count": 0,
+          "generic_sub_intent_count": 0,
+          "generic_act_count": 0,
+          "exact_match_count": 1,
+          "compact_adapter_error_count": 0,
+          "failure_class_counts": {
+            "verifier": 4,
+            "strict_gold_semantic": 8,
+            "strict_gold_response_plan": 7,
+            "compact_contract": 1
+          },
+          "generic_label_count": 0,
+          "malformed_output_count": 0,
+          "latency_metrics": {
+            "model_load_time_ms": null,
+            "total_generation_latency_ms": 134432.731,
+            "average_generation_latency_ms": 13443.273,
+            "p50_generation_latency_ms": 13450.555,
+            "p90_generation_latency_ms": 14591.825,
+            "average_first_output_latency_ms": 7029.168,
+            "peak_gpu_memory_bytes": 5975052288
+          },
+          "target_present_in_generation_prompt_count": 0
+        }
+      }
+    },
+    "exact_blocker": null
+  },
+  "prior_tiny_probe_comparison": {
+    "source": "research/experiments/generated/LOCAL-QWEN-LORA-TINY-OVERFIT-001/result.json",
+    "status": "available",
+    "base_qwen": {
+      "status": "completed",
+      "adapter_loaded": false,
+      "case_count": 8,
+      "schema_valid_count": 0,
+      "verifier_pass_count": 0,
+      "compact_contract_valid_count": 0,
+      "strict_gold_semantic_match_count": 0,
+      "exact_target_match_count": 0,
+      "malformed_compact_object_count": 8,
+      "deprecated_case_id_generic_label_count": 0,
+      "latency_metrics": {
+        "model_load_time_ms": 9063.376,
+        "total_generation_latency_ms": 46720.024,
+        "average_generation_latency_ms": 5840.003,
+        "p50_generation_latency_ms": 6180.026,
+        "p90_generation_latency_ms": 6867.07,
+        "average_first_output_latency_ms": 4978.782
+      }
+    },
+    "lora_002": {
+      "status": "completed",
+      "adapter_loaded": true,
+      "case_count": 8,
+      "schema_valid_count": 0,
+      "verifier_pass_count": 0,
+      "compact_contract_valid_count": 0,
+      "strict_gold_semantic_match_count": 0,
+      "exact_target_match_count": 0,
+      "malformed_compact_object_count": 8,
+      "deprecated_case_id_generic_label_count": 0,
+      "latency_metrics": {
+        "model_load_time_ms": 8525.524,
+        "total_generation_latency_ms": 171574.226,
+        "average_generation_latency_ms": 21446.778,
+        "p50_generation_latency_ms": 19935.606,
+        "p90_generation_latency_ms": 28280.314,
+        "average_first_output_latency_ms": 15185.753
+      }
+    },
+    "tiny_adapter": {
+      "status": "completed",
+      "adapter_loaded": true,
+      "case_count": 8,
+      "schema_valid_count": 8,
+      "verifier_pass_count": 8,
+      "compact_contract_valid_count": 8,
+      "strict_gold_semantic_match_count": 8,
+      "exact_target_match_count": 8,
+      "malformed_compact_object_count": 0,
+      "deprecated_case_id_generic_label_count": 0,
+      "latency_metrics": {
+        "model_load_time_ms": 8568.852,
+        "total_generation_latency_ms": 131160.207,
+        "average_generation_latency_ms": 16395.026,
+        "p50_generation_latency_ms": 17031.836,
+        "p90_generation_latency_ms": 18700.586,
+        "average_first_output_latency_ms": 6360.373
+      }
+    }
+  },
+  "quality_gate_passed": false,
+  "adapter_live_ready": false,
+  "adapter_live_ready_reason": "No live dialogue wiring in this phase; strict gates are evidence only.",
+  "validation_metrics": {
+    "case_count": 10,
+    "schema_valid_count": 10,
+    "verifier_pass_count": 8,
+    "semantic_match_count": 1,
+    "gold_section_semantic_match_count": 1,
+    "strict_gold_semantic_match_count": 1,
+    "strict_gold_response_plan_match_count": 1,
+    "compact_contract_valid_count": 10,
+    "deprecated_label_count": 0,
+    "case_id_label_leak_count": 0,
+    "generic_action_count": 0,
+    "generic_sub_intent_count": 0,
+    "generic_act_count": 0,
+    "exact_match_count": 1,
+    "compact_adapter_error_count": 0,
+    "failure_class_counts": {
+      "strict_gold_semantic": 9,
+      "strict_gold_response_plan": 9,
+      "verifier": 2
+    },
+    "generic_label_count": 0,
+    "malformed_output_count": 0,
+    "latency_metrics": {
+      "model_load_time_ms": null,
+      "total_generation_latency_ms": 130574.778,
+      "average_generation_latency_ms": 13057.478,
+      "p50_generation_latency_ms": 13248.54,
+      "p90_generation_latency_ms": 13807.181,
+      "average_first_output_latency_ms": 6078.076,
+      "peak_gpu_memory_bytes": 5975206912
+    },
+    "target_present_in_generation_prompt_count": 0
+  },
+  "test_metrics": {
+    "case_count": 10,
+    "schema_valid_count": 10,
+    "verifier_pass_count": 6,
+    "semantic_match_count": 2,
+    "gold_section_semantic_match_count": 2,
+    "strict_gold_semantic_match_count": 2,
+    "strict_gold_response_plan_match_count": 3,
+    "compact_contract_valid_count": 9,
+    "deprecated_label_count": 0,
+    "case_id_label_leak_count": 0,
+    "generic_action_count": 0,
+    "generic_sub_intent_count": 0,
+    "generic_act_count": 0,
+    "exact_match_count": 1,
+    "compact_adapter_error_count": 0,
+    "failure_class_counts": {
+      "verifier": 4,
+      "strict_gold_semantic": 8,
+      "strict_gold_response_plan": 7,
+      "compact_contract": 1
+    },
+    "generic_label_count": 0,
+    "malformed_output_count": 0,
+    "latency_metrics": {
+      "model_load_time_ms": null,
+      "total_generation_latency_ms": 134432.731,
+      "average_generation_latency_ms": 13443.273,
+      "p50_generation_latency_ms": 13450.555,
+      "p90_generation_latency_ms": 14591.825,
+      "average_first_output_latency_ms": 7029.168,
+      "peak_gpu_memory_bytes": 5975052288
+    },
+    "target_present_in_generation_prompt_count": 0
+  },
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "live_tts_calls_made": false,
+  "provider_side_effects_made": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "raw_private_transcript_included": false,
+  "raw_private_transcript_copied_to_public_evidence": false,
+  "case_text_stored_in_evidence": false,
+  "eval_hardware_summary": {
+    "python_version": "3.13.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 33 Stepping 2, AuthenticAMD",
+    "machine": "AMD64",
+    "torch_available": true,
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+    "vram_total_bytes": 12878086144,
+    "nvidia_smi": {
+      "available": true,
+      "stdout": "NVIDIA GeForce RTX 4070 SUPER, 610.47, 12282 MiB",
+      "stderr": "",
+      "returncode": 0
+    },
+    "nvidia_driver_version": "610.47",
+    "nvidia_vram_total": "12282 MiB",
+    "torch_version": "2.11.0+cu128",
+    "torch_cuda_version": "12.8"
+  },
+  "dependency_status": {
+    "modules": {
+      "torch": true,
+      "transformers": true,
+      "accelerate": true,
+      "bitsandbytes": true,
+      "peft": true,
+      "datasets": true,
+      "trl": true,
+      "evaluate": true,
+      "sentencepiece": true,
+      "protobuf": true
+    },
+    "versions": {
+      "torch": "2.11.0+cu128",
+      "transformers": "5.9.0",
+      "accelerate": "1.13.0",
+      "bitsandbytes": "0.49.2",
+      "peft": "0.19.1",
+      "datasets": "4.8.5",
+      "trl": "1.5.0",
+      "evaluate": "0.4.6",
+      "sentencepiece": "0.2.1",
+      "protobuf": "7.35.0"
+    },
+    "required": [
+      "torch",
+      "transformers",
+      "accelerate",
+      "bitsandbytes",
+      "peft",
+      "datasets"
+    ],
+    "optional": [
+      "trl",
+      "evaluate",
+      "sentencepiece",
+      "protobuf"
+    ],
+    "missing_required": [],
+    "ready": true,
+    "peft_import_ok": true,
+    "peft_import_error": null,
+    "transformers_trainer_import_ok": true,
+    "transformers_trainer_import_error": null,
+    "trl_sft_trainer_import_ok": false,
+    "trl_sft_trainer_import_error": "RuntimeError: Failed to import trl.trainer.sft_trainer because of the following error (look up to see its traceback):\n'charmap' codec can't decode byte 0x81 in position 932: character maps to <undefined>",
+    "training_backend": "transformers_trainer_peft_qlora"
+  }
+}

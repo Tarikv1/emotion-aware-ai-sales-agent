@@ -1,0 +1,365 @@
+{
+  "experiment_id": "LOCAL-QWEN-LORA-CURRICULUM-TRAINING-001",
+  "generated_at": "2026-05-27T20:21:18.234861+00:00",
+  "status": "completed",
+  "dataset_experiment_id": "LOCAL-QWEN-CURRICULUM-DATASET-001",
+  "config": {
+    "experiment_id": "LOCAL-QWEN-LORA-CURRICULUM-TRAINING-001",
+    "base_model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "base_model_path": "local_artifacts/models/qwen2.5-7b-instruct",
+    "dataset_dir": "research/experiments/generated/LOCAL-QWEN-SFT-DATASET-001",
+    "tiny_dataset_dir": "research/experiments/generated/LOCAL-QWEN-TINY-OVERFIT-DATASET-001",
+    "curriculum_dataset_dir": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-DATASET-001",
+    "output_adapter_dir": "local_artifacts/adapters/qwen2.5-sales-brain-lora-curriculum-001",
+    "cache_dir": "local_artifacts/cache/huggingface",
+    "quantization": "4bit",
+    "target": "compact planner JSON",
+    "max_seq_length": 1024,
+    "learning_rate": 0.0002,
+    "per_device_train_batch_size": 1,
+    "batch_size": 1,
+    "gradient_accumulation_steps": 2,
+    "max_steps": null,
+    "eval_steps": 25,
+    "save_strategy": "end_only",
+    "overwrite_output_dir": true,
+    "seed": 42016,
+    "device": "cuda",
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "lora_target_modules": [
+      "q_proj",
+      "v_proj"
+    ],
+    "optimizer": "adamw_torch",
+    "fp16": true,
+    "gradient_checkpointing": true,
+    "local_files_only": true,
+    "allow_model_download": false
+  },
+  "stage": "all",
+  "selected_stages": [
+    "tiny",
+    "20",
+    "60"
+  ],
+  "stage_default_steps": {
+    "tiny": 30,
+    "20": 75,
+    "60": 150
+  },
+  "max_steps_override": null,
+  "resume_from_adapter": null,
+  "output_adapter_dir": "local_artifacts/adapters/qwen2.5-sales-brain-lora-curriculum-001",
+  "adapter_path": "local_artifacts/adapters/qwen2.5-sales-brain-lora-curriculum-001",
+  "python_executable": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-llm\\Scripts\\python.exe",
+  "expected_python_environment": ".venv-llm",
+  "expected_python_environment_active": true,
+  "dependency_status": {
+    "modules": {
+      "torch": true,
+      "transformers": true,
+      "accelerate": true,
+      "bitsandbytes": true,
+      "peft": true,
+      "datasets": true,
+      "trl": true,
+      "evaluate": true,
+      "sentencepiece": true,
+      "protobuf": true
+    },
+    "versions": {
+      "torch": "2.11.0+cu128",
+      "transformers": "5.9.0",
+      "accelerate": "1.13.0",
+      "bitsandbytes": "0.49.2",
+      "peft": "0.19.1",
+      "datasets": "4.8.5",
+      "trl": "1.5.0",
+      "evaluate": "0.4.6",
+      "sentencepiece": "0.2.1",
+      "protobuf": "7.35.0"
+    },
+    "required": [
+      "torch",
+      "transformers",
+      "accelerate",
+      "bitsandbytes",
+      "peft",
+      "datasets"
+    ],
+    "optional": [
+      "trl",
+      "evaluate",
+      "sentencepiece",
+      "protobuf"
+    ],
+    "missing_required": [],
+    "ready": true,
+    "peft_import_ok": true,
+    "peft_import_error": null,
+    "transformers_trainer_import_ok": true,
+    "transformers_trainer_import_error": null,
+    "trl_sft_trainer_import_ok": false,
+    "trl_sft_trainer_import_error": "RuntimeError: Failed to import trl.trainer.sft_trainer because of the following error (look up to see its traceback):\n'charmap' codec can't decode byte 0x81 in position 932: character maps to <undefined>",
+    "training_backend": "transformers_trainer_peft_qlora"
+  },
+  "hardware_summary": {
+    "python_version": "3.13.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 33 Stepping 2, AuthenticAMD",
+    "machine": "AMD64",
+    "torch_available": true,
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+    "vram_total_bytes": 12878086144,
+    "nvidia_smi": {
+      "available": true,
+      "stdout": "NVIDIA GeForce RTX 4070 SUPER, 610.47, 12282 MiB",
+      "stderr": "",
+      "returncode": 0
+    },
+    "nvidia_driver_version": "610.47",
+    "nvidia_vram_total": "12282 MiB",
+    "torch_version": "2.11.0+cu128",
+    "torch_cuda_version": "12.8"
+  },
+  "cuda_available": true,
+  "dry_run_config_only": false,
+  "skip_train_if_missing_deps": false,
+  "overwrite_adapter": true,
+  "training_attempted": true,
+  "training_completed": true,
+  "completed_stages": [
+    "tiny",
+    "20",
+    "60"
+  ],
+  "stage_results": [
+    {
+      "stage": "tiny",
+      "row_count": 8,
+      "max_steps": 30,
+      "global_step": 30,
+      "train_loss": 0.9877387543519338,
+      "eval_loss": 0.5309866070747375,
+      "runtime_seconds": 108.885,
+      "tokenization": {
+        "row_count": 8,
+        "max_prompt_tokens": 700,
+        "max_full_tokens": 844,
+        "max_target_tokens": 146,
+        "min_target_tokens": 111,
+        "truncated_example_count": 0,
+        "label_token_count": 1060,
+        "labels_mask_prompt_tokens": true,
+        "labels_train_only_assistant_tokens": true,
+        "full_sequence_trained": false,
+        "eos_token_appended_count": 8
+      },
+      "adapter_saved_after_stage": true,
+      "peak_gpu_memory_bytes_after_stage": 10824809984
+    },
+    {
+      "stage": "20",
+      "row_count": 20,
+      "max_steps": 75,
+      "global_step": 75,
+      "train_loss": 0.14688273772985364,
+      "eval_loss": 0.0010504324454814196,
+      "runtime_seconds": 253.287,
+      "tokenization": {
+        "row_count": 20,
+        "max_prompt_tokens": 696,
+        "max_full_tokens": 845,
+        "max_target_tokens": 149,
+        "min_target_tokens": 118,
+        "truncated_example_count": 0,
+        "label_token_count": 2573,
+        "labels_mask_prompt_tokens": true,
+        "labels_train_only_assistant_tokens": true,
+        "full_sequence_trained": false,
+        "eos_token_appended_count": 20
+      },
+      "adapter_saved_after_stage": true,
+      "peak_gpu_memory_bytes_after_stage": 10826617344
+    },
+    {
+      "stage": "60",
+      "row_count": 60,
+      "max_steps": 150,
+      "global_step": 150,
+      "train_loss": 0.12804181731926897,
+      "eval_loss": 0.027555696666240692,
+      "runtime_seconds": 669.779,
+      "tokenization": {
+        "row_count": 60,
+        "max_prompt_tokens": 696,
+        "max_full_tokens": 845,
+        "max_target_tokens": 149,
+        "min_target_tokens": 110,
+        "truncated_example_count": 0,
+        "label_token_count": 7434,
+        "labels_mask_prompt_tokens": true,
+        "labels_train_only_assistant_tokens": true,
+        "full_sequence_trained": false,
+        "eos_token_appended_count": 60
+      },
+      "adapter_saved_after_stage": true,
+      "peak_gpu_memory_bytes_after_stage": 10826617344
+    }
+  ],
+  "train_steps_by_stage": {
+    "tiny": 30,
+    "20": 75,
+    "60": 150
+  },
+  "train_losses_by_stage": {
+    "tiny": 0.9877387543519338,
+    "20": 0.14688273772985364,
+    "60": 0.12804181731926897
+  },
+  "eval_losses_by_stage": {
+    "tiny": 0.5309866070747375,
+    "20": 0.0010504324454814196,
+    "60": 0.027555696666240692
+  },
+  "tokenization_by_stage": {
+    "tiny": {
+      "row_count": 8,
+      "max_prompt_tokens": 700,
+      "max_full_tokens": 844,
+      "max_target_tokens": 146,
+      "min_target_tokens": 111,
+      "truncated_example_count": 0,
+      "label_token_count": 1060,
+      "labels_mask_prompt_tokens": true,
+      "labels_train_only_assistant_tokens": true,
+      "full_sequence_trained": false,
+      "eos_token_appended_count": 8
+    },
+    "20": {
+      "row_count": 20,
+      "max_prompt_tokens": 696,
+      "max_full_tokens": 845,
+      "max_target_tokens": 149,
+      "min_target_tokens": 118,
+      "truncated_example_count": 0,
+      "label_token_count": 2573,
+      "labels_mask_prompt_tokens": true,
+      "labels_train_only_assistant_tokens": true,
+      "full_sequence_trained": false,
+      "eos_token_appended_count": 20
+    },
+    "60": {
+      "row_count": 60,
+      "max_prompt_tokens": 696,
+      "max_full_tokens": 845,
+      "max_target_tokens": 149,
+      "min_target_tokens": 110,
+      "truncated_example_count": 0,
+      "label_token_count": 7434,
+      "labels_mask_prompt_tokens": true,
+      "labels_train_only_assistant_tokens": true,
+      "full_sequence_trained": false,
+      "eos_token_appended_count": 60
+    }
+  },
+  "train_row_counts_by_stage": {
+    "tiny": 8,
+    "20": 20,
+    "60": 60
+  },
+  "exact_blocker": null,
+  "blocker_classification": null,
+  "model_loaded": true,
+  "adapter_saved": true,
+  "adapter_files_committed": false,
+  "peak_gpu_memory_bytes": 10826617344,
+  "train_runtime_seconds": 1041.37,
+  "local_model_calls_made": true,
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "live_tts_calls_made": false,
+  "provider_side_effects_made": false,
+  "model_download_attempted": false,
+  "model_redownloaded": false,
+  "model_weights_committed": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "raw_private_transcript_included": false,
+  "raw_private_transcript_copied_to_public_evidence": false,
+  "case_text_stored_in_evidence": false,
+  "adapter_live_ready": false,
+  "quality_gate_passed": false,
+  "notes": [
+    "Existing adapter directory retained for Windows-safe overwrite; model is loaded from base and adapter files are overwritten at stage saves.",
+    "Curriculum adapter saved under ignored local_artifacts; no runtime wiring changed."
+  ],
+  "dataset_status": "pass",
+  "curriculum_stage_counts": {
+    "stage1_tiny": 8,
+    "stage2_20": 20,
+    "stage3_60": 60,
+    "validation": 10,
+    "test": 10
+  },
+  "held_out_contamination": {
+    "validation": {
+      "case_id_overlap_count": 0,
+      "case_id_overlap": [],
+      "exact_buyer_text_overlap_count": 0,
+      "exact_buyer_text_overlap": [],
+      "held_out_clean": true
+    },
+    "test": {
+      "case_id_overlap_count": 0,
+      "case_id_overlap": [],
+      "exact_buyer_text_overlap_count": 0,
+      "exact_buyer_text_overlap": [],
+      "held_out_clean": true
+    }
+  },
+  "dry_run_tokenization_by_stage": {
+    "tiny": {
+      "row_count": 8,
+      "max_prompt_tokens": 700,
+      "max_full_tokens": 844,
+      "max_target_tokens": 146,
+      "min_target_tokens": 111,
+      "truncated_example_count": 0,
+      "label_token_count": 1060,
+      "labels_mask_prompt_tokens": true,
+      "labels_train_only_assistant_tokens": true,
+      "full_sequence_trained": false,
+      "eos_token_appended_count": 8
+    },
+    "20": {
+      "row_count": 20,
+      "max_prompt_tokens": 696,
+      "max_full_tokens": 845,
+      "max_target_tokens": 149,
+      "min_target_tokens": 118,
+      "truncated_example_count": 0,
+      "label_token_count": 2573,
+      "labels_mask_prompt_tokens": true,
+      "labels_train_only_assistant_tokens": true,
+      "full_sequence_trained": false,
+      "eos_token_appended_count": 20
+    },
+    "60": {
+      "row_count": 60,
+      "max_prompt_tokens": 696,
+      "max_full_tokens": 845,
+      "max_target_tokens": 149,
+      "min_target_tokens": 110,
+      "truncated_example_count": 0,
+      "label_token_count": 7434,
+      "labels_mask_prompt_tokens": true,
+      "labels_train_only_assistant_tokens": true,
+      "full_sequence_trained": false,
+      "eos_token_appended_count": 60
+    }
+  }
+}

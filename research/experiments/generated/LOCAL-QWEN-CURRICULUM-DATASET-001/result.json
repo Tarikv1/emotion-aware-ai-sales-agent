@@ -1,0 +1,83 @@
+{
+  "experiment_id": "LOCAL-QWEN-CURRICULUM-DATASET-001",
+  "generated_at": "2026-05-27T20:53:31.167356+00:00",
+  "status": "pass",
+  "source_sft_experiment_id": "LOCAL-QWEN-SFT-DATASET-001",
+  "source_tiny_experiment_id": "LOCAL-QWEN-TINY-OVERFIT-DATASET-001",
+  "paths": {
+    "stage1_tiny": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-DATASET-001/stage1_tiny.jsonl",
+    "stage2_20": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-DATASET-001/stage2_20.jsonl",
+    "stage3_60": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-DATASET-001/stage3_60.jsonl",
+    "validation": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-DATASET-001/validation.jsonl",
+    "test": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-DATASET-001/test.jsonl"
+  },
+  "counts": {
+    "stage1_tiny": 8,
+    "stage2_20": 20,
+    "stage3_60": 60,
+    "validation": 10,
+    "test": 10
+  },
+  "stage_categories": {
+    "tiny": {
+      "current tool with AND": 1,
+      "current tool with OR": 1,
+      "negated team": 1,
+      "use case fidelity": 1,
+      "plan category explanation": 1,
+      "midcycle upgrade": 1,
+      "terminal acceptance": 1,
+      "safety boundary": 1
+    },
+    "20": {
+      "live_sanitized": 20
+    },
+    "60": {
+      "live_sanitized": 24,
+      "synthetic_paraphrase": 22,
+      "negative_control": 14
+    }
+  },
+  "held_out_contamination": {
+    "validation": {
+      "case_id_overlap_count": 0,
+      "case_id_overlap": [],
+      "exact_buyer_text_overlap_count": 0,
+      "exact_buyer_text_overlap": [],
+      "held_out_clean": true
+    },
+    "test": {
+      "case_id_overlap_count": 0,
+      "case_id_overlap": [],
+      "exact_buyer_text_overlap_count": 0,
+      "exact_buyer_text_overlap": [],
+      "held_out_clean": true
+    }
+  },
+  "validation_summary": {
+    "invalid_count": 0,
+    "invalid_cases": [],
+    "target_validation_totals": {
+      "tiny": 8,
+      "20": 20,
+      "60": 60,
+      "validation": 10,
+      "test": 10
+    },
+    "target_validation_pass_counts": {
+      "tiny": 8,
+      "20": 20,
+      "60": 60,
+      "validation": 10,
+      "test": 10
+    }
+  },
+  "raw_private_transcript_included": false,
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "live_tts_calls_made": false,
+  "provider_side_effects_made": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "legacy_stage_cleanup": []
+}
