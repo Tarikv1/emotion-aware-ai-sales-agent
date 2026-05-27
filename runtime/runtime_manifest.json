@@ -210,6 +210,17 @@
       ]
     },
     {
+      "path": "runtime/llm_brain/compact_planner_contract.py",
+      "path_type": "file",
+      "tier": "local-llm-conversation-brain-training-contract",
+      "runtime_role": "Offline compact enum/value contract for Qwen supervised fine-tuning targets; it does not enable local LLM runtime routing or replace deterministic dialogue behavior.",
+      "behavior_surface": [
+        "compact planner training values",
+        "offline dataset validation",
+        "no live dialogue replacement"
+      ]
+    },
+    {
       "path": "runtime/llm_brain/conversation_brain_prompts.py",
       "path_type": "file",
       "tier": "local-llm-conversation-brain-contract",

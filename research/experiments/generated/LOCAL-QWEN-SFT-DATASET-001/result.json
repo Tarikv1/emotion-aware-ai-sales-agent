@@ -1,0 +1,75 @@
+{
+  "experiment_id": "LOCAL-QWEN-SFT-DATASET-001",
+  "generated_at": "2026-05-27T13:38:00.001464+00:00",
+  "status": "pass",
+  "source_experiment_id": "LOCAL-LLM-CONVERSATION-BRAIN-FEASIBILITY-001",
+  "qwen_eval_experiment_id": "LOCAL-QWEN-GOLDSET-EVAL-001",
+  "failure_audit_experiment_id": "LOCAL-QWEN-GOLDSET-FAILURE-AUDIT-001",
+  "compact_value_contract_version": "LOCAL-QWEN-COMPACT-PLANNER-CONTRACT-001",
+  "row_count": 80,
+  "splits": {
+    "train": {
+      "path": "research/experiments/generated/LOCAL-QWEN-SFT-DATASET-001/train.jsonl",
+      "count": 60
+    },
+    "validation": {
+      "path": "research/experiments/generated/LOCAL-QWEN-SFT-DATASET-001/validation.jsonl",
+      "count": 10
+    },
+    "test": {
+      "path": "research/experiments/generated/LOCAL-QWEN-SFT-DATASET-001/test.jsonl",
+      "count": 10
+    }
+  },
+  "source_summary": {
+    "source_case_count": 80,
+    "row_count": 80,
+    "source_counts": {
+      "live_sanitized": 30,
+      "negative_control": 20,
+      "synthetic_paraphrase": 30
+    },
+    "failed_qwen_case_rows": 28,
+    "repair_counts": {
+      "safe_price_reframe": 2
+    }
+  },
+  "target_fields": [
+    "act",
+    "sub",
+    "obj",
+    "rel",
+    "neg",
+    "buyer",
+    "intent",
+    "update",
+    "block",
+    "action",
+    "strategy",
+    "facts",
+    "preserve",
+    "avoid",
+    "say",
+    "flags",
+    "conf"
+  ],
+  "target_repairs": {
+    "safe_price_reframe": 2
+  },
+  "failed_qwen_outputs_used_as_targets": false,
+  "privacy_level": "sanitized_only",
+  "raw_private_transcript_included": false,
+  "side_effects": {
+    "local_model_calls_made": false,
+    "local_model_call_count": 0,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "model_download_attempted": false,
+    "model_redownloaded": false,
+    "model_weights_committed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false
+  }
+}

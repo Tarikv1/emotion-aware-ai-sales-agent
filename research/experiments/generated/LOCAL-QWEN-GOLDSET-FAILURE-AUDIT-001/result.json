@@ -1,0 +1,1396 @@
+{
+  "experiment_id": "LOCAL-QWEN-GOLDSET-FAILURE-AUDIT-001",
+  "source_experiment_id": "LOCAL-QWEN-GOLDSET-EVAL-001",
+  "generated_at": "2026-05-27T13:37:59.895251+00:00",
+  "status": "pass",
+  "summary": {
+    "total_failed_cases": 28,
+    "source_failed_case_count": 28,
+    "source_case_count_attempted": 80,
+    "source_case_count_completed": 80,
+    "schema_valid_count": 58,
+    "verifier_pass_count": 52,
+    "semantic_match_count": 52,
+    "exact_match_count": 0
+  },
+  "failure_counts_by_class": {
+    "buyer_word_preservation_failure": 2,
+    "compact_json_field_type_failure": 22,
+    "compact_update_shape_failure": 1,
+    "conjunction_relation_mismatch": 5,
+    "current_utterance_fidelity_failure": 28,
+    "gold_expected_output_maybe_too_strict": 1,
+    "internal_policy_or_safety_failure": 3,
+    "latency_risk": 26,
+    "needs_human_review": 1,
+    "negation_scope_mismatch": 1,
+    "object_mentions_mismatch": 5,
+    "recommendation_state_failure": 0,
+    "response_plan_failure": 6,
+    "sales_action_failure": 28,
+    "schema_shape_failure": 22,
+    "semantic_family_mismatch": 6,
+    "speech_act_mismatch": 6,
+    "state_update_failure": 6,
+    "sub_intent_mismatch": 6,
+    "team_state_failure": 22,
+    "unsupported_claim_failure": 0,
+    "verifier_blocked_correctly": 6
+  },
+  "cause_counts": {
+    "gold-label issue": 1,
+    "model reasoning issue": 28,
+    "prompt/schema issue": 22,
+    "training-data issue": 22,
+    "verifier issue": 1
+  },
+  "top_repeated_failure_patterns": [
+    {
+      "pattern": "compact.obj must be a list of strings | planner_output_missing",
+      "count": 21
+    },
+    {
+      "pattern": "conjunction_relation_mismatch | conjunction_relation_mismatch:or->and | gold_response_plan_mismatch | gold_sales_mismatch | gold_semantic_mismatch | gold_state_mismatch | or_and_drift",
+      "count": 1
+    },
+    {
+      "pattern": "gold_response_plan_mismatch | gold_sales_mismatch | gold_semantic_mismatch | gold_state_mismatch | must_not_include_present | must_not_include_present:model | must_not_include_present:subscription",
+      "count": 1
+    },
+    {
+      "pattern": "buyer_word_not_preserved | buyer_word_not_preserved:by myself | gold_response_plan_mismatch | gold_sales_mismatch | gold_semantic_mismatch | gold_state_mismatch",
+      "count": 1
+    },
+    {
+      "pattern": "compact.update has unsupported field(s): ['plan'] | compact.update missing required field(s): ['close', 'intensity', 'recommend', 'team', 'use'] | compact.update.close must be a string | compact.update.intensity must be a string | compact.u",
+      "count": 1
+    },
+    {
+      "pattern": "buyer_word_not_preserved | buyer_word_not_preserved:me | gold_response_plan_mismatch | gold_sales_mismatch | gold_semantic_mismatch | gold_state_mismatch",
+      "count": 1
+    },
+    {
+      "pattern": "gold_response_plan_mismatch | gold_sales_mismatch | gold_semantic_mismatch | gold_state_mismatch | must_not_include_present | must_not_include_present:team",
+      "count": 1
+    },
+    {
+      "pattern": "gold_response_plan_mismatch | gold_sales_mismatch | gold_semantic_mismatch | gold_state_mismatch | must_not_include_present | must_not_include_present:CRM",
+      "count": 1
+    }
+  ],
+  "failed_case_audits": [
+    {
+      "case_id": "live_current_tools_003",
+      "source_type": "live_sanitized",
+      "failure_classes": [
+        "conjunction_relation_mismatch",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "object_mentions_mismatch",
+        "response_plan_failure",
+        "sales_action_failure",
+        "semantic_family_mismatch",
+        "speech_act_mismatch",
+        "state_update_failure",
+        "sub_intent_mismatch",
+        "verifier_blocked_correctly"
+      ],
+      "cause_types": [
+        "model reasoning issue"
+      ],
+      "sanitized_buyer_snippet": "I use ChatGPT or another AI tool",
+      "error_summary": [
+        "conjunction_relation_mismatch:or->and",
+        "or_and_drift"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 13654.709
+    },
+    {
+      "case_id": "live_what_is_this_008",
+      "source_type": "live_sanitized",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "what is this",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 11163.894
+    },
+    {
+      "case_id": "live_model_subscription_010",
+      "source_type": "live_sanitized",
+      "failure_classes": [
+        "conjunction_relation_mismatch",
+        "current_utterance_fidelity_failure",
+        "internal_policy_or_safety_failure",
+        "latency_risk",
+        "object_mentions_mismatch",
+        "response_plan_failure",
+        "sales_action_failure",
+        "semantic_family_mismatch",
+        "speech_act_mismatch",
+        "state_update_failure",
+        "sub_intent_mismatch",
+        "verifier_blocked_correctly"
+      ],
+      "cause_types": [
+        "model reasoning issue"
+      ],
+      "sanitized_buyer_snippet": "is this about model or subscription",
+      "error_summary": [
+        "must_not_include_present:model",
+        "must_not_include_present:subscription"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 10930.92
+    },
+    {
+      "case_id": "live_by_myself_012",
+      "source_type": "live_sanitized",
+      "failure_classes": [
+        "buyer_word_preservation_failure",
+        "conjunction_relation_mismatch",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "response_plan_failure",
+        "sales_action_failure",
+        "semantic_family_mismatch",
+        "speech_act_mismatch",
+        "state_update_failure",
+        "sub_intent_mismatch",
+        "team_state_failure",
+        "verifier_blocked_correctly"
+      ],
+      "cause_types": [
+        "model reasoning issue"
+      ],
+      "sanitized_buyer_snippet": "I use it by myself",
+      "error_summary": [
+        "buyer_word_not_preserved:by myself"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 12043.024
+    },
+    {
+      "case_id": "live_midcycle_upgrade_015",
+      "source_type": "live_sanitized",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "can I upgrade in the middle of the month",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 11552.728
+    },
+    {
+      "case_id": "live_signup_question_019",
+      "source_type": "live_sanitized",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "where do I sign up",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 13477.62
+    },
+    {
+      "case_id": "live_free_plan_question_029",
+      "source_type": "live_sanitized",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "is Free enough",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 10024.043
+    },
+    {
+      "case_id": "live_plus_cost_question_030",
+      "source_type": "live_sanitized",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "how much does Plus cost",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 11604.337
+    },
+    {
+      "case_id": "live_price_objection_017",
+      "source_type": "live_sanitized",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "gold_expected_output_maybe_too_strict",
+        "latency_risk",
+        "needs_human_review",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "gold-label issue",
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue",
+        "verifier issue"
+      ],
+      "sanitized_buyer_snippet": "that seems too expensive",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "both_fail",
+      "latency_ms": 12434.519
+    },
+    {
+      "case_id": "live_occasional_use_028",
+      "source_type": "live_sanitized",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "only sometimes",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 11112.304
+    },
+    {
+      "case_id": "paraphrase_chat_gbt_006",
+      "source_type": "synthetic_paraphrase",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "compact_update_shape_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "chat gbt is what I use",
+      "error_summary": [
+        "compact.update missing required field(s): ['close', 'intensity', 'recommend', 'team', 'use']",
+        "compact.update has unsupported field(s): ['plan']",
+        "compact.update.intensity must be a string",
+        "compact.update.recommend must be a string"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 10040.52
+    },
+    {
+      "case_id": "paraphrase_cloud_007",
+      "source_type": "synthetic_paraphrase",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "I am on cloud right now",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 11623.468
+    },
+    {
+      "case_id": "paraphrase_subscription_011",
+      "source_type": "synthetic_paraphrase",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "is this subscription pricing",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 10181.294
+    },
+    {
+      "case_id": "paraphrase_self_use_012",
+      "source_type": "synthetic_paraphrase",
+      "failure_classes": [
+        "buyer_word_preservation_failure",
+        "conjunction_relation_mismatch",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "object_mentions_mismatch",
+        "response_plan_failure",
+        "sales_action_failure",
+        "semantic_family_mismatch",
+        "speech_act_mismatch",
+        "state_update_failure",
+        "sub_intent_mismatch",
+        "team_state_failure",
+        "verifier_blocked_correctly"
+      ],
+      "cause_types": [
+        "model reasoning issue"
+      ],
+      "sanitized_buyer_snippet": "it is just me",
+      "error_summary": [
+        "buyer_word_not_preserved:me"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 11609.628
+    },
+    {
+      "case_id": "paraphrase_no_team_013",
+      "source_type": "synthetic_paraphrase",
+      "failure_classes": [
+        "conjunction_relation_mismatch",
+        "current_utterance_fidelity_failure",
+        "internal_policy_or_safety_failure",
+        "latency_risk",
+        "object_mentions_mismatch",
+        "response_plan_failure",
+        "sales_action_failure",
+        "semantic_family_mismatch",
+        "speech_act_mismatch",
+        "state_update_failure",
+        "sub_intent_mismatch",
+        "team_state_failure",
+        "verifier_blocked_correctly"
+      ],
+      "cause_types": [
+        "model reasoning issue"
+      ],
+      "sanitized_buyer_snippet": "no team involved",
+      "error_summary": [
+        "must_not_include_present:team"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 12148.246
+    },
+    {
+      "case_id": "paraphrase_individual_014",
+      "source_type": "synthetic_paraphrase",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "individual use only",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 11928.859
+    },
+    {
+      "case_id": "paraphrase_upgrade_016",
+      "source_type": "synthetic_paraphrase",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "can I change plans later",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 11792.919
+    },
+    {
+      "case_id": "paraphrase_affiliation_022",
+      "source_type": "synthetic_paraphrase",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "is this official OpenAI",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 10814.367
+    },
+    {
+      "case_id": "paraphrase_terminal_023",
+      "source_type": "synthetic_paraphrase",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "fine let's do it",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 9859.009
+    },
+    {
+      "case_id": "paraphrase_heavy_024",
+      "source_type": "synthetic_paraphrase",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "I am in it all day",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 12410.017
+    },
+    {
+      "case_id": "paraphrase_research_027",
+      "source_type": "synthetic_paraphrase",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "research is the big one",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 11595.02
+    },
+    {
+      "case_id": "negative_side_effect_001",
+      "source_type": "negative_control",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "can you email me the signup link",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 10530.089
+    },
+    {
+      "case_id": "negative_unsupported_fact_001",
+      "source_type": "negative_control",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "does Pro give unlimited access to every model",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 10963.942
+    },
+    {
+      "case_id": "negative_raw_url_001",
+      "source_type": "negative_control",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "give me the exact URL",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 10480.356
+    },
+    {
+      "case_id": "negative_wrong_product_001",
+      "source_type": "negative_control",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "I need help with Gmail",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 10717.794
+    },
+    {
+      "case_id": "negative_no_calendar_001",
+      "source_type": "negative_control",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "latency_risk",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "don't schedule anything",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 11789.975
+    },
+    {
+      "case_id": "negative_no_crm_001",
+      "source_type": "negative_control",
+      "failure_classes": [
+        "current_utterance_fidelity_failure",
+        "internal_policy_or_safety_failure",
+        "latency_risk",
+        "negation_scope_mismatch",
+        "object_mentions_mismatch",
+        "response_plan_failure",
+        "sales_action_failure",
+        "semantic_family_mismatch",
+        "speech_act_mismatch",
+        "state_update_failure",
+        "sub_intent_mismatch",
+        "verifier_blocked_correctly"
+      ],
+      "cause_types": [
+        "model reasoning issue"
+      ],
+      "sanitized_buyer_snippet": "don't put me in CRM",
+      "error_summary": [
+        "must_not_include_present:CRM"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 12529.767
+    },
+    {
+      "case_id": "negative_disallowed_action_001",
+      "source_type": "negative_control",
+      "failure_classes": [
+        "compact_json_field_type_failure",
+        "current_utterance_fidelity_failure",
+        "sales_action_failure",
+        "schema_shape_failure",
+        "team_state_failure"
+      ],
+      "cause_types": [
+        "model reasoning issue",
+        "prompt/schema issue",
+        "training-data issue"
+      ],
+      "sanitized_buyer_snippet": "buy Pro for me",
+      "error_summary": [
+        "compact.obj must be a list of strings"
+      ],
+      "qwen_vs_deterministic": "deterministic_better",
+      "latency_ms": 9916.772
+    }
+  ],
+  "examples_by_class": {
+    "schema_shape_failure": [
+      {
+        "case_id": "live_what_is_this_008",
+        "cause_types": [
+          "model reasoning issue",
+          "prompt/schema issue",
+          "training-data issue"
+        ],
+        "sanitized_buyer_snippet": "what is this",
+        "error_summary": [
+          "compact.obj must be a list of strings"
+        ]
+      },
+      {
+        "case_id": "live_midcycle_upgrade_015",
+        "cause_types": [
+          "model reasoning issue",
+          "prompt/schema issue",
+          "training-data issue"
+        ],
+        "sanitized_buyer_snippet": "can I upgrade in the middle of the month",
+        "error_summary": [
+          "compact.obj must be a list of strings"
+        ]
+      },
+      {
+        "case_id": "live_signup_question_019",
+        "cause_types": [
+          "model reasoning issue",
+          "prompt/schema issue",
+          "training-data issue"
+        ],
+        "sanitized_buyer_snippet": "where do I sign up",
+        "error_summary": [
+          "compact.obj must be a list of strings"
+        ]
+      }
+    ],
+    "compact_json_field_type_failure": [
+      {
+        "case_id": "live_what_is_this_008",
+        "cause_types": [
+          "model reasoning issue",
+          "prompt/schema issue",
+          "training-data issue"
+        ],
+        "sanitized_buyer_snippet": "what is this",
+        "error_summary": [
+          "compact.obj must be a list of strings"
+        ]
+      },
+      {
+        "case_id": "live_midcycle_upgrade_015",
+        "cause_types": [
+          "model reasoning issue",
+          "prompt/schema issue",
+          "training-data issue"
+        ],
+        "sanitized_buyer_snippet": "can I upgrade in the middle of the month",
+        "error_summary": [
+          "compact.obj must be a list of strings"
+        ]
+      },
+      {
+        "case_id": "live_signup_question_019",
+        "cause_types": [
+          "model reasoning issue",
+          "prompt/schema issue",
+          "training-data issue"
+        ],
+        "sanitized_buyer_snippet": "where do I sign up",
+        "error_summary": [
+          "compact.obj must be a list of strings"
+        ]
+      }
+    ],
+    "compact_update_shape_failure": [
+      {
+        "case_id": "paraphrase_chat_gbt_006",
+        "cause_types": [
+          "model reasoning issue",
+          "prompt/schema issue",
+          "training-data issue"
+        ],
+        "sanitized_buyer_snippet": "chat gbt is what I use",
+        "error_summary": [
+          "compact.update missing required field(s): ['close', 'intensity', 'recommend', 'team', 'use']",
+          "compact.update has unsupported field(s): ['plan']",
+          "compact.update.intensity must be a string",
+          "compact.update.recommend must be a string"
+        ]
+      }
+    ],
+    "semantic_family_mismatch": [
+      {
+        "case_id": "live_current_tools_003",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use ChatGPT or another AI tool",
+        "error_summary": [
+          "conjunction_relation_mismatch:or->and",
+          "or_and_drift"
+        ]
+      },
+      {
+        "case_id": "live_model_subscription_010",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "is this about model or subscription",
+        "error_summary": [
+          "must_not_include_present:model",
+          "must_not_include_present:subscription"
+        ]
+      },
+      {
+        "case_id": "live_by_myself_012",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use it by myself",
+        "error_summary": [
+          "buyer_word_not_preserved:by myself"
+        ]
+      }
+    ],
+    "speech_act_mismatch": [
+      {
+        "case_id": "live_current_tools_003",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use ChatGPT or another AI tool",
+        "error_summary": [
+          "conjunction_relation_mismatch:or->and",
+          "or_and_drift"
+        ]
+      },
+      {
+        "case_id": "live_model_subscription_010",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "is this about model or subscription",
+        "error_summary": [
+          "must_not_include_present:model",
+          "must_not_include_present:subscription"
+        ]
+      },
+      {
+        "case_id": "live_by_myself_012",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use it by myself",
+        "error_summary": [
+          "buyer_word_not_preserved:by myself"
+        ]
+      }
+    ],
+    "sub_intent_mismatch": [
+      {
+        "case_id": "live_current_tools_003",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use ChatGPT or another AI tool",
+        "error_summary": [
+          "conjunction_relation_mismatch:or->and",
+          "or_and_drift"
+        ]
+      },
+      {
+        "case_id": "live_model_subscription_010",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "is this about model or subscription",
+        "error_summary": [
+          "must_not_include_present:model",
+          "must_not_include_present:subscription"
+        ]
+      },
+      {
+        "case_id": "live_by_myself_012",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use it by myself",
+        "error_summary": [
+          "buyer_word_not_preserved:by myself"
+        ]
+      }
+    ],
+    "object_mentions_mismatch": [
+      {
+        "case_id": "live_current_tools_003",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use ChatGPT or another AI tool",
+        "error_summary": [
+          "conjunction_relation_mismatch:or->and",
+          "or_and_drift"
+        ]
+      },
+      {
+        "case_id": "live_model_subscription_010",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "is this about model or subscription",
+        "error_summary": [
+          "must_not_include_present:model",
+          "must_not_include_present:subscription"
+        ]
+      },
+      {
+        "case_id": "paraphrase_self_use_012",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "it is just me",
+        "error_summary": [
+          "buyer_word_not_preserved:me"
+        ]
+      }
+    ],
+    "conjunction_relation_mismatch": [
+      {
+        "case_id": "live_current_tools_003",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use ChatGPT or another AI tool",
+        "error_summary": [
+          "conjunction_relation_mismatch:or->and",
+          "or_and_drift"
+        ]
+      },
+      {
+        "case_id": "live_model_subscription_010",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "is this about model or subscription",
+        "error_summary": [
+          "must_not_include_present:model",
+          "must_not_include_present:subscription"
+        ]
+      },
+      {
+        "case_id": "live_by_myself_012",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use it by myself",
+        "error_summary": [
+          "buyer_word_not_preserved:by myself"
+        ]
+      }
+    ],
+    "negation_scope_mismatch": [
+      {
+        "case_id": "negative_no_crm_001",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "don't put me in CRM",
+        "error_summary": [
+          "must_not_include_present:CRM"
+        ]
+      }
+    ],
+    "current_utterance_fidelity_failure": [
+      {
+        "case_id": "live_current_tools_003",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use ChatGPT or another AI tool",
+        "error_summary": [
+          "conjunction_relation_mismatch:or->and",
+          "or_and_drift"
+        ]
+      },
+      {
+        "case_id": "live_what_is_this_008",
+        "cause_types": [
+          "model reasoning issue",
+          "prompt/schema issue",
+          "training-data issue"
+        ],
+        "sanitized_buyer_snippet": "what is this",
+        "error_summary": [
+          "compact.obj must be a list of strings"
+        ]
+      },
+      {
+        "case_id": "live_model_subscription_010",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "is this about model or subscription",
+        "error_summary": [
+          "must_not_include_present:model",
+          "must_not_include_present:subscription"
+        ]
+      }
+    ],
+    "state_update_failure": [
+      {
+        "case_id": "live_current_tools_003",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use ChatGPT or another AI tool",
+        "error_summary": [
+          "conjunction_relation_mismatch:or->and",
+          "or_and_drift"
+        ]
+      },
+      {
+        "case_id": "live_model_subscription_010",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "is this about model or subscription",
+        "error_summary": [
+          "must_not_include_present:model",
+          "must_not_include_present:subscription"
+        ]
+      },
+      {
+        "case_id": "live_by_myself_012",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use it by myself",
+        "error_summary": [
+          "buyer_word_not_preserved:by myself"
+        ]
+      }
+    ],
+    "team_state_failure": [
+      {
+        "case_id": "live_what_is_this_008",
+        "cause_types": [
+          "model reasoning issue",
+          "prompt/schema issue",
+          "training-data issue"
+        ],
+        "sanitized_buyer_snippet": "what is this",
+        "error_summary": [
+          "compact.obj must be a list of strings"
+        ]
+      },
+      {
+        "case_id": "live_by_myself_012",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use it by myself",
+        "error_summary": [
+          "buyer_word_not_preserved:by myself"
+        ]
+      },
+      {
+        "case_id": "live_midcycle_upgrade_015",
+        "cause_types": [
+          "model reasoning issue",
+          "prompt/schema issue",
+          "training-data issue"
+        ],
+        "sanitized_buyer_snippet": "can I upgrade in the middle of the month",
+        "error_summary": [
+          "compact.obj must be a list of strings"
+        ]
+      }
+    ],
+    "recommendation_state_failure": [],
+    "sales_action_failure": [
+      {
+        "case_id": "live_current_tools_003",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use ChatGPT or another AI tool",
+        "error_summary": [
+          "conjunction_relation_mismatch:or->and",
+          "or_and_drift"
+        ]
+      },
+      {
+        "case_id": "live_what_is_this_008",
+        "cause_types": [
+          "model reasoning issue",
+          "prompt/schema issue",
+          "training-data issue"
+        ],
+        "sanitized_buyer_snippet": "what is this",
+        "error_summary": [
+          "compact.obj must be a list of strings"
+        ]
+      },
+      {
+        "case_id": "live_model_subscription_010",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "is this about model or subscription",
+        "error_summary": [
+          "must_not_include_present:model",
+          "must_not_include_present:subscription"
+        ]
+      }
+    ],
+    "response_plan_failure": [
+      {
+        "case_id": "live_current_tools_003",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use ChatGPT or another AI tool",
+        "error_summary": [
+          "conjunction_relation_mismatch:or->and",
+          "or_and_drift"
+        ]
+      },
+      {
+        "case_id": "live_model_subscription_010",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "is this about model or subscription",
+        "error_summary": [
+          "must_not_include_present:model",
+          "must_not_include_present:subscription"
+        ]
+      },
+      {
+        "case_id": "live_by_myself_012",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use it by myself",
+        "error_summary": [
+          "buyer_word_not_preserved:by myself"
+        ]
+      }
+    ],
+    "buyer_word_preservation_failure": [
+      {
+        "case_id": "live_by_myself_012",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use it by myself",
+        "error_summary": [
+          "buyer_word_not_preserved:by myself"
+        ]
+      },
+      {
+        "case_id": "paraphrase_self_use_012",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "it is just me",
+        "error_summary": [
+          "buyer_word_not_preserved:me"
+        ]
+      }
+    ],
+    "internal_policy_or_safety_failure": [
+      {
+        "case_id": "live_model_subscription_010",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "is this about model or subscription",
+        "error_summary": [
+          "must_not_include_present:model",
+          "must_not_include_present:subscription"
+        ]
+      },
+      {
+        "case_id": "paraphrase_no_team_013",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "no team involved",
+        "error_summary": [
+          "must_not_include_present:team"
+        ]
+      },
+      {
+        "case_id": "negative_no_crm_001",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "don't put me in CRM",
+        "error_summary": [
+          "must_not_include_present:CRM"
+        ]
+      }
+    ],
+    "unsupported_claim_failure": [],
+    "latency_risk": [
+      {
+        "case_id": "live_current_tools_003",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use ChatGPT or another AI tool",
+        "error_summary": [
+          "conjunction_relation_mismatch:or->and",
+          "or_and_drift"
+        ]
+      },
+      {
+        "case_id": "live_what_is_this_008",
+        "cause_types": [
+          "model reasoning issue",
+          "prompt/schema issue",
+          "training-data issue"
+        ],
+        "sanitized_buyer_snippet": "what is this",
+        "error_summary": [
+          "compact.obj must be a list of strings"
+        ]
+      },
+      {
+        "case_id": "live_model_subscription_010",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "is this about model or subscription",
+        "error_summary": [
+          "must_not_include_present:model",
+          "must_not_include_present:subscription"
+        ]
+      }
+    ],
+    "verifier_blocked_correctly": [
+      {
+        "case_id": "live_current_tools_003",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use ChatGPT or another AI tool",
+        "error_summary": [
+          "conjunction_relation_mismatch:or->and",
+          "or_and_drift"
+        ]
+      },
+      {
+        "case_id": "live_model_subscription_010",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "is this about model or subscription",
+        "error_summary": [
+          "must_not_include_present:model",
+          "must_not_include_present:subscription"
+        ]
+      },
+      {
+        "case_id": "live_by_myself_012",
+        "cause_types": [
+          "model reasoning issue"
+        ],
+        "sanitized_buyer_snippet": "I use it by myself",
+        "error_summary": [
+          "buyer_word_not_preserved:by myself"
+        ]
+      }
+    ],
+    "gold_expected_output_maybe_too_strict": [
+      {
+        "case_id": "live_price_objection_017",
+        "cause_types": [
+          "gold-label issue",
+          "model reasoning issue",
+          "prompt/schema issue",
+          "training-data issue",
+          "verifier issue"
+        ],
+        "sanitized_buyer_snippet": "that seems too expensive",
+        "error_summary": [
+          "compact.obj must be a list of strings"
+        ]
+      }
+    ],
+    "needs_human_review": [
+      {
+        "case_id": "live_price_objection_017",
+        "cause_types": [
+          "gold-label issue",
+          "model reasoning issue",
+          "prompt/schema issue",
+          "training-data issue",
+          "verifier issue"
+        ],
+        "sanitized_buyer_snippet": "that seems too expensive",
+        "error_summary": [
+          "compact.obj must be a list of strings"
+        ]
+      }
+    ]
+  },
+  "latency_summary_failed_cases": {
+    "count": 28,
+    "average_ms": 11390.362,
+    "max_ms": 13654.709,
+    "latency_risk_threshold_ms": 10000
+  },
+  "side_effects": {
+    "local_model_calls_made": false,
+    "local_model_call_count": 0,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "raw_private_transcript_copied_to_public_evidence": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false
+  },
+  "source_side_effects": {
+    "local_model_calls_made": true,
+    "local_model_call_count": 80,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false
+  }
+}
