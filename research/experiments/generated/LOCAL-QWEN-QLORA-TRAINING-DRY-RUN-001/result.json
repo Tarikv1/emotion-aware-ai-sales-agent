@@ -1,0 +1,190 @@
+{
+  "experiment_id": "LOCAL-QWEN-QLORA-TRAINING-DRY-RUN-001",
+  "generated_at": "2026-05-27T14:10:08.365345+00:00",
+  "status": "completed",
+  "config_path": "runtime/llm_brain/training/qwen_qlora_planner_config.json",
+  "config": {
+    "experiment_id": "LOCAL-QWEN-QLORA-TRAINING-DRY-RUN-001",
+    "base_model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "base_model_path": "local_artifacts/models/qwen2.5-7b-instruct",
+    "dataset_dir": "research/experiments/generated/LOCAL-QWEN-SFT-DATASET-001",
+    "output_adapter_dir": "local_artifacts/adapters/qwen2.5-sales-brain-lora-001",
+    "cache_dir": "local_artifacts/cache/huggingface",
+    "quantization": "4bit",
+    "target": "compact planner JSON",
+    "max_seq_length": 1536,
+    "learning_rate": 0.0002,
+    "per_device_train_batch_size": 1,
+    "batch_size": 1,
+    "gradient_accumulation_steps": 4,
+    "max_steps": 20,
+    "eval_steps": 10,
+    "save_steps": 20,
+    "save_strategy": "end_only",
+    "seed": 42,
+    "device": "cuda",
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "lora_target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "optimizer": "paged_adamw_8bit",
+    "fp16": true,
+    "gradient_checkpointing": true,
+    "local_files_only": true,
+    "allow_model_download": false
+  },
+  "python_executable": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-llm\\Scripts\\python.exe",
+  "expected_python_environment": ".venv-llm",
+  "expected_python_environment_active": true,
+  "dependency_status": {
+    "modules": {
+      "torch": true,
+      "transformers": true,
+      "accelerate": true,
+      "bitsandbytes": true,
+      "peft": true,
+      "datasets": true,
+      "trl": true,
+      "evaluate": true,
+      "sentencepiece": true,
+      "protobuf": true
+    },
+    "versions": {
+      "torch": "2.11.0+cu128",
+      "transformers": "5.9.0",
+      "accelerate": "1.13.0",
+      "bitsandbytes": "0.49.2",
+      "peft": "0.19.1",
+      "datasets": "4.8.5",
+      "trl": "1.5.0",
+      "evaluate": "0.4.6",
+      "sentencepiece": "0.2.1",
+      "protobuf": "7.35.0"
+    },
+    "required": [
+      "torch",
+      "transformers",
+      "accelerate",
+      "bitsandbytes",
+      "peft",
+      "datasets"
+    ],
+    "optional": [
+      "trl",
+      "evaluate",
+      "sentencepiece",
+      "protobuf"
+    ],
+    "missing_required": [],
+    "ready": true,
+    "peft_import_ok": true,
+    "peft_import_error": null,
+    "transformers_trainer_import_ok": true,
+    "transformers_trainer_import_error": null,
+    "trl_sft_trainer_import_ok": false,
+    "trl_sft_trainer_import_error": "RuntimeError: Failed to import trl.trainer.sft_trainer because of the following error (look up to see its traceback):\n'charmap' codec can't decode byte 0x81 in position 932: character maps to <undefined>",
+    "training_backend": "transformers_trainer_peft_qlora"
+  },
+  "dependency_install_attempted_by_script": false,
+  "hardware_summary": {
+    "python_version": "3.13.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 33 Stepping 2, AuthenticAMD",
+    "machine": "AMD64",
+    "torch_available": true,
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+    "vram_total_bytes": 12878086144,
+    "nvidia_smi": {
+      "available": true,
+      "stdout": "NVIDIA GeForce RTX 4070 SUPER, 610.47, 12282 MiB",
+      "stderr": "",
+      "returncode": 0
+    },
+    "nvidia_driver_version": "610.47",
+    "nvidia_vram_total": "12282 MiB",
+    "torch_version": "2.11.0+cu128",
+    "torch_cuda_version": "12.8"
+  },
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+  "dry_run_config_only": false,
+  "training_attempted": true,
+  "training_completed": true,
+  "exact_blocker": null,
+  "model_loaded": true,
+  "adapter_saved": true,
+  "adapter_path": "local_artifacts/adapters/qwen2.5-sales-brain-lora-001",
+  "adapter_files_committed": false,
+  "train_row_count": 60,
+  "validation_row_count": 10,
+  "test_row_count": 10,
+  "tokenization": {
+    "train": {
+      "row_count": 60,
+      "max_prompt_tokens": 419,
+      "max_full_tokens": 555,
+      "max_target_tokens": 138,
+      "min_target_tokens": 110,
+      "truncated_example_count": 0,
+      "label_token_count": 7309
+    },
+    "validation": {
+      "row_count": 10,
+      "max_prompt_tokens": 411,
+      "max_full_tokens": 537,
+      "max_target_tokens": 128,
+      "min_target_tokens": 115,
+      "truncated_example_count": 0,
+      "label_token_count": 1217
+    },
+    "max_seq_length": 1536
+  },
+  "train_steps_completed": 20,
+  "train_loss": 0.9283706557005644,
+  "eval_loss": 0.3574617803096771,
+  "peak_gpu_memory_bytes": 10452374016,
+  "local_model_calls_made": true,
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "live_tts_calls_made": false,
+  "provider_side_effects_made": false,
+  "model_download_attempted": false,
+  "model_redownloaded": false,
+  "model_weights_committed": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "raw_private_transcript_included": false,
+  "raw_private_transcript_copied_to_public_evidence": false,
+  "case_text_stored_in_evidence": false,
+  "notes": [
+    "Adapter saved under ignored local_artifacts; no runtime wiring changed."
+  ],
+  "dataset_summary": {
+    "dataset_dir": "research/experiments/generated/LOCAL-QWEN-SFT-DATASET-001",
+    "splits": {
+      "train": {
+        "path": "research/experiments/generated/LOCAL-QWEN-SFT-DATASET-001/train.jsonl",
+        "count": 60
+      },
+      "validation": {
+        "path": "research/experiments/generated/LOCAL-QWEN-SFT-DATASET-001/validation.jsonl",
+        "count": 10
+      },
+      "test": {
+        "path": "research/experiments/generated/LOCAL-QWEN-SFT-DATASET-001/test.jsonl",
+        "count": 10
+      }
+    },
+    "row_count": 80,
+    "raw_private_transcript_included": false
+  }
+}
