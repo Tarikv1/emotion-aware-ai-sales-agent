@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-QWEN-CURRICULUM-AUDITS-VALIDATION-001",
-  "validated_at": "2026-05-27T21:34:07.593531+00:00",
+  "validated_at": "2026-05-27T22:28:46.090461+00:00",
   "status": "pass",
   "forgetting_result": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-FORGETTING-AUDIT-001/result.json",
   "error_result": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-EVAL-ERROR-AUDIT-001/result.json",

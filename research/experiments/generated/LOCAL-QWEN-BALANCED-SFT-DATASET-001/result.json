@@ -1,0 +1,342 @@
+{
+  "experiment_id": "LOCAL-QWEN-BALANCED-SFT-DATASET-001",
+  "generated_at": "2026-05-27T22:28:28.900189+00:00",
+  "status": "pass",
+  "inputs": {
+    "source_dataset": "research/experiments/generated/LOCAL-QWEN-SFT-DATASET-001",
+    "tiny_dataset": "research/experiments/generated/LOCAL-QWEN-TINY-OVERFIT-DATASET-001",
+    "dataset_spec": "runtime/llm_brain/training/qwen_balanced_planner_dataset_spec.json",
+    "target_cards": "runtime/llm_brain/training/qwen_compact_target_cards.json"
+  },
+  "total_rows": 445,
+  "in_distribution_rows": 435,
+  "ood_rows": 10,
+  "split_counts": {
+    "train": 304,
+    "validation": 65,
+    "test": 66,
+    "ood_test": 10
+  },
+  "semantic_group_counts": {
+    "adoption_current_tool_context": 45,
+    "individual_not_team_and_team_scope": 45,
+    "objections_and_competitor_context": 45,
+    "orientation_or_explanation": 45,
+    "plan_change_and_signup": 45,
+    "plan_fit_and_recommendation": 45,
+    "price_and_value": 45,
+    "safety_and_boundary": 45,
+    "usage_intensity": 30,
+    "use_case_scope": 45
+  },
+  "label_distribution_by_split": {
+    "train": {
+      "row_count": 304,
+      "act": {
+        "affiliation_question": 11,
+        "competitor_objection": 8,
+        "current_tool_context": 45,
+        "no_fit": 8,
+        "orientation_or_explanation": 23,
+        "plan_change_question": 1,
+        "plan_fit_question": 8,
+        "price_objection": 19,
+        "price_question": 19,
+        "pro_tier_question": 4,
+        "safety_boundary": 13,
+        "signup_question": 1,
+        "source_question": 11,
+        "team_scope": 45,
+        "terminal_acceptance": 13,
+        "usage_intensity": 30,
+        "use_case_scope": 45
+      },
+      "sub": {
+        "affiliation_boundary_question": 11,
+        "coding_research_use_case": 14,
+        "coding_voice_use_case": 16,
+        "coding_writing_use_case": 15,
+        "current_chatgpt_and_other_ai_user": 9,
+        "current_chatgpt_or_other_ai_unknown": 18,
+        "current_chatgpt_user": 9,
+        "current_competitor_tool": 12,
+        "current_other_ai_user": 9,
+        "enterprise_security_question": 11,
+        "heavy_daily_use": 10,
+        "internal_policy_request": 2,
+        "light_occasional_use": 7,
+        "midcycle_upgrade_question": 1,
+        "model_vs_subscription_question": 11,
+        "no_calendar_request": 3,
+        "no_crm_request": 1,
+        "no_interest": 6,
+        "not_team_personal_use": 12,
+        "occasional_use": 13,
+        "personal_use": 11,
+        "plan_category_explanation": 12,
+        "plus_price_question": 10,
+        "plus_sufficiency_question": 8,
+        "price_objection": 15,
+        "privacy_question": 1,
+        "pro_tier_choice": 13,
+        "raw_transcript_request": 3,
+        "raw_url_request": 1,
+        "side_effect_boundary_request": 1,
+        "signup_path_question": 1,
+        "source_disclosure_question": 11,
+        "team_controls_question": 11,
+        "terminal_thanks_acceptance": 13,
+        "unsupported_fact_request": 1,
+        "wrong_product_question": 2
+      },
+      "action": {
+        "answer_affiliation_boundary": 11,
+        "answer_plan_category": 23,
+        "answer_plan_change": 1,
+        "answer_plan_fit": 8,
+        "answer_price": 19,
+        "answer_signup_path": 1,
+        "answer_source": 11,
+        "answer_team_controls": 22,
+        "answer_without_inventing_facts": 4,
+        "ask_individual_usage_intensity": 23,
+        "ask_usage_intensity": 45,
+        "ask_use_case_gap": 75,
+        "compare_competitor_context": 8,
+        "disqualify_no_fit": 8,
+        "recommend_plan": 4,
+        "reframe_price_objection": 19,
+        "respect_boundary": 9,
+        "terminal_close": 13
+      },
+      "strategy": {
+        "answer_without_inventing_facts": 52,
+        "boundary_without_side_effects": 13,
+        "choice_close": 6,
+        "compare_options": 4,
+        "diagnose_before_recommend": 131,
+        "explain_without_overclaiming": 34,
+        "no_fit_close": 8,
+        "preserve_buyer_words": 12,
+        "terminal_close": 13,
+        "value_before_plan_selection": 12,
+        "value_reframe": 19
+      }
+    },
+    "validation": {
+      "row_count": 65,
+      "act": {
+        "competitor_objection": 7,
+        "no_fit": 14,
+        "plan_change_question": 13,
+        "plan_fit_question": 10,
+        "price_objection": 4,
+        "price_question": 5,
+        "pro_tier_question": 2,
+        "safety_boundary": 8,
+        "signup_question": 1,
+        "terminal_acceptance": 1
+      },
+      "sub": {
+        "current_competitor_tool": 11,
+        "midcycle_upgrade_question": 13,
+        "no_crm_request": 1,
+        "no_interest": 7,
+        "plus_price_question": 5,
+        "plus_sufficiency_question": 10,
+        "pro_tier_choice": 2,
+        "raw_transcript_request": 3,
+        "raw_url_request": 2,
+        "signup_path_question": 1,
+        "terminal_thanks_acceptance": 1,
+        "unsupported_fact_request": 2,
+        "wrong_product_question": 7
+      },
+      "action": {
+        "answer_plan_change": 13,
+        "answer_plan_fit": 7,
+        "answer_price": 5,
+        "answer_signup_path": 1,
+        "answer_without_inventing_facts": 2,
+        "compare_competitor_context": 7,
+        "disqualify_no_fit": 14,
+        "recommend_plan": 5,
+        "reframe_price_objection": 4,
+        "respect_boundary": 6,
+        "terminal_close": 1
+      },
+      "strategy": {
+        "answer_without_inventing_facts": 5,
+        "boundary_without_side_effects": 8,
+        "choice_close": 19,
+        "compare_options": 3,
+        "no_fit_close": 14,
+        "terminal_close": 1,
+        "value_before_plan_selection": 11,
+        "value_reframe": 4
+      }
+    },
+    "test": {
+      "row_count": 66,
+      "act": {
+        "competitor_objection": 8,
+        "no_fit": 11,
+        "plan_change_question": 1,
+        "plan_fit_question": 5,
+        "price_objection": 3,
+        "price_question": 6,
+        "pro_tier_question": 5,
+        "safety_boundary": 13,
+        "signup_question": 13,
+        "terminal_acceptance": 1
+      },
+      "sub": {
+        "current_competitor_tool": 11,
+        "internal_policy_request": 2,
+        "midcycle_upgrade_question": 1,
+        "no_calendar_request": 1,
+        "no_crm_request": 2,
+        "no_interest": 9,
+        "plus_sufficiency_question": 5,
+        "privacy_question": 2,
+        "pro_tier_choice": 11,
+        "raw_transcript_request": 1,
+        "raw_url_request": 1,
+        "side_effect_boundary_request": 3,
+        "signup_path_question": 13,
+        "terminal_thanks_acceptance": 1,
+        "unsupported_fact_request": 1,
+        "wrong_product_question": 2
+      },
+      "action": {
+        "answer_plan_change": 1,
+        "answer_plan_fit": 8,
+        "answer_price": 6,
+        "answer_signup_path": 13,
+        "answer_without_inventing_facts": 5,
+        "compare_competitor_context": 8,
+        "disqualify_no_fit": 11,
+        "recommend_plan": 2,
+        "reframe_price_objection": 3,
+        "respect_boundary": 8,
+        "terminal_close": 1
+      },
+      "strategy": {
+        "answer_without_inventing_facts": 6,
+        "boundary_without_side_effects": 13,
+        "choice_close": 16,
+        "compare_options": 5,
+        "no_fit_close": 11,
+        "terminal_close": 1,
+        "value_before_plan_selection": 11,
+        "value_reframe": 3
+      }
+    },
+    "ood_test": {
+      "row_count": 10,
+      "act": {
+        "no_fit": 10
+      },
+      "sub": {
+        "wrong_product_question": 10
+      },
+      "action": {
+        "disqualify_no_fit": 10
+      },
+      "strategy": {
+        "no_fit_close": 10
+      }
+    }
+  },
+  "heldout_coverage": {
+    "validation": {
+      "unseen_act_sub_action_strategy_combo_count": 0,
+      "unseen_act_sub_action_strategy_combos": [],
+      "unseen_action_sub_pair_count": 0,
+      "unseen_action_sub_pairs": [],
+      "covered_by_train": true
+    },
+    "test": {
+      "unseen_act_sub_action_strategy_combo_count": 0,
+      "unseen_act_sub_action_strategy_combos": [],
+      "unseen_action_sub_pair_count": 0,
+      "unseen_action_sub_pairs": [],
+      "covered_by_train": true
+    }
+  },
+  "heldout_exact_text_overlap": {
+    "train_validation": [],
+    "train_test": [],
+    "validation_test": []
+  },
+  "target_card_usage": {
+    "adoption_chatgpt_and_other_ai": 9,
+    "adoption_chatgpt_or_other_uncertain": 9,
+    "adoption_current_chatgpt_user": 9,
+    "adoption_current_other_ai_user": 9,
+    "adoption_no_current_ai_tool": 9,
+    "objection_chatgpt_vs_current_tool": 11,
+    "objection_competitor_current_tool": 12,
+    "objection_not_interested": 11,
+    "objection_price_with_current_tool": 11,
+    "orientation_affiliation_boundary": 11,
+    "orientation_model_vs_subscription": 11,
+    "orientation_plan_categories": 12,
+    "orientation_source_disclosure": 11,
+    "plan_change_signup_path": 15,
+    "plan_change_terminal_close": 15,
+    "plan_change_upgrade_later": 15,
+    "plan_fit_no_fit_free_enough": 11,
+    "plan_fit_plus_enough": 12,
+    "plan_fit_pro_choice": 11,
+    "plan_fit_recommend_after_context": 11,
+    "price_objection_value": 15,
+    "price_plus_direct": 15,
+    "price_pro_direct": 15,
+    "safety_no_crm_email_calendar": 12,
+    "safety_raw_url_or_transcript": 11,
+    "safety_unsupported_policy_privacy": 11,
+    "safety_wrong_product": 21,
+    "team_controls_positive": 11,
+    "team_enterprise_security": 11,
+    "team_not_team_personal": 12,
+    "team_personal_use": 11,
+    "usage_heavy_daily": 10,
+    "usage_light_occasional": 10,
+    "usage_moderate": 10,
+    "use_case_coding_research": 11,
+    "use_case_coding_voice": 12,
+    "use_case_coding_writing": 11,
+    "use_case_single_mode": 11
+  },
+  "source_type_counts": {
+    "deterministic_paraphrase": 267,
+    "live_sanitized": 51,
+    "negative_control": 24,
+    "ood_control": 10,
+    "original_gold": 5,
+    "synthetic_control": 88
+  },
+  "target_consistency": {
+    "target_cards_valid": true,
+    "validation_test_labels_covered_by_train": true,
+    "exact_text_heldout": true
+  },
+  "side_effects": {
+    "local_model_calls_made": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "model_download_attempted": false,
+    "model_redownloaded": false,
+    "model_weights_committed": false,
+    "adapter_files_committed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcript_included": false,
+    "raw_private_transcript_copied_to_public_evidence": false,
+    "case_text_stored_in_evidence": false
+  },
+  "failures": []
+}

@@ -1,0 +1,118 @@
+{
+  "plan_id": "LOCAL-QWEN-NEXT-MIXED-REPLAY-TRAINING-PLAN-001",
+  "base_model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "balanced_dataset_id": "LOCAL-QWEN-BALANCED-SFT-DATASET-001",
+  "output_adapter_dir": "local_artifacts/adapters/qwen-planner-lora-balanced-001",
+  "adapter_version": "qwen-planner-lora-balanced-001",
+  "training_strategy": "mixed_replay_balanced_sampling",
+  "train_again_in_this_phase": false,
+  "do_not_resume_from": [
+    "lora-002",
+    "curriculum-001",
+    "any adapter trained with sequential tiny -> 20 -> 60 overwrite"
+  ],
+  "replay_sources": [
+    {
+      "dataset_id": "LOCAL-QWEN-TINY-OVERFIT-DATASET-001",
+      "purpose": "Retention anchor for tiny exact compact JSON behavior."
+    },
+    {
+      "dataset_id": "LOCAL-QWEN-SFT-DATASET-001",
+      "purpose": "Original 80-row gold coverage retained throughout training."
+    },
+    {
+      "dataset_id": "LOCAL-QWEN-BALANCED-SFT-DATASET-001",
+      "purpose": "Expanded regularized semantic coverage."
+    }
+  ],
+  "replay_weights": {
+    "tiny_overfit_examples": 0.12,
+    "original_80_gold_rows": 0.28,
+    "balanced_expanded_rows": 0.60
+  },
+  "semantic_group_weights": {
+    "adoption_current_tool_context": 1.0,
+    "orientation_or_explanation": 1.0,
+    "individual_not_team_and_team_scope": 1.1,
+    "use_case_scope": 1.0,
+    "usage_intensity": 1.2,
+    "price_and_value": 1.05,
+    "plan_fit_and_recommendation": 1.05,
+    "plan_change_and_signup": 1.15,
+    "safety_and_boundary": 1.2,
+    "objections_and_competitor_context": 1.1
+  },
+  "rare_group_weighting": {
+    "enabled": true,
+    "max_multiplier": 1.5,
+    "rare_groups": [
+      "usage_intensity",
+      "plan_change_and_signup",
+      "safety_and_boundary",
+      "individual_not_team_and_team_scope"
+    ],
+    "reason": "Prior failures clustered around held-out label combinations, safety boundaries, not-team drift, terminal close, and small rare neighborhoods."
+  },
+  "final_stage_mixing_required": true,
+  "final_stage_only_stage3_rows_allowed": false,
+  "validation_test_held_out": true,
+  "ood_test_separate": true,
+  "stop_conditions": {
+    "stop_if_validation_contract_below": 1.0,
+    "stop_if_test_contract_below": 1.0,
+    "stop_if_any_safety_failure": true,
+    "stop_if_tiny_retention_below": 1.0,
+    "stop_if_and_or_drift_detected": true,
+    "stop_if_not_team_team_drift_detected": true,
+    "stop_if_voice_writing_drift_detected": true,
+    "stop_if_adapter_latency_exceeds_gate": true
+  },
+  "quality_gate_thresholds": {
+    "validation_schema": 1.0,
+    "test_schema": 1.0,
+    "validation_compact_contract": 1.0,
+    "test_compact_contract": 1.0,
+    "validation_verifier": 0.98,
+    "test_verifier": 0.98,
+    "strict_semantic": 0.9,
+    "equivalence_match": 0.95,
+    "safety_critical_cases": 1.0,
+    "tiny_retention": 1.0
+  },
+  "latency_gate_thresholds": {
+    "p50_ms_max": 1200,
+    "p95_ms_max": 2500,
+    "max_output_tokens": 256,
+    "schema_retry_budget": 0
+  },
+  "live_ready_required_metrics": {
+    "adapter_live_ready": false,
+    "live_wiring_allowed_in_this_phase": false,
+    "shadow_mode_before_live_replacement": true,
+    "validation_schema": "100%",
+    "test_schema": "100%",
+    "compact_contract": "100%",
+    "verifier": ">=98% or all safety-critical cases pass",
+    "strict_semantic": ">=90%",
+    "equivalence_match": ">=95%",
+    "no_safety_failures": true,
+    "no_and_or_drift": true,
+    "no_not_team_team_drift": true,
+    "no_voice_writing_drift": true,
+    "no_fake_side_effects": true,
+    "no_internal_policy_language": true
+  },
+  "live_replacement_gate_later": {
+    "status": "not_part_of_this_phase",
+    "requirement": "Much stricter than shadow mode; requires separate product/runtime review."
+  },
+  "side_effect_policy": {
+    "local_model_calls_made": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "model_or_adapter_weights_committed": false
+  }
+}

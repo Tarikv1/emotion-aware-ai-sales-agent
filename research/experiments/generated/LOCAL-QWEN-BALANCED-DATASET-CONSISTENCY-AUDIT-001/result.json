@@ -1,0 +1,1374 @@
+{
+  "experiment_id": "LOCAL-QWEN-BALANCED-DATASET-CONSISTENCY-AUDIT-001",
+  "generated_at": "2026-05-27T22:33:35.017816+00:00",
+  "status": "pass",
+  "inputs": {
+    "train": "research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/train.jsonl",
+    "validation": "research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/validation.jsonl",
+    "test": "research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/test.jsonl",
+    "ood_test": "research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/ood_test.jsonl"
+  },
+  "row_counts": {
+    "total": 445,
+    "in_distribution": 435,
+    "ood_test": 10,
+    "by_split": {
+      "train": 304,
+      "validation": 65,
+      "test": 66,
+      "ood_test": 10
+    }
+  },
+  "label_distribution_by_split": {
+    "train": {
+      "row_count": 304,
+      "act": {
+        "affiliation_question": 11,
+        "competitor_objection": 8,
+        "current_tool_context": 45,
+        "no_fit": 8,
+        "orientation_or_explanation": 23,
+        "plan_change_question": 1,
+        "plan_fit_question": 8,
+        "price_objection": 19,
+        "price_question": 19,
+        "pro_tier_question": 4,
+        "safety_boundary": 13,
+        "signup_question": 1,
+        "source_question": 11,
+        "team_scope": 45,
+        "terminal_acceptance": 13,
+        "usage_intensity": 30,
+        "use_case_scope": 45
+      },
+      "sub": {
+        "affiliation_boundary_question": 11,
+        "coding_research_use_case": 14,
+        "coding_voice_use_case": 16,
+        "coding_writing_use_case": 15,
+        "current_chatgpt_and_other_ai_user": 9,
+        "current_chatgpt_or_other_ai_unknown": 18,
+        "current_chatgpt_user": 9,
+        "current_competitor_tool": 12,
+        "current_other_ai_user": 9,
+        "enterprise_security_question": 11,
+        "heavy_daily_use": 10,
+        "internal_policy_request": 2,
+        "light_occasional_use": 7,
+        "midcycle_upgrade_question": 1,
+        "model_vs_subscription_question": 11,
+        "no_calendar_request": 3,
+        "no_crm_request": 1,
+        "no_interest": 6,
+        "not_team_personal_use": 12,
+        "occasional_use": 13,
+        "personal_use": 11,
+        "plan_category_explanation": 12,
+        "plus_price_question": 10,
+        "plus_sufficiency_question": 8,
+        "price_objection": 15,
+        "privacy_question": 1,
+        "pro_tier_choice": 13,
+        "raw_transcript_request": 3,
+        "raw_url_request": 1,
+        "side_effect_boundary_request": 1,
+        "signup_path_question": 1,
+        "source_disclosure_question": 11,
+        "team_controls_question": 11,
+        "terminal_thanks_acceptance": 13,
+        "unsupported_fact_request": 1,
+        "wrong_product_question": 2
+      },
+      "action": {
+        "answer_affiliation_boundary": 11,
+        "answer_plan_category": 23,
+        "answer_plan_change": 1,
+        "answer_plan_fit": 8,
+        "answer_price": 19,
+        "answer_signup_path": 1,
+        "answer_source": 11,
+        "answer_team_controls": 22,
+        "answer_without_inventing_facts": 4,
+        "ask_individual_usage_intensity": 23,
+        "ask_usage_intensity": 45,
+        "ask_use_case_gap": 75,
+        "compare_competitor_context": 8,
+        "disqualify_no_fit": 8,
+        "recommend_plan": 4,
+        "reframe_price_objection": 19,
+        "respect_boundary": 9,
+        "terminal_close": 13
+      },
+      "strategy": {
+        "answer_without_inventing_facts": 52,
+        "boundary_without_side_effects": 13,
+        "choice_close": 6,
+        "compare_options": 4,
+        "diagnose_before_recommend": 131,
+        "explain_without_overclaiming": 34,
+        "no_fit_close": 8,
+        "preserve_buyer_words": 12,
+        "terminal_close": 13,
+        "value_before_plan_selection": 12,
+        "value_reframe": 19
+      }
+    },
+    "validation": {
+      "row_count": 65,
+      "act": {
+        "competitor_objection": 7,
+        "no_fit": 14,
+        "plan_change_question": 13,
+        "plan_fit_question": 10,
+        "price_objection": 4,
+        "price_question": 5,
+        "pro_tier_question": 2,
+        "safety_boundary": 8,
+        "signup_question": 1,
+        "terminal_acceptance": 1
+      },
+      "sub": {
+        "current_competitor_tool": 11,
+        "midcycle_upgrade_question": 13,
+        "no_crm_request": 1,
+        "no_interest": 7,
+        "plus_price_question": 5,
+        "plus_sufficiency_question": 10,
+        "pro_tier_choice": 2,
+        "raw_transcript_request": 3,
+        "raw_url_request": 2,
+        "signup_path_question": 1,
+        "terminal_thanks_acceptance": 1,
+        "unsupported_fact_request": 2,
+        "wrong_product_question": 7
+      },
+      "action": {
+        "answer_plan_change": 13,
+        "answer_plan_fit": 7,
+        "answer_price": 5,
+        "answer_signup_path": 1,
+        "answer_without_inventing_facts": 2,
+        "compare_competitor_context": 7,
+        "disqualify_no_fit": 14,
+        "recommend_plan": 5,
+        "reframe_price_objection": 4,
+        "respect_boundary": 6,
+        "terminal_close": 1
+      },
+      "strategy": {
+        "answer_without_inventing_facts": 5,
+        "boundary_without_side_effects": 8,
+        "choice_close": 19,
+        "compare_options": 3,
+        "no_fit_close": 14,
+        "terminal_close": 1,
+        "value_before_plan_selection": 11,
+        "value_reframe": 4
+      }
+    },
+    "test": {
+      "row_count": 66,
+      "act": {
+        "competitor_objection": 8,
+        "no_fit": 11,
+        "plan_change_question": 1,
+        "plan_fit_question": 5,
+        "price_objection": 3,
+        "price_question": 6,
+        "pro_tier_question": 5,
+        "safety_boundary": 13,
+        "signup_question": 13,
+        "terminal_acceptance": 1
+      },
+      "sub": {
+        "current_competitor_tool": 11,
+        "internal_policy_request": 2,
+        "midcycle_upgrade_question": 1,
+        "no_calendar_request": 1,
+        "no_crm_request": 2,
+        "no_interest": 9,
+        "plus_sufficiency_question": 5,
+        "privacy_question": 2,
+        "pro_tier_choice": 11,
+        "raw_transcript_request": 1,
+        "raw_url_request": 1,
+        "side_effect_boundary_request": 3,
+        "signup_path_question": 13,
+        "terminal_thanks_acceptance": 1,
+        "unsupported_fact_request": 1,
+        "wrong_product_question": 2
+      },
+      "action": {
+        "answer_plan_change": 1,
+        "answer_plan_fit": 8,
+        "answer_price": 6,
+        "answer_signup_path": 13,
+        "answer_without_inventing_facts": 5,
+        "compare_competitor_context": 8,
+        "disqualify_no_fit": 11,
+        "recommend_plan": 2,
+        "reframe_price_objection": 3,
+        "respect_boundary": 8,
+        "terminal_close": 1
+      },
+      "strategy": {
+        "answer_without_inventing_facts": 6,
+        "boundary_without_side_effects": 13,
+        "choice_close": 16,
+        "compare_options": 5,
+        "no_fit_close": 11,
+        "terminal_close": 1,
+        "value_before_plan_selection": 11,
+        "value_reframe": 3
+      }
+    },
+    "ood_test": {
+      "row_count": 10,
+      "act": {
+        "no_fit": 10
+      },
+      "sub": {
+        "wrong_product_question": 10
+      },
+      "action": {
+        "disqualify_no_fit": 10
+      },
+      "strategy": {
+        "no_fit_close": 10
+      }
+    }
+  },
+  "semantic_group_distribution": {
+    "adoption_current_tool_context": 45,
+    "individual_not_team_and_team_scope": 45,
+    "objections_and_competitor_context": 45,
+    "orientation_or_explanation": 45,
+    "plan_change_and_signup": 45,
+    "plan_fit_and_recommendation": 45,
+    "price_and_value": 45,
+    "safety_and_boundary": 45,
+    "usage_intensity": 30,
+    "use_case_scope": 45
+  },
+  "target_card_usage": {
+    "adoption_chatgpt_and_other_ai": 9,
+    "adoption_chatgpt_or_other_uncertain": 9,
+    "adoption_current_chatgpt_user": 9,
+    "adoption_current_other_ai_user": 9,
+    "adoption_no_current_ai_tool": 9,
+    "objection_chatgpt_vs_current_tool": 11,
+    "objection_competitor_current_tool": 12,
+    "objection_not_interested": 11,
+    "objection_price_with_current_tool": 11,
+    "orientation_affiliation_boundary": 11,
+    "orientation_model_vs_subscription": 11,
+    "orientation_plan_categories": 12,
+    "orientation_source_disclosure": 11,
+    "plan_change_signup_path": 15,
+    "plan_change_terminal_close": 15,
+    "plan_change_upgrade_later": 15,
+    "plan_fit_no_fit_free_enough": 11,
+    "plan_fit_plus_enough": 12,
+    "plan_fit_pro_choice": 11,
+    "plan_fit_recommend_after_context": 11,
+    "price_objection_value": 15,
+    "price_plus_direct": 15,
+    "price_pro_direct": 15,
+    "safety_no_crm_email_calendar": 12,
+    "safety_raw_url_or_transcript": 11,
+    "safety_unsupported_policy_privacy": 11,
+    "safety_wrong_product": 21,
+    "team_controls_positive": 11,
+    "team_enterprise_security": 11,
+    "team_not_team_personal": 12,
+    "team_personal_use": 11,
+    "usage_heavy_daily": 10,
+    "usage_light_occasional": 10,
+    "usage_moderate": 10,
+    "use_case_coding_research": 11,
+    "use_case_coding_voice": 12,
+    "use_case_coding_writing": 11,
+    "use_case_single_mode": 11
+  },
+  "target_card_consistency": {
+    "cards": {
+      "adoption_chatgpt_and_other_ai": {
+        "row_count": 9,
+        "sub_values": [
+          "current_chatgpt_and_other_ai_user"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "adoption_chatgpt_or_other_uncertain": {
+        "row_count": 9,
+        "sub_values": [
+          "current_chatgpt_or_other_ai_unknown"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "adoption_current_chatgpt_user": {
+        "row_count": 9,
+        "sub_values": [
+          "current_chatgpt_user"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "adoption_current_other_ai_user": {
+        "row_count": 9,
+        "sub_values": [
+          "current_other_ai_user"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "adoption_no_current_ai_tool": {
+        "row_count": 9,
+        "sub_values": [
+          "current_chatgpt_or_other_ai_unknown"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "objection_chatgpt_vs_current_tool": {
+        "row_count": 11,
+        "sub_values": [
+          "current_competitor_tool"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "objection_competitor_current_tool": {
+        "row_count": 12,
+        "sub_values": [
+          "current_competitor_tool"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "objection_not_interested": {
+        "row_count": 11,
+        "sub_values": [
+          "no_interest"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "objection_price_with_current_tool": {
+        "row_count": 11,
+        "sub_values": [
+          "current_competitor_tool"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "orientation_affiliation_boundary": {
+        "row_count": 11,
+        "sub_values": [
+          "affiliation_boundary_question"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "orientation_model_vs_subscription": {
+        "row_count": 11,
+        "sub_values": [
+          "model_vs_subscription_question"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "orientation_plan_categories": {
+        "row_count": 12,
+        "sub_values": [
+          "plan_category_explanation"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "orientation_source_disclosure": {
+        "row_count": 11,
+        "sub_values": [
+          "source_disclosure_question"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "plan_change_signup_path": {
+        "row_count": 15,
+        "sub_values": [
+          "signup_path_question"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "plan_change_terminal_close": {
+        "row_count": 15,
+        "sub_values": [
+          "terminal_thanks_acceptance"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "plan_change_upgrade_later": {
+        "row_count": 15,
+        "sub_values": [
+          "midcycle_upgrade_question"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "plan_fit_no_fit_free_enough": {
+        "row_count": 11,
+        "sub_values": [
+          "no_interest"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "plan_fit_plus_enough": {
+        "row_count": 12,
+        "sub_values": [
+          "plus_sufficiency_question"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "plan_fit_pro_choice": {
+        "row_count": 11,
+        "sub_values": [
+          "pro_tier_choice"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "plan_fit_recommend_after_context": {
+        "row_count": 11,
+        "sub_values": [
+          "plus_sufficiency_question"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "price_objection_value": {
+        "row_count": 15,
+        "sub_values": [
+          "price_objection"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "price_plus_direct": {
+        "row_count": 15,
+        "sub_values": [
+          "plus_price_question"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "price_pro_direct": {
+        "row_count": 15,
+        "sub_values": [
+          "pro_tier_choice"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "safety_no_crm_email_calendar": {
+        "row_count": 12,
+        "sub_values": [
+          "no_calendar_request",
+          "no_crm_request",
+          "side_effect_boundary_request"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "safety_raw_url_or_transcript": {
+        "row_count": 11,
+        "sub_values": [
+          "raw_transcript_request",
+          "raw_url_request"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "safety_unsupported_policy_privacy": {
+        "row_count": 11,
+        "sub_values": [
+          "internal_policy_request",
+          "privacy_question",
+          "unsupported_fact_request"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "safety_wrong_product": {
+        "row_count": 21,
+        "sub_values": [
+          "wrong_product_question"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "team_controls_positive": {
+        "row_count": 11,
+        "sub_values": [
+          "team_controls_question"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "team_enterprise_security": {
+        "row_count": 11,
+        "sub_values": [
+          "enterprise_security_question"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "team_not_team_personal": {
+        "row_count": 12,
+        "sub_values": [
+          "not_team_personal_use"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "team_personal_use": {
+        "row_count": 11,
+        "sub_values": [
+          "personal_use"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "usage_heavy_daily": {
+        "row_count": 10,
+        "sub_values": [
+          "heavy_daily_use"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "usage_light_occasional": {
+        "row_count": 10,
+        "sub_values": [
+          "light_occasional_use",
+          "occasional_use"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "usage_moderate": {
+        "row_count": 10,
+        "sub_values": [
+          "occasional_use"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "use_case_coding_research": {
+        "row_count": 11,
+        "sub_values": [
+          "coding_research_use_case"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "use_case_coding_voice": {
+        "row_count": 12,
+        "sub_values": [
+          "coding_voice_use_case"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "use_case_coding_writing": {
+        "row_count": 11,
+        "sub_values": [
+          "coding_writing_use_case"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      },
+      "use_case_single_mode": {
+        "row_count": 11,
+        "sub_values": [
+          "coding_research_use_case",
+          "coding_voice_use_case",
+          "coding_writing_use_case"
+        ],
+        "action_strategy_count": 1,
+        "facts_policy_count": 1,
+        "avoid_policy_count": 1,
+        "consistent": true,
+        "warnings": []
+      }
+    },
+    "warnings": []
+  },
+  "action_strategy_consistency_inside_semantic_groups": {
+    "adoption_current_tool_context": {
+      "row_count": 45,
+      "target_card_count": 5,
+      "action_strategy_distribution": [
+        {
+          "action": "ask_use_case_gap",
+          "strategy": "diagnose_before_recommend",
+          "count": 45
+        }
+      ],
+      "expected_card_diversity": false
+    },
+    "individual_not_team_and_team_scope": {
+      "row_count": 45,
+      "target_card_count": 4,
+      "action_strategy_distribution": [
+        {
+          "action": "ask_individual_usage_intensity",
+          "strategy": "preserve_buyer_words",
+          "count": 12
+        },
+        {
+          "action": "ask_individual_usage_intensity",
+          "strategy": "diagnose_before_recommend",
+          "count": 11
+        },
+        {
+          "action": "answer_team_controls",
+          "strategy": "explain_without_overclaiming",
+          "count": 11
+        },
+        {
+          "action": "answer_team_controls",
+          "strategy": "answer_without_inventing_facts",
+          "count": 11
+        }
+      ],
+      "expected_card_diversity": true
+    },
+    "objections_and_competitor_context": {
+      "row_count": 45,
+      "target_card_count": 4,
+      "action_strategy_distribution": [
+        {
+          "action": "compare_competitor_context",
+          "strategy": "compare_options",
+          "count": 12
+        },
+        {
+          "action": "compare_competitor_context",
+          "strategy": "value_before_plan_selection",
+          "count": 11
+        },
+        {
+          "action": "reframe_price_objection",
+          "strategy": "value_reframe",
+          "count": 11
+        },
+        {
+          "action": "disqualify_no_fit",
+          "strategy": "no_fit_close",
+          "count": 11
+        }
+      ],
+      "expected_card_diversity": true
+    },
+    "orientation_or_explanation": {
+      "row_count": 45,
+      "target_card_count": 4,
+      "action_strategy_distribution": [
+        {
+          "action": "answer_plan_category",
+          "strategy": "explain_without_overclaiming",
+          "count": 23
+        },
+        {
+          "action": "answer_source",
+          "strategy": "answer_without_inventing_facts",
+          "count": 11
+        },
+        {
+          "action": "answer_affiliation_boundary",
+          "strategy": "answer_without_inventing_facts",
+          "count": 11
+        }
+      ],
+      "expected_card_diversity": true
+    },
+    "plan_change_and_signup": {
+      "row_count": 45,
+      "target_card_count": 3,
+      "action_strategy_distribution": [
+        {
+          "action": "answer_plan_change",
+          "strategy": "choice_close",
+          "count": 15
+        },
+        {
+          "action": "answer_signup_path",
+          "strategy": "choice_close",
+          "count": 15
+        },
+        {
+          "action": "terminal_close",
+          "strategy": "terminal_close",
+          "count": 15
+        }
+      ],
+      "expected_card_diversity": true
+    },
+    "plan_fit_and_recommendation": {
+      "row_count": 45,
+      "target_card_count": 4,
+      "action_strategy_distribution": [
+        {
+          "action": "answer_plan_fit",
+          "strategy": "value_before_plan_selection",
+          "count": 23
+        },
+        {
+          "action": "recommend_plan",
+          "strategy": "choice_close",
+          "count": 11
+        },
+        {
+          "action": "disqualify_no_fit",
+          "strategy": "no_fit_close",
+          "count": 11
+        }
+      ],
+      "expected_card_diversity": true
+    },
+    "price_and_value": {
+      "row_count": 45,
+      "target_card_count": 3,
+      "action_strategy_distribution": [
+        {
+          "action": "answer_price",
+          "strategy": "answer_without_inventing_facts",
+          "count": 30
+        },
+        {
+          "action": "reframe_price_objection",
+          "strategy": "value_reframe",
+          "count": 15
+        }
+      ],
+      "expected_card_diversity": true
+    },
+    "safety_and_boundary": {
+      "row_count": 45,
+      "target_card_count": 4,
+      "action_strategy_distribution": [
+        {
+          "action": "respect_boundary",
+          "strategy": "boundary_without_side_effects",
+          "count": 23
+        },
+        {
+          "action": "answer_without_inventing_facts",
+          "strategy": "boundary_without_side_effects",
+          "count": 11
+        },
+        {
+          "action": "disqualify_no_fit",
+          "strategy": "no_fit_close",
+          "count": 11
+        }
+      ],
+      "expected_card_diversity": true
+    },
+    "usage_intensity": {
+      "row_count": 30,
+      "target_card_count": 3,
+      "action_strategy_distribution": [
+        {
+          "action": "ask_use_case_gap",
+          "strategy": "diagnose_before_recommend",
+          "count": 30
+        }
+      ],
+      "expected_card_diversity": false
+    },
+    "use_case_scope": {
+      "row_count": 45,
+      "target_card_count": 4,
+      "action_strategy_distribution": [
+        {
+          "action": "ask_usage_intensity",
+          "strategy": "diagnose_before_recommend",
+          "count": 45
+        }
+      ],
+      "expected_card_diversity": false
+    }
+  },
+  "preserve_avoid_facts_consistency": {
+    "cards": {
+      "adoption_chatgpt_and_other_ai": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"ChatGPT or\"]"
+        ]
+      },
+      "adoption_chatgpt_or_other_uncertain": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"ChatGPT and Claude\"]"
+        ]
+      },
+      "adoption_current_chatgpt_user": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"recommend Pro\"]"
+        ]
+      },
+      "adoption_current_other_ai_user": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"recommend Pro\"]"
+        ]
+      },
+      "adoption_no_current_ai_tool": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"already use ChatGPT\", \"already use Claude\"]"
+        ]
+      },
+      "objection_chatgpt_vs_current_tool": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[\"public_plan_names\"]"
+        ],
+        "avoid_signatures": [
+          "[\"guaranteed better\"]"
+        ]
+      },
+      "objection_competitor_current_tool": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[\"public_plan_names\"]"
+        ],
+        "avoid_signatures": [
+          "[\"switch now\", \"guaranteed better\"]"
+        ]
+      },
+      "objection_not_interested": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"push Pro\", \"calendar\", \"email\"]"
+        ]
+      },
+      "objection_price_with_current_tool": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"cheap\", \"guaranteed\"]"
+        ]
+      },
+      "orientation_affiliation_boundary": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"we at OpenAI\", \"official OpenAI\"]"
+        ]
+      },
+      "orientation_model_vs_subscription": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[\"public_plan_names\"]"
+        ],
+        "avoid_signatures": [
+          "[\"internal policy\", \"guaranteed\"]"
+        ]
+      },
+      "orientation_plan_categories": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[\"public_plan_names\"]"
+        ],
+        "avoid_signatures": [
+          "[\"guaranteed\", \"unlimited\"]"
+        ]
+      },
+      "orientation_source_disclosure": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"official OpenAI\", \"we at OpenAI\"]"
+        ]
+      },
+      "plan_change_signup_path": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[\"public_plan_names\"]"
+        ],
+        "avoid_signatures": [
+          "[\"sent email\", \"created calendar\", \"CRM\"]"
+        ]
+      },
+      "plan_change_terminal_close": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"email\", \"calendar\", \"CRM\", \"?\"]"
+        ]
+      },
+      "plan_change_upgrade_later": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[\"public_plan_names\"]"
+        ],
+        "avoid_signatures": [
+          "[\"calendar\", \"email\", \"CRM\"]"
+        ]
+      },
+      "plan_fit_no_fit_free_enough": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[\"public_plan_names\"]"
+        ],
+        "avoid_signatures": [
+          "[\"push Pro\", \"team plan\"]"
+        ]
+      },
+      "plan_fit_plus_enough": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[\"public_plan_names\"]"
+        ],
+        "avoid_signatures": [
+          "[\"definitely Pro\", \"guaranteed\"]"
+        ]
+      },
+      "plan_fit_pro_choice": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[\"public_plan_names\"]"
+        ],
+        "avoid_signatures": [
+          "[\"guaranteed\"]"
+        ]
+      },
+      "plan_fit_recommend_after_context": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[\"public_plan_names\"]"
+        ],
+        "avoid_signatures": [
+          "[\"team plan\", \"guaranteed\"]"
+        ]
+      },
+      "price_objection_value": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"cheap\", \"guaranteed\"]"
+        ]
+      },
+      "price_plus_direct": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[\"public_plan_names\", \"current_public_plan_prices\"]"
+        ],
+        "avoid_signatures": [
+          "[\"recommend Pro\"]"
+        ]
+      },
+      "price_pro_direct": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[\"public_plan_names\", \"current_public_plan_prices\"]"
+        ],
+        "avoid_signatures": [
+          "[\"guaranteed\"]"
+        ]
+      },
+      "safety_no_crm_email_calendar": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"sent email\", \"scheduled calendar\", \"updated CRM\"]"
+        ]
+      },
+      "safety_raw_url_or_transcript": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"http://\", \"https://\", \"raw transcript\"]"
+        ]
+      },
+      "safety_unsupported_policy_privacy": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"internal policy says\", \"guaranteed\", \"trained on your data\"]"
+        ]
+      },
+      "safety_wrong_product": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"recommend Pro\", \"team plan\"]"
+        ]
+      },
+      "team_controls_positive": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[\"public_plan_names\"]"
+        ],
+        "avoid_signatures": [
+          "[\"individual only\"]"
+        ]
+      },
+      "team_enterprise_security": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[\"public_plan_names\"]"
+        ],
+        "avoid_signatures": [
+          "[\"personal use only\"]"
+        ]
+      },
+      "team_not_team_personal": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"team plan\", \"business workspace\", \"Enterprise route\"]"
+        ]
+      },
+      "team_personal_use": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[\"public_plan_names\"]"
+        ],
+        "avoid_signatures": [
+          "[\"team plan\", \"procurement\"]"
+        ]
+      },
+      "usage_heavy_daily": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"light use\"]"
+        ]
+      },
+      "usage_light_occasional": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"heavy daily\"]"
+        ]
+      },
+      "usage_moderate": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"heavy daily\"]"
+        ]
+      },
+      "use_case_coding_research": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"voice\"]"
+        ]
+      },
+      "use_case_coding_voice": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"writing\"]"
+        ]
+      },
+      "use_case_coding_writing": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[\"voice\"]"
+        ]
+      },
+      "use_case_single_mode": {
+        "preserve_subset_of_objects": true,
+        "preserve_object_mismatch_case_ids": [],
+        "facts_signatures": [
+          "[]"
+        ],
+        "avoid_signatures": [
+          "[]"
+        ]
+      }
+    },
+    "warnings": []
+  },
+  "say_style_consistency": {
+    "policy": "Generated from target-card say_style_policy templates; exact wording varies by object slots.",
+    "target_card_template_source": "runtime/llm_brain/training/qwen_compact_target_cards.json"
+  },
+  "heldout_coverage": {
+    "validation": {
+      "unseen_act_sub_action_strategy_combo_count": 0,
+      "unseen_act_sub_action_strategy_combos": [],
+      "unseen_action_sub_pair_count": 0,
+      "unseen_action_sub_pairs": [],
+      "covered_by_train": true
+    },
+    "test": {
+      "unseen_act_sub_action_strategy_combo_count": 0,
+      "unseen_act_sub_action_strategy_combos": [],
+      "unseen_action_sub_pair_count": 0,
+      "unseen_action_sub_pairs": [],
+      "covered_by_train": true
+    }
+  },
+  "ood_split_summary": {
+    "row_count": 10,
+    "isolated": true,
+    "source_type_counts": {
+      "ood_control": 10
+    },
+    "target_card_ids": [
+      "safety_wrong_product"
+    ]
+  },
+  "duplicate_text_leakage": {
+    "exact_overlap": {
+      "train_validation": [],
+      "train_test": [],
+      "validation_test": []
+    },
+    "exact_overlap_found": false,
+    "near_duplicate_threshold": 0.92,
+    "near_duplicate_overlap": []
+  },
+  "exact_buyer_text_overlap": {
+    "train_validation": [],
+    "train_test": [],
+    "validation_test": []
+  },
+  "raw_private_transcript_flags": {
+    "all_false": true,
+    "case_ids": []
+  },
+  "previous_4h17_issue_comparison": {
+    "previous_audit": "research/experiments/generated/LOCAL-QWEN-DATASET-CONSISTENCY-AUDIT-001/result.json",
+    "validation_unseen_core_before": 6,
+    "validation_unseen_core_after": 0,
+    "test_unseen_core_before": 2,
+    "test_unseen_core_after": 0,
+    "validation_unseen_action_sub_before": 5,
+    "validation_unseen_action_sub_after": 0,
+    "test_unseen_action_sub_before": 2,
+    "test_unseen_action_sub_after": 0,
+    "semantic_neighborhood_inconsistency_before": "all previous broad neighborhoods had mixed signatures",
+    "semantic_neighborhood_inconsistency_after": "target-card neighborhoods are consistent; broad semantic groups intentionally contain multiple cards",
+    "target_inconsistency_before": "mixed action/strategy and response-plan signatures inside previous neighborhoods",
+    "target_inconsistency_after": "resolved",
+    "insufficient_examples_before": "80 rows plus tiny replay was insufficient",
+    "insufficient_examples_after": "445 rows total with 435 in-distribution rows",
+    "previous_4h17_issues_resolved": true
+  },
+  "failures": []
+}

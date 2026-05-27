@@ -1,0 +1,214 @@
+{
+  "dataset_version": "LOCAL-QWEN-BALANCED-SFT-DATASET-001",
+  "source_dataset_id": "LOCAL-QWEN-SFT-DATASET-001 + LOCAL-QWEN-TINY-OVERFIT-DATASET-001",
+  "target_row_count_min": 300,
+  "target_row_count_max": 500,
+  "recommended_row_count": 400,
+  "actual_design_target": 435,
+  "compact_contract_version": "LOCAL-QWEN-COMPACT-PLANNER-CONTRACT-002",
+  "semantic_groups": {
+    "adoption_current_tool_context": {
+      "minimum_rows": 45,
+      "required_coverage": [
+        "current ChatGPT user",
+        "current other AI user",
+        "ChatGPT and other AI tools",
+        "ChatGPT or maybe Claude / uncertain",
+        "no current AI tool",
+        "ASR aliases: chacha PT, chachu PT, chat gbt, check GPT, Claude/cloud/clawed"
+      ]
+    },
+    "orientation_or_explanation": {
+      "minimum_rows": 45,
+      "required_coverage": [
+        "what is this",
+        "what are these plans",
+        "Free / Plus / Pro / Business / Enterprise explanation",
+        "model vs subscription",
+        "subscription model question",
+        "simple explanation request",
+        "source/affiliation boundaries when buyer asks who/what this is"
+      ]
+    },
+    "individual_not_team_and_team_scope": {
+      "minimum_rows": 45,
+      "required_coverage": [
+        "by myself",
+        "just me",
+        "not a team",
+        "personal use only",
+        "no company",
+        "positive team controls: team/company/admin/security/procurement/SSO/employees",
+        "Enterprise/security/procurement intent"
+      ]
+    },
+    "use_case_scope": {
+      "minimum_rows": 45,
+      "required_coverage": [
+        "coding and voice",
+        "coding and writing",
+        "coding and research",
+        "voice-only",
+        "writing-only",
+        "research-only",
+        "mixed use cases with AND/OR",
+        "current buyer words must be preserved"
+      ]
+    },
+    "usage_intensity": {
+      "minimum_rows": 30,
+      "required_coverage": [
+        "light",
+        "occasional",
+        "moderate",
+        "heavy",
+        "daily",
+        "hitting limits",
+        "not hitting limits",
+        "a little heavy maybe more than a little"
+      ]
+    },
+    "price_and_value": {
+      "minimum_rows": 45,
+      "required_coverage": [
+        "Plus price question",
+        "Pro price question",
+        "price objection",
+        "too expensive",
+        "value challenge",
+        "why should I pay",
+        "budget sensitivity",
+        "price without buying intent",
+        "direct price answer priority"
+      ]
+    },
+    "plan_fit_and_recommendation": {
+      "minimum_rows": 45,
+      "required_coverage": [
+        "Is Plus enough?",
+        "Is Pro better?",
+        "Pro tier choice",
+        "Plus vs Pro",
+        "current tool vs ChatGPT",
+        "no-fit / Free enough",
+        "recommendation after enough context",
+        "avoid premature recommendation when context is missing"
+      ]
+    },
+    "plan_change_and_signup": {
+      "minimum_rows": 35,
+      "required_coverage": [
+        "start lower and upgrade later",
+        "midcycle upgrade",
+        "signup path",
+        "self-serve close",
+        "terminal acceptance after recommendation",
+        "Ok, I'll check that, thanks",
+        "close without fake side effects"
+      ]
+    },
+    "safety_and_boundary": {
+      "minimum_rows": 45,
+      "required_coverage": [
+        "don't put me in CRM",
+        "don't email me",
+        "don't schedule calendar",
+        "raw URL request",
+        "unsupported fact request",
+        "affiliation claim pressure",
+        "internal policy request",
+        "wrong product",
+        "privacy/data training question",
+        "no fake side effects"
+      ]
+    },
+    "objections_and_competitor_context": {
+      "minimum_rows": 45,
+      "required_coverage": [
+        "I use Claude",
+        "I use Gemini",
+        "I use Copilot",
+        "why switch",
+        "current tool is enough",
+        "ChatGPT vs current tool",
+        "not interested",
+        "skeptical challenge",
+        "price objection with current tool"
+      ]
+    }
+  },
+  "split_policy": {
+    "train_ratio": 0.7,
+    "validation_ratio": 0.15,
+    "test_ratio": 0.15,
+    "ood_test_separate": true,
+    "held_out_by": "exact buyer text",
+    "exact_text_overlap_allowed_across_train_validation_test": false,
+    "train_must_include_each_in_distribution_target_card": true
+  },
+  "label_consistency_policy": {
+    "semantic_target_source": "qwen_compact_target_cards.json",
+    "same_buyer_meaning_must_keep_same_core_labels": [
+      "act",
+      "sub",
+      "action",
+      "strategy"
+    ],
+    "same_buyer_meaning_must_keep_same_response_plan_constraints": [
+      "rel",
+      "neg",
+      "facts",
+      "preserve",
+      "avoid",
+      "state update"
+    ],
+    "forbidden_labels": [
+      "generalized_sales_move",
+      "case-id-like labels",
+      "deprecated compact labels"
+    ]
+  },
+  "validation_test_coverage_policy": {
+    "validation_test_core_combos_must_exist_in_train": true,
+    "validation_test_action_sub_pairs_must_exist_in_train": true,
+    "exception": "Only rows in ood_test may intentionally contain unseen labels or combinations.",
+    "coverage_fields": [
+      "act",
+      "sub",
+      "action",
+      "strategy"
+    ]
+  },
+  "ood_policy": {
+    "split_name": "ood_test",
+    "purpose": "Keep intentionally unsupported or out-of-distribution buyer turns out of validation/test metrics.",
+    "must_be_labeled": true,
+    "must_not_be_counted_as_in_distribution_coverage": true
+  },
+  "replay_training_policy": {
+    "train_again_in_this_phase": false,
+    "future_strategy": "mixed_replay_balanced_sampling",
+    "include_tiny_examples_throughout_training": true,
+    "include_original_80_gold_rows_throughout_training": true,
+    "final_stage_mixing_required": true,
+    "final_stage_only_stage3_rows_allowed": false
+  },
+  "privacy_policy": {
+    "privacy_level": "sanitized_only",
+    "raw_private_transcripts_allowed": false,
+    "customer_audio_allowed": false,
+    "failed_qwen_outputs_as_targets_allowed": false,
+    "failed_qwen_outputs_as_negative_metadata_allowed": true
+  },
+  "side_effect_policy": {
+    "provider_llm_calls_allowed": false,
+    "openai_api_calls_allowed": false,
+    "local_qwen_generation_allowed": false,
+    "local_qwen_training_allowed": false,
+    "live_tts_calls_allowed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "live_dialogue_replacement_allowed": false,
+    "model_or_adapter_weight_commits_allowed": false
+  }
+}

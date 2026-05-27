@@ -1,0 +1,25 @@
+{
+  "experiment_id": "LOCAL-QWEN-BALANCED-DATASET-ARTIFACTS-VALIDATION-001",
+  "validated_at": "2026-05-27T22:28:29.007298+00:00",
+  "status": "pass",
+  "checks": {
+    "balanced_dataset_exists": true,
+    "dataset_size_in_range": true,
+    "all_compact_targets_valid": true,
+    "target_cards_exist": true,
+    "target_cards_referenced": true,
+    "equivalence_policy_exists": true,
+    "mixed_replay_plan_exists": true,
+    "final_stage_only_stage3_rows_allowed_false": true,
+    "final_stage_mixing_required_true": true,
+    "no_provider_openai_tts_calls": true,
+    "no_raw_private_transcripts": true,
+    "no_model_adapters_committed": true,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "live_readiness_claimed": false
+  },
+  "dataset_validation_status": "pass",
+  "dataset_total_rows": 445,
+  "failures": []
+}

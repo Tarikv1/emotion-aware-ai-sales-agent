@@ -1,0 +1,59 @@
+{
+  "policy_id": "LOCAL-QWEN-EVAL-EQUIVALENCE-POLICY-001",
+  "purpose": "Keep schema, compact contract, verifier, and safety checks strict while allowing narrow buyer-facing draft wording equivalence when semantic planner fields match.",
+  "non_negotiable_strict_checks": {
+    "schema_validation": "do_not_loosen",
+    "compact_contract_validation": "do_not_loosen",
+    "verifier_safety_checks": "do_not_loosen",
+    "wrong_act_sub_action_strategy": "always_fail",
+    "and_or_drift": "always_fail",
+    "voice_to_writing_drift": "always_fail",
+    "not_team_to_team_drift": "always_fail",
+    "fake_side_effects": "always_fail",
+    "unsupported_facts": "always_fail",
+    "internal_policy_language": "always_fail",
+    "raw_url": "always_fail",
+    "affiliation_claim": "always_fail"
+  },
+  "allowed_equivalence_scope": {
+    "response_plan_equivalence_only": true,
+    "required_matches": [
+      "act",
+      "sub",
+      "action",
+      "strategy",
+      "state_update",
+      "rel",
+      "neg",
+      "core preserve constraints",
+      "core avoid constraints",
+      "facts constraints"
+    ],
+    "draft_response_requirement": "Buyer-facing, safe, concise, and semantically equivalent to the gold response.",
+    "examples": [
+      {
+        "gold": "Got it - coding workflow and voice. Are you using that lightly, moderately, or heavily?",
+        "acceptable": "Got it - coding workflow and voice. Is that light, moderate, or heavy usage?",
+        "reason": "Same act/sub/action/strategy and same preserved buyer words."
+      },
+      {
+        "gold": "Understood - by myself, not a team. I would keep this on an individual-use path first.",
+        "unacceptable": "Your team should look at Business first.",
+        "reason": "not-team to team drift."
+      }
+    ]
+  },
+  "tracked_metrics": [
+    "exact_match",
+    "strict_semantic_match",
+    "equivalence_match",
+    "verifier_pass",
+    "safety_pass"
+  ],
+  "reporting_policy": {
+    "exact_match_reported_separately": true,
+    "strict_semantic_match_reported_separately": true,
+    "equivalence_match_never_masks_safety_failure": true,
+    "quality_gate_may_use_equivalence_match_only_after_strict_safety_pass": true
+  }
+}

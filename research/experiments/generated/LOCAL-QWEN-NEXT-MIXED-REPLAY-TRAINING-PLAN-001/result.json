@@ -1,0 +1,44 @@
+{
+  "experiment_id": "LOCAL-QWEN-NEXT-MIXED-REPLAY-TRAINING-PLAN-001",
+  "generated_at": "2026-05-27T22:31:37.661095+00:00",
+  "status": "pass",
+  "plan_path": "runtime/llm_brain/training/qwen_mixed_replay_training_plan.json",
+  "equivalence_policy_path": "runtime/llm_brain/training/qwen_eval_equivalence_policy.json",
+  "balanced_dataset_result_path": "research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/result.json",
+  "training_strategy": "mixed_replay_balanced_sampling",
+  "balanced_dataset_id": "LOCAL-QWEN-BALANCED-SFT-DATASET-001",
+  "more_training_recommended_now": false,
+  "future_mixed_replay_training_recommended_after_data_passes": true,
+  "adapter_live_ready_claimed": false,
+  "live_wiring_allowed_in_this_phase": false,
+  "adapter_live_ready": false,
+  "quality_gate_passed": false,
+  "live_wiring": {
+    "recommended": false,
+    "reason": "This phase is planning and dataset expansion only; no adapter was trained or evaluated for live readiness."
+  },
+  "checks": {
+    "final_stage_mixing_required": true,
+    "final_stage_only_stage3_rows_allowed_false": true,
+    "validation_test_held_out": true,
+    "ood_test_separate": true,
+    "no_training_performed": true,
+    "no_model_or_adapter_weights_committed": true,
+    "equivalence_policy_exists": true
+  },
+  "side_effects": {
+    "local_model_calls_made": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "model_download_attempted": false,
+    "model_redownloaded": false,
+    "model_weights_committed": false,
+    "adapter_files_committed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcript_included": false
+  },
+  "failures": []
+}
