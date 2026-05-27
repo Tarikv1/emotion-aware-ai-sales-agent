@@ -1,0 +1,59 @@
+{
+  "experiment_id": "LOCAL-QWEN-NEXT-TRAINING-PLAN-001",
+  "generated_at": "2026-05-27T21:34:01.864775+00:00",
+  "status": "pass",
+  "selected_option": "option_1_data_expansion_needed",
+  "option_scores": {
+    "option_1_data_expansion_needed": 39,
+    "option_2_curriculum_replay_fix": 16,
+    "option_3_label_simplification": 4,
+    "option_4_eval_strictness_adjustment": 21,
+    "option_5_constrained_decoding_or_grammar": 1
+  },
+  "adapter_live_ready": false,
+  "quality_gate_passed": false,
+  "more_training_recommended_now": false,
+  "data_expansion_recommended": true,
+  "label_simplification_recommended": false,
+  "eval_strictness_adjustment_recommended": true,
+  "curriculum_replay_fix_recommended": true,
+  "constrained_decoding_or_grammar_recommended": true,
+  "recommendation": {
+    "primary": "Do not train more from the current 80-row curriculum. Expand to 300-500 balanced rows first, preserve held-out splits, and only then retrain with replay.",
+    "minimum_dataset_work": [
+      "Create balanced paraphrases per semantic neighborhood.",
+      "Add rare safety, terminal, price, current-tool, personal-use, and use-case variants.",
+      "Keep validation/test held out by case intent and paraphrase family, not only by case ID.",
+      "Run the dataset consistency audit before any new QLoRA run."
+    ],
+    "required_curriculum_change_after_data_passes": [
+      "Final training stage must mix tiny + stage2 + stage3 examples.",
+      "Use replay weighting or balanced sampling for tiny and rare groups.",
+      "Track tiny-overfit retention as a hard regression gate."
+    ],
+    "eval_change": [
+      "Keep schema, verifier, safety, and side-effect checks strict.",
+      "Add narrow semantic-equivalence rules for same action/strategy with acceptable response-plan wording."
+    ]
+  },
+  "live_wiring": {
+    "recommended": false,
+    "reason": "Held-out strict metrics and verifier pass rates do not justify live dialogue wiring."
+  },
+  "side_effects": {
+    "local_model_calls_made": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "model_download_attempted": false,
+    "model_redownloaded": false,
+    "model_weights_committed": false,
+    "adapter_files_committed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcript_included": false,
+    "raw_private_transcript_copied_to_public_evidence": false,
+    "case_text_stored_in_evidence": false
+  }
+}

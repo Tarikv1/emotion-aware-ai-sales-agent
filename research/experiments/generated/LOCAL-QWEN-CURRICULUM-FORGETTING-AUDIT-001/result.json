@@ -1,0 +1,1036 @@
+{
+  "experiment_id": "LOCAL-QWEN-CURRICULUM-FORGETTING-AUDIT-001",
+  "generated_at": "2026-05-27T21:33:59.033065+00:00",
+  "status": "pass",
+  "inputs": {
+    "tiny_result": "research/experiments/generated/LOCAL-QWEN-LORA-TINY-OVERFIT-001/result.json",
+    "curriculum_eval_result": "research/experiments/generated/LOCAL-QWEN-LORA-CURRICULUM-EVAL-001/result.json",
+    "curriculum_training_result": "research/experiments/generated/LOCAL-QWEN-LORA-CURRICULUM-TRAINING-001/result.json",
+    "stage1_tiny": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-DATASET-001/stage1_tiny.jsonl",
+    "stage2_20": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-DATASET-001/stage2_20.jsonl",
+    "stage3_60": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-DATASET-001/stage3_60.jsonl"
+  },
+  "tiny_adapter_vs_curriculum_on_tiny": {
+    "tiny_adapter_summary": {
+      "status": "completed",
+      "adapter_loaded": true,
+      "case_count": 8,
+      "schema_valid_count": 8,
+      "verifier_pass_count": 8,
+      "compact_contract_valid_count": 8,
+      "strict_gold_semantic_match_count": 8,
+      "exact_target_match_count": 8,
+      "malformed_compact_object_count": 0,
+      "deprecated_case_id_generic_label_count": 0,
+      "latency_metrics": {
+        "model_load_time_ms": 8568.852,
+        "total_generation_latency_ms": 131160.207,
+        "average_generation_latency_ms": 16395.026,
+        "p50_generation_latency_ms": 17031.836,
+        "p90_generation_latency_ms": 18700.586,
+        "average_first_output_latency_ms": 6360.373
+      }
+    },
+    "curriculum_tiny_metrics": {
+      "case_count": 8,
+      "schema_valid_count": 8,
+      "verifier_pass_count": 7,
+      "semantic_match_count": 0,
+      "gold_section_semantic_match_count": 0,
+      "strict_gold_semantic_match_count": 0,
+      "strict_gold_response_plan_match_count": 2,
+      "compact_contract_valid_count": 8,
+      "deprecated_label_count": 0,
+      "case_id_label_leak_count": 0,
+      "generic_action_count": 0,
+      "generic_sub_intent_count": 0,
+      "generic_act_count": 0,
+      "exact_match_count": 0,
+      "compact_adapter_error_count": 0,
+      "failure_class_counts": {
+        "strict_gold_semantic": 8,
+        "strict_gold_response_plan": 6,
+        "verifier": 1
+      },
+      "generic_label_count": 0,
+      "malformed_output_count": 0,
+      "latency_metrics": {
+        "model_load_time_ms": 8726.045,
+        "total_generation_latency_ms": 113501.959,
+        "average_generation_latency_ms": 14187.745,
+        "p50_generation_latency_ms": 13995.41,
+        "p90_generation_latency_ms": 15861.986,
+        "average_first_output_latency_ms": 5452.931,
+        "peak_gpu_memory_bytes": 5975856128
+      },
+      "target_present_in_generation_prompt_count": 0
+    }
+  },
+  "summary": {
+    "forgotten_tiny_case_count": 8,
+    "forgotten_case_ids": [
+      "tiny_current_tool_and_001",
+      "tiny_current_tool_or_002",
+      "tiny_midcycle_upgrade_006",
+      "tiny_negated_team_003",
+      "tiny_plan_category_005",
+      "tiny_safety_boundary_008",
+      "tiny_terminal_acceptance_007",
+      "tiny_use_case_fidelity_004"
+    ],
+    "failure_class_counts": {
+      "strict_gold_response_plan": 6,
+      "strict_gold_semantic": 8,
+      "verifier": 1
+    },
+    "adapter_live_ready": false,
+    "quality_gate_passed": false
+  },
+  "forgotten_cases": [
+    {
+      "case_id": "tiny_current_tool_and_001",
+      "groups": [
+        "current_tool_ai"
+      ],
+      "tiny_adapter": {
+        "schema_valid": true,
+        "verifier_pass": true,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": true,
+        "strict_gold_response_plan_match": true,
+        "exact_match": true
+      },
+      "curriculum_adapter": {
+        "schema_valid": true,
+        "verifier_pass": true,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": false,
+        "strict_gold_response_plan_match": true,
+        "exact_match": false
+      },
+      "field_mismatches": [
+        "strategy",
+        "say"
+      ],
+      "failure_classes": [
+        "strict_gold_semantic"
+      ],
+      "semantic_mismatches": [
+        "sales_strategy.persuasion_strategy",
+        "sales_strategy.should_ask_question",
+        "sales_strategy.should_recommend"
+      ],
+      "verifier_errors": [],
+      "unacceptable_wrong_sales_move": false,
+      "expected": {
+        "act": "adoption_state",
+        "sub": "current_chatgpt_and_other_ai_user",
+        "action": "ask_use_case_gap",
+        "strategy": "preserve_buyer_words",
+        "buyer": "evaluating",
+        "intent": "medium",
+        "rel": "and",
+        "neg": "none",
+        "update": {
+          "adoption": "current_chatgpt_and_other_ai_user",
+          "close": "",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": []
+        },
+        "facts": [],
+        "preserve": [
+          "ChatGPT",
+          "other AI tools"
+        ],
+        "avoid": [],
+        "say_style": "acknowledges_buyer"
+      },
+      "curriculum_predicted": {
+        "act": "adoption_state",
+        "sub": "current_chatgpt_and_other_ai_user",
+        "action": "ask_use_case_gap",
+        "strategy": "diagnose_before_recommend",
+        "buyer": "evaluating",
+        "intent": "medium",
+        "rel": "and",
+        "neg": "none",
+        "update": {
+          "adoption": "current_chatgpt_and_other_ai_user",
+          "close": "",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": []
+        },
+        "facts": [],
+        "preserve": [
+          "ChatGPT",
+          "other AI tools"
+        ],
+        "avoid": [],
+        "say_style": "acknowledges_buyer"
+      }
+    },
+    {
+      "case_id": "tiny_current_tool_or_002",
+      "groups": [
+        "current_tool_ai"
+      ],
+      "tiny_adapter": {
+        "schema_valid": true,
+        "verifier_pass": true,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": true,
+        "strict_gold_response_plan_match": true,
+        "exact_match": true
+      },
+      "curriculum_adapter": {
+        "schema_valid": true,
+        "verifier_pass": true,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": false,
+        "strict_gold_response_plan_match": false,
+        "exact_match": false
+      },
+      "field_mismatches": [
+        "sub",
+        "update",
+        "strategy",
+        "facts",
+        "say"
+      ],
+      "failure_classes": [
+        "strict_gold_semantic",
+        "strict_gold_response_plan"
+      ],
+      "semantic_mismatches": [
+        "response_plan.campaign_facts_needed",
+        "sales_strategy.persuasion_strategy",
+        "sales_strategy.should_ask_question",
+        "sales_strategy.should_recommend",
+        "semantic_frame.object_type",
+        "semantic_frame.sub_intent",
+        "state_update.should_update_adoption_state"
+      ],
+      "verifier_errors": [],
+      "unacceptable_wrong_sales_move": false,
+      "expected": {
+        "act": "current_tool_context",
+        "sub": "current_chatgpt_or_other_ai_unknown",
+        "action": "ask_use_case_gap",
+        "strategy": "preserve_buyer_words",
+        "buyer": "evaluating",
+        "intent": "medium",
+        "rel": "or",
+        "neg": "none",
+        "update": {
+          "adoption": "current_chatgpt_or_other_ai_unknown",
+          "close": "",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": []
+        },
+        "facts": [],
+        "preserve": [
+          "ChatGPT",
+          "Claude"
+        ],
+        "avoid": [],
+        "say_style": "acknowledges_buyer"
+      },
+      "curriculum_predicted": {
+        "act": "current_tool_context",
+        "sub": "current_chatgpt_and_other_ai_user",
+        "action": "ask_use_case_gap",
+        "strategy": "diagnose_before_recommend",
+        "buyer": "evaluating",
+        "intent": "medium",
+        "rel": "or",
+        "neg": "none",
+        "update": {
+          "adoption": "",
+          "close": "",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": []
+        },
+        "facts": [
+          "public_plan_names"
+        ],
+        "preserve": [
+          "ChatGPT",
+          "Claude"
+        ],
+        "avoid": [],
+        "say_style": "acknowledges_buyer+next_step_plan_fit+recommendation_language"
+      }
+    },
+    {
+      "case_id": "tiny_midcycle_upgrade_006",
+      "groups": [
+        "upgrade_midcycle"
+      ],
+      "tiny_adapter": {
+        "schema_valid": true,
+        "verifier_pass": true,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": true,
+        "strict_gold_response_plan_match": true,
+        "exact_match": true
+      },
+      "curriculum_adapter": {
+        "schema_valid": true,
+        "verifier_pass": true,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": false,
+        "strict_gold_response_plan_match": false,
+        "exact_match": false
+      },
+      "field_mismatches": [
+        "buyer",
+        "intent",
+        "strategy",
+        "preserve",
+        "avoid",
+        "say",
+        "flags"
+      ],
+      "failure_classes": [
+        "strict_gold_semantic",
+        "strict_gold_response_plan"
+      ],
+      "semantic_mismatches": [
+        "response_plan.buyer_words_to_preserve",
+        "response_plan.max_sentence_count",
+        "response_plan.must_include",
+        "response_plan.must_not_include",
+        "sales_strategy.persuasion_strategy",
+        "semantic_frame.buyer_state",
+        "semantic_frame.commercial_intent",
+        "semantic_frame.object_mentions"
+      ],
+      "verifier_errors": [],
+      "unacceptable_wrong_sales_move": false,
+      "expected": {
+        "act": "plan_change_question",
+        "sub": "midcycle_upgrade_question",
+        "action": "answer_plan_change",
+        "strategy": "explain_without_overclaiming",
+        "buyer": "price_sensitive",
+        "intent": "evaluation",
+        "rel": "and",
+        "neg": "none",
+        "update": {
+          "adoption": "",
+          "close": "",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": []
+        },
+        "facts": [
+          "public_plan_names"
+        ],
+        "preserve": [
+          "lower Pro tier",
+          "upgrade later"
+        ],
+        "avoid": [
+          "automatically upgrades",
+          "guaranteed"
+        ],
+        "say_style": "plain_statement"
+      },
+      "curriculum_predicted": {
+        "act": "plan_change_question",
+        "sub": "midcycle_upgrade_question",
+        "action": "answer_plan_change",
+        "strategy": "value_before_plan_selection",
+        "buyer": "evaluating",
+        "intent": "medium",
+        "rel": "and",
+        "neg": "none",
+        "update": {
+          "adoption": "",
+          "close": "",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": []
+        },
+        "facts": [
+          "public_plan_names"
+        ],
+        "preserve": [
+          "lower Pro tier",
+          "later upgrade"
+        ],
+        "avoid": [],
+        "say_style": "acknowledges_buyer+next_step_plan_fit+recommendation_language"
+      }
+    },
+    {
+      "case_id": "tiny_negated_team_003",
+      "groups": [
+        "personal_not_team"
+      ],
+      "tiny_adapter": {
+        "schema_valid": true,
+        "verifier_pass": true,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": true,
+        "strict_gold_response_plan_match": true,
+        "exact_match": true
+      },
+      "curriculum_adapter": {
+        "schema_valid": true,
+        "verifier_pass": true,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": false,
+        "strict_gold_response_plan_match": false,
+        "exact_match": false
+      },
+      "field_mismatches": [
+        "intent",
+        "strategy",
+        "facts",
+        "avoid",
+        "say"
+      ],
+      "failure_classes": [
+        "strict_gold_semantic",
+        "strict_gold_response_plan"
+      ],
+      "semantic_mismatches": [
+        "response_plan.campaign_facts_needed",
+        "response_plan.must_not_include",
+        "sales_strategy.persuasion_strategy",
+        "sales_strategy.should_ask_question",
+        "sales_strategy.should_recommend",
+        "semantic_frame.commercial_intent"
+      ],
+      "verifier_errors": [],
+      "unacceptable_wrong_sales_move": false,
+      "expected": {
+        "act": "team_scope",
+        "sub": "not_team_personal_use",
+        "action": "ask_individual_usage_intensity",
+        "strategy": "preserve_buyer_words",
+        "buyer": "individual_user",
+        "intent": "information",
+        "rel": "and",
+        "neg": "team_state",
+        "update": {
+          "adoption": "",
+          "close": "",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": []
+        },
+        "facts": [],
+        "preserve": [
+          "by myself",
+          "not a team"
+        ],
+        "avoid": [
+          "team plan",
+          "business workspace"
+        ],
+        "say_style": "acknowledges_buyer"
+      },
+      "curriculum_predicted": {
+        "act": "team_scope",
+        "sub": "not_team_personal_use",
+        "action": "ask_individual_usage_intensity",
+        "strategy": "diagnose_before_recommend",
+        "buyer": "individual_user",
+        "intent": "medium",
+        "rel": "and",
+        "neg": "team_state",
+        "update": {
+          "adoption": "",
+          "close": "",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": []
+        },
+        "facts": [
+          "public_plan_names"
+        ],
+        "preserve": [
+          "by myself",
+          "not a team"
+        ],
+        "avoid": [
+          "your team",
+          "Business workspace"
+        ],
+        "say_style": "acknowledges_buyer"
+      }
+    },
+    {
+      "case_id": "tiny_plan_category_005",
+      "groups": [
+        "plan_explanation"
+      ],
+      "tiny_adapter": {
+        "schema_valid": true,
+        "verifier_pass": true,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": true,
+        "strict_gold_response_plan_match": true,
+        "exact_match": true
+      },
+      "curriculum_adapter": {
+        "schema_valid": true,
+        "verifier_pass": true,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": false,
+        "strict_gold_response_plan_match": true,
+        "exact_match": false
+      },
+      "field_mismatches": [
+        "buyer",
+        "intent",
+        "rel",
+        "say",
+        "flags"
+      ],
+      "failure_classes": [
+        "strict_gold_semantic"
+      ],
+      "semantic_mismatches": [
+        "semantic_frame.buyer_state",
+        "semantic_frame.commercial_intent",
+        "semantic_frame.conjunction_relation"
+      ],
+      "verifier_errors": [],
+      "unacceptable_wrong_sales_move": false,
+      "expected": {
+        "act": "orientation_or_explanation",
+        "sub": "plan_category_explanation",
+        "action": "answer_plan_category",
+        "strategy": "explain_without_overclaiming",
+        "buyer": "confused",
+        "intent": "information",
+        "rel": "and",
+        "neg": "none",
+        "update": {
+          "adoption": "",
+          "close": "",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": []
+        },
+        "facts": [
+          "public_plan_names"
+        ],
+        "preserve": [
+          "Free",
+          "Plus",
+          "Pro",
+          "Business",
+          "Enterprise"
+        ],
+        "avoid": [],
+        "say_style": "plan_list_language"
+      },
+      "curriculum_predicted": {
+        "act": "orientation_or_explanation",
+        "sub": "plan_category_explanation",
+        "action": "answer_plan_category",
+        "strategy": "explain_without_overclaiming",
+        "buyer": "evaluating",
+        "intent": "medium",
+        "rel": "none",
+        "neg": "none",
+        "update": {
+          "adoption": "",
+          "close": "",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": []
+        },
+        "facts": [
+          "public_plan_names"
+        ],
+        "preserve": [
+          "Free",
+          "Plus",
+          "Pro",
+          "Business",
+          "Enterprise"
+        ],
+        "avoid": [],
+        "say_style": "next_step_plan_fit+plan_list_language"
+      }
+    },
+    {
+      "case_id": "tiny_safety_boundary_008",
+      "groups": [
+        "safety_boundary"
+      ],
+      "tiny_adapter": {
+        "schema_valid": true,
+        "verifier_pass": true,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": true,
+        "strict_gold_response_plan_match": true,
+        "exact_match": true
+      },
+      "curriculum_adapter": {
+        "schema_valid": true,
+        "verifier_pass": true,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": false,
+        "strict_gold_response_plan_match": false,
+        "exact_match": false
+      },
+      "field_mismatches": [
+        "buyer",
+        "intent",
+        "block",
+        "strategy",
+        "facts",
+        "preserve",
+        "avoid",
+        "say"
+      ],
+      "failure_classes": [
+        "strict_gold_semantic",
+        "strict_gold_response_plan"
+      ],
+      "semantic_mismatches": [
+        "response_plan.buyer_words_to_preserve",
+        "response_plan.campaign_facts_needed",
+        "response_plan.must_include",
+        "response_plan.must_not_include",
+        "sales_strategy.persuasion_strategy",
+        "semantic_frame.buyer_state",
+        "semantic_frame.commercial_intent",
+        "semantic_frame.object_mentions",
+        "state_update.blocked_updates"
+      ],
+      "verifier_errors": [],
+      "unacceptable_wrong_sales_move": false,
+      "expected": {
+        "act": "safety_boundary",
+        "sub": "no_crm_request",
+        "action": "respect_boundary",
+        "strategy": "respect_boundary",
+        "buyer": "skeptical",
+        "intent": "boundary",
+        "rel": "none",
+        "neg": "none",
+        "update": {
+          "adoption": "",
+          "close": "",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": []
+        },
+        "facts": [],
+        "preserve": [],
+        "avoid": [
+          "CRM",
+          "record"
+        ],
+        "say_style": "plain_statement"
+      },
+      "curriculum_predicted": {
+        "act": "safety_boundary",
+        "sub": "no_crm_request",
+        "action": "respect_boundary",
+        "strategy": "boundary_without_side_effects",
+        "buyer": "evaluating",
+        "intent": "medium",
+        "rel": "none",
+        "neg": "none",
+        "update": {
+          "adoption": "",
+          "close": "",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": []
+        },
+        "facts": [
+          "public_plan_names"
+        ],
+        "preserve": [
+          "no CRM"
+        ],
+        "avoid": [],
+        "say_style": "acknowledges_buyer+boundary_language"
+      }
+    },
+    {
+      "case_id": "tiny_terminal_acceptance_007",
+      "groups": [
+        "terminal_acceptance"
+      ],
+      "tiny_adapter": {
+        "schema_valid": true,
+        "verifier_pass": true,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": true,
+        "strict_gold_response_plan_match": true,
+        "exact_match": true
+      },
+      "curriculum_adapter": {
+        "schema_valid": true,
+        "verifier_pass": false,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": false,
+        "strict_gold_response_plan_match": false,
+        "exact_match": false
+      },
+      "field_mismatches": [
+        "intent",
+        "update",
+        "facts",
+        "preserve",
+        "avoid",
+        "say"
+      ],
+      "failure_classes": [
+        "verifier",
+        "strict_gold_semantic",
+        "strict_gold_response_plan"
+      ],
+      "semantic_mismatches": [
+        "response_plan.buyer_words_to_preserve",
+        "response_plan.campaign_facts_needed",
+        "response_plan.max_sentence_count",
+        "response_plan.must_include",
+        "response_plan.must_not_include",
+        "semantic_frame.commercial_intent",
+        "semantic_frame.object_mentions"
+      ],
+      "verifier_errors": [
+        "buyer_word_not_preserved:terminal_close"
+      ],
+      "unacceptable_wrong_sales_move": false,
+      "expected": {
+        "act": "terminal_acceptance",
+        "sub": "terminal_thanks_acceptance",
+        "action": "terminal_close",
+        "strategy": "terminal_close",
+        "buyer": "evaluating",
+        "intent": "none",
+        "rel": "none",
+        "neg": "none",
+        "update": {
+          "adoption": "",
+          "close": "terminal_thanks_acceptance",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": []
+        },
+        "facts": [],
+        "preserve": [
+          "thanks"
+        ],
+        "avoid": [
+          "new question"
+        ],
+        "say_style": "terminal_language"
+      },
+      "curriculum_predicted": {
+        "act": "terminal_acceptance",
+        "sub": "terminal_thanks_acceptance",
+        "action": "terminal_close",
+        "strategy": "terminal_close",
+        "buyer": "evaluating",
+        "intent": "medium",
+        "rel": "none",
+        "neg": "none",
+        "update": {
+          "adoption": "",
+          "close": "terminal",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": []
+        },
+        "facts": [
+          "public_plan_names"
+        ],
+        "preserve": [
+          "terminal_close"
+        ],
+        "avoid": [],
+        "say_style": "acknowledges_buyer+next_step_plan_fit+recommendation_language+terminal_language"
+      }
+    },
+    {
+      "case_id": "tiny_use_case_fidelity_004",
+      "groups": [
+        "use_case_coding_voice_writing_research"
+      ],
+      "tiny_adapter": {
+        "schema_valid": true,
+        "verifier_pass": true,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": true,
+        "strict_gold_response_plan_match": true,
+        "exact_match": true
+      },
+      "curriculum_adapter": {
+        "schema_valid": true,
+        "verifier_pass": true,
+        "compact_contract_valid": true,
+        "strict_gold_semantic_match": false,
+        "strict_gold_response_plan_match": false,
+        "exact_match": false
+      },
+      "field_mismatches": [
+        "sub",
+        "intent",
+        "strategy",
+        "facts",
+        "say"
+      ],
+      "failure_classes": [
+        "strict_gold_semantic",
+        "strict_gold_response_plan"
+      ],
+      "semantic_mismatches": [
+        "response_plan.campaign_facts_needed",
+        "sales_strategy.persuasion_strategy",
+        "sales_strategy.should_ask_question",
+        "sales_strategy.should_recommend",
+        "semantic_frame.commercial_intent",
+        "semantic_frame.object_type",
+        "semantic_frame.sub_intent"
+      ],
+      "verifier_errors": [],
+      "unacceptable_wrong_sales_move": false,
+      "expected": {
+        "act": "use_case_scope",
+        "sub": "coding_voice_use_case",
+        "action": "ask_usage_intensity",
+        "strategy": "preserve_buyer_words",
+        "buyer": "evaluating",
+        "intent": "evaluation",
+        "rel": "and",
+        "neg": "none",
+        "update": {
+          "adoption": "",
+          "close": "",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": [
+            "coding workflow",
+            "voice"
+          ]
+        },
+        "facts": [],
+        "preserve": [
+          "coding workflow",
+          "voice"
+        ],
+        "avoid": [
+          "writing"
+        ],
+        "say_style": "asks_question+acknowledges_buyer"
+      },
+      "curriculum_predicted": {
+        "act": "use_case_scope",
+        "sub": "coding_writing_use_case",
+        "action": "ask_usage_intensity",
+        "strategy": "diagnose_before_recommend",
+        "buyer": "evaluating",
+        "intent": "medium",
+        "rel": "and",
+        "neg": "none",
+        "update": {
+          "adoption": "",
+          "close": "",
+          "intensity": "",
+          "recommend": "",
+          "team": false,
+          "use": [
+            "coding workflow",
+            "voice"
+          ]
+        },
+        "facts": [
+          "public_plan_names"
+        ],
+        "preserve": [
+          "coding workflow",
+          "voice"
+        ],
+        "avoid": [
+          "writing"
+        ],
+        "say_style": "asks_question"
+      }
+    }
+  ],
+  "tiny_cases_in_later_stages": {
+    "20": {
+      "tiny_case_id_overlap_count": 0,
+      "tiny_case_id_overlap": [],
+      "tiny_replay_included": false
+    },
+    "60": {
+      "tiny_case_id_overlap_count": 0,
+      "tiny_case_id_overlap": [],
+      "tiny_replay_included": false
+    }
+  },
+  "similar_later_stage_conflicts": {
+    "conflict_count": 8,
+    "cases": [
+      {
+        "tiny_case_id": "tiny_current_tool_and_001",
+        "groups": [
+          "current_tool_ai"
+        ],
+        "similar_later_count": 24,
+        "classification": "conflicting_similar_targets",
+        "action_strategy_signature_count": 5,
+        "facts_signature_count": 2,
+        "preserve_signature_count": 9
+      },
+      {
+        "tiny_case_id": "tiny_current_tool_or_002",
+        "groups": [
+          "current_tool_ai"
+        ],
+        "similar_later_count": 24,
+        "classification": "conflicting_similar_targets",
+        "action_strategy_signature_count": 5,
+        "facts_signature_count": 2,
+        "preserve_signature_count": 9
+      },
+      {
+        "tiny_case_id": "tiny_negated_team_003",
+        "groups": [
+          "personal_not_team"
+        ],
+        "similar_later_count": 10,
+        "classification": "conflicting_similar_targets",
+        "action_strategy_signature_count": 2,
+        "facts_signature_count": 1,
+        "preserve_signature_count": 7
+      },
+      {
+        "tiny_case_id": "tiny_use_case_fidelity_004",
+        "groups": [
+          "use_case_coding_voice_writing_research"
+        ],
+        "similar_later_count": 11,
+        "classification": "conflicting_similar_targets",
+        "action_strategy_signature_count": 3,
+        "facts_signature_count": 2,
+        "preserve_signature_count": 8
+      },
+      {
+        "tiny_case_id": "tiny_plan_category_005",
+        "groups": [
+          "plan_explanation"
+        ],
+        "similar_later_count": 8,
+        "classification": "conflicting_similar_targets",
+        "action_strategy_signature_count": 3,
+        "facts_signature_count": 1,
+        "preserve_signature_count": 5
+      },
+      {
+        "tiny_case_id": "tiny_midcycle_upgrade_006",
+        "groups": [
+          "upgrade_midcycle"
+        ],
+        "similar_later_count": 1,
+        "classification": "conflicting_similar_targets",
+        "action_strategy_signature_count": 2,
+        "facts_signature_count": 1,
+        "preserve_signature_count": 2
+      },
+      {
+        "tiny_case_id": "tiny_terminal_acceptance_007",
+        "groups": [
+          "terminal_acceptance"
+        ],
+        "similar_later_count": 3,
+        "classification": "conflicting_similar_targets",
+        "action_strategy_signature_count": 2,
+        "facts_signature_count": 2,
+        "preserve_signature_count": 3
+      },
+      {
+        "tiny_case_id": "tiny_safety_boundary_008",
+        "groups": [
+          "safety_boundary"
+        ],
+        "similar_later_count": 13,
+        "classification": "conflicting_similar_targets",
+        "action_strategy_signature_count": 3,
+        "facts_signature_count": 2,
+        "preserve_signature_count": 14
+      }
+    ]
+  },
+  "training_replay_diagnostics": {
+    "completed_stages": [
+      "tiny",
+      "20",
+      "60"
+    ],
+    "train_steps_by_stage": {
+      "tiny": 30,
+      "20": 75,
+      "60": 150
+    },
+    "train_row_counts_by_stage": {
+      "tiny": 8,
+      "20": 20,
+      "60": 60
+    },
+    "sequential_stage_training_detected": true,
+    "sequential_overwrite_without_mixed_replay": true,
+    "final_stage": "60",
+    "final_stage_used_only_stage3_rows": true,
+    "tiny_replay_examples_in_later_stages": false,
+    "learning_rate": 0.0002,
+    "learning_rate_steps_likely_caused_forgetting": true,
+    "recommended_curriculum_shape": "mixed tiny+stage2+stage3 replay with balanced sampling before any retrain",
+    "replay_weighting_or_balanced_sampling_recommended": true
+  },
+  "recommendations": {
+    "continue_training_now": false,
+    "final_stage_should_mix_tiny_stage2_stage3": true,
+    "use_replay_weighting_or_balanced_sampling": true,
+    "diagnostic_read": "Forgetting is expected under sequential stage-only training when the final 60-row stage does not replay tiny examples."
+  },
+  "side_effects": {
+    "local_model_calls_made": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "model_download_attempted": false,
+    "model_redownloaded": false,
+    "model_weights_committed": false,
+    "adapter_files_committed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcript_included": false,
+    "raw_private_transcript_copied_to_public_evidence": false,
+    "case_text_stored_in_evidence": false
+  }
+}

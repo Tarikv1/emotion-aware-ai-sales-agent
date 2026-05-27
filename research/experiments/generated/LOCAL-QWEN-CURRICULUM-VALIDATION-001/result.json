@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-QWEN-CURRICULUM-VALIDATION-001",
-  "validated_at": "2026-05-27T20:53:36.779897+00:00",
+  "validated_at": "2026-05-27T21:34:18.899270+00:00",
   "status": "pass",
   "dataset_result": "research/experiments/generated/LOCAL-QWEN-CURRICULUM-DATASET-001/result.json",
   "training_result": "research/experiments/generated/LOCAL-QWEN-LORA-CURRICULUM-TRAINING-001/result.json",

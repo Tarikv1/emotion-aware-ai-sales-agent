@@ -1,0 +1,32 @@
+{
+  "experiment_id": "LOCAL-QWEN-DATASET-CONSISTENCY-AUDIT-VALIDATION-001",
+  "validated_at": "2026-05-27T21:34:07.549857+00:00",
+  "status": "pass",
+  "audit_result": "research/experiments/generated/LOCAL-QWEN-DATASET-CONSISTENCY-AUDIT-001/result.json",
+  "audit_report": "research/experiments/generated/LOCAL-QWEN-DATASET-CONSISTENCY-AUDIT-001/report.md",
+  "checks": {
+    "evidence_exists": true,
+    "no_provider_openai_tts_calls": true,
+    "no_raw_private_transcript": true,
+    "no_model_adapter_files_committed": true,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false
+  },
+  "failures": [],
+  "side_effects": {
+    "local_model_calls_made": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "model_download_attempted": false,
+    "model_redownloaded": false,
+    "model_weights_committed": false,
+    "adapter_files_committed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcript_included": false,
+    "raw_private_transcript_copied_to_public_evidence": false,
+    "case_text_stored_in_evidence": false
+  }
+}
