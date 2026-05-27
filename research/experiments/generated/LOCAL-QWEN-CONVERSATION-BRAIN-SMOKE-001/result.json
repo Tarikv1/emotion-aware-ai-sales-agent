@@ -1,0 +1,97 @@
+{
+  "experiment_id": "LOCAL-QWEN-CONVERSATION-BRAIN-SMOKE-001",
+  "generated_at": "2026-05-27T00:00:07.916451+00:00",
+  "status": "not_run",
+  "runner_implemented": true,
+  "primary_model": "Qwen/Qwen2.5-7B-Instruct",
+  "local_model_path": "local_artifacts/models/qwen2.5-7b-instruct",
+  "cache_path": "local_artifacts/cache/huggingface",
+  "dependencies_available": false,
+  "model_artifact_found": false,
+  "model_download_attempted": false,
+  "inference_attempted": false,
+  "model_loaded": false,
+  "dependency_status": {
+    "modules": {
+      "torch": false,
+      "transformers": false,
+      "accelerate": false,
+      "bitsandbytes": false,
+      "huggingface_hub": false
+    },
+    "required": [
+      "torch",
+      "transformers",
+      "accelerate",
+      "bitsandbytes"
+    ],
+    "missing_required": [
+      "torch",
+      "transformers",
+      "accelerate",
+      "bitsandbytes"
+    ],
+    "ready": false,
+    "install_notes": [
+      "Install the missing local inference packages in this project environment before enabling inference.",
+      "4-bit loading needs bitsandbytes; set LOCAL_LLM_QUANTIZATION=none only if you accept higher VRAM use."
+    ]
+  },
+  "hardware_summary": {
+    "python_version": "3.13.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 33 Stepping 2, AuthenticAMD",
+    "machine": "AMD64",
+    "torch_available": false,
+    "cuda_available": false,
+    "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+    "vram_total_bytes": 12878610432,
+    "nvidia_smi": {
+      "available": true,
+      "stdout": "NVIDIA GeForce RTX 4070 SUPER, 610.47, 12282 MiB",
+      "stderr": "",
+      "returncode": 0
+    },
+    "nvidia_driver_version": "610.47",
+    "nvidia_vram_total": "12282 MiB"
+  },
+  "cuda_available": false,
+  "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+  "vram_total_bytes": 12878610432,
+  "model_availability": {
+    "configured_path": "local_artifacts/models/qwen2.5-7b-instruct",
+    "absolute_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\local_artifacts\\models\\qwen2.5-7b-instruct",
+    "exists": false,
+    "is_dir": false,
+    "markers": [],
+    "weight_file_count": 0,
+    "available": false,
+    "download_attempted": false,
+    "download_allowed": false
+  },
+  "quantization_mode": "4bit",
+  "smoke_case_count": 0,
+  "schema_valid_count": 0,
+  "verifier_pass_count": 0,
+  "failed_cases": [],
+  "latency_metrics": {
+    "model_load_time_ms": null,
+    "first_output_latency_ms": null,
+    "total_generation_latency_ms": null,
+    "tokens_generated": null,
+    "peak_gpu_memory_bytes": null
+  },
+  "local_model_calls_made": false,
+  "provider_calls_made": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "wsl_required": false,
+  "wsl_optional_for_future_training": true,
+  "local_llm_enabled_env": false,
+  "experiment_enabled_env": false,
+  "download_allowed_env": false,
+  "cases": [],
+  "notes": [
+    "ENABLE_LOCAL_LLM_BRAIN_EXPERIMENT=1 and LOCAL_LLM_ENABLED=true are required before inference."
+  ]
+}

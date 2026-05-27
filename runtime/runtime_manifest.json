@@ -246,6 +246,19 @@
       ]
     },
     {
+      "path": "runtime/llm_brain/local_transformers_runner.py",
+      "path_type": "file",
+      "tier": "local-llm-conversation-brain-smoke-runner",
+      "runtime_role": "Windows-first disabled local Transformers runner for the Qwen2.5 conversation-brain smoke test, with lazy dependency imports, project-local model/cache paths, strict JSON parsing, and no provider or live speech calls.",
+      "behavior_surface": [
+        "local Transformers load gate",
+        "project-local model artifact boundary",
+        "strict JSON smoke output",
+        "dependency and CUDA reporting",
+        "no-provider-call boundary"
+      ]
+    },
+    {
       "path": "runtime/llm_brain/__init__.py",
       "path_type": "file",
       "tier": "local-llm-conversation-brain-package",

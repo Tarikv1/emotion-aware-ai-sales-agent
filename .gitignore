@@ -21,6 +21,16 @@ runtime/config/local/*
 !runtime/config/local/voice_ids.example.json
 !runtime/config/local/dialogue_reasoner.env.example
 
+local_artifacts/
+models/
+hf-cache/
+llm-checkpoints/
+*.gguf
+*.safetensors
+*.pt
+*.pth
+*.bin
+
 __pycache__/
 *.pyc
 *.pyc.*

@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-LLM-CONVERSATION-BRAIN-FEASIBILITY-001",
-  "generated_at": "2026-05-26T23:06:17.766120+00:00",
+  "generated_at": "2026-05-27T00:00:18.504023+00:00",
   "schema_status": "defined",
   "required_top_level_fields": [
     "semantic_frame",
@@ -85,10 +85,12 @@
     "campaign_leakage": true
   },
   "local_brain_config": {
-    "provider": "none",
+    "provider": "local_transformers",
     "model_id": "Qwen/Qwen2.5-7B-Instruct",
-    "device": "auto",
-    "quantization_mode": "none",
+    "model_path": "local_artifacts/models/qwen2.5-7b-instruct",
+    "cache_dir": "local_artifacts/cache/huggingface",
+    "device": "cuda",
+    "quantization_mode": "4bit",
     "max_input_tokens": 4096,
     "max_output_tokens": 768,
     "timeout_ms": 30000,

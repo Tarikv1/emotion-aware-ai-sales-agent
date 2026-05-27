@@ -1,7 +1,7 @@
 # LOCAL-LLM-CONVERSATION-BRAIN-FEASIBILITY-001
 
 - status: PASS
-- generated_at: 2026-05-26T23:06:17.766120+00:00
+- generated_at: 2026-05-27T00:00:18.504023+00:00
 - schema_status: defined
 - gold_case_count: 80
 - live_derived_sanitized_case_count: 30

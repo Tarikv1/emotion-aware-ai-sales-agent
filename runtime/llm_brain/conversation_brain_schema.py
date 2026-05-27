@@ -11,6 +11,10 @@ MODEL_CANDIDATES = (
     "mistralai/Mistral-7B-Instruct-v0.3",
 )
 PRIMARY_MODEL_ID = "Qwen/Qwen2.5-7B-Instruct"
+DEFAULT_LOCAL_LLM_MODEL_PATH = "local_artifacts/models/qwen2.5-7b-instruct"
+DEFAULT_LOCAL_LLM_CACHE_DIR = "local_artifacts/cache/huggingface"
+DEFAULT_LOCAL_LLM_QUANTIZATION = "4bit"
+DEFAULT_LOCAL_LLM_DEVICE = "cuda"
 FALLBACK_MODEL_CANDIDATES = (
     "Qwen/Qwen3-8B",
     "mistralai/Mistral-7B-Instruct-v0.3",
@@ -122,10 +126,12 @@ _BOOL_FIELDS = {
 
 @dataclass(frozen=True)
 class LocalConversationBrainConfig:
-    provider: str = "none"
-    model_id: str = ""
-    device: str = "auto"
-    quantization_mode: str = "none"
+    provider: str = "local_transformers"
+    model_id: str = PRIMARY_MODEL_ID
+    model_path: str = DEFAULT_LOCAL_LLM_MODEL_PATH
+    cache_dir: str = DEFAULT_LOCAL_LLM_CACHE_DIR
+    device: str = DEFAULT_LOCAL_LLM_DEVICE
+    quantization_mode: str = DEFAULT_LOCAL_LLM_QUANTIZATION
     max_input_tokens: int = 4096
     max_output_tokens: int = 768
     timeout_ms: int = 30000
@@ -136,6 +142,8 @@ class LocalConversationBrainConfig:
         return {
             "provider": self.provider,
             "model_id": self.model_id,
+            "model_path": self.model_path,
+            "cache_dir": self.cache_dir,
             "device": self.device,
             "quantization_mode": self.quantization_mode,
             "max_input_tokens": self.max_input_tokens,
@@ -154,6 +162,20 @@ def validate_local_conversation_brain_config(config: LocalConversationBrainConfi
         errors.append(f"provider must be one of {list(PROVIDERS)}, got {config.provider!r}")
     if config.enabled and config.provider == "none":
         errors.append("enabled local conversation brain cannot use provider='none'")
+    if config.model_id != PRIMARY_MODEL_ID:
+        errors.append(f"this phase only supports primary model {PRIMARY_MODEL_ID!r}")
+    for field_name in ("model_path", "cache_dir"):
+        value = getattr(config, field_name)
+        if not isinstance(value, str) or not value:
+            errors.append(f"{field_name} must be a non-empty project-relative path")
+            continue
+        normalized = value.replace("\\", "/")
+        if normalized.startswith("/") or ":" in normalized or ".." in normalized.split("/"):
+            errors.append(f"{field_name} must be project-relative and not absolute: {value!r}")
+    if config.quantization_mode not in {"4bit", "8bit", "none"}:
+        errors.append("quantization_mode must be one of '4bit', '8bit', or 'none'")
+    if config.device not in {"cuda", "cpu", "auto"}:
+        errors.append("device must be one of 'cuda', 'cpu', or 'auto'")
     if config.max_input_tokens <= 0:
         errors.append("max_input_tokens must be positive")
     if config.max_output_tokens <= 0:

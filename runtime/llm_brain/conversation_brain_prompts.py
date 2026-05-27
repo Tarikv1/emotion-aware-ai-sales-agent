@@ -5,8 +5,6 @@ from typing import Any
 
 from runtime.llm_brain.conversation_brain_schema import (
     ACTIVE_MODEL_COMPARISON_THIS_PHASE,
-    FALLBACK_MODEL_CANDIDATES,
-    MODEL_CANDIDATES,
     PRIMARY_MODEL_ID,
     REQUIRED_RESPONSE_PLAN_FIELDS,
     REQUIRED_SAFETY_FLAG_FIELDS,
@@ -61,8 +59,6 @@ def render_conversation_brain_prompt(context: dict[str, Any]) -> str:
             "",
             "Primary local model for this phase:",
             PRIMARY_MODEL_ID,
-            "Fallback candidates documented for later baseline work, not active comparison in this phase:",
-            json.dumps(list(FALLBACK_MODEL_CANDIDATES), ensure_ascii=False),
             f"active_model_comparison_this_phase: {str(ACTIVE_MODEL_COMPARISON_THIS_PHASE).lower()}",
             "",
             "Required output schema:",
