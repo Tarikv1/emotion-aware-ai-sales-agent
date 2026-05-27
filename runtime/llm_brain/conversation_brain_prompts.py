@@ -5,7 +5,10 @@ from typing import Any
 
 from runtime.llm_brain.conversation_brain_schema import (
     ACTIVE_MODEL_COMPARISON_THIS_PHASE,
+    COMPACT_PLANNER_SCHEMA_MODE,
+    FULL_PLANNER_SCHEMA_MODE,
     PRIMARY_MODEL_ID,
+    REQUIRED_COMPACT_PLANNER_FIELDS,
     REQUIRED_RESPONSE_PLAN_FIELDS,
     REQUIRED_SAFETY_FLAG_FIELDS,
     REQUIRED_SALES_STRATEGY_FIELDS,
@@ -42,7 +45,11 @@ def conversation_brain_key_spellings_prompt() -> str:
     return "\n".join(f"- {section}: {', '.join(fields)}" for section, fields in sections.items())
 
 
-def compact_valid_json_example() -> str:
+def compact_conversation_brain_key_spellings_prompt() -> str:
+    return ", ".join(REQUIRED_COMPACT_PLANNER_FIELDS)
+
+
+def full_valid_json_example() -> str:
     example = {
         "semantic_frame": {field: "<short string>" for field in REQUIRED_SEMANTIC_FRAME_FIELDS},
         "state_update": {
@@ -129,8 +136,38 @@ def compact_valid_json_example() -> str:
     return json.dumps(example, ensure_ascii=False, separators=(",", ":"))
 
 
-def render_conversation_brain_prompt(context: dict[str, Any]) -> str:
-    safe_context = {
+def compact_valid_json_example() -> str:
+    example = {
+        "act": "use_case_scope",
+        "sub": "coding_voice",
+        "obj": ["coding workflow", "voice"],
+        "rel": "and",
+        "neg": "none",
+        "buyer": "evaluating",
+        "intent": "evaluation",
+        "update": {
+            "adoption": "",
+            "use": ["coding workflow", "voice"],
+            "intensity": "",
+            "team": False,
+            "recommend": "",
+            "close": "",
+        },
+        "block": [],
+        "action": "ask_intensity",
+        "strategy": "diagnose_before_recommend",
+        "facts": [],
+        "preserve": ["coding workflow", "voice"],
+        "avoid": ["writing"],
+        "say": "Got it - coding workflow and voice. Are you using it lightly, moderately, or heavily?",
+        "flags": [],
+        "conf": 0.84,
+    }
+    return json.dumps(example, ensure_ascii=False, separators=(",", ":"))
+
+
+def _safe_context(context: dict[str, Any]) -> dict[str, Any]:
+    return {
         "normalized_transcript": context.get("normalized_transcript") or "",
         "prior_state": context.get("prior_state") or {},
         "approved_campaign_fact_ids": context.get("approved_campaign_fact_ids") or [],
@@ -139,6 +176,69 @@ def render_conversation_brain_prompt(context: dict[str, Any]) -> str:
         "last_agent_question": context.get("last_agent_question") or "",
         "campaign_id": context.get("campaign_id") or "",
     }
+
+
+def render_conversation_brain_prompt(
+    context: dict[str, Any],
+    *,
+    schema_mode: str = FULL_PLANNER_SCHEMA_MODE,
+) -> str:
+    safe_context = {
+        **_safe_context(context),
+    }
+    if schema_mode == COMPACT_PLANNER_SCHEMA_MODE:
+        return "\n".join(
+            [
+                SYSTEM_PROMPT,
+                "",
+                "Architecture target:",
+                ARCHITECTURE_TARGET,
+                "",
+                "Primary local model for this phase:",
+                PRIMARY_MODEL_ID,
+                f"active_model_comparison_this_phase: {str(ACTIVE_MODEL_COMPARISON_THIS_PHASE).lower()}",
+                "",
+                "Return exactly one compact minified single-line JSON object only. No markdown, prose, labels, nulls, comments, indentation, or extra keys.",
+                "Use exactly these compact top-level keys in this order:",
+                compact_conversation_brain_key_spellings_prompt(),
+                "",
+                "Compact valid JSON example, shape only; do not copy values:",
+                compact_valid_json_example(),
+                "",
+                "Compact key meanings:",
+                "- act=speech act or semantic family; sub=sub-intent; obj=current buyer objects/words.",
+                "- rel preserves and/or/none exactly; neg preserves negation scope.",
+                "- buyer=buyer state; intent=commercial intent.",
+                "- update.use is current use-case values; update.team must stay false when buyer says by myself/not a team.",
+                "- block lists blocked state updates; facts lists approved fact IDs needed before factual claims.",
+                "- preserve lists buyer words repeated exactly in say; avoid lists words/claims say must not include.",
+                "- flags may include needs_fact_check, unsupported_claim, side_effect, affiliation, internal_policy, raw_url, campaign_leakage.",
+                "- say is buyer-facing wording only; no schema/policy language.",
+                "",
+                "Rules:",
+                "- For smoke cases, keep the compact JSON short.",
+                "- This compact planner JSON does not globally limit future spoken answers.",
+                "- Keep say concise unless buyer asks for explanation, objection handling, or detailed comparison.",
+                "- Dynamic say length: direct price/signup short; explanation medium; objection medium; detailed comparison may be longer.",
+                "- Preserve current buyer words, AND/OR, and negation; voice remains voice, not writing.",
+                "- If buyer says by myself, not a team, no team, personal use, just me, or only me, set neg to team_state; never none.",
+                "- preserve is strict: every phrase in preserve must appear in say exactly, not as a paraphrase or changed tense.",
+                "- If say uses solo, put preserve []; if preserve includes by myself or not a team, say must include by myself or not a team exactly.",
+                "- If preserve includes upgrade later, say must include upgrade later exactly, not upgrading later.",
+                "- Do not invent product claims; use only approved fact summaries below.",
+                "- If a needed fact is not approved, put the fact ID in facts and avoid the claim in say.",
+                "- No fake side effects: do not claim email, calendar, CRM, ticket, or TTS actions happened.",
+                "- No internal policy language, raw URLs, affiliation claims, or unsupported guarantees.",
+                "- For thanks/check closing turns, do not ask a new question; use a short acceptance close.",
+                "- If input context includes smoke_contract, follow it exactly; it is a local verifier hint for this smoke only.",
+                "- If smoke_contract.preferred_draft_response exists, use it exactly as say.",
+                "- If smoke_contract.buyer_words_to_preserve_allowed exists, preserve only allowed phrases that appear exactly in say.",
+                "",
+                "Input context:",
+                json.dumps(safe_context, ensure_ascii=False, separators=(",", ":")),
+            ]
+        )
+
     return "\n".join(
         [
             SYSTEM_PROMPT,
@@ -155,7 +255,7 @@ def render_conversation_brain_prompt(context: dict[str, Any]) -> str:
             conversation_brain_key_spellings_prompt(),
             "",
             "Compact valid JSON example, shape only; do not copy values:",
-            compact_valid_json_example(),
+            full_valid_json_example(),
             "",
             "Rules:",
             "- Keep planner JSON compact; this does not permanently limit future final spoken responses.",

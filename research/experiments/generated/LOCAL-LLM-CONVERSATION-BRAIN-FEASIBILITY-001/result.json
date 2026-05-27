@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-LLM-CONVERSATION-BRAIN-FEASIBILITY-001",
-  "generated_at": "2026-05-27T02:58:11.249550+00:00",
+  "generated_at": "2026-05-27T10:24:51.103322+00:00",
   "schema_status": "defined",
   "required_top_level_fields": [
     "semantic_frame",
@@ -77,6 +77,7 @@
     "voice_not_writing": true,
     "and_or_fidelity": true,
     "not_team_no_team_update": true,
+    "negation_scope": true,
     "internal_policy_language": true,
     "side_effect_safety": true,
     "unsupported_claim": true,
@@ -94,6 +95,7 @@
     "max_input_tokens": 4096,
     "max_output_tokens": 512,
     "timeout_ms": 60000,
+    "planner_schema_mode": "full",
     "structured_output_required": true,
     "enabled": false,
     "requires_provider_secret": false,

@@ -18,8 +18,12 @@ from typing import Any
 
 from runtime.llm_brain.conversation_brain_prompts import render_conversation_brain_prompt
 from runtime.llm_brain.conversation_brain_schema import (
+    COMPACT_PLANNER_SCHEMA_MODE,
+    FULL_PLANNER_SCHEMA_MODE,
     LocalConversationBrainConfig,
     PRIMARY_MODEL_ID,
+    expand_compact_planner_output,
+    validate_compact_conversation_brain_output,
     validate_conversation_brain_output,
 )
 from runtime.llm_brain.conversation_brain_verifier import verify_conversation_brain_output
@@ -37,6 +41,11 @@ class PlannerRepairDiagnostics:
     repair_types: list[str]
     needs_fact_check_before_repair: bool | None
     needs_fact_check_after_repair: bool | None
+    planner_schema_mode: str
+    compact_planner_output: dict[str, Any] | None
+    compact_schema_errors: list[str]
+    compact_adapter_errors: list[str]
+    compact_adapter_applied: bool
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -47,6 +56,11 @@ class PlannerRepairDiagnostics:
             "repair_types": self.repair_types,
             "needs_fact_check_before_repair": self.needs_fact_check_before_repair,
             "needs_fact_check_after_repair": self.needs_fact_check_after_repair,
+            "planner_schema_mode": self.planner_schema_mode,
+            "compact_planner_output": self.compact_planner_output,
+            "compact_schema_errors": self.compact_schema_errors,
+            "compact_adapter_errors": self.compact_adapter_errors,
+            "compact_adapter_applied": self.compact_adapter_applied,
         }
 
 
@@ -69,6 +83,11 @@ class LocalTransformersCaseResult:
     repair_types: list[str]
     needs_fact_check_before_repair: bool | None
     needs_fact_check_after_repair: bool | None
+    planner_schema_mode: str
+    compact_planner_output: dict[str, Any] | None
+    compact_schema_errors: list[str]
+    compact_adapter_errors: list[str]
+    compact_adapter_applied: bool
     errors: list[str]
     latency_metrics: dict[str, float | int | bool | None]
 
@@ -91,6 +110,11 @@ class LocalTransformersCaseResult:
             "repair_types": self.repair_types,
             "needs_fact_check_before_repair": self.needs_fact_check_before_repair,
             "needs_fact_check_after_repair": self.needs_fact_check_after_repair,
+            "planner_schema_mode": self.planner_schema_mode,
+            "compact_planner_output": self.compact_planner_output,
+            "compact_schema_errors": self.compact_schema_errors,
+            "compact_adapter_errors": self.compact_adapter_errors,
+            "compact_adapter_applied": self.compact_adapter_applied,
             "errors": self.errors,
             "latency_metrics": self.latency_metrics,
         }
@@ -395,7 +419,11 @@ def _repair_planner_payload(payload: dict[str, Any]) -> tuple[dict[str, Any], li
     return repaired, repair_types
 
 
-def parse_and_repair_planner_output(text: str) -> tuple[dict[str, Any] | None, PlannerRepairDiagnostics]:
+def parse_and_repair_planner_output(
+    text: str,
+    *,
+    schema_mode: str = FULL_PLANNER_SCHEMA_MODE,
+) -> tuple[dict[str, Any] | None, PlannerRepairDiagnostics]:
     parse_repair_types: list[str] = []
     cleaned, removed_fence = _without_markdown_fences(text)
     if removed_fence:
@@ -412,8 +440,48 @@ def parse_and_repair_planner_output(text: str) -> tuple[dict[str, Any] | None, P
             repair_types=parse_repair_types,
             needs_fact_check_before_repair=None,
             needs_fact_check_after_repair=None,
+            planner_schema_mode=schema_mode,
+            compact_planner_output=None,
+            compact_schema_errors=[],
+            compact_adapter_errors=[],
+            compact_adapter_applied=False,
         )
         return None, diagnostics
+
+    if schema_mode == COMPACT_PLANNER_SCHEMA_MODE:
+        compact_schema_errors = validate_compact_conversation_brain_output(payload)
+        if compact_schema_errors:
+            diagnostics = PlannerRepairDiagnostics(
+                parse_errors=parse_errors,
+                raw_schema_errors_before_repair=compact_schema_errors,
+                schema_errors_after_repair=compact_schema_errors,
+                repair_applied=bool(parse_repair_types),
+                repair_types=parse_repair_types,
+                needs_fact_check_before_repair=None,
+                needs_fact_check_after_repair=None,
+                planner_schema_mode=schema_mode,
+                compact_planner_output=payload,
+                compact_schema_errors=compact_schema_errors,
+                compact_adapter_errors=[],
+                compact_adapter_applied=False,
+            )
+            return None, diagnostics
+        expanded, adapter_errors = expand_compact_planner_output(payload)
+        diagnostics = PlannerRepairDiagnostics(
+            parse_errors=parse_errors,
+            raw_schema_errors_before_repair=compact_schema_errors,
+            schema_errors_after_repair=adapter_errors,
+            repair_applied=bool(parse_repair_types),
+            repair_types=parse_repair_types,
+            needs_fact_check_before_repair=None,
+            needs_fact_check_after_repair=_needs_fact_check(expanded),
+            planner_schema_mode=schema_mode,
+            compact_planner_output=payload,
+            compact_schema_errors=compact_schema_errors,
+            compact_adapter_errors=adapter_errors,
+            compact_adapter_applied=True,
+        )
+        return expanded, diagnostics
 
     raw_schema_errors = validate_conversation_brain_output(payload)
     repaired, repair_types = _repair_planner_payload(payload)
@@ -427,6 +495,11 @@ def parse_and_repair_planner_output(text: str) -> tuple[dict[str, Any] | None, P
         repair_types=all_repair_types,
         needs_fact_check_before_repair=_needs_fact_check(payload),
         needs_fact_check_after_repair=_needs_fact_check(repaired),
+        planner_schema_mode=schema_mode,
+        compact_planner_output=None,
+        compact_schema_errors=[],
+        compact_adapter_errors=[],
+        compact_adapter_applied=False,
     )
     return repaired, diagnostics
 
@@ -513,8 +586,13 @@ def load_local_transformers_model(
     return model, tokenizer, model_status
 
 
-def render_qwen_prompt(tokenizer: Any, request_context: dict[str, Any]) -> str:
-    prompt = render_conversation_brain_prompt(request_context)
+def render_qwen_prompt(
+    tokenizer: Any,
+    request_context: dict[str, Any],
+    *,
+    schema_mode: str = FULL_PLANNER_SCHEMA_MODE,
+) -> str:
+    prompt = render_conversation_brain_prompt(request_context, schema_mode=schema_mode)
     messages = [
         {
             "role": "user",
@@ -635,7 +713,7 @@ def run_single_conversation_brain_case(
     tokenizer: Any | None = None,
 ) -> LocalTransformersCaseResult:
     case_id = str(case.get("case_id") or "single_case")
-    prompt = render_conversation_brain_prompt(request_context)
+    prompt = render_conversation_brain_prompt(request_context, schema_mode=config.planner_schema_mode)
     prompt_rendered = bool(prompt)
     load_started = time.perf_counter()
     load_ms: float | None = None
@@ -654,6 +732,11 @@ def run_single_conversation_brain_case(
         repair_types=[],
         needs_fact_check_before_repair=None,
         needs_fact_check_after_repair=None,
+        planner_schema_mode=config.planner_schema_mode,
+        compact_planner_output=None,
+        compact_schema_errors=[],
+        compact_adapter_errors=[],
+        compact_adapter_applied=False,
     )
     errors: list[str] = []
     generation_metrics: dict[str, float | int | bool | None] = {
@@ -681,18 +764,29 @@ def run_single_conversation_brain_case(
         else:
             load_ms = 0.0
         generation_metrics["model_load_time_ms"] = load_ms
-        qwen_prompt = render_qwen_prompt(tokenizer, request_context)
+        qwen_prompt = render_qwen_prompt(tokenizer, request_context, schema_mode=config.planner_schema_mode)
         model_call_made = True
         raw_output, run_metrics = generate_text(model, tokenizer, qwen_prompt, config)
         generation_metrics.update(run_metrics)
-        planner_output, repair_diagnostics = parse_and_repair_planner_output(raw_output)
+        planner_output, repair_diagnostics = parse_and_repair_planner_output(
+            raw_output,
+            schema_mode=config.planner_schema_mode,
+        )
         errors.extend(repair_diagnostics.parse_errors)
         raw_schema_errors_before_repair = repair_diagnostics.raw_schema_errors_before_repair
         schema_errors = repair_diagnostics.schema_errors_after_repair
         if planner_output is not None:
             raw_cleaned, _removed_fence = _without_markdown_fences(raw_output)
             raw_payload, _object_text, _extracted, _raw_parse_errors = _first_json_object(raw_cleaned)
-            if raw_payload is not None and not raw_schema_errors_before_repair:
+            if (
+                raw_payload is not None
+                and not raw_schema_errors_before_repair
+                and config.planner_schema_mode == COMPACT_PLANNER_SCHEMA_MODE
+            ):
+                raw_expanded, raw_adapter_errors = expand_compact_planner_output(raw_payload)
+                if not raw_adapter_errors:
+                    verifier_errors_before_repair = verify_conversation_brain_output(raw_expanded, case)
+            elif raw_payload is not None and not raw_schema_errors_before_repair:
                 verifier_errors_before_repair = verify_conversation_brain_output(raw_payload, case)
             verifier_errors = verify_conversation_brain_output(planner_output, case)
     except Exception as exc:
@@ -717,6 +811,11 @@ def run_single_conversation_brain_case(
         repair_types=repair_diagnostics.repair_types,
         needs_fact_check_before_repair=repair_diagnostics.needs_fact_check_before_repair,
         needs_fact_check_after_repair=repair_diagnostics.needs_fact_check_after_repair,
+        planner_schema_mode=config.planner_schema_mode,
+        compact_planner_output=repair_diagnostics.compact_planner_output,
+        compact_schema_errors=repair_diagnostics.compact_schema_errors,
+        compact_adapter_errors=repair_diagnostics.compact_adapter_errors,
+        compact_adapter_applied=repair_diagnostics.compact_adapter_applied,
         errors=errors,
         latency_metrics=generation_metrics,
     )

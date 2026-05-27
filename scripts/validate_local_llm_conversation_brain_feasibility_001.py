@@ -261,6 +261,14 @@ def run_verifier_regression_probes(
     probes["not_team_no_team_update"] = expect_verifier_failure(
         not_team_case, not_team_output, "negated_team_state", failures
     )
+    not_team_negation_output = mutate_case_output(
+        mocks_by_case_id,
+        "negative_not_team_001",
+        lambda output: output["semantic_frame"].__setitem__("negation_scope", "none"),
+    )
+    probes["negation_scope"] = expect_verifier_failure(
+        not_team_case, not_team_negation_output, "negation_scope_missing", failures
+    )
 
     internal_case = cases_by_id["negative_internal_policy_001"]
     internal_output = mutate_case_output(
@@ -355,6 +363,7 @@ def write_result_and_report(result: dict[str, Any], failures: list[str]) -> None
         f"- current_utterance_fidelity_result: {result['verifier_regression_probes'].get('voice_not_writing')}",
         f"- and_or_fidelity_result: {result['verifier_regression_probes'].get('and_or_fidelity')}",
         f"- negation_fidelity_result: {result['verifier_regression_probes'].get('not_team_no_team_update')}",
+        f"- negation_scope_result: {result['verifier_regression_probes'].get('negation_scope')}",
         f"- voice_not_writing_result: {result['verifier_regression_probes'].get('voice_not_writing')}",
         f"- side_effect_safety_result: {result['verifier_regression_probes'].get('side_effect_safety')}",
         f"- unsupported_claim_result: {result['verifier_regression_probes'].get('unsupported_claim')}",

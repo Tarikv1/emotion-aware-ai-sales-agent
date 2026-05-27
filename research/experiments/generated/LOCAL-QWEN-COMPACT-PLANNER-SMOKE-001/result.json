@@ -1,5 +1,5 @@
 {
-  "experiment_id": "LOCAL-QWEN-CONVERSATION-BRAIN-SMOKE-001",
+  "experiment_id": "LOCAL-QWEN-COMPACT-PLANNER-SMOKE-001",
   "generated_at": "2026-05-27T10:22:27.369690+00:00",
   "status": "pass",
   "runner_implemented": true,

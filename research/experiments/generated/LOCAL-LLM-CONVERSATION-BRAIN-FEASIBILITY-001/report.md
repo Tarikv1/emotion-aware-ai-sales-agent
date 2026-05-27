@@ -1,7 +1,7 @@
 # LOCAL-LLM-CONVERSATION-BRAIN-FEASIBILITY-001
 
 - status: PASS
-- generated_at: 2026-05-27T02:58:11.249550+00:00
+- generated_at: 2026-05-27T10:24:51.103322+00:00
 - schema_status: defined
 - gold_case_count: 80
 - live_derived_sanitized_case_count: 30
@@ -12,6 +12,7 @@
 - current_utterance_fidelity_result: True
 - and_or_fidelity_result: True
 - negation_fidelity_result: True
+- negation_scope_result: True
 - voice_not_writing_result: True
 - side_effect_safety_result: True
 - unsupported_claim_result: True

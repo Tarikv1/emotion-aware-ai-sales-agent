@@ -6,6 +6,9 @@ from typing import Any
 
 from runtime.llm_brain.conversation_brain_prompts import render_conversation_brain_prompt
 from runtime.llm_brain.conversation_brain_schema import (
+    COMPACT_PLANNER_MAX_OUTPUT_TOKENS,
+    COMPACT_PLANNER_SCHEMA_MODE,
+    FULL_PLANNER_SCHEMA_MODE,
     LocalConversationBrainConfig,
     PRIMARY_MODEL_ID,
     validate_conversation_brain_output,
@@ -23,6 +26,7 @@ LOCAL_LLM_DEVICE_ENV_VAR = "LOCAL_LLM_DEVICE"
 LOCAL_LLM_MAX_INPUT_TOKENS_ENV_VAR = "LOCAL_LLM_MAX_INPUT_TOKENS"
 LOCAL_LLM_MAX_OUTPUT_TOKENS_ENV_VAR = "LOCAL_LLM_MAX_OUTPUT_TOKENS"
 LOCAL_LLM_TIMEOUT_MS_ENV_VAR = "LOCAL_LLM_TIMEOUT_MS"
+LOCAL_LLM_PLANNER_SCHEMA_ENV_VAR = "LOCAL_LLM_PLANNER_SCHEMA"
 
 
 def _env_flag(value: str | None) -> bool:
@@ -95,6 +99,14 @@ def local_conversation_brain_config_from_env(
 ) -> LocalConversationBrainConfig:
     source = env if env is not None else os.environ
     defaults = default_local_conversation_brain_config()
+    planner_schema_mode = str(source.get(LOCAL_LLM_PLANNER_SCHEMA_ENV_VAR, defaults.planner_schema_mode)).strip().lower()
+    if planner_schema_mode not in {FULL_PLANNER_SCHEMA_MODE, COMPACT_PLANNER_SCHEMA_MODE}:
+        planner_schema_mode = defaults.planner_schema_mode
+    default_max_output_tokens = (
+        COMPACT_PLANNER_MAX_OUTPUT_TOKENS
+        if planner_schema_mode == COMPACT_PLANNER_SCHEMA_MODE
+        else defaults.max_output_tokens
+    )
     return LocalConversationBrainConfig(
         provider="local_transformers",
         model_id=source.get(LOCAL_LLM_MODEL_ID_ENV_VAR, defaults.model_id),
@@ -103,8 +115,9 @@ def local_conversation_brain_config_from_env(
         device=source.get(LOCAL_LLM_DEVICE_ENV_VAR, defaults.device),
         quantization_mode=source.get(LOCAL_LLM_QUANTIZATION_ENV_VAR, defaults.quantization_mode),
         max_input_tokens=_env_positive_int(source, LOCAL_LLM_MAX_INPUT_TOKENS_ENV_VAR, defaults.max_input_tokens),
-        max_output_tokens=_env_positive_int(source, LOCAL_LLM_MAX_OUTPUT_TOKENS_ENV_VAR, defaults.max_output_tokens),
+        max_output_tokens=_env_positive_int(source, LOCAL_LLM_MAX_OUTPUT_TOKENS_ENV_VAR, default_max_output_tokens),
         timeout_ms=_env_positive_int(source, LOCAL_LLM_TIMEOUT_MS_ENV_VAR, defaults.timeout_ms),
+        planner_schema_mode=planner_schema_mode,
         structured_output_required=defaults.structured_output_required,
         enabled=_env_flag(source.get(LOCAL_LLM_ENABLED_ENV_VAR)),
     )
@@ -162,7 +175,10 @@ def plan_with_local_conversation_brain(
             errors=[],
         )
 
-    prompt = render_conversation_brain_prompt(request.prompt_context())
+    prompt = render_conversation_brain_prompt(
+        request.prompt_context(),
+        schema_mode=resolved_config.planner_schema_mode,
+    )
     if not local_llm_experiment_enabled() or not local_llm_enabled():
         return ConversationBrainResult(
             status="skipped_env_disabled",

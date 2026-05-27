@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import re
 from typing import Any
 
 
@@ -20,6 +21,10 @@ FALLBACK_MODEL_CANDIDATES = (
     "mistralai/Mistral-7B-Instruct-v0.3",
 )
 ACTIVE_MODEL_COMPARISON_THIS_PHASE = False
+FULL_PLANNER_SCHEMA_MODE = "full"
+COMPACT_PLANNER_SCHEMA_MODE = "compact"
+PLANNER_SCHEMA_MODES = (FULL_PLANNER_SCHEMA_MODE, COMPACT_PLANNER_SCHEMA_MODE)
+COMPACT_PLANNER_MAX_OUTPUT_TOKENS = 256
 
 REQUIRED_TOP_LEVEL_FIELDS = (
     "semantic_frame",
@@ -90,6 +95,35 @@ REQUIRED_SAFETY_FLAG_FIELDS = (
     "campaign_leakage_risk",
 )
 
+REQUIRED_COMPACT_PLANNER_FIELDS = (
+    "act",
+    "sub",
+    "obj",
+    "rel",
+    "neg",
+    "buyer",
+    "intent",
+    "update",
+    "block",
+    "action",
+    "strategy",
+    "facts",
+    "preserve",
+    "avoid",
+    "say",
+    "flags",
+    "conf",
+)
+
+REQUIRED_COMPACT_UPDATE_FIELDS = (
+    "adoption",
+    "use",
+    "intensity",
+    "team",
+    "recommend",
+    "close",
+)
+
 _LIST_FIELDS = {
     "semantic_frame.object_mentions",
     "state_update.use_case_values",
@@ -135,6 +169,7 @@ class LocalConversationBrainConfig:
     max_input_tokens: int = 4096
     max_output_tokens: int = 512
     timeout_ms: int = 60000
+    planner_schema_mode: str = FULL_PLANNER_SCHEMA_MODE
     structured_output_required: bool = True
     enabled: bool = False
 
@@ -149,6 +184,7 @@ class LocalConversationBrainConfig:
             "max_input_tokens": self.max_input_tokens,
             "max_output_tokens": self.max_output_tokens,
             "timeout_ms": self.timeout_ms,
+            "planner_schema_mode": self.planner_schema_mode,
             "structured_output_required": self.structured_output_required,
             "enabled": self.enabled,
             "requires_provider_secret": False,
@@ -182,11 +218,180 @@ def validate_local_conversation_brain_config(config: LocalConversationBrainConfi
         errors.append("max_output_tokens must be positive")
     if config.timeout_ms <= 0:
         errors.append("timeout_ms must be positive")
+    if config.planner_schema_mode not in PLANNER_SCHEMA_MODES:
+        errors.append(f"planner_schema_mode must be one of {list(PLANNER_SCHEMA_MODES)}")
     if not isinstance(config.structured_output_required, bool):
         errors.append("structured_output_required must be boolean")
     if not isinstance(config.enabled, bool):
         errors.append("enabled must be boolean")
     return errors
+
+
+def _is_string_list(value: Any) -> bool:
+    return isinstance(value, list) and all(isinstance(item, str) for item in value)
+
+
+def validate_compact_conversation_brain_output(payload: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(payload, dict):
+        return ["compact planner output must be an object"]
+
+    actual = set(payload)
+    required = set(REQUIRED_COMPACT_PLANNER_FIELDS)
+    missing = sorted(required - actual)
+    extra = sorted(actual - required)
+    if missing:
+        errors.append(f"compact output missing required field(s): {missing}")
+    if extra:
+        errors.append(f"compact output has unsupported field(s): {extra}")
+
+    for key in ("act", "sub", "rel", "neg", "buyer", "intent", "action", "strategy", "say"):
+        value = payload.get(key)
+        if not isinstance(value, str):
+            errors.append(f"compact.{key} must be a string")
+        elif key == "say" and not value.strip():
+            errors.append("compact.say must be a non-empty string")
+
+    for key in ("obj", "block", "facts", "preserve", "avoid", "flags"):
+        if not _is_string_list(payload.get(key)):
+            errors.append(f"compact.{key} must be a list of strings")
+
+    update = payload.get("update")
+    if not isinstance(update, dict):
+        errors.append("compact.update must be an object")
+    else:
+        update_actual = set(update)
+        update_required = set(REQUIRED_COMPACT_UPDATE_FIELDS)
+        update_missing = sorted(update_required - update_actual)
+        update_extra = sorted(update_actual - update_required)
+        if update_missing:
+            errors.append(f"compact.update missing required field(s): {update_missing}")
+        if update_extra:
+            errors.append(f"compact.update has unsupported field(s): {update_extra}")
+        for key in ("adoption", "intensity", "recommend", "close"):
+            if not isinstance(update.get(key), str):
+                errors.append(f"compact.update.{key} must be a string")
+        if not _is_string_list(update.get("use")):
+            errors.append("compact.update.use must be a list of strings")
+        if not isinstance(update.get("team"), bool):
+            errors.append("compact.update.team must be boolean")
+
+    confidence = payload.get("conf")
+    if not isinstance(confidence, (int, float)) or isinstance(confidence, bool):
+        errors.append("compact.conf must be a number")
+    elif confidence < 0.0 or confidence > 1.0:
+        errors.append("compact.conf must be between 0.0 and 1.0")
+
+    return errors
+
+
+def _compact_sentence_count(text: str) -> int:
+    fragments = [item.strip() for item in re.split(r"[.!?]+", text) if item.strip()]
+    return max(1, len(fragments)) if text.strip() else 1
+
+
+def _has_compact_flag(flags: list[str], *candidates: str) -> bool:
+    normalized = {str(flag).strip().lower() for flag in flags}
+    return any(candidate.lower() in normalized for candidate in candidates)
+
+
+def _compact_action_flags(action: str, strategy: str, say: str) -> dict[str, bool]:
+    action_text = f"{action} {strategy}".lower()
+    should_disqualify = "disqual" in action_text
+    should_close = not should_disqualify and "close" in action_text
+    should_reframe = not (should_disqualify or should_close) and (
+        "objection" in action_text or "reframe" in action_text
+    )
+    should_recommend = not (should_disqualify or should_close or should_reframe) and "recommend" in action_text
+    should_ask = not (should_disqualify or should_close or should_reframe or should_recommend) and (
+        action_text.startswith("ask") or " ask" in action_text or say.strip().endswith("?")
+    )
+    return {
+        "should_answer_directly": True,
+        "should_ask_question": should_ask,
+        "should_recommend": should_recommend,
+        "should_reframe_objection": should_reframe,
+        "should_close": should_close,
+        "should_disqualify": should_disqualify,
+    }
+
+
+def expand_compact_planner_output(payload: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
+    errors = validate_compact_conversation_brain_output(payload)
+    if errors:
+        return {}, errors
+
+    update = payload["update"]
+    objects = list(payload["obj"])
+    flags = list(payload["flags"])
+    action = str(payload["action"])
+    strategy = str(payload["strategy"])
+    say = str(payload["say"])
+    action_flags = _compact_action_flags(action, strategy, say)
+    facts = list(payload["facts"])
+
+    expanded = {
+        "semantic_frame": {
+            "semantic_family": payload["act"],
+            "speech_act": payload["act"],
+            "sub_intent": payload["sub"],
+            "object_type": payload["sub"] or "none",
+            "object_mentions": objects,
+            "conjunction_relation": payload["rel"],
+            "negation_scope": payload["neg"],
+            "buyer_state": payload["buyer"],
+            "buyer_emotion_hint": "unknown",
+            "commercial_intent": payload["intent"],
+            "current_utterance_fidelity_notes": "compact fields preserve current buyer words",
+        },
+        "state_update": {
+            "should_update_adoption_state": bool(update["adoption"].strip()),
+            "should_update_use_case": bool(update["use"]),
+            "use_case_values": list(update["use"]),
+            "should_update_usage_intensity": bool(update["intensity"].strip()),
+            "usage_intensity": update["intensity"] or "unknown",
+            "should_update_team_state": update["team"] is True,
+            "should_update_recommendation": bool(update["recommend"].strip()),
+            "should_update_close_readiness": bool(update["close"].strip()),
+            "blocked_updates": list(payload["block"]),
+            "reason": "compact planner state update",
+        },
+        "sales_strategy": {
+            "next_action": action,
+            **action_flags,
+            "persuasion_strategy": strategy,
+            "one_next_step": action,
+        },
+        "response_plan": {
+            "must_include": objects[:],
+            "must_not_include": list(payload["avoid"]),
+            "campaign_facts_needed": facts,
+            "buyer_words_to_preserve": list(payload["preserve"]),
+            "response_tone": (
+                "dynamic spoken length: direct price/signup short; explanation/objection medium; "
+                "detailed comparison can be longer"
+            ),
+            "max_sentence_count": _compact_sentence_count(say),
+        },
+        "draft_response": say,
+        "safety_flags": {
+            "needs_fact_check": _has_compact_flag(flags, "needs_fact_check", "fact_check"),
+            "unsupported_product_claim_risk": _has_compact_flag(
+                flags, "unsupported_product_claim_risk", "unsupported_claim", "unsupported_product_claim"
+            ),
+            "side_effect_claim_risk": _has_compact_flag(flags, "side_effect_claim_risk", "side_effect"),
+            "affiliation_claim_risk": _has_compact_flag(flags, "affiliation_claim_risk", "affiliation"),
+            "internal_policy_language_risk": _has_compact_flag(
+                flags, "internal_policy_language_risk", "internal_policy"
+            ),
+            "raw_url_risk": _has_compact_flag(flags, "raw_url_risk", "raw_url"),
+            "campaign_leakage_risk": _has_compact_flag(flags, "campaign_leakage_risk", "campaign_leakage"),
+        },
+        "confidence": payload["conf"],
+        "reasons": ["compact planner mapped without rewriting buyer meaning"],
+    }
+    full_schema_errors = validate_conversation_brain_output(expanded)
+    return expanded, full_schema_errors
 
 
 def _section_errors(

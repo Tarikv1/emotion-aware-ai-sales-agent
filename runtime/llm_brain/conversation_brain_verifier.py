@@ -188,6 +188,8 @@ def verify_conversation_brain_output(payload: dict[str, Any], case: dict[str, An
         )
     )
     if negated_team:
+        if normalize(semantic.get("negation_scope")) in {"", "none", "unknown"}:
+            errors.append("negation_scope_missing")
         if state_update["should_update_team_state"]:
             errors.append("negated_team_state")
         if TEAM_LANGUAGE_RE.search(draft):

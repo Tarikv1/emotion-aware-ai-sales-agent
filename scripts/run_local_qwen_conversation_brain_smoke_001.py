@@ -15,10 +15,17 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from runtime.llm_brain.conversation_brain_schema import PRIMARY_MODEL_ID  # noqa: E402
+from runtime.llm_brain.conversation_brain_schema import (  # noqa: E402
+    COMPACT_PLANNER_MAX_OUTPUT_TOKENS,
+    COMPACT_PLANNER_SCHEMA_MODE,
+    FULL_PLANNER_SCHEMA_MODE,
+    PRIMARY_MODEL_ID,
+)
 from runtime.llm_brain.local_conversation_brain import (  # noqa: E402
     EXPERIMENT_ENV_VAR,
     LOCAL_LLM_ENABLED_ENV_VAR,
+    LOCAL_LLM_MAX_OUTPUT_TOKENS_ENV_VAR,
+    LOCAL_LLM_PLANNER_SCHEMA_ENV_VAR,
     local_conversation_brain_config_from_env,
     local_llm_enabled,
     local_llm_experiment_enabled,
@@ -34,9 +41,13 @@ from runtime.llm_brain.local_transformers_runner import (  # noqa: E402
 
 
 EXPERIMENT_ID = "LOCAL-QWEN-CONVERSATION-BRAIN-SMOKE-001"
+COMPACT_EXPERIMENT_ID = "LOCAL-QWEN-COMPACT-PLANNER-SMOKE-001"
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / EXPERIMENT_ID
 RESULT_PATH = OUT_DIR / "result.json"
 REPORT_PATH = OUT_DIR / "report.md"
+COMPACT_OUT_DIR = ROOT / "research" / "experiments" / "generated" / COMPACT_EXPERIMENT_ID
+COMPACT_RESULT_PATH = COMPACT_OUT_DIR / "result.json"
+COMPACT_REPORT_PATH = COMPACT_OUT_DIR / "report.md"
 DOWNLOAD_ENV_VAR = "LOCAL_LLM_ALLOW_MODEL_DOWNLOAD"
 
 SMOKE_APPROVED_FACT_SUMMARIES = {
@@ -49,13 +60,18 @@ SMOKE_APPROVED_FACT_SUMMARIES = {
 }
 SMOKE_APPROVED_FACT_IDS = list(SMOKE_APPROVED_FACT_SUMMARIES)
 PHASE_4H10_BASELINE_SUMMARY = {
-    "status": "fail",
+    "status": "pass",
     "smoke_case_count": 8,
-    "schema_valid_count": 5,
-    "verifier_pass_count": 0,
-    "total_generation_latency_ms": 435166.75,
-    "tokens_generated": 4089,
+    "schema_valid_count": 8,
+    "verifier_pass_count": 8,
+    "schema_valid_before_repair_count": 8,
+    "schema_valid_after_repair_count": 8,
+    "repair_applied_count": 0,
+    "total_generation_latency_ms": 325385.843,
+    "tokens_generated": 2951,
     "provider_calls_made": False,
+    "local_model_calls_made": True,
+    "model_download_attempted": False,
     "runtime_behavior_changed": False,
     "response_text_changed": False,
 }
@@ -67,6 +83,20 @@ def utc_now() -> str:
 
 def env_flag(name: str) -> bool:
     return str(os.getenv(name) or "").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def smoke_config_from_env():
+    config = local_conversation_brain_config_from_env()
+    if os.getenv(LOCAL_LLM_PLANNER_SCHEMA_ENV_VAR):
+        return config
+    max_output_tokens = config.max_output_tokens
+    if not os.getenv(LOCAL_LLM_MAX_OUTPUT_TOKENS_ENV_VAR):
+        max_output_tokens = COMPACT_PLANNER_MAX_OUTPUT_TOKENS
+    return replace(
+        config,
+        planner_schema_mode=COMPACT_PLANNER_SCHEMA_MODE,
+        max_output_tokens=max_output_tokens,
+    )
 
 
 def existing_smoke_summary() -> dict[str, Any] | None:
@@ -230,7 +260,7 @@ def build_request_context(case: dict[str, Any]) -> dict[str, Any]:
 
 
 def base_result() -> dict[str, Any]:
-    config = local_conversation_brain_config_from_env()
+    config = smoke_config_from_env()
     runner_implemented = True
     ensure_local_artifact_layout()
     hardware = hardware_summary()
@@ -264,12 +294,17 @@ def base_result() -> dict[str, Any]:
         "fallback_used": False,
         "fallback_attempts": [],
         "phase_4h10_baseline_summary": PHASE_4H10_BASELINE_SUMMARY,
+        "previous_full_schema_smoke_metrics": PHASE_4H10_BASELINE_SUMMARY,
         "previous_smoke_summary": existing_smoke_summary(),
         "smoke_case_count": 0,
         "schema_valid_count": 0,
         "verifier_pass_count": 0,
         "schema_valid_before_repair_count": 0,
         "schema_valid_after_repair_count": 0,
+        "compact_schema_valid_count": 0,
+        "compact_expanded_schema_valid_count": 0,
+        "compact_adapter_error_count": 0,
+        "compact_adapter_status": "enabled" if config.planner_schema_mode == COMPACT_PLANNER_SCHEMA_MODE else "disabled",
         "repair_applied_count": 0,
         "repair_types": [],
         "repair_type_counts": {},
@@ -277,6 +312,9 @@ def base_result() -> dict[str, Any]:
         "needs_fact_check_after_repair_count": 0,
         "buyer_word_preservation_errors_before_repair": 0,
         "buyer_word_preservation_errors_after_repair": 0,
+        "truncation_count": 0,
+        "token_reduction_vs_full": None,
+        "latency_reduction_ms_vs_full": None,
         "approved_campaign_fact_summaries_added": SMOKE_APPROVED_FACT_SUMMARIES,
         "planner_json_compactness_scope": "max_output_tokens and compact prompt apply to planner JSON only; longer buyer-facing answers remain allowed when response strategy and buyer need justify them.",
         "generation_settings": {
@@ -285,6 +323,10 @@ def base_result() -> dict[str, Any]:
             "stop_after_first_complete_json_object": True,
             "temperature": "default deterministic greedy generation; no sampling temperature is set",
         },
+        "planner_schema_mode": config.planner_schema_mode,
+        "planner_schema_mode_default": (
+            "smoke defaults to compact unless LOCAL_LLM_PLANNER_SCHEMA is set; base runtime config defaults to full"
+        ),
         "failed_cases": [],
         "latency_metrics": {
             "model_load_time_ms": None,
@@ -294,7 +336,9 @@ def base_result() -> dict[str, Any]:
             "peak_gpu_memory_bytes": None,
         },
         "local_model_calls_made": False,
+        "local_model_call_count": 0,
         "provider_calls_made": False,
+        "model_weights_committed": False,
         "runtime_behavior_changed": False,
         "response_text_changed": False,
         "wsl_required": False,
@@ -353,14 +397,14 @@ def aggregate_latency(case_results: list[dict[str, Any]], model_load_time_ms: fl
     }
 
 
-def write_report(result: dict[str, Any]) -> None:
+def write_report(result: dict[str, Any], report_path: Path = REPORT_PATH) -> None:
     failed_cases = result.get("failed_cases") or []
     dependency_status_payload = result.get("dependency_status") or {}
-    previous = result.get("phase_4h10_baseline_summary") or result.get("previous_smoke_summary") or {}
+    previous = result.get("previous_full_schema_smoke_metrics") or result.get("previous_smoke_summary") or {}
     lines = [
-        f"# {EXPERIMENT_ID}",
+        f"# {result.get('experiment_id') or EXPERIMENT_ID}",
         "",
-        "## Previous Smoke",
+        "## Previous Full-Schema Smoke",
         "",
         f"- previous_status: {previous.get('status', 'unknown')}",
         f"- previous_schema_valid_count: {previous.get('schema_valid_count', 'unknown')}",
@@ -390,24 +434,34 @@ def write_report(result: dict[str, Any]) -> None:
         f"- quantization_mode_requested: {result['quantization_mode_requested']}",
         f"- quantization_mode_actually_used: {result['quantization_mode_actually_used'] or 'none'}",
         f"- fallback_used: {str(result['fallback_used']).lower()}",
+        f"- planner_schema_mode: {result['planner_schema_mode']}",
+        f"- compact_adapter_status: {result['compact_adapter_status']}",
         f"- smoke_case_count: {result['smoke_case_count']}",
         f"- schema_valid_count: {result['schema_valid_count']}",
         f"- verifier_pass_count: {result['verifier_pass_count']}",
         f"- schema_valid_before_repair_count: {result['schema_valid_before_repair_count']}",
         f"- schema_valid_after_repair_count: {result['schema_valid_after_repair_count']}",
+        f"- compact_schema_valid_count: {result['compact_schema_valid_count']}",
+        f"- compact_expanded_schema_valid_count: {result['compact_expanded_schema_valid_count']}",
+        f"- compact_adapter_error_count: {result['compact_adapter_error_count']}",
         f"- repair_applied_count: {result['repair_applied_count']}",
         f"- repair_types: {json.dumps(result['repair_type_counts'], ensure_ascii=False)}",
+        f"- truncation_count: {result['truncation_count']}",
         f"- needs_fact_check_before_repair_count: {result['needs_fact_check_before_repair_count']}",
         f"- needs_fact_check_after_repair_count: {result['needs_fact_check_after_repair_count']}",
         f"- buyer_word_preservation_errors_before_repair: {result['buyer_word_preservation_errors_before_repair']}",
         f"- buyer_word_preservation_errors_after_repair: {result['buyer_word_preservation_errors_after_repair']}",
         f"- failed_case_count: {len(failed_cases)}",
         f"- latency_metrics: {json.dumps(result['latency_metrics'], ensure_ascii=False)}",
+        f"- token_reduction_vs_full: {result['token_reduction_vs_full']}",
+        f"- latency_reduction_ms_vs_full: {result['latency_reduction_ms_vs_full']}",
         f"- generation_settings: {json.dumps(result['generation_settings'], ensure_ascii=False)}",
         f"- approved_campaign_fact_summaries_added: {json.dumps(result['approved_campaign_fact_summaries_added'], ensure_ascii=False)}",
         f"- planner_json_compactness_scope: {result['planner_json_compactness_scope']}",
         f"- local_model_calls_made: {str(result['local_model_calls_made']).lower()}",
+        f"- local_model_call_count: {result['local_model_call_count']}",
         f"- provider_calls_made: {str(result['provider_calls_made']).lower()}",
+        f"- model_weights_committed: {str(result['model_weights_committed']).lower()}",
         f"- runtime_behavior_changed: {str(result['runtime_behavior_changed']).lower()}",
         f"- response_text_changed: {str(result['response_text_changed']).lower()}",
         f"- WSL required: {str(result['wsl_required']).lower()}",
@@ -424,18 +478,23 @@ def write_report(result: dict[str, Any]) -> None:
     if notes:
         lines.extend(["", "## Notes", ""])
         lines.extend(f"- {item}" for item in notes)
-    REPORT_PATH.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def write_evidence(result: dict[str, Any]) -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     RESULT_PATH.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     write_report(result)
+    if result.get("planner_schema_mode") == COMPACT_PLANNER_SCHEMA_MODE:
+        COMPACT_OUT_DIR.mkdir(parents=True, exist_ok=True)
+        compact_result = {**result, "experiment_id": COMPACT_EXPERIMENT_ID}
+        COMPACT_RESULT_PATH.write_text(json.dumps(compact_result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        write_report(compact_result, COMPACT_REPORT_PATH)
 
 
 def main() -> int:
     result = base_result()
-    config = local_conversation_brain_config_from_env()
+    config = smoke_config_from_env()
     print(
         json.dumps(
             {
@@ -447,6 +506,8 @@ def main() -> int:
                 "local_model_path": config.model_path,
                 "cache_path": config.cache_dir,
                 "quantization_mode": config.quantization_mode,
+                "planner_schema_mode": config.planner_schema_mode,
+                "max_output_tokens": config.max_output_tokens,
             },
             indent=2,
             ensure_ascii=False,
@@ -562,6 +623,7 @@ def main() -> int:
 
     result["cases"] = case_results
     result["local_model_calls_made"] = bool(case_results)
+    result["local_model_call_count"] = len(case_results)
     result["smoke_case_count"] = len(case_results)
     result["schema_valid_before_repair_count"] = sum(
         1
@@ -572,6 +634,25 @@ def main() -> int:
         1 for item in case_results if item.get("planner_output") is not None and not item.get("schema_errors")
     )
     result["schema_valid_after_repair_count"] = result["schema_valid_count"]
+    result["compact_schema_valid_count"] = sum(
+        1
+        for item in case_results
+        if item.get("planner_schema_mode") == COMPACT_PLANNER_SCHEMA_MODE
+        and item.get("compact_planner_output") is not None
+        and not item.get("compact_schema_errors")
+    )
+    result["compact_expanded_schema_valid_count"] = sum(
+        1
+        for item in case_results
+        if item.get("planner_schema_mode") == COMPACT_PLANNER_SCHEMA_MODE
+        and item.get("planner_output") is not None
+        and not item.get("schema_errors")
+    )
+    result["compact_adapter_error_count"] = sum(
+        len(item.get("compact_adapter_errors") or [])
+        for item in case_results
+        if item.get("planner_schema_mode") == COMPACT_PLANNER_SCHEMA_MODE
+    )
     result["verifier_pass_count"] = sum(
         1
         for item in case_results
@@ -613,6 +694,15 @@ def main() -> int:
         if item.get("status") != "pass"
     ]
     result["latency_metrics"] = aggregate_latency(case_results, model_load_time_ms)
+    result["truncation_count"] = int(result["latency_metrics"].get("output_truncated_count") or 0)
+    current_tokens = result["latency_metrics"].get("tokens_generated")
+    full_tokens = PHASE_4H10_BASELINE_SUMMARY.get("tokens_generated")
+    if isinstance(current_tokens, int) and isinstance(full_tokens, int):
+        result["token_reduction_vs_full"] = full_tokens - current_tokens
+    current_latency = result["latency_metrics"].get("total_generation_latency_ms")
+    full_latency = PHASE_4H10_BASELINE_SUMMARY.get("total_generation_latency_ms")
+    if isinstance(current_latency, (int, float)) and isinstance(full_latency, (int, float)):
+        result["latency_reduction_ms_vs_full"] = round(float(full_latency) - float(current_latency), 3)
     result["status"] = "pass" if not result["failed_cases"] else "fail"
     write_evidence(result)
     print(f"{EXPERIMENT_ID}: {result['status']}")
