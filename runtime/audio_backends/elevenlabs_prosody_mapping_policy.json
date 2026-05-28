@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "mapping_version": "elevenlabs-prosody-mapping-policy-001",
+  "phase": "4I5",
+  "current_voice_path": "elevenlabs",
+  "provider_calls_allowed": false,
+  "live_wiring_allowed": false,
+  "raw_fish_tags_allowed_in_spoken_text": false,
+  "internal_labels_exposed_to_buyer": false,
+  "purpose": "No-provider policy for mapping internal prosody plans into future ElevenLabs-safe text, style, and voice-setting metadata without generating audio or changing live runtime behavior.",
+  "supported_mapping_layers": [
+    "text_shaping",
+    "punctuation",
+    "sentence_length",
+    "pause_hinting_by_punctuation",
+    "emphasis_by_word_choice",
+    "style_prompt_hint",
+    "voice_settings_hint"
+  ],
+  "unsupported_mapping_layers": [
+    "raw_fish_bracket_tags",
+    "fake_laughter",
+    "fake_emotion_tags",
+    "unverified_voice_cloning",
+    "unsupported_claim_confidence",
+    "manipulative urgency"
+  ],
+  "safety_rules": [
+    "no raw bracket tags in spoken text",
+    "no internal policy language",
+    "no fake side effects",
+    "no overclaiming",
+    "no pressure after boundary",
+    "no emotional exaggeration",
+    "no hidden action claims",
+    "no raw URLs unless explicit metadata mode"
+  ],
+  "mapping_layers": {
+    "text_shaping": {
+      "purpose": "Convert a safe base response into a phone-friendly spoken form while preserving the same factual content and sales boundary.",
+      "allowed_inputs": [
+        "base_text",
+        "planner pace",
+        "planner warmth",
+        "planner confidence",
+        "planner energy",
+        "selected internal prosody label ids",
+        "planner avoid styles"
+      ],
+      "disallowed_inputs": [
+        "raw Fish bracket tags",
+        "private transcript text",
+        "provider API output",
+        "claims not already present in the base text"
+      ],
+      "output_field": "shaped_text",
+      "buyer_facing_safety_notes": [
+        "Use plain spoken sentences.",
+        "Keep the buyer-facing text free of internal labels and backend names.",
+        "Do not add new commitments, appointments, emails, CRM actions, or product claims."
+      ]
+    },
+    "punctuation": {
+      "purpose": "Use ordinary punctuation to make the same response easier to speak and listen to.",
+      "allowed_inputs": [
+        "safe base sentence boundaries",
+        "commas for natural clauses",
+        "periods for one idea per sentence",
+        "question marks only when the response intentionally asks a buyer question"
+      ],
+      "disallowed_inputs": [
+        "bracketed performance directions",
+        "multiple exclamation marks",
+        "ellipsis padding",
+        "raw URLs"
+      ],
+      "output_field": "shaped_text",
+      "buyer_facing_safety_notes": [
+        "Punctuation must not imply fake side effects or urgency.",
+        "Terminal and boundary responses must not add a new question."
+      ]
+    },
+    "sentence_length": {
+      "purpose": "Keep phone-call sentences short enough for natural TTS delivery and buyer comprehension.",
+      "allowed_inputs": [
+        "base_text sentence length",
+        "planner clarity labels",
+        "confusion and ASR-repair labels",
+        "terminal-close labels"
+      ],
+      "disallowed_inputs": [
+        "long monologues",
+        "stacked questions",
+        "hidden sales pressure",
+        "internal classifier explanations"
+      ],
+      "output_field": "shaped_text",
+      "buyer_facing_safety_notes": [
+        "Use one idea per sentence for confused buyers.",
+        "Use concise final sentences for terminal closes.",
+        "Do not make the response longer than the base meaning requires."
+      ]
+    },
+    "pause_hinting_by_punctuation": {
+      "purpose": "Represent future pause intent with safe punctuation metadata instead of raw tags or audio generation.",
+      "allowed_inputs": [
+        "pause_policy",
+        "price pause labels",
+        "boundary pause labels",
+        "source-answer pause labels"
+      ],
+      "disallowed_inputs": [
+        "raw pause tags",
+        "SSML",
+        "provider-specific markup",
+        "fake breathing or laughter cues"
+      ],
+      "output_field": "pause_punctuation_plan",
+      "buyer_facing_safety_notes": [
+        "Pause metadata is not spoken.",
+        "Any punctuation added to spoken text must remain natural and ordinary."
+      ]
+    },
+    "emphasis_by_word_choice": {
+      "purpose": "Choose plain emphasis targets from the planner without adding markup or capitalized shouting.",
+      "allowed_inputs": [
+        "planner emphasis_terms",
+        "safe product nouns already present in base_text",
+        "buyer-safe value-frame terms"
+      ],
+      "disallowed_inputs": [
+        "all-caps emphasis",
+        "urgency pressure words",
+        "unsupported superiority claims",
+        "raw internal labels"
+      ],
+      "output_field": "emphasis_terms",
+      "buyer_facing_safety_notes": [
+        "Emphasis terms are metadata for review.",
+        "Do not add manipulative urgency or overexcited sales language."
+      ]
+    },
+    "style_prompt_hint": {
+      "purpose": "Create a future-provider style hint that can be reviewed before any approved provider sample phase.",
+      "allowed_inputs": [
+        "planner pace",
+        "planner warmth",
+        "planner confidence",
+        "planner energy",
+        "safe delivery family inferred from labels"
+      ],
+      "disallowed_inputs": [
+        "unsafe persuasion instructions",
+        "fake emotional performance tags",
+        "provider keys",
+        "voice cloning claims",
+        "instructions to pressure the buyer"
+      ],
+      "output_field": "style_prompt_hint",
+      "buyer_facing_safety_notes": [
+        "Style hints are metadata only and must not be spoken to the buyer.",
+        "Keep style grounded, calm, and truthful."
+      ]
+    },
+    "voice_settings_hint": {
+      "purpose": "Represent a conservative future voice-settings suggestion without calling ElevenLabs or assuming exact provider behavior.",
+      "allowed_inputs": [
+        "planner pace",
+        "planner warmth",
+        "planner confidence",
+        "planner energy",
+        "pause_policy"
+      ],
+      "disallowed_inputs": [
+        "API credentials",
+        "provider-specific live settings writes",
+        "unverified voice cloning",
+        "audio generation requests"
+      ],
+      "output_field": "voice_settings_hint",
+      "buyer_facing_safety_notes": [
+        "Voice settings are review metadata only.",
+        "They must not claim audio was generated or tested."
+      ]
+    }
+  },
+  "text_shaping_examples": {
+    "confused buyer": "Short sentences, slower explanatory phrasing, one idea per sentence.",
+    "price objection": "Acknowledge first, then value frame, no pressure.",
+    "terminal close": "Concise final sentence, no new question.",
+    "already told you": "Acknowledge, summarize known context, do not repeat the same question.",
+    "ASR uncertainty": "Natural clarification, no classifier or confidence language."
+  },
+  "boundary_flags": {
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "fish_inference_performed": false,
+    "liquid_inference_performed": false,
+    "kokoro_inference_performed": false,
+    "local_model_generation_made": false,
+    "ollama_generation_made": false,
+    "training_performed": false,
+    "live_runtime_wiring_changed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "spoken_text_tag_injection_allowed": false
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "experiment_id": "ELEVENLABS-PROSODY-MAPPING-DECISION-001",
+  "phase": "4I5",
+  "status": "pass",
+  "recommendation": "Future ElevenLabs offline sample generation phase only after explicit provider-call approval; not current phase.",
+  "human_review_needed": false,
+  "future_provider_sample_generation_recommended": true,
+  "live_wiring_allowed": false,
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "live_tts_calls_made": false,
+  "response_text_changed": false,
+  "runtime_behavior_changed": false,
+  "does_not_claim_live_readiness": true,
+  "provider_test_current_phase_allowed": false,
+  "provider_test_future_phase_requires_explicit_approval": true,
+  "decision_inputs": {
+    "prototype": "research/experiments/generated/ELEVENLABS-PROSODY-MAPPING-PROTOTYPE-001/result.json",
+    "quality_audit": "research/experiments/generated/ELEVENLABS-PROSODY-MAPPING-QUALITY-AUDIT-001/result.json"
+  },
+  "quality_summary": {
+    "example_count": 62,
+    "status_counts": {
+      "pass": 62,
+      "warning": 0,
+      "fail": 0,
+      "needs_human_review": 0
+    },
+    "blocking_failure_count": 0,
+    "warning_count": 0
+  },
+  "fish_tags_internal_only": true,
+  "raw_fish_tags_allowed_in_elevenlabs_text": false,
+  "boundary_flags": {
+    "fish_install_performed": false,
+    "fish_inference_performed": false,
+    "liquid_inference_performed": false,
+    "kokoro_inference_performed": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "local_model_generation_made": false,
+    "ollama_generation_made": false,
+    "training_performed": false,
+    "model_weights_committed": false,
+    "audio_files_committed": false,
+    "live_runtime_wiring_changed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "spoken_text_tag_injection_allowed": false
+  }
+}
