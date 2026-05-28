@@ -1,0 +1,21 @@
+{
+  "experiment_id": "FISH-INSPIRED-PROSODY-TAXONOMY-001",
+  "phase": "4I2",
+  "status": "pass",
+  "taxonomy": "runtime/audio_backends/prosody_sales_taxonomy.json",
+  "taxonomy_label_count": 267,
+  "taxonomy_category_count": 24,
+  "unsafe_disallowed_label_count": 17,
+  "source_urls": [
+    "https://fish.audio/s2/",
+    "https://huggingface.co/fishaudio/s2-pro",
+    "https://github.com/fishaudio/fish-speech",
+    "https://speech.fish.audio/"
+  ],
+  "fish_15000_tags_reference": "inspiration only; full tag universe not imported",
+  "fish_tags_internal_only": true,
+  "spoken_text_tag_injection_allowed": false,
+  "provider_calls_made": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false
+}

@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "policy_id": "prosody-backend-mapping-policy-001",
+  "phase": "4I2",
+  "updated_on": "2026-05-28",
+  "purpose": "Backend handling policy for internal prosody labels and Fish-inspired control concepts.",
+  "source_urls": [
+    "https://fish.audio/s2/",
+    "https://huggingface.co/fishaudio/s2-pro",
+    "https://github.com/fishaudio/fish-speech",
+    "https://speech.fish.audio/"
+  ],
+  "boundary_flags": {
+    "fish_install_performed": false,
+    "fish_inference_performed": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "local_model_generation_made": false,
+    "ollama_generation_made": false,
+    "training_performed": false,
+    "model_weights_committed": false,
+    "audio_files_committed": false,
+    "raw_private_transcripts_included": false,
+    "live_runtime_wiring_changed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "spoken_text_tag_injection_allowed": false
+  },
+  "backend_aliases": {
+    "elevenlabs_existing_provider": "elevenlabs_current_provider",
+    "plain_text": "plain_text_fallback",
+    "plain_text_fallback": "plain_text_fallback",
+    "fish_audio_s2": "fish_future_research",
+    "kokoro_82m": "kokoro_future",
+    "liquid_audio_lfm25": "liquid_audio"
+  },
+  "backend_policies": {
+    "elevenlabs_current_provider": {
+      "current_voice_path": true,
+      "mapping_allowed_now": false,
+      "raw_fish_tag_injection_allowed": false,
+      "handling": "Use style prompt, voice settings, sentence shape, punctuation, and pacing hints only where supported in a later approved adapter.",
+      "mapping_strategy": [
+        "Fish-inspired labels stay internal.",
+        "Do not insert raw Fish tags into spoken text.",
+        "Do not change current live ElevenLabs response text in this phase."
+      ]
+    },
+    "plain_text_fallback": {
+      "current_voice_path": false,
+      "mapping_allowed_now": true,
+      "raw_fish_tag_injection_allowed": false,
+      "handling": "Use sentence length, punctuation, shorter clauses, and word choice.",
+      "mapping_strategy": [
+        "No bracket tags.",
+        "No backend-specific markup."
+      ]
+    },
+    "fish_future_research": {
+      "active_now": false,
+      "mapping_allowed_now": false,
+      "raw_fish_tag_injection_allowed": false,
+      "handling": "Fish-style tags may be mapped only if Fish is explicitly selected, licensed, and approved.",
+      "mapping_strategy": [
+        "Not active now.",
+        "No Fish install or inference in Phase 4I2."
+      ]
+    },
+    "kokoro_future": {
+      "status": "optional_future_benchmark_only",
+      "mapping_allowed_now": false,
+      "raw_fish_tag_injection_allowed": false,
+      "handling": "Future Kokoro mapping may use punctuation, speed, voice selection, and phrasing only after benchmark evidence.",
+      "mapping_strategy": [
+        "Not active now.",
+        "No Kokoro inference in Phase 4I2."
+      ]
+    },
+    "liquid_audio": {
+      "status": "architecture_inspiration_only",
+      "current_tts_backend": false,
+      "mapping_allowed_now": false,
+      "raw_fish_tag_injection_allowed": false,
+      "handling": "No current Liquid voice backend mapping after failed manual listening review.",
+      "listening_review_status": "fail_quality",
+      "recommendation": "liquid_architecture_inspiration_only",
+      "thesis_demo_tts_allowed": false,
+      "product_fallback_tts_allowed": false,
+      "live_wiring_allowed": false,
+      "sales_brain_replacement_allowed": false
+    },
+    "debug_and_evidence": {
+      "mapping_allowed_now": true,
+      "raw_fish_tag_injection_allowed": false,
+      "handling": "Selected labels may be shown in internal evidence only.",
+      "mapping_strategy": [
+        "Do not expose internal tags to buyer-facing speech."
+      ]
+    }
+  }
+}

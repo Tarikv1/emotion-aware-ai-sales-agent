@@ -1,0 +1,820 @@
+{
+  "experiment_id": "SALES-PROSODY-MAPPING-001",
+  "phase": "4I2",
+  "status": "pass",
+  "composition_rules": "runtime/audio_backends/prosody_composition_rules.json",
+  "sales_mapping": "runtime/audio_backends/sales_prosody_mapping.json",
+  "composition_rule_count": 46,
+  "sales_mapping_count": 138,
+  "examples_count": 45,
+  "examples": [
+    {
+      "example_id": "example.001.confused_buyer_plan_explanation",
+      "input_context": {
+        "buyer_emotion": "confused",
+        "sales_move": "plan_explanation"
+      },
+      "selected_labels": [
+        "emotion_response.confused_buyer_reassurance",
+        "pacing.slow_down_for_confusion",
+        "clarity.simple_words",
+        "clarity.one_idea_per_sentence",
+        "plan.explain_with_plain_language"
+      ],
+      "plain_text": "You need Pro because it has more features.",
+      "prosody_shaped_text": "The simple version is this: Plus is lighter individual use. Pro fits heavier daily use. Does that match what you meant?",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.002.confused_buyer_price",
+      "input_context": {
+        "buyer_emotion": "confused",
+        "sales_move": "price_answer"
+      },
+      "selected_labels": [
+        "emotion_response.confused_buyer_reassurance",
+        "pause.pause_before_price",
+        "pause.pause_after_price",
+        "clarity.short_sentence",
+        "source.no_price_guarantee"
+      ],
+      "plain_text": "It costs more depending on the plan.",
+      "prosody_shaped_text": "The exact price can change, so I would check the official plan page. The decision point is whether the paid tier saves enough time for your use.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.003.skeptical_buyer_source_question",
+      "input_context": {
+        "buyer_emotion": "skeptical",
+        "sales_move": "source_affiliation_answer"
+      },
+      "selected_labels": [
+        "emotion_response.skeptical_buyer_grounding",
+        "tone.transparent_source",
+        "trust.no_affiliation_overclaim",
+        "source.no_affiliation_claim",
+        "source.official_route_boundary"
+      ],
+      "plain_text": "According to the article, we know it is official.",
+      "prosody_shaped_text": "I am not claiming affiliation. I am using source-grounded public information and would route exact terms to the official page.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.004.skeptical_buyer_competitor_objection",
+      "input_context": {
+        "buyer_emotion": "skeptical",
+        "objection_type": "competitor"
+      },
+      "selected_labels": [
+        "objection.competitor_respect_current_tool",
+        "objection.competitor_gap_probe",
+        "tone.direct_but_respectful",
+        "sales.tie_to_buyer_words"
+      ],
+      "plain_text": "Our tool is better than that.",
+      "prosody_shaped_text": "If your current tool works, keep it. The only reason to compare is if there is a gap it is not covering.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.005.impatient_buyer_direct_price",
+      "input_context": {
+        "buyer_emotion": "impatient",
+        "sales_move": "price_answer"
+      },
+      "selected_labels": [
+        "emotion_response.impatient_buyer_concise",
+        "pacing.compress_for_impatient_buyer",
+        "pause.no_pause_direct_answer",
+        "clarity.short_sentence"
+      ],
+      "plain_text": "Let me explain the whole pricing structure first.",
+      "prosody_shaped_text": "Short answer: check the official plan page for the current price. If you tell me light or heavy use, I can narrow the fit.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.006.price_objection_heavy_use",
+      "input_context": {
+        "objection_type": "price",
+        "sales_move": "recommendation",
+        "buyer_engagement_level": "high"
+      },
+      "selected_labels": [
+        "objection.price_acknowledge",
+        "objection.price_value_reframe",
+        "recommend.pro_for_heavy_use",
+        "confidence.confidence_with_caveat"
+      ],
+      "plain_text": "It is worth it because it has many features.",
+      "prosody_shaped_text": "I hear the cost concern. For heavy daily use, Pro can make sense if it replaces enough manual work.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.007.price_objection_low_budget",
+      "input_context": {
+        "objection_type": "price",
+        "buyer_friction_level": "high"
+      },
+      "selected_labels": [
+        "objection.price_acknowledge",
+        "objection.too_expensive_no_pressure",
+        "recommend.free_or_no_fit",
+        "warmth.low_pressure_warmth"
+      ],
+      "plain_text": "You should still pay for it.",
+      "prosody_shaped_text": "If the budget is tight and the free plan covers the job, staying free is a reasonable no-fit answer.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.008.current_tool_objection",
+      "input_context": {
+        "objection_type": "already_have_tool"
+      },
+      "selected_labels": [
+        "objection.already_have_tool_compare_gap",
+        "objection.competitor_respect_current_tool",
+        "clarify.comparison_target"
+      ],
+      "plain_text": "You should replace your current tool.",
+      "prosody_shaped_text": "If the current tool is doing the job, I would not replace it. What gap, if any, is still open?",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.009.privacy_concern",
+      "input_context": {
+        "objection_type": "privacy"
+      },
+      "selected_labels": [
+        "objection.privacy_concern_respectful_answer",
+        "plan.explain_privacy_boundary",
+        "boundary.respect_privacy_boundary",
+        "safety.no_sensitive_data_request"
+      ],
+      "plain_text": "Privacy is fine.",
+      "prosody_shaped_text": "I would not guess on privacy terms. The safe route is to check the official privacy terms and avoid sharing sensitive data here.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.010.buyer_already_told_you",
+      "input_context": {
+        "buyer_said_already_told_you": true
+      },
+      "selected_labels": [
+        "repair.already_told_you_acknowledge",
+        "repair.do_not_repeat_question",
+        "repair.summarize_known_context",
+        "repair.move_forward_after_repair"
+      ],
+      "plain_text": "Can you tell me that again?",
+      "prosody_shaped_text": "You're right, you already said that. You are looking at individual use, not a team setup, so I will use that.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.011.buyer_correction",
+      "input_context": {
+        "sales_move": "correction_repair"
+      },
+      "selected_labels": [
+        "repair.correction_acceptance",
+        "repair.wrong_word_repair",
+        "repair.move_forward_after_repair",
+        "confidence.confidence_with_caveat"
+      ],
+      "plain_text": "So you meant ChatGPT.",
+      "prosody_shaped_text": "Got it, Claude, not ChatGPT. I will use that correction.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.012.asr_uncertainty",
+      "input_context": {
+        "asr_uncertainty_detected": true
+      },
+      "selected_labels": [
+        "repair.asr_uncertainty_repair",
+        "clarify.short_natural_question",
+        "phone.one_question_at_a_time"
+      ],
+      "plain_text": "I did not understand the classifier output.",
+      "prosody_shaped_text": "I may have missed that. Did you mean ChatGPT, Claude, or another tool?",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.013.buyer_same_question_again",
+      "input_context": {
+        "sales_move": "repeat_answer"
+      },
+      "selected_labels": [
+        "repair.repeat_with_different_words",
+        "clarity.repeat_differently",
+        "clarity.summary_before_next_question"
+      ],
+      "plain_text": "As I said before, Pro is better.",
+      "prosody_shaped_text": "Put differently: Plus is lighter use, Pro is heavier daily use. The choice depends on how often you need it.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.014.use_case_discovery",
+      "input_context": {
+        "sales_move": "use_case_discovery"
+      },
+      "selected_labels": [
+        "clarify.use_case",
+        "phone.one_question_at_a_time",
+        "clarify.short_natural_question"
+      ],
+      "plain_text": "Tell me everything about your needs and team.",
+      "prosody_shaped_text": "What would you mainly use it for?",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.015.intensity_discovery",
+      "input_context": {
+        "sales_move": "intensity_discovery"
+      },
+      "selected_labels": [
+        "clarify.intensity",
+        "clarity.simple_words",
+        "phone.short_turn_discipline"
+      ],
+      "plain_text": "Classify your intensity level.",
+      "prosody_shaped_text": "Would this be occasional use or something you use most workdays?",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.016.team_vs_individual_clarification",
+      "input_context": {
+        "sales_move": "team_clarification"
+      },
+      "selected_labels": [
+        "clarify.team_vs_individual",
+        "repair.restore_not_team",
+        "phone.answer_then_ask"
+      ],
+      "plain_text": "So this is for your team.",
+      "prosody_shaped_text": "Is this just for you, or does a team need admin and billing control?",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.017.recommendation_after_enough_context",
+      "input_context": {
+        "sales_move": "recommendation",
+        "decision_stage": "recommendation"
+      },
+      "selected_labels": [
+        "sales.confirm_then_recommend",
+        "recommend.confidence_based_on_known_context",
+        "confidence.decisive_recommendation",
+        "pause.pause_before_recommendation"
+      ],
+      "plain_text": "Maybe you could choose Pro.",
+      "prosody_shaped_text": "Based on what you told me, I would start with Pro. It fits heavier daily use without jumping straight to enterprise.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.018.plus_vs_pro_comparison",
+      "input_context": {
+        "sales_move": "compare_plus_pro"
+      },
+      "selected_labels": [
+        "recommend.compare_two_options",
+        "plan.explain_free_plus_pro",
+        "sales.choice_framing",
+        "clarity.one_idea_per_sentence"
+      ],
+      "plain_text": "Plus and Pro are different tiers.",
+      "prosody_shaped_text": "Plus is the lighter paid option. Pro is better when you use it heavily enough that limits and workflow speed matter.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.019.pro_tier_selection",
+      "input_context": {
+        "sales_move": "pro_tier_selection"
+      },
+      "selected_labels": [
+        "plan.explain_pro_tiers",
+        "recommend.pro_for_heavy_use",
+        "confidence.confidence_with_caveat"
+      ],
+      "plain_text": "Pick Pro.",
+      "prosody_shaped_text": "I would choose Pro only if the usage is frequent enough to justify it. Otherwise start lower.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.020.no_fit_close",
+      "input_context": {
+        "sales_move": "close",
+        "close_readiness": "no_fit"
+      },
+      "selected_labels": [
+        "close.no_fit_close",
+        "recommend.free_or_no_fit",
+        "trust.buyer_control",
+        "boundary.no_pressure_after_boundary"
+      ],
+      "plain_text": "Maybe I can convince you later.",
+      "prosody_shaped_text": "Then I would not push a paid plan. Staying free or doing nothing is the better fit for now.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.021.terminal_acceptance",
+      "input_context": {
+        "sales_move": "close",
+        "close_readiness": "accepted"
+      },
+      "selected_labels": [
+        "close.terminal_close",
+        "close.stop_after_acceptance",
+        "phone.stop_when_terminal"
+      ],
+      "plain_text": "Great, anything else I can sell you?",
+      "prosody_shaped_text": "That sounds settled. Use the official page for the next step, and I will stop there.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.022.boundary_no_email",
+      "input_context": {
+        "safety_boundary_detected": true,
+        "objection_type": "no_email"
+      },
+      "selected_labels": [
+        "boundary.respect_no_email",
+        "close.no_fake_email",
+        "boundary.no_side_effect_claim"
+      ],
+      "plain_text": "I will email you anyway.",
+      "prosody_shaped_text": "Understood, no email. I will not claim any follow-up action.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.023.boundary_no_crm",
+      "input_context": {
+        "safety_boundary_detected": true,
+        "objection_type": "no_crm"
+      },
+      "selected_labels": [
+        "boundary.respect_no_crm",
+        "close.no_crm_claim",
+        "boundary.no_side_effect_claim"
+      ],
+      "plain_text": "I will put that in the CRM.",
+      "prosody_shaped_text": "Understood, no CRM action. I am only answering here.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.024.boundary_no_calendar",
+      "input_context": {
+        "safety_boundary_detected": true,
+        "objection_type": "no_calendar"
+      },
+      "selected_labels": [
+        "boundary.respect_no_calendar",
+        "close.no_fake_calendar",
+        "boundary.no_side_effect_claim"
+      ],
+      "plain_text": "I will add a calendar event.",
+      "prosody_shaped_text": "Understood, no calendar action. I will not claim a booking.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.025.source_affiliation_answer",
+      "input_context": {
+        "sales_move": "source_affiliation_answer"
+      },
+      "selected_labels": [
+        "source.no_affiliation_claim",
+        "trust.no_affiliation_overclaim",
+        "tone.transparent_source",
+        "source.official_route_boundary"
+      ],
+      "plain_text": "We are from OpenAI.",
+      "prosody_shaped_text": "No affiliation claim from me. I can discuss public plan-fit information and point to the official route for terms.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.026.opening_permission_check",
+      "input_context": {
+        "sales_move": "opening_permission_check"
+      },
+      "selected_labels": [
+        "phone.opener_clear_identity",
+        "phone.permission_check_natural",
+        "tone.neutral_professional",
+        "phone.short_turn_discipline"
+      ],
+      "plain_text": "Hi, I am calling with an amazing offer.",
+      "prosody_shaped_text": "Hi, I am calling about ChatGPT plan fit. Is this an okay moment for one quick question?",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.027.barge_in_recovery",
+      "input_context": {
+        "sales_move": "barge_in_recovery"
+      },
+      "selected_labels": [
+        "phone.barge_in_recovery",
+        "pause.barge_in_recovery_pause",
+        "pacing.reduce_speed_after_interruption"
+      ],
+      "plain_text": "Let me finish.",
+      "prosody_shaped_text": "Go ahead. I will pause and follow your point.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.028.buyer_frustration",
+      "input_context": {
+        "buyer_emotion": "frustrated"
+      },
+      "selected_labels": [
+        "emotion_response.frustrated_buyer_deescalation",
+        "volume.deescalation_lower_volume",
+        "tone.direct_but_respectful",
+        "objection.avoid_argument"
+      ],
+      "plain_text": "You do not understand.",
+      "prosody_shaped_text": "I hear the frustration. I will keep this short and answer only the point you asked.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.029.buyer_disengaged",
+      "input_context": {
+        "buyer_emotion": "disengaged"
+      },
+      "selected_labels": [
+        "emotion_response.disengaged_buyer_relevance_bridge",
+        "sales.concise_summary",
+        "clarify.short_natural_question"
+      ],
+      "plain_text": "There are many features.",
+      "prosody_shaped_text": "The only relevant question is whether it saves you time. If not, we can stop here.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.030.buyer_interested",
+      "input_context": {
+        "buyer_emotion": "interested"
+      },
+      "selected_labels": [
+        "emotion_response.interested_buyer_momentum",
+        "energy.increase_for_momentum",
+        "sales.advance_after_answer"
+      ],
+      "plain_text": "Great, let me tell you everything.",
+      "prosody_shaped_text": "That sounds relevant. The next useful step is choosing between Plus and Pro based on usage.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.031.buyer_not_using_ai",
+      "input_context": {
+        "objection_type": "not_using_ai"
+      },
+      "selected_labels": [
+        "objection.not_using_ai_disqualify_softly",
+        "recommend.free_or_no_fit",
+        "close.no_fit_close"
+      ],
+      "plain_text": "You should start using AI.",
+      "prosody_shaped_text": "If you are not using AI and do not have a clear use case, I would not recommend a paid plan.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.032.buyer_using_chatgpt_and_other_tools",
+      "input_context": {
+        "objection_type": "using_chatgpt_and_other_tools"
+      },
+      "selected_labels": [
+        "objection.already_have_tool_compare_gap",
+        "clarify.comparison_target",
+        "sales.tie_to_buyer_words"
+      ],
+      "plain_text": "You should consolidate everything.",
+      "prosody_shaped_text": "If ChatGPT and other tools already work, the comparison should focus only on the gap you still feel.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.033.buyer_chatgpt_or_maybe_claude",
+      "input_context": {
+        "objection_type": "chatgpt_or_claude_uncertain"
+      },
+      "selected_labels": [
+        "repair.restore_voice_not_writing",
+        "clarify.tool_name",
+        "multilingual.pronounce_chatgpt_carefully",
+        "multilingual.pronounce_claude_carefully"
+      ],
+      "plain_text": "You are confused.",
+      "prosody_shaped_text": "No problem. Are we comparing ChatGPT, Claude, or both?",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.034.plans_are_models_or_subscriptions",
+      "input_context": {
+        "sales_move": "subscription_vs_model"
+      },
+      "selected_labels": [
+        "plan.explain_model_vs_subscription",
+        "clarify.subscription_vs_model",
+        "clarity.define_plan_terms"
+      ],
+      "plain_text": "The model is the plan.",
+      "prosody_shaped_text": "The plan is the subscription tier. The model is the technology you may access through it.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.035.signup_path",
+      "input_context": {
+        "sales_move": "signup_path"
+      },
+      "selected_labels": [
+        "plan.explain_self_serve_path",
+        "close.official_plan_page_route",
+        "trust.official_route_only"
+      ],
+      "plain_text": "I can sign you up.",
+      "prosody_shaped_text": "Use the official plan page for signup. I cannot create an account for you here.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.036.upgrade_path",
+      "input_context": {
+        "sales_move": "upgrade_path"
+      },
+      "selected_labels": [
+        "recommend.start_lower_then_upgrade",
+        "plan.explain_self_serve_path",
+        "sales.low_pressure_next_step"
+      ],
+      "plain_text": "Upgrade now.",
+      "prosody_shaped_text": "You can start lower and upgrade later if usage proves it is worth it.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.037.data_privacy_training",
+      "input_context": {
+        "sales_move": "privacy_training_answer"
+      },
+      "selected_labels": [
+        "plan.explain_privacy_boundary",
+        "source.caveat_exact_terms_can_change",
+        "safety.no_fake_privacy_claim",
+        "trust.check_current_terms"
+      ],
+      "plain_text": "Your data is never used.",
+      "prosody_shaped_text": "I would not make a blanket privacy claim. Check the current official terms for how data and training are handled.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.038.wrong_product_question",
+      "input_context": {
+        "sales_move": "wrong_product_repair"
+      },
+      "selected_labels": [
+        "repair.wrong_word_repair",
+        "clarify.tool_name",
+        "source.no_unverified_model_claim"
+      ],
+      "plain_text": "Yes, that plan has that unrelated feature.",
+      "prosody_shaped_text": "That sounds like a different product question. Which tool are you asking about?",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.039.unsupported_claim_request",
+      "input_context": {
+        "sales_move": "unsupported_claim"
+      },
+      "selected_labels": [
+        "safety.no_unverified_claim_confidence",
+        "source.no_unverified_model_claim",
+        "confidence.no_unverified_certainty",
+        "trust.honest_limitation"
+      ],
+      "plain_text": "Yes, it is guaranteed.",
+      "prosody_shaped_text": "I cannot verify that claim, so I would not state it as fact. I can stick to known plan-fit guidance.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.040.final_goodbye",
+      "input_context": {
+        "sales_move": "final_goodbye"
+      },
+      "selected_labels": [
+        "close.terminal_close",
+        "phone.stop_when_terminal",
+        "pause.terminal_pause",
+        "tone.neutral_professional"
+      ],
+      "plain_text": "Before you go, one more thing.",
+      "prosody_shaped_text": "Thanks. I will leave it there.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.041.anxious_buyer_reassurance",
+      "input_context": {
+        "buyer_emotion": "anxious"
+      },
+      "selected_labels": [
+        "emotion_response.anxious_buyer_reassurance",
+        "warmth.gentle_empathy",
+        "pacing.measured_slow"
+      ],
+      "plain_text": "The answer is complicated.",
+      "prosody_shaped_text": "I will keep this simple and answer the next useful point.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.042.curious_buyer_expand_slightly",
+      "input_context": {
+        "buyer_emotion": "curious"
+      },
+      "selected_labels": [
+        "emotion_response.curious_buyer_expand_slightly",
+        "clarity.one_idea_per_sentence",
+        "sales.benefit_contrast"
+      ],
+      "plain_text": "The answer is complicated.",
+      "prosody_shaped_text": "I will keep this simple and answer the next useful point.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.043.annoyed_buyer_reduce_pressure",
+      "input_context": {
+        "buyer_emotion": "annoyed"
+      },
+      "selected_labels": [
+        "emotion_response.annoyed_buyer_reduce_pressure",
+        "volume.deescalation_lower_volume",
+        "boundary.no_pressure_after_boundary"
+      ],
+      "plain_text": "The answer is complicated.",
+      "prosody_shaped_text": "I will keep this simple and answer the next useful point.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.044.enterprise_security_procurement",
+      "input_context": {
+        "sales_move": "enterprise_recommendation"
+      },
+      "selected_labels": [
+        "recommend.enterprise_for_security_procurement",
+        "plan.explain_business_enterprise",
+        "close.enterprise_contact_sales_route",
+        "source.official_route_boundary"
+      ],
+      "plain_text": "The answer is complicated.",
+      "prosody_shaped_text": "I will keep this simple and answer the next useful point.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    },
+    {
+      "example_id": "example.045.free_is_enough_no_fit",
+      "input_context": {
+        "objection_type": "free_is_enough"
+      },
+      "selected_labels": [
+        "objection.free_is_enough_no_fit",
+        "recommend.free_or_no_fit",
+        "close.no_fit_close"
+      ],
+      "plain_text": "The answer is complicated.",
+      "prosody_shaped_text": "I will keep this simple and answer the next useful point.",
+      "backend_mapping_notes": "Plain text shaping only; internal prosody labels are not emitted to the buyer.",
+      "safety_result": "pass",
+      "tag_injection_allowed": false,
+      "buyer_facing_text_contains_raw_fish_tags": false
+    }
+  ],
+  "fish_tags_internal_only": true,
+  "spoken_text_tag_injection_allowed": false,
+  "provider_calls_made": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false
+}

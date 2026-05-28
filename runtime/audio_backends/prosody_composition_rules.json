@@ -1,0 +1,1215 @@
+{
+  "schema_version": 1,
+  "rules_id": "fish-inspired-sales-prosody-composition-rules-001",
+  "phase": "4I2",
+  "updated_on": "2026-05-28",
+  "purpose": "Deterministic composition rules for combining primitive internal prosody labels into safe sales voice profiles.",
+  "boundary_flags": {
+    "fish_install_performed": false,
+    "fish_inference_performed": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "local_model_generation_made": false,
+    "ollama_generation_made": false,
+    "training_performed": false,
+    "model_weights_committed": false,
+    "audio_files_committed": false,
+    "raw_private_transcripts_included": false,
+    "live_runtime_wiring_changed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "spoken_text_tag_injection_allowed": false
+  },
+  "composition_rules": [
+    {
+      "rule_id": "rule.confused_buyer_plan_explanation",
+      "input_conditions": {
+        "buyer_emotion": "confused",
+        "sales_move": "plan_explanation"
+      },
+      "selected_label_ids": [
+        "emotion_response.confused_buyer_reassurance",
+        "pacing.slow_down_for_confusion",
+        "clarity.simple_words",
+        "clarity.one_idea_per_sentence",
+        "plan.explain_with_plain_language"
+      ],
+      "avoid_label_ids": [
+        "unsafe.no_condescension",
+        "sales.no_feature_dump"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "warm",
+        "confidence": "calm",
+        "energy": "medium",
+        "pause_policy": "confusion_repair_pause"
+      },
+      "text_shaping_guidance": "Slow down, define one plan term, then check relevance.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.confused_buyer_price",
+      "input_conditions": {
+        "buyer_emotion": "confused",
+        "sales_move": "price_answer"
+      },
+      "selected_label_ids": [
+        "emotion_response.confused_buyer_reassurance",
+        "pause.pause_before_price",
+        "pause.pause_after_price",
+        "clarity.short_sentence",
+        "source.no_price_guarantee"
+      ],
+      "avoid_label_ids": [
+        "unsafe.no_fear_pressure",
+        "confidence.no_unverified_certainty"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "warm",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "pause_before_and_after_price"
+      },
+      "text_shaping_guidance": "State the price boundary plainly and avoid extra plan detail.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.skeptical_buyer_source_question",
+      "input_conditions": {
+        "buyer_emotion": "skeptical",
+        "sales_move": "source_affiliation_answer"
+      },
+      "selected_label_ids": [
+        "emotion_response.skeptical_buyer_grounding",
+        "tone.transparent_source",
+        "trust.no_affiliation_overclaim",
+        "source.no_affiliation_claim",
+        "source.official_route_boundary"
+      ],
+      "avoid_label_ids": [
+        "source.no_article_says",
+        "unsafe.no_emotional_exaggeration"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "neutral_warm",
+        "confidence": "certainty_without_overclaim",
+        "energy": "medium",
+        "pause_policy": "trust_building_pause"
+      },
+      "text_shaping_guidance": "Answer source and affiliation directly, then route to official terms.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.skeptical_buyer_competitor_objection",
+      "input_conditions": {
+        "buyer_emotion": "skeptical",
+        "objection_type": "competitor"
+      },
+      "selected_label_ids": [
+        "objection.competitor_respect_current_tool",
+        "objection.competitor_gap_probe",
+        "tone.direct_but_respectful",
+        "sales.tie_to_buyer_words"
+      ],
+      "avoid_label_ids": [
+        "objection.avoid_argument",
+        "unsafe.no_sarcasm"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "respectful",
+        "confidence": "calm",
+        "energy": "medium",
+        "pause_policy": "short_after_objection_ack"
+      },
+      "text_shaping_guidance": "Respect the current tool before asking one gap question.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.impatient_buyer_direct_price",
+      "input_conditions": {
+        "buyer_emotion": "impatient",
+        "sales_move": "price_answer"
+      },
+      "selected_label_ids": [
+        "emotion_response.impatient_buyer_concise",
+        "pacing.compress_for_impatient_buyer",
+        "pause.no_pause_direct_answer",
+        "clarity.short_sentence"
+      ],
+      "avoid_label_ids": [
+        "sales.no_monologue",
+        "plan.explain_then_check_relevance"
+      ],
+      "output_style": {
+        "pace": "brisk_but_clear",
+        "warmth": "neutral",
+        "confidence": "confident",
+        "energy": "medium",
+        "pause_policy": "no_pause_direct_answer"
+      },
+      "text_shaping_guidance": "Give the direct answer first, then one optional next step.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.price_objection_heavy_use",
+      "input_conditions": {
+        "objection_type": "price",
+        "sales_move": "recommendation",
+        "buyer_engagement_level": "high"
+      },
+      "selected_label_ids": [
+        "objection.price_acknowledge",
+        "objection.price_value_reframe",
+        "recommend.pro_for_heavy_use",
+        "confidence.confidence_with_caveat"
+      ],
+      "avoid_label_ids": [
+        "unsafe.no_manipulative_urgency",
+        "recommend.do_not_overrecommend"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "warm",
+        "confidence": "confident",
+        "energy": "medium",
+        "pause_policy": "short_after_objection_ack"
+      },
+      "text_shaping_guidance": "Acknowledge cost, tie value to heavy use, and keep the caveat.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.price_objection_low_budget",
+      "input_conditions": {
+        "objection_type": "price",
+        "buyer_friction_level": "high"
+      },
+      "selected_label_ids": [
+        "objection.price_acknowledge",
+        "objection.too_expensive_no_pressure",
+        "recommend.free_or_no_fit",
+        "warmth.low_pressure_warmth"
+      ],
+      "avoid_label_ids": [
+        "unsafe.no_guilt",
+        "unsafe.no_fear_pressure"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "warm",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "short_after_objection_ack"
+      },
+      "text_shaping_guidance": "Normalize no-fit and avoid defending price.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.current_tool_objection",
+      "input_conditions": {
+        "objection_type": "already_have_tool"
+      },
+      "selected_label_ids": [
+        "objection.already_have_tool_compare_gap",
+        "objection.competitor_respect_current_tool",
+        "clarify.comparison_target"
+      ],
+      "avoid_label_ids": [
+        "objection.avoid_argument",
+        "sales.no_feature_dump"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "respectful",
+        "confidence": "calm",
+        "energy": "medium",
+        "pause_policy": "short_after_objection_ack"
+      },
+      "text_shaping_guidance": "Compare only around the buyer's stated gap.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.privacy_concern",
+      "input_conditions": {
+        "objection_type": "privacy"
+      },
+      "selected_label_ids": [
+        "objection.privacy_concern_respectful_answer",
+        "plan.explain_privacy_boundary",
+        "boundary.respect_privacy_boundary",
+        "safety.no_sensitive_data_request"
+      ],
+      "avoid_label_ids": [
+        "trust.no_fake_followup",
+        "unsafe.no_aggressive_close"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "warm",
+        "confidence": "certainty_without_overclaim",
+        "energy": "low",
+        "pause_policy": "trust_building_pause"
+      },
+      "text_shaping_guidance": "Answer privacy within known limits and avoid collecting data.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.buyer_already_told_you",
+      "input_conditions": {
+        "buyer_said_already_told_you": true
+      },
+      "selected_label_ids": [
+        "repair.already_told_you_acknowledge",
+        "repair.do_not_repeat_question",
+        "repair.summarize_known_context",
+        "repair.move_forward_after_repair"
+      ],
+      "avoid_label_ids": [
+        "sales.no_repeat_qualification",
+        "unsafe.no_condescension"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "warm",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "confusion_repair_pause"
+      },
+      "text_shaping_guidance": "Acknowledge, summarize known context, and move forward.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.buyer_correction",
+      "input_conditions": {
+        "sales_move": "correction_repair"
+      },
+      "selected_label_ids": [
+        "repair.correction_acceptance",
+        "repair.wrong_word_repair",
+        "repair.move_forward_after_repair",
+        "confidence.confidence_with_caveat"
+      ],
+      "avoid_label_ids": [
+        "unsafe.no_mocking",
+        "unsafe.no_sarcasm"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "warm",
+        "confidence": "calm",
+        "energy": "medium",
+        "pause_policy": "short_after_objection_ack"
+      },
+      "text_shaping_guidance": "Accept correction briefly and use the corrected term.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.asr_uncertainty",
+      "input_conditions": {
+        "asr_uncertainty_detected": true
+      },
+      "selected_label_ids": [
+        "repair.asr_uncertainty_repair",
+        "clarify.short_natural_question",
+        "phone.one_question_at_a_time"
+      ],
+      "avoid_label_ids": [
+        "clarify.no_classifier_language",
+        "sales.no_monologue"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "neutral_warm",
+        "confidence": "soft",
+        "energy": "low",
+        "pause_policy": "confusion_repair_pause"
+      },
+      "text_shaping_guidance": "Ask one natural repair question without exposing classifier language.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.buyer_same_question_again",
+      "input_conditions": {
+        "sales_move": "repeat_answer"
+      },
+      "selected_label_ids": [
+        "repair.repeat_with_different_words",
+        "clarity.repeat_differently",
+        "clarity.summary_before_next_question"
+      ],
+      "avoid_label_ids": [
+        "sales.no_monologue",
+        "unsafe.no_condescension"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "warm",
+        "confidence": "calm",
+        "energy": "medium",
+        "pause_policy": "medium_pause"
+      },
+      "text_shaping_guidance": "Answer differently and summarize before the next question.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.use_case_discovery",
+      "input_conditions": {
+        "sales_move": "use_case_discovery"
+      },
+      "selected_label_ids": [
+        "clarify.use_case",
+        "phone.one_question_at_a_time",
+        "clarify.short_natural_question"
+      ],
+      "avoid_label_ids": [
+        "phone.do_not_stack_questions",
+        "sales.no_repeat_qualification"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "warm",
+        "confidence": "calm",
+        "energy": "medium",
+        "pause_policy": "short_pause"
+      },
+      "text_shaping_guidance": "Ask one use-case question.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.intensity_discovery",
+      "input_conditions": {
+        "sales_move": "intensity_discovery"
+      },
+      "selected_label_ids": [
+        "clarify.intensity",
+        "clarity.simple_words",
+        "phone.short_turn_discipline"
+      ],
+      "avoid_label_ids": [
+        "phone.do_not_stack_questions",
+        "clarify.no_classifier_language"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "warm",
+        "confidence": "calm",
+        "energy": "medium",
+        "pause_policy": "short_pause"
+      },
+      "text_shaping_guidance": "Ask for usage intensity in plain language.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.team_vs_individual_clarification",
+      "input_conditions": {
+        "sales_move": "team_clarification"
+      },
+      "selected_label_ids": [
+        "clarify.team_vs_individual",
+        "repair.restore_not_team",
+        "phone.answer_then_ask"
+      ],
+      "avoid_label_ids": [
+        "sales.no_repeat_qualification",
+        "unsafe.no_condescension"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "neutral_warm",
+        "confidence": "calm",
+        "energy": "medium",
+        "pause_policy": "short_pause"
+      },
+      "text_shaping_guidance": "Clarify team versus individual without assuming.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.recommendation_after_enough_context",
+      "input_conditions": {
+        "sales_move": "recommendation",
+        "decision_stage": "recommendation"
+      },
+      "selected_label_ids": [
+        "sales.confirm_then_recommend",
+        "recommend.confidence_based_on_known_context",
+        "confidence.decisive_recommendation",
+        "pause.pause_before_recommendation"
+      ],
+      "avoid_label_ids": [
+        "recommend.do_not_overrecommend",
+        "unsafe.no_aggressive_close"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "warm",
+        "confidence": "confident",
+        "energy": "medium",
+        "pause_policy": "short_before_recommendation"
+      },
+      "text_shaping_guidance": "Confirm context, then make one recommendation.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.plus_vs_pro_comparison",
+      "input_conditions": {
+        "sales_move": "compare_plus_pro"
+      },
+      "selected_label_ids": [
+        "recommend.compare_two_options",
+        "plan.explain_free_plus_pro",
+        "sales.choice_framing",
+        "clarity.one_idea_per_sentence"
+      ],
+      "avoid_label_ids": [
+        "sales.no_feature_dump",
+        "unsafe.no_overexcited_sales_voice"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "warm",
+        "confidence": "calm_confidence",
+        "energy": "medium",
+        "pause_policy": "short_pause"
+      },
+      "text_shaping_guidance": "Compare two options using the buyer's intensity.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.pro_tier_selection",
+      "input_conditions": {
+        "sales_move": "pro_tier_selection"
+      },
+      "selected_label_ids": [
+        "plan.explain_pro_tiers",
+        "recommend.pro_for_heavy_use",
+        "confidence.confidence_with_caveat"
+      ],
+      "avoid_label_ids": [
+        "recommend.do_not_overrecommend",
+        "source.no_price_guarantee"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "neutral_warm",
+        "confidence": "confident",
+        "energy": "medium",
+        "pause_policy": "pause_before_recommendation"
+      },
+      "text_shaping_guidance": "State the tier logic and caveat current terms.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.no_fit_close",
+      "input_conditions": {
+        "sales_move": "close",
+        "close_readiness": "no_fit"
+      },
+      "selected_label_ids": [
+        "close.no_fit_close",
+        "recommend.free_or_no_fit",
+        "trust.buyer_control",
+        "boundary.no_pressure_after_boundary"
+      ],
+      "avoid_label_ids": [
+        "unsafe.no_guilt",
+        "unsafe.no_aggressive_close"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "warm",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "terminal_pause"
+      },
+      "text_shaping_guidance": "Close cleanly without trying to rescue the sale.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.terminal_acceptance",
+      "input_conditions": {
+        "sales_move": "close",
+        "close_readiness": "accepted"
+      },
+      "selected_label_ids": [
+        "close.terminal_close",
+        "close.stop_after_acceptance",
+        "phone.stop_when_terminal"
+      ],
+      "avoid_label_ids": [
+        "sales.advance_after_answer",
+        "unsafe.no_interrupting_buyer"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "neutral_warm",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "terminal_pause"
+      },
+      "text_shaping_guidance": "Stop selling after acceptance.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.boundary_no_email",
+      "input_conditions": {
+        "safety_boundary_detected": true,
+        "objection_type": "no_email"
+      },
+      "selected_label_ids": [
+        "boundary.respect_no_email",
+        "close.no_fake_email",
+        "boundary.no_side_effect_claim"
+      ],
+      "avoid_label_ids": [
+        "trust.no_fake_followup",
+        "boundary.no_persistence_after_refusal"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "respectful",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "terminal_pause"
+      },
+      "text_shaping_guidance": "Respect no-email boundary and do not claim a follow-up.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.boundary_no_crm",
+      "input_conditions": {
+        "safety_boundary_detected": true,
+        "objection_type": "no_crm"
+      },
+      "selected_label_ids": [
+        "boundary.respect_no_crm",
+        "close.no_crm_claim",
+        "boundary.no_side_effect_claim"
+      ],
+      "avoid_label_ids": [
+        "trust.no_hidden_action",
+        "boundary.no_persistence_after_refusal"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "respectful",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "terminal_pause"
+      },
+      "text_shaping_guidance": "Do not imply CRM writes or hidden actions.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.boundary_no_calendar",
+      "input_conditions": {
+        "safety_boundary_detected": true,
+        "objection_type": "no_calendar"
+      },
+      "selected_label_ids": [
+        "boundary.respect_no_calendar",
+        "close.no_fake_calendar",
+        "boundary.no_side_effect_claim"
+      ],
+      "avoid_label_ids": [
+        "trust.no_fake_followup",
+        "boundary.no_persistence_after_refusal"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "respectful",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "terminal_pause"
+      },
+      "text_shaping_guidance": "Do not claim calendar actions.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.source_affiliation_answer",
+      "input_conditions": {
+        "sales_move": "source_affiliation_answer"
+      },
+      "selected_label_ids": [
+        "source.no_affiliation_claim",
+        "trust.no_affiliation_overclaim",
+        "tone.transparent_source",
+        "source.official_route_boundary"
+      ],
+      "avoid_label_ids": [
+        "source.no_article_says",
+        "unsafe.no_roleplay_as_human_employee_if_not_true"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "neutral_warm",
+        "confidence": "certainty_without_overclaim",
+        "energy": "medium",
+        "pause_policy": "trust_building_pause"
+      },
+      "text_shaping_guidance": "Be direct about affiliation and source boundary.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.opening_permission_check",
+      "input_conditions": {
+        "sales_move": "opening_permission_check"
+      },
+      "selected_label_ids": [
+        "phone.opener_clear_identity",
+        "phone.permission_check_natural",
+        "tone.neutral_professional",
+        "phone.short_turn_discipline"
+      ],
+      "avoid_label_ids": [
+        "phone.avoid_reading_script",
+        "unsafe.no_flirt"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "neutral_warm",
+        "confidence": "calm",
+        "energy": "medium",
+        "pause_policy": "micro_pause"
+      },
+      "text_shaping_guidance": "Open clearly and ask permission naturally.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.barge_in_recovery",
+      "input_conditions": {
+        "sales_move": "barge_in_recovery"
+      },
+      "selected_label_ids": [
+        "phone.barge_in_recovery",
+        "pause.barge_in_recovery_pause",
+        "pacing.reduce_speed_after_interruption"
+      ],
+      "avoid_label_ids": [
+        "unsafe.no_interrupting_buyer",
+        "sales.no_monologue"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "neutral_warm",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "barge_in_recovery_pause"
+      },
+      "text_shaping_guidance": "Yield, pause, and resume with the buyer's point.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.buyer_frustration",
+      "input_conditions": {
+        "buyer_emotion": "frustrated"
+      },
+      "selected_label_ids": [
+        "emotion_response.frustrated_buyer_deescalation",
+        "volume.deescalation_lower_volume",
+        "tone.direct_but_respectful",
+        "objection.avoid_argument"
+      ],
+      "avoid_label_ids": [
+        "unsafe.no_mocking",
+        "unsafe.no_aggressive_close"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "respectful",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "short_after_objection_ack"
+      },
+      "text_shaping_guidance": "Lower pressure and avoid argument.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.buyer_disengaged",
+      "input_conditions": {
+        "buyer_emotion": "disengaged"
+      },
+      "selected_label_ids": [
+        "emotion_response.disengaged_buyer_relevance_bridge",
+        "sales.concise_summary",
+        "clarify.short_natural_question"
+      ],
+      "avoid_label_ids": [
+        "sales.no_monologue",
+        "sales.no_feature_dump"
+      ],
+      "output_style": {
+        "pace": "brisk_but_clear",
+        "warmth": "neutral_warm",
+        "confidence": "calm",
+        "energy": "medium",
+        "pause_policy": "short_pause"
+      },
+      "text_shaping_guidance": "Bridge to relevance and ask one concise question.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.buyer_interested",
+      "input_conditions": {
+        "buyer_emotion": "interested"
+      },
+      "selected_label_ids": [
+        "emotion_response.interested_buyer_momentum",
+        "energy.increase_for_momentum",
+        "sales.advance_after_answer"
+      ],
+      "avoid_label_ids": [
+        "energy.no_hype_energy",
+        "unsafe.no_overexcited_sales_voice"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "warm",
+        "confidence": "confident",
+        "energy": "medium_high",
+        "pause_policy": "short_before_recommendation"
+      },
+      "text_shaping_guidance": "Use momentum without hype.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.buyer_not_using_ai",
+      "input_conditions": {
+        "objection_type": "not_using_ai"
+      },
+      "selected_label_ids": [
+        "objection.not_using_ai_disqualify_softly",
+        "recommend.free_or_no_fit",
+        "close.no_fit_close"
+      ],
+      "avoid_label_ids": [
+        "unsafe.no_guilt",
+        "sales.no_feature_dump"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "warm",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "terminal_pause"
+      },
+      "text_shaping_guidance": "Softly disqualify if there is no AI use case.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.buyer_using_chatgpt_and_other_tools",
+      "input_conditions": {
+        "objection_type": "using_chatgpt_and_other_tools"
+      },
+      "selected_label_ids": [
+        "objection.already_have_tool_compare_gap",
+        "clarify.comparison_target",
+        "sales.tie_to_buyer_words"
+      ],
+      "avoid_label_ids": [
+        "objection.avoid_argument",
+        "unsafe.no_sarcasm"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "neutral_warm",
+        "confidence": "calm",
+        "energy": "medium",
+        "pause_policy": "short_pause"
+      },
+      "text_shaping_guidance": "Ask which gap remains instead of attacking tools.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.buyer_chatgpt_or_maybe_claude",
+      "input_conditions": {
+        "objection_type": "chatgpt_or_claude_uncertain"
+      },
+      "selected_label_ids": [
+        "repair.restore_voice_not_writing",
+        "clarify.tool_name",
+        "multilingual.pronounce_chatgpt_carefully",
+        "multilingual.pronounce_claude_carefully"
+      ],
+      "avoid_label_ids": [
+        "clarify.no_classifier_language",
+        "unsafe.no_mocking"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "warm",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "confusion_repair_pause"
+      },
+      "text_shaping_guidance": "Repair the tool name uncertainty naturally.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.plans_are_models_or_subscriptions",
+      "input_conditions": {
+        "sales_move": "subscription_vs_model"
+      },
+      "selected_label_ids": [
+        "plan.explain_model_vs_subscription",
+        "clarify.subscription_vs_model",
+        "clarity.define_plan_terms"
+      ],
+      "avoid_label_ids": [
+        "clarity.no_internal_terms",
+        "sales.no_feature_dump"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "warm",
+        "confidence": "calm",
+        "energy": "medium",
+        "pause_policy": "short_pause"
+      },
+      "text_shaping_guidance": "Separate subscription from model in plain language.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.signup_path",
+      "input_conditions": {
+        "sales_move": "signup_path"
+      },
+      "selected_label_ids": [
+        "plan.explain_self_serve_path",
+        "close.official_plan_page_route",
+        "trust.official_route_only"
+      ],
+      "avoid_label_ids": [
+        "close.no_fake_email",
+        "trust.no_hidden_action"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "neutral_warm",
+        "confidence": "confident",
+        "energy": "medium",
+        "pause_policy": "short_pause"
+      },
+      "text_shaping_guidance": "Route to the official self-serve path.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.upgrade_path",
+      "input_conditions": {
+        "sales_move": "upgrade_path"
+      },
+      "selected_label_ids": [
+        "recommend.start_lower_then_upgrade",
+        "plan.explain_self_serve_path",
+        "sales.low_pressure_next_step"
+      ],
+      "avoid_label_ids": [
+        "unsafe.no_manipulative_urgency",
+        "close.no_fake_calendar"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "warm",
+        "confidence": "calm_confidence",
+        "energy": "medium",
+        "pause_policy": "short_pause"
+      },
+      "text_shaping_guidance": "Explain upgrade path without urgency.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.data_privacy_training",
+      "input_conditions": {
+        "sales_move": "privacy_training_answer"
+      },
+      "selected_label_ids": [
+        "plan.explain_privacy_boundary",
+        "source.caveat_exact_terms_can_change",
+        "safety.no_fake_privacy_claim",
+        "trust.check_current_terms"
+      ],
+      "avoid_label_ids": [
+        "confidence.no_unverified_certainty",
+        "safety.no_customer_audio_upload_claim"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "neutral_warm",
+        "confidence": "confidence_with_caveat",
+        "energy": "low",
+        "pause_policy": "trust_building_pause"
+      },
+      "text_shaping_guidance": "Caveat exact privacy terms and route to official terms.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.wrong_product_question",
+      "input_conditions": {
+        "sales_move": "wrong_product_repair"
+      },
+      "selected_label_ids": [
+        "repair.wrong_word_repair",
+        "clarify.tool_name",
+        "source.no_unverified_model_claim"
+      ],
+      "avoid_label_ids": [
+        "unsafe.no_condescension",
+        "confidence.no_unverified_certainty"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "warm",
+        "confidence": "calm",
+        "energy": "medium",
+        "pause_policy": "short_pause"
+      },
+      "text_shaping_guidance": "Repair product mismatch and ask one clarifier.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.unsupported_claim_request",
+      "input_conditions": {
+        "sales_move": "unsupported_claim"
+      },
+      "selected_label_ids": [
+        "safety.no_unverified_claim_confidence",
+        "source.no_unverified_model_claim",
+        "confidence.no_unverified_certainty",
+        "trust.honest_limitation"
+      ],
+      "avoid_label_ids": [
+        "unsafe.no_roleplay_as_human_employee_if_not_true",
+        "source.no_price_guarantee"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "neutral_warm",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "trust_building_pause"
+      },
+      "text_shaping_guidance": "Refuse the unsupported claim and give the verifiable boundary.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.final_goodbye",
+      "input_conditions": {
+        "sales_move": "final_goodbye"
+      },
+      "selected_label_ids": [
+        "close.terminal_close",
+        "phone.stop_when_terminal",
+        "pause.terminal_pause",
+        "tone.neutral_professional"
+      ],
+      "avoid_label_ids": [
+        "sales.advance_after_answer",
+        "boundary.no_persistence_after_refusal"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "neutral",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "terminal_pause"
+      },
+      "text_shaping_guidance": "End politely without reopening the sale.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.anxious_buyer_reassurance",
+      "input_conditions": {
+        "buyer_emotion": "anxious"
+      },
+      "selected_label_ids": [
+        "emotion_response.anxious_buyer_reassurance",
+        "warmth.gentle_empathy",
+        "pacing.measured_slow"
+      ],
+      "avoid_label_ids": [
+        "unsafe.no_fear_pressure",
+        "confidence.no_unverified_certainty"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "warm",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "short_pause"
+      },
+      "text_shaping_guidance": "Reassure without overpromising.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.curious_buyer_expand_slightly",
+      "input_conditions": {
+        "buyer_emotion": "curious"
+      },
+      "selected_label_ids": [
+        "emotion_response.curious_buyer_expand_slightly",
+        "clarity.one_idea_per_sentence",
+        "sales.benefit_contrast"
+      ],
+      "avoid_label_ids": [
+        "sales.no_feature_dump",
+        "sales.no_monologue"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "warm",
+        "confidence": "calm_confidence",
+        "energy": "medium",
+        "pause_policy": "short_pause"
+      },
+      "text_shaping_guidance": "Expand one level, then check relevance.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.annoyed_buyer_reduce_pressure",
+      "input_conditions": {
+        "buyer_emotion": "annoyed"
+      },
+      "selected_label_ids": [
+        "emotion_response.annoyed_buyer_reduce_pressure",
+        "volume.deescalation_lower_volume",
+        "boundary.no_pressure_after_boundary"
+      ],
+      "avoid_label_ids": [
+        "unsafe.no_sarcasm",
+        "unsafe.no_aggressive_close"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "respectful",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "short_after_objection_ack"
+      },
+      "text_shaping_guidance": "Reduce pressure and stop pushing.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.enterprise_security_procurement",
+      "input_conditions": {
+        "sales_move": "enterprise_recommendation"
+      },
+      "selected_label_ids": [
+        "recommend.enterprise_for_security_procurement",
+        "plan.explain_business_enterprise",
+        "close.enterprise_contact_sales_route",
+        "source.official_route_boundary"
+      ],
+      "avoid_label_ids": [
+        "confidence.no_unverified_certainty",
+        "trust.no_fake_followup"
+      ],
+      "output_style": {
+        "pace": "medium",
+        "warmth": "neutral_warm",
+        "confidence": "confidence_with_caveat",
+        "energy": "medium",
+        "pause_policy": "pause_before_recommendation"
+      },
+      "text_shaping_guidance": "Recommend enterprise route only when security/procurement needs exist.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.free_is_enough_no_fit",
+      "input_conditions": {
+        "objection_type": "free_is_enough"
+      },
+      "selected_label_ids": [
+        "objection.free_is_enough_no_fit",
+        "recommend.free_or_no_fit",
+        "close.no_fit_close"
+      ],
+      "avoid_label_ids": [
+        "unsafe.no_guilt",
+        "unsafe.no_fear_pressure"
+      ],
+      "output_style": {
+        "pace": "medium_slow",
+        "warmth": "warm",
+        "confidence": "calm",
+        "energy": "low",
+        "pause_policy": "terminal_pause"
+      },
+      "text_shaping_guidance": "Treat free as enough when paid value is not established.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    },
+    {
+      "rule_id": "rule.too_busy_compress",
+      "input_conditions": {
+        "objection_type": "too_busy"
+      },
+      "selected_label_ids": [
+        "objection.too_busy_compress",
+        "pacing.compress_for_impatient_buyer",
+        "sales.concise_summary"
+      ],
+      "avoid_label_ids": [
+        "sales.no_monologue",
+        "phone.do_not_stack_questions"
+      ],
+      "output_style": {
+        "pace": "brisk_but_clear",
+        "warmth": "neutral_warm",
+        "confidence": "calm",
+        "energy": "medium",
+        "pause_policy": "no_pause_direct_answer"
+      },
+      "text_shaping_guidance": "Compress to one sentence and one option.",
+      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+    }
+  ]
+}
