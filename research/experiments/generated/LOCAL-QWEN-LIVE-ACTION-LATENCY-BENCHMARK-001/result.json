@@ -1,12 +1,18 @@
 {
   "experiment_id": "LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001",
-  "generated_at": "2026-05-28T10:23:45.121728+00:00",
-  "status": "not_run",
-  "benchmark_run": false,
-  "not_run_reason": "ENABLE_LOCAL_LLM_BRAIN_EXPERIMENT=1 and LOCAL_LLM_ENABLED=true are required before local Qwen inference.",
+  "generated_at": "2026-05-28T11:08:15.392030+00:00",
+  "status": "pass",
+  "benchmark_run": true,
+  "not_run_reason": "",
   "env_gates": {
-    "ENABLE_LOCAL_LLM_BRAIN_EXPERIMENT": false,
-    "LOCAL_LLM_ENABLED": false
+    "ENABLE_LOCAL_LLM_BRAIN_EXPERIMENT": true,
+    "LOCAL_LLM_ENABLED": true,
+    "LOCAL_LLM_MODEL_ID": "Qwen/Qwen2.5-7B-Instruct",
+    "LOCAL_LLM_MODEL_PATH": "local_artifacts/models/qwen2.5-7b-instruct",
+    "LOCAL_LLM_CACHE_DIR": "local_artifacts/cache/huggingface",
+    "LOCAL_LLM_QUANTIZATION": "4bit",
+    "LOCAL_LLM_DEVICE": "cuda",
+    "LOCAL_LLM_ALLOW_MODEL_DOWNLOAD": "0"
   },
   "case_count": 20,
   "mode_names": [
@@ -19,11 +25,1396 @@
     "p90": 3.0,
     "p99": 4.0
   },
-  "target_met": null,
-  "metrics_by_mode": {},
-  "rows": [],
-  "local_model_calls_made": false,
-  "local_model_call_count": 0,
+  "target_met": false,
+  "metrics_by_mode": {
+    "current_compact_planner_prompt": {
+      "case_count": 20,
+      "prompt_token_count_total": 33173,
+      "prompt_token_count_avg": 1658.65,
+      "generated_token_count_total": 2343,
+      "generated_token_count_avg": 117.15,
+      "first_output_latency_avg_s": 6.523,
+      "first_output_latency_p50_s": 8.03,
+      "first_output_latency_p90_s": 10.012,
+      "first_output_latency_p99_s": 12.033,
+      "total_generation_latency_avg_s": 11.291,
+      "total_generation_latency_p50_s": 11.232,
+      "total_generation_latency_p90_s": 11.968,
+      "total_generation_latency_p99_s": 13.527,
+      "malformed_output_count": 14,
+      "verifier_pass_count": 0,
+      "replan_required_count": 0,
+      "internal_language_count": 0,
+      "loop_risk_count": 0
+    },
+    "minimal_live_action_prompt": {
+      "case_count": 20,
+      "prompt_token_count_total": 15011,
+      "prompt_token_count_avg": 750.55,
+      "generated_token_count_total": 1389,
+      "generated_token_count_avg": 69.45,
+      "first_output_latency_avg_s": 3.017,
+      "first_output_latency_p50_s": 2.861,
+      "first_output_latency_p90_s": 3.501,
+      "first_output_latency_p99_s": 4.993,
+      "total_generation_latency_avg_s": 6.608,
+      "total_generation_latency_p50_s": 6.436,
+      "total_generation_latency_p90_s": 8.292,
+      "total_generation_latency_p99_s": 10.976,
+      "malformed_output_count": 1,
+      "verifier_pass_count": 0,
+      "replan_required_count": 4,
+      "internal_language_count": 0,
+      "loop_risk_count": 0
+    },
+    "minimal_live_action_prompt_with_replan_context": {
+      "case_count": 20,
+      "prompt_token_count_total": 15711,
+      "prompt_token_count_avg": 785.55,
+      "generated_token_count_total": 1338,
+      "generated_token_count_avg": 66.9,
+      "first_output_latency_avg_s": 3.214,
+      "first_output_latency_p50_s": 3.01,
+      "first_output_latency_p90_s": 4.358,
+      "first_output_latency_p99_s": 4.891,
+      "total_generation_latency_avg_s": 6.496,
+      "total_generation_latency_p50_s": 5.882,
+      "total_generation_latency_p90_s": 8.938,
+      "total_generation_latency_p99_s": 10.922,
+      "malformed_output_count": 1,
+      "verifier_pass_count": 0,
+      "replan_required_count": 4,
+      "internal_language_count": 0,
+      "loop_risk_count": 1
+    }
+  },
+  "rows": [
+    {
+      "case_id": "direct_price_001",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1650,
+      "generated_token_count": 116,
+      "first_output_latency_s": 8.481,
+      "total_generation_latency_s": 11.169,
+      "wall_clock_latency_s": 11.177,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "direct_price_001",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 742,
+      "generated_token_count": 60,
+      "first_output_latency_s": 3.312,
+      "total_generation_latency_s": 5.607,
+      "wall_clock_latency_s": 5.61,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "direct_price_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 777,
+      "generated_token_count": 59,
+      "first_output_latency_s": 3.356,
+      "total_generation_latency_s": 5.739,
+      "wall_clock_latency_s": 5.742,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "direct_price_002",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1652,
+      "generated_token_count": 120,
+      "first_output_latency_s": 8.519,
+      "total_generation_latency_s": 11.479,
+      "wall_clock_latency_s": 11.484,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "direct_price_002",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 744,
+      "generated_token_count": 78,
+      "first_output_latency_s": 3.501,
+      "total_generation_latency_s": 7.505,
+      "wall_clock_latency_s": 7.508,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "direct_price_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 779,
+      "generated_token_count": 73,
+      "first_output_latency_s": 3.852,
+      "total_generation_latency_s": 8.036,
+      "wall_clock_latency_s": 8.039,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "terminal_thanks_001",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1657,
+      "generated_token_count": 96,
+      "first_output_latency_s": 7.441,
+      "total_generation_latency_s": 9.044,
+      "wall_clock_latency_s": 9.049,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "terminal_thanks_001",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 749,
+      "generated_token_count": 51,
+      "first_output_latency_s": 2.914,
+      "total_generation_latency_s": 5.128,
+      "wall_clock_latency_s": 5.13,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": true,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [
+          "terminal_acceptance_not_closed"
+        ],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "terminal_thanks_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 784,
+      "generated_token_count": 61,
+      "first_output_latency_s": 2.905,
+      "total_generation_latency_s": 5.882,
+      "wall_clock_latency_s": 5.885,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": true,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [
+          "terminal_acceptance_not_closed"
+        ],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "terminal_thanks_002",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1649,
+      "generated_token_count": 93,
+      "first_output_latency_s": 7.655,
+      "total_generation_latency_s": 9.039,
+      "wall_clock_latency_s": 9.043,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "terminal_thanks_002",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 741,
+      "generated_token_count": 51,
+      "first_output_latency_s": 2.74,
+      "total_generation_latency_s": 4.728,
+      "wall_clock_latency_s": 4.731,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "terminal_thanks_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 776,
+      "generated_token_count": 67,
+      "first_output_latency_s": 3.463,
+      "total_generation_latency_s": 6.387,
+      "wall_clock_latency_s": 6.39,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "current_tool_and_001",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1656,
+      "generated_token_count": 120,
+      "first_output_latency_s": 12.033,
+      "total_generation_latency_s": 13.345,
+      "wall_clock_latency_s": 13.349,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 404 (char 403)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "current_tool_and_001",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 747,
+      "generated_token_count": 56,
+      "first_output_latency_s": 3.164,
+      "total_generation_latency_s": 5.266,
+      "wall_clock_latency_s": 5.269,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": true,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [
+          "and_or_drift"
+        ],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "current_tool_and_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 782,
+      "generated_token_count": 56,
+      "first_output_latency_s": 3.475,
+      "total_generation_latency_s": 5.575,
+      "wall_clock_latency_s": 5.577,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": true,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [
+          "and_or_drift"
+        ],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "current_tool_or_001",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1658,
+      "generated_token_count": 120,
+      "first_output_latency_s": 10.012,
+      "total_generation_latency_s": 11.326,
+      "wall_clock_latency_s": 11.33,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 406 (char 405)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "current_tool_or_001",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 749,
+      "generated_token_count": 63,
+      "first_output_latency_s": 3.211,
+      "total_generation_latency_s": 5.788,
+      "wall_clock_latency_s": 5.791,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "current_tool_or_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 784,
+      "generated_token_count": 61,
+      "first_output_latency_s": 3.422,
+      "total_generation_latency_s": 5.815,
+      "wall_clock_latency_s": 5.818,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "not_team_001",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1660,
+      "generated_token_count": 120,
+      "first_output_latency_s": 1.938,
+      "total_generation_latency_s": 11.056,
+      "wall_clock_latency_s": 11.06,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "not_team_001",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 752,
+      "generated_token_count": 68,
+      "first_output_latency_s": 2.76,
+      "total_generation_latency_s": 6.436,
+      "wall_clock_latency_s": 6.439,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "not_team_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 787,
+      "generated_token_count": 51,
+      "first_output_latency_s": 2.897,
+      "total_generation_latency_s": 4.815,
+      "wall_clock_latency_s": 4.818,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "not_team_002",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1658,
+      "generated_token_count": 120,
+      "first_output_latency_s": 2.037,
+      "total_generation_latency_s": 11.778,
+      "wall_clock_latency_s": 11.783,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Expecting ',' delimiter: line 1 column 508 (char 507)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "not_team_002",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 750,
+      "generated_token_count": 120,
+      "first_output_latency_s": 4.808,
+      "total_generation_latency_s": 10.917,
+      "wall_clock_latency_s": 10.919,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 460 (char 459)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "not_team_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 785,
+      "generated_token_count": 44,
+      "first_output_latency_s": 3.01,
+      "total_generation_latency_s": 4.411,
+      "wall_clock_latency_s": 4.413,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "coding_voice_001",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1657,
+      "generated_token_count": 120,
+      "first_output_latency_s": 2.249,
+      "total_generation_latency_s": 11.035,
+      "wall_clock_latency_s": 11.039,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Expecting ',' delimiter: line 1 column 525 (char 524)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "coding_voice_001",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 749,
+      "generated_token_count": 48,
+      "first_output_latency_s": 2.861,
+      "total_generation_latency_s": 4.723,
+      "wall_clock_latency_s": 4.726,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": true,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [
+          "and_or_drift"
+        ],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "coding_voice_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 784,
+      "generated_token_count": 46,
+      "first_output_latency_s": 2.843,
+      "total_generation_latency_s": 4.499,
+      "wall_clock_latency_s": 4.502,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": true,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [
+          "and_or_drift"
+        ],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "coding_voice_002",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1658,
+      "generated_token_count": 120,
+      "first_output_latency_s": 9.466,
+      "total_generation_latency_s": 11.968,
+      "wall_clock_latency_s": 11.972,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "coding_voice_002",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 751,
+      "generated_token_count": 120,
+      "first_output_latency_s": 4.993,
+      "total_generation_latency_s": 10.976,
+      "wall_clock_latency_s": 10.979,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "coding_voice_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 786,
+      "generated_token_count": 52,
+      "first_output_latency_s": 3.23,
+      "total_generation_latency_s": 5.57,
+      "wall_clock_latency_s": 5.573,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "plan_explanation_001",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1652,
+      "generated_token_count": 120,
+      "first_output_latency_s": 8.482,
+      "total_generation_latency_s": 11.003,
+      "wall_clock_latency_s": 11.007,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Expecting ',' delimiter: line 1 column 500 (char 499)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "plan_explanation_001",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 744,
+      "generated_token_count": 47,
+      "first_output_latency_s": 2.574,
+      "total_generation_latency_s": 4.475,
+      "wall_clock_latency_s": 4.478,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "plan_explanation_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 779,
+      "generated_token_count": 112,
+      "first_output_latency_s": 4.358,
+      "total_generation_latency_s": 10.385,
+      "wall_clock_latency_s": 10.388,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "plan_explanation_002",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1654,
+      "generated_token_count": 120,
+      "first_output_latency_s": 11.466,
+      "total_generation_latency_s": 13.527,
+      "wall_clock_latency_s": 13.531,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 424 (char 423)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "plan_explanation_002",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 746,
+      "generated_token_count": 75,
+      "first_output_latency_s": 2.416,
+      "total_generation_latency_s": 7.121,
+      "wall_clock_latency_s": 7.124,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "plan_explanation_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 781,
+      "generated_token_count": 49,
+      "first_output_latency_s": 2.727,
+      "total_generation_latency_s": 4.783,
+      "wall_clock_latency_s": 4.786,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "price_objection_001",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1655,
+      "generated_token_count": 120,
+      "first_output_latency_s": 8.03,
+      "total_generation_latency_s": 11.135,
+      "wall_clock_latency_s": 11.139,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 368 (char 367)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "price_objection_001",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 747,
+      "generated_token_count": 76,
+      "first_output_latency_s": 2.655,
+      "total_generation_latency_s": 7.099,
+      "wall_clock_latency_s": 7.101,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "price_objection_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 782,
+      "generated_token_count": 63,
+      "first_output_latency_s": 4.758,
+      "total_generation_latency_s": 6.612,
+      "wall_clock_latency_s": 6.615,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "price_objection_002",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1665,
+      "generated_token_count": 118,
+      "first_output_latency_s": 2.53,
+      "total_generation_latency_s": 10.982,
+      "wall_clock_latency_s": 10.986,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 416 (char 415)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "price_objection_002",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 757,
+      "generated_token_count": 78,
+      "first_output_latency_s": 3.199,
+      "total_generation_latency_s": 8.292,
+      "wall_clock_latency_s": 8.294,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "price_objection_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 792,
+      "generated_token_count": 94,
+      "first_output_latency_s": 2.833,
+      "total_generation_latency_s": 8.938,
+      "wall_clock_latency_s": 8.942,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "competitor_objection_001",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1655,
+      "generated_token_count": 120,
+      "first_output_latency_s": 4.848,
+      "total_generation_latency_s": 11.15,
+      "wall_clock_latency_s": 11.154,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 465 (char 464)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "competitor_objection_001",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 746,
+      "generated_token_count": 52,
+      "first_output_latency_s": 2.868,
+      "total_generation_latency_s": 5.31,
+      "wall_clock_latency_s": 5.313,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "competitor_objection_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 781,
+      "generated_token_count": 52,
+      "first_output_latency_s": 2.966,
+      "total_generation_latency_s": 4.967,
+      "wall_clock_latency_s": 4.969,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "competitor_objection_002",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1655,
+      "generated_token_count": 120,
+      "first_output_latency_s": 2.214,
+      "total_generation_latency_s": 11.232,
+      "wall_clock_latency_s": 11.236,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 507 (char 506)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "competitor_objection_002",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 747,
+      "generated_token_count": 64,
+      "first_output_latency_s": 2.82,
+      "total_generation_latency_s": 6.066,
+      "wall_clock_latency_s": 6.068,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "competitor_objection_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 782,
+      "generated_token_count": 61,
+      "first_output_latency_s": 2.141,
+      "total_generation_latency_s": 5.733,
+      "wall_clock_latency_s": 5.736,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "unsupported_side_effect_001",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1656,
+      "generated_token_count": 120,
+      "first_output_latency_s": 9.435,
+      "total_generation_latency_s": 11.481,
+      "wall_clock_latency_s": 11.485,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Expecting value: line 1 column 517 (char 516)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "unsupported_side_effect_001",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 748,
+      "generated_token_count": 73,
+      "first_output_latency_s": 2.581,
+      "total_generation_latency_s": 6.936,
+      "wall_clock_latency_s": 6.938,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "unsupported_side_effect_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 783,
+      "generated_token_count": 72,
+      "first_output_latency_s": 2.581,
+      "total_generation_latency_s": 7.167,
+      "wall_clock_latency_s": 7.17,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "unsupported_side_effect_002",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1663,
+      "generated_token_count": 120,
+      "first_output_latency_s": 2.2,
+      "total_generation_latency_s": 11.153,
+      "wall_clock_latency_s": 11.157,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 516 (char 515)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "unsupported_side_effect_002",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 755,
+      "generated_token_count": 71,
+      "first_output_latency_s": 2.454,
+      "total_generation_latency_s": 6.668,
+      "wall_clock_latency_s": 6.671,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": true,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object"
+        ],
+        "replan_reasons": [
+          "and_or_drift"
+        ],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "unsupported_side_effect_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 790,
+      "generated_token_count": 120,
+      "first_output_latency_s": 4.891,
+      "total_generation_latency_s": 10.922,
+      "wall_clock_latency_s": 10.925,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 482 (char 481)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "repeated_question_risk_001",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1697,
+      "generated_token_count": 120,
+      "first_output_latency_s": 9.067,
+      "total_generation_latency_s": 11.442,
+      "wall_clock_latency_s": 11.446,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Expecting ',' delimiter: line 1 column 493 (char 492)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "repeated_question_risk_001",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 789,
+      "generated_token_count": 88,
+      "first_output_latency_s": 1.665,
+      "total_generation_latency_s": 8.276,
+      "wall_clock_latency_s": 8.279,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "repeated_question_risk_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 824,
+      "generated_token_count": 71,
+      "first_output_latency_s": 1.738,
+      "total_generation_latency_s": 6.723,
+      "wall_clock_latency_s": 6.726,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "repeated_question_risk_002",
+      "mode": "current_compact_planner_prompt",
+      "prompt_token_count": 1666,
+      "generated_token_count": 120,
+      "first_output_latency_s": 2.358,
+      "total_generation_latency_s": 11.484,
+      "wall_clock_latency_s": 11.488,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Expecting ',' delimiter: line 1 column 484 (char 483)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "repeated_question_risk_002",
+      "mode": "minimal_live_action_prompt",
+      "prompt_token_count": 758,
+      "generated_token_count": 50,
+      "first_output_latency_s": 2.849,
+      "total_generation_latency_s": 4.852,
+      "wall_clock_latency_s": 4.855,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "repeated_question_risk_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "prompt_token_count": 793,
+      "generated_token_count": 74,
+      "first_output_latency_s": 2.835,
+      "total_generation_latency_s": 6.958,
+      "wall_clock_latency_s": 6.961,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": true,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [
+          "buyer_already_told_you"
+        ],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    }
+  ],
+  "local_model_calls_made": true,
+  "local_model_call_count": 60,
+  "model_loaded": true,
+  "adapter_loaded": false,
+  "adapter_source": "none",
+  "model_load_status": {
+    "configured_path": "local_artifacts/models/qwen2.5-7b-instruct",
+    "absolute_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\local_artifacts\\models\\qwen2.5-7b-instruct",
+    "exists": true,
+    "is_dir": true,
+    "markers": [
+      "config.json",
+      "generation_config.json",
+      "model.safetensors.index.json",
+      "tokenizer.json",
+      "tokenizer_config.json"
+    ],
+    "weight_file_count": 4,
+    "available": true,
+    "download_attempted": false,
+    "download_allowed": false
+  },
+  "model_download_attempted": false,
+  "model_redownloaded": false,
+  "model_weights_committed": false,
+  "adapter_weights_committed": false,
   "training_rerun": false,
   "provider_calls_made": false,
   "openai_api_calls_made": false,
@@ -35,6 +1426,16 @@
   "live_wiring_allowed": false,
   "quality_gate_passed": false,
   "model_or_adapter_weights_committed": false,
+  "fastest_mode": "minimal_live_action_prompt_with_replan_context",
+  "latency_classification": "far_above_target",
+  "bottleneck_notes": [
+    "minimal live-action first-token p50 is already above the 2s target",
+    "minimal live-action first-token p90 is above the 3s target",
+    "minimal live-action total-generation p50 misses the 2s target",
+    "minimal live-action total-generation p90 misses the 3s target",
+    "minimal live-action still has malformed output cases",
+    "minimal live-action verifier pass count is zero, so latency alone cannot justify live wiring"
+  ],
   "side_effects": {
     "local_model_calls_made": false,
     "provider_calls_made": false,
@@ -50,5 +1451,50 @@
     "raw_private_transcript_included": false,
     "raw_private_transcript_copied_to_public_evidence": false,
     "case_text_stored_in_evidence": false
+  },
+  "config": {
+    "provider": "local_transformers",
+    "model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "model_path": "local_artifacts/models/qwen2.5-7b-instruct",
+    "cache_dir": "local_artifacts/cache/huggingface",
+    "device": "cuda",
+    "quantization_mode": "4bit",
+    "max_input_tokens": 4096,
+    "max_output_tokens": 120,
+    "timeout_ms": 20000,
+    "planner_schema_mode": "full",
+    "structured_output_required": true,
+    "enabled": true,
+    "requires_provider_secret": false,
+    "provider_secret_logged": false
+  },
+  "dependency_status": {
+    "modules": {
+      "torch": true,
+      "transformers": true,
+      "accelerate": true,
+      "bitsandbytes": true,
+      "safetensors": true,
+      "huggingface_hub": true
+    },
+    "versions": {
+      "torch": "2.11.0+cu128",
+      "transformers": "5.9.0",
+      "accelerate": "1.13.0",
+      "bitsandbytes": "0.49.2",
+      "safetensors": "0.7.0",
+      "huggingface_hub": "1.16.4"
+    },
+    "required": [
+      "torch",
+      "transformers",
+      "accelerate",
+      "safetensors",
+      "huggingface_hub",
+      "bitsandbytes"
+    ],
+    "missing_required": [],
+    "ready": true,
+    "install_notes": []
   }
 }
