@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "plan_id": "local-audio-s2s-architecture-plan-001",
+  "phase": "4I0",
+  "purpose": "Plan future audio pipeline options without changing live runtime behavior.",
+  "source_grounding": [
+    {
+      "url": "https://github.com/Liquid4All/liquid-audio",
+      "relevance": "Liquid Audio repo describes interleaved generation for real-time speech-to-speech and sequential generation for ASR/TTS."
+    },
+    {
+      "url": "https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B",
+      "relevance": "Model card describes LFM2.5-Audio as end-to-end audio foundation model with interleaved and sequential generation, ASR, TTS, English support, and LFM Open License."
+    },
+    {
+      "url": "https://docs.liquid.ai/lfm/models/audio-models",
+      "relevance": "Liquid docs describe audio models as audio/text-in and audio/text-out models supporting TTS, speech recognition, and audio-to-audio."
+    }
+  ],
+  "boundary_flags": {
+    "plan_only": true,
+    "live_runtime_allowed": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "local_model_generation_made": false,
+    "model_downloads_performed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcripts_included": false
+  },
+  "project_owned_boundaries": [
+    "sales/conversation brain",
+    "campaign facts",
+    "source grounding",
+    "memory ledger",
+    "safety verifier",
+    "deterministic sales action gate",
+    "consent and provider/live-use policy"
+  ],
+  "pipelines": [
+    {
+      "pipeline_id": "current_modular_path",
+      "display_name": "Pipeline 1 - Current modular path",
+      "status": "current_architecture_reference",
+      "stages": [
+        "ASR",
+        "transcript normalization",
+        "conversation brain",
+        "response text",
+        "prosody planner",
+        "TTS"
+      ],
+      "strengths": [
+        "Each boundary is inspectable and testable.",
+        "Transcript text is available before verifier and memory updates.",
+        "Provider TTS can stay replaceable behind a controlled adapter.",
+        "Sales brain remains project-owned and source-grounded."
+      ],
+      "risks": [
+        "Higher end-to-end latency from separate components.",
+        "ASR errors can propagate into sales state unless quality gates catch them.",
+        "Prosody and text generation are loosely coupled."
+      ],
+      "live_use_status": "existing architecture reference only; no Phase 4I0 behavior change"
+    },
+    {
+      "pipeline_id": "liquid_inspired_future_path",
+      "display_name": "Pipeline 2 - Liquid-inspired future path",
+      "status": "future_feasibility_candidate",
+      "stages": [
+        "audio input",
+        "speech-to-speech/audio model",
+        "transcript plus candidate audio",
+        "deterministic sales/memory/verifier gate",
+        "controlled response audio"
+      ],
+      "strengths": [
+        "Interleaved audio/text generation could reduce time-to-first-audio if local hardware supports it.",
+        "A single audio model may support ASR, TTS, and speech-to-speech experiments.",
+        "Candidate transcript can feed project-owned verifier and memory ledger if extraction is reliable."
+      ],
+      "risks": [
+        "Generated audio may contain unsupported product claims unless gated before playback.",
+        "Partial streaming audio may become unsafe if verifier only sees final text.",
+        "Speech-to-speech model could accidentally become the sales brain if boundaries are not enforced.",
+        "Local VRAM and latency on RTX 4070 Super 12GB are unknown."
+      ],
+      "hard_constraints": [
+        "Liquid must not become the unverified sales/conversation brain.",
+        "Campaign facts, source grounding, memory ledger, and safety verifier remain project-owned.",
+        "No generated audio can be played live before verifier gating is specified and benchmarked.",
+        "No live wiring until ASR, TTS, transcript extraction, latency, and hallucination gates pass."
+      ],
+      "live_use_status": "blocked until later feasibility and benchmark phases"
+    }
+  ],
+  "feasibility_questions": [
+    "Can Liquid run locally on RTX 4070 Super 12GB?",
+    "Can it do ASR on known bad phrases?",
+    "Can it produce TTS fast enough?",
+    "Can interleaved generation reduce time-to-first-audio?",
+    "Can we extract transcript text for verifier/memory?",
+    "Can we prevent hallucinated product facts?",
+    "Can generated audio be gated by verifier before playback?",
+    "Is streaming partial audio safe in a sales conversation?",
+    "What must be blocked from live use until verified?"
+  ],
+  "blocked_from_live_use_until_verified": [
+    "speech-to-speech generated spoken responses",
+    "partial audio streaming before verifier gate",
+    "Liquid-derived product facts or sales claims",
+    "memory updates from unverified transcript extraction",
+    "voice cloning or speaker imitation",
+    "provider or local model calls in live demo paths",
+    "replacement of current ElevenLabs provider path"
+  ],
+  "recommended_next_phase": "Run Liquid feasibility probe only after explicit approval for installs/downloads; keep all outputs evidence-only and no live wiring."
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "plan_id": "liquid-audio-feasibility-plan-001",
+  "candidate_backend_id": "liquid_audio_lfm25",
+  "phase": "future_after_4I0",
+  "purpose": "Plan a gated feasibility probe for Liquid Audio without performing it in Phase 4I0.",
+  "source_urls": [
+    "https://github.com/Liquid4All/liquid-audio",
+    "https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B",
+    "https://docs.liquid.ai/lfm/help/model-license"
+  ],
+  "allowed_in_phase_4I0": false,
+  "future_gates_required": [
+    "explicit user approval before install",
+    "explicit user approval before model weight download",
+    "ignored local artifact directory for any generated audio",
+    "no live runtime wiring",
+    "no provider calls"
+  ],
+  "planned_steps": [
+    "install probe only in isolated audio environment",
+    "no model download unless explicitly gated",
+    "check package install and import metadata",
+    "check model metadata without committing weights",
+    "ASR benchmark on sanitized known-bad phrases",
+    "TTS benchmark on 20 short sales responses",
+    "optional interleaved speech-to-speech smoke after ASR/TTS gates",
+    "write output evidence only"
+  ],
+  "blocked_steps": [
+    "live wiring",
+    "provider calls",
+    "OpenAI calls",
+    "ElevenLabs calls",
+    "model training",
+    "committing model weights",
+    "committing audio files",
+    "raw private transcript use"
+  ],
+  "metrics": [
+    "install success/failure",
+    "model metadata available",
+    "VRAM observed",
+    "cold latency",
+    "warm latency",
+    "time to first audio if supported",
+    "ASR word error on sanitized phrases",
+    "TTS real-time factor",
+    "verifier-compatible transcript extraction",
+    "unsupported product claim rate"
+  ],
+  "success_thresholds": {
+    "live_runtime_allowed": false,
+    "minimum_evidence_before_live_consideration": [
+      "runs on target hardware",
+      "ASR handles known bad phrases acceptably",
+      "TTS latency and quality beat or complement provider path",
+      "transcript extraction is reliable enough for verifier and memory",
+      "audio can be gated before playback"
+    ]
+  }
+}

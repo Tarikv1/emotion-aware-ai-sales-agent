@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "policy_id": "local-prosody-control-contract-001",
+  "phase": "4I0",
+  "purpose": "Backend-neutral prosody object and mapping policy for later TTS/S2S adapters. This is not wired into live speech.",
+  "runtime_boundaries": {
+    "live_runtime_allowed": false,
+    "inject_fish_tags_into_live_elevenlabs": false,
+    "alter_current_live_spoken_responses": false,
+    "provider_calls_made": false,
+    "live_tts_calls_made": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false
+  },
+  "prosody_object_template": {
+    "voice_intent": "",
+    "buyer_emotion": "",
+    "sales_move": "",
+    "pace": "",
+    "warmth": "",
+    "confidence": "",
+    "energy": "",
+    "pause_policy": "",
+    "emphasis_terms": [],
+    "avoid": [],
+    "backend_hints": {}
+  },
+  "standard_values": {
+    "pace": [
+      "slow",
+      "medium_slow",
+      "medium",
+      "medium_fast"
+    ],
+    "warmth": [
+      "neutral",
+      "warm",
+      "very_warm"
+    ],
+    "confidence": [
+      "soft",
+      "calm",
+      "confident",
+      "assertive"
+    ],
+    "energy": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "pause_policy": [
+      "none",
+      "short_after_opening_clause",
+      "short_before_recommendation",
+      "short_after_objection_ack"
+    ],
+    "voice_intent": [
+      "clarify_without_pressure",
+      "reassure_confused_buyer",
+      "handle_price_objection",
+      "recommend_with_confidence",
+      "close_low_pressure",
+      "respect_boundary",
+      "terminal_close"
+    ],
+    "buyer_emotion": [
+      "neutral",
+      "confused",
+      "skeptical",
+      "impatient",
+      "price_sensitive",
+      "interested",
+      "frustrated"
+    ]
+  },
+  "default_mappings": [
+    {
+      "voice_intent": "clarify_without_pressure",
+      "buyer_emotion": "confused",
+      "sales_move": "diagnostic_repair",
+      "pace": "medium_slow",
+      "warmth": "warm",
+      "confidence": "calm",
+      "energy": "medium",
+      "pause_policy": "short_after_opening_clause",
+      "emphasis_terms": [],
+      "avoid": [
+        "rushed delivery",
+        "pressure language",
+        "unsupported factual expansion"
+      ]
+    },
+    {
+      "voice_intent": "reassure_confused_buyer",
+      "buyer_emotion": "confused",
+      "sales_move": "explain_plainly",
+      "pace": "medium_slow",
+      "warmth": "very_warm",
+      "confidence": "calm",
+      "energy": "medium",
+      "pause_policy": "short_after_objection_ack",
+      "emphasis_terms": [
+        "simple next step"
+      ],
+      "avoid": [
+        "technical overload",
+        "fake empathy"
+      ]
+    },
+    {
+      "voice_intent": "handle_price_objection",
+      "buyer_emotion": "price_sensitive",
+      "sales_move": "value_reframe",
+      "pace": "medium",
+      "warmth": "warm",
+      "confidence": "confident",
+      "energy": "medium",
+      "pause_policy": "short_after_objection_ack",
+      "emphasis_terms": [
+        "fit",
+        "value"
+      ],
+      "avoid": [
+        "defensive tone",
+        "discount promises"
+      ]
+    },
+    {
+      "voice_intent": "recommend_with_confidence",
+      "buyer_emotion": "interested",
+      "sales_move": "recommend_next_step",
+      "pace": "medium",
+      "warmth": "warm",
+      "confidence": "confident",
+      "energy": "medium",
+      "pause_policy": "short_before_recommendation",
+      "emphasis_terms": [
+        "recommend"
+      ],
+      "avoid": [
+        "overexplaining",
+        "hard close"
+      ]
+    },
+    {
+      "voice_intent": "close_low_pressure",
+      "buyer_emotion": "interested",
+      "sales_move": "appointment_close",
+      "pace": "medium",
+      "warmth": "warm",
+      "confidence": "confident",
+      "energy": "medium",
+      "pause_policy": "short_before_recommendation",
+      "emphasis_terms": [
+        "next step"
+      ],
+      "avoid": [
+        "urgency pressure",
+        "assumed consent"
+      ]
+    },
+    {
+      "voice_intent": "respect_boundary",
+      "buyer_emotion": "frustrated",
+      "sales_move": "stop_or_transfer",
+      "pace": "medium_slow",
+      "warmth": "neutral",
+      "confidence": "calm",
+      "energy": "low",
+      "pause_policy": "none",
+      "emphasis_terms": [],
+      "avoid": [
+        "retention pressure",
+        "new questions"
+      ]
+    },
+    {
+      "voice_intent": "terminal_close",
+      "buyer_emotion": "neutral",
+      "sales_move": "end_call",
+      "pace": "medium",
+      "warmth": "neutral",
+      "confidence": "calm",
+      "energy": "low",
+      "pause_policy": "none",
+      "emphasis_terms": [],
+      "avoid": [
+        "continued selling",
+        "new offer"
+      ]
+    }
+  ],
+  "backend_mappings": {
+    "elevenlabs_existing_provider": {
+      "runtime_status": "future_mapping_only",
+      "allowed_now": false,
+      "mapping_strategy": [
+        "Do not insert Fish-style inline tags into ElevenLabs text.",
+        "Future adapter may map backend-neutral pace/warmth/confidence/energy to provider voice settings only after provider support is verified.",
+        "Fallback may use punctuation and text shaping only after a validator proves buyer-facing text is unchanged or intentionally approved."
+      ],
+      "blocked": [
+        "[pause]",
+        "[emphasis]",
+        "[calm]",
+        "[whispering]",
+        "[reassuring]"
+      ]
+    },
+    "kokoro_82m": {
+      "runtime_status": "future_benchmark_mapping_only",
+      "allowed_now": false,
+      "mapping_strategy": [
+        "Map pace to Kokoro speed if benchmark phase verifies the supported API.",
+        "Map voice to a benchmark voice choice only inside ignored local audio artifacts.",
+        "Use punctuation/text shaping fallback only in benchmark copies, never current live responses."
+      ]
+    },
+    "fish_audio_s2_inspired": {
+      "runtime_status": "inspiration_only_not_active_runtime",
+      "allowed_now": false,
+      "source_urls": [
+        "https://fish.audio/s2/",
+        "https://github.com/fishaudio/fish-speech",
+        "https://huggingface.co/fishaudio/s2-pro",
+        "https://speech.fish.audio/"
+      ],
+      "inline_tag_examples": [
+        "[pause]",
+        "[emphasis]",
+        "[calm]",
+        "[whispering]",
+        "[reassuring]",
+        "[laughing]",
+        "[slow]",
+        "[excited]"
+      ],
+      "mapping_strategy": [
+        "Use Fish tags only as vocabulary inspiration for internal policy labels.",
+        "Never leak bracketed tags into unsupported provider text.",
+        "Validate rendered text for unsupported backends before any live TTS path can consume the policy."
+      ]
+    },
+    "liquid_audio_lfm25": {
+      "runtime_status": "future_speech_to_speech_style_hints_only",
+      "allowed_now": false,
+      "mapping_strategy": [
+        "Future S2S adapter may translate the prosody object into speech-to-speech prompt/style hints.",
+        "Verifier, campaign facts, source grounding, memory, and sales action selection remain project-owned.",
+        "No partial generated audio may be played before verifier gating is designed and tested."
+      ]
+    }
+  }
+}

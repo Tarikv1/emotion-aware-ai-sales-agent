@@ -1,0 +1,53 @@
+{
+  "experiment_id": "LOCAL-PROSODY-CONTROL-CONTRACT-001",
+  "phase": "4I0",
+  "status": "pass",
+  "artifact_type": "backend_neutral_prosody_contract",
+  "contract": "runtime/audio_backends/prosody_control_contract.py",
+  "policy": "runtime/audio_backends/prosody_style_policy.json",
+  "standard_values_recorded": {
+    "pace": [
+      "slow",
+      "medium_slow",
+      "medium",
+      "medium_fast"
+    ],
+    "warmth": [
+      "neutral",
+      "warm",
+      "very_warm"
+    ],
+    "confidence": [
+      "soft",
+      "calm",
+      "confident",
+      "assertive"
+    ],
+    "energy": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "pause_policy": [
+      "none",
+      "short_after_opening_clause",
+      "short_before_recommendation",
+      "short_after_objection_ack"
+    ]
+  },
+  "backend_mapping_status": {
+    "elevenlabs_existing_provider": "future mapping only; no Fish tags inserted",
+    "kokoro_82m": "future benchmark mapping only",
+    "fish_audio_s2_inspired": "inspiration only, not active runtime",
+    "liquid_audio_lfm25": "future speech-to-speech style hints only"
+  },
+  "side_effects": {
+    "provider_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "fish_tags_wired_into_live_runtime": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false
+  },
+  "validator": "python scripts\\validate_prosody_control_contract_001.py"
+}

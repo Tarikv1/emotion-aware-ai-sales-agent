@@ -1,0 +1,72 @@
+{
+  "experiment_id": "LOCAL-AUDIO-BACKEND-REGISTRY-001",
+  "phase": "4I0",
+  "status": "pass",
+  "artifact_type": "source_grounded_registry",
+  "registry": "runtime/audio_backends/audio_backend_candidates.json",
+  "contracts": [
+    "runtime/audio_backends/audio_backend_contracts.py",
+    "runtime/audio_backends/audio_backend_registry.py"
+  ],
+  "source_urls": {
+    "liquid_audio_lfm25": [
+      "https://github.com/Liquid4All/liquid-audio",
+      "https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B",
+      "https://docs.liquid.ai/lfm/help/model-license",
+      "https://github.com/Liquid4All/liquid-audio/blob/main/LICENSE"
+    ],
+    "fish_audio_s2": [
+      "https://fish.audio/s2/",
+      "https://github.com/fishaudio",
+      "https://github.com/fishaudio/fish-speech",
+      "https://huggingface.co/fishaudio/s2-pro",
+      "https://speech.fish.audio/",
+      "https://github.com/fishaudio/fish-speech/blob/main/LICENSE"
+    ],
+    "kokoro_82m": [
+      "https://github.com/hexgrad/kokoro",
+      "https://huggingface.co/hexgrad/Kokoro-82M",
+      "https://github.com/hexgrad/kokoro/blob/main/LICENSE"
+    ]
+  },
+  "backend_summaries": {
+    "elevenlabs_existing_provider": {
+      "role": "current provider TTS path",
+      "live_runtime_changed": false
+    },
+    "liquid_audio_lfm25": {
+      "role": "speech-to-speech, ASR, and TTS feasibility candidate",
+      "commercial_use_status": "LFM Open License threshold recorded; acceptable for thesis/prototype/startup-stage under 10M USD annual revenue, paid license required above threshold",
+      "live_runtime_allowed": false,
+      "sales_brain_replacement_allowed": false
+    },
+    "fish_audio_s2": {
+      "role": "prosody/emotion-control inspiration and research-only candidate",
+      "commercial_use_status": "commercial use requires separate Fish Audio license",
+      "hardware_requirement_recorded": "24GB GPU memory for inference stated in Fish install docs",
+      "live_runtime_allowed": false
+    },
+    "kokoro_82m": {
+      "role": "local/offline TTS benchmark candidate",
+      "commercial_use_status": "Apache-2.0 recorded from official repo/model card",
+      "live_runtime_allowed": false
+    }
+  },
+  "side_effects": {
+    "model_downloads_performed": false,
+    "model_weights_committed": false,
+    "audio_files_committed": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "local_model_generation_made": false,
+    "ollama_generation_made": false,
+    "training_performed": false,
+    "live_runtime_wiring_changed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcripts_included": false
+  },
+  "validator": "python scripts\\validate_audio_backend_registry_001.py"
+}

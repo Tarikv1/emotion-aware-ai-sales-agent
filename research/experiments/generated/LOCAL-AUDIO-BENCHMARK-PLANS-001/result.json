@@ -1,0 +1,50 @@
+{
+  "experiment_id": "LOCAL-AUDIO-BENCHMARK-PLANS-001",
+  "phase": "4I0",
+  "status": "pass",
+  "artifact_type": "future_audio_benchmark_plans",
+  "plans": [
+    "runtime/audio_backends/benchmark_plans/liquid_audio_feasibility_plan.json",
+    "runtime/audio_backends/benchmark_plans/kokoro_tts_benchmark_plan.json",
+    "runtime/audio_backends/benchmark_plans/fish_inspired_prosody_policy_plan.json"
+  ],
+  "source_urls": {
+    "liquid_audio_lfm25": [
+      "https://github.com/Liquid4All/liquid-audio",
+      "https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B",
+      "https://docs.liquid.ai/lfm/help/model-license"
+    ],
+    "kokoro_82m": [
+      "https://github.com/hexgrad/kokoro",
+      "https://huggingface.co/hexgrad/Kokoro-82M",
+      "https://github.com/hexgrad/kokoro/blob/main/LICENSE"
+    ],
+    "fish_audio_s2": [
+      "https://fish.audio/s2/",
+      "https://github.com/fishaudio/fish-speech",
+      "https://huggingface.co/fishaudio/s2-pro",
+      "https://speech.fish.audio/",
+      "https://github.com/fishaudio/fish-speech/blob/main/LICENSE"
+    ]
+  },
+  "plan_summaries": {
+    "liquid_audio_feasibility_plan": "install probe first, no model download unless gated, ASR/TTS benchmarks on sanitized/evidence-only cases, optional S2S smoke, no live wiring",
+    "kokoro_tts_benchmark_plan": "isolated .venv-audio or .venv-tts, 20 short sales utterances, cold/warm latency, real-time factor, ignored local audio artifacts only",
+    "fish_inspired_prosody_policy_plan": "no model install, no model download, internal prosody taxonomy, buyer-emotion plus sales-move mapping, no tag leakage"
+  },
+  "side_effects": {
+    "model_downloads_performed": false,
+    "model_weights_committed": false,
+    "audio_files_committed": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "local_model_generation_made": false,
+    "training_performed": false,
+    "live_runtime_wiring_changed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false
+  },
+  "validator": "python scripts\\validate_audio_backend_benchmark_plans_001.py"
+}

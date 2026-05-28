@@ -1,0 +1,35 @@
+{
+  "experiment_id": "LOCAL-AUDIO-S2S-ARCHITECTURE-PLAN-001",
+  "phase": "4I0",
+  "status": "pass",
+  "artifact_type": "speech_to_speech_architecture_plan",
+  "plan": "runtime/audio_backends/speech_to_speech_architecture_plan.json",
+  "source_urls": [
+    "https://github.com/Liquid4All/liquid-audio",
+    "https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B",
+    "https://docs.liquid.ai/lfm/models/audio-models"
+  ],
+  "pipelines": [
+    {
+      "pipeline_id": "current_modular_path",
+      "summary": "ASR -> transcript normalization -> conversation brain -> response text -> prosody planner -> TTS"
+    },
+    {
+      "pipeline_id": "liquid_inspired_future_path",
+      "summary": "audio input -> speech-to-speech/audio model -> transcript plus candidate audio -> deterministic sales/memory/verifier -> controlled response audio"
+    }
+  ],
+  "hard_boundary": "Liquid must not become the unverified sales brain. Sales logic, campaign facts, source grounding, memory ledger, and verifier remain project-owned.",
+  "side_effects": {
+    "model_downloads_performed": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "local_model_generation_made": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcripts_included": false
+  },
+  "validator": "python scripts\\validate_audio_s2s_architecture_plan_001.py"
+}

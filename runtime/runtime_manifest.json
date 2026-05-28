@@ -875,6 +875,76 @@
         "naturalness rules"
       ],
       "legacy_path": "scripts/speech_naturalness.py"
+    },
+    {
+      "path": "runtime/audio_backends/audio_backend_contracts.py",
+      "path_type": "file",
+      "tier": "audio-backend-research-contract",
+      "runtime_role": "Data-only contract for source-grounded local audio backend research records; it does not load models, call providers, or alter live voice behavior.",
+      "behavior_surface": [
+        "audio backend registry schema",
+        "research boundary flags"
+      ]
+    },
+    {
+      "path": "runtime/audio_backends/audio_backend_registry.py",
+      "path_type": "file",
+      "tier": "audio-backend-research-config-loader",
+      "runtime_role": "Side-effect-free loader and metadata shape checker for audio backend registry candidates; it does not install packages, download weights, or run inference.",
+      "behavior_surface": [
+        "audio backend registry loading",
+        "source-grounding validation"
+      ]
+    },
+    {
+      "path": "runtime/audio_backends/audio_backend_candidates.json",
+      "path_type": "file",
+      "tier": "audio-backend-research-config",
+      "runtime_role": "Source-grounded registry classifying ElevenLabs, Liquid Audio, Fish Audio S2, and Kokoro for future audio feasibility work without live runtime wiring.",
+      "behavior_surface": [
+        "audio backend candidate classification",
+        "license and hardware research boundary"
+      ]
+    },
+    {
+      "path": "runtime/audio_backends/prosody_control_contract.py",
+      "path_type": "file",
+      "tier": "audio-prosody-research-contract",
+      "runtime_role": "Backend-neutral prosody control value contract for future adapters; it is not consumed by live speech or provider TTS paths.",
+      "behavior_surface": [
+        "prosody object schema",
+        "backend-neutral delivery labels"
+      ]
+    },
+    {
+      "path": "runtime/audio_backends/prosody_style_policy.json",
+      "path_type": "file",
+      "tier": "audio-prosody-research-policy",
+      "runtime_role": "Backend-neutral prosody style mapping policy with Fish-inspired tags marked as inspiration-only and blocked from live ElevenLabs speech.",
+      "behavior_surface": [
+        "prosody planning policy",
+        "unsupported tag leakage guard"
+      ]
+    },
+    {
+      "path": "runtime/audio_backends/speech_to_speech_architecture_plan.json",
+      "path_type": "file",
+      "tier": "audio-architecture-research-plan",
+      "runtime_role": "Speech-to-speech architecture plan comparing current modular ASR-to-TTS flow with a Liquid-inspired future flow while keeping the sales brain project-owned.",
+      "behavior_surface": [
+        "speech-to-speech architecture planning",
+        "sales brain boundary"
+      ]
+    },
+    {
+      "path": "runtime/audio_backends/benchmark_plans",
+      "path_type": "directory",
+      "tier": "audio-benchmark-research-plans",
+      "runtime_role": "Future benchmark plans for Liquid feasibility, Kokoro local TTS latency, and Fish-inspired prosody policy work; plans only, no model execution.",
+      "behavior_surface": [
+        "future audio benchmark planning",
+        "no-live-wiring gates"
+      ]
     }
   ],
   "non_runtime_defaults": [

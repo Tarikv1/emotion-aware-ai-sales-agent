@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "plan_id": "kokoro-tts-benchmark-plan-001",
+  "candidate_backend_id": "kokoro_82m",
+  "phase": "future_after_4I0",
+  "purpose": "Plan an isolated local/offline Kokoro TTS latency and quality benchmark without performing it in Phase 4I0.",
+  "source_urls": [
+    "https://github.com/hexgrad/kokoro",
+    "https://huggingface.co/hexgrad/Kokoro-82M",
+    "https://github.com/hexgrad/kokoro/blob/main/LICENSE"
+  ],
+  "allowed_in_phase_4I0": false,
+  "future_gates_required": [
+    "explicit user approval before install",
+    "isolated .venv-audio or .venv-tts",
+    "model weights and generated audio only in ignored local artifacts",
+    "no live runtime wiring",
+    "no provider calls"
+  ],
+  "planned_steps": [
+    "create isolated .venv-audio or .venv-tts",
+    "install probe",
+    "prepare 20 short sanitized sales utterances",
+    "measure cold latency",
+    "measure warm latency",
+    "measure real-time factor",
+    "generate audio files only to ignored local artifacts",
+    "create subjective quality review packet",
+    "record whether latency/quality justifies any future adapter work"
+  ],
+  "blocked_steps": [
+    "replace ElevenLabs",
+    "live wiring",
+    "provider calls",
+    "committing model weights",
+    "committing generated audio",
+    "raw private transcript use"
+  ],
+  "metrics": [
+    "install success/failure",
+    "cold latency",
+    "warm latency",
+    "real-time factor",
+    "audio duration",
+    "file generation path ignored by git",
+    "subjective clarity score",
+    "subjective sales naturalness score",
+    "emotion/prosody adequacy notes"
+  ],
+  "success_thresholds": {
+    "live_runtime_allowed": false,
+    "minimum_evidence_before_replacement_consideration": [
+      "latency is competitive for live interaction",
+      "quality is acceptable in human listening review",
+      "commercial/license review remains clean",
+      "provider-independent fallback value is proven"
+    ]
+  }
+}

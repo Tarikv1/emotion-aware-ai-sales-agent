@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "registry_id": "local-audio-backend-registry-001",
+  "phase": "4I0",
+  "purpose": "Source-grounded registry for audio backend research candidates. This file is config-only and does not install, download, load, or run any model.",
+  "source_grounding_policy": {
+    "rule": "Record only facts visible in cited project docs, model cards, or license files. If a source does not state a fact, record unknown rather than inferring.",
+    "phase_boundaries": [
+      "no installs",
+      "no model downloads",
+      "no model loading",
+      "no inference",
+      "no provider calls",
+      "no live TTS calls",
+      "no live runtime wiring",
+      "no response text changes"
+    ]
+  },
+  "backend_categories": [
+    "provider_tts",
+    "local_tts",
+    "local_asr",
+    "local_speech_to_speech",
+    "local_voice_conversion",
+    "prosody_control_inspiration",
+    "research_only",
+    "production_candidate"
+  ],
+  "required_fields": [
+    "backend_id",
+    "display_name",
+    "source_url",
+    "repo_url",
+    "model_card_url",
+    "license_name",
+    "license_summary",
+    "commercial_use_status",
+    "hardware_requirements",
+    "windows_support",
+    "wsl_or_linux_required",
+    "local_install_possible",
+    "role_in_project",
+    "integration_priority",
+    "live_runtime_allowed",
+    "provider_calls_required",
+    "model_weights_download_required",
+    "expected_risks",
+    "recommended_next_phase"
+  ],
+  "boundary_flags": {
+    "registry_data_only": true,
+    "model_downloads_performed": false,
+    "model_weights_committed": false,
+    "audio_files_committed": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "local_model_generation_made": false,
+    "ollama_generation_made": false,
+    "training_performed": false,
+    "live_runtime_wiring_changed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcripts_included": false
+  },
+  "candidates": [
+    {
+      "backend_id": "elevenlabs_existing_provider",
+      "display_name": "ElevenLabs Existing Provider TTS",
+      "source_url": "runtime/providers/VOICE_PROVIDER_RUN_BOUNDARY.md",
+      "repo_url": "runtime/providers/tts_provider_clients.py",
+      "model_card_url": "unknown",
+      "license_url": "unknown",
+      "license_file_path": "unknown",
+      "license_name": "provider_terms_unknown_in_repo",
+      "license_summary": "Current project-local provider path. This phase does not revisit ElevenLabs commercial terms or call the provider.",
+      "commercial_use_status": "current provider relationship not changed in Phase 4I0",
+      "hardware_requirements": "not_applicable_provider_tts",
+      "windows_support": "not_applicable_provider_tts",
+      "wsl_or_linux_required": "not_applicable_provider_tts",
+      "local_install_possible": "not_applicable_provider_tts",
+      "model_weights_available": "not_applicable_provider_tts",
+      "backend_categories": [
+        "provider_tts",
+        "production_candidate"
+      ],
+      "capability_classification": [
+        "TTS"
+      ],
+      "integration_classification": "current_runtime_provider",
+      "role_in_project": "Current live/provider TTS path. Keep as the high-quality voice path and do not change it in this phase.",
+      "integration_priority": "keep_current_do_not_change",
+      "live_runtime_allowed": true,
+      "provider_calls_required": true,
+      "model_weights_download_required": false,
+      "expected_risks": [
+        "provider dependency remains",
+        "commercial/provider terms are outside this local audio registry phase",
+        "live calls must remain opt-in"
+      ],
+      "recommended_next_phase": "No change in Phase 4I0. Compare against local candidates only after offline benchmarks exist.",
+      "source_evidence": [
+        {
+          "url": "runtime/providers/VOICE_PROVIDER_RUN_BOUNDARY.md",
+          "fact": "Project-local provider boundary is the source for live TTS opt-in rules."
+        },
+        {
+          "url": "runtime/providers/tts_provider_clients.py",
+          "fact": "Project-local provider client code contains the existing ElevenLabs path; this phase does not edit or call it."
+        }
+      ]
+    },
+    {
+      "backend_id": "liquid_audio_lfm25",
+      "display_name": "Liquid Audio LFM2.5-Audio-1.5B",
+      "source_url": "https://github.com/Liquid4All/liquid-audio",
+      "repo_url": "https://github.com/Liquid4All/liquid-audio",
+      "model_card_url": "https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B",
+      "license_url": "https://docs.liquid.ai/lfm/help/model-license",
+      "license_file_path": "https://github.com/Liquid4All/liquid-audio/blob/main/LICENSE",
+      "license_name": "LFM Open License v1.0",
+      "license_summary": "LFM Open License is Apache-2.0-like with a commercial-use revenue threshold. Liquid docs state free commercial use is limited to companies under 10M USD annual revenue; above that requires a paid license.",
+      "commercial_use_status": "acceptable_for_thesis_prototype_and_startup_stage_under_10m_usd_revenue_threshold; paid license required above threshold",
+      "hardware_requirements": "unknown exact VRAM; sources state 1.5B audio model, BF16, GGUF/CPU-friendly options, and low-latency design but do not state RTX 4070 Super 12GB fit",
+      "windows_support": "unknown - cited sources do not explicitly state native Windows support",
+      "wsl_or_linux_required": "unknown - cited sources do not state WSL/Linux requirement",
+      "local_install_possible": "yes_source_states_pip_install_liquid_audio_and_local_examples; not tested in this phase",
+      "model_weights_available": "yes_source_states_associated_weights_and_Hugging_Face_model_files_available",
+      "backend_categories": [
+        "local_tts",
+        "local_asr",
+        "local_speech_to_speech",
+        "production_candidate"
+      ],
+      "capability_classification": [
+        "ASR",
+        "TTS",
+        "speech-to-speech",
+        "interleaved_audio_text_generation"
+      ],
+      "integration_classification": "integration_candidate",
+      "role_in_project": "High strategic feasibility candidate for local ASR, local TTS, and future speech-to-speech audio interface. It must not replace the project-owned sales brain, campaign facts, memory ledger, source grounding, or verifier.",
+      "integration_priority": "high_strategic_priority_feasibility_probe_only",
+      "live_runtime_allowed": false,
+      "provider_calls_required": false,
+      "model_weights_download_required": true,
+      "expected_risks": [
+        "unknown RTX 4070 Super 12GB local performance",
+        "English-only support stated on the model card",
+        "integration complexity around interleaved audio/text generation",
+        "custom LFM Open License commercial threshold",
+        "risk of treating a speech-to-speech model as an unverified sales brain"
+      ],
+      "recommended_next_phase": "Liquid feasibility probe only: install/package metadata check first, then gated model download and ASR/TTS/S2S benchmark only after explicit approval.",
+      "source_evidence": [
+        {
+          "url": "https://github.com/Liquid4All/liquid-audio",
+          "fact": "Repository describes Liquid Audio as speech-to-speech models and documents interleaved generation for real-time speech-to-speech plus sequential generation for ASR/TTS."
+        },
+        {
+          "url": "https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B",
+          "fact": "Model card identifies LFM2.5-Audio-1.5B as end-to-end audio foundation model with ASR, TTS, interleaved generation, English support, BF16, and LFM Open License v1.0."
+        },
+        {
+          "url": "https://docs.liquid.ai/lfm/help/model-license",
+          "fact": "Liquid model license docs state commercial use is free under 10M USD annual revenue and paid license is required above that threshold."
+        },
+        {
+          "url": "https://github.com/Liquid4All/liquid-audio/blob/main/LICENSE",
+          "fact": "Repository license file contains the LFM Open License v1.0 and the 10M USD threshold definition."
+        }
+      ]
+    },
+    {
+      "backend_id": "fish_audio_s2",
+      "display_name": "Fish Audio S2 / fish-speech s2-pro",
+      "source_url": "https://fish.audio/s2/",
+      "repo_url": "https://github.com/fishaudio/fish-speech",
+      "model_card_url": "https://huggingface.co/fishaudio/s2-pro",
+      "license_url": "https://github.com/fishaudio/fish-speech/blob/main/LICENSE",
+      "license_file_path": "https://raw.githubusercontent.com/fishaudio/fish-speech/main/LICENSE",
+      "license_name": "Fish Audio Research License",
+      "license_summary": "Research and non-commercial use are permitted free of charge. Commercial use requires a separate written license from Fish Audio.",
+      "commercial_use_status": "commercial_use_requires_separate_license; not product-runtime-clean for this phase",
+      "hardware_requirements": "24GB GPU memory for inference stated in Fish Audio install docs; H200 performance reported for production streaming benchmarks",
+      "windows_support": "limited_or_not_targeted - install docs state System: Linux, WSL and warn compile option is not supported on Windows/macOS",
+      "wsl_or_linux_required": "yes_source_states_linux_wsl",
+      "local_install_possible": "yes_if_linux_or_wsl_with_required_gpu_and_weights; not installed or tested in this phase",
+      "model_weights_available": "yes_source_states_model_weights_available_on_GitHub_or_Hugging_Face",
+      "backend_categories": [
+        "local_tts",
+        "local_voice_conversion",
+        "prosody_control_inspiration",
+        "research_only"
+      ],
+      "capability_classification": [
+        "TTS",
+        "voice_cloning",
+        "multi-speaker_generation",
+        "prosody_control",
+        "emotion_control",
+        "research_only_for_this_project"
+      ],
+      "integration_classification": "architecture_inspiration_only",
+      "role_in_project": "Prosody and emotion-control design inspiration first. Do not integrate as a local runtime dependency now. Extract backend-neutral inline-control concepts and serving architecture ideas only.",
+      "integration_priority": "concept_high_integration_low",
+      "live_runtime_allowed": false,
+      "provider_calls_required": false,
+      "model_weights_download_required": true,
+      "expected_risks": [
+        "24GB VRAM requirement exceeds the stated local 12GB target machine",
+        "Linux/WSL requirement complicates Windows-first local workflow",
+        "commercial license required for product use",
+        "Fish tags could leak into unsupported TTS backends if not guarded",
+        "voice cloning capabilities require separate consent and safety review before any use"
+      ],
+      "recommended_next_phase": "No model install. Build internal backend-neutral prosody-control policy inspired by Fish tags and validate no tag leakage into live ElevenLabs speech.",
+      "source_evidence": [
+        {
+          "url": "https://fish.audio/s2/",
+          "fact": "S2 page states fine-grained inline prosody/emotion control with tag syntax, multi-speaker control, 80+ languages, model weights, fine-tuning code, and SGLang streaming engine."
+        },
+        {
+          "url": "https://speech.fish.audio/install/",
+          "fact": "Install docs state GPU Memory: 24GB (Inference), System: Linux, WSL, and compile option not supported on Windows/macOS."
+        },
+        {
+          "url": "https://huggingface.co/fishaudio/s2-pro",
+          "fact": "Model card states Fish Audio Research License, research/non-commercial use free, commercial use requires separate license, and model size is 5B params."
+        },
+        {
+          "url": "https://github.com/fishaudio/fish-speech/blob/main/LICENSE",
+          "fact": "License file states commercial use requires a separate written license and grants research/non-commercial rights."
+        },
+        {
+          "url": "https://speech.fish.audio/",
+          "fact": "Docs describe SGLang production streaming, multi-speaker generation, multi-turn generation, and rapid voice cloning."
+        }
+      ]
+    },
+    {
+      "backend_id": "kokoro_82m",
+      "display_name": "Kokoro-82M",
+      "source_url": "https://github.com/hexgrad/kokoro",
+      "repo_url": "https://github.com/hexgrad/kokoro",
+      "model_card_url": "https://huggingface.co/hexgrad/Kokoro-82M",
+      "license_url": "https://github.com/hexgrad/kokoro/blob/main/LICENSE",
+      "license_file_path": "https://github.com/hexgrad/kokoro/blob/main/LICENSE",
+      "license_name": "Apache-2.0",
+      "license_summary": "Kokoro repository and model card identify Apache-2.0 licensing; model card states Apache-licensed weights can be deployed from production environments to personal projects.",
+      "commercial_use_status": "commercially_cleaner_than_fish_under_apache_2_0_subject_to_normal_license_review",
+      "hardware_requirements": "unknown exact VRAM; source states 82M parameters and lightweight architecture but does not state RTX 4070 Super VRAM requirement",
+      "windows_support": "partial_source_stated - repository README includes Windows espeak-ng installation guidance; full local benchmark not tested",
+      "wsl_or_linux_required": "not_stated_as_required_by_cited_sources",
+      "local_install_possible": "yes_source_states_pip_install_kokoro_usage; not installed or tested in this phase",
+      "model_weights_available": "yes_source_model_card_lists_open_weights_and_files",
+      "backend_categories": [
+        "local_tts",
+        "production_candidate"
+      ],
+      "capability_classification": [
+        "TTS",
+        "local_offline_tts_benchmark_candidate"
+      ],
+      "integration_classification": "benchmark_candidate",
+      "role_in_project": "Optional local/offline TTS latency and quality benchmark candidate. It may provide provider-independent evidence but must not replace ElevenLabs without latency and listening-quality results.",
+      "integration_priority": "medium_practical_priority",
+      "live_runtime_allowed": false,
+      "provider_calls_required": false,
+      "model_weights_download_required": true,
+      "expected_risks": [
+        "voice quality may be below ElevenLabs for sales calls",
+        "less expressive emotional control than Fish S2",
+        "exact Windows setup and hardware latency unknown until local benchmark",
+        "G2P/espeak dependency may affect Windows setup"
+      ],
+      "recommended_next_phase": "Kokoro local TTS smoke and latency benchmark in an isolated audio virtual environment, with audio output only to ignored local artifacts.",
+      "source_evidence": [
+        {
+          "url": "https://huggingface.co/hexgrad/Kokoro-82M",
+          "fact": "Model card states Kokoro is an open-weight TTS model with 82M parameters, Apache-2.0 license, and deployable from production environments to personal projects."
+        },
+        {
+          "url": "https://github.com/hexgrad/kokoro",
+          "fact": "Repository describes itself as an inference library for Kokoro-82M and includes usage with pip install kokoro."
+        },
+        {
+          "url": "https://github.com/hexgrad/kokoro/blob/main/LICENSE",
+          "fact": "Repository license file is Apache-2.0."
+        },
+        {
+          "url": "https://github.com/hexgrad/kokoro",
+          "fact": "Repository README includes Windows espeak-ng installation guidance and a speed parameter in generation usage."
+        }
+      ]
+    }
+  ]
+}

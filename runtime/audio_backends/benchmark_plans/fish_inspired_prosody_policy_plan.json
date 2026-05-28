@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "plan_id": "fish-inspired-prosody-policy-plan-001",
+  "candidate_backend_id": "fish_audio_s2",
+  "phase": "future_after_4I0",
+  "purpose": "Plan backend-neutral prosody policy work inspired by Fish S2 without installing or using Fish S2 as a runtime dependency.",
+  "source_urls": [
+    "https://fish.audio/s2/",
+    "https://github.com/fishaudio/fish-speech",
+    "https://huggingface.co/fishaudio/s2-pro",
+    "https://speech.fish.audio/",
+    "https://github.com/fishaudio/fish-speech/blob/main/LICENSE"
+  ],
+  "allowed_in_phase_4I0": false,
+  "model_install_allowed": false,
+  "model_download_allowed": false,
+  "planned_steps": [
+    "define internal prosody tag taxonomy",
+    "map buyer emotion plus sales move to backend-neutral prosody object",
+    "map Fish-style concepts to internal labels only",
+    "validate no internal/emotional tag leakage into unsupported TTS backends",
+    "review licensing and hardware feasibility before any local runtime proposal"
+  ],
+  "blocked_steps": [
+    "Fish model install",
+    "Fish model download",
+    "Fish API calls",
+    "live runtime wiring",
+    "voice cloning",
+    "commercial product use without separate license",
+    "inserting bracketed Fish tags into ElevenLabs speech"
+  ],
+  "validation_targets": [
+    "prosody object contains only backend-neutral values",
+    "unsupported backend rendered text contains no bracketed tags",
+    "current live spoken responses unchanged",
+    "runtime behavior changed false",
+    "response text changed false"
+  ]
+}
