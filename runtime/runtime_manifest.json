@@ -937,6 +937,17 @@
       ]
     },
     {
+      "path": "runtime/audio_backends/liquid_audio_feasibility_config.json",
+      "path_type": "file",
+      "tier": "audio-backend-research-config",
+      "runtime_role": "Source-grounded local Liquid Audio feasibility probe config with project-local ignored artifact paths, env gates, and no live wiring or sales-brain replacement.",
+      "behavior_surface": [
+        "Liquid Audio probe configuration",
+        "model download gate",
+        "local artifact boundary"
+      ]
+    },
+    {
       "path": "runtime/audio_backends/benchmark_plans",
       "path_type": "directory",
       "tier": "audio-benchmark-research-plans",

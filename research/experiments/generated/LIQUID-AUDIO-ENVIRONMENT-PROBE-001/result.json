@@ -1,0 +1,164 @@
+{
+  "config": "runtime/audio_backends/liquid_audio_feasibility_config.json",
+  "dependency_status": {
+    "missing_optional": [
+      "flash_attn"
+    ],
+    "missing_required": [
+      "liquid_audio",
+      "torch",
+      "torchaudio"
+    ],
+    "optional": {
+      "flash_attn": {
+        "distribution_name": "flash-attn",
+        "import_name": "flash_attn",
+        "module_found": false,
+        "version": null
+      }
+    },
+    "required": {
+      "liquid_audio": {
+        "distribution_name": "liquid-audio",
+        "import_name": "liquid_audio",
+        "module_found": false,
+        "version": null
+      },
+      "torch": {
+        "distribution_name": "torch",
+        "import_name": "torch",
+        "module_found": false,
+        "version": null
+      },
+      "torchaudio": {
+        "distribution_name": "torchaudio",
+        "import_name": "torchaudio",
+        "module_found": false,
+        "version": null
+      }
+    }
+  },
+  "download_gate_enabled": false,
+  "env_gates": {
+    "ENABLE_LOCAL_AUDIO_EXPERIMENT": {
+      "actual": "",
+      "enabled": false,
+      "expected": "1"
+    },
+    "LOCAL_LIQUID_ALLOW_MODEL_DOWNLOAD": {
+      "actual": "",
+      "enabled": false,
+      "expected": "1"
+    },
+    "LOCAL_LIQUID_AUDIO_ENABLED": {
+      "actual": "",
+      "enabled": false,
+      "expected": "true"
+    }
+  },
+  "env_gates_enabled": false,
+  "experiment_id": "LIQUID-AUDIO-ENVIRONMENT-PROBE-001",
+  "generated_at": "2026-05-28T17:01:52.444707+00:00",
+  "hardware": {
+    "explicit_vram_requirement_from_source": "unknown",
+    "nvidia_smi": {
+      "available": true,
+      "error": "",
+      "gpus": [
+        {
+          "memory_total": "12282 MiB",
+          "name": "NVIDIA GeForce RTX 4070 SUPER"
+        }
+      ]
+    },
+    "torch": {
+      "cuda_available": false,
+      "cuda_version": null,
+      "device_count": 0,
+      "devices": [],
+      "import_error": "ModuleNotFoundError: No module named 'torch'",
+      "installed": false,
+      "version": null
+    }
+  },
+  "license_tracking": {
+    "commercial_use_status": "Free commercial use under 10M USD annual revenue; paid license required above that threshold.",
+    "license_name": "LFM Open License v1.0",
+    "source_url": "https://docs.liquid.ai/lfm/help/model-license"
+  },
+  "live_wiring_allowed": false,
+  "model_status": {
+    "model_download_allowed_by_default": false,
+    "model_download_attempted": false,
+    "model_files_present": 0,
+    "model_id": "LiquidAI/LFM2.5-Audio-1.5B",
+    "model_present": false
+  },
+  "path_status": {
+    "cache_path": {
+      "exists": true,
+      "expected_under_local_artifacts": true,
+      "git_ignored": true,
+      "is_dir": true,
+      "model_file_count": 0,
+      "model_files_sample": [],
+      "path": "local_artifacts/cache/huggingface",
+      "under_local_artifacts": true
+    },
+    "local_model_path": {
+      "exists": false,
+      "expected_under_local_artifacts": true,
+      "git_ignored": true,
+      "is_dir": false,
+      "model_file_count": 0,
+      "model_files_sample": [],
+      "path": "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b",
+      "under_local_artifacts": true
+    },
+    "output_audio_path": {
+      "exists": false,
+      "expected_under_local_artifacts": true,
+      "git_ignored": true,
+      "is_dir": false,
+      "model_file_count": 0,
+      "model_files_sample": [],
+      "path": "local_artifacts/audio_outputs/liquid",
+      "under_local_artifacts": true
+    },
+    "path_failures": []
+  },
+  "python": {
+    "executable": "C:\\Users\\tarik\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "sales_brain_replacement_allowed": false,
+  "side_effects": {
+    "audio_files_committed": false,
+    "audio_files_generated": false,
+    "elevenlabs_calls_made": false,
+    "live_runtime_wiring_changed": false,
+    "live_tts_calls_made": false,
+    "live_wiring_allowed": false,
+    "local_model_generation_made": false,
+    "model_download_attempted": false,
+    "model_downloads_performed": false,
+    "model_weights_committed": false,
+    "ollama_generation_made": false,
+    "openai_api_calls_made": false,
+    "provider_calls_made": false,
+    "raw_private_audio_used": false,
+    "raw_private_transcripts_included": false,
+    "response_text_changed": false,
+    "runtime_behavior_changed": false,
+    "sales_brain_replacement_allowed": false,
+    "training_performed": false
+  },
+  "source_urls": {
+    "audio_model_docs": "https://docs.liquid.ai/lfm/models/audio-models",
+    "license_docs": "https://docs.liquid.ai/lfm/help/model-license",
+    "model_card": "https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B",
+    "source_repo": "https://github.com/Liquid4All/liquid-audio"
+  },
+  "status": "missing_dependencies"
+}

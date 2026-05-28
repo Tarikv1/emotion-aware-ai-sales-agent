@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "config_id": "liquid-audio-feasibility-config-001",
+  "phase": "4I1",
+  "backend_id": "liquid_audio_lfm25",
+  "source_repo": "https://github.com/Liquid4All/liquid-audio",
+  "model_card": "https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B",
+  "license_docs": "https://docs.liquid.ai/lfm/help/model-license",
+  "audio_model_docs": "https://docs.liquid.ai/lfm/models/audio-models",
+  "model_id": "LiquidAI/LFM2.5-Audio-1.5B",
+  "local_model_path": "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b",
+  "cache_path": "local_artifacts/cache/huggingface",
+  "output_audio_path": "local_artifacts/audio_outputs/liquid",
+  "env_gates": {
+    "ENABLE_LOCAL_AUDIO_EXPERIMENT": "1",
+    "LOCAL_LIQUID_AUDIO_ENABLED": "true",
+    "LOCAL_LIQUID_ALLOW_MODEL_DOWNLOAD": "1"
+  },
+  "download_gate_name": "LOCAL_LIQUID_ALLOW_MODEL_DOWNLOAD",
+  "planned_modes": [
+    "install_probe",
+    "metadata_probe",
+    "asr_smoke",
+    "tts_smoke",
+    "interleaved_s2s_smoke"
+  ],
+  "source_grounded_requirements": {
+    "install_package": "liquid-audio",
+    "python_import": "liquid_audio",
+    "required_runtime_packages_from_examples": [
+      "torch",
+      "torchaudio",
+      "liquid-audio"
+    ],
+    "optional_packages_from_sources": [
+      "flash-attn",
+      "liquid-audio[demo]"
+    ],
+    "generation_routines": [
+      "generate_sequential",
+      "generate_interleaved"
+    ],
+    "source_stated_capabilities": [
+      "ASR via sequential generation",
+      "TTS via sequential generation",
+      "speech-to-speech via interleaved generation",
+      "text and audio input/output",
+      "24 kHz audio output in examples"
+    ],
+    "model_precision": "bfloat16",
+    "supported_languages": [
+      "English"
+    ],
+    "explicit_vram_requirement": "unknown"
+  },
+  "license_tracking": {
+    "license_name": "LFM Open License v1.0",
+    "commercial_use_status": "Free commercial use under 10M USD annual revenue; paid license required above that threshold.",
+    "source_url": "https://docs.liquid.ai/lfm/help/model-license"
+  },
+  "runtime_boundaries": {
+    "live_wiring_allowed": false,
+    "sales_brain_replacement_allowed": false,
+    "model_download_allowed_by_default": false,
+    "provider_calls_allowed": false,
+    "elevenlabs_calls_allowed": false,
+    "live_tts_calls_allowed": false,
+    "raw_private_audio_allowed": false,
+    "raw_private_transcripts_allowed": false,
+    "model_weights_committable": false,
+    "generated_audio_committable": false
+  },
+  "safe_test_inputs": {
+    "asr_phrases": [
+      "ChatGPT",
+      "ChatGPT and other AI tools",
+      "Claude",
+      "coding and voice",
+      "Free Plus Pro Business Enterprise"
+    ],
+    "tts_utterances": [
+      "Just so I answer the right thing, are you asking about the plans themselves or which one fits your use?",
+      "Got it - coding workflow and voice. Are you using it lightly, moderately, or heavily?"
+    ]
+  },
+  "source_evidence": [
+    {
+      "url": "https://github.com/Liquid4All/liquid-audio",
+      "fact": "Repository states pip install liquid-audio, optional demo extras, optional flash-attn fallback, and examples using torch, torchaudio, LFM2AudioModel, LFM2AudioProcessor, ChatState, and LFMModality."
+    },
+    {
+      "url": "https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B",
+      "fact": "Model card states LFM2.5-Audio supports interleaved speech-to-speech, sequential ASR/TTS, bfloat16, English, safetensors, and LFM Open License v1.0."
+    },
+    {
+      "url": "https://docs.liquid.ai/lfm/help/model-license",
+      "fact": "License docs state commercial use is free under 10M USD annual revenue and requires a paid license above that threshold."
+    },
+    {
+      "url": "https://docs.liquid.ai/lfm/models/audio-models",
+      "fact": "Audio model docs describe TTS, speech recognition, audio-to-audio, and LFM2.5-Audio-1.5B as the latest recommended audio model."
+    }
+  ]
+}
