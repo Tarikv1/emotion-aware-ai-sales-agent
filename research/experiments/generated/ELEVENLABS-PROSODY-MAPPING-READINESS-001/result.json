@@ -1,0 +1,65 @@
+{
+  "experiment_id": "ELEVENLABS-PROSODY-MAPPING-READINESS-001",
+  "phase": "4I3",
+  "status": "pass",
+  "plan": "runtime/audio_backends/elevenlabs_prosody_mapping_readiness.json",
+  "schema_version": 1,
+  "readiness_id": "elevenlabs-prosody-mapping-readiness-001",
+  "current_voice_path": "ElevenLabs",
+  "fish_tags_in_elevenlabs_text_allowed": false,
+  "current_integration_status": "not_wired",
+  "future_mapping_layers": [
+    "text shaping",
+    "punctuation/pause shaping",
+    "sentence length control",
+    "optional style prompt if supported",
+    "optional voice settings if already available"
+  ],
+  "disallowed": [
+    "raw bracket tags",
+    "fake emotions",
+    "fake laughter",
+    "manipulative urgency",
+    "internal policy language",
+    "unsupported claims"
+  ],
+  "required_future_gate_before_live": [
+    "sample generation",
+    "listening review",
+    "regression against current ElevenLabs behavior",
+    "no raw tag leakage",
+    "no response text behavior change unless explicitly approved"
+  ],
+  "quality_inputs": {
+    "taxonomy_blocker_count": 0,
+    "mapping_failure_count": 0,
+    "planner_failure_count": 0
+  },
+  "recommended_now": "plan_only_not_wired",
+  "provider_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "live_tts_calls_made": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "fish_tags_internal_only": true,
+  "raw_fish_tags_allowed_in_elevenlabs_text": false,
+  "boundary_flags": {
+    "fish_install_performed": false,
+    "fish_inference_performed": false,
+    "liquid_inference_performed": false,
+    "kokoro_inference_performed": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "local_model_generation_made": false,
+    "ollama_generation_made": false,
+    "training_performed": false,
+    "model_weights_committed": false,
+    "audio_files_committed": false,
+    "live_runtime_wiring_changed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "spoken_text_tag_injection_allowed": false
+  }
+}

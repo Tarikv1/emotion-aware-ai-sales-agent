@@ -1,0 +1,2252 @@
+{
+  "experiment_id": "PROSODY-PLANNER-DRY-RUN-AUDIT-001",
+  "phase": "4I3",
+  "status": "pass",
+  "case_count": 60,
+  "dry_run_status_counts": {
+    "pass": 55,
+    "warning": 5,
+    "fail": 0,
+    "needs_human_review": 0,
+    "unknown": 0
+  },
+  "cases": [
+    {
+      "case_id": "dry_run.001.confused_plan",
+      "input_context": {
+        "case_id": "dry_run.001.confused_plan",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "confused",
+        "buyer_confusion_level": "high",
+        "sales_move": "plan_explanation"
+      },
+      "selected_labels": [
+        "emotion_response.confused_buyer_reassurance",
+        "pacing.slow_down_for_confusion",
+        "clarity.simple_words",
+        "clarity.one_idea_per_sentence",
+        "plan.explain_with_plain_language"
+      ],
+      "selected_composition_rule": [
+        "rule.confused_buyer_plan_explanation"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.002.confused_price",
+      "input_context": {
+        "case_id": "dry_run.002.confused_price",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "confused",
+        "buyer_confusion_level": "high",
+        "sales_move": "price_answer"
+      },
+      "selected_labels": [
+        "emotion_response.confused_buyer_reassurance",
+        "pause.pause_before_price",
+        "pause.pause_after_price",
+        "clarity.short_sentence",
+        "source.no_price_guarantee"
+      ],
+      "selected_composition_rule": [
+        "rule.confused_buyer_price"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.003.skeptical_source",
+      "input_context": {
+        "case_id": "dry_run.003.skeptical_source",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "skeptical",
+        "buyer_skepticism_level": "high",
+        "sales_move": "source_affiliation_answer"
+      },
+      "selected_labels": [
+        "emotion_response.skeptical_buyer_grounding",
+        "tone.transparent_source",
+        "trust.no_affiliation_overclaim",
+        "source.no_affiliation_claim",
+        "source.official_route_boundary"
+      ],
+      "selected_composition_rule": [
+        "rule.skeptical_buyer_source_question",
+        "rule.source_affiliation_answer"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.004.skeptical_competitor",
+      "input_context": {
+        "case_id": "dry_run.004.skeptical_competitor",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "skeptical",
+        "buyer_skepticism_level": "high",
+        "objection_type": "competitor"
+      },
+      "selected_labels": [
+        "objection.competitor_respect_current_tool",
+        "objection.competitor_gap_probe",
+        "tone.direct_but_respectful",
+        "sales.tie_to_buyer_words"
+      ],
+      "selected_composition_rule": [
+        "rule.skeptical_buyer_competitor_objection"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.005.impatient_price",
+      "input_context": {
+        "case_id": "dry_run.005.impatient_price",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "impatient",
+        "buyer_friction_level": "medium",
+        "sales_move": "price_answer"
+      },
+      "selected_labels": [
+        "emotion_response.impatient_buyer_concise",
+        "pacing.compress_for_impatient_buyer",
+        "pause.no_pause_direct_answer",
+        "clarity.short_sentence"
+      ],
+      "selected_composition_rule": [
+        "rule.impatient_buyer_direct_price"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.006.price_heavy_use",
+      "input_context": {
+        "case_id": "dry_run.006.price_heavy_use",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "price_sensitive",
+        "buyer_engagement_level": "high",
+        "sales_move": "recommendation",
+        "objection_type": "price"
+      },
+      "selected_labels": [
+        "objection.price_acknowledge",
+        "objection.price_value_reframe",
+        "recommend.pro_for_heavy_use",
+        "confidence.confidence_with_caveat"
+      ],
+      "selected_composition_rule": [
+        "rule.price_objection_heavy_use"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.007.price_low_budget",
+      "input_context": {
+        "case_id": "dry_run.007.price_low_budget",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "price_sensitive",
+        "buyer_friction_level": "high",
+        "objection_type": "price"
+      },
+      "selected_labels": [
+        "objection.price_acknowledge",
+        "objection.too_expensive_no_pressure",
+        "recommend.free_or_no_fit",
+        "warmth.low_pressure_warmth"
+      ],
+      "selected_composition_rule": [
+        "rule.price_objection_low_budget"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.008.frustrated",
+      "input_context": {
+        "case_id": "dry_run.008.frustrated",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "frustrated",
+        "buyer_friction_level": "high"
+      },
+      "selected_labels": [
+        "emotion_response.frustrated_buyer_deescalation",
+        "volume.deescalation_lower_volume",
+        "tone.direct_but_respectful",
+        "objection.avoid_argument"
+      ],
+      "selected_composition_rule": [
+        "rule.buyer_frustration"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.009.interested",
+      "input_context": {
+        "case_id": "dry_run.009.interested",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "interested",
+        "buyer_engagement_level": "high"
+      },
+      "selected_labels": [
+        "emotion_response.interested_buyer_momentum",
+        "energy.increase_for_momentum",
+        "sales.advance_after_answer"
+      ],
+      "selected_composition_rule": [
+        "rule.buyer_interested"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.010.disengaged",
+      "input_context": {
+        "case_id": "dry_run.010.disengaged",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "disengaged",
+        "buyer_engagement_level": "low"
+      },
+      "selected_labels": [
+        "emotion_response.disengaged_buyer_relevance_bridge",
+        "sales.concise_summary",
+        "clarify.short_natural_question"
+      ],
+      "selected_composition_rule": [
+        "rule.buyer_disengaged"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.011.privacy",
+      "input_context": {
+        "case_id": "dry_run.011.privacy",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "skeptical",
+        "objection_type": "privacy",
+        "safety_boundary_detected": true
+      },
+      "selected_labels": [
+        "boundary.respect_no_calendar",
+        "close.no_fake_calendar",
+        "boundary.no_side_effect_claim",
+        "objection.privacy_concern_respectful_answer",
+        "plan.explain_privacy_boundary",
+        "boundary.respect_privacy_boundary",
+        "safety.no_sensitive_data_request"
+      ],
+      "selected_composition_rule": [
+        "rule.privacy_concern"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.012.already_told_you",
+      "input_context": {
+        "case_id": "dry_run.012.already_told_you",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "frustrated",
+        "buyer_said_already_told_you": true
+      },
+      "selected_labels": [
+        "repair.already_told_you_acknowledge",
+        "repair.do_not_repeat_question",
+        "repair.summarize_known_context",
+        "repair.move_forward_after_repair",
+        "emotion_response.frustrated_buyer_deescalation",
+        "volume.deescalation_lower_volume",
+        "tone.direct_but_respectful",
+        "objection.avoid_argument"
+      ],
+      "selected_composition_rule": [
+        "rule.buyer_already_told_you",
+        "rule.buyer_frustration"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.013.buyer_correction",
+      "input_context": {
+        "case_id": "dry_run.013.buyer_correction",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "sales_move": "correction_repair"
+      },
+      "selected_labels": [
+        "repair.correction_acceptance",
+        "repair.wrong_word_repair",
+        "repair.move_forward_after_repair",
+        "confidence.confidence_with_caveat"
+      ],
+      "selected_composition_rule": [
+        "rule.buyer_correction"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.014.asr_uncertainty",
+      "input_context": {
+        "case_id": "dry_run.014.asr_uncertainty",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "asr_uncertainty_detected": true
+      },
+      "selected_labels": [
+        "repair.asr_uncertainty_repair",
+        "clarify.short_natural_question",
+        "phone.one_question_at_a_time"
+      ],
+      "selected_composition_rule": [
+        "rule.asr_uncertainty"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.015.same_question",
+      "input_context": {
+        "case_id": "dry_run.015.same_question",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "confused",
+        "sales_move": "repeat_answer"
+      },
+      "selected_labels": [
+        "repair.repeat_with_different_words",
+        "clarity.repeat_differently",
+        "clarity.summary_before_next_question"
+      ],
+      "selected_composition_rule": [
+        "rule.buyer_same_question_again"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.016.use_case",
+      "input_context": {
+        "case_id": "dry_run.016.use_case",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "sales_move": "use_case_discovery"
+      },
+      "selected_labels": [
+        "clarify.use_case",
+        "phone.one_question_at_a_time",
+        "clarify.short_natural_question"
+      ],
+      "selected_composition_rule": [
+        "rule.use_case_discovery"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.017.intensity",
+      "input_context": {
+        "case_id": "dry_run.017.intensity",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "sales_move": "intensity_discovery"
+      },
+      "selected_labels": [
+        "clarify.intensity",
+        "clarity.simple_words",
+        "phone.short_turn_discipline"
+      ],
+      "selected_composition_rule": [
+        "rule.intensity_discovery"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.018.team_individual",
+      "input_context": {
+        "case_id": "dry_run.018.team_individual",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "sales_move": "team_clarification"
+      },
+      "selected_labels": [
+        "clarify.team_vs_individual",
+        "repair.restore_not_team",
+        "phone.answer_then_ask"
+      ],
+      "selected_composition_rule": [
+        "rule.team_vs_individual_clarification"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.019.recommendation",
+      "input_context": {
+        "case_id": "dry_run.019.recommendation",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "interested",
+        "sales_move": "recommendation",
+        "decision_stage": "recommendation"
+      },
+      "selected_labels": [
+        "sales.confirm_then_recommend",
+        "recommend.confidence_based_on_known_context",
+        "confidence.decisive_recommendation",
+        "pause.pause_before_recommendation",
+        "emotion_response.interested_buyer_momentum",
+        "energy.increase_for_momentum",
+        "sales.advance_after_answer"
+      ],
+      "selected_composition_rule": [
+        "rule.recommendation_after_enough_context",
+        "rule.buyer_interested"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.020.plus_pro",
+      "input_context": {
+        "case_id": "dry_run.020.plus_pro",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "curious",
+        "sales_move": "compare_plus_pro"
+      },
+      "selected_labels": [
+        "emotion_response.curious_buyer_expand_slightly",
+        "clarity.one_idea_per_sentence",
+        "sales.benefit_contrast",
+        "recommend.compare_two_options",
+        "plan.explain_free_plus_pro",
+        "sales.choice_framing"
+      ],
+      "selected_composition_rule": [
+        "rule.plus_vs_pro_comparison",
+        "rule.curious_buyer_expand_slightly"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.021.pro_tier",
+      "input_context": {
+        "case_id": "dry_run.021.pro_tier",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "interested",
+        "sales_move": "pro_tier_selection"
+      },
+      "selected_labels": [
+        "emotion_response.interested_buyer_momentum",
+        "energy.increase_for_momentum",
+        "sales.advance_after_answer",
+        "plan.explain_pro_tiers",
+        "recommend.pro_for_heavy_use",
+        "confidence.confidence_with_caveat"
+      ],
+      "selected_composition_rule": [
+        "rule.pro_tier_selection",
+        "rule.buyer_interested"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.022.no_fit",
+      "input_context": {
+        "case_id": "dry_run.022.no_fit",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "sales_move": "close",
+        "close_readiness": "no_fit"
+      },
+      "selected_labels": [
+        "close.no_fit_close",
+        "recommend.free_or_no_fit",
+        "trust.buyer_control",
+        "boundary.no_pressure_after_boundary"
+      ],
+      "selected_composition_rule": [
+        "rule.no_fit_close"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.023.terminal_acceptance",
+      "input_context": {
+        "case_id": "dry_run.023.terminal_acceptance",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "interested",
+        "sales_move": "close",
+        "close_readiness": "accepted"
+      },
+      "selected_labels": [
+        "close.terminal_close",
+        "close.stop_after_acceptance",
+        "phone.stop_when_terminal",
+        "emotion_response.interested_buyer_momentum",
+        "energy.increase_for_momentum",
+        "sales.advance_after_answer"
+      ],
+      "selected_composition_rule": [
+        "rule.terminal_acceptance",
+        "rule.buyer_interested"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": true,
+      "status": "warning",
+      "reason": [
+        "terminal acceptance may continue selling"
+      ]
+    },
+    {
+      "case_id": "dry_run.024.boundary_no_email",
+      "input_context": {
+        "case_id": "dry_run.024.boundary_no_email",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "safety_boundary_detected": true,
+        "objection_type": "no_email"
+      },
+      "selected_labels": [
+        "boundary.respect_no_email",
+        "close.no_fake_email",
+        "boundary.no_side_effect_claim"
+      ],
+      "selected_composition_rule": [
+        "rule.boundary_no_email"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.025.boundary_no_crm",
+      "input_context": {
+        "case_id": "dry_run.025.boundary_no_crm",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "safety_boundary_detected": true,
+        "objection_type": "no_crm"
+      },
+      "selected_labels": [
+        "boundary.respect_no_crm",
+        "close.no_crm_claim",
+        "boundary.no_side_effect_claim"
+      ],
+      "selected_composition_rule": [
+        "rule.boundary_no_crm"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.026.boundary_no_calendar",
+      "input_context": {
+        "case_id": "dry_run.026.boundary_no_calendar",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "safety_boundary_detected": true,
+        "objection_type": "no_calendar"
+      },
+      "selected_labels": [
+        "boundary.respect_no_calendar",
+        "close.no_fake_calendar",
+        "boundary.no_side_effect_claim"
+      ],
+      "selected_composition_rule": [
+        "rule.boundary_no_calendar"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.027.opening",
+      "input_context": {
+        "case_id": "dry_run.027.opening",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "sales_move": "opening_permission_check"
+      },
+      "selected_labels": [
+        "phone.opener_clear_identity",
+        "phone.permission_check_natural",
+        "tone.neutral_professional",
+        "phone.short_turn_discipline"
+      ],
+      "selected_composition_rule": [
+        "rule.opening_permission_check"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.028.barge_in",
+      "input_context": {
+        "case_id": "dry_run.028.barge_in",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "impatient",
+        "sales_move": "barge_in_recovery"
+      },
+      "selected_labels": [
+        "phone.barge_in_recovery",
+        "pause.barge_in_recovery_pause",
+        "pacing.reduce_speed_after_interruption"
+      ],
+      "selected_composition_rule": [
+        "rule.barge_in_recovery"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.029.not_using_ai",
+      "input_context": {
+        "case_id": "dry_run.029.not_using_ai",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "objection_type": "not_using_ai"
+      },
+      "selected_labels": [
+        "objection.not_using_ai_disqualify_softly",
+        "recommend.free_or_no_fit",
+        "close.no_fit_close"
+      ],
+      "selected_composition_rule": [
+        "rule.buyer_not_using_ai"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.030.many_tools",
+      "input_context": {
+        "case_id": "dry_run.030.many_tools",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "skeptical",
+        "objection_type": "using_chatgpt_and_other_tools"
+      },
+      "selected_labels": [
+        "objection.already_have_tool_compare_gap",
+        "clarify.comparison_target",
+        "sales.tie_to_buyer_words"
+      ],
+      "selected_composition_rule": [
+        "rule.buyer_using_chatgpt_and_other_tools"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.031.chatgpt_or_claude",
+      "input_context": {
+        "case_id": "dry_run.031.chatgpt_or_claude",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "confused",
+        "objection_type": "chatgpt_or_claude_uncertain"
+      },
+      "selected_labels": [
+        "repair.restore_voice_not_writing",
+        "clarify.tool_name",
+        "multilingual.pronounce_chatgpt_carefully",
+        "multilingual.pronounce_claude_carefully"
+      ],
+      "selected_composition_rule": [
+        "rule.buyer_chatgpt_or_maybe_claude"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.032.subscription_model",
+      "input_context": {
+        "case_id": "dry_run.032.subscription_model",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "confused",
+        "sales_move": "subscription_vs_model"
+      },
+      "selected_labels": [
+        "plan.explain_model_vs_subscription",
+        "clarify.subscription_vs_model",
+        "clarity.define_plan_terms"
+      ],
+      "selected_composition_rule": [
+        "rule.plans_are_models_or_subscriptions"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.033.signup_path",
+      "input_context": {
+        "case_id": "dry_run.033.signup_path",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "interested",
+        "sales_move": "signup_path"
+      },
+      "selected_labels": [
+        "plan.explain_self_serve_path",
+        "close.official_plan_page_route",
+        "trust.official_route_only",
+        "emotion_response.interested_buyer_momentum",
+        "energy.increase_for_momentum",
+        "sales.advance_after_answer"
+      ],
+      "selected_composition_rule": [
+        "rule.buyer_interested",
+        "rule.signup_path"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.034.upgrade_path",
+      "input_context": {
+        "case_id": "dry_run.034.upgrade_path",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "interested",
+        "sales_move": "upgrade_path"
+      },
+      "selected_labels": [
+        "recommend.start_lower_then_upgrade",
+        "plan.explain_self_serve_path",
+        "sales.low_pressure_next_step",
+        "emotion_response.interested_buyer_momentum",
+        "energy.increase_for_momentum",
+        "sales.advance_after_answer"
+      ],
+      "selected_composition_rule": [
+        "rule.buyer_interested",
+        "rule.upgrade_path"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.035.privacy_training",
+      "input_context": {
+        "case_id": "dry_run.035.privacy_training",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "skeptical",
+        "sales_move": "privacy_training_answer"
+      },
+      "selected_labels": [
+        "plan.explain_privacy_boundary",
+        "source.caveat_exact_terms_can_change",
+        "safety.no_fake_privacy_claim",
+        "trust.check_current_terms"
+      ],
+      "selected_composition_rule": [
+        "rule.data_privacy_training"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.036.wrong_product",
+      "input_context": {
+        "case_id": "dry_run.036.wrong_product",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "confused",
+        "sales_move": "wrong_product_repair"
+      },
+      "selected_labels": [
+        "repair.wrong_word_repair",
+        "clarify.tool_name",
+        "source.no_unverified_model_claim"
+      ],
+      "selected_composition_rule": [
+        "rule.wrong_product_question"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.037.unsupported_claim",
+      "input_context": {
+        "case_id": "dry_run.037.unsupported_claim",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "skeptical",
+        "sales_move": "unsupported_claim"
+      },
+      "selected_labels": [
+        "safety.no_unverified_claim_confidence",
+        "source.no_unverified_model_claim",
+        "confidence.no_unverified_certainty",
+        "trust.honest_limitation"
+      ],
+      "selected_composition_rule": [
+        "rule.unsupported_claim_request"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.038.final_goodbye",
+      "input_context": {
+        "case_id": "dry_run.038.final_goodbye",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "sales_move": "final_goodbye"
+      },
+      "selected_labels": [
+        "close.terminal_close",
+        "phone.stop_when_terminal",
+        "pause.terminal_pause",
+        "tone.neutral_professional"
+      ],
+      "selected_composition_rule": [
+        "rule.final_goodbye"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.039.api_vs_chatgpt",
+      "input_context": {
+        "case_id": "dry_run.039.api_vs_chatgpt",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "confused",
+        "sales_move": "api_boundary",
+        "objection_type": "api_vs_chatgpt"
+      },
+      "selected_labels": [
+        "objection.too_busy_compress",
+        "pacing.compress_for_impatient_buyer",
+        "sales.concise_summary"
+      ],
+      "selected_composition_rule": [],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "warning",
+      "reason": [
+        "no composition rule matched"
+      ]
+    },
+    {
+      "case_id": "dry_run.040.business_enterprise",
+      "input_context": {
+        "case_id": "dry_run.040.business_enterprise",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "interested",
+        "sales_move": "enterprise_recommendation"
+      },
+      "selected_labels": [
+        "recommend.enterprise_for_security_procurement",
+        "plan.explain_business_enterprise",
+        "close.enterprise_contact_sales_route",
+        "source.official_route_boundary",
+        "emotion_response.interested_buyer_momentum",
+        "energy.increase_for_momentum",
+        "sales.advance_after_answer"
+      ],
+      "selected_composition_rule": [
+        "rule.buyer_interested",
+        "rule.enterprise_security_procurement"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.041.free_enough",
+      "input_context": {
+        "case_id": "dry_run.041.free_enough",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "objection_type": "free_is_enough"
+      },
+      "selected_labels": [
+        "objection.free_is_enough_no_fit",
+        "recommend.free_or_no_fit",
+        "close.no_fit_close"
+      ],
+      "selected_composition_rule": [
+        "rule.free_is_enough_no_fit"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.042.too_busy",
+      "input_context": {
+        "case_id": "dry_run.042.too_busy",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "impatient",
+        "objection_type": "too_busy"
+      },
+      "selected_labels": [
+        "objection.too_busy_compress",
+        "pacing.compress_for_impatient_buyer",
+        "sales.concise_summary"
+      ],
+      "selected_composition_rule": [
+        "rule.too_busy_compress"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.043.anxious",
+      "input_context": {
+        "case_id": "dry_run.043.anxious",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "anxious",
+        "buyer_friction_level": "medium"
+      },
+      "selected_labels": [
+        "emotion_response.anxious_buyer_reassurance",
+        "warmth.gentle_empathy",
+        "pacing.measured_slow"
+      ],
+      "selected_composition_rule": [
+        "rule.anxious_buyer_reassurance"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.044.curious",
+      "input_context": {
+        "case_id": "dry_run.044.curious",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "curious",
+        "buyer_engagement_level": "high"
+      },
+      "selected_labels": [
+        "emotion_response.curious_buyer_expand_slightly",
+        "clarity.one_idea_per_sentence",
+        "sales.benefit_contrast"
+      ],
+      "selected_composition_rule": [
+        "rule.curious_buyer_expand_slightly"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.045.annoyed",
+      "input_context": {
+        "case_id": "dry_run.045.annoyed",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "annoyed",
+        "buyer_friction_level": "high"
+      },
+      "selected_labels": [
+        "emotion_response.annoyed_buyer_reduce_pressure",
+        "volume.deescalation_lower_volume",
+        "boundary.no_pressure_after_boundary"
+      ],
+      "selected_composition_rule": [
+        "rule.annoyed_buyer_reduce_pressure"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.046.direct_price_neutral",
+      "input_context": {
+        "case_id": "dry_run.046.direct_price_neutral",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "sales_move": "price_answer"
+      },
+      "selected_labels": [
+        "recommend.enterprise_for_security_procurement",
+        "plan.explain_business_enterprise",
+        "close.enterprise_contact_sales_route",
+        "source.official_route_boundary"
+      ],
+      "selected_composition_rule": [],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "warning",
+      "reason": [
+        "no composition rule matched"
+      ]
+    },
+    {
+      "case_id": "dry_run.047.competitor_neutral",
+      "input_context": {
+        "case_id": "dry_run.047.competitor_neutral",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "objection_type": "competitor"
+      },
+      "selected_labels": [
+        "objection.too_busy_compress",
+        "pacing.compress_for_impatient_buyer",
+        "sales.concise_summary"
+      ],
+      "selected_composition_rule": [],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "warning",
+      "reason": [
+        "no composition rule matched"
+      ]
+    },
+    {
+      "case_id": "dry_run.048.source_neutral",
+      "input_context": {
+        "case_id": "dry_run.048.source_neutral",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "sales_move": "source_affiliation_answer"
+      },
+      "selected_labels": [
+        "recommend.enterprise_for_security_procurement",
+        "plan.explain_business_enterprise",
+        "close.enterprise_contact_sales_route",
+        "source.official_route_boundary",
+        "source.no_affiliation_claim",
+        "trust.no_affiliation_overclaim",
+        "tone.transparent_source"
+      ],
+      "selected_composition_rule": [
+        "rule.source_affiliation_answer"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.049.plan_change",
+      "input_context": {
+        "case_id": "dry_run.049.plan_change",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "interested",
+        "sales_move": "upgrade_path",
+        "decision_stage": "plan_change"
+      },
+      "selected_labels": [
+        "recommend.start_lower_then_upgrade",
+        "plan.explain_self_serve_path",
+        "sales.low_pressure_next_step",
+        "emotion_response.interested_buyer_momentum",
+        "energy.increase_for_momentum",
+        "sales.advance_after_answer"
+      ],
+      "selected_composition_rule": [
+        "rule.buyer_interested",
+        "rule.upgrade_path"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.050.team_no_team",
+      "input_context": {
+        "case_id": "dry_run.050.team_no_team",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "sales_move": "team_clarification",
+        "objection_type": "not_team"
+      },
+      "selected_labels": [
+        "clarify.team_vs_individual",
+        "repair.restore_not_team",
+        "phone.answer_then_ask"
+      ],
+      "selected_composition_rule": [
+        "rule.team_vs_individual_clarification"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.051.plan_explain_api",
+      "input_context": {
+        "case_id": "dry_run.051.plan_explain_api",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "confused",
+        "sales_move": "subscription_vs_model",
+        "objection_type": "api_boundary"
+      },
+      "selected_labels": [
+        "plan.explain_model_vs_subscription",
+        "clarify.subscription_vs_model",
+        "clarity.define_plan_terms"
+      ],
+      "selected_composition_rule": [
+        "rule.plans_are_models_or_subscriptions"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.052.low_budget_no_fit",
+      "input_context": {
+        "case_id": "dry_run.052.low_budget_no_fit",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "price_sensitive",
+        "buyer_friction_level": "high",
+        "sales_move": "close",
+        "close_readiness": "no_fit"
+      },
+      "selected_labels": [
+        "close.no_fit_close",
+        "recommend.free_or_no_fit",
+        "trust.buyer_control",
+        "boundary.no_pressure_after_boundary"
+      ],
+      "selected_composition_rule": [
+        "rule.no_fit_close"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.053.close_soft",
+      "input_context": {
+        "case_id": "dry_run.053.close_soft",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "interested",
+        "sales_move": "close",
+        "close_readiness": "ready"
+      },
+      "selected_labels": [
+        "emotion_response.interested_buyer_momentum",
+        "energy.increase_for_momentum",
+        "sales.advance_after_answer"
+      ],
+      "selected_composition_rule": [
+        "rule.buyer_interested"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.054.boundary_stop",
+      "input_context": {
+        "case_id": "dry_run.054.boundary_stop",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "annoyed",
+        "safety_boundary_detected": true,
+        "objection_type": "stop"
+      },
+      "selected_labels": [
+        "boundary.respect_no_calendar",
+        "close.no_fake_calendar",
+        "boundary.no_side_effect_claim",
+        "emotion_response.annoyed_buyer_reduce_pressure",
+        "volume.deescalation_lower_volume",
+        "boundary.no_pressure_after_boundary"
+      ],
+      "selected_composition_rule": [
+        "rule.annoyed_buyer_reduce_pressure"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.055.privacy_boundary",
+      "input_context": {
+        "case_id": "dry_run.055.privacy_boundary",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "anxious",
+        "safety_boundary_detected": true,
+        "objection_type": "privacy"
+      },
+      "selected_labels": [
+        "boundary.respect_no_calendar",
+        "close.no_fake_calendar",
+        "boundary.no_side_effect_claim",
+        "objection.privacy_concern_respectful_answer",
+        "plan.explain_privacy_boundary",
+        "boundary.respect_privacy_boundary",
+        "safety.no_sensitive_data_request",
+        "emotion_response.anxious_buyer_reassurance",
+        "warmth.gentle_empathy",
+        "pacing.measured_slow"
+      ],
+      "selected_composition_rule": [
+        "rule.privacy_concern",
+        "rule.anxious_buyer_reassurance"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.056.repeat_price",
+      "input_context": {
+        "case_id": "dry_run.056.repeat_price",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "confused",
+        "sales_move": "repeat_answer",
+        "objection_type": "price"
+      },
+      "selected_labels": [
+        "repair.repeat_with_different_words",
+        "clarity.repeat_differently",
+        "clarity.summary_before_next_question"
+      ],
+      "selected_composition_rule": [
+        "rule.buyer_same_question_again"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.057.current_tool_gap",
+      "input_context": {
+        "case_id": "dry_run.057.current_tool_gap",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "skeptical",
+        "objection_type": "already_have_tool"
+      },
+      "selected_labels": [
+        "objection.already_have_tool_compare_gap",
+        "objection.competitor_respect_current_tool",
+        "clarify.comparison_target"
+      ],
+      "selected_composition_rule": [
+        "rule.current_tool_objection"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.058.source_price",
+      "input_context": {
+        "case_id": "dry_run.058.source_price",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "skeptical",
+        "sales_move": "price_answer",
+        "objection_type": "source_affiliation"
+      },
+      "selected_labels": [
+        "emotion_response.impatient_buyer_concise",
+        "pacing.compress_for_impatient_buyer",
+        "pause.no_pause_direct_answer",
+        "clarity.short_sentence"
+      ],
+      "selected_composition_rule": [],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "warning",
+      "reason": [
+        "no composition rule matched"
+      ]
+    },
+    {
+      "case_id": "dry_run.059.enterprise_security",
+      "input_context": {
+        "case_id": "dry_run.059.enterprise_security",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "skeptical",
+        "sales_move": "enterprise_recommendation",
+        "objection_type": "privacy"
+      },
+      "selected_labels": [
+        "recommend.enterprise_for_security_procurement",
+        "plan.explain_business_enterprise",
+        "close.enterprise_contact_sales_route",
+        "source.official_route_boundary",
+        "objection.privacy_concern_respectful_answer",
+        "plan.explain_privacy_boundary",
+        "boundary.respect_privacy_boundary",
+        "safety.no_sensitive_data_request"
+      ],
+      "selected_composition_rule": [
+        "rule.privacy_concern",
+        "rule.enterprise_security_procurement"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    },
+    {
+      "case_id": "dry_run.060.goodbye_after_no",
+      "input_context": {
+        "case_id": "dry_run.060.goodbye_after_no",
+        "backend_id": "elevenlabs_existing_provider",
+        "buyer_emotion": "neutral",
+        "sales_move": "final_goodbye",
+        "close_readiness": "no_fit"
+      },
+      "selected_labels": [
+        "close.terminal_close",
+        "phone.stop_when_terminal",
+        "pause.terminal_pause",
+        "tone.neutral_professional"
+      ],
+      "selected_composition_rule": [
+        "rule.final_goodbye"
+      ],
+      "backend_hints": {
+        "backend_id": "elevenlabs_existing_provider",
+        "policy_key": "elevenlabs_current_provider",
+        "mapping_allowed_now": false,
+        "tag_injection_allowed": false,
+        "notes": [
+          "Fish-inspired labels stay internal.",
+          "Do not insert raw Fish tags into spoken text.",
+          "Do not change current live ElevenLabs response text in this phase."
+        ]
+      },
+      "spoken_text_tag_injection_allowed": false,
+      "unsafe_labels_selected": false,
+      "loop_risk_labels_selected": false,
+      "status": "pass",
+      "reason": [
+        "planner selected a bounded internal prosody plan"
+      ]
+    }
+  ],
+  "unsafe_label_case_count": 0,
+  "loop_risk_case_count": 1,
+  "fish_tags_internal_only": true,
+  "raw_fish_tags_allowed_in_elevenlabs_text": false,
+  "spoken_text_tag_injection_allowed": false,
+  "provider_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "live_tts_calls_made": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "boundary_flags": {
+    "fish_install_performed": false,
+    "fish_inference_performed": false,
+    "liquid_inference_performed": false,
+    "kokoro_inference_performed": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "local_model_generation_made": false,
+    "ollama_generation_made": false,
+    "training_performed": false,
+    "model_weights_committed": false,
+    "audio_files_committed": false,
+    "live_runtime_wiring_changed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "spoken_text_tag_injection_allowed": false
+  }
+}

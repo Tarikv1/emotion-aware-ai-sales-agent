@@ -1,0 +1,1916 @@
+{
+  "experiment_id": "SALES-PROSODY-MAPPING-QUALITY-AUDIT-001",
+  "phase": "4I3",
+  "status": "pass",
+  "mapping_count": 138,
+  "coverage_by_buyer_emotion": {
+    "confused": 6,
+    "skeptical": 6,
+    "impatient": 3,
+    "neutral": 105,
+    "frustrated": 3,
+    "disengaged": 3,
+    "interested": 3,
+    "anxious": 3,
+    "curious": 3,
+    "annoyed": 3
+  },
+  "coverage_by_sales_move": {
+    "plan_explanation": 3,
+    "price_answer": 6,
+    "source_affiliation_answer": 6,
+    "answer": 60,
+    "recommendation": 6,
+    "correction_repair": 3,
+    "repeat_answer": 3,
+    "use_case_discovery": 3,
+    "intensity_discovery": 3,
+    "team_clarification": 3,
+    "compare_plus_pro": 3,
+    "pro_tier_selection": 3,
+    "close": 6,
+    "opening_permission_check": 3,
+    "barge_in_recovery": 3,
+    "subscription_vs_model": 3,
+    "signup_path": 3,
+    "upgrade_path": 3,
+    "privacy_training_answer": 3,
+    "wrong_product_repair": 3,
+    "unsupported_claim": 3,
+    "final_goodbye": 3,
+    "enterprise_recommendation": 3
+  },
+  "coverage_by_objection_type": {
+    "none": 99,
+    "competitor": 3,
+    "price": 6,
+    "already_have_tool": 3,
+    "privacy": 3,
+    "no_email": 3,
+    "no_crm": 3,
+    "no_calendar": 3,
+    "not_using_ai": 3,
+    "using_chatgpt_and_other_tools": 3,
+    "chatgpt_or_claude_uncertain": 3,
+    "free_is_enough": 3,
+    "too_busy": 3
+  },
+  "missing_required_contexts": [],
+  "duplicate_mapping_signature_count": 46,
+  "mappings_with_too_many_labels": [],
+  "mappings_with_too_few_labels": [],
+  "unsafe_label_mapping_count": 0,
+  "loop_risk_mapping_count": 0,
+  "conflict_mapping_count": 0,
+  "status_counts": {
+    "pass": 0,
+    "warning": 129,
+    "fail": 0,
+    "needs_human_review": 9,
+    "unknown": 0
+  },
+  "mapping_assessments": [
+    {
+      "mapping_id": "mapping.001.confused_buyer_plan_explanation.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 5,
+      "buyer_emotion": "confused",
+      "sales_move": "plan_explanation",
+      "objection_type": "none",
+      "coverage_tags": [
+        "confusion",
+        "plan_explanation"
+      ]
+    },
+    {
+      "mapping_id": "mapping.002.confused_buyer_plan_explanation.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 5,
+      "buyer_emotion": "confused",
+      "sales_move": "plan_explanation",
+      "objection_type": "none",
+      "coverage_tags": [
+        "confusion",
+        "plan_explanation"
+      ]
+    },
+    {
+      "mapping_id": "mapping.003.confused_buyer_plan_explanation.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 5,
+      "buyer_emotion": "confused",
+      "sales_move": "plan_explanation",
+      "objection_type": "none",
+      "coverage_tags": [
+        "confusion",
+        "plan_explanation"
+      ]
+    },
+    {
+      "mapping_id": "mapping.004.confused_buyer_price.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 5,
+      "buyer_emotion": "confused",
+      "sales_move": "price_answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "confusion",
+        "direct_price_question"
+      ]
+    },
+    {
+      "mapping_id": "mapping.005.confused_buyer_price.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 5,
+      "buyer_emotion": "confused",
+      "sales_move": "price_answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "confusion",
+        "direct_price_question"
+      ]
+    },
+    {
+      "mapping_id": "mapping.006.confused_buyer_price.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 5,
+      "buyer_emotion": "confused",
+      "sales_move": "price_answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "confusion",
+        "direct_price_question"
+      ]
+    },
+    {
+      "mapping_id": "mapping.007.skeptical_buyer_source_question.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 5,
+      "buyer_emotion": "skeptical",
+      "sales_move": "source_affiliation_answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "skepticism",
+        "source_affiliation_question"
+      ]
+    },
+    {
+      "mapping_id": "mapping.008.skeptical_buyer_source_question.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 5,
+      "buyer_emotion": "skeptical",
+      "sales_move": "source_affiliation_answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "skepticism",
+        "source_affiliation_question"
+      ]
+    },
+    {
+      "mapping_id": "mapping.009.skeptical_buyer_source_question.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 5,
+      "buyer_emotion": "skeptical",
+      "sales_move": "source_affiliation_answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "skepticism",
+        "source_affiliation_question"
+      ]
+    },
+    {
+      "mapping_id": "mapping.010.skeptical_buyer_competitor_objection.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "skeptical",
+      "sales_move": "answer",
+      "objection_type": "competitor",
+      "coverage_tags": [
+        "skepticism",
+        "competitor_objection"
+      ]
+    },
+    {
+      "mapping_id": "mapping.011.skeptical_buyer_competitor_objection.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "skeptical",
+      "sales_move": "answer",
+      "objection_type": "competitor",
+      "coverage_tags": [
+        "skepticism",
+        "competitor_objection"
+      ]
+    },
+    {
+      "mapping_id": "mapping.012.skeptical_buyer_competitor_objection.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "skeptical",
+      "sales_move": "answer",
+      "objection_type": "competitor",
+      "coverage_tags": [
+        "skepticism",
+        "competitor_objection"
+      ]
+    },
+    {
+      "mapping_id": "mapping.013.impatient_buyer_direct_price.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "impatient",
+      "sales_move": "price_answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "impatience",
+        "direct_price_question"
+      ]
+    },
+    {
+      "mapping_id": "mapping.014.impatient_buyer_direct_price.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "impatient",
+      "sales_move": "price_answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "impatience",
+        "direct_price_question"
+      ]
+    },
+    {
+      "mapping_id": "mapping.015.impatient_buyer_direct_price.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "impatient",
+      "sales_move": "price_answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "impatience",
+        "direct_price_question"
+      ]
+    },
+    {
+      "mapping_id": "mapping.016.price_objection_heavy_use.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "recommendation",
+      "objection_type": "price",
+      "coverage_tags": [
+        "price_objection",
+        "recommendation"
+      ]
+    },
+    {
+      "mapping_id": "mapping.017.price_objection_heavy_use.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "recommendation",
+      "objection_type": "price",
+      "coverage_tags": [
+        "price_objection",
+        "recommendation"
+      ]
+    },
+    {
+      "mapping_id": "mapping.018.price_objection_heavy_use.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "recommendation",
+      "objection_type": "price",
+      "coverage_tags": [
+        "price_objection",
+        "recommendation"
+      ]
+    },
+    {
+      "mapping_id": "mapping.019.price_objection_low_budget.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "price",
+      "coverage_tags": [
+        "price_objection",
+        "no_fit"
+      ]
+    },
+    {
+      "mapping_id": "mapping.020.price_objection_low_budget.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "price",
+      "coverage_tags": [
+        "price_objection",
+        "no_fit"
+      ]
+    },
+    {
+      "mapping_id": "mapping.021.price_objection_low_budget.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "price",
+      "coverage_tags": [
+        "price_objection",
+        "no_fit"
+      ]
+    },
+    {
+      "mapping_id": "mapping.022.current_tool_objection.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "already_have_tool",
+      "coverage_tags": [
+        "competitor_objection"
+      ]
+    },
+    {
+      "mapping_id": "mapping.023.current_tool_objection.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "already_have_tool",
+      "coverage_tags": [
+        "competitor_objection"
+      ]
+    },
+    {
+      "mapping_id": "mapping.024.current_tool_objection.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "already_have_tool",
+      "coverage_tags": [
+        "competitor_objection"
+      ]
+    },
+    {
+      "mapping_id": "mapping.025.privacy_concern.base",
+      "status": "needs_human_review",
+      "reasons": [
+        "duplicate selected-label/text signature",
+        "high-risk label needs human review before mapping"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "privacy",
+      "coverage_tags": [
+        "privacy_objection",
+        "boundary_request"
+      ]
+    },
+    {
+      "mapping_id": "mapping.026.privacy_concern.low_friction",
+      "status": "needs_human_review",
+      "reasons": [
+        "duplicate selected-label/text signature",
+        "high-risk label needs human review before mapping"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "privacy",
+      "coverage_tags": [
+        "privacy_objection",
+        "boundary_request"
+      ]
+    },
+    {
+      "mapping_id": "mapping.027.privacy_concern.medium_friction",
+      "status": "needs_human_review",
+      "reasons": [
+        "duplicate selected-label/text signature",
+        "high-risk label needs human review before mapping"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "privacy",
+      "coverage_tags": [
+        "privacy_objection",
+        "boundary_request"
+      ]
+    },
+    {
+      "mapping_id": "mapping.028.buyer_already_told_you.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "already_told_you",
+        "buyer_correction"
+      ]
+    },
+    {
+      "mapping_id": "mapping.029.buyer_already_told_you.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "already_told_you",
+        "buyer_correction"
+      ]
+    },
+    {
+      "mapping_id": "mapping.030.buyer_already_told_you.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "already_told_you",
+        "buyer_correction"
+      ]
+    },
+    {
+      "mapping_id": "mapping.031.buyer_correction.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "correction_repair",
+      "objection_type": "none",
+      "coverage_tags": [
+        "buyer_correction"
+      ]
+    },
+    {
+      "mapping_id": "mapping.032.buyer_correction.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "correction_repair",
+      "objection_type": "none",
+      "coverage_tags": [
+        "buyer_correction"
+      ]
+    },
+    {
+      "mapping_id": "mapping.033.buyer_correction.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "correction_repair",
+      "objection_type": "none",
+      "coverage_tags": [
+        "buyer_correction"
+      ]
+    },
+    {
+      "mapping_id": "mapping.034.asr_uncertainty.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "asr_uncertainty"
+      ]
+    },
+    {
+      "mapping_id": "mapping.035.asr_uncertainty.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "asr_uncertainty"
+      ]
+    },
+    {
+      "mapping_id": "mapping.036.asr_uncertainty.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "asr_uncertainty"
+      ]
+    },
+    {
+      "mapping_id": "mapping.037.buyer_same_question_again.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "repeat_answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "same_question_again"
+      ]
+    },
+    {
+      "mapping_id": "mapping.038.buyer_same_question_again.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "repeat_answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "same_question_again"
+      ]
+    },
+    {
+      "mapping_id": "mapping.039.buyer_same_question_again.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "repeat_answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "same_question_again"
+      ]
+    },
+    {
+      "mapping_id": "mapping.040.use_case_discovery.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "use_case_discovery",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.041.use_case_discovery.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "use_case_discovery",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.042.use_case_discovery.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "use_case_discovery",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.043.intensity_discovery.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "intensity_discovery",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.044.intensity_discovery.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "intensity_discovery",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.045.intensity_discovery.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "intensity_discovery",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.046.team_vs_individual_clarification.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "team_clarification",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.047.team_vs_individual_clarification.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "team_clarification",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.048.team_vs_individual_clarification.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "team_clarification",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.049.recommendation_after_enough_context.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "recommendation",
+      "objection_type": "none",
+      "coverage_tags": [
+        "recommendation"
+      ]
+    },
+    {
+      "mapping_id": "mapping.050.recommendation_after_enough_context.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "recommendation",
+      "objection_type": "none",
+      "coverage_tags": [
+        "recommendation"
+      ]
+    },
+    {
+      "mapping_id": "mapping.051.recommendation_after_enough_context.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "recommendation",
+      "objection_type": "none",
+      "coverage_tags": [
+        "recommendation"
+      ]
+    },
+    {
+      "mapping_id": "mapping.052.plus_vs_pro_comparison.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "compare_plus_pro",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.053.plus_vs_pro_comparison.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "compare_plus_pro",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.054.plus_vs_pro_comparison.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "compare_plus_pro",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.055.pro_tier_selection.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "pro_tier_selection",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.056.pro_tier_selection.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "pro_tier_selection",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.057.pro_tier_selection.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "pro_tier_selection",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.058.no_fit_close.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "close",
+      "objection_type": "none",
+      "coverage_tags": [
+        "no_fit",
+        "close"
+      ]
+    },
+    {
+      "mapping_id": "mapping.059.no_fit_close.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "close",
+      "objection_type": "none",
+      "coverage_tags": [
+        "no_fit",
+        "close"
+      ]
+    },
+    {
+      "mapping_id": "mapping.060.no_fit_close.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "close",
+      "objection_type": "none",
+      "coverage_tags": [
+        "no_fit",
+        "close"
+      ]
+    },
+    {
+      "mapping_id": "mapping.061.terminal_acceptance.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "close",
+      "objection_type": "none",
+      "coverage_tags": [
+        "terminal_acceptance",
+        "close"
+      ]
+    },
+    {
+      "mapping_id": "mapping.062.terminal_acceptance.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "close",
+      "objection_type": "none",
+      "coverage_tags": [
+        "terminal_acceptance",
+        "close"
+      ]
+    },
+    {
+      "mapping_id": "mapping.063.terminal_acceptance.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "close",
+      "objection_type": "none",
+      "coverage_tags": [
+        "terminal_acceptance",
+        "close"
+      ]
+    },
+    {
+      "mapping_id": "mapping.064.boundary_no_email.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "no_email",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.065.boundary_no_email.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "no_email",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.066.boundary_no_email.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "no_email",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.067.boundary_no_crm.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "no_crm",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.068.boundary_no_crm.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "no_crm",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.069.boundary_no_crm.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "no_crm",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.070.boundary_no_calendar.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "no_calendar",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.071.boundary_no_calendar.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "no_calendar",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.072.boundary_no_calendar.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "no_calendar",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.073.source_affiliation_answer.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "source_affiliation_answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.074.source_affiliation_answer.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "source_affiliation_answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.075.source_affiliation_answer.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "source_affiliation_answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.076.opening_permission_check.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "opening_permission_check",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.077.opening_permission_check.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "opening_permission_check",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.078.opening_permission_check.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "opening_permission_check",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.079.barge_in_recovery.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "barge_in_recovery",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.080.barge_in_recovery.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "barge_in_recovery",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.081.barge_in_recovery.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "barge_in_recovery",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.082.buyer_frustration.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "frustrated",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.083.buyer_frustration.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "frustrated",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.084.buyer_frustration.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "frustrated",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.085.buyer_disengaged.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "disengaged",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "disengaged"
+      ]
+    },
+    {
+      "mapping_id": "mapping.086.buyer_disengaged.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "disengaged",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "disengaged"
+      ]
+    },
+    {
+      "mapping_id": "mapping.087.buyer_disengaged.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "disengaged",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "disengaged"
+      ]
+    },
+    {
+      "mapping_id": "mapping.088.buyer_interested.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "interested",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "interested"
+      ]
+    },
+    {
+      "mapping_id": "mapping.089.buyer_interested.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "interested",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "interested"
+      ]
+    },
+    {
+      "mapping_id": "mapping.090.buyer_interested.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "interested",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": [
+        "interested"
+      ]
+    },
+    {
+      "mapping_id": "mapping.091.buyer_not_using_ai.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "not_using_ai",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.092.buyer_not_using_ai.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "not_using_ai",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.093.buyer_not_using_ai.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "not_using_ai",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.094.buyer_using_chatgpt_and_other_tools.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "using_chatgpt_and_other_tools",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.095.buyer_using_chatgpt_and_other_tools.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "using_chatgpt_and_other_tools",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.096.buyer_using_chatgpt_and_other_tools.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "using_chatgpt_and_other_tools",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.097.buyer_chatgpt_or_maybe_claude.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "chatgpt_or_claude_uncertain",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.098.buyer_chatgpt_or_maybe_claude.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "chatgpt_or_claude_uncertain",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.099.buyer_chatgpt_or_maybe_claude.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "chatgpt_or_claude_uncertain",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.100.plans_are_models_or_subscriptions.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "subscription_vs_model",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.101.plans_are_models_or_subscriptions.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "subscription_vs_model",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.102.plans_are_models_or_subscriptions.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "subscription_vs_model",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.103.signup_path.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "signup_path",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.104.signup_path.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "signup_path",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.105.signup_path.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "signup_path",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.106.upgrade_path.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "upgrade_path",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.107.upgrade_path.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "upgrade_path",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.108.upgrade_path.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "upgrade_path",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.109.data_privacy_training.base",
+      "status": "needs_human_review",
+      "reasons": [
+        "duplicate selected-label/text signature",
+        "high-risk label needs human review before mapping"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "privacy_training_answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.110.data_privacy_training.low_friction",
+      "status": "needs_human_review",
+      "reasons": [
+        "duplicate selected-label/text signature",
+        "high-risk label needs human review before mapping"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "privacy_training_answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.111.data_privacy_training.medium_friction",
+      "status": "needs_human_review",
+      "reasons": [
+        "duplicate selected-label/text signature",
+        "high-risk label needs human review before mapping"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "privacy_training_answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.112.wrong_product_question.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "wrong_product_repair",
+      "objection_type": "none",
+      "coverage_tags": [
+        "wrong_product"
+      ]
+    },
+    {
+      "mapping_id": "mapping.113.wrong_product_question.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "wrong_product_repair",
+      "objection_type": "none",
+      "coverage_tags": [
+        "wrong_product"
+      ]
+    },
+    {
+      "mapping_id": "mapping.114.wrong_product_question.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "wrong_product_repair",
+      "objection_type": "none",
+      "coverage_tags": [
+        "wrong_product"
+      ]
+    },
+    {
+      "mapping_id": "mapping.115.unsupported_claim_request.base",
+      "status": "needs_human_review",
+      "reasons": [
+        "duplicate selected-label/text signature",
+        "high-risk label needs human review before mapping"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "unsupported_claim",
+      "objection_type": "none",
+      "coverage_tags": [
+        "unsupported_claim"
+      ]
+    },
+    {
+      "mapping_id": "mapping.116.unsupported_claim_request.low_friction",
+      "status": "needs_human_review",
+      "reasons": [
+        "duplicate selected-label/text signature",
+        "high-risk label needs human review before mapping"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "unsupported_claim",
+      "objection_type": "none",
+      "coverage_tags": [
+        "unsupported_claim"
+      ]
+    },
+    {
+      "mapping_id": "mapping.117.unsupported_claim_request.medium_friction",
+      "status": "needs_human_review",
+      "reasons": [
+        "duplicate selected-label/text signature",
+        "high-risk label needs human review before mapping"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "unsupported_claim",
+      "objection_type": "none",
+      "coverage_tags": [
+        "unsupported_claim"
+      ]
+    },
+    {
+      "mapping_id": "mapping.118.final_goodbye.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "final_goodbye",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.119.final_goodbye.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "final_goodbye",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.120.final_goodbye.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "final_goodbye",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.121.anxious_buyer_reassurance.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "anxious",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.122.anxious_buyer_reassurance.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "anxious",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.123.anxious_buyer_reassurance.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "anxious",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.124.curious_buyer_expand_slightly.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "curious",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.125.curious_buyer_expand_slightly.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "curious",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.126.curious_buyer_expand_slightly.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "curious",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.127.annoyed_buyer_reduce_pressure.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "annoyed",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.128.annoyed_buyer_reduce_pressure.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "annoyed",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.129.annoyed_buyer_reduce_pressure.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "annoyed",
+      "sales_move": "answer",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.130.enterprise_security_procurement.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "enterprise_recommendation",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.131.enterprise_security_procurement.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "enterprise_recommendation",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.132.enterprise_security_procurement.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 4,
+      "buyer_emotion": "neutral",
+      "sales_move": "enterprise_recommendation",
+      "objection_type": "none",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.133.free_is_enough_no_fit.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "free_is_enough",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.134.free_is_enough_no_fit.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "free_is_enough",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.135.free_is_enough_no_fit.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "free_is_enough",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.136.too_busy_compress.base",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "too_busy",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.137.too_busy_compress.low_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "too_busy",
+      "coverage_tags": []
+    },
+    {
+      "mapping_id": "mapping.138.too_busy_compress.medium_friction",
+      "status": "warning",
+      "reasons": [
+        "duplicate selected-label/text signature"
+      ],
+      "selected_label_count": 3,
+      "buyer_emotion": "neutral",
+      "sales_move": "answer",
+      "objection_type": "too_busy",
+      "coverage_tags": []
+    }
+  ],
+  "failure_count": 0,
+  "warning_count": 138,
+  "fish_tags_internal_only": true,
+  "raw_fish_tags_allowed_in_elevenlabs_text": false,
+  "unsafe_labels_blocked": true,
+  "boundary_flags": {
+    "fish_install_performed": false,
+    "fish_inference_performed": false,
+    "liquid_inference_performed": false,
+    "kokoro_inference_performed": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "local_model_generation_made": false,
+    "ollama_generation_made": false,
+    "training_performed": false,
+    "model_weights_committed": false,
+    "audio_files_committed": false,
+    "live_runtime_wiring_changed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "spoken_text_tag_injection_allowed": false
+  }
+}
