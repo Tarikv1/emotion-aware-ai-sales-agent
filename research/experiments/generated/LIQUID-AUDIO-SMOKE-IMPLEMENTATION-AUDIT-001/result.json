@@ -1,0 +1,230 @@
+{
+  "audio_input_audit": {
+    "generated_tts_loopback_is_valid_asr_quality_source": false,
+    "generated_tts_loopback_is_valid_plumbing_source": true,
+    "loopback_audio_metadata": [
+      {
+        "channels": 1,
+        "duration_seconds": 3.84,
+        "exists": true,
+        "frames": 92160,
+        "path": "local_artifacts/audio_outputs/liquid/asr_loopback/asr_01.wav",
+        "sample_rate": 24000,
+        "sample_width_bytes": 2,
+        "under_local_artifacts": true
+      },
+      {
+        "channels": 1,
+        "duration_seconds": 12.48,
+        "exists": true,
+        "frames": 299520,
+        "path": "local_artifacts/audio_outputs/liquid/asr_loopback/asr_02.wav",
+        "sample_rate": 24000,
+        "sample_width_bytes": 2,
+        "under_local_artifacts": true
+      },
+      {
+        "channels": 1,
+        "duration_seconds": 15.36,
+        "exists": true,
+        "frames": 368640,
+        "path": "local_artifacts/audio_outputs/liquid/asr_loopback/asr_03.wav",
+        "sample_rate": 24000,
+        "sample_width_bytes": 2,
+        "under_local_artifacts": true
+      },
+      {
+        "channels": 1,
+        "duration_seconds": 1.92,
+        "exists": true,
+        "frames": 46080,
+        "path": "local_artifacts/audio_outputs/liquid/asr_loopback/asr_04.wav",
+        "sample_rate": 24000,
+        "sample_width_bytes": 2,
+        "under_local_artifacts": true
+      },
+      {
+        "channels": 1,
+        "duration_seconds": 12.48,
+        "exists": true,
+        "frames": 299520,
+        "path": "local_artifacts/audio_outputs/liquid/asr_loopback/asr_05.wav",
+        "sample_rate": 24000,
+        "sample_width_bytes": 2,
+        "under_local_artifacts": true
+      },
+      {
+        "channels": 1,
+        "duration_seconds": 3.84,
+        "exists": true,
+        "frames": 92160,
+        "path": "local_artifacts/audio_outputs/liquid/asr_loopback/asr_06.wav",
+        "sample_rate": 24000,
+        "sample_width_bytes": 2,
+        "under_local_artifacts": true
+      },
+      {
+        "channels": 1,
+        "duration_seconds": 4.8,
+        "exists": true,
+        "frames": 115200,
+        "path": "local_artifacts/audio_outputs/liquid/asr_loopback/asr_07.wav",
+        "sample_rate": 24000,
+        "sample_width_bytes": 2,
+        "under_local_artifacts": true
+      },
+      {
+        "channels": 1,
+        "duration_seconds": 3.84,
+        "exists": true,
+        "frames": 92160,
+        "path": "local_artifacts/audio_outputs/liquid/roundtrip_loopback/roundtrip_01.wav",
+        "sample_rate": 24000,
+        "sample_width_bytes": 2,
+        "under_local_artifacts": true
+      },
+      {
+        "channels": 1,
+        "duration_seconds": 1.92,
+        "exists": true,
+        "frames": 46080,
+        "path": "local_artifacts/audio_outputs/liquid/roundtrip_loopback/roundtrip_02.wav",
+        "sample_rate": 24000,
+        "sample_width_bytes": 2,
+        "under_local_artifacts": true
+      },
+      {
+        "channels": 1,
+        "duration_seconds": 3.84,
+        "exists": true,
+        "frames": 92160,
+        "path": "local_artifacts/audio_outputs/liquid/roundtrip_loopback/roundtrip_03.wav",
+        "sample_rate": 24000,
+        "sample_width_bytes": 2,
+        "under_local_artifacts": true
+      }
+    ],
+    "loopback_only": true,
+    "sample_rate_channel_assessment": "format_valid_for_local_wav_and_probably_acceptable_for_ChatState_add_audio_but_not_independent_asr_quality_evidence"
+  },
+  "experiment_id": "LIQUID-AUDIO-SMOKE-IMPLEMENTATION-AUDIT-001",
+  "generated_at": "2026-05-28T19:16:05.456501+00:00",
+  "inputs": {
+    "asr_result": "research/experiments/generated/LIQUID-AUDIO-SYNTHETIC-ASR-SMOKE-001/result.json",
+    "config": "runtime/audio_backends/liquid_audio_feasibility_config.json",
+    "smoke_result": "research/experiments/generated/LIQUID-AUDIO-FEASIBILITY-SMOKE-001/result.json",
+    "smoke_script": "scripts/run_liquid_audio_feasibility_smoke_001.py",
+    "tts_result": "research/experiments/generated/LIQUID-AUDIO-SYNTHETIC-TTS-SMOKE-001/result.json"
+  },
+  "likely_failure_causes": [
+    {
+      "cause": "prompt_or_mode_misuse",
+      "evidence": "ASR outputs look like assistant repair/chat responses rather than literal transcripts; TTS used interleaved chat generation despite source notes saying TTS is sequential.",
+      "likelihood": "high"
+    },
+    {
+      "cause": "loopback_audio_artifact_issue",
+      "evidence": "ASR input was Liquid-generated loopback audio, not an independent controlled recording; listening quality has not been reviewed yet.",
+      "likelihood": "medium"
+    },
+    {
+      "cause": "audio_format_sample_rate_issue",
+      "evidence": "Loopback WAVs are mono 16-bit PCM at 24 kHz; ChatState.add_audio accepts waveform plus sampling rate and resamples internally, but official ASR example expectations still need a focused check.",
+      "likelihood": "low_to_medium"
+    },
+    {
+      "cause": "verifier_too_strict",
+      "evidence": "The transcripts did not merely miss exact phrasing; they failed all critical-term checks and often contained conversational fallback text.",
+      "likelihood": "low"
+    },
+    {
+      "cause": "actual_model_limitation",
+      "evidence": "The current loopback setup is not clean enough to isolate model quality from prompting/mode/audio-source artifacts.",
+      "likelihood": "unknown"
+    },
+    {
+      "cause": "latency_rtf_issue",
+      "evidence": "TTS generated audio but p50 total generation latency and RTF are above live-turn targets.",
+      "likelihood": "confirmed_for_live_use"
+    }
+  ],
+  "live_wiring_allowed": false,
+  "mode_audit": {
+    "asked_to_chat_or_respond": true,
+    "asked_to_transcribe": true,
+    "asr_mode_alignment": "partial_match_but_prompt_may_be_conversational",
+    "asr_mode_used": "sequential_generation_chat_prompt",
+    "chat_state_roles_used": true,
+    "source_stated_asr_mode": "sequential_generation",
+    "source_stated_tts_mode": "sequential_generation",
+    "tts_mode_alignment": "questionable_mismatch",
+    "tts_mode_used": "interleaved_generation_chat_prompt"
+  },
+  "output_audit": {
+    "asr_attempted_count": 10,
+    "asr_output_classification": "assistant_response_not_transcript",
+    "asr_succeeded_count": 0,
+    "assistant_like_asr_output_count": 8,
+    "critical_terms_preserved_count": 0,
+    "critical_terms_total": 16,
+    "transcript_like_asr_output_count": 0,
+    "tts_generated_count": 5
+  },
+  "primary_asr_failure_cause": "likely_prompt_mode_or_loopback_artifact_issue_not_final_model_limitation",
+  "primary_tts_issue": "latency_rtf_too_slow_for_live_and_quality_unreviewed",
+  "response_text_changed": false,
+  "runtime_behavior_changed": false,
+  "sales_brain_replacement_allowed": false,
+  "side_effects": {
+    "audio_files_committed": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "model_download_attempted": false,
+    "model_weights_committed": false,
+    "new_audio_generated": false,
+    "new_liquid_inference_run": false,
+    "openai_api_calls_made": false,
+    "provider_calls_made": false,
+    "raw_private_audio_used": false,
+    "raw_private_transcripts_included": false,
+    "response_text_changed": false,
+    "runtime_behavior_changed": false
+  },
+  "source_grounding": {
+    "generation_routines": [
+      "generate_sequential",
+      "generate_interleaved"
+    ],
+    "official_examples_unclear_items": [
+      "Whether the chat-style TTS prompt used in the smoke is equivalent to the official sequential TTS path.",
+      "Whether a direct ASR prompt template exists for one-shot transcription without assistant fallback behavior.",
+      "Whether Liquid-generated speech is an acceptable ASR loopback source for diagnosis."
+    ],
+    "source_evidence": [
+      {
+        "fact": "Repository states pip install liquid-audio, optional demo extras, optional flash-attn fallback, and examples using torch, torchaudio, LFM2AudioModel, LFM2AudioProcessor, ChatState, and LFMModality.",
+        "url": "https://github.com/Liquid4All/liquid-audio"
+      },
+      {
+        "fact": "Model card states LFM2.5-Audio supports interleaved speech-to-speech, sequential ASR/TTS, bfloat16, English, safetensors, and LFM Open License v1.0.",
+        "url": "https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B"
+      },
+      {
+        "fact": "License docs state commercial use is free under 10M USD annual revenue and requires a paid license above that threshold.",
+        "url": "https://docs.liquid.ai/lfm/help/model-license"
+      },
+      {
+        "fact": "Audio model docs describe TTS, speech recognition, audio-to-audio, and LFM2.5-Audio-1.5B as the latest recommended audio model.",
+        "url": "https://docs.liquid.ai/lfm/models/audio-models"
+      }
+    ],
+    "source_stated_capabilities": [
+      "ASR via sequential generation",
+      "TTS via sequential generation",
+      "speech-to-speech via interleaved generation",
+      "text and audio input/output",
+      "24 kHz audio output in examples"
+    ]
+  },
+  "status": "pass"
+}

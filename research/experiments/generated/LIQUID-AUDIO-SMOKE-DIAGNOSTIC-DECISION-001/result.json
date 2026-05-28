@@ -1,0 +1,68 @@
+{
+  "asr_setup_correct_enough_for_independent_benchmark": false,
+  "experiment_id": "LIQUID-AUDIO-SMOKE-DIAGNOSTIC-DECISION-001",
+  "generated_at": "2026-05-28T19:16:09.250234+00:00",
+  "generated_audio_committed": false,
+  "implementation_audit": "research/experiments/generated/LIQUID-AUDIO-SMOKE-IMPLEMENTATION-AUDIT-001/result.json",
+  "independent_asr_benchmark_recommended": false,
+  "interleaved_s2s_probe_recommended": false,
+  "latency_audit": "research/experiments/generated/LIQUID-AUDIO-LATENCY-AUDIT-001/result.json",
+  "likely_asr_failure_cause": "likely_prompt_mode_or_loopback_artifact_issue_not_final_model_limitation",
+  "liquid_remains_offline_candidate_or_inspiration": true,
+  "listening_review": "research/experiments/generated/LIQUID-AUDIO-LISTENING-REVIEW-001/result.json",
+  "live_wiring_allowed": false,
+  "model_weights_committed": false,
+  "primary_recommendation": "liquid_tts_listening_review_next",
+  "provider_calls_made": false,
+  "ranked_recommendations": [
+    {
+      "option": "liquid_tts_listening_review_next",
+      "rank": 1,
+      "rationale": "TTS generated valid local audio but quality has not been manually reviewed.",
+      "recommended": true
+    },
+    {
+      "option": "liquid_asr_prompt_mode_fix_next",
+      "rank": 2,
+      "rationale": "ASR outputs looked like assistant responses and the current setup cannot isolate model quality.",
+      "recommended": true
+    },
+    {
+      "option": "liquid_architecture_inspiration_only",
+      "rank": 3,
+      "rationale": "Current TTS total latency and RTF are too slow for live voice without further optimization and verifier-safe streaming.",
+      "recommended": true
+    },
+    {
+      "option": "liquid_independent_asr_benchmark_next",
+      "rank": 4,
+      "rationale": "Not recommended until ASR prompt/mode is fixed or a clean independent synthetic/recorded audio source is prepared.",
+      "recommended": false
+    },
+    {
+      "option": "liquid_interleaved_s2s_probe_next",
+      "rank": 5,
+      "rationale": "Do not probe interleaved S2S yet; verifier gating and the current prompt/mode issue must be resolved first.",
+      "recommended": false
+    }
+  ],
+  "response_text_changed": false,
+  "runtime_behavior_changed": false,
+  "sales_brain_replacement_allowed": false,
+  "side_effects": {
+    "audio_files_committed": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "model_download_attempted": false,
+    "model_weights_committed": false,
+    "new_audio_generated": false,
+    "new_liquid_inference_run": false,
+    "openai_api_calls_made": false,
+    "provider_calls_made": false,
+    "raw_private_audio_used": false,
+    "raw_private_transcripts_included": false,
+    "response_text_changed": false,
+    "runtime_behavior_changed": false
+  },
+  "status": "pass"
+}
