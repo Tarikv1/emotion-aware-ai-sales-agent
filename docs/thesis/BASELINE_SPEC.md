@@ -151,3 +151,33 @@ This baseline does not yet claim:
 - validated superiority on real call-center data
 
 It is the first controlled adaptive comparison, not the finished thesis system.
+
+## Current Runtime Baseline Addendum
+
+The historical phase-1 baseline remains useful as the first controlled adaptive comparison, but it is no longer the current system baseline.
+
+Current baseline as of 2026-05-29:
+
+- deterministic/campaign-owned dialogue remains the active live-response authority
+- source-grounded campaign configs own product truth, plan names, price/source claims, privacy boundaries, close routes, and no-fit language
+- ElevenLabs remains the current live TTS path
+- local LLMs are research-only and are not live-wired
+- Liquid, Fish, and Kokoro are not live-wired
+- Liquid is architecture inspiration only after failed manual listening review
+- Fish-inspired prosody labels are internal planning controls only and must not be injected into spoken text
+- Kokoro is only an optional future local TTS benchmark candidate
+
+Future architecture target:
+
+- LLM as conversation move planner, not fact owner or side-effect owner
+- deterministic memory ledger, verifier, source/fact boundary, safety guardrail, and anti-loop detector
+- one LLM replan allowed for non-critical verifier issues
+- hard deterministic fallback only for safety-critical or repeated verifier failure
+- possible action-id-only selector with deterministic response renderer and separate prosody planner
+
+Current local LLM conclusion:
+
+- Qwen2.5-7B and tested Ollama variants are not live-ready for per-turn voice use
+- full local LLM response generation is not live-ready
+- action-id-only selection, distilled small selectors, and non-LLM classifier/action selectors are future research paths
+- no local LLM live wiring is allowed until quality and roughly 2-3 second live-turn latency gates pass

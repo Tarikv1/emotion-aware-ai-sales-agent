@@ -515,6 +515,36 @@ ElevenLabs. "Get voice settings."
 - Thesis relevance: documents provider voice settings such as stability, style, and speed, which can affect emotional range, latency, and pace.
 - Limitation: settings are provider-specific and should not be generalized to other TTS systems.
 
+Fish Audio S2 / fish-speech.
+
+- URLs:
+  - https://fish.audio/s2/
+  - https://github.com/fishaudio/fish-speech
+  - https://huggingface.co/fishaudio/s2-pro
+  - https://speech.fish.audio/
+- Thesis relevance: supports the idea of fine-grained inline emotion/prosody control as architecture inspiration for an internal sales-safe prosody taxonomy.
+- Project boundary: Fish is not installed, run, or used as a local runtime dependency. The project does not import Fish's full 15,000+ tag universe. Fish-style tags remain internal and must not appear in ElevenLabs buyer-facing speech.
+- Limitation: hardware and commercial-license constraints make Fish a research/inspiration source only for the current project.
+
+Liquid Audio / LFM2.5-Audio-1.5B.
+
+- URLs:
+  - https://github.com/Liquid4All/liquid-audio
+  - https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B
+  - https://docs.liquid.ai/lfm/help/model-license
+- Thesis relevance: speech-to-speech architecture inspiration and negative TTS-quality result.
+- Project boundary: Liquid setup, load, and synthetic TTS smoke succeeded mechanically, but manual listening review found the generated speech unintelligible/gibberish. Liquid is not a TTS backend, fallback voice, thesis-demo TTS, ASR quality proof, or live runtime component.
+- Limitation: technical generation success does not imply intelligible or usable speech.
+
+Kokoro-82M.
+
+- URLs:
+  - https://github.com/hexgrad/kokoro
+  - https://huggingface.co/hexgrad/Kokoro-82M
+- Thesis relevance: optional future local/offline TTS benchmark candidate if provider-independent TTS becomes thesis-relevant.
+- Project boundary: Kokoro is not installed, run, or wired into runtime in the current evidence. It is not an immediate ElevenLabs replacement.
+- Limitation: quality, latency, Windows setup, and sales-call suitability remain untested in this project.
+
 ## Thesis Usage Notes
 
 Possible thesis framing:
@@ -527,6 +557,11 @@ Possible thesis framing:
 - Sales-call voice quality should be evaluated through rate, pitch/intonation, affirmative tone, warmth, clarity, and confidence, not just through filler count.
 - General speech quality should be evaluated across prosodic phrasing, prominence, rhythm, reduction, response timing, perceived trust/warmth, and interaction quality.
 - The system intentionally separated language mechanics from campaign persona and avoided stereotype-driven voice behavior.
+- Prosody is now treated as an internal planning layer that maps buyer emotion, sales move, objection type, and conversation state into safe delivery guidance.
+- ElevenLabs remains the current live voice path; Fish, Liquid, and Kokoro are not active live runtimes.
+- Fish-inspired labels are internal/backend-neutral and must not be injected as raw bracket tags into buyer-facing speech.
+- Liquid is useful only as architecture inspiration after failed manual listening review, not as a voice quality result.
+- Buyer-facing uncertainty should be natural clarification, not exposed classifier language. For example, ask whether the buyer means plan details or fit, rather than saying the classifier is uncertain.
 
 Near-term implementation implications:
 
@@ -535,6 +570,8 @@ Near-term implementation implications:
 - Prefer provider prosody and short acknowledgments for thinking time before adding more visible `um`/`ähm` tokens.
 - Evaluate faster sales-call pace, but only inside a bounded speed range and never for disclosures, regulated claims, appointment details, or campaign questions.
 - Include a minimal evaluation rubric for VOICE-026 that separates naturalness, trust, confidence, warmth, pace, interruption safety, and sales usefulness.
+- Clean the Fish-inspired prosody taxonomy before mapping it to ElevenLabs style prompts, punctuation, sentence length, or voice settings.
+- Do not treat prosody taxonomy validation as audio-quality evidence; listening review is still required.
 
 Possible thesis limitation:
 

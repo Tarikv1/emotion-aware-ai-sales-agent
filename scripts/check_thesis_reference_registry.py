@@ -78,6 +78,7 @@ ALLOWED_NON_REFERENCE_DOMAINS = {
     "example.com",
     "example.org",
     "example.net",
+    "example.invalid",
     "schemas.example.test",
 }
 

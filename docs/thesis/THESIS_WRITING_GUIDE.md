@@ -48,6 +48,9 @@ The thesis is no longer only a small prompt-comparison project. It now has sever
 - voice/TTS provider evaluation
 - live replay and adversarial dialogue regression
 - speech naturalness and speech-realism design
+- local LLM feasibility and rejection for live per-turn use
+- internal prosody/emotion-control taxonomy and planner design
+- audio-model research branches with negative results
 - private call-center data policy and future learning path
 - thesis/product review gates and reproducibility discipline
 
@@ -63,6 +66,12 @@ Post-May-22 writing boundary:
 - campaign configs/adapters own product facts, plan names, pricing, source-grounded claims, customer-facing wording, and close targets
 - the public OpenAI/ChatGPT fixture is an internal public-data simulation, not an official OpenAI sales agent
 - deterministic validator pass is not the same as sales-quality pass
+- evidence-integrity pass is not the same as quality-gate pass
+- sales-ready means active selling, objection handling, fit-based recommendation/disqualification, decision movement, and loop resistance, not only product explanation
+- scenario-specific patches are not enough; semantic frame mapping and buyer-state tracking are now part of the methodology
+- local LLMs are research-only until quality and live-latency gates pass
+- Liquid is architecture inspiration only after failed manual listening review
+- Fish-inspired tags are internal controls only and must not leak into buyer-facing ElevenLabs speech
 - live ASR, TTS, latency, turn-taking, and voice naturalness need live rehearsal evidence
 - raw private transcripts should not be copied into thesis files
 
@@ -120,6 +129,9 @@ Record a note when:
 - an architecture decision is made
 - a rule baseline changes
 - an LLM or voice provider changes output quality
+- local model latency or quality changes the architecture recommendation
+- an audio model succeeds mechanically but fails manual listening quality
+- a prosody/control taxonomy changes future voice-delivery assumptions
 - a bug reveals a limitation
 - a privacy or retention boundary changes
 - a private or personal speech-sample boundary changes
@@ -167,6 +179,8 @@ Do not:
 - imply official vendor affiliation for public-data simulations
 - invent product, pricing, API, privacy, legal, security, discount, ROI, or model-availability claims
 - say an email, calendar event, CRM update, or payment action happened unless the runtime actually performs that side effect
+- write Fish-style bracket tags into buyer-facing speech unless a future approved backend explicitly supports them
+- describe Liquid, Fish, Kokoro, Qwen, or Ollama work as live-wired unless a later evidence packet actually wires and validates it
 
 If a checkpoint is too small for a full methodology entry, still update the roadmap or decision log when the change affects thesis structure, evidence, scope, tooling, or future writing assumptions.
 
@@ -183,6 +197,8 @@ Default narrow-phase budget:
 - `git diff --check`
 
 Run the full historical ring only for broad universal runtime changes, major milestones, or release-readiness sweeps. If a phase intentionally uses a reduced budget, write that plainly; do not say "everything passed."
+
+Avoid parallel Git/Codex sessions on this repo while large commits are pending. Repeated Windows Git lock issues make overlapping sessions a practical reliability risk.
 
 ## Writing From Evidence
 
@@ -234,6 +250,11 @@ Do not hide these:
 - controlled delivery imperfections are currently offline-validated but still need live audio and listener validation
 - public OpenAI fixture validation proves source grounding and isolation, not official OpenAI authorization or live sales effectiveness
 - live-inspired adversarial matrices reduce repeated bug discovery but do not prove ASR, TTS, latency, or buyer-perceived quality
+- validator optimism is a known limitation; validators are tripwires, not proof of sales quality
+- local Qwen 7B and tested small Ollama models are not live-ready for per-turn voice use
+- QLoRA evidence proves the training pipeline can run, not that the resulting adapters are good enough
+- Liquid TTS technically generated audio but failed intelligibility in manual listening review
+- Fish-inspired prosody taxonomy is internal and not live-wired; it needs cleanup before ElevenLabs mapping work
 - personal speech-pattern learning must be framed as abstract style learning, not voice cloning, identity learning, or raw transcript reuse
 - raw-audio learning currently extracts WAV acoustic features only; transcription, non-WAV decoding, and runtime personalization are separate later checkpoints
 - the product is not yet production deployed

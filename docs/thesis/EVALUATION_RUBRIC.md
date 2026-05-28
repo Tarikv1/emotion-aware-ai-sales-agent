@@ -113,3 +113,26 @@ Live voice dimensions:
 Method note:
 
 Deterministic validators can score many content and safety dimensions, but human/live review is still required for voice realism, perceived sales quality, and production-readiness claims.
+
+## Post-Checkpoint Evaluation Dimensions
+
+As of the 2026-05-29 thesis update, "sales-ready" should be evaluated more strictly than "can answer questions":
+
+- sales momentum: does the agent move the buyer toward a decision without pressure or fake urgency?
+- semantic understanding: does it preserve buyer meaning across paraphrases, ASR aliases, corrections, AND/OR relations, negation, and repeated questions?
+- recommendation quality: does it recommend, compare, start lower, or disqualify based on known buyer context instead of pushing the highest tier?
+- objection handling: does it acknowledge price, competitor/current-tool, privacy, source, timing, distrust, and no-interest objections without arguing?
+- memory and loop resistance: does it avoid asking for information already provided and stop after terminal acceptance?
+- source-grounded product claims: are product, price, privacy, API, Enterprise, and plan claims backed by the campaign source bundle or clearly caveated?
+- side-effect safety: does it avoid claiming email, calendar, CRM, payment, official affiliation, hidden tracking, or unsupported follow-up actions?
+- latency budget: any model in the live turn must still fit the perceived live voice target; 2-3 seconds is the working target and higher latency is problematic.
+- voice/TTS intelligibility: can a listener understand the spoken words without relying on transcript text?
+- prosody and emotional delivery: does delivery match buyer emotion and sales move while avoiding hype, manipulation, fake laughter, flirting, shouting, guilt, or fear pressure?
+
+Evidence interpretation:
+
+- evidence-integrity validators check artifact structure, side-effect flags, leakage boundaries, and regression coverage
+- quality gates judge whether behavior is good enough for the next use
+- a quality gate can fail and still produce useful thesis evidence
+- manual live tests and listening reviews remain required for sales naturalness, voice intelligibility, latency perception, and buyer trust
+- live-demo readiness, thesis-demo readiness, and product readiness are separate claims

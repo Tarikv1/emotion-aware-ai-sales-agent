@@ -29,18 +29,23 @@ Status convention:
 
 ## Checkpoint Board
 
-Active phase: source-grounded campaign evaluation, universal dialogue isolation, self-serve close behavior, live-demo campaign selection, live replay/adversarial regression, and thesis evidence preservation.
+Active phase: evidence consolidation after source-grounded OpenAI sales-readiness work, local LLM feasibility rejection for live use, Liquid TTS retirement, and Fish-inspired prosody taxonomy/audit.
 
 Current checkpoint:
 
-- [ ] Current: live dry-run and supervised voice rehearsal of `public-openai-chatgpt-plans` after `PUBLIC-OPENAI-CLOSE-SEMANTICS-001`. The fixture is now a source-grounded public-data ChatGPT plan-fit simulation with self-serve close and contact-sales routes. The next evidence should test whether the voice path handles plan questions, link requests, no-fit/free-plan answers, privacy boundaries, and Enterprise contact-sales routing naturally. This is not production readiness, official OpenAI representation, email sending, payment collection, local LLM adoption, or `PROD-102`.
+- [ ] Current: clean up the Fish-inspired prosody taxonomy and sales-prosody mappings before any ElevenLabs mapping prototype. The 4I3 quality decision found no blockers but recorded many warnings and recommended targeted cleanup, not live mapping. Keep Fish tags internal, raw tag injection disabled, ElevenLabs provider calls disabled, and live runtime wiring false.
 
 Next checkpoints:
 
-- [ ] Next: if the OpenAI live rehearsal fails, create one narrow follow-up from the observed failure: source-claim rendering, self-serve close wording, contact-sales routing, no-fit pressure, OpenAI affiliation boundary, raw-URL speech, ASR misunderstanding, turn-taking, latency, or TTS naturalness. Do not broaden into email/calendar/CRM integration, payment collection, official vendor representation, or unchecked LLM final speech.
-- [ ] Next: design a reusable source-grounded campaign intake workflow for real client campaigns. The workflow should collect official/product-owner sources, create claim objects, separate campaign facts from universal dialogue, define close modes, and run isolation/contamination checks before live routing.
-- [ ] Next: define compliance, consent, retention, handoff, and sales-review requirements before any real customer deployment or production claim.
-- [ ] Next: assess whether deterministic response shapes are becoming too rigid. Only consider a controlled LLM response-planning layer after replay/adversarial guardrails, source-claim constraints, latency budgets, and final-speech authority boundaries are explicit.
+- [ ] Next: after cleanup, design an ElevenLabs prosody mapping prototype without provider calls. Limit it to text shaping, punctuation/pause shaping, sentence length control, optional style prompt/settings only if supported, and no raw bracket tags.
+- [ ] Next: test a non-LLM classifier/action-selector baseline against the OpenAI semantic/live-action cases. This is now a serious path because Qwen 7B and tested small local models did not meet both quality and live-turn latency expectations.
+- [ ] Next: decide whether the strongest small action-id-only model result deserves distillation or fine-tuning. Do not return to full local LLM response generation unless the model can meet quality and roughly 2-3 second live-turn latency gates.
+- [ ] Next: consolidate thesis writing evidence around the OpenAI fixture, semantic sales-dialogue evolution, local LLM feasibility rejection, audio-model research branch, prosody control layer, validator optimism, and manual review methodology.
+- [ ] Future research: design a reusable source-grounded campaign intake workflow for real client campaigns. The workflow should collect official/product-owner sources, create claim objects, separate campaign facts from universal dialogue, define close modes, and run isolation/contamination checks before live routing.
+- [ ] Future research: define compliance, consent, retention, handoff, and sales-review requirements before any real customer deployment or production claim.
+- [ ] Future research: Kokoro local TTS benchmark only if local TTS fallback becomes thesis-relevant. It is not an immediate ElevenLabs replacement.
+- [ ] Rejected/retired: Liquid as TTS/voice backend, thesis-demo TTS, product fallback TTS, and sales-brain replacement after failed manual listening review. Retain as architecture inspiration only.
+- [ ] Blocked: live local LLM wiring, Fish runtime integration, Fish tag injection into spoken text, Liquid/Kokoro live runtime wiring, provider side effects, email/calendar/CRM claims, payment collection, and official OpenAI representation.
 - [ ] Parked after `PROD-101` until Tarik resumes: select the next remaining English customer-move classifier slice only if recommendation-roleplay positives, adjacent controls, and the stable English guard pass.
 - [ ] Next after `PROD-079`: select the next remaining English customer-move classifier slice only if provider-comparison regression stays stable.
 - [ ] Future persuasion-tactics checkpoint candidate: define and test `guided_option_selection` only after current coverage-boundary/runtime regression work is stable. Guardrails: use only after fit or interest is established, present two real options fairly, preserve `neither`, `not now`, and `explain the difference`, avoid fake urgency, and never pretend the customer already agreed.
@@ -67,6 +72,14 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] Post-baseline OpenAI sales-readiness chain, including voice/config diagnostics, live sales-flow relevance, sales readiness, memory progression, intent priority, spoken sales naturalness, decision-stage selling, commercial closing, semantic understanding, and live semantic pipeline evidence. This keeps the fixture source-grounded and self-serve while changing the evaluation target from passive product explanation to active selling, objection handling, fit-based recommendation/disqualification, and loop resistance. No provider calls, raw private transcript copying, fake side effects, raw URL speech, or official OpenAI affiliation claims are introduced.
+
+- [x] Local LLM conversation-brain feasibility chain, including Qwen2.5-7B compact planner smokes, an 80-case gold-set evaluation, SFT/QLoRA dataset and training probes, tiny overfit, curriculum and mixed-replay failure audits, a two-head architecture decision, Qwen/Ollama latency benchmarks, and small-model action benchmark decisions. Current conclusion: full local LLM response generation is not live-ready; action-id-only selection, distilled small selectors, or non-LLM classifier/action selectors remain research paths; no live LLM wiring is allowed.
+
+- [x] Liquid Audio feasibility and retirement chain. Setup, model download/load, and synthetic TTS smoke were technically successful, but manual listening review found generated speech unintelligible/gibberish with no recognizable words. Liquid is retired as TTS/voice backend and kept only as speech-to-speech architecture inspiration.
+
+- [x] Fish-inspired sales prosody taxonomy and 4I3 quality audit. The project now has 267 internal labels, 24 categories, 46 composition rules, 138 sales mappings, 45 examples, a deterministic planner prototype, quality audits, dry-run evidence, and an ElevenLabs mapping readiness plan. Fish's 15,000+ tag universe is inspiration only, not imported; Fish tags remain internal; tag injection into spoken text is false; live wiring is false; cleanup is recommended before mapping prototype.
 
 - [x] `PUBLIC-OPENAI-CLOSE-SEMANTICS-001`, which changes the OpenAI fixture from appointment-style framing to `self_serve_plan_fit`, keeps `self_serve_purchase_link` as the primary individual close mode, routes Enterprise to `contact_sales`, keeps raw URLs out of spoken final responses, preserves the official URL in metadata, keeps `can_send_email` false, and verifies 64 close scenarios including 32 multi-turn cases. It keeps provider calls, live TTS, local LLM calls, email sending, calendar creation, CRM writes, payment collection, OpenAI affiliation claims, real customer data, and `PROD-102` disabled.
 
@@ -707,45 +720,20 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Run a live dry-run and then supervised voice rehearsal for `public-openai-chatgpt-plans`, starting with the self-serve close and Enterprise contact-sales paths. Do not open `PROD-102`, do not add email/calendar/CRM side effects, and do not claim official OpenAI representation.
+Clean the Fish-inspired prosody taxonomy/mapping warnings before any ElevenLabs prosody mapping prototype. Do not call ElevenLabs, generate audio, wire live runtime, inject Fish tags, open `PROD-102`, add email/calendar/CRM side effects, or claim official OpenAI representation.
 
 Purpose:
 
-- test whether the public-data OpenAI fixture sounds like a self-serve plan-fit campaign rather than appointment setting
-- verify spoken close responses avoid raw URLs while metadata keeps the official URL available
-- verify no-fit/free-plan responses do not pressure the buyer
-- verify Enterprise routes to contact sales without fake booking, legal/security guarantees, or exact Enterprise pricing
-- keep value guarantees, payment collection, contract signing, email sending, calendar creation, CRM writes, official-affiliation claims, and production runtime promotion blocked
+- merge or clarify duplicate/vague prosody labels found by the 4I3 audit
+- keep unsafe/disallowed labels blocked from future live style hints
+- preserve Fish-inspired labels as internal project controls, not provider text
+- keep ElevenLabs as the current voice path but leave prosody mapping not wired
+- use the cleaned taxonomy as possible input to a future no-provider ElevenLabs mapping prototype
 - keep private raw transcript text out of public thesis evidence
 
-Immediate OpenAI fixture artifacts:
+Immediate evidence artifacts:
 
-- source bundle at `research/sources/public_openai_chatgpt_plans/`
-- fixture at `runtime/campaigns/examples/public-openai-chatgpt-plans.json`
-- close-semantics result at `research/experiments/generated/PUBLIC-OPENAI-CLOSE-SEMANTICS-001/result.json`
-- campaign dialogue result at `research/experiments/generated/PUBLIC-OPENAI-CAMPAIGN-DIALOGUE-001/result.json`
-- universal isolation result at `research/experiments/generated/PUBLIC-OPENAI-UNIVERSAL-ISOLATION-001/result.json`
-- cross-campaign contamination result at `research/experiments/generated/PUBLIC-OPENAI-CROSS-CAMPAIGN-CONTAMINATION-001/result.json`
-
-Immediate product artifact from `PROD-101`:
-
-- regression result at `research/experiments/generated/PROD-101-english-recommendation-roleplay-post-patch-regression/result.json`
-- recommendation-roleplay regression cases at `research/experiments/generated/PROD-101-english-recommendation-roleplay-post-patch-regression/recommendation_roleplay_regression_cases.json`
-- adjacent control cases at `research/experiments/generated/PROD-101-english-recommendation-roleplay-post-patch-regression/adjacent_control_cases.json`
-- no production or real-customer use from this regression checkpoint
-
-Next voice checkpoint:
-
-- record the `RESP-007` German pacing-stability listening decision before promoting a voice-personality selector
-- keep VOICE-043 and VOICE-044 as the acceptance guards before and after any future baseline voice change
-- compare any future private-pattern or personalization variant against VOICE-043 baseline and promote it only if it wins a human listening review
-- connect RESP-003 audio output to the local demo/playback flow after the dry-run and missing-key gates remain stable
-- expand RESP-002 from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn
-- expand the VOICE-017 live A/B beyond the first two ElevenLabs cases, or add a second listener before treating the result as stronger evaluation evidence
-- compare original guarded text against filler-only and prosody-shaped text if the thesis needs a more detailed ablation
-- rate whether rare fillers, pause/rate/pitch cues, and bounded stretches improve human-likeness without reducing trust across more cases
-- optionally test Cartesia against the same VOICE-017 cases to see whether richer direct tags can match or beat the ElevenLabs result
-- verify campaign qualification questions and compliance statements remain clean in audio
-- keep environment-only API key and voice ID handling
-- use synthetic prompts only
-- upload no customer audio
+- OpenAI semantic/sales readiness: `PUBLIC-OPENAI-LIVE-SALES-READINESS-001`, `PUBLIC-OPENAI-SEMANTIC-UNDERSTANDING-001`, `PUBLIC-OPENAI-LIVE-SEMANTIC-PIPELINE-001`
+- Local LLM feasibility and rejection for live use: `LOCAL-QWEN-GOLDSET-EVAL-001`, `LOCAL-QWEN-TWO-HEAD-ARCHITECTURE-001`, `LOCAL-QWEN-LIVE-ACTION-LATENCY-DECISION-001`, `LOCAL-OLLAMA-SMALL-LIVE-ACTION-MODEL-DECISION-001`
+- Liquid retirement: `LIQUID-AUDIO-LISTENING-REVIEW-DECISION-001`
+- Prosody taxonomy and audit: `FISH-INSPIRED-PROSODY-TAXONOMY-001`, `PROSODY-TAXONOMY-QUALITY-DECISION-001`, `ELEVENLABS-PROSODY-MAPPING-READINESS-001`

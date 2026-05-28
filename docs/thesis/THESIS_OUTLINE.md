@@ -262,6 +262,9 @@ reusable sales-agent core
   + source-grounded campaign claim objects
   + campaign guardrails
   + bilingual runtime support
+  + optional future conversation planner
+  + deterministic memory/verifier/source boundary
+  + backend-neutral prosody planner
   + human handoff / escalation
 ```
 
@@ -274,6 +277,8 @@ Evidence sources:
 - `research/experiments/generated/UNIVERSAL-BUYER-MOVE-RECOGNITION-001/`
 - `research/experiments/generated/UNIVERSAL-BUYER-MOVES-CROSS-CAMPAIGN-001/`
 - `research/experiments/generated/UNIVERSALIZATION-DRIFT-CLEANUP-001/`
+- `research/experiments/generated/LOCAL-QWEN-TWO-HEAD-ARCHITECTURE-001/`
+- `research/experiments/generated/FISH-INSPIRED-PROSODY-TAXONOMY-001/`
 
 ### 4.2 Emotion And Persuasion Taxonomies
 
@@ -344,6 +349,9 @@ Discuss:
 - language-lane separation: English exact phrase review can be owner-reviewed now, while German exact phrase acceptance requires native or source-backed wording review
 - universal-vs-campaign boundary: response behavior and shapes are universal; product facts and customer-facing product wording are campaign-owned
 - replay-first debugging: capture live evidence, classify currentness, reproduce locally, patch only current reproduced defects, then add exact regressions, generalized variants, and negative controls
+- semantic-understanding shift: move from exact scenario patching toward semantic frames, buyer-state tracking, relation fidelity, ASR aliases, memory progression, and generalized intent/action planning
+- local LLM boundary: a future LLM may plan conversational moves, but campaign facts, source truth, side effects, memory verification, and safety remain deterministic
+- live-turn latency: any model in the live voice turn must meet roughly 2-3 second perceived latency before live wiring
 
 Evidence sources:
 
@@ -361,6 +369,10 @@ Evidence sources:
 - `research/experiments/generated/PROD-053D-english-review-import/`
 - `research/experiments/generated/CURRENT-LIVE-TRANSCRIPT-REPLAY-001/`
 - `research/experiments/generated/LIVE-INSPIRED-ADVERSARIAL-DIALOGUE-MATRIX-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-SEMANTIC-UNDERSTANDING-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-LIVE-SEMANTIC-PIPELINE-001/`
+- `research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-DECISION-001/`
+- `research/experiments/generated/LOCAL-OLLAMA-SMALL-LIVE-ACTION-MODEL-DECISION-001/`
 
 ### 4.5 Voice And Speech Delivery
 
@@ -375,6 +387,10 @@ Discuss the evolution:
 - custom voice comparison
 - spoken text normalization
 - planned speech-realism layer
+- Liquid Audio feasibility and retirement after failed manual listening review
+- Fish-inspired internal prosody taxonomy and deterministic planner
+- Kokoro as optional future local TTS benchmark candidate
+- ElevenLabs as the current live voice path
 - live TTS gating for generic campaigns
 - audio playback error separation and raw URL avoidance in spoken self-serve closes
 - distinction between dry-run text validation and live ASR/TTS/latency/voice-realism evidence
@@ -389,6 +405,10 @@ Evidence sources:
 - `research/experiments/VOICE-021-elevenlabs-custom-voice-comparison.md`
 - `research/experiments/VOICE-022-spoken-text-normalization.md`
 - `SPEECH_REALISM_REFERENCES.md`
+- `research/experiments/generated/LIQUID-AUDIO-LISTENING-REVIEW-DECISION-001/`
+- `research/experiments/generated/FISH-INSPIRED-PROSODY-TAXONOMY-001/`
+- `research/experiments/generated/PROSODY-TAXONOMY-QUALITY-DECISION-001/`
+- `research/experiments/generated/ELEVENLABS-PROSODY-MAPPING-READINESS-001/`
 - `research/experiments/generated/LIVE-DEMO-GENERIC-CAMPAIGN-LIVE-TTS-GATE-001/`
 - `research/experiments/generated/LIVE-DEMO-TTS-AUDIO-PLAYBACK-001/`
 - `research/experiments/generated/PUBLIC-OPENAI-CLOSE-SEMANTICS-001/`
@@ -513,6 +533,9 @@ Discuss validators as methodological controls:
 - live replay validators
 - adversarial matrices
 - commercial and resonance review packets
+- evidence validators versus quality gates
+- manual live tests and listening reviews as qualitative ground truth
+- quality-gate failures as useful evidence rather than automatic integration blockers
 
 Evidence sources:
 
@@ -527,6 +550,9 @@ Evidence sources:
 - `research/experiments/generated/PUBLIC-OPENAI-SOURCE-BUNDLE-001/`
 - `research/experiments/generated/PUBLIC-OPENAI-UNIVERSAL-ISOLATION-001/`
 - `research/experiments/generated/PUBLIC-OPENAI-CROSS-CAMPAIGN-CONTAMINATION-001/`
+- `research/experiments/generated/COMMERCIAL-SALES-PERFORMANCE-GATE-001/`
+- `research/experiments/generated/LOCAL-QWEN-MIXED-REPLAY-QUALITY-GATE-001/`
+- `research/experiments/generated/PROSODY-TAXONOMY-QUALITY-DECISION-001/`
 
 ### 5.5 Source-Grounded Product Dialogue Evaluation
 
@@ -539,12 +565,19 @@ Evaluation focus:
 - self-serve close and contact-sales close
 - unsupported-claim refusal
 - cross-campaign contamination prevention
+- sales momentum beyond FAQ behavior
+- objection handling and fit-based recommendation/disqualification
+- memory progression and loop prevention
+- semantic preservation across paraphrases and spoken variations
 
 Evidence sources:
 
 - `research/experiments/generated/PUBLIC-OPENAI-CAMPAIGN-DIALOGUE-001/`
 - `research/experiments/generated/PUBLIC-OPENAI-CLOSE-SEMANTICS-001/`
 - `research/experiments/generated/PUBLIC-OPENAI-CROSS-CAMPAIGN-CONTAMINATION-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-LIVE-SALES-READINESS-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-DECISION-STAGE-SELLING-001/`
+- `research/experiments/generated/PUBLIC-OPENAI-COMMERCIAL-CLOSING-001/`
 
 ## 6. Results And Discussion
 
@@ -558,6 +591,9 @@ Likely themes:
 - voice prosody and sales tuning improved perceived quality
 - custom ElevenLabs voices improved over first versions
 - protected-text segmentation prevented unsafe naturalness changes
+- source-grounded public-product fixture improved claim governance
+- semantic frame mapping reduced reliance on exact dialogue patches
+- prosody planning became an internal/backend-neutral design layer
 
 ### 6.2 What Did Not Work Or Remains Weak
 
@@ -569,6 +605,10 @@ Likely themes:
 - browser speech recognition can mis-route language
 - cloud provider quality and latency are provider-specific
 - public datasets do not match real call-center conditions
+- Qwen2.5-7B and tested small local models are not live-ready for per-turn voice use
+- QLoRA training pipeline is mechanically valid but current local model strategy is insufficient
+- Liquid Audio generated unintelligible TTS and is retired as a voice backend
+- Fish-inspired prosody taxonomy needs cleanup before any ElevenLabs mapping prototype
 
 ### 6.3 Threats To Validity
 
@@ -634,6 +674,9 @@ Future work:
 - stronger ablation of voice naturalness layers
 - public-only vs restricted-private evidence comparison
 - real-call pattern analysis after redaction and review
+- non-LLM classifier/action selector baseline
+- action-id-only small model or distillation path if it can meet quality and latency gates
+- ElevenLabs prosody mapping prototype without provider calls after taxonomy cleanup
 
 ## Appendix Candidates
 

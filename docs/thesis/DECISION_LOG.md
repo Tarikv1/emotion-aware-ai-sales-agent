@@ -15,6 +15,192 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-138 - Treat evidence validators and quality gates as separate instruments
+
+- Date: 2026-05-29
+- Status: accepted
+- Decision: keep evidence-integrity validators, deterministic regressions, and quality gates separate. A validator pass can prove that an artifact is well formed, side-effect-safe, and regression-covered; it does not prove live sales quality, voice quality, or production readiness.
+- Why:
+  - post-baseline OpenAI, local LLM, Liquid, and prosody phases showed that structurally valid evidence can still reveal quality failures or cleanup needs
+  - `LOCAL-QWEN-MIXED-REPLAY-QUALITY-GATE-001` failed usefully without authorizing live wiring
+  - `PROSODY-TAXONOMY-QUALITY-DECISION-001` passed the decision artifact while recommending cleanup before mapping
+  - live call review and manual listening review remain the strongest signals for actual sales and speech quality
+- Alternatives considered:
+  - treat any passing evidence validator as readiness
+  - block evidence commits whenever quality gates fail
+  - run the full historical validator ring for every phase
+- Consequences:
+  - failed quality gates can be committed as honest research evidence
+  - docs must distinguish evidence pass, quality pass, thesis-demo readiness, live-demo readiness, and product readiness
+  - focused validators remain the default unless broad runtime behavior changes
+
+### DEC-137 - Keep ElevenLabs as the current voice path while prosody mapping remains plan-only
+
+- Date: 2026-05-29
+- Status: accepted
+- Decision: keep ElevenLabs as the current live voice path. The Fish-inspired prosody layer and ElevenLabs mapping readiness plan remain architecture/config/evidence only, with no provider calls, no raw Fish tags in ElevenLabs text, and no live runtime wiring.
+- Why:
+  - `ELEVENLABS-PROSODY-MAPPING-READINESS-001` records `current_integration_status: not_wired`
+  - Fish-style tags are internal only and not allowed in buyer-facing text
+  - `PROSODY-TAXONOMY-QUALITY-DECISION-001` recommends targeted taxonomy and mapping cleanup before any ElevenLabs mapping prototype
+  - replacing or changing the live TTS path without listening review would confuse architecture research with product quality
+- Alternatives considered:
+  - directly inject Fish-style bracket tags into ElevenLabs speech
+  - wire the deterministic prosody planner into live speech immediately
+  - replace ElevenLabs with Fish, Liquid, or Kokoro before comparative listening evidence
+- Consequences:
+  - ElevenLabs remains the operational voice path
+  - future ElevenLabs prosody mapping must be prototype-only first, with no provider calls unless explicitly approved
+  - no spoken response behavior changes from the prosody taxonomy
+
+### DEC-136 - Build a Fish-inspired internal prosody taxonomy without importing Fish or its tag universe
+
+- Date: 2026-05-29
+- Status: accepted
+- Decision: use Fish Audio S2's inline prosody/emotion-control concept as inspiration for an internal, backend-neutral, sales-safe prosody taxonomy and deterministic planner; do not install Fish, run Fish inference, import the 15,000+ tag universe, or leak Fish tags into active speech.
+- Why:
+  - Fish S2 provides a useful control-language pattern, but its hardware and commercial-license constraints make it unsuitable as a current local dependency
+  - the project needs a curated sales delivery layer that maps buyer emotion, sales move, objection type, and conversation state to safe delivery guidance
+  - `FISH-INSPIRED-PROSODY-TAXONOMY-001` records 267 internal labels, 24 categories, 46 composition rules, 138 mappings, and 45 examples, with tag injection disabled
+- Alternatives considered:
+  - create a tiny label list that would be too weak for sales delivery
+  - scrape or import Fish's full tag universe
+  - use Fish tags directly in ElevenLabs output
+- Consequences:
+  - prosody controls are internal project labels, not raw provider tags
+  - future backend mappings must pass leakage and quality checks
+  - 4I3 found warnings and cleanup needs before any mapping prototype
+
+### DEC-135 - Retire Liquid Audio as a TTS or voice backend after manual listening review
+
+- Date: 2026-05-28
+- Status: accepted
+- Decision: keep Liquid Audio as speech-to-speech architecture inspiration only. Do not use it as a thesis-demo TTS, product fallback TTS, live voice backend, ASR quality proof, or sales-brain replacement.
+- Why:
+  - Liquid setup, model load, and synthetic TTS smoke were mechanically successful, but manual listening review found all five generated TTS files unintelligible/gibberish with no recognizable words
+  - the loopback ASR result was based on Liquid-generated audio and is not final ASR quality evidence
+  - `LIQUID-AUDIO-LISTENING-REVIEW-DECISION-001` sets `liquid_architecture_inspiration_only: true`, `product_fallback_tts_allowed: false`, and `live_wiring_allowed: false`
+- Alternatives considered:
+  - compare Liquid immediately against Kokoro or ElevenLabs despite failed intelligibility
+  - keep Liquid as a fallback because the setup worked
+  - use Liquid as a broader local sales-brain candidate
+- Consequences:
+  - no Liquid runtime wiring
+  - no Liquid audio is committed
+  - Kokoro remains the optional future local TTS benchmark candidate if local TTS becomes thesis-relevant
+
+### DEC-134 - Reject current local Qwen 7B and tested small local models for live per-turn use
+
+- Date: 2026-05-28
+- Status: accepted
+- Decision: do not wire local Qwen2.5-7B, Qwen LoRA adapters, Ollama Qwen 7B, or the tested small Ollama models into live per-turn voice dialogue. Treat full local LLM response generation as not live-ready; keep action-id-only selection, distilled small selectors, and non-LLM classifier/action selectors as research paths.
+- Why:
+  - Qwen2.5-7B compact planner passed small smoke tests but failed the 80-case gold-set quality gate
+  - QLoRA and tiny overfit experiments proved the pipeline can train, but curriculum and mixed-replay adapters did not pass quality gates
+  - Qwen 7B latency remained far above the live target, including Ollama backend evidence
+  - tested small Ollama models got closer, especially constrained/action modes, but did not meet strict live latency targets
+  - a live voice turn still needs acceptable latency whenever an LLM is used, even if the LLM is called less often
+- Alternatives considered:
+  - wire Qwen 7B as the live conversation brain
+  - keep training larger QLoRA datasets before simplifying the target
+  - prune Qwen 7B immediately
+  - use a small local model for full spoken response generation
+- Consequences:
+  - no local LLM live wiring
+  - no model weights, adapters, or checkpoints are committed
+  - future model work should test constrained action selection before full response generation
+  - the live target remains roughly 2-3 seconds for any model-in-the-turn path
+
+### DEC-133 - Keep the LLM as conversation planner, not fact owner or side-effect owner
+
+- Date: 2026-05-28
+- Status: accepted
+- Decision: the desired long-term architecture is: LLM as conversational move planner; deterministic layer as memory ledger, verifier, source/fact boundary, safety guardrail, and anti-loop detector; campaign configs/source bundles as product truth; TTS/prosody layer as delivery control. The deterministic layer must not become the normal conversation brain except for hard safety fallback.
+- Why:
+  - a purely deterministic conversation brain becomes brittle and canned
+  - a free LLM cannot own product facts, source truth, CRM/email/calendar side effects, or safety decisions
+  - `LOCAL-QWEN-TWO-HEAD-ARCHITECTURE-001` records `llm_remains_conversation_brain: true` and `deterministic_layer_role: memory_and_verifier_only`
+  - anti-loop memory should tell the planner what happened, while the verifier flags repetition and unsafe output
+- Alternatives considered:
+  - let the LLM generate final buyer-facing speech without deterministic verification
+  - move all conversation planning into deterministic templates
+  - let local LLM outputs alter campaign facts or side effects
+- Consequences:
+  - one replan is allowed for non-critical verifier issues
+  - hard deterministic fallback is reserved for safety-critical or repeated verifier failure
+  - buyer-facing uncertainty must be natural clarification, not internal classifier language
+  - local LLM work remains isolated until quality and latency gates pass
+
+### DEC-132 - Move from scenario patching toward semantic frame mapping
+
+- Date: 2026-05-27
+- Status: accepted
+- Decision: stop treating exact dialogue-path patches as sufficient. Future sales-dialogue work should emphasize semantic frame mapping, buyer-state tracking, relation fidelity such as AND/OR and negation, ASR alias handling, memory progression, and generalized intent/action planning.
+- Why:
+  - OpenAI live-derived evidence showed that the agent could answer product questions yet still fail as a sales agent when it stalled, dumped information, repeated itself, or missed buyer intent
+  - `PUBLIC-OPENAI-SEMANTIC-UNDERSTANDING-001` covers 630 scenarios and 590 multi-turn cases
+  - `PUBLIC-OPENAI-LIVE-SEMANTIC-PIPELINE-001` covers ASR aliases, state transitions, terminal acceptance, and stability-guard ownership without provider calls
+  - validators are regression tripwires, not proof that real buyers experience the conversation as intelligent
+- Alternatives considered:
+  - continue one-off patches for each observed phrase
+  - expand scenario count without changing semantic representation
+  - rely on broad menu fallback after uncertainty
+- Consequences:
+  - future evaluations should test paraphrases and meaning preservation, not only exact utterances
+  - "I already told you" and repeated-question cases must use memory before asking again
+  - buyer-facing clarification should sound natural and should not expose classifier uncertainty
+
+### DEC-131 - Define sales-ready as active selling, not product explanation
+
+- Date: 2026-05-25
+- Status: accepted
+- Decision: for this project, "sales-ready" means the agent can actively sell: move the buyer toward a decision, handle objections, recommend or disqualify based on fit, avoid loops and passive information dumping, and behave closer to a strong sales agent than a static FAQ reader.
+- Why:
+  - OpenAI plan-fit evidence showed that source-grounded product answers are necessary but not sufficient
+  - `OPENAI-LIVE-SALES-SKILL-FAILURE-AUDIT-001` recorded missing sales-skill classes from private live evidence without copying raw transcript text
+  - `PUBLIC-OPENAI-LIVE-SALES-READINESS-001`, `PUBLIC-OPENAI-DECISION-STAGE-SELLING-001`, `PUBLIC-OPENAI-COMMERCIAL-CLOSING-001`, and `COMMERCIAL-SALES-PERFORMANCE-GATE-001` extended evaluation toward decision-stage selling, commercial closing, and loop prevention
+- Alternatives considered:
+  - define readiness as answering product questions accurately
+  - optimize only for source-grounded factuality
+  - defer sales momentum and objection handling to a human operator
+- Consequences:
+  - evaluation must include sales momentum, recommendation quality, objection handling, no-fit decisions, and terminal-close discipline
+  - source grounding remains required, but factual correctness alone is not a sales-quality pass
+
+### DEC-130 - Resolve the ElevenLabs voice issue as configuration precedence, not hardcoded voice logic
+
+- Date: 2026-05-25
+- Status: accepted
+- Decision: treat the observed ElevenLabs voice mismatch as a runtime configuration/environment issue, not as a hardcoded voice-id bug in campaign logic. Voice diagnostics should avoid logging raw voice IDs and should preserve env/local-config precedence boundaries.
+- Why:
+  - `ELEVENLABS-VOICE-RESOLUTION-AUDIT-001` found no hardcoded voice-id findings and no raw voice-id logging
+  - the active packet resolved the voice from local voice config, while stale process environment variables could affect a live server until restart
+  - the audit made no live TTS or provider calls and copied no private transcript into public evidence
+- Alternatives considered:
+  - patch campaign voice IDs directly
+  - assume ElevenLabs itself was broken
+  - log raw voice IDs into public evidence for debugging convenience
+- Consequences:
+  - live voice fixes should check process environment, local config, and server restart state before changing runtime code
+  - public evidence may record hashes/aliases but not raw private config values
+
+### DEC-129 - Keep the OpenAI public fixture source-grounded and self-serve while improving live sales behavior
+
+- Date: 2026-05-25
+- Status: accepted
+- Decision: preserve the OpenAI public fixture as a source-grounded self-serve plan-fit campaign while improving live sales flow, intent priority, decision-stage selling, memory progression, spoken naturalness, and commercial closing.
+- Why:
+  - post-baseline evidence (`PUBLIC-OPENAI-LIVE-SALES-FLOW-001`, `PUBLIC-OPENAI-INTENT-PRIORITY-001`, `PUBLIC-OPENAI-MEMORY-PROGRESSION-001`, `PUBLIC-OPENAI-SPOKEN-SALES-NATURALNESS-001`, and `PUBLIC-OPENAI-COMMERCIAL-CLOSING-001`) passed without provider calls, raw URL speech, fake side effects, or private transcript copying
+  - the fixture must still avoid official OpenAI affiliation claims, email/calendar/CRM side effects, raw spoken URLs, payment collection, and Enterprise pricing overclaims
+- Alternatives considered:
+  - revert to appointment-style close semantics
+  - weaken source constraints to make sales language easier
+  - let universal dialogue absorb OpenAI product facts
+- Consequences:
+  - self-serve and contact-sales close semantics remain campaign-owned
+  - universal dialogue stays product-agnostic
+  - further sales improvements must not compromise source grounding or side-effect safety
+
 ### DEC-128 - Make self-serve close semantics campaign-owned for the OpenAI public fixture
 
 - Date: 2026-05-24

@@ -53,6 +53,9 @@ The post-May-22 development workflow also used iterative human/AI collaboration:
 - The assistant was expected to challenge assumptions, preserve provider/private-data boundaries, and avoid broad repo audits when targeted reads were enough.
 - Live feedback was not copied into public thesis files as raw private transcript material; only sanitized findings and generated public-safe evidence should be cited.
 - Deterministic validation is treated as engineering evidence, not a substitute for Tarik's live listening review, sales-expert review, or compliance review.
+- Tarik clarified that sales-ready means active selling, objection handling, fit-based recommendation/disqualification, decision movement, and loop resistance, not only product explanation.
+- Tarik made the manual qualitative judgment that Liquid TTS output was unintelligible/gibberish, which caused Liquid's retirement as a voice backend despite successful setup and synthetic smoke generation.
+- AI-assisted development supported prompt design, implementation planning, debugging, validator design, evidence interpretation, and documentation updates, but final project decisions and thesis claims remain Tarik's responsibility.
 
 ## Draft Wording For Thesis
 
@@ -61,3 +64,7 @@ The post-May-22 development workflow also used iterative human/AI collaboration:
 Optional process wording:
 
 `The implementation workflow used supervised AI-assisted development. The author provided project direction, live-call observations, review judgments, and acceptance boundaries; AI tooling assisted with local implementation, validator design, documentation planning, and evidence organization. Final interpretation and thesis claims remain the author's responsibility.`
+
+Additional current-process wording:
+
+`Manual live tests and listening reviews were treated as qualitative ground truth for sales and speech quality. Automated validators were used as regression and evidence-integrity tools, not as substitutes for independent evaluation or production-readiness proof.`

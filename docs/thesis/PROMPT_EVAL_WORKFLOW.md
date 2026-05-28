@@ -91,3 +91,27 @@ Default to:
 - `git diff --check`
 
 Run the full ring only for broad universal runtime changes, major milestones, or release-readiness sweeps. If a reduced budget is used, record that scope instead of claiming all validators passed.
+
+## Post-Checkpoint Workflow Rules
+
+For current sales-dialogue work, do not treat exact scenario patching as enough. A useful evaluation packet should include:
+
+- exact regression cases for observed defects
+- paraphrase and spoken-variation cases
+- semantic frame checks for buyer intent, objects, relations, negation, correction, and previous context
+- negative controls that prove adjacent intents do not collapse into the same route
+- loop-risk checks for repeated questions, "I already told you", terminal acceptance, and no-fit closes
+
+Validator interpretation:
+
+- evidence validators are regression tripwires and integrity checks
+- quality gates can fail without blocking an honest evidence commit
+- passing validators must not be written as live/product readiness
+- manual live tests and listening reviews are required after architecture changes that affect sales flow, voice delivery, TTS, latency, or perceived naturalness
+
+Operational workflow:
+
+- use focused validators plus directly affected validators by default
+- run shared-runtime or full historical validators only when shared/core runtime behavior changed
+- avoid parallel Git/Codex sessions on the same repo when large commits are pending, because repeated Windows Git lock issues have occurred
+- do not include `continue from commit X` in future phase prompts unless a fixed baseline is truly needed; the current local repo state and verified evidence baseline should be the source of truth

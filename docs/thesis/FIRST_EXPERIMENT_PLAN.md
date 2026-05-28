@@ -66,3 +66,9 @@ Do not start with:
 - multilingual adaptation
 - private-data tuning
 - production deployment concerns
+
+## Historical Status
+
+This file is historical. It records the first narrow experiment plan and should not be rewritten as if it were the current plan.
+
+Current thesis work has moved beyond the first prompt-comparison slice into source-grounded product fixtures, semantic sales-dialogue evaluation, local LLM feasibility research, voice/audio backend research, and internal prosody planning. Use this file to explain the initial baseline and then cite later generated evidence for current architecture and quality claims.

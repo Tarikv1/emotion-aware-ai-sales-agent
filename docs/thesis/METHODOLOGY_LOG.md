@@ -16,6 +16,56 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-29 - Thesis update from post-checkpoint evidence
+
+- Objective: update thesis-facing documentation from committed evidence after the latest thesis-doc checkpoint without changing runtime behavior or copying private raw transcripts.
+- Action taken: verified the latest `docs/thesis` commit as `09228e0c23548ae799ca7baf7ede9ced7aea83ad` from `2026-05-25 01:29:50 +0200`, reviewed post-baseline generated evidence selectively, and recorded this update under `THESIS-DOCS-UPDATE-001`.
+- Data used: committed generated evidence, runtime/config manifests, scripts, git history, and user-confirmed planning decisions cross-checked against local evidence. No provider call, local model generation, audio inference, live TTS, real customer data, or raw private transcript copying was used.
+- Output created: updated thesis docs and `research/experiments/generated/THESIS-DOCS-UPDATE-001/`.
+- What was learned: the project has moved from "can answer product questions" toward "can sell with source grounding, semantic understanding, objection handling, loop resistance, fit-based recommendation, safe no-fit, and delivery control." That is a stronger and stricter target than the earlier prompt baseline.
+- Why it matters for the thesis: final writing must distinguish architecture research, evidence integrity, quality gates, manual review, and live/product readiness instead of flattening them into a single "passed tests" claim.
+- Open questions: how much of the next phase should clean the prosody taxonomy versus test a non-LLM/action-id selector baseline.
+
+### 2026-05-29 - Fish-inspired prosody taxonomy and quality audit
+
+- Objective: create and audit an internal sales-safe prosody control layer inspired by Fish Audio S2 without using Fish as a runtime dependency or leaking Fish tags into active speech.
+- Action taken: added a backend-neutral taxonomy, composition rules, sales-state mapping, backend mapping policy, deterministic prosody planner prototype, examples, quality audits, dry-run planner audit, ElevenLabs mapping readiness plan, and decision evidence.
+- Data used: recorded Fish source links and project-owned synthetic sales/prosody scenarios. Fish was not installed or run. ElevenLabs, Liquid, Kokoro, local generation, provider APIs, and live TTS were not called.
+- Output created: `FISH-INSPIRED-PROSODY-TAXONOMY-001`, `SALES-PROSODY-MAPPING-001`, `PROSODY-PLANNER-PROTOTYPE-001`, `PROSODY-TAXONOMY-QUALITY-AUDIT-001`, `SALES-PROSODY-MAPPING-QUALITY-AUDIT-001`, `PROSODY-PLANNER-DRY-RUN-AUDIT-001`, `ELEVENLABS-PROSODY-MAPPING-READINESS-001`, and `PROSODY-TAXONOMY-QUALITY-DECISION-001`.
+- What was learned: a useful prosody layer needs a curated internal taxonomy, not a tiny label set and not 15,000 raw provider tags. The first quality audit found no blockers but many warnings, so cleanup is required before any ElevenLabs mapping prototype.
+- Why it matters for the thesis: speech/prosody control is now an internal planning problem that can be evaluated separately from provider audio quality and live integration.
+- Open questions: which duplicate or vague labels should be merged, and whether the first future ElevenLabs mapping should use text shaping only or also provider-supported style/settings.
+
+### 2026-05-28 - Liquid Audio feasibility succeeded mechanically but failed listening quality
+
+- Objective: evaluate Liquid Audio as a possible local speech/audio backend while preserving the current live voice path and no-live-wiring boundary.
+- Action taken: recorded source/license registry material, set up an isolated audio environment, downloaded/loaded the model, ran synthetic TTS/ASR smoke evidence, generated a manual listening review workflow, imported the manual review, and recorded the retirement decision.
+- Data used: synthetic text only, local ignored model/audio artifacts, generated evidence, and explicit manual listening feedback. No real customer audio, provider calls, ElevenLabs calls, live TTS, or committed audio/model weights were used.
+- Output created: Liquid feasibility, environment, model-load, synthetic TTS/ASR smoke, latency/audit, manual review, and retirement decision packets.
+- What was learned: model setup and inference success are not enough. The TTS smoke technically produced audio, but manual review found all five files unintelligible/gibberish with no recognizable words, so Liquid is not usable as TTS, voice backend, thesis-demo TTS, fallback TTS, or ASR quality evidence.
+- Why it matters for the thesis: it is a concrete example of the difference between engineering feasibility and human-perceived voice quality. Negative results are valuable evidence when boundaries and manual review are explicit.
+- Open questions: whether Liquid's speech-to-speech architecture remains useful only as design inspiration, and whether Kokoro deserves a later benchmark if local TTS becomes thesis-relevant.
+
+### 2026-05-27/28 - Local LLM conversation-brain research and rejection for live use
+
+- Objective: test whether a local Qwen-based conversation brain could plan sales turns under the source, memory, safety, and live-latency constraints of the OpenAI plan-fit campaign.
+- Action taken: defined a structured planner schema, built an 80-case gold set, ran Qwen2.5-7B compact planner smoke/evaluation, built SFT and balanced datasets, ran QLoRA dry runs and adapter probes, diagnosed curriculum and mixed-replay failures, designed a two-head architecture, and benchmarked Qwen/Ollama/small models for live-action selection.
+- Data used: generated/sanitized cases and local model artifacts. Local model inference/training occurred only in explicit offline experiment phases. No provider calls, OpenAI API calls, live TTS, runtime replacement, real customer data, or committed model/adapters were used.
+- Output created: `LOCAL-LLM-CONVERSATION-BRAIN-FEASIBILITY-001`, `LOCAL-QWEN-GOLDSET-EVAL-001`, Qwen SFT/QLoRA/tiny/curriculum/mixed-replay evidence, `LOCAL-QWEN-TWO-HEAD-ARCHITECTURE-001`, Qwen/Ollama latency decisions, and small-model benchmark decisions.
+- What was learned: Qwen 7B can be made to emit structured plans in small smokes but failed strict gold-set quality and live-latency needs. QLoRA was mechanically valid and tiny overfit worked, but curriculum and mixed-replay adapters did not generalize enough. Ollama improved some backend behavior but not enough. Small action-id/constrained modes are more plausible than full spoken-response generation, but tested models still missed the strict target.
+- Why it matters for the thesis: the long-term architecture should keep the LLM as a conversation planner while deterministic layers own memory, verifier, facts, safety, and side-effect boundaries. No local LLM should be live-wired until both quality and roughly 2-3 second live-turn latency gates pass.
+- Open questions: whether a non-LLM classifier/action selector or distilled small action selector can beat the current deterministic/LLM tradeoff.
+
+### 2026-05-25/27 - OpenAI fixture sales readiness and semantic understanding shift
+
+- Objective: improve the OpenAI public product fixture from accurate product explanation toward active sales behavior without weakening source grounding or side-effect safety.
+- Action taken: audited fresh live rehearsal, fixed voice/config diagnostics, stopped legacy OpenAI fields leaking into speech, repaired sales-flow relevance, strengthened sales readiness, preserved memory across plan-fit progression, added universal commercial sales-skill evidence, hardened commercial performance gates, preserved decision stage through close, prioritized explanation intent, improved spoken naturalness, and enforced a semantic pipeline in live turns.
+- Data used: committed generated evidence and sanitized live-derived failure classes. Raw private transcripts were not copied into public evidence. Provider calls, live TTS, local LLM calls, email/calendar/CRM side effects, payment collection, and official OpenAI representation remained disabled.
+- Output created: post-baseline OpenAI evidence from `ELEVENLABS-VOICE-RESOLUTION-AUDIT-001` through `PUBLIC-OPENAI-LIVE-SEMANTIC-PIPELINE-001`, plus commercial sales performance evidence.
+- What was learned: sales readiness is not just answering plan questions. The agent must actively sell, handle objections, move the buyer toward a decision, recommend or disqualify based on context, avoid loops, and preserve buyer meaning across paraphrases, ASR aliases, AND/OR relations, corrections, repeated questions, and terminal acceptance.
+- Why it matters for the thesis: the methodology shifted from scenario-specific route patching toward semantic frame mapping, buyer-state tracking, generalized intent/action planning, and validators as regression tripwires rather than proof of real sales quality.
+- Open questions: how to measure live buyer perception once semantic dry-runs pass, and whether a future planner can improve flexibility without hallucinating facts or side effects.
+
 ### 2026-05-24 - Public OpenAI source-grounded product fixture and self-serve close semantics
 
 - Objective: add a real public product benchmark that lets the agent answer plan, price, upgrade, API-boundary, privacy, business, Enterprise, and sign-up questions from official public OpenAI sources without leaking those facts into universal sales dialogue.

@@ -10,7 +10,9 @@ Develop the thesis work toward a real client-usable product: an autonomous emoti
 
 The launch target is autonomous behavior inside a constrained sales workflow, with fallback and escalation guardrails rather than human approval for every normal response.
 
-Current status as of 2026-05-24: the project is still a research/prototype system, not production-ready. It now has a stronger deterministic dialogue layer, a generic campaign selector, campaign-owned fact/config layers, replay-first live failure tests, a live-inspired adversarial matrix, and a source-grounded public OpenAI/ChatGPT plan-fit fixture. These improve evidence quality but do not remove the need for live ASR/TTS/latency testing, human review, compliance review, and controlled client campaign intake.
+Current status as of 2026-05-29: the project is still a research/prototype system, not production-ready. It now has a stronger deterministic dialogue layer, a generic campaign selector, campaign-owned fact/config layers, replay-first live failure tests, a live-inspired adversarial matrix, a source-grounded public OpenAI/ChatGPT plan-fit fixture, local LLM feasibility evidence, Liquid retirement evidence, and a Fish-inspired internal prosody taxonomy. These improve evidence quality and architecture clarity, but they do not remove the need for live ASR/TTS/latency testing, human review, compliance review, and controlled client campaign intake.
+
+Sales-ready now means more than explaining the product. The agent must actively move the buyer toward a decision, handle objections, recommend or disqualify based on fit, avoid loops and passive information dumping, and preserve buyer meaning across paraphrases and spoken variations.
 
 ## Smallest believable system
 
@@ -42,6 +44,9 @@ Constraints for the first version:
 - universal sales dialogue behavior with campaign-owned product facts
 - source-grounded campaign fixtures and claim governance
 - deterministic replay and adversarial validation for live-shaped dialogue failures
+- semantic frame mapping, buyer-state tracking, and loop resistance for sales dialogue
+- local LLM/action-selector research as an isolated future-planning track
+- internal backend-neutral prosody planning as a future delivery-control layer
 
 ## Out of scope
 
@@ -54,6 +59,9 @@ Constraints for the first version:
 - official representation of third-party vendors in public-data simulations
 - fake email, calendar, CRM, or payment side effects
 - production deployment or real customer use without compliance, consent, retention, and handoff review
+- live local LLM response generation
+- Liquid, Fish, or Kokoro live voice/runtime wiring
+- raw Fish-style tags in buyer-facing speech
 
 ## Current risks
 
@@ -69,6 +77,9 @@ Constraints for the first version:
 - deterministic validator pass being mistaken for real sales quality
 - source-grounded public product facts becoming stale
 - universal dialogue being contaminated by campaign-specific product claims
+- local LLM latency or output quality being overestimated from small smokes
+- successful model setup being mistaken for acceptable speech quality
+- prosody labels becoming too redundant or vague to improve real sales calls
 
 ## Research posture
 
@@ -96,6 +107,12 @@ Current architecture posture:
 
 - universal dialogue owns buyer-move recognition, response shape, repair, call control, and side-effect safety
 - campaign configs and adapters own product claims, customer-facing wording, close modes, source policies, and handoff targets
+- a future LLM may act as conversation move planner, but it must not own campaign facts, source truth, side effects, or final safety boundaries
+- deterministic memory/verifier layers should store what happened, detect loops, enforce source/safety boundaries, and request at most one replan before hard fallback
+- the current live voice path remains ElevenLabs
+- Liquid is architecture inspiration only after failed manual listening review
+- Fish Audio S2 is inspiration for internal prosody labels only; Fish tags must not leak into ElevenLabs speech
+- Kokoro remains optional/future local TTS benchmark candidate, not an immediate replacement
 - deterministic dry-run evidence is required before live rehearsal
 - live rehearsal is still required before stronger claims about ASR, TTS, latency, voice naturalness, or commercial readiness
 

@@ -560,6 +560,79 @@ Project use:
 - live custom voice comparison
 - provider privacy and logging boundaries
 
+### Liquid Audio / LFM2.5-Audio-1.5B
+
+- Type: open-source/model documentation and architecture inspiration
+- Sources:
+  - Liquid Audio repository: https://github.com/Liquid4All/liquid-audio
+  - LFM2.5-Audio-1.5B model card: https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B
+  - Liquid model license docs: https://docs.liquid.ai/lfm/help/model-license
+  - Liquid Audio repository license: https://github.com/Liquid4All/liquid-audio/blob/main/LICENSE
+- Project use: local audio-model feasibility branch, speech-to-speech architecture inspiration, and negative TTS-quality evidence after manual listening review.
+- Current project status: environment setup, model download/load, and synthetic TTS smoke were recorded, but manual listening review found generated Liquid TTS unintelligible/gibberish. Liquid is retired as TTS/voice backend and retained as architecture inspiration only.
+- License/commercial note: registry evidence records the LFM Open License v1.0 and a commercial-use revenue threshold. Re-check license before any future use.
+- Thesis caution: do not cite Liquid as working TTS quality evidence, ASR quality evidence, product fallback TTS, or live-runtime dependency.
+
+### Fish Audio S2 / fish-speech / s2-pro
+
+- Type: model documentation, open-source inspiration, and prosody-control inspiration
+- Sources:
+  - Fish S2 page: https://fish.audio/s2/
+  - fish-speech repository: https://github.com/fishaudio/fish-speech
+  - s2-pro model card: https://huggingface.co/fishaudio/s2-pro
+  - Fish speech docs: https://speech.fish.audio/
+  - Fish license file: https://github.com/fishaudio/fish-speech/blob/main/LICENSE
+- Project use: inspiration for internal backend-neutral prosody/emotion-control taxonomy and deterministic prosody planner.
+- Current project status: Fish is not installed, run, or wired. The project records Fish's 15,000+ tag support as inspiration only, does not import the full tag universe, and blocks raw Fish tags from ElevenLabs spoken text.
+- License/commercial note: registry evidence records a research/non-commercial license posture and separate commercial license requirement.
+- Thesis caution: cite Fish as architecture/control inspiration only, not as an implementation dependency or measured provider-quality result.
+
+### Kokoro-82M
+
+- Type: local TTS benchmark candidate and open-source model reference
+- Sources:
+  - Kokoro repository: https://github.com/hexgrad/kokoro
+  - Kokoro-82M model card: https://huggingface.co/hexgrad/Kokoro-82M
+  - Kokoro repository license: https://github.com/hexgrad/kokoro/blob/main/LICENSE
+- Project use: optional future local/offline TTS benchmark candidate if provider-independent TTS becomes thesis-relevant.
+- Current project status: not installed, not run, not benchmarked, and not wired into runtime. ElevenLabs remains the current live voice path.
+- License/commercial note: registry evidence records Apache-2.0 licensing, subject to normal final license review.
+- Thesis caution: do not describe Kokoro as an accepted fallback or replacement until latency and listening-quality evidence exists.
+
+### PyTorch local install selector
+
+- Type: implementation dependency documentation
+- Sources:
+  - PyTorch local install selector: https://pytorch.org/get-started/locally/
+  - PyTorch CUDA 12.8 wheel index used by local setup script: https://download.pytorch.org/whl/cu128
+- Project use: recorded by the Liquid audio environment setup script as the local install selector reference for PyTorch/CUDA wheel selection.
+- Current project status: implementation setup reference only.
+- Thesis caution: dependency documentation supports environment reproducibility, not model quality claims.
+
+### Liquid Audio model docs
+
+- Type: provider/model documentation
+- Source: https://docs.liquid.ai/lfm/models/audio-models
+- Project use: setup/config reference for Liquid Audio model feasibility work.
+- Current project status: implementation setup and architecture research reference only. Liquid is retired as a TTS/voice backend after failed manual listening review.
+- Thesis caution: documentation supports setup and architecture context, not TTS quality or live-readiness claims.
+
+### Local LLM and Ollama benchmark evidence
+
+- Type: local benchmark evidence registry and model/source identifiers
+- Local references:
+  - `research/experiments/generated/LOCAL-LLM-CONVERSATION-BRAIN-FEASIBILITY-001/`
+  - `research/experiments/generated/LOCAL-QWEN-GOLDSET-EVAL-001/`
+  - `research/experiments/generated/LOCAL-QWEN-TWO-HEAD-ARCHITECTURE-001/`
+  - `research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-DECISION-001/`
+  - `research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-001/`
+  - `research/experiments/generated/LOCAL-OLLAMA-SMALL-LIVE-ACTION-MODEL-DECISION-001/`
+  - `runtime/llm_brain/training/ollama_small_live_action_model_registry.json`
+- Model/source identifiers recorded in repo evidence: `Qwen/Qwen2.5-7B-Instruct`, `qwen2.5:7b`, `qwen2.5:0.5b`, `qwen2.5:1.5b`, `gemma3:270m`, `gemma3:1b`, `smollm2:1.7b`, and `llama3.2:1b`.
+- External model URLs: not recorded in current repo evidence for the Ollama model entries; add official URLs later only if final writing needs model-card citations.
+- Project use: evidence-only feasibility, latency, and action-selector research. Qwen 7B and tested small local models are not live-wired.
+- Thesis caution: cite these as local project benchmark artifacts and model identifiers, not as provider documentation or proof of live readiness.
+
 ## Sales Objection And Product Sources
 
 ### Sales difficulty taxonomy
