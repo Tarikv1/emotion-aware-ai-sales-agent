@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-QWEN-LIVE-ACTION-LATENCY-DECISION-VALIDATION-001",
-  "validated_at": "2026-05-28T14:29:58.428148+00:00",
+  "validated_at": "2026-05-28T15:57:00.168346+00:00",
   "status": "pass",
   "benchmark_result": "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001/result.json",
   "decision_result": "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-DECISION-001/result.json",
@@ -22,18 +22,10 @@
     "decision_recommendation_exists": true
   },
   "changed_files": [
-    "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-001/report.md",
-    "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-DECISION-VALIDATION-001/result.json",
     "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-VALIDATION-001/result.json",
-    "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-001/report.md",
-    "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-001/result.json",
-    "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-VALIDATION-001/report.md",
     "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-VALIDATION-001/result.json",
-    "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-001/report.md",
-    "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-001/result.json",
-    "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-VALIDATION-001/report.md",
-    "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-VALIDATION-001/result.json",
-    "research/experiments/generated/LOCAL-QWEN7B-PRUNING-FEASIBILITY-VALIDATION-001/result.json"
+    "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-VALIDATION-001/result.json"
   ],
   "failures": [],
   "side_effects": {

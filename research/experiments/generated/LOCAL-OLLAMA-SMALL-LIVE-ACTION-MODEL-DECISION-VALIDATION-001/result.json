@@ -1,11 +1,9 @@
 {
-  "experiment_id": "LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-VALIDATION-001",
-  "validated_at": "2026-05-28T15:56:51.128325+00:00",
+  "experiment_id": "LOCAL-OLLAMA-SMALL-LIVE-ACTION-MODEL-DECISION-VALIDATION-001",
+  "validated_at": "2026-05-28T15:56:44.074538+00:00",
   "status": "pass",
-  "benchmark_result": "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-001/result.json",
-  "benchmark_run": true,
-  "target_met": false,
-  "ollama_localhost_calls_made": true,
+  "decision_result": "research/experiments/generated/LOCAL-OLLAMA-SMALL-LIVE-ACTION-MODEL-DECISION-001/result.json",
+  "recommendation_id": "non_llm_classifier_or_backend_optimization",
   "changed_files": [
     "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-DECISION-VALIDATION-001/result.json",
     "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-VALIDATION-001/result.json",
@@ -14,8 +12,8 @@
   ],
   "failures": [],
   "side_effects": {
-    "local_model_calls_made": true,
-    "ollama_localhost_calls_made": true,
+    "local_model_calls_made": false,
+    "ollama_localhost_calls_made": false,
     "ollama_pull_attempted": false,
     "provider_calls_made": false,
     "openai_api_calls_made": false,

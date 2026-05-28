@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-QWEN-OLLAMA-BACKEND-PROBE-VALIDATION-001",
-  "validated_at": "2026-05-28T14:29:37.802828+00:00",
+  "validated_at": "2026-05-28T15:56:43.974761+00:00",
   "status": "pass",
   "probe_result": "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-001/result.json",
   "ollama_command_exists": false,
@@ -8,12 +8,10 @@
   "qwen_model_present": true,
   "ollama_pull_attempted": false,
   "changed_files": [
-    "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-001/report.md",
-    "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-001/result.json",
-    "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-001/report.md",
-    "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-001/result.json",
-    "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-001/report.md",
-    "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-001/result.json"
+    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-DECISION-VALIDATION-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-VALIDATION-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-VALIDATION-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-VALIDATION-001/result.json"
   ],
   "failures": [],
   "side_effects": {

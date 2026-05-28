@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-VALIDATION-001",
-  "validated_at": "2026-05-28T14:29:46.798486+00:00",
+  "validated_at": "2026-05-28T15:57:00.257559+00:00",
   "status": "pass",
   "decision_result": "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-001/result.json",
   "backend_pruning_decision": "move_to_smaller_distilled_or_constrained_selector",
@@ -8,15 +8,10 @@
   "pruning_recommended_now": false,
   "smaller_model_or_distillation_remains_recommended": true,
   "changed_files": [
-    "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-001/report.md",
-    "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-DECISION-VALIDATION-001/result.json",
     "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-VALIDATION-001/result.json",
-    "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-001/report.md",
-    "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-001/result.json",
-    "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-VALIDATION-001/report.md",
     "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-VALIDATION-001/result.json",
-    "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-001/report.md",
-    "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-001/result.json"
+    "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-VALIDATION-001/result.json"
   ],
   "failures": [],
   "side_effects": {

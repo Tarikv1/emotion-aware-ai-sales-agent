@@ -1,0 +1,86 @@
+{
+  "registry_id": "ollama-small-live-action-model-registry-001",
+  "phase": "4H25",
+  "purpose": "Evidence-only registry for benchmarking already-installed small Ollama models against live-action and constrained-action contracts.",
+  "localhost_api_base": "http://localhost:11434",
+  "localhost_only": true,
+  "provider_api": false,
+  "live_wiring_allowed": false,
+  "adapter_live_ready": false,
+  "pull_allowed_by_env_only": true,
+  "required_env_for_benchmark": {
+    "ENABLE_LOCAL_LLM_BRAIN_EXPERIMENT": "1",
+    "LOCAL_LLM_ENABLED": "true",
+    "LOCAL_OLLAMA_BENCHMARK_ENABLED": "1"
+  },
+  "required_env_for_pull": {
+    "LOCAL_OLLAMA_ALLOW_MODEL_PULL": "1"
+  },
+  "models": [
+    {
+      "model_name": "qwen2.5:0.5b",
+      "expected_size_from_user_ollama_list": "0.5B",
+      "role": "primary_benchmark_candidate",
+      "benchmark_enabled": true,
+      "pull_allowed_by_env_only": true,
+      "live_wiring_allowed": false,
+      "notes": "Smallest Qwen candidate; test whether latency improves enough for action selection."
+    },
+    {
+      "model_name": "qwen2.5:1.5b",
+      "expected_size_from_user_ollama_list": "1.5B",
+      "role": "primary_benchmark_candidate",
+      "benchmark_enabled": true,
+      "pull_allowed_by_env_only": true,
+      "live_wiring_allowed": false,
+      "notes": "Most plausible Qwen distillation target if latency is close and quality is weak."
+    },
+    {
+      "model_name": "gemma3:270m",
+      "expected_size_from_user_ollama_list": "270M",
+      "role": "primary_benchmark_candidate",
+      "benchmark_enabled": true,
+      "pull_allowed_by_env_only": true,
+      "live_wiring_allowed": false,
+      "notes": "Very small latency probe; quality is expected to be the limiting factor."
+    },
+    {
+      "model_name": "gemma3:1b",
+      "expected_size_from_user_ollama_list": "1B",
+      "role": "primary_benchmark_candidate",
+      "benchmark_enabled": true,
+      "pull_allowed_by_env_only": true,
+      "live_wiring_allowed": false,
+      "notes": "Small Gemma candidate for action-only or constrained JSON output."
+    },
+    {
+      "model_name": "smollm2:1.7b",
+      "expected_size_from_user_ollama_list": "1.7B",
+      "role": "primary_benchmark_candidate",
+      "benchmark_enabled": true,
+      "pull_allowed_by_env_only": true,
+      "live_wiring_allowed": false,
+      "notes": "Small general model candidate; benchmark only, no live replacement."
+    },
+    {
+      "model_name": "llama3.2:1b",
+      "expected_size_from_user_ollama_list": "1B",
+      "role": "primary_benchmark_candidate",
+      "benchmark_enabled": true,
+      "pull_allowed_by_env_only": true,
+      "live_wiring_allowed": false,
+      "notes": "Small Llama candidate for constrained action selection."
+    },
+    {
+      "model_name": "qwen2.5:7b",
+      "expected_size_from_user_ollama_list": "7B",
+      "role": "baseline_reference_only",
+      "benchmark_enabled": false,
+      "already_benchmarked": true,
+      "do_not_rerun_by_default": true,
+      "pull_allowed_by_env_only": true,
+      "live_wiring_allowed": false,
+      "notes": "Previous Ollama Qwen 7B evidence is the baseline. Include only with an explicit reference flag."
+    }
+  ]
+}

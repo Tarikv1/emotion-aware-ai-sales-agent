@@ -1,11 +1,9 @@
 {
-  "experiment_id": "LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-VALIDATION-001",
-  "validated_at": "2026-05-28T15:56:51.128325+00:00",
+  "experiment_id": "LOCAL-OLLAMA-SMALL-LIVE-ACTION-MODEL-REGISTRY-VALIDATION-001",
+  "validated_at": "2026-05-28T15:56:43.968229+00:00",
   "status": "pass",
-  "benchmark_result": "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-001/result.json",
-  "benchmark_run": true,
-  "target_met": false,
-  "ollama_localhost_calls_made": true,
+  "registry": "runtime/llm_brain/training/ollama_small_live_action_model_registry.json",
+  "primary_model_count": 6,
   "changed_files": [
     "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-DECISION-VALIDATION-001/result.json",
     "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-VALIDATION-001/result.json",
@@ -14,8 +12,8 @@
   ],
   "failures": [],
   "side_effects": {
-    "local_model_calls_made": true,
-    "ollama_localhost_calls_made": true,
+    "local_model_calls_made": false,
+    "ollama_localhost_calls_made": false,
     "ollama_pull_attempted": false,
     "provider_calls_made": false,
     "openai_api_calls_made": false,
