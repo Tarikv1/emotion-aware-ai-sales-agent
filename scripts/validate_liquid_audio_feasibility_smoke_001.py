@@ -48,6 +48,21 @@ def false_side_effect(payload: dict[str, Any], key: str, failures: list[str], pr
         failures.append(f"{prefix}.{key} must be false")
 
 
+def generated_audio_paths(result: dict[str, Any]) -> list[str]:
+    paths: list[str] = []
+    for section_name in ("tts_smoke", "asr_smoke", "roundtrip_smoke"):
+        section = result.get(section_name) if isinstance(result.get(section_name), dict) else {}
+        cases = section.get("cases") if isinstance(section.get("cases"), list) else []
+        for case in cases:
+            if not isinstance(case, dict):
+                continue
+            for key in ("output_audio_path", "audio_input_path"):
+                value = str(case.get(key) or "").replace("\\", "/")
+                if value.lower().endswith(FORBIDDEN_AUDIO_SUFFIXES):
+                    paths.append(value)
+    return paths
+
+
 def main() -> int:
     failures: list[str] = []
     config = load_json(CONFIG_PATH)
@@ -82,21 +97,24 @@ def main() -> int:
         failures.append("TTS synthetic utterance set must mirror config")
     if asr.get("raw_private_audio_used") is not False:
         failures.append("ASR smoke must not use raw private audio")
-    if tts.get("audio_files_generated") is not False:
-        failures.append("TTS smoke must not generate audio in default Phase 4I1 run")
+    audio_generation_allowed = bool(result.get("status") == "pass" and (result.get("side_effects") or {}).get("allowed_local_audio_generation") is True)
+    generated_paths = generated_audio_paths(result)
+    if tts.get("audio_files_generated") is not False and not audio_generation_allowed:
+        failures.append("TTS smoke can generate audio only in the gated Phase 4I1D run")
+    for path in generated_paths:
+        if not path.startswith("local_artifacts/audio_outputs/liquid/"):
+            failures.append(f"generated audio path must stay under local_artifacts/audio_outputs/liquid: {path}")
 
     side_effects = result.get("side_effects") if isinstance(result.get("side_effects"), dict) else {}
     for key in (
         "model_download_attempted",
         "model_downloads_performed",
         "model_weights_committed",
-        "audio_files_generated",
         "audio_files_committed",
         "provider_calls_made",
         "openai_api_calls_made",
         "elevenlabs_calls_made",
         "live_tts_calls_made",
-        "local_model_generation_made",
         "ollama_generation_made",
         "training_performed",
         "live_runtime_wiring_changed",
@@ -108,6 +126,10 @@ def main() -> int:
         "live_wiring_allowed",
     ):
         false_side_effect(side_effects, key, failures, "smoke.side_effects")
+    if side_effects.get("audio_files_generated") is not False and not audio_generation_allowed:
+        failures.append("smoke.side_effects.audio_files_generated can be true only for allowed gated local audio generation")
+    if side_effects.get("local_model_generation_made") is not False and not audio_generation_allowed:
+        failures.append("smoke.side_effects.local_model_generation_made can be true only for allowed gated local audio generation")
 
     tracked = git_lines(["ls-files"])
     weights = [path for path in tracked if path.lower().endswith(FORBIDDEN_WEIGHT_SUFFIXES) or path.startswith("local_artifacts/")]

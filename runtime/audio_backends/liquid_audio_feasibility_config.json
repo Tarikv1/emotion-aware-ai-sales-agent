@@ -16,6 +16,12 @@
     "LOCAL_LIQUID_AUDIO_ENABLED": "true",
     "LOCAL_LIQUID_ALLOW_MODEL_DOWNLOAD": "1"
   },
+  "smoke_env_gates": {
+    "ENABLE_LOCAL_AUDIO_EXPERIMENT": "1",
+    "LOCAL_LIQUID_AUDIO_ENABLED": "true",
+    "LOCAL_LIQUID_ALLOW_MODEL_LOAD": "1",
+    "LOCAL_LIQUID_ALLOW_INFERENCE": "1"
+  },
   "download_gate_name": "LOCAL_LIQUID_ALLOW_MODEL_DOWNLOAD",
   "planned_modes": [
     "install_probe",
@@ -76,11 +82,16 @@
       "ChatGPT and other AI tools",
       "Claude",
       "coding and voice",
-      "Free Plus Pro Business Enterprise"
+      "Free Plus Pro Business Enterprise",
+      "I am by myself, not a team",
+      "I use ChatGPT or maybe Claude"
     ],
     "tts_utterances": [
       "Just so I answer the right thing, are you asking about the plans themselves or which one fits your use?",
-      "Got it - coding workflow and voice. Are you using it lightly, moderately, or heavily?"
+      "Got it \u2014 coding workflow and voice. Are you using it lightly, moderately, or heavily?",
+      "I heard something like Claude there \u2014 are you comparing ChatGPT with Claude, or did I catch that wrong?",
+      "If you are using it heavily for coding, Pro is the safer plan to compare, while Plus is the lower-cost starting point.",
+      "Sounds good. Start from the official ChatGPT plans page, and if you are unsure, start lower and move up only if you need more headroom."
     ]
   },
   "source_evidence": [

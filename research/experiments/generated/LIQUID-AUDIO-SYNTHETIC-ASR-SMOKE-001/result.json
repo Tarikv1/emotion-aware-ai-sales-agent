@@ -1,0 +1,312 @@
+{
+  "asr_attempted_count": 10,
+  "asr_quality_claim": "unproven_loopback_only",
+  "asr_source_type": "liquid_tts_loopback",
+  "asr_succeeded_count": 0,
+  "audio_files_committed": false,
+  "audio_files_generated": true,
+  "audio_source_types": [
+    "liquid_tts_loopback"
+  ],
+  "blocker": "",
+  "cases": [
+    {
+      "asr_attempted": true,
+      "asr_succeeded": false,
+      "audio_input_path": "local_artifacts/audio_outputs/liquid/asr_loopback/asr_01.wav",
+      "audio_source_type": "liquid_tts_loopback",
+      "case_id": "asr_01",
+      "critical_term_preserved": {
+        "ChatGPT": false
+      },
+      "critical_terms_checked": [
+        "ChatGPT"
+      ],
+      "critical_terms_preserved_count": 0,
+      "critical_terms_total": 1,
+      "exact_blocker": "Liquid ASR returned text, but it did not match the target phrase or preserve required critical terms.",
+      "exact_match": false,
+      "fuzzy_match_score": 0.1818,
+      "latency_seconds": 0.424903,
+      "normalized_transcript": "oops i couldn t understand that please try again",
+      "target_phrase": "ChatGPT",
+      "transcript": "Oops, I couldn't understand that. Please try again."
+    },
+    {
+      "asr_attempted": true,
+      "asr_succeeded": false,
+      "audio_input_path": "local_artifacts/audio_outputs/liquid/asr_loopback/asr_02.wav",
+      "audio_source_type": "liquid_tts_loopback",
+      "case_id": "asr_02",
+      "critical_term_preserved": {
+        "ChatGPT": false,
+        "and/or": false
+      },
+      "critical_terms_checked": [
+        "ChatGPT",
+        "and/or"
+      ],
+      "critical_terms_preserved_count": 0,
+      "critical_terms_total": 2,
+      "exact_blocker": "Liquid ASR returned text, but it did not match the target phrase or preserve required critical terms.",
+      "exact_match": false,
+      "fuzzy_match_score": 0.0,
+      "latency_seconds": 3.975801,
+      "normalized_transcript": "uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh",
+      "target_phrase": "ChatGPT and other AI tools",
+      "transcript": "Uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh uh"
+    },
+    {
+      "asr_attempted": true,
+      "asr_succeeded": false,
+      "audio_input_path": "local_artifacts/audio_outputs/liquid/asr_loopback/asr_03.wav",
+      "audio_source_type": "liquid_tts_loopback",
+      "case_id": "asr_03",
+      "critical_term_preserved": {
+        "Claude": false
+      },
+      "critical_terms_checked": [
+        "Claude"
+      ],
+      "critical_terms_preserved_count": 0,
+      "critical_terms_total": 1,
+      "exact_blocker": "Liquid ASR returned text, but it did not match the target phrase or preserve required critical terms.",
+      "exact_match": false,
+      "fuzzy_match_score": 0.0448,
+      "latency_seconds": 0.838447,
+      "normalized_transcript": "i m sorry but i can t assist with that request if you have any other questions or need help with something else feel free to ask",
+      "target_phrase": "Claude",
+      "transcript": "I'm sorry, but I can't assist with that request. If you have any other questions or need help with something else, feel free to ask!"
+    },
+    {
+      "asr_attempted": true,
+      "asr_succeeded": false,
+      "audio_input_path": "local_artifacts/audio_outputs/liquid/asr_loopback/asr_04.wav",
+      "audio_source_type": "liquid_tts_loopback",
+      "case_id": "asr_04",
+      "critical_term_preserved": {
+        "and/or": false,
+        "coding": false,
+        "voice": false
+      },
+      "critical_terms_checked": [
+        "and/or",
+        "coding",
+        "voice"
+      ],
+      "critical_terms_preserved_count": 0,
+      "critical_terms_total": 3,
+      "exact_blocker": "Liquid ASR returned text, but it did not match the target phrase or preserve required critical terms.",
+      "exact_match": false,
+      "fuzzy_match_score": 0.209,
+      "latency_seconds": 0.601281,
+      "normalized_transcript": "hmm i didn t quite hear you could you say it louder",
+      "target_phrase": "coding and voice",
+      "transcript": "Hmm, I didn't quite hear you. Could you say it louder?"
+    },
+    {
+      "asr_attempted": true,
+      "asr_succeeded": false,
+      "audio_input_path": "local_artifacts/audio_outputs/liquid/asr_loopback/asr_05.wav",
+      "audio_source_type": "liquid_tts_loopback",
+      "case_id": "asr_05",
+      "critical_term_preserved": {},
+      "critical_terms_checked": [],
+      "critical_terms_preserved_count": 0,
+      "critical_terms_total": 0,
+      "exact_blocker": "Liquid ASR returned text, but it did not match the target phrase or preserve required critical terms.",
+      "exact_match": false,
+      "fuzzy_match_score": 0.2154,
+      "latency_seconds": 0.775542,
+      "normalized_transcript": "wow that s a lot of words could you tell me more about what you re trying to say i m here to help",
+      "target_phrase": "Free Plus Pro Business Enterprise",
+      "transcript": "Wow, that's a lot of words! Could you tell me more about what you're trying to say? I'm here to help!"
+    },
+    {
+      "asr_attempted": true,
+      "asr_succeeded": false,
+      "audio_input_path": "local_artifacts/audio_outputs/liquid/asr_loopback/asr_06.wav",
+      "audio_source_type": "liquid_tts_loopback",
+      "case_id": "asr_06",
+      "critical_term_preserved": {
+        "not team": false
+      },
+      "critical_terms_checked": [
+        "not team"
+      ],
+      "critical_terms_preserved_count": 0,
+      "critical_terms_total": 1,
+      "exact_blocker": "Liquid ASR returned text, but it did not match the target phrase or preserve required critical terms.",
+      "exact_match": false,
+      "fuzzy_match_score": 0.1795,
+      "latency_seconds": 0.568637,
+      "normalized_transcript": "hmm i couldn t make sense of that could you try again",
+      "target_phrase": "I am by myself, not a team",
+      "transcript": "Hmm, I couldn't make sense of that. Could you try again?"
+    },
+    {
+      "asr_attempted": true,
+      "asr_succeeded": false,
+      "audio_input_path": "local_artifacts/audio_outputs/liquid/asr_loopback/asr_07.wav",
+      "audio_source_type": "liquid_tts_loopback",
+      "case_id": "asr_07",
+      "critical_term_preserved": {
+        "ChatGPT": false,
+        "Claude": false,
+        "and/or": false
+      },
+      "critical_terms_checked": [
+        "ChatGPT",
+        "Claude",
+        "and/or"
+      ],
+      "critical_terms_preserved_count": 0,
+      "critical_terms_total": 3,
+      "exact_blocker": "Liquid ASR returned text, but it did not match the target phrase or preserve required critical terms.",
+      "exact_match": false,
+      "fuzzy_match_score": 0.2105,
+      "latency_seconds": 0.175828,
+      "normalized_transcript": "by your f",
+      "target_phrase": "I use ChatGPT or maybe Claude",
+      "transcript": "By your f"
+    }
+  ],
+  "config": "runtime/audio_backends/liquid_audio_feasibility_config.json",
+  "critical_term_preservation_rate": 0.0,
+  "critical_terms_preserved_count": 0,
+  "critical_terms_total": 16,
+  "elevenlabs_calls_made": false,
+  "exact_match_count": 0,
+  "experiment_id": "LIQUID-AUDIO-SYNTHETIC-ASR-SMOKE-001",
+  "generated_at": "2026-05-28T18:50:44.651607+00:00",
+  "gpu_memory": {
+    "cuda_available": true,
+    "device_name": "NVIDIA GeForce RTX 4070 SUPER",
+    "max_gpu_memory_allocated": 6215779328,
+    "mem_get_info_free_bytes": 5157945344,
+    "mem_get_info_total_bytes": 12878086144,
+    "peak_gpu_memory_reserved": 6387924992
+  },
+  "latency_seconds": {
+    "average": null,
+    "count": 0,
+    "max": null,
+    "min": null,
+    "p50": null,
+    "p90": null
+  },
+  "live_tts_calls_made": false,
+  "live_wiring_allowed": false,
+  "loopback_only": true,
+  "model_files_sample": [
+    "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/model.safetensors",
+    "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/tokenizer-e351c8d8-checkpoint125.safetensors",
+    "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/audio_detokenizer/model.safetensors"
+  ],
+  "model_id": "LiquidAI/LFM2.5-Audio-1.5B",
+  "model_path": "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b",
+  "model_present": true,
+  "model_weights_committed": false,
+  "openai_api_calls_made": false,
+  "provider_calls_made": false,
+  "raw_private_audio_used": false,
+  "raw_private_transcripts_included": false,
+  "response_text_changed": false,
+  "roundtrip_cases": [
+    {
+      "asr_attempted": true,
+      "asr_succeeded": false,
+      "audio_input_path": "local_artifacts/audio_outputs/liquid/roundtrip_loopback/roundtrip_01.wav",
+      "audio_source_type": "liquid_tts_loopback",
+      "case_id": "roundtrip_01",
+      "critical_term_preserved": {
+        "ChatGPT": false
+      },
+      "critical_terms_checked": [
+        "ChatGPT"
+      ],
+      "critical_terms_preserved_count": 0,
+      "critical_terms_total": 1,
+      "exact_blocker": "Liquid ASR returned text, but it did not match the target phrase or preserve required critical terms.",
+      "exact_match": false,
+      "fuzzy_match_score": 0.1818,
+      "latency_seconds": 0.420683,
+      "normalized_transcript": "oops i couldn t understand that please try again",
+      "target_phrase": "ChatGPT",
+      "transcript": "Oops, I couldn't understand that. Please try again."
+    },
+    {
+      "asr_attempted": true,
+      "asr_succeeded": false,
+      "audio_input_path": "local_artifacts/audio_outputs/liquid/roundtrip_loopback/roundtrip_02.wav",
+      "audio_source_type": "liquid_tts_loopback",
+      "case_id": "roundtrip_02",
+      "critical_term_preserved": {
+        "and/or": false,
+        "coding": false,
+        "voice": false
+      },
+      "critical_terms_checked": [
+        "and/or",
+        "coding",
+        "voice"
+      ],
+      "critical_terms_preserved_count": 0,
+      "critical_terms_total": 3,
+      "exact_blocker": "Liquid ASR returned text, but it did not match the target phrase or preserve required critical terms.",
+      "exact_match": false,
+      "fuzzy_match_score": 0.209,
+      "latency_seconds": 0.477392,
+      "normalized_transcript": "hmm i didn t quite hear you could you say it louder",
+      "target_phrase": "coding and voice",
+      "transcript": "Hmm, I didn't quite hear you. Could you say it louder?"
+    },
+    {
+      "asr_attempted": true,
+      "asr_succeeded": false,
+      "audio_input_path": "local_artifacts/audio_outputs/liquid/roundtrip_loopback/roundtrip_03.wav",
+      "audio_source_type": "liquid_tts_loopback",
+      "case_id": "roundtrip_03",
+      "critical_term_preserved": {
+        "not team": false
+      },
+      "critical_terms_checked": [
+        "not team"
+      ],
+      "critical_terms_preserved_count": 0,
+      "critical_terms_total": 1,
+      "exact_blocker": "Liquid ASR returned text, but it did not match the target phrase or preserve required critical terms.",
+      "exact_match": false,
+      "fuzzy_match_score": 0.1795,
+      "latency_seconds": 0.497483,
+      "normalized_transcript": "hmm i couldn t make sense of that could you try again",
+      "target_phrase": "I am by myself, not a team",
+      "transcript": "Hmm, I couldn't make sense of that. Could you try again?"
+    }
+  ],
+  "runtime_behavior_changed": false,
+  "sales_brain_replacement_allowed": false,
+  "side_effects": {
+    "allowed_local_audio_generation": true,
+    "audio_files_committed": false,
+    "audio_files_generated": true,
+    "elevenlabs_calls_made": false,
+    "live_runtime_wiring_changed": false,
+    "live_tts_calls_made": false,
+    "live_wiring_allowed": false,
+    "local_model_generation_made": true,
+    "model_download_attempted": false,
+    "model_downloads_performed": false,
+    "model_weights_committed": false,
+    "ollama_generation_made": false,
+    "openai_api_calls_made": false,
+    "provider_calls_made": false,
+    "raw_private_audio_used": false,
+    "raw_private_transcripts_included": false,
+    "response_text_changed": false,
+    "runtime_behavior_changed": false,
+    "sales_brain_replacement_allowed": false,
+    "training_performed": false
+  },
+  "status": "pass"
+}

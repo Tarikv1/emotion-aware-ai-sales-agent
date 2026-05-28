@@ -1,0 +1,84 @@
+{
+  "asr_next_phase_recommendation": "Loopback ASR did not preserve critical terms; independent ASR quality is unproven and needs a separate synthetic or recorded benchmark after prompt/runtime blockers are understood.",
+  "asr_summary": {
+    "attempted": 10,
+    "critical_term_preservation_rate": 0.0,
+    "critical_terms_preserved_count": 0,
+    "critical_terms_total": 16,
+    "loopback_only": true,
+    "source_type": "liquid_tts_loopback",
+    "succeeded": 0
+  },
+  "blocker": "",
+  "config": "runtime/audio_backends/liquid_audio_feasibility_config.json",
+  "elevenlabs_calls_made": false,
+  "experiment_id": "LIQUID-AUDIO-SMOKE-DECISION-001",
+  "generated_at": "2026-05-28T18:51:35.451723+00:00",
+  "latency_assessment": {
+    "reasonable_rtf_threshold": 1.5,
+    "tts_average_rtf": 1.743069,
+    "tts_p50_generation_latency_seconds": 12.896955
+  },
+  "live_tts_calls_made": false,
+  "live_wiring_allowed": false,
+  "model_files_sample": [
+    "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/model.safetensors",
+    "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/tokenizer-e351c8d8-checkpoint125.safetensors",
+    "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/audio_detokenizer/model.safetensors"
+  ],
+  "model_id": "LiquidAI/LFM2.5-Audio-1.5B",
+  "model_path": "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b",
+  "model_present": true,
+  "next_phase_recommendation": "TTS generated local audio but latency/RTF is not yet strong enough for live use. Keep Liquid as offline candidate or architecture inspiration pending comparison.",
+  "openai_api_calls_made": false,
+  "provider_calls_made": false,
+  "raw_private_audio_used": false,
+  "raw_private_transcripts_included": false,
+  "recommendation_id": "offline_candidate_or_architecture_inspiration",
+  "response_text_changed": false,
+  "runtime_behavior_changed": false,
+  "sales_brain_replacement_allowed": false,
+  "side_effects": {
+    "allowed_local_audio_generation": true,
+    "audio_files_committed": false,
+    "audio_files_generated": true,
+    "elevenlabs_calls_made": false,
+    "live_runtime_wiring_changed": false,
+    "live_tts_calls_made": false,
+    "live_wiring_allowed": false,
+    "local_model_generation_made": true,
+    "model_download_attempted": false,
+    "model_downloads_performed": false,
+    "model_weights_committed": false,
+    "ollama_generation_made": false,
+    "openai_api_calls_made": false,
+    "provider_calls_made": false,
+    "raw_private_audio_used": false,
+    "raw_private_transcripts_included": false,
+    "response_text_changed": false,
+    "runtime_behavior_changed": false,
+    "sales_brain_replacement_allowed": false,
+    "training_performed": false
+  },
+  "status": "pass",
+  "tts_summary": {
+    "attempted": 5,
+    "latency_seconds": {
+      "average": 12.4176,
+      "count": 5,
+      "max": 21.416825,
+      "min": 1.769303,
+      "p50": 12.896955,
+      "p90": 21.416825
+    },
+    "real_time_factor": {
+      "average": 1.743069,
+      "count": 5,
+      "max": 1.859644,
+      "min": 1.617294,
+      "p50": 1.716092,
+      "p90": 1.859644
+    },
+    "succeeded": 5
+  }
+}

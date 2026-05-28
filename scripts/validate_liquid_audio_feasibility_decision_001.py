@@ -87,17 +87,16 @@ def main() -> int:
         failures.append("smoke blocker must be recorded when smoke did not run")
 
     side_effects = decision.get("side_effects") if isinstance(decision.get("side_effects"), dict) else {}
+    audio_generation_allowed = bool(smoke.get("status") == "pass" and side_effects.get("allowed_local_audio_generation") is True)
     for key in (
         "model_download_attempted",
         "model_downloads_performed",
         "model_weights_committed",
-        "audio_files_generated",
         "audio_files_committed",
         "provider_calls_made",
         "openai_api_calls_made",
         "elevenlabs_calls_made",
         "live_tts_calls_made",
-        "local_model_generation_made",
         "ollama_generation_made",
         "training_performed",
         "live_runtime_wiring_changed",
@@ -109,6 +108,10 @@ def main() -> int:
         "live_wiring_allowed",
     ):
         false_side_effect(side_effects, key, failures, "decision.side_effects")
+    if side_effects.get("audio_files_generated") is not False and not audio_generation_allowed:
+        failures.append("decision.side_effects.audio_files_generated can be true only for allowed gated local audio generation")
+    if side_effects.get("local_model_generation_made") is not False and not audio_generation_allowed:
+        failures.append("decision.side_effects.local_model_generation_made can be true only for allowed gated local audio generation")
 
     tracked = git_lines(["ls-files"])
     weights = [path for path in tracked if path.lower().endswith(FORBIDDEN_WEIGHT_SUFFIXES) or path.startswith("local_artifacts/")]

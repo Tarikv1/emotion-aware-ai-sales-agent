@@ -1,5 +1,5 @@
 {
-  "actual_smoke_recommended": true,
+  "actual_smoke_recommended": false,
   "dependency_status": {
     "liquid_audio_import_ok": true,
     "missing_optional": [
@@ -49,7 +49,7 @@
   "environment_status": "model_loaded_ready_for_smoke",
   "exact_blocker": "",
   "experiment_id": "LIQUID-AUDIO-FEASIBILITY-DECISION-001",
-  "generated_at": "2026-05-28T18:03:18.174997+00:00",
+  "generated_at": "2026-05-28T18:51:35.393693+00:00",
   "hardware_status": {
     "assessment": "cuda_available",
     "cuda_available": true,
@@ -60,17 +60,18 @@
   "model_load_result": "research/experiments/generated/LIQUID-AUDIO-MODEL-LOAD-PROBE-001/result.json",
   "model_load_succeeded": true,
   "model_present": true,
-  "next_phase_recommendation": "Run the gated ASR/TTS smoke with synthetic inputs only; keep Liquid out of live runtime and out of sales-brain decisions.",
-  "recommendation_id": "asr_tts_smoke_next",
+  "next_phase_recommendation": "Use the Liquid synthetic smoke evidence to decide whether to run listening review, Kokoro/ElevenLabs latency comparison, and an independent ASR benchmark. Keep Liquid out of live runtime.",
+  "recommendation_id": "synthetic_smoke_completed",
   "sales_brain_replacement_allowed": false,
   "side_effects": {
+    "allowed_local_audio_generation": true,
     "audio_files_committed": false,
-    "audio_files_generated": false,
+    "audio_files_generated": true,
     "elevenlabs_calls_made": false,
     "live_runtime_wiring_changed": false,
     "live_tts_calls_made": false,
     "live_wiring_allowed": false,
-    "local_model_generation_made": false,
+    "local_model_generation_made": true,
     "model_download_attempted": false,
     "model_downloads_performed": false,
     "model_weights_committed": false,
@@ -85,6 +86,6 @@
     "training_performed": false
   },
   "smoke_result": "research/experiments/generated/LIQUID-AUDIO-FEASIBILITY-SMOKE-001/result.json",
-  "smoke_status": "not_run",
+  "smoke_status": "pass",
   "status": "pass"
 }

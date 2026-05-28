@@ -1,30 +1,20 @@
 # LIQUID-AUDIO-FEASIBILITY-SMOKE-001
 
-- status: not_run
-- blocker: ENABLE_LOCAL_AUDIO_EXPERIMENT=1 and LOCAL_LIQUID_AUDIO_ENABLED=true are required for smoke execution.
+- status: pass
+- blocker: none
 - model_present: true
 - model_download_attempted: false
-- smoke_run: false
-- asr_smoke_status: not_run
-- tts_smoke_status: not_run
-- interleaved_s2s_smoke_status: not_run
+- smoke_run: true
+- tts_attempted_count: 5
+- tts_succeeded_count: 5
+- asr_attempted_count: 7
+- asr_succeeded_count: 0
+- roundtrip_attempted_count: 3
+- roundtrip_succeeded_count: 0
+- audio_files_generated: true
+- audio_files_committed: false
 - provider_calls_made: false
 - live_wiring_allowed: false
 - sales_brain_replacement_allowed: false
 
-## Synthetic Test Inputs
-
-ASR phrases:
-[
-  "ChatGPT",
-  "ChatGPT and other AI tools",
-  "Claude",
-  "coding and voice",
-  "Free Plus Pro Business Enterprise"
-]
-
-TTS utterances:
-[
-  "Just so I answer the right thing, are you asking about the plans themselves or which one fits your use?",
-  "Got it - coding workflow and voice. Are you using it lightly, moderately, or heavily?"
-]
+Generated audio is only an ignored local artifact under `local_artifacts/audio_outputs/liquid`; public evidence records metadata and hashes, not audio bytes.
