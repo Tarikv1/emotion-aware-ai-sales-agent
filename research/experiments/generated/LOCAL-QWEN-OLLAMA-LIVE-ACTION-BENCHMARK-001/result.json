@@ -1,18 +1,18 @@
 {
   "experiment_id": "LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-001",
-  "generated_at": "2026-05-28T12:48:28.938011+00:00",
-  "status": "not_run",
-  "benchmark_run": false,
-  "not_run_reason": "ENABLE_LOCAL_LLM_BRAIN_EXPERIMENT=1, LOCAL_LLM_ENABLED=true, and LOCAL_OLLAMA_BENCHMARK_ENABLED=1 are required before localhost Ollama generation.",
+  "generated_at": "2026-05-28T14:23:40.575615+00:00",
+  "status": "pass",
+  "benchmark_run": true,
+  "not_run_reason": "",
   "backend": "ollama_local",
   "model_name": "qwen2.5:7b",
   "localhost_api_base": "http://localhost:11434",
   "localhost_only": true,
   "provider_api": false,
   "env_gates": {
-    "ENABLE_LOCAL_LLM_BRAIN_EXPERIMENT": false,
-    "LOCAL_LLM_ENABLED": false,
-    "LOCAL_OLLAMA_BENCHMARK_ENABLED": false,
+    "ENABLE_LOCAL_LLM_BRAIN_EXPERIMENT": true,
+    "LOCAL_LLM_ENABLED": true,
+    "LOCAL_OLLAMA_BENCHMARK_ENABLED": true,
     "LOCAL_OLLAMA_ALLOW_MODEL_PULL": false
   },
   "case_count": 20,
@@ -26,16 +26,1736 @@
     "p90": 3.0,
     "p99": 4.0
   },
-  "target_met": null,
+  "target_met": false,
   "quality_acceptable": false,
-  "fastest_mode": "",
-  "metrics_by_mode": {},
-  "warm_metrics_by_mode": {},
-  "cold_request": {},
-  "rows": [],
-  "local_model_calls_made": false,
-  "ollama_localhost_calls_made": false,
-  "ollama_local_model_call_count": 0,
+  "fastest_mode": "constrained_action_selector_prompt",
+  "metrics_by_mode": {
+    "constrained_action_selector_prompt": {
+      "case_count": 20,
+      "prompt_token_count_total": 9482,
+      "prompt_token_count_avg": 474.1,
+      "generated_token_count_total": 640,
+      "generated_token_count_avg": 32.0,
+      "first_output_latency_avg_s": null,
+      "first_output_latency_p50_s": null,
+      "first_output_latency_p90_s": null,
+      "first_output_latency_p99_s": null,
+      "total_generation_latency_avg_s": 3.721,
+      "total_generation_latency_p50_s": 3.707,
+      "total_generation_latency_p90_s": 3.785,
+      "total_generation_latency_p99_s": 3.942,
+      "malformed_output_count": 20,
+      "verifier_pass_count": 0,
+      "replan_required_count": 0,
+      "internal_language_count": 0,
+      "loop_risk_count": 0,
+      "hard_block_count": 0,
+      "target_met": false
+    },
+    "minimal_live_action_prompt": {
+      "case_count": 20,
+      "prompt_token_count_total": 15011,
+      "prompt_token_count_avg": 750.55,
+      "generated_token_count_total": 1198,
+      "generated_token_count_avg": 59.9,
+      "first_output_latency_avg_s": null,
+      "first_output_latency_p50_s": null,
+      "first_output_latency_p90_s": null,
+      "first_output_latency_p99_s": null,
+      "total_generation_latency_avg_s": 7.649,
+      "total_generation_latency_p50_s": 5.079,
+      "total_generation_latency_p90_s": 5.351,
+      "total_generation_latency_p99_s": 57.858,
+      "malformed_output_count": 9,
+      "verifier_pass_count": 0,
+      "replan_required_count": 2,
+      "internal_language_count": 0,
+      "loop_risk_count": 0,
+      "hard_block_count": 0,
+      "target_met": false
+    },
+    "minimal_live_action_prompt_with_replan_context": {
+      "case_count": 20,
+      "prompt_token_count_total": 15711,
+      "prompt_token_count_avg": 785.55,
+      "generated_token_count_total": 1205,
+      "generated_token_count_avg": 60.25,
+      "first_output_latency_avg_s": null,
+      "first_output_latency_p50_s": null,
+      "first_output_latency_p90_s": null,
+      "first_output_latency_p99_s": null,
+      "total_generation_latency_avg_s": 5.021,
+      "total_generation_latency_p50_s": 5.12,
+      "total_generation_latency_p90_s": 5.298,
+      "total_generation_latency_p99_s": 5.315,
+      "malformed_output_count": 12,
+      "verifier_pass_count": 0,
+      "replan_required_count": 3,
+      "internal_language_count": 0,
+      "loop_risk_count": 0,
+      "hard_block_count": 0,
+      "target_met": false
+    }
+  },
+  "warm_metrics_by_mode": {
+    "constrained_action_selector_prompt": {
+      "case_count": 20,
+      "prompt_token_count_total": 9482,
+      "prompt_token_count_avg": 474.1,
+      "generated_token_count_total": 640,
+      "generated_token_count_avg": 32.0,
+      "first_output_latency_avg_s": null,
+      "first_output_latency_p50_s": null,
+      "first_output_latency_p90_s": null,
+      "first_output_latency_p99_s": null,
+      "total_generation_latency_avg_s": 3.721,
+      "total_generation_latency_p50_s": 3.707,
+      "total_generation_latency_p90_s": 3.785,
+      "total_generation_latency_p99_s": 3.942,
+      "malformed_output_count": 20,
+      "verifier_pass_count": 0,
+      "replan_required_count": 0,
+      "internal_language_count": 0,
+      "loop_risk_count": 0,
+      "hard_block_count": 0,
+      "target_met": false
+    },
+    "minimal_live_action_prompt": {
+      "case_count": 19,
+      "prompt_token_count_total": 14269,
+      "prompt_token_count_avg": 751.0,
+      "generated_token_count_total": 1141,
+      "generated_token_count_avg": 60.05,
+      "first_output_latency_avg_s": null,
+      "first_output_latency_p50_s": null,
+      "first_output_latency_p90_s": null,
+      "first_output_latency_p99_s": null,
+      "total_generation_latency_avg_s": 5.007,
+      "total_generation_latency_p50_s": 5.068,
+      "total_generation_latency_p90_s": 5.266,
+      "total_generation_latency_p99_s": 5.4,
+      "malformed_output_count": 9,
+      "verifier_pass_count": 0,
+      "replan_required_count": 2,
+      "internal_language_count": 0,
+      "loop_risk_count": 0,
+      "hard_block_count": 0,
+      "target_met": false
+    },
+    "minimal_live_action_prompt_with_replan_context": {
+      "case_count": 20,
+      "prompt_token_count_total": 15711,
+      "prompt_token_count_avg": 785.55,
+      "generated_token_count_total": 1205,
+      "generated_token_count_avg": 60.25,
+      "first_output_latency_avg_s": null,
+      "first_output_latency_p50_s": null,
+      "first_output_latency_p90_s": null,
+      "first_output_latency_p99_s": null,
+      "total_generation_latency_avg_s": 5.021,
+      "total_generation_latency_p50_s": 5.12,
+      "total_generation_latency_p90_s": 5.298,
+      "total_generation_latency_p99_s": 5.315,
+      "malformed_output_count": 12,
+      "verifier_pass_count": 0,
+      "replan_required_count": 3,
+      "internal_language_count": 0,
+      "loop_risk_count": 0,
+      "hard_block_count": 0,
+      "target_met": false
+    }
+  },
+  "cold_request": {
+    "case_id": "direct_price_001",
+    "mode": "minimal_live_action_prompt",
+    "backend": "ollama_local",
+    "model_name": "qwen2.5:7b",
+    "request_phase": "cold",
+    "prompt_token_count": 742,
+    "generated_token_count": 57,
+    "first_output_latency_s": null,
+    "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+    "total_generation_latency_s": 57.858,
+    "ollama_total_duration_s": 55.829,
+    "ollama_load_duration_s": 52.74,
+    "ollama_prompt_eval_duration_s": 0.449,
+    "ollama_eval_duration_s": 0.763,
+    "malformed_output": false,
+    "parse_errors": [],
+    "verifier": {
+      "status": "invalid",
+      "valid": false,
+      "replan_required": false,
+      "hard_block": false,
+      "errors": [
+        "missing_required_fields:['say']",
+        "slots_must_be_object",
+        "memory_updates_must_be_object",
+        "say_must_be_non_empty_string"
+      ],
+      "replan_reasons": [],
+      "hard_block_reasons": [],
+      "warnings": []
+    }
+  },
+  "rows": [
+    {
+      "case_id": "direct_price_001",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "cold",
+      "prompt_token_count": 742,
+      "generated_token_count": 57,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 57.858,
+      "ollama_total_duration_s": 55.829,
+      "ollama_load_duration_s": 52.74,
+      "ollama_prompt_eval_duration_s": 0.449,
+      "ollama_eval_duration_s": 0.763,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "missing_required_fields:['say']",
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "say_must_be_non_empty_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "direct_price_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 777,
+      "generated_token_count": 58,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.009,
+      "ollama_total_duration_s": 2.963,
+      "ollama_load_duration_s": 0.112,
+      "ollama_prompt_eval_duration_s": 0.276,
+      "ollama_eval_duration_s": 0.704,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "action_id_not_allowed:internal",
+          "slots_must_be_object",
+          "memory_updates_must_be_object"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "direct_price_001",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 466,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.766,
+      "ollama_total_duration_s": 1.727,
+      "ollama_load_duration_s": 0.127,
+      "ollama_prompt_eval_duration_s": 0.201,
+      "ollama_eval_duration_s": 0.377,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 123 (char 122)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "direct_price_002",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 744,
+      "generated_token_count": 60,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 4.935,
+      "ollama_total_duration_s": 2.901,
+      "ollama_load_duration_s": 0.105,
+      "ollama_prompt_eval_duration_s": 0.288,
+      "ollama_eval_duration_s": 0.717,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "direct_price_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 779,
+      "generated_token_count": 62,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.001,
+      "ollama_total_duration_s": 2.947,
+      "ollama_load_duration_s": 0.116,
+      "ollama_prompt_eval_duration_s": 0.261,
+      "ollama_eval_duration_s": 0.757,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "direct_price_002",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 468,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.693,
+      "ollama_total_duration_s": 1.638,
+      "ollama_load_duration_s": 0.116,
+      "ollama_prompt_eval_duration_s": 0.182,
+      "ollama_eval_duration_s": 0.413,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 122 (char 121)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "terminal_thanks_001",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 749,
+      "generated_token_count": 58,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 4.921,
+      "ollama_total_duration_s": 2.869,
+      "ollama_load_duration_s": 0.108,
+      "ollama_prompt_eval_duration_s": 0.26,
+      "ollama_eval_duration_s": 0.705,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": true,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object"
+        ],
+        "replan_reasons": [
+          "terminal_acceptance_not_closed"
+        ],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "terminal_thanks_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 784,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.233,
+      "ollama_total_duration_s": 3.179,
+      "ollama_load_duration_s": 0.105,
+      "ollama_prompt_eval_duration_s": 0.264,
+      "ollama_eval_duration_s": 0.821,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 220 (char 219)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "terminal_thanks_001",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 473,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.785,
+      "ollama_total_duration_s": 1.745,
+      "ollama_load_duration_s": 0.113,
+      "ollama_prompt_eval_duration_s": 0.263,
+      "ollama_eval_duration_s": 0.383,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 5 column 23 (char 99)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "terminal_thanks_002",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 741,
+      "generated_token_count": 58,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.068,
+      "ollama_total_duration_s": 3.002,
+      "ollama_load_duration_s": 0.106,
+      "ollama_prompt_eval_duration_s": 0.293,
+      "ollama_eval_duration_s": 0.752,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "terminal_thanks_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 776,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.127,
+      "ollama_total_duration_s": 3.069,
+      "ollama_load_duration_s": 0.11,
+      "ollama_prompt_eval_duration_s": 0.25,
+      "ollama_eval_duration_s": 0.783,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 133 (char 132)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "terminal_thanks_002",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 465,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.694,
+      "ollama_total_duration_s": 1.652,
+      "ollama_load_duration_s": 0.113,
+      "ollama_prompt_eval_duration_s": 0.201,
+      "ollama_eval_duration_s": 0.397,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Expecting property name enclosed in double quotes: line 6 column 5 (char 113)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "current_tool_and_001",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 747,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.079,
+      "ollama_total_duration_s": 3.03,
+      "ollama_load_duration_s": 0.111,
+      "ollama_prompt_eval_duration_s": 0.245,
+      "ollama_eval_duration_s": 0.772,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 213 (char 212)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "current_tool_and_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 782,
+      "generated_token_count": 57,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 4.801,
+      "ollama_total_duration_s": 2.745,
+      "ollama_load_duration_s": 0.108,
+      "ollama_prompt_eval_duration_s": 0.283,
+      "ollama_eval_duration_s": 0.679,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": true,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object"
+        ],
+        "replan_reasons": [
+          "and_or_drift"
+        ],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "current_tool_and_001",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 471,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.715,
+      "ollama_total_duration_s": 1.668,
+      "ollama_load_duration_s": 0.111,
+      "ollama_prompt_eval_duration_s": 0.193,
+      "ollama_eval_duration_s": 0.409,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 5 column 27 (char 104)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "current_tool_or_001",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 749,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.083,
+      "ollama_total_duration_s": 3.035,
+      "ollama_load_duration_s": 0.112,
+      "ollama_prompt_eval_duration_s": 0.244,
+      "ollama_eval_duration_s": 0.78,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 213 (char 212)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "current_tool_or_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 784,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.147,
+      "ollama_total_duration_s": 3.109,
+      "ollama_load_duration_s": 0.114,
+      "ollama_prompt_eval_duration_s": 0.274,
+      "ollama_eval_duration_s": 0.777,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 218 (char 217)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "current_tool_or_001",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 473,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.66,
+      "ollama_total_duration_s": 1.624,
+      "ollama_load_duration_s": 0.12,
+      "ollama_prompt_eval_duration_s": 0.172,
+      "ollama_eval_duration_s": 0.414,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 5 column 27 (char 104)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "not_team_001",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 752,
+      "generated_token_count": 55,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 4.734,
+      "ollama_total_duration_s": 2.689,
+      "ollama_load_duration_s": 0.113,
+      "ollama_prompt_eval_duration_s": 0.289,
+      "ollama_eval_duration_s": 0.658,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "not_team_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 787,
+      "generated_token_count": 52,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 4.708,
+      "ollama_total_duration_s": 2.636,
+      "ollama_load_duration_s": 0.115,
+      "ollama_prompt_eval_duration_s": 0.248,
+      "ollama_eval_duration_s": 0.643,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "not_team_001",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 476,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.787,
+      "ollama_total_duration_s": 1.747,
+      "ollama_load_duration_s": 0.112,
+      "ollama_prompt_eval_duration_s": 0.192,
+      "ollama_eval_duration_s": 0.4,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Expecting ',' delimiter: line 1 column 134 (char 133)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "not_team_002",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 750,
+      "generated_token_count": 46,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 4.35,
+      "ollama_total_duration_s": 2.305,
+      "ollama_load_duration_s": 0.109,
+      "ollama_prompt_eval_duration_s": 0.28,
+      "ollama_eval_duration_s": 0.552,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "not_team_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 785,
+      "generated_token_count": 52,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 4.688,
+      "ollama_total_duration_s": 2.645,
+      "ollama_load_duration_s": 0.109,
+      "ollama_prompt_eval_duration_s": 0.275,
+      "ollama_eval_duration_s": 0.64,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "not_team_002",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 474,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.656,
+      "ollama_total_duration_s": 1.61,
+      "ollama_load_duration_s": 0.117,
+      "ollama_prompt_eval_duration_s": 0.194,
+      "ollama_eval_duration_s": 0.381,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Expecting ',' delimiter: line 5 column 45 (char 121)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "coding_voice_001",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 749,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.266,
+      "ollama_total_duration_s": 3.221,
+      "ollama_load_duration_s": 0.11,
+      "ollama_prompt_eval_duration_s": 0.27,
+      "ollama_eval_duration_s": 0.793,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": true,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [
+          "and_or_drift"
+        ],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "coding_voice_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 784,
+      "generated_token_count": 52,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 4.621,
+      "ollama_total_duration_s": 2.57,
+      "ollama_load_duration_s": 0.11,
+      "ollama_prompt_eval_duration_s": 0.269,
+      "ollama_eval_duration_s": 0.629,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": true,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object"
+        ],
+        "replan_reasons": [
+          "and_or_drift"
+        ],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "coding_voice_001",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 473,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.778,
+      "ollama_total_duration_s": 1.721,
+      "ollama_load_duration_s": 0.124,
+      "ollama_prompt_eval_duration_s": 0.194,
+      "ollama_eval_duration_s": 0.385,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Expecting value: line 5 column 31 (char 106)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "coding_voice_002",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 751,
+      "generated_token_count": 53,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 4.622,
+      "ollama_total_duration_s": 2.579,
+      "ollama_load_duration_s": 0.109,
+      "ollama_prompt_eval_duration_s": 0.291,
+      "ollama_eval_duration_s": 0.637,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "coding_voice_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 786,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.298,
+      "ollama_total_duration_s": 3.241,
+      "ollama_load_duration_s": 0.115,
+      "ollama_prompt_eval_duration_s": 0.251,
+      "ollama_eval_duration_s": 0.83,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 222 (char 221)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "coding_voice_002",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 475,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.702,
+      "ollama_total_duration_s": 1.664,
+      "ollama_load_duration_s": 0.121,
+      "ollama_prompt_eval_duration_s": 0.202,
+      "ollama_eval_duration_s": 0.413,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 5 column 31 (char 106)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "plan_explanation_001",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 744,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.141,
+      "ollama_total_duration_s": 3.088,
+      "ollama_load_duration_s": 0.111,
+      "ollama_prompt_eval_duration_s": 0.267,
+      "ollama_eval_duration_s": 0.779,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 231 (char 230)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "plan_explanation_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 779,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.303,
+      "ollama_total_duration_s": 3.258,
+      "ollama_load_duration_s": 0.107,
+      "ollama_prompt_eval_duration_s": 0.259,
+      "ollama_eval_duration_s": 0.833,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Expecting ',' delimiter: line 1 column 288 (char 287)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "plan_explanation_001",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 468,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.757,
+      "ollama_total_duration_s": 1.71,
+      "ollama_load_duration_s": 0.119,
+      "ollama_prompt_eval_duration_s": 0.203,
+      "ollama_eval_duration_s": 0.382,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 5 column 23 (char 99)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "plan_explanation_002",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 746,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.091,
+      "ollama_total_duration_s": 3.052,
+      "ollama_load_duration_s": 0.112,
+      "ollama_prompt_eval_duration_s": 0.273,
+      "ollama_eval_duration_s": 0.777,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 213 (char 212)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "plan_explanation_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 781,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.055,
+      "ollama_total_duration_s": 3.023,
+      "ollama_load_duration_s": 0.113,
+      "ollama_prompt_eval_duration_s": 0.239,
+      "ollama_eval_duration_s": 0.798,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 210 (char 209)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "plan_explanation_002",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 470,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.692,
+      "ollama_total_duration_s": 1.638,
+      "ollama_load_duration_s": 0.105,
+      "ollama_prompt_eval_duration_s": 0.198,
+      "ollama_eval_duration_s": 0.401,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 141 (char 140)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "price_objection_001",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 747,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.055,
+      "ollama_total_duration_s": 2.996,
+      "ollama_load_duration_s": 0.113,
+      "ollama_prompt_eval_duration_s": 0.245,
+      "ollama_eval_duration_s": 0.776,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 271 (char 270)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "price_objection_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 782,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.118,
+      "ollama_total_duration_s": 3.066,
+      "ollama_load_duration_s": 0.111,
+      "ollama_prompt_eval_duration_s": 0.238,
+      "ollama_eval_duration_s": 0.798,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 281 (char 280)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "price_objection_001",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 471,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.651,
+      "ollama_total_duration_s": 1.608,
+      "ollama_load_duration_s": 0.11,
+      "ollama_prompt_eval_duration_s": 0.208,
+      "ollama_eval_duration_s": 0.379,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 5 column 23 (char 102)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "price_objection_002",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 757,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.4,
+      "ollama_total_duration_s": 3.353,
+      "ollama_load_duration_s": 0.114,
+      "ollama_prompt_eval_duration_s": 0.269,
+      "ollama_eval_duration_s": 0.84,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 211 (char 210)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "price_objection_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 792,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.283,
+      "ollama_total_duration_s": 3.244,
+      "ollama_load_duration_s": 0.113,
+      "ollama_prompt_eval_duration_s": 0.283,
+      "ollama_eval_duration_s": 0.844,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 237 (char 236)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "price_objection_002",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 481,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.731,
+      "ollama_total_duration_s": 1.689,
+      "ollama_load_duration_s": 0.108,
+      "ollama_prompt_eval_duration_s": 0.26,
+      "ollama_eval_duration_s": 0.383,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Expecting property name enclosed in double quotes: line 5 column 39 (char 118)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "competitor_objection_001",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 746,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.216,
+      "ollama_total_duration_s": 3.171,
+      "ollama_load_duration_s": 0.109,
+      "ollama_prompt_eval_duration_s": 0.284,
+      "ollama_eval_duration_s": 0.815,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 272 (char 271)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "competitor_objection_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 781,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.12,
+      "ollama_total_duration_s": 3.095,
+      "ollama_load_duration_s": 0.109,
+      "ollama_prompt_eval_duration_s": 0.24,
+      "ollama_eval_duration_s": 0.8,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 282 (char 281)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "competitor_objection_001",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 470,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.659,
+      "ollama_total_duration_s": 1.614,
+      "ollama_load_duration_s": 0.111,
+      "ollama_prompt_eval_duration_s": 0.201,
+      "ollama_eval_duration_s": 0.383,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 5 column 5 (char 87)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "competitor_objection_002",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 747,
+      "generated_token_count": 60,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.024,
+      "ollama_total_duration_s": 2.989,
+      "ollama_load_duration_s": 0.11,
+      "ollama_prompt_eval_duration_s": 0.266,
+      "ollama_eval_duration_s": 0.748,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "competitor_objection_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 782,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.153,
+      "ollama_total_duration_s": 3.098,
+      "ollama_load_duration_s": 0.109,
+      "ollama_prompt_eval_duration_s": 0.252,
+      "ollama_eval_duration_s": 0.789,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 205 (char 204)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "competitor_objection_002",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 471,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.669,
+      "ollama_total_duration_s": 1.625,
+      "ollama_load_duration_s": 0.106,
+      "ollama_prompt_eval_duration_s": 0.177,
+      "ollama_eval_duration_s": 0.414,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 5 column 5 (char 87)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "unsupported_side_effect_001",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 748,
+      "generated_token_count": 60,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 4.971,
+      "ollama_total_duration_s": 2.929,
+      "ollama_load_duration_s": 0.114,
+      "ollama_prompt_eval_duration_s": 0.292,
+      "ollama_eval_duration_s": 0.727,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "unsupported_side_effect_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 783,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.196,
+      "ollama_total_duration_s": 3.146,
+      "ollama_load_duration_s": 0.112,
+      "ollama_prompt_eval_duration_s": 0.255,
+      "ollama_eval_duration_s": 0.823,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 231 (char 230)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "unsupported_side_effect_001",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 472,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.663,
+      "ollama_total_duration_s": 1.624,
+      "ollama_load_duration_s": 0.11,
+      "ollama_prompt_eval_duration_s": 0.179,
+      "ollama_eval_duration_s": 0.417,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 5 column 31 (char 103)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "unsupported_side_effect_002",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 755,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.126,
+      "ollama_total_duration_s": 3.063,
+      "ollama_load_duration_s": 0.12,
+      "ollama_prompt_eval_duration_s": 0.266,
+      "ollama_eval_duration_s": 0.778,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 213 (char 212)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "unsupported_side_effect_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 790,
+      "generated_token_count": 53,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 4.698,
+      "ollama_total_duration_s": 2.62,
+      "ollama_load_duration_s": 0.121,
+      "ollama_prompt_eval_duration_s": 0.275,
+      "ollama_eval_duration_s": 0.643,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": true,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object"
+        ],
+        "replan_reasons": [
+          "and_or_drift"
+        ],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "unsupported_side_effect_002",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 479,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.707,
+      "ollama_total_duration_s": 1.635,
+      "ollama_load_duration_s": 0.112,
+      "ollama_prompt_eval_duration_s": 0.194,
+      "ollama_eval_duration_s": 0.381,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 148 (char 147)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "repeated_question_risk_001",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 789,
+      "generated_token_count": 51,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 4.692,
+      "ollama_total_duration_s": 2.66,
+      "ollama_load_duration_s": 0.106,
+      "ollama_prompt_eval_duration_s": 0.28,
+      "ollama_eval_duration_s": 0.64,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "repeated_question_risk_001",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 824,
+      "generated_token_count": 51,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 4.548,
+      "ollama_total_duration_s": 2.509,
+      "ollama_load_duration_s": 0.145,
+      "ollama_prompt_eval_duration_s": 0.242,
+      "ollama_eval_duration_s": 0.617,
+      "malformed_output": false,
+      "parse_errors": [],
+      "verifier": {
+        "status": "invalid",
+        "valid": false,
+        "replan_required": false,
+        "hard_block": false,
+        "errors": [
+          "slots_must_be_object",
+          "memory_updates_must_be_object",
+          "uncertainty_must_be_string"
+        ],
+        "replan_reasons": [],
+        "hard_block_reasons": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "repeated_question_risk_001",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 504,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.718,
+      "ollama_total_duration_s": 1.653,
+      "ollama_load_duration_s": 0.106,
+      "ollama_prompt_eval_duration_s": 0.217,
+      "ollama_eval_duration_s": 0.391,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 116 (char 115)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "repeated_question_risk_002",
+      "mode": "minimal_live_action_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 758,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.351,
+      "ollama_total_duration_s": 3.302,
+      "ollama_load_duration_s": 0.112,
+      "ollama_prompt_eval_duration_s": 0.26,
+      "ollama_eval_duration_s": 0.826,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Expecting ',' delimiter: line 1 column 259 (char 258)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "repeated_question_risk_002",
+      "mode": "minimal_live_action_prompt_with_replan_context",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 793,
+      "generated_token_count": 64,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 5.315,
+      "ollama_total_duration_s": 3.264,
+      "ollama_load_duration_s": 0.117,
+      "ollama_prompt_eval_duration_s": 0.222,
+      "ollama_eval_duration_s": 0.806,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 1 column 267 (char 266)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    },
+    {
+      "case_id": "repeated_question_risk_002",
+      "mode": "constrained_action_selector_prompt",
+      "backend": "ollama_local",
+      "model_name": "qwen2.5:7b",
+      "request_phase": "warm",
+      "prompt_token_count": 482,
+      "generated_token_count": 32,
+      "first_output_latency_s": null,
+      "first_output_latency_note": "stream=false initial benchmark; first output latency unavailable",
+      "total_generation_latency_s": 3.942,
+      "ollama_total_duration_s": 1.898,
+      "ollama_load_duration_s": 0.104,
+      "ollama_prompt_eval_duration_s": 0.205,
+      "ollama_eval_duration_s": 0.461,
+      "malformed_output": true,
+      "parse_errors": [
+        "invalid_json:Unterminated string starting at: line 6 column 5 (char 115)"
+      ],
+      "verifier": {
+        "status": "not_applicable"
+      }
+    }
+  ],
+  "local_model_calls_made": true,
+  "ollama_localhost_calls_made": true,
+  "ollama_local_model_call_count": 60,
   "ollama_pull_attempted": false,
   "training_rerun": false,
   "provider_calls_made": false,
@@ -48,8 +1768,8 @@
   "adapter_live_ready": false,
   "live_wiring_allowed": false,
   "side_effects": {
-    "local_model_calls_made": false,
-    "ollama_localhost_calls_made": false,
+    "local_model_calls_made": true,
+    "ollama_localhost_calls_made": true,
     "ollama_pull_attempted": false,
     "provider_calls_made": false,
     "openai_api_calls_made": false,
@@ -67,5 +1787,8 @@
     "response_text_changed": false,
     "raw_private_transcript_included": false,
     "raw_private_transcript_copied_to_public_evidence": false
-  }
+  },
+  "qwen_model_present": true,
+  "qwen_resolved_model": "qwen2.5:7b",
+  "qwen_resolved_parameter_size": "7.6B"
 }

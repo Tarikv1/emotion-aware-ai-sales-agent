@@ -1,19 +1,21 @@
 # LOCAL-QWEN-OLLAMA-BACKEND-PROBE-001
 
-- status: not_available
+- status: pass
 - ollama_command_exists: false
-- ollama_api_reachable: false
-- qwen_model_present: false
-- qwen_resolved_model: none
+- ollama_api_reachable: true
+- qwen_model_present: true
+- qwen_resolved_model: qwen2.5:7b
 - ollama_pull_attempted: false
-- benchmark_blocker: ollama command not found and localhost API is not reachable
+- benchmark_blocker: none
 - provider_calls_made: false
 - openai_api_calls_made: false
 - live_tts_calls_made: false
 
 ## Local Models
 
-[]
+[
+  "qwen2.5:7b"
+]
 
 ## Env Gates
 

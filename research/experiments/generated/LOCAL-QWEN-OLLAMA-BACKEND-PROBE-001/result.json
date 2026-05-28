@@ -1,7 +1,7 @@
 {
   "experiment_id": "LOCAL-QWEN-OLLAMA-BACKEND-PROBE-001",
-  "generated_at": "2026-05-28T12:48:10.755136+00:00",
-  "status": "not_available",
+  "generated_at": "2026-05-28T14:23:27.431503+00:00",
+  "status": "pass",
   "backend_id": "ollama_local",
   "localhost_api_base": "http://localhost:11434",
   "localhost_only": true,
@@ -19,21 +19,23 @@
     "stdout": "",
     "stderr": "ollama command not found"
   },
-  "ollama_api_reachable": false,
-  "ollama_api_error": "<urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>",
-  "ollama_localhost_calls_made": false,
-  "local_model_names": [],
-  "qwen_model_present": false,
-  "qwen_resolved_model": "",
-  "qwen_resolved_parameter_size": "",
+  "ollama_api_reachable": true,
+  "ollama_api_error": "",
+  "ollama_localhost_calls_made": true,
+  "local_model_names": [
+    "qwen2.5:7b"
+  ],
+  "qwen_model_present": true,
+  "qwen_resolved_model": "qwen2.5:7b",
+  "qwen_resolved_parameter_size": "7.6B",
   "ollama_pull_attempted": false,
   "ollama_pull_allowed": false,
   "ollama_pull_result": {
     "attempted": false,
     "allowed": false,
-    "reason": "LOCAL_OLLAMA_ALLOW_MODEL_PULL=1 is required before ollama pull"
+    "reason": "model_already_present"
   },
-  "benchmark_blocker": "ollama command not found and localhost API is not reachable",
+  "benchmark_blocker": "",
   "local_model_calls_made": false,
   "provider_calls_made": false,
   "openai_api_calls_made": false,
@@ -46,7 +48,7 @@
   "adapter_live_ready": false,
   "side_effects": {
     "local_model_calls_made": false,
-    "ollama_localhost_calls_made": false,
+    "ollama_localhost_calls_made": true,
     "ollama_pull_attempted": false,
     "provider_calls_made": false,
     "openai_api_calls_made": false,

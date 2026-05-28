@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-QWEN7B-PRUNING-FEASIBILITY-VALIDATION-001",
-  "validated_at": "2026-05-28T12:48:52.992432+00:00",
+  "validated_at": "2026-05-28T14:29:51.601397+00:00",
   "status": "pass",
   "pruning_result": "research/experiments/generated/LOCAL-QWEN7B-PRUNING-FEASIBILITY-001/result.json",
   "pruning_plan": "runtime/llm_brain/training/qwen7b_pruning_experiment_plan.json",
@@ -9,7 +9,19 @@
   "expected_latency_gain_class": "low",
   "implementation_risk": "high",
   "quality_risk": "high",
-  "changed_files": [],
+  "changed_files": [
+    "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-001/report.md",
+    "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-VALIDATION-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-001/report.md",
+    "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-VALIDATION-001/report.md",
+    "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-VALIDATION-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-001/report.md",
+    "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-VALIDATION-001/report.md",
+    "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-VALIDATION-001/result.json"
+  ],
   "failures": [],
   "side_effects": {
     "local_model_calls_made": false,
