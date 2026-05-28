@@ -1,0 +1,63 @@
+{
+  "config_id": "qwen-ollama-backend-benchmark-001",
+  "backend_id": "ollama_local",
+  "backend_type": "localhost_local_inference",
+  "localhost_api_base": "http://localhost:11434",
+  "localhost_only": true,
+  "provider_api": false,
+  "provider_api_boundary_note": "Localhost Ollama calls are local-only inference calls to a user-controlled local server, not external provider API calls.",
+  "model_candidates": [
+    {
+      "name": "qwen2.5:7b",
+      "role": "primary_candidate",
+      "expected_parameter_size": "7B"
+    },
+    {
+      "name": "qwen2.5:latest",
+      "role": "alias_reference_only",
+      "allowed_only_if_resolves_to": "7B"
+    }
+  ],
+  "allow_ollama_pull_by_env_only": true,
+  "required_env_for_ollama_calls": {
+    "ENABLE_LOCAL_LLM_BRAIN_EXPERIMENT": "1",
+    "LOCAL_LLM_ENABLED": "true",
+    "LOCAL_OLLAMA_BENCHMARK_ENABLED": "1"
+  },
+  "required_env_for_ollama_pull": {
+    "LOCAL_OLLAMA_ALLOW_MODEL_PULL": "1"
+  },
+  "generation_defaults": {
+    "keep_alive": "30m",
+    "stream": false,
+    "format": "json",
+    "temperature": 0,
+    "num_predict_targets": {
+      "constrained_action_selector_prompt": 32,
+      "minimal_live_action_prompt": 64,
+      "minimal_live_action_prompt_with_replan_context": 64,
+      "diagnostic_mode_max": 96
+    }
+  },
+  "latency_targets_seconds": {
+    "p50": 2.0,
+    "p90": 3.0,
+    "p99": 4.0
+  },
+  "architecture_boundary": {
+    "llm_remains_conversation_brain": true,
+    "deterministic_layer_role": "memory ledger + verifier + safety guardrail only",
+    "fixed_scenario_scripts_allowed": false,
+    "live_runtime_wiring_allowed": false,
+    "live_wiring_allowed": false,
+    "adapter_live_ready": false
+  },
+  "side_effect_policy": {
+    "training_rerun": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "model_or_adapter_weights_committed": false
+  }
+}

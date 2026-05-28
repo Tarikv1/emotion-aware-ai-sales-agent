@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-QWEN-LIVE-ACTION-LATENCY-DECISION-VALIDATION-001",
-  "validated_at": "2026-05-28T11:17:05.596742+00:00",
+  "validated_at": "2026-05-28T12:49:05.546277+00:00",
   "status": "pass",
   "benchmark_result": "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001/result.json",
   "decision_result": "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-DECISION-001/result.json",
@@ -21,13 +21,7 @@
     "target_met_reported_honestly": true,
     "decision_recommendation_exists": true
   },
-  "changed_files": [
-    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001/report.md",
-    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001/result.json",
-    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001/validation_report.md",
-    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001/validation_result.json",
-    "scripts/benchmark_local_qwen_live_action_latency_001.py"
-  ],
+  "changed_files": [],
   "failures": [],
   "side_effects": {
     "local_model_calls_made": false,

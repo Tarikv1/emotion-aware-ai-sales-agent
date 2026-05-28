@@ -1,0 +1,165 @@
+{
+  "experiment_id": "LOCAL-QWEN7B-PRUNING-FEASIBILITY-001",
+  "generated_at": "2026-05-28T12:48:35.557071+00:00",
+  "status": "pass",
+  "inputs": {
+    "transformers_benchmark": "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001/result.json",
+    "ollama_probe": "research/experiments/generated/LOCAL-QWEN-OLLAMA-BACKEND-PROBE-001/result.json",
+    "ollama_benchmark": "research/experiments/generated/LOCAL-QWEN-OLLAMA-LIVE-ACTION-BENCHMARK-001/result.json",
+    "local_qwen_model_path": "local_artifacts/models/qwen2.5-7b-instruct"
+  },
+  "hardware_summary": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.13.5",
+    "processor": "AMD64 Family 25 Model 33 Stepping 2, AuthenticAMD",
+    "nvidia_smi": {
+      "available": true,
+      "returncode": 0,
+      "stdout": "NVIDIA GeForce RTX 4070 SUPER, 12282 MiB, 610.47, 8.9",
+      "stderr": ""
+    }
+  },
+  "installed_python_packages": {
+    "torch": "not_installed",
+    "transformers": "not_installed",
+    "bitsandbytes": "not_installed",
+    "accelerate": "not_installed",
+    "safetensors": "not_installed",
+    "huggingface_hub": "not_installed",
+    "peft": "not_installed",
+    "optimum": "not_installed",
+    "llama-cpp-python": "not_installed",
+    "sparseml": "not_installed"
+  },
+  "local_model_status": {
+    "path": "local_artifacts/models/qwen2.5-7b-instruct",
+    "exists": true,
+    "is_dir": true,
+    "markers": [
+      "config.json",
+      "model.safetensors.index.json",
+      "tokenizer.json",
+      "tokenizer_config.json"
+    ],
+    "weight_file_count": 4,
+    "weight_file_suffixes": [
+      ".safetensors"
+    ]
+  },
+  "current_inference_backend_details": {
+    "transformers_quantization": "4bit",
+    "transformers_device": "cuda",
+    "ollama_command_exists": false,
+    "ollama_api_reachable": false,
+    "ollama_model_present": false,
+    "ollama_benchmark_run": false
+  },
+  "transformers_minimal_live_action_metrics": {
+    "case_count": 20,
+    "prompt_token_count_total": 15011,
+    "prompt_token_count_avg": 750.55,
+    "generated_token_count_total": 1389,
+    "generated_token_count_avg": 69.45,
+    "first_output_latency_avg_s": 3.017,
+    "first_output_latency_p50_s": 2.861,
+    "first_output_latency_p90_s": 3.501,
+    "first_output_latency_p99_s": 4.993,
+    "total_generation_latency_avg_s": 6.608,
+    "total_generation_latency_p50_s": 6.436,
+    "total_generation_latency_p90_s": 8.292,
+    "total_generation_latency_p99_s": 10.976,
+    "malformed_output_count": 1,
+    "verifier_pass_count": 0,
+    "replan_required_count": 4,
+    "internal_language_count": 0,
+    "loop_risk_count": 0
+  },
+  "ollama_minimal_live_action_warm_metrics": {},
+  "backend_p50_speedup_vs_transformers": null,
+  "audit_paths": {
+    "unstructured_pruning": {
+      "can_make_file_smaller": true,
+      "transformers_bitsandbytes_sparse_speedup_expected": false,
+      "ollama_gguf_llamacpp_sparse_unstructured_speedup_expected": false,
+      "speedup_likely_without_sparse_kernels": false,
+      "quality_risk": "high",
+      "finding": "Unstructured pruning can zero weights, but the current practical backends are dense/quantized paths and should not be expected to accelerate arbitrary sparse masks."
+    },
+    "semi_structured_2_4_pruning": {
+      "runtime_backend_support_practical_now": false,
+      "export_run_path_realistic_now": false,
+      "rtx_4070_super_acceleration_likely_in_project_stack": false,
+      "implementation_complexity": "high",
+      "finding": "2:4 sparsity can be hardware-relevant in supported CUDA kernels, but this project stack has no validated export/runtime path for Ollama/GGUF or the existing Transformers 4-bit path."
+    },
+    "structured_pruning": {
+      "dense_smaller_model_possible": true,
+      "export_to_runnable_local_format_possible": "uncertain",
+      "recovery_fine_tuning_required": true,
+      "more_promising_than_native_smaller_model": false,
+      "realistic_within_current_timeline": false,
+      "finding": "Structured pruning could make a smaller dense model, but it becomes a model-surgery and recovery-training project. A native smaller Qwen model or distilled selector is the simpler route."
+    },
+    "distillation_comparison": {
+      "pruning_more_effort_than_smaller_model_distillation": true,
+      "more_likely_to_hit_2_3_seconds": "smaller_model_or_distilled_action_selector",
+      "safer_for_product_quality": "smaller_model_distillation_with_offline_quality_gate",
+      "finding": "Distillation/smaller native model keeps a standard dense runtime path and is easier to benchmark and roll back."
+    },
+    "backend_first_optimization": {
+      "ollama_benchmark_run": false,
+      "ollama_target_met": false,
+      "ollama_quality_acceptable": false,
+      "p50_speedup_vs_transformers": null,
+      "finding": "Use measured Ollama latency if available. If it does not meet target with quality, pruning still lacks a low-risk path to the target."
+    }
+  },
+  "pruning_feasible_now": false,
+  "pruning_recommended_now": false,
+  "recommended_pruning_type": "none",
+  "expected_latency_gain_class": "low",
+  "implementation_risk": "high",
+  "quality_risk": "high",
+  "attempt_actual_pruning_next_phase": false,
+  "smaller_model_or_distillation_remains_recommended": true,
+  "rationale": [
+    "Current unstructured pruning has no validated sparse-kernel speed path in the measured backends.",
+    "2:4 pruning is not a practical Ollama/GGUF or current 4-bit Transformers path in this repo.",
+    "Structured pruning would require recovery fine-tuning and export validation, which is more complex than testing a smaller dense model.",
+    "No actual pruning, training, adapter generation, or live wiring was performed."
+  ],
+  "training_rerun": false,
+  "actual_pruning_performed": false,
+  "pruned_weights_created": false,
+  "pruned_weight_files_detected": [],
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "live_tts_calls_made": false,
+  "provider_side_effects_made": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "live_wiring_allowed": false,
+  "adapter_live_ready": false,
+  "model_or_adapter_weights_committed": false,
+  "side_effects": {
+    "local_model_calls_made": false,
+    "ollama_localhost_calls_made": false,
+    "ollama_pull_attempted": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "training_rerun": false,
+    "actual_pruning_performed": false,
+    "pruned_weights_created": false,
+    "model_download_attempted": false,
+    "model_redownloaded": false,
+    "model_weights_committed": false,
+    "adapter_files_committed": false,
+    "pruned_weights_committed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcript_included": false,
+    "raw_private_transcript_copied_to_public_evidence": false
+  }
+}

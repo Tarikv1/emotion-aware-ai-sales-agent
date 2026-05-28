@@ -1,0 +1,33 @@
+{
+  "experiment_id": "LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-VALIDATION-001",
+  "validated_at": "2026-05-28T12:49:00.549613+00:00",
+  "status": "pass",
+  "decision_result": "research/experiments/generated/LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-001/result.json",
+  "backend_pruning_decision": "ollama_unavailable_or_not_run_move_to_smaller_model_unless_benchmark_unblocks",
+  "ollama_benchmark_run": false,
+  "pruning_recommended_now": false,
+  "smaller_model_or_distillation_remains_recommended": true,
+  "changed_files": [],
+  "failures": [],
+  "side_effects": {
+    "local_model_calls_made": false,
+    "ollama_localhost_calls_made": false,
+    "ollama_pull_attempted": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "training_rerun": false,
+    "actual_pruning_performed": false,
+    "pruned_weights_created": false,
+    "model_download_attempted": false,
+    "model_redownloaded": false,
+    "model_weights_committed": false,
+    "adapter_files_committed": false,
+    "pruned_weights_committed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcript_included": false,
+    "raw_private_transcript_copied_to_public_evidence": false
+  }
+}

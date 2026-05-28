@@ -1,0 +1,62 @@
+{
+  "plan_id": "qwen7b-pruning-experiment-plan-001",
+  "generated_at": "2026-05-28T12:48:35.680934+00:00",
+  "future_pruning_experiment_enabled": false,
+  "activation_condition": "Only enable in a later approved phase if pruning_feasible_now=true and pruning_recommended_now=true.",
+  "base_model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "base_model_path": "local_artifacts/models/qwen2.5-7b-instruct",
+  "candidate_pruning_methods": [
+    {
+      "method": "unstructured_pruning",
+      "status": "rejected_for_now",
+      "reason": "No expected speedup on current dense/quantized runtime path without sparse kernels."
+    },
+    {
+      "method": "semi_structured_2_4_pruning",
+      "status": "deferred",
+      "reason": "No validated export/runtime path for this project stack."
+    },
+    {
+      "method": "structured_layer_head_mlp_pruning",
+      "status": "deferred",
+      "reason": "Requires recovery fine-tuning and export validation; smaller native model is simpler."
+    }
+  ],
+  "calibration_dataset_source": "future local sanitized live-action benchmark cases plus generated contract cases; no real customer data",
+  "target_sparsity_or_compression_levels": {
+    "unstructured": [
+      "30%",
+      "50%"
+    ],
+    "semi_structured_2_4": [
+      "50% 2:4 pattern"
+    ],
+    "structured": [
+      "remove selected heads/channels/layers only after sensitivity audit"
+    ]
+  },
+  "recovery_fine_tuning_plan": "Not approved in this phase. Any recovery fine-tuning would need a later explicit no-provider local-only phase.",
+  "output_path": "local_artifacts/pruned_models/qwen2.5-7b-pruned-experiment-001",
+  "no_model_weights_committed": true,
+  "benchmark_plan": [
+    "Run the same live-action latency benchmark before and after pruning.",
+    "Run live-action contract quality validators.",
+    "Compare against smaller native/distilled model baseline."
+  ],
+  "quality_gate": {
+    "latency_target": {
+      "p50": 2.0,
+      "p90": 3.0,
+      "p99": 4.0
+    },
+    "malformed_output_count": 0,
+    "verifier_pass_required": true,
+    "no_internal_language": true,
+    "live_wiring_allowed": false
+  },
+  "rollback_plan": "Delete local_artifacts/pruned_models experiment output and return to the committed baseline; never commit pruned weights.",
+  "actual_pruning_performed": false,
+  "model_weights_created": false,
+  "live_wiring_allowed": false,
+  "adapter_live_ready": false
+}
