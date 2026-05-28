@@ -1,0 +1,169 @@
+{
+  "experiment_id": "LOCAL-QWEN-LIVE-ACTION-CONTRACT-001",
+  "validated_at": "2026-05-28T10:27:04.287011+00:00",
+  "status": "pass",
+  "contract": "runtime/llm_brain/training/qwen_live_action_contract.json",
+  "anti_loop_memory_contract": "runtime/llm_brain/training/qwen_anti_loop_memory_contract.json",
+  "buyer_facing_uncertainty_policy": "runtime/llm_brain/training/qwen_buyer_facing_uncertainty_policy.json",
+  "required_fields": [
+    "action_id",
+    "slots",
+    "memory_updates",
+    "uncertainty",
+    "say"
+  ],
+  "optional_fields": [
+    "needs_facts",
+    "blocked_routes",
+    "replan_reason",
+    "emotion_hint",
+    "confidence"
+  ],
+  "semantic_action_ids": [
+    "orient_plan_options",
+    "ask_adoption_state",
+    "ask_use_case_gap",
+    "ask_usage_intensity",
+    "answer_price",
+    "answer_plan_fit",
+    "compare_plus_vs_pro",
+    "handle_price_objection",
+    "handle_competitor_context",
+    "answer_signup_path",
+    "answer_plan_change",
+    "answer_source_or_affiliation",
+    "respect_boundary",
+    "terminal_close",
+    "disqualify_no_fit",
+    "clarify_unclear_tool",
+    "clarify_question_scope",
+    "replan_after_repeat"
+  ],
+  "slots_open": true,
+  "buyer_facing_uncertainty_examples": [
+    {
+      "internal": "low_confidence_plan_scope",
+      "buyer_facing": "Just so I answer the right thing - are you asking what the plans are, or which one fits you?"
+    },
+    {
+      "internal": "possible_asr_claude_cloud",
+      "buyer_facing": "I heard something like Claude there - are you comparing ChatGPT with Claude, or did I catch that wrong?"
+    },
+    {
+      "internal": "missing_use_case",
+      "buyer_facing": "What would you mainly use it for - work, coding, writing, research, voice, or something else?"
+    },
+    {
+      "internal": "repeated_question_risk",
+      "buyer_facing": "Let me use what you already said instead of asking again."
+    },
+    {
+      "internal": "terminal_acceptance",
+      "buyer_facing": "Sounds good. Start from the official ChatGPT plans page, and if you are unsure, start lower and move up only if you need more headroom."
+    }
+  ],
+  "verifier_behavior": {
+    "good": {
+      "status": "pass",
+      "valid": true,
+      "replan_required": false,
+      "hard_block": false,
+      "errors": [],
+      "replan_reasons": [],
+      "hard_block_reasons": [],
+      "warnings": []
+    },
+    "repeat": {
+      "status": "replan_required",
+      "valid": false,
+      "replan_required": true,
+      "hard_block": false,
+      "errors": [],
+      "replan_reasons": [
+        "buyer_already_told_you",
+        "repeated_action_and_slots_without_new_info"
+      ],
+      "hard_block_reasons": [],
+      "warnings": []
+    },
+    "internal_language": {
+      "status": "replan_required",
+      "valid": false,
+      "replan_required": true,
+      "hard_block": false,
+      "errors": [],
+      "replan_reasons": [
+        "internal_language_in_say"
+      ],
+      "hard_block_reasons": [],
+      "warnings": []
+    },
+    "side_effect": {
+      "status": "hard_block",
+      "valid": false,
+      "replan_required": false,
+      "hard_block": true,
+      "errors": [],
+      "replan_reasons": [],
+      "hard_block_reasons": [
+        "fake_side_effect_claim"
+      ],
+      "warnings": []
+    }
+  },
+  "live_wiring_allowed": false,
+  "adapter_live_ready": false,
+  "local_model_calls_made": false,
+  "training_rerun": false,
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "live_tts_calls_made": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "model_or_adapter_weights_committed": false,
+  "changed_files": [
+    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-CONTRACT-001/report.md",
+    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-CONTRACT-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001/report.md",
+    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001/validation_report.md",
+    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001/validation_result.json",
+    "research/experiments/generated/LOCAL-QWEN-MIXED-REPLAY-FAILURE-AUDITS-VALIDATION-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-MIXED-REPLAY-NEXT-DECISION-VALIDATION-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-MIXED-REPLAY-VALIDATION-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-TWO-HEAD-ARCHITECTURE-001/report.md",
+    "research/experiments/generated/LOCAL-QWEN-TWO-HEAD-ARCHITECTURE-001/result.json",
+    "runtime/llm_brain/live_action_prompt.py",
+    "runtime/llm_brain/live_action_verifier.py",
+    "runtime/llm_brain/training/qwen_anti_loop_memory_contract.json",
+    "runtime/llm_brain/training/qwen_buyer_facing_uncertainty_policy.json",
+    "runtime/llm_brain/training/qwen_live_action_contract.json",
+    "runtime/llm_brain/training/qwen_two_head_architecture_spec.json",
+    "runtime/runtime_manifest.json",
+    "scripts/benchmark_local_qwen_live_action_latency_001.py",
+    "scripts/local_qwen_audit_utils_001.py",
+    "scripts/validate_local_qwen_live_action_contract_001.py",
+    "scripts/validate_local_qwen_live_action_latency_benchmark_001.py",
+    "scripts/validate_local_qwen_mixed_replay_failure_audits_001.py",
+    "scripts/validate_local_qwen_mixed_replay_next_decision_001.py",
+    "scripts/validate_local_qwen_mixed_replay_training_001.py",
+    "scripts/validate_local_qwen_two_head_architecture_001.py"
+  ],
+  "failures": [],
+  "side_effects": {
+    "local_model_calls_made": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "model_download_attempted": false,
+    "model_redownloaded": false,
+    "model_weights_committed": false,
+    "adapter_files_committed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcript_included": false,
+    "raw_private_transcript_copied_to_public_evidence": false,
+    "case_text_stored_in_evidence": false
+  }
+}

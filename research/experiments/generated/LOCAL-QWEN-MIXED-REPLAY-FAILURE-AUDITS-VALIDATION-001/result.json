@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-QWEN-MIXED-REPLAY-FAILURE-AUDITS-VALIDATION-001",
-  "validated_at": "2026-05-28T09:41:04.338752+00:00",
+  "validated_at": "2026-05-28T10:27:25.121221+00:00",
   "status": "pass",
   "audit_ids": [
     "LOCAL-QWEN-MIXED-REPLAY-EVAL-FAILURE-AUDIT-001",
@@ -17,7 +17,34 @@
     "runtime_behavior_changed": false,
     "response_text_changed": false
   },
-  "changed_files": [],
+  "changed_files": [
+    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-CONTRACT-001/report.md",
+    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-CONTRACT-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001/report.md",
+    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001/validation_report.md",
+    "research/experiments/generated/LOCAL-QWEN-LIVE-ACTION-LATENCY-BENCHMARK-001/validation_result.json",
+    "research/experiments/generated/LOCAL-QWEN-MIXED-REPLAY-FAILURE-AUDITS-VALIDATION-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-MIXED-REPLAY-NEXT-DECISION-VALIDATION-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-MIXED-REPLAY-VALIDATION-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-TWO-HEAD-ARCHITECTURE-001/report.md",
+    "research/experiments/generated/LOCAL-QWEN-TWO-HEAD-ARCHITECTURE-001/result.json",
+    "runtime/llm_brain/live_action_prompt.py",
+    "runtime/llm_brain/live_action_verifier.py",
+    "runtime/llm_brain/training/qwen_anti_loop_memory_contract.json",
+    "runtime/llm_brain/training/qwen_buyer_facing_uncertainty_policy.json",
+    "runtime/llm_brain/training/qwen_live_action_contract.json",
+    "runtime/llm_brain/training/qwen_two_head_architecture_spec.json",
+    "runtime/runtime_manifest.json",
+    "scripts/benchmark_local_qwen_live_action_latency_001.py",
+    "scripts/local_qwen_audit_utils_001.py",
+    "scripts/validate_local_qwen_live_action_contract_001.py",
+    "scripts/validate_local_qwen_live_action_latency_benchmark_001.py",
+    "scripts/validate_local_qwen_mixed_replay_failure_audits_001.py",
+    "scripts/validate_local_qwen_mixed_replay_next_decision_001.py",
+    "scripts/validate_local_qwen_mixed_replay_training_001.py",
+    "scripts/validate_local_qwen_two_head_architecture_001.py"
+  ],
   "failures": [],
   "side_effects": {
     "local_model_calls_made": false,

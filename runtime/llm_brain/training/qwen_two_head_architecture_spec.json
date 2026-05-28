@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "architecture_id": "LOCAL-QWEN-TWO-HEAD-ARCHITECTURE-001",
+  "created_on": "2026-05-28",
+  "source_evidence": {
+    "previous_commit": "0c0e5e6",
+    "dominant_4h21_failure": "response_plan_failure",
+    "failed_case_count": 138,
+    "format_fixable_estimate_percent": 11.59,
+    "recommended_next_option": "option_4_two_head_architecture",
+    "adapter_live_ready": false,
+    "live_wiring_allowed": false
+  },
+  "core_correction": {
+    "conversation_brain_owner": "llm",
+    "deterministic_layer_role": "memory_and_verifier_only",
+    "deterministic_layer_is_conversation_brain": false,
+    "llm_remains_responsible_for_sales_move_selection": true,
+    "llm_remains_responsible_for_buyer_facing_phrasing": true,
+    "normal_operation_uses_canned_deterministic_response": false,
+    "hard_safety_fallback_allowed": true
+  },
+  "heads": {
+    "conversation_decision_head": {
+      "owner": "llm",
+      "purpose": "Choose the next sales move, preserve buyer meaning and wording, account for emotion or friction, extract open slots, and decide when a natural clarification is needed.",
+      "inputs": [
+        "sanitized buyer utterance",
+        "last agent response",
+        "memory ledger summary",
+        "available semantic action IDs",
+        "approved campaign fact IDs and summaries",
+        "buyer-facing uncertainty rules",
+        "safety constraints"
+      ],
+      "outputs": [
+        "action_id",
+        "slots",
+        "memory_updates",
+        "uncertainty"
+      ],
+      "must_not_output": [
+        "full verbose planner JSON",
+        "case IDs",
+        "numbered scenario labels",
+        "internal confidence or classifier language in buyer-facing text",
+        "fake side-effect claims",
+        "unsupported product facts"
+      ],
+      "responsibilities": [
+        "interpret buyer meaning",
+        "choose the next sales move",
+        "decide when to clarify",
+        "decide when to recommend or close",
+        "adapt to buyer wording and emotional or friction context"
+      ]
+    },
+    "response_wording_head": {
+      "owner": "llm",
+      "purpose": "Produce the buyer-facing phrasing for the selected conversational move.",
+      "same_model_call_allowed_initially": true,
+      "logically_separate_from_decision_head": true,
+      "outputs": [
+        "say"
+      ],
+      "must_preserve": [
+        "buyer wording when relevant",
+        "and/or meaning",
+        "not-team or personal-use corrections",
+        "voice versus writing distinctions"
+      ],
+      "must_not_expose": [
+        "internal policy",
+        "confidence scores",
+        "classifier labels",
+        "schema language",
+        "verifier language",
+        "route labels"
+      ]
+    },
+    "deterministic_memory_verifier_layer": {
+      "owner": "deterministic_system",
+      "purpose": "Maintain memory/state and verify proposed LLM output before it can be used in an offline benchmark or future gated integration.",
+      "is_conversation_brain": false,
+      "may_store": [
+        "last_agent_question",
+        "last_action_id",
+        "last_response_signature",
+        "answered_topics",
+        "known buyer slots",
+        "prior objections",
+        "prior recommendations",
+        "buyer corrections",
+        "terminal signals"
+      ],
+      "may_expose_to_llm": [
+        "prior asked topics",
+        "prior answered topics",
+        "prior agent response",
+        "prior action",
+        "known slots",
+        "loop-risk hints",
+        "approved fact summaries"
+      ],
+      "may_verify": [
+        "no fake side effects",
+        "no unsupported facts",
+        "no internal policy language",
+        "no AND/OR drift",
+        "no voice/writing drift",
+        "no not-team/team drift",
+        "no repeated action without progress",
+        "no raw URL speech unless explicitly allowed"
+      ],
+      "must_not": [
+        "choose the final sales move by itself in normal operation",
+        "replace the LLM with a canned response except for hard safety fallback",
+        "force fixed scripted scenario paths",
+        "speak internal uncertainty or policy language"
+      ]
+    }
+  },
+  "replan_loop": {
+    "enabled_for_non_critical_issues": true,
+    "max_replans": 1,
+    "replan_is_llm_request": true,
+    "deterministic_replacement_used_for_non_critical_issues": false,
+    "canonical_replan_instruction": "You repeated the same action/question. Use known memory, avoid repeating, and move the conversation forward.",
+    "hard_fallback_only_after": [
+      "replan fails",
+      "safety-critical issue remains",
+      "fake side-effect claim remains",
+      "unsupported factual claim remains"
+    ]
+  },
+  "live_runtime_boundary": {
+    "live_wiring_allowed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "training_rerun": false,
+    "new_qlora_training": false,
+    "model_or_adapter_weights_committed": false
+  }
+}

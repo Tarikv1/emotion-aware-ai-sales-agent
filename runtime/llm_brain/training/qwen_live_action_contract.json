@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "contract_id": "LOCAL-QWEN-LIVE-ACTION-CONTRACT-001",
+  "created_on": "2026-05-28",
+  "purpose": "Define a low-latency live-action JSON shape that is smaller than compact planner JSON while leaving conversation decisions with the LLM.",
+  "required_fields": [
+    "action_id",
+    "slots",
+    "memory_updates",
+    "uncertainty",
+    "say"
+  ],
+  "optional_fields": [
+    "needs_facts",
+    "blocked_routes",
+    "replan_reason",
+    "emotion_hint",
+    "confidence"
+  ],
+  "field_contract": {
+    "action_id": {
+      "type": "string",
+      "meaning": "Semantic reusable next conversation move selected by the LLM."
+    },
+    "slots": {
+      "type": "object",
+      "meaning": "Open extracted buyer slots. Values may be strings, booleans, numbers, arrays, or nested objects.",
+      "open_slots": true
+    },
+    "memory_updates": {
+      "type": "object",
+      "meaning": "Proposed memory ledger updates derived from the buyer turn and response."
+    },
+    "uncertainty": {
+      "type": "string",
+      "allowed_values": [
+        "none",
+        "low_confidence_plan_scope",
+        "possible_asr_claude_cloud",
+        "missing_use_case",
+        "repeated_question_risk",
+        "terminal_acceptance",
+        "other"
+      ]
+    },
+    "say": {
+      "type": "string",
+      "meaning": "Buyer-facing wording only. No markdown, schema, verifier, classifier, policy, route, or confidence language."
+    }
+  },
+  "output_target": {
+    "normal_generated_tokens_min": 10,
+    "normal_generated_tokens_max": 60,
+    "full_compact_planner_json_allowed_in_live_mode": false,
+    "verbose_reasoning_allowed": false,
+    "schema_explanation_allowed": false,
+    "internal_language_allowed": false
+  },
+  "action_space": {
+    "bounded": true,
+    "slots_open": true,
+    "semantic_reusable_action_ids": [
+      "orient_plan_options",
+      "ask_adoption_state",
+      "ask_use_case_gap",
+      "ask_usage_intensity",
+      "answer_price",
+      "answer_plan_fit",
+      "compare_plus_vs_pro",
+      "handle_price_objection",
+      "handle_competitor_context",
+      "answer_signup_path",
+      "answer_plan_change",
+      "answer_source_or_affiliation",
+      "respect_boundary",
+      "terminal_close",
+      "disqualify_no_fit",
+      "clarify_unclear_tool",
+      "clarify_question_scope",
+      "replan_after_repeat"
+    ],
+    "forbidden_action_ids": [
+      "generalized_sales_move"
+    ],
+    "forbidden_action_id_patterns": [
+      "case IDs",
+      "numbered scenario labels",
+      "labels ending in _001, _002, or another case number"
+    ],
+    "fixed_scripted_scenario_paths_allowed": false
+  },
+  "example": {
+    "action_id": "ask_usage_intensity",
+    "slots": {
+      "use_case": [
+        "coding workflow",
+        "voice"
+      ]
+    },
+    "memory_updates": {
+      "use_case": [
+        "coding workflow",
+        "voice"
+      ]
+    },
+    "uncertainty": "none",
+    "say": "Got it - coding workflow and voice. Are you using it lightly, moderately, or heavily?"
+  },
+  "live_runtime_boundary": {
+    "live_wiring_allowed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "training_rerun": false,
+    "model_or_adapter_weights_committed": false
+  }
+}

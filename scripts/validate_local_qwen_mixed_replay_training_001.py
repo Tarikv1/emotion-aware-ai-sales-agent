@@ -14,6 +14,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.train_local_qwen_planner_lora_001 import read_jsonl, rel, safe_project_path  # noqa: E402
+from scripts.local_qwen_audit_utils_001 import runtime_behavior_changed_by_files  # noqa: E402
 
 
 EXPERIMENT_ID = "LOCAL-QWEN-MIXED-REPLAY-VALIDATION-001"
@@ -164,10 +165,7 @@ def main() -> int:
     if tracked_weights:
         blockers.append(f"model/adapter/checkpoint weights tracked by git: {tracked_weights[:10]}")
     files_changed = changed_files()
-    runtime_behavior_changed = any(
-        path.startswith("runtime/") and not path.startswith("runtime/llm_brain/training/")
-        for path in files_changed
-    )
+    runtime_behavior_changed = runtime_behavior_changed_by_files(files_changed)
     if runtime_behavior_changed:
         blockers.append("runtime behavior file changed outside runtime/llm_brain/training")
     response_text_changed = any(path.startswith("runtime/dialogue") or path.startswith("runtime/responses") for path in files_changed)

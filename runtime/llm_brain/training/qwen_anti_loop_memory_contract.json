@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "contract_id": "LOCAL-QWEN-ANTI-LOOP-MEMORY-CONTRACT-001",
+  "created_on": "2026-05-28",
+  "purpose": "Define the memory ledger passed to the LLM and the deterministic loop checks used before any future gated live-action integration.",
+  "memory_passed_to_llm": [
+    "last_action_id",
+    "last_action_slot_signature",
+    "last_agent_question",
+    "last_response_signature",
+    "answered_topics",
+    "asked_topic_counts",
+    "known_slots",
+    "buyer_corrections",
+    "buyer_said_already_told_you",
+    "terminal_acceptance_seen",
+    "price_answered",
+    "recommendation_given",
+    "current_decision_frame",
+    "last_objection_handled"
+  ],
+  "required_memory_fields": [
+    "last_action_id",
+    "last_action_slot_signature",
+    "last_agent_question",
+    "last_response_signature",
+    "answered_topics",
+    "asked_topic_counts",
+    "known_slots",
+    "buyer_corrections",
+    "buyer_said_already_told_you",
+    "terminal_acceptance_seen",
+    "price_answered",
+    "recommendation_given",
+    "current_decision_frame",
+    "last_objection_handled"
+  ],
+  "memory_updated_by_llm_proposal": [
+    "slots",
+    "memory_updates",
+    "action_id",
+    "say",
+    "uncertainty"
+  ],
+  "verifier_checks": [
+    "repeated same question after answer",
+    "repeated same action_id and slots without new buyer info",
+    "repeated same say",
+    "asking for use case after use case already known",
+    "asking for team after buyer said not team",
+    "recommending same plan again without new context",
+    "not closing after terminal thanks",
+    "not changing explanation after buyer says they do not understand",
+    "no fake side effects",
+    "no unsupported facts",
+    "no internal policy language",
+    "no raw URL speech unless explicitly allowed"
+  ],
+  "replan_triggers": [
+    "repeated same question after answer",
+    "repeated same action_id and slots without new buyer info",
+    "repeated same say",
+    "asking for use case after use case already known",
+    "asking for team after buyer said not team",
+    "recommending same plan again without new context",
+    "not closing after terminal thanks",
+    "not changing explanation after buyer says they do not understand",
+    "internal language in non-critical output",
+    "raw URL speech when a safer reference is available"
+  ],
+  "hard_fallback_triggers": [
+    "fake side-effect claim remains after replan",
+    "unsupported factual claim remains after replan",
+    "safety-critical boundary violation remains after replan",
+    "output cannot be parsed or validated after one replan"
+  ],
+  "replan_instruction_examples": [
+    "The last response already asked this. Use the known answer and move forward.",
+    "Buyer corrected you. Preserve the correction and do not repeat the wrong wording.",
+    "Buyer said they already told you. Summarize known context and move to the next useful step.",
+    "Buyer seems confused. Explain differently, not louder or longer."
+  ],
+  "deterministic_layer_boundary": {
+    "stores_memory": true,
+    "detects_loop_risk": true,
+    "requests_one_llm_replan": true,
+    "chooses_final_sales_move_in_normal_operation": false,
+    "uses_canned_replacement_in_normal_operation": false
+  }
+}

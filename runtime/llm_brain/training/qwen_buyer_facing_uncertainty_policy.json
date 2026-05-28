@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "policy_id": "LOCAL-QWEN-BUYER-FACING-UNCERTAINTY-POLICY-001",
+  "created_on": "2026-05-28",
+  "purpose": "Map internal uncertainty signals into natural buyer-facing clarification language.",
+  "rules": [
+    "Never speak classifier or confidence language.",
+    "Never say: I am not confident enough to classify this.",
+    "Never say semantic, schema, intent classifier, verifier, policy, or route in buyer-facing say.",
+    "Low confidence must become a natural clarification.",
+    "Clarification should preserve buyer wording and ask one useful question."
+  ],
+  "forbidden_buyer_facing_terms": [
+    "I am not confident enough to classify this",
+    "not confident enough to classify",
+    "semantic",
+    "schema",
+    "intent classifier",
+    "verifier",
+    "policy",
+    "route",
+    "confidence score",
+    "classification"
+  ],
+  "mappings": [
+    {
+      "internal": "low_confidence_plan_scope",
+      "buyer_facing": "Just so I answer the right thing - are you asking what the plans are, or which one fits you?"
+    },
+    {
+      "internal": "possible_asr_claude_cloud",
+      "buyer_facing": "I heard something like Claude there - are you comparing ChatGPT with Claude, or did I catch that wrong?"
+    },
+    {
+      "internal": "missing_use_case",
+      "buyer_facing": "What would you mainly use it for - work, coding, writing, research, voice, or something else?"
+    },
+    {
+      "internal": "repeated_question_risk",
+      "buyer_facing": "Let me use what you already said instead of asking again."
+    },
+    {
+      "internal": "terminal_acceptance",
+      "buyer_facing": "Sounds good. Start from the official ChatGPT plans page, and if you are unsure, start lower and move up only if you need more headroom."
+    }
+  ],
+  "live_runtime_boundary": {
+    "live_wiring_allowed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false
+  }
+}

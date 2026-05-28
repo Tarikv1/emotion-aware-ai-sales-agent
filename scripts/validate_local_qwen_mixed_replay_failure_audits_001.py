@@ -18,6 +18,7 @@ from scripts.local_qwen_audit_utils_001 import (  # noqa: E402
     audit_side_effects,
     read_json,
     rel,
+    runtime_behavior_changed_by_files,
     tracked_model_or_adapter_files,
     utc_now,
     write_json,
@@ -206,10 +207,7 @@ def main() -> int:
     if tracked:
         failures.append(f"tracked model/adapter/local_artifact files are forbidden: {tracked[:20]}")
     files_changed = changed_files()
-    runtime_behavior_changed = any(
-        path.startswith("runtime/") and not path.startswith("runtime/llm_brain/training/")
-        for path in files_changed
-    )
+    runtime_behavior_changed = runtime_behavior_changed_by_files(files_changed)
     response_text_changed = any(path.startswith("runtime/dialogue") or path.startswith("runtime/responses") for path in files_changed)
     if runtime_behavior_changed:
         failures.append("runtime behavior changed")

@@ -16,6 +16,11 @@ LABEL_FIELDS = ("act", "sub", "action", "strategy", "buyer", "intent", "rel", "n
 CORE_FIELDS = ("act", "sub", "action", "strategy")
 PLAN_FIELDS = ("facts", "preserve", "avoid")
 WEIGHT_SUFFIXES = (".safetensors", ".bin", ".gguf", ".pt", ".pth", ".ckpt")
+OFFLINE_LIVE_ACTION_ARCHITECTURE_RUNTIME_PATHS = {
+    "runtime/runtime_manifest.json",
+    "runtime/llm_brain/live_action_prompt.py",
+    "runtime/llm_brain/live_action_verifier.py",
+}
 
 SIDE_EFFECT_FALSE_KEYS = (
     "local_model_calls_made",
@@ -436,6 +441,15 @@ def tracked_model_or_adapter_files() -> list[str]:
         for line in completed.stdout.splitlines()
         if line.strip().lower().endswith(WEIGHT_SUFFIXES) or line.strip().replace("\\", "/").startswith("local_artifacts/")
     ]
+
+
+def runtime_behavior_changed_by_files(files: list[str]) -> bool:
+    return any(
+        path.startswith("runtime/")
+        and not path.startswith("runtime/llm_brain/training/")
+        and path not in OFFLINE_LIVE_ACTION_ARCHITECTURE_RUNTIME_PATHS
+        for path in files
+    )
 
 
 def audit_side_effects() -> dict[str, Any]:

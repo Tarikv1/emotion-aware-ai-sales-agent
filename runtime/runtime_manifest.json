@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "manifest_id": "runtime-boundary-001",
-  "updated_on": "2026-05-25",
+  "updated_on": "2026-05-28",
   "purpose": "Make runtime-affecting project files visible separately from research, generated evidence, checkpoint runners, and temporary files.",
   "status": "runtime-sources-and-docs-moved-with-legacy-wrappers",
   "runtime_home_policy": {
@@ -242,6 +242,30 @@
         "current wording preservation",
         "negation and conjunction fidelity",
         "side-effect and unsupported-claim block"
+      ]
+    },
+    {
+      "path": "runtime/llm_brain/live_action_prompt.py",
+      "path_type": "file",
+      "tier": "local-llm-conversation-brain-contract",
+      "runtime_role": "Disabled offline prompt builder for a future low-latency live-action JSON contract; it is not wired into live dialogue routing or spoken response selection.",
+      "behavior_surface": [
+        "live-action prompt contract",
+        "bounded semantic action IDs",
+        "memory ledger prompt context",
+        "no live runtime wiring"
+      ]
+    },
+    {
+      "path": "runtime/llm_brain/live_action_verifier.py",
+      "path_type": "file",
+      "tier": "local-llm-conversation-brain-guard",
+      "runtime_role": "Disabled offline verifier for live-action JSON proposals that validates safety, factual, wording-drift, and anti-loop risks without choosing the final sales move.",
+      "behavior_surface": [
+        "live-action output verification",
+        "anti-loop replan request",
+        "hard safety block signaling",
+        "no deterministic sales-move selection"
       ]
     },
     {
