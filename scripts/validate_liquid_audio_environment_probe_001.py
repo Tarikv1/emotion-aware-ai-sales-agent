@@ -9,6 +9,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "runtime" / "audio_backends" / "liquid_audio_feasibility_config.json"
+ENV_CONFIG_PATH = ROOT / "runtime" / "audio_backends" / "liquid_audio_env_config.json"
 RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-ENVIRONMENT-PROBE-001" / "result.json"
 REPORT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-ENVIRONMENT-PROBE-001" / "report.md"
 ALLOWED_STATUSES = {
@@ -79,6 +80,7 @@ def false_side_effect(payload: dict[str, Any], key: str, failures: list[str], pr
 def main() -> int:
     failures: list[str] = []
     config = load_json(CONFIG_PATH)
+    env_config = load_json(ENV_CONFIG_PATH)
     result = load_json(RESULT_PATH)
     if not REPORT_PATH.is_file():
         failures.append(f"missing report: {rel(REPORT_PATH)}")
@@ -112,6 +114,16 @@ def main() -> int:
         failures.append("environment live_wiring_allowed must be false")
     if result.get("sales_brain_replacement_allowed") is not False:
         failures.append("environment sales_brain_replacement_allowed must be false")
+    if not str(result.get("active_python_env") or "").strip():
+        failures.append("environment active_python_env must be recorded")
+    if result.get("expected_audio_env") != env_config.get("python_executable_expected"):
+        failures.append("environment expected_audio_env must mirror audio env config")
+    if not isinstance(result.get("running_inside_audio_env"), bool):
+        failures.append("environment running_inside_audio_env must be boolean")
+    dependency_status = result.get("dependency_status") if isinstance(result.get("dependency_status"), dict) else {}
+    for key in ("package_versions", "liquid_audio_import_ok", "torchaudio_import_ok"):
+        if key not in dependency_status:
+            failures.append(f"environment dependency_status.{key} must be recorded")
 
     path_status = result.get("path_status") if isinstance(result.get("path_status"), dict) else {}
     for name in ("local_model_path", "cache_path", "output_audio_path"):

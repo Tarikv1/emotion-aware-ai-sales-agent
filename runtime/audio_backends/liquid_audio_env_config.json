@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "config_id": "liquid-audio-env-config-001",
+  "phase": "4I1B",
+  "backend_id": "liquid_audio_lfm25",
+  "env_name": ".venv-audio",
+  "python_executable_expected": ".venv-audio/Scripts/python.exe",
+  "install_scope": "isolated_audio_experiment",
+  "base_python_selection": {
+    "preferred_launcher": "py -3.11",
+    "fallback_launcher": "current python",
+    "rationale": "Prefer Python 3.11 when available because local ML wheels are commonly published for it; record an exact blocker if the local machine cannot create that env."
+  },
+  "required_packages": [
+    "torch",
+    "torchaudio",
+    "liquid-audio"
+  ],
+  "optional_packages": [
+    "flash-attn",
+    "liquid-audio[demo]"
+  ],
+  "install_flash_attn_by_default": false,
+  "install_demo_extra_by_default": false,
+  "model_download_allowed_by_default": false,
+  "inference_allowed_by_default": false,
+  "live_wiring_allowed": false,
+  "sales_brain_replacement_allowed": false,
+  "pytorch_install": {
+    "selector_url": "https://pytorch.org/get-started/locally/",
+    "package_manager": "pip",
+    "target_os": "Windows",
+    "compute_platform": "CUDA",
+    "index_url": "https://download.pytorch.org/whl/cu128",
+    "packages": [
+      "torch",
+      "torchaudio"
+    ],
+    "fallback_to_cpu_by_default": false,
+    "source_note": "Use the official PyTorch local install selector before changing CUDA wheel targets. If the CUDA wheel command fails, record the exact blocker instead of reporting success."
+  },
+  "liquid_audio_install": {
+    "source_repo": "https://github.com/Liquid4All/liquid-audio",
+    "model_card": "https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B",
+    "license_docs": "https://docs.liquid.ai/lfm/help/model-license",
+    "audio_model_docs": "https://docs.liquid.ai/lfm/models/audio-models",
+    "package": "liquid-audio",
+    "import_name": "liquid_audio",
+    "demo_extra_installed_by_default": false,
+    "flash_attn_installed_by_default": false
+  },
+  "env_gates": {
+    "ENABLE_LOCAL_AUDIO_EXPERIMENT": "1",
+    "LOCAL_LIQUID_AUDIO_ENABLED": "true",
+    "LOCAL_LIQUID_ALLOW_MODEL_DOWNLOAD": "1"
+  },
+  "local_artifact_paths": [
+    "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b",
+    "local_artifacts/audio_outputs/liquid",
+    "local_artifacts/cache/huggingface"
+  ],
+  "side_effect_boundaries": {
+    "model_download_attempted": false,
+    "inference_run": false,
+    "audio_files_generated": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false
+  }
+}

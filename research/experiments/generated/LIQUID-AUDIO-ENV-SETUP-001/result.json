@@ -1,0 +1,151 @@
+{
+  "audio_files_committed": false,
+  "audio_files_generated": false,
+  "config": "runtime/audio_backends/liquid_audio_env_config.json",
+  "demo_extra_install_attempted": false,
+  "elevenlabs_calls_made": false,
+  "ensurepip_repair_attempted": true,
+  "exact_blocker": "",
+  "experiment_id": "LIQUID-AUDIO-ENV-SETUP-001",
+  "feasibility_config": "runtime/audio_backends/liquid_audio_feasibility_config.json",
+  "flash_attn_install_attempted": false,
+  "flash_attn_installed": false,
+  "generated_at": "2026-05-28T17:29:16.094466+00:00",
+  "gpu": {
+    "available": true,
+    "error": "",
+    "gpus": [
+      {
+        "memory_total": "12282 MiB",
+        "name": "NVIDIA GeForce RTX 4070 SUPER"
+      }
+    ]
+  },
+  "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+  "inference_run": false,
+  "install_steps": [
+    {
+      "command": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Scripts\\python.exe -m pip --version",
+      "returncode": 1,
+      "stderr_tail": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Scripts\\python.exe: No module named pip",
+      "stdout_tail": "",
+      "step": "pip_version_before_or_after",
+      "success": false
+    },
+    {
+      "command": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Scripts\\python.exe -m ensurepip --upgrade --default-pip",
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "Looking in links: c:\\Users\\tarik\\AppData\\Local\\Temp\\tmpcsbo9pvk\nProcessing c:\\users\\tarik\\appdata\\local\\temp\\tmpcsbo9pvk\\pip-25.1.1-py3-none-any.whl\nInstalling collected packages: pip\nSuccessfully installed pip-25.1.1",
+      "step": "ensurepip_repair",
+      "success": true
+    },
+    {
+      "command": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Scripts\\python.exe -m pip --version",
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "pip 25.1.1 from D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Lib\\site-packages\\pip (python 3.13)",
+      "step": "pip_version_after_ensurepip",
+      "success": true
+    },
+    {
+      "command": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Scripts\\python.exe -m pip install --upgrade pip",
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "Requirement already satisfied: pip in d:\\codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\lib\\site-packages (25.1.1)\nCollecting pip\n  Downloading pip-26.1.1-py3-none-any.whl.metadata (4.6 kB)\nDownloading pip-26.1.1-py3-none-any.whl (1.8 MB)\n   ---------------------------------------- 1.8/1.8 MB 9.3 MB/s eta 0:00:00\nInstalling collected packages: pip\n  Attempting uninstall: pip\n    Found existing installation: pip 25.1.1\n    Uninstalling pip-25.1.1:\n      Successfully uninstalled pip-25.1.1\nSuccessfully installed pip-26.1.1",
+      "step": "pip_upgrade",
+      "success": true
+    },
+    {
+      "command": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Scripts\\python.exe -m pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu128",
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "Looking in indexes: https://download.pytorch.org/whl/cu128\nCollecting torch\n  Using cached torch-2.11.0%2Bcu128-cp313-cp313-win_amd64.whl.metadata (29 kB)\nCollecting torchaudio\n  Using cached torchaudio-2.11.0%2Bcu128-cp313-cp313-win_amd64.whl.metadata (7.0 kB)\nCollecting filelock (from torch)\n  Using cached filelock-3.29.0-py3-none-any.whl.metadata (2.0 kB)\nCollecting typing-extensions>=4.10.0 (from torch)\n  Using cached typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)\nCollecting setuptools<82 (from torch)\n  Using cached setuptools-70.2.0-py3-none-any.whl.metadata (5.8 kB)\nCollecting sympy>=1.13.3 (from torch)\n  Using cached sympy-1.14.0-py3-none-any.whl.metadata (12 kB)\nCollecting networkx>=2.5.1 (from torch)\n  Using cached networkx-3.6.1-py3-none-any.whl.metadata (6.8 kB)\nCollecting jinja2 (from torch)\n  Using cached jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)\nCollecting fsspec>=0.8.5 (from torch)\n  Using cached fsspec-2026.4.0-py3-none-any.whl.metadata (10 kB)\nCollecting mpmath<1.4,>=1.1.0 (from sympy>=1.13.3->torch)\n  Using cached mpmath-1.3.0-py3-none-any.whl.metadata (8.6 kB)\nCollecting MarkupSafe>=2.0 (from jinja2->torch)\n  Using cached markupsafe-3.0.3-cp313-cp313-win_amd64.whl.metadata (2.8 kB)\nUsing cached torch-2.11.0%2Bcu128-cp313-cp313-win_amd64.whl (2753.2 MB)\nUsing cached setuptools-70.2.0-py3-none-any.whl (930 kB)\nUsing cached torchaudio-2.11.0%2Bcu128-cp313-cp313-win_amd64.whl (1.7 MB)\nUsing cached fsspec-2026.4.0-py3-none-any.whl (203 kB)\nUsing cached networkx-3.6.1-py3-none-any.whl (2.1 MB)\nUsing cached sympy-1.14.0-py3-none-any.whl (6.3 MB)\nUsing cached mpmath-1.3.0-py3-none-any.whl (536 kB)\nUsing cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)\nUsing cached filelock-3.29.0-py3-none-any.whl (39 kB)\nUsing cached jinja2-3.1.6-py3-none-any.whl (134 kB)\nUsing cached markupsafe-3.0.3-cp313-cp313-win_amd64.whl (15 kB)\nInstalling collected packages: torchaudio, mpmath, typing-extensions, sympy, setuptools, networkx, MarkupSafe, fsspec, filelock, jinja2, torch\n\nSuccessfully installed MarkupSafe-3.0.3 filelock-3.29.0 fsspec-2026.4.0 jinja2-3.1.6 mpmath-1.3.0 networkx-3.6.1 setuptools-70.2.0 sympy-1.14.0 torch-2.11.0+cu128 torchaudio-2.11.0+cu128 typing-extensions-4.15.0",
+      "step": "install_torch_torchaudio",
+      "success": true
+    },
+    {
+      "command": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Scripts\\python.exe -m pip install liquid-audio",
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "4.whl.metadata (41 kB)\nCollecting tokenizers<=0.23.0,>=0.22.0 (from transformers>=4.55.4->liquid-audio)\n  Using cached tokenizers-0.22.2-cp39-abi3-win_amd64.whl.metadata (7.4 kB)\nRequirement already satisfied: MarkupSafe>=2.0 in .\\.venv-audio\\Lib\\site-packages (from jinja2->torch>=2.8.0->liquid-audio) (3.0.3)\nCollecting python-dateutil>=2.8.2 (from pandas->datasets>=4.8.4->liquid-audio)\n  Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)\nCollecting tzdata (from pandas->datasets>=4.8.4->liquid-audio)\n  Using cached tzdata-2026.2-py2.py3-none-any.whl.metadata (1.4 kB)\nCollecting six>=1.5 (from python-dateutil>=2.8.2->pandas->datasets>=4.8.4->liquid-audio)\n  Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)\nCollecting standard-chunk (from standard-aifc->librosa>=0.11.0->liquid-audio)\n  Downloading standard_chunk-3.13.0-py3-none-any.whl.metadata (860 bytes)\nCollecting audioop-lts (from standard-aifc->librosa>=0.11.0->liquid-audio)\n  Downloading audioop_lts-0.2.2-cp313-abi3-win_amd64.whl.metadata (2.0 kB)\nDownloading liquid_audio-1.2.0-py3-none-any.whl (173 kB)\nUsing cached accelerate-1.13.0-py3-none-any.whl (383 kB)\nUsing cached datasets-4.8.5-py3-none-any.whl (528 kB)\nUsing cached dill-0.4.1-py3-none-any.whl (120 kB)\nUsing cached fsspec-2026.2.0-py3-none-any.whl (202 kB)\nUsing cached httpx-0.28.1-py3-none-any.whl (73 kB)\nUsing cached httpcore-1.0.9-py3-none-any.whl (78 kB)\nDownloading huggingface_hub-1.17.0-py3-none-any.whl (671 kB)\n   ---------------------------------------- 671.5/671.5 kB 11.7 MB/s  0:00:00\nUsing cached hf_xet-1.5.0-cp37-abi3-win_amd64.whl (4.0 MB)\nUsing cached multiprocess-0.70.19-py313-none-any.whl (156 kB)\nUsing cached typer-0.25.1-py3-none-any.whl (58 kB)\nUsing cached aiohttp-3.13.5-cp313-cp313-win_amd64.whl (458 kB)\nUsing cached multidict-6.7.1-cp313-cp313-win_amd64.whl (45 kB)\nUsing cached yarl-1.24.2-cp313-cp313-win_amd64.whl (92 kB)\nUsing cached aiohappyeyeballs-2.6.2-py3-none-any.whl (15 kB)\nUsing cached aiosignal-1.4.0-py3-none-any.whl (7.5 kB)\nUsing cached annotated_doc-0.0.4-py3-none-any.whl (5.3 kB)\nUsing cached attrs-26.1.0-py3-none-any.whl (67 kB)\nUsing cached click-8.4.1-py3-none-any.whl (116 kB)\nDownloading einops-0.8.2-py3-none-any.whl (65 kB)\nUsing cached frozenlist-1.8.0-cp313-cp313-win_amd64.whl (43 kB)\nUsing cached h11-0.16.0-py3-none-any.whl (37 kB)\nDownloading idna-3.17-py3-none-any.whl (65 kB)\nDownloading librosa-0.11.0-py3-none-any.whl (260 kB)\nDownloading audioread-3.1.0-py3-none-any.whl (23 kB)\nDownloading decorator-5.3.1-py3-none-any.whl (10 kB)\nDownloading joblib-1.5.3-py3-none-any.whl (309 kB)\nDownloading lazy_loader-0.5-py3-none-any.whl (8.0 kB)\nDownloading msgpack-1.1.2-cp313-cp313-win_amd64.whl (72 kB)\nDownloading numba-0.65.1-cp313-cp313-win_amd64.whl (2.8 MB)\n   ---------------------------------------- 2.8/2.8 MB 17.5 MB/s  0:00:00\nDownloading llvmlite-0.47.0-cp313-cp313-win_amd64.whl (38.1 MB)\n   ---------------------------------------- 38.1/38.1 MB 38.9 MB/s  0:00:00\nDownloading numpy-2.4.6-cp313-cp313-win_amd64.whl (12.3 MB)\n   ---------------------------------------- 12.3/12.3 MB 61.2 MB/s  0:00:00\nUsing cached packaging-26.2-py3-none-any.whl (100 kB)\nDownloading pooch-1.9.0-py3-none-any.whl (67 kB)\nDownloading platformdirs-4.10.0-py3-none-any.whl (22 kB)\nUsing cached propcache-0.5.2-cp313-cp313-win_amd64.whl (41 kB)\nUsing cached pyarrow-24.0.0-cp313-cp313-win_amd64.whl (27.3 MB)\nUsing cached pyyaml-6.0.3-cp313-cp313-win_amd64.whl (154 kB)\nUsing cached requests-2.34.2-py3-none-any.whl (73 kB)\nUsing cached charset_normalizer-3.4.7-cp313-cp313-win_amd64.whl (158 kB)\nUsing cached urllib3-2.7.0-py3-none-any.whl (131 kB)\nUsing cached certifi-2026.5.20-py3-none-any.whl (134 kB)\nUsing cached rich-15.0.0-py3-none-any.whl (310 kB)\nUsing cached pygments-2.20.0-py3-none-any.whl (1.2 MB)\nUsing cached markdown_it_py-4.2.0-py3-none-any.whl (91 kB)\nUsing cached mdurl-0.1.2-py3-none-any.whl (10.0 kB)\nUsing cached safetensors-0.7.0-cp38-abi3-win_amd64.whl (341 kB)\nDownloading scikit_learn-1.8.0-cp313-cp313-win_amd64.whl (8.0 MB)\n   ---------------------------------------- 8.0/8.0 MB 60.8 MB/s  0:00:00\nDownloading scipy-1.17.1-cp313-cp313-win_amd64.whl (36.5 MB)\n   ---------------------------------------- 36.5/36.5 MB 60.9 MB/s  0:00:00\nUsing cached sentencepiece-0.2.1-cp313-cp313-win_amd64.whl (1.1 MB)\nUsing cached shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)\nDownloading soundfile-0.13.1-py2.py3-none-win_amd64.whl (1.0 MB)\n   ---------------------------------------- 1.0/1.0 MB 47.3 MB/s  0:00:00\nUsing cached cffi-2.0.0-cp313-cp313-win_amd64.whl (183 kB)\nDownloading soxr-1.1.0-cp312-abi3-win_amd64.whl (174 kB)\nUsing cached threadpoolctl-3.6.0-py3-none-any.whl (18 kB)\nDownloading torchcodec-0.13.0-cp313-cp313-win_amd64.whl (2.2 MB)\n   ---------------------------------------- 2.2/2.2 MB 54.9 MB/s  0:00:00\nUsing cached tqdm-4.67.3-py3-none-any.whl (78 kB)\nUsing cached transformers-5.9.0-py3-none-any.whl (10.8 MB)\nUsing cached tokenizers-0.22.2-cp39-abi3-win_amd64.whl (2.7 MB)\nUsing cached regex-2026.5.9-cp313-cp313-win_amd64.whl (277 kB)\nUsing cached anyio-4.13.0-py3-none-any.whl (114 kB)\nUsing cached colorama-0.4.6-py2.py3-none-any.whl (25 kB)\nUsing cached pandas-3.0.3-cp313-cp313-win_amd64.whl (9.8 MB)\nUsing cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)\nUsing cached six-1.17.0-py2.py3-none-any.whl (11 kB)\nUsing cached psutil-7.2.2-cp37-abi3-win_amd64.whl (137 kB)\nUsing cached pycparser-3.0-py3-none-any.whl (48 kB)\nDownloading standard_aifc-3.13.0-py3-none-any.whl (10 kB)\nDownloading audioop_lts-0.2.2-cp313-abi3-win_amd64.whl (30 kB)\nDownloading standard_chunk-3.13.0-py3-none-any.whl (4.9 kB)\nDownloading standard_sunau-3.13.0-py3-none-any.whl (7.4 kB)\nUsing cached tzdata-2026.2-py2.py3-none-any.whl (349 kB)\nUsing cached xxhash-3.7.0-cp313-cp313-win_amd64.whl (31 kB)\nInstalling collected packages: standard-chunk, xxhash, urllib3, tzdata, torchcodec, threadpoolctl, six, shellingham, sentencepiece, safetensors, regex, pyyaml, pygments, pycparser, pyarrow, psutil, propcache, platformdirs, packaging, numpy, multidict, msgpack, mdurl, llvmlite, joblib, idna, hf-xet, h11, fsspec, frozenlist, einops, dill, decorator, colorama, charset_normalizer, certifi, audioop-lts, attrs, annotated-doc, aiohappyeyeballs, yarl, tqdm, standard-sunau, standard-aifc, soxr, scipy, requests, python-dateutil, numba, multiprocess, markdown-it-py, lazy_loader, httpcore, click, cffi, anyio, aiosignal, soundfile, scikit-learn, rich, pooch, pandas, httpx, audioread, aiohttp, typer, librosa, huggingface_hub, tokenizers, datasets, accelerate, transformers, liquid-audio\n  Attempting uninstall: fsspec\n    Found existing installation: fsspec 2026.4.0\n    Uninstalling fsspec-2026.4.0:\n      Successfully uninstalled fsspec-2026.4.0\n\nSuccessfully installed accelerate-1.13.0 aiohappyeyeballs-2.6.2 aiohttp-3.13.5 aiosignal-1.4.0 annotated-doc-0.0.4 anyio-4.13.0 attrs-26.1.0 audioop-lts-0.2.2 audioread-3.1.0 certifi-2026.5.20 cffi-2.0.0 charset_normalizer-3.4.7 click-8.4.1 colorama-0.4.6 datasets-4.8.5 decorator-5.3.1 dill-0.4.1 einops-0.8.2 frozenlist-1.8.0 fsspec-2026.2.0 h11-0.16.0 hf-xet-1.5.0 httpcore-1.0.9 httpx-0.28.1 huggingface_hub-1.17.0 idna-3.17 joblib-1.5.3 lazy_loader-0.5 librosa-0.11.0 liquid-audio-1.2.0 llvmlite-0.47.0 markdown-it-py-4.2.0 mdurl-0.1.2 msgpack-1.1.2 multidict-6.7.1 multiprocess-0.70.19 numba-0.65.1 numpy-2.4.6 packaging-26.2 pandas-3.0.3 platformdirs-4.10.0 pooch-1.9.0 propcache-0.5.2 psutil-7.2.2 pyarrow-24.0.0 pycparser-3.0 pygments-2.20.0 python-dateutil-2.9.0.post0 pyyaml-6.0.3 regex-2026.5.9 requests-2.34.2 rich-15.0.0 safetensors-0.7.0 scikit-learn-1.8.0 scipy-1.17.1 sentencepiece-0.2.1 shellingham-1.5.4 six-1.17.0 soundfile-0.13.1 soxr-1.1.0 standard-aifc-3.13.0 standard-chunk-3.13.0 standard-sunau-3.13.0 threadpoolctl-3.6.0 tokenizers-0.22.2 torchcodec-0.13.0 tqdm-4.67.3 transformers-5.9.0 typer-0.25.1 tzdata-2026.2 urllib3-2.7.0 xxhash-3.7.0 yarl-1.24.2",
+      "step": "install_liquid_audio",
+      "success": true
+    }
+  ],
+  "install_success": true,
+  "liquid_audio_install_attempted": true,
+  "live_tts_calls_made": false,
+  "live_wiring_allowed": false,
+  "model_download_attempted": false,
+  "model_downloads_performed": false,
+  "model_weights_committed": false,
+  "openai_api_calls_made": false,
+  "package_versions": {
+    "liquid_audio": {
+      "distribution_name": "liquid-audio",
+      "import_name": "liquid_audio",
+      "module_found": true,
+      "version": "1.2.0"
+    },
+    "torch": {
+      "distribution_name": "torch",
+      "import_name": "torch",
+      "module_found": true,
+      "version": "2.11.0+cu128"
+    },
+    "torchaudio": {
+      "distribution_name": "torchaudio",
+      "import_name": "torchaudio",
+      "module_found": true,
+      "version": "2.11.0+cu128"
+    }
+  },
+  "pip_upgrade_attempted": true,
+  "pip_version": "pip 25.1.1 from D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Lib\\site-packages\\pip (python 3.13)",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "provider_calls_made": false,
+  "python_executable": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Scripts\\python.exe",
+  "python_executable_exists": true,
+  "python_version": {
+    "command": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Scripts\\python.exe --version",
+    "returncode": 0,
+    "stderr_tail": "",
+    "stdout_tail": "Python 3.13.5",
+    "success": true
+  },
+  "response_text_changed": false,
+  "runtime_behavior_changed": false,
+  "sales_brain_replacement_allowed": false,
+  "setup_attempted": true,
+  "status": "pass",
+  "system_python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+  "torch": {
+    "cuda_available": true,
+    "cuda_version": "12.8",
+    "device_count": 1,
+    "devices": [
+      {
+        "index": 0,
+        "name": "NVIDIA GeForce RTX 4070 SUPER",
+        "total_memory_gb": 11.99
+      }
+    ],
+    "import_error": "",
+    "installed": true,
+    "version": "2.11.0+cu128"
+  },
+  "torch_cuda_available": true,
+  "torch_cuda_version": "12.8",
+  "torch_install_attempted": true,
+  "torchaudio_install_attempted": true,
+  "tracked_forbidden_files": {
+    "audio_files": [],
+    "venv_audio_files": [],
+    "weights_or_local_artifacts": []
+  },
+  "venv_command_source": "existing .venv-audio",
+  "venv_created": false,
+  "venv_existed_before": true,
+  "vram_total": "12282 MiB"
+}

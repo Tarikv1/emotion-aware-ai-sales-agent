@@ -11,7 +11,9 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "runtime" / "audio_backends" / "liquid_audio_feasibility_config.json"
+ENV_CONFIG_PATH = ROOT / "runtime" / "audio_backends" / "liquid_audio_env_config.json"
 ENV_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-ENVIRONMENT-PROBE-001" / "result.json"
+SETUP_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-ENV-SETUP-001" / "result.json"
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-FEASIBILITY-SMOKE-001"
 RESULT_PATH = OUT_DIR / "result.json"
 REPORT_PATH = OUT_DIR / "report.md"
@@ -87,6 +89,7 @@ def side_effects() -> dict[str, bool]:
 
 def write_decision(smoke: dict[str, Any]) -> None:
     environment = read_json(ENV_RESULT_PATH)
+    setup = read_json(SETUP_RESULT_PATH)
     dependency_status = environment.get("dependency_status") if isinstance(environment.get("dependency_status"), dict) else {}
     model_status = environment.get("model_status") if isinstance(environment.get("model_status"), dict) else {}
     hardware = environment.get("hardware") if isinstance(environment.get("hardware"), dict) else {}
@@ -94,10 +97,13 @@ def write_decision(smoke: dict[str, Any]) -> None:
     environment_status = str(environment.get("status") or "not_available")
     model_present = bool(model_status.get("model_present") or smoke.get("model_present"))
     environment_ready = environment_status in {"environment_ready_no_model", "ready_for_download_phase"} and not dependency_status.get("missing_required")
+    setup_blocker = str(setup.get("exact_blocker") or "").strip()
 
     if environment_status == "missing_dependencies":
         recommendation_id = "install_plan_first"
         next_phase = "Install Liquid Audio dependencies in an isolated local audio environment, then rerun the environment probe. Do not download model weights yet."
+        if setup_blocker:
+            next_phase = f"Resolve Liquid Audio env setup blocker before any download phase: {setup_blocker}"
         download_recommended = False
         smoke_recommended = False
     elif environment_ready and not model_present:
@@ -121,6 +127,10 @@ def write_decision(smoke: dict[str, Any]) -> None:
         "generated_at": utc_now(),
         "status": "pass",
         "environment_probe_result": rel(ENV_RESULT_PATH) if ENV_RESULT_PATH.is_file() else "",
+        "env_setup_result": rel(SETUP_RESULT_PATH) if SETUP_RESULT_PATH.is_file() else "",
+        "env_setup_status": setup.get("status", "not_available"),
+        "install_success": setup.get("install_success"),
+        "exact_blocker": setup_blocker,
         "smoke_result": rel(RESULT_PATH),
         "environment_status": environment_status,
         "environment_ready": environment_ready,
@@ -149,6 +159,9 @@ def write_decision(smoke: dict[str, Any]) -> None:
                 "",
                 f"- status: {decision['status']}",
                 f"- environment_status: {decision['environment_status']}",
+                f"- env_setup_status: {decision['env_setup_status']}",
+                f"- install_success: {str(decision['install_success']).lower()}",
+                f"- exact_blocker: {decision['exact_blocker'] or 'none'}",
                 f"- model_present: {str(decision['model_present']).lower()}",
                 f"- download_phase_recommended: {str(decision['download_phase_recommended']).lower()}",
                 f"- actual_smoke_recommended: {str(decision['actual_smoke_recommended']).lower()}",
@@ -169,6 +182,7 @@ def main() -> int:
     config = read_json(CONFIG_PATH)
     if not config:
         raise AssertionError(f"Missing config: {rel(CONFIG_PATH)}")
+    env_config = read_json(ENV_CONFIG_PATH)
 
     gates = {
         name: {
@@ -209,6 +223,9 @@ def main() -> int:
         "status": status,
         "blocker": blocker,
         "config": rel(CONFIG_PATH),
+        "env_config": rel(ENV_CONFIG_PATH) if ENV_CONFIG_PATH.is_file() else "",
+        "active_python_env": sys.executable,
+        "expected_audio_env": str(env_config.get("python_executable_expected") or ".venv-audio/Scripts/python.exe").replace("\\", "/"),
         "env_gates": gates,
         "model_id": config.get("model_id"),
         "model_present": model_present,

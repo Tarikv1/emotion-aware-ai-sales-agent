@@ -1,9 +1,12 @@
 # LIQUID-AUDIO-ENVIRONMENT-PROBE-001
 
-- status: missing_dependencies
-- missing_required: liquid_audio, torch, torchaudio
-- torch_installed: false
-- cuda_available: false
+- status: environment_ready_no_model
+- active_python_env: `D:\Codex\active\emotion-aware-ai-sales-agent\.venv-audio\Scripts\python.exe`
+- expected_audio_env: `.venv-audio/Scripts/python.exe`
+- running_inside_audio_env: true
+- missing_required: none
+- torch_installed: true
+- cuda_available: true
 - model_present: false
 - model_download_attempted: false
 - local_model_path_ignored: true
@@ -20,8 +23,4 @@
 
 ## Blockers
 
-[
-  "missing dependency: liquid_audio",
-  "missing dependency: torch",
-  "missing dependency: torchaudio"
-]
+[]

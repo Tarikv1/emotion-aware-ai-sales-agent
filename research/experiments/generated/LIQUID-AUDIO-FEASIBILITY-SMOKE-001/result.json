@@ -1,4 +1,5 @@
 {
+  "active_python_env": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Scripts\\python.exe",
   "asr_smoke": {
     "raw_private_audio_used": false,
     "status": "not_run",
@@ -12,6 +13,7 @@
   },
   "blocker": "ENABLE_LOCAL_AUDIO_EXPERIMENT=1 and LOCAL_LIQUID_AUDIO_ENABLED=true are required for smoke execution.",
   "config": "runtime/audio_backends/liquid_audio_feasibility_config.json",
+  "env_config": "runtime/audio_backends/liquid_audio_env_config.json",
   "env_gates": {
     "ENABLE_LOCAL_AUDIO_EXPERIMENT": {
       "actual": "",
@@ -29,8 +31,9 @@
       "expected": "true"
     }
   },
+  "expected_audio_env": ".venv-audio/Scripts/python.exe",
   "experiment_id": "LIQUID-AUDIO-FEASIBILITY-SMOKE-001",
-  "generated_at": "2026-05-28T17:01:52.180953+00:00",
+  "generated_at": "2026-05-28T17:33:37.562973+00:00",
   "interleaved_s2s_smoke": {
     "reason": "Optional future mode only after model/runtime support and gates are verified.",
     "status": "not_run"

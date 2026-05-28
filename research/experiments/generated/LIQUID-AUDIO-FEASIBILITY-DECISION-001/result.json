@@ -1,14 +1,11 @@
 {
   "actual_smoke_recommended": false,
   "dependency_status": {
+    "liquid_audio_import_ok": true,
     "missing_optional": [
       "flash_attn"
     ],
-    "missing_required": [
-      "liquid_audio",
-      "torch",
-      "torchaudio"
-    ],
+    "missing_required": [],
     "optional": {
       "flash_attn": {
         "distribution_name": "flash-attn",
@@ -17,42 +14,52 @@
         "version": null
       }
     },
+    "package_versions": {
+      "liquid_audio": "1.2.0",
+      "torch": "2.11.0+cu128",
+      "torchaudio": "2.11.0+cu128"
+    },
     "required": {
       "liquid_audio": {
         "distribution_name": "liquid-audio",
         "import_name": "liquid_audio",
-        "module_found": false,
-        "version": null
+        "module_found": true,
+        "version": "1.2.0"
       },
       "torch": {
         "distribution_name": "torch",
         "import_name": "torch",
-        "module_found": false,
-        "version": null
+        "module_found": true,
+        "version": "2.11.0+cu128"
       },
       "torchaudio": {
         "distribution_name": "torchaudio",
         "import_name": "torchaudio",
-        "module_found": false,
-        "version": null
+        "module_found": true,
+        "version": "2.11.0+cu128"
       }
-    }
+    },
+    "torchaudio_import_ok": true
   },
-  "download_phase_recommended": false,
+  "download_phase_recommended": true,
+  "env_setup_result": "research/experiments/generated/LIQUID-AUDIO-ENV-SETUP-001/result.json",
+  "env_setup_status": "pass",
   "environment_probe_result": "research/experiments/generated/LIQUID-AUDIO-ENVIRONMENT-PROBE-001/result.json",
-  "environment_ready": false,
-  "environment_status": "missing_dependencies",
+  "environment_ready": true,
+  "environment_status": "environment_ready_no_model",
+  "exact_blocker": "",
   "experiment_id": "LIQUID-AUDIO-FEASIBILITY-DECISION-001",
-  "generated_at": "2026-05-28T17:01:52.544540+00:00",
+  "generated_at": "2026-05-28T17:33:37.572811+00:00",
   "hardware_status": {
-    "assessment": "cuda_unavailable_or_unknown_no_source_vram_requirement",
-    "cuda_available": false,
+    "assessment": "cuda_available",
+    "cuda_available": true,
     "explicit_vram_requirement_from_source": "unknown"
   },
+  "install_success": true,
   "live_wiring_allowed": false,
   "model_present": false,
-  "next_phase_recommendation": "Install Liquid Audio dependencies in an isolated local audio environment, then rerun the environment probe. Do not download model weights yet.",
-  "recommendation_id": "install_plan_first",
+  "next_phase_recommendation": "Proceed only to a gated model download and ASR/TTS smoke phase after explicit approval. Keep artifacts under ignored local_artifacts paths.",
+  "recommendation_id": "gated_download_phase_next",
   "sales_brain_replacement_allowed": false,
   "side_effects": {
     "audio_files_committed": false,

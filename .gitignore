@@ -22,6 +22,7 @@ runtime/config/local/*
 !runtime/config/local/dialogue_reasoner.env.example
 
 local_artifacts/
+.venv-audio/
 .venv-llm/
 models/
 hf-cache/

@@ -15,9 +15,11 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "runtime" / "audio_backends" / "liquid_audio_feasibility_config.json"
+ENV_CONFIG_PATH = ROOT / "runtime" / "audio_backends" / "liquid_audio_env_config.json"
 ENV_OUT_DIR = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-ENVIRONMENT-PROBE-001"
 ENV_RESULT_PATH = ENV_OUT_DIR / "result.json"
 ENV_REPORT_PATH = ENV_OUT_DIR / "report.md"
+SETUP_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-ENV-SETUP-001" / "result.json"
 SMOKE_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-FEASIBILITY-SMOKE-001" / "result.json"
 DECISION_OUT_DIR = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-FEASIBILITY-DECISION-001"
 DECISION_RESULT_PATH = DECISION_OUT_DIR / "result.json"
@@ -193,6 +195,20 @@ def load_config() -> dict[str, Any]:
     return payload
 
 
+def audio_env_report(env_config: dict[str, Any]) -> dict[str, Any]:
+    expected_rel = str(env_config.get("python_executable_expected") or ".venv-audio/Scripts/python.exe")
+    expected_path = (ROOT / expected_rel).resolve()
+    active_path = Path(sys.executable).resolve()
+    return {
+        "env_config": rel(ENV_CONFIG_PATH) if ENV_CONFIG_PATH.is_file() else "",
+        "env_name": env_config.get("env_name", ".venv-audio"),
+        "active_python_env": str(active_path),
+        "expected_audio_env": expected_rel.replace("\\", "/"),
+        "expected_audio_env_absolute": str(expected_path),
+        "running_inside_audio_env": active_path == expected_path,
+    }
+
+
 def side_effects() -> dict[str, bool]:
     return {
         "model_download_attempted": False,
@@ -243,15 +259,19 @@ def decision_from_environment(environment: dict[str, Any]) -> dict[str, Any]:
     model_status = environment.get("model_status") if isinstance(environment.get("model_status"), dict) else {}
     hardware = environment.get("hardware") if isinstance(environment.get("hardware"), dict) else {}
     smoke = read_json(SMOKE_RESULT_PATH)
+    setup = read_json(SETUP_RESULT_PATH)
 
     environment_ready = status in {"environment_ready_no_model", "ready_for_download_phase"} and not dependency_status.get("missing_required")
     model_present = bool(model_status.get("model_present"))
     cuda_available = bool((hardware.get("torch") or {}).get("cuda_available")) if isinstance(hardware.get("torch"), dict) else False
     hardware_note = "cuda_available" if cuda_available else "cuda_unavailable_or_unknown_no_source_vram_requirement"
+    setup_blocker = str(setup.get("exact_blocker") or "").strip()
 
     if status == "missing_dependencies":
         recommendation_id = "install_plan_first"
         next_phase = "Install Liquid Audio dependencies in an isolated local audio environment, then rerun the environment probe. Do not download model weights yet."
+        if setup_blocker:
+            next_phase = f"Resolve Liquid Audio env setup blocker before any download phase: {setup_blocker}"
         download_recommended = False
         smoke_recommended = False
     elif environment_ready and not model_present:
@@ -280,6 +300,10 @@ def decision_from_environment(environment: dict[str, Any]) -> dict[str, Any]:
         "environment_probe_result": rel(ENV_RESULT_PATH),
         "smoke_result": rel(SMOKE_RESULT_PATH) if SMOKE_RESULT_PATH.is_file() else "",
         "environment_status": status,
+        "env_setup_result": rel(SETUP_RESULT_PATH) if SETUP_RESULT_PATH.is_file() else "",
+        "env_setup_status": setup.get("status", "not_available"),
+        "install_success": setup.get("install_success"),
+        "exact_blocker": setup_blocker,
         "environment_ready": environment_ready,
         "dependency_status": dependency_status,
         "hardware_status": {
@@ -308,6 +332,9 @@ def write_decision(environment: dict[str, Any]) -> None:
             "",
             f"- status: {decision['status']}",
             f"- environment_status: {decision['environment_status']}",
+            f"- env_setup_status: {decision['env_setup_status']}",
+            f"- install_success: {str(decision['install_success']).lower()}",
+            f"- exact_blocker: {decision['exact_blocker'] or 'none'}",
             f"- environment_ready: {str(decision['environment_ready']).lower()}",
             f"- model_present: {str(decision['model_present']).lower()}",
             f"- download_phase_recommended: {str(decision['download_phase_recommended']).lower()}",
@@ -326,6 +353,8 @@ def write_decision(environment: dict[str, Any]) -> None:
 
 def main() -> int:
     config = load_config()
+    env_config = read_json(ENV_CONFIG_PATH)
+    active_env = audio_env_report(env_config)
     required = {name: package_report(name, dist) for name, dist in REQUIRED_PACKAGES.items()}
     optional = {name: package_report(name, dist) for name, dist in OPTIONAL_PACKAGES.items()}
     torch_info = torch_report()
@@ -379,6 +408,11 @@ def main() -> int:
         "generated_at": utc_now(),
         "status": status,
         "config": rel(CONFIG_PATH),
+        "env_config": rel(ENV_CONFIG_PATH) if ENV_CONFIG_PATH.is_file() else "",
+        "active_python_env": active_env["active_python_env"],
+        "expected_audio_env": active_env["expected_audio_env"],
+        "running_inside_audio_env": active_env["running_inside_audio_env"],
+        "audio_env": active_env,
         "python": {
             "executable": sys.executable,
             "version": sys.version,
@@ -396,6 +430,9 @@ def main() -> int:
         "dependency_status": {
             "required": required,
             "optional": optional,
+            "package_versions": {name: item.get("version") for name, item in required.items()},
+            "liquid_audio_import_ok": bool(required["liquid_audio"]["module_found"]),
+            "torchaudio_import_ok": bool(required["torchaudio"]["module_found"]),
             "missing_required": missing_required,
             "missing_optional": [name for name, item in optional.items() if not item["module_found"]],
         },
@@ -429,6 +466,9 @@ def main() -> int:
             "# LIQUID-AUDIO-ENVIRONMENT-PROBE-001",
             "",
             f"- status: {status}",
+            f"- active_python_env: `{active_env['active_python_env']}`",
+            f"- expected_audio_env: `{active_env['expected_audio_env']}`",
+            f"- running_inside_audio_env: {str(active_env['running_inside_audio_env']).lower()}",
             f"- missing_required: {', '.join(missing_required) if missing_required else 'none'}",
             f"- torch_installed: {str(torch_info.get('installed')).lower()}",
             f"- cuda_available: {str(torch_info.get('cuda_available')).lower()}",

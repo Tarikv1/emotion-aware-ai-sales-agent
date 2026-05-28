@@ -948,6 +948,17 @@
       ]
     },
     {
+      "path": "runtime/audio_backends/liquid_audio_env_config.json",
+      "path_type": "file",
+      "tier": "audio-backend-local-env-config",
+      "runtime_role": "Isolated .venv-audio dependency environment config for Liquid Audio feasibility work; it records install boundaries only and does not load models, run inference, or change live runtime behavior.",
+      "behavior_surface": [
+        "Liquid Audio dependency setup boundary",
+        "isolated audio environment config",
+        "no model download or inference gate"
+      ]
+    },
+    {
       "path": "runtime/audio_backends/benchmark_plans",
       "path_type": "directory",
       "tier": "audio-benchmark-research-plans",

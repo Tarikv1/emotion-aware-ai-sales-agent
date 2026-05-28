@@ -1,14 +1,20 @@
 {
+  "active_python_env": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Scripts\\python.exe",
+  "audio_env": {
+    "active_python_env": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Scripts\\python.exe",
+    "env_config": "runtime/audio_backends/liquid_audio_env_config.json",
+    "env_name": ".venv-audio",
+    "expected_audio_env": ".venv-audio/Scripts/python.exe",
+    "expected_audio_env_absolute": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Scripts\\python.exe",
+    "running_inside_audio_env": true
+  },
   "config": "runtime/audio_backends/liquid_audio_feasibility_config.json",
   "dependency_status": {
+    "liquid_audio_import_ok": true,
     "missing_optional": [
       "flash_attn"
     ],
-    "missing_required": [
-      "liquid_audio",
-      "torch",
-      "torchaudio"
-    ],
+    "missing_required": [],
     "optional": {
       "flash_attn": {
         "distribution_name": "flash-attn",
@@ -17,28 +23,35 @@
         "version": null
       }
     },
+    "package_versions": {
+      "liquid_audio": "1.2.0",
+      "torch": "2.11.0+cu128",
+      "torchaudio": "2.11.0+cu128"
+    },
     "required": {
       "liquid_audio": {
         "distribution_name": "liquid-audio",
         "import_name": "liquid_audio",
-        "module_found": false,
-        "version": null
+        "module_found": true,
+        "version": "1.2.0"
       },
       "torch": {
         "distribution_name": "torch",
         "import_name": "torch",
-        "module_found": false,
-        "version": null
+        "module_found": true,
+        "version": "2.11.0+cu128"
       },
       "torchaudio": {
         "distribution_name": "torchaudio",
         "import_name": "torchaudio",
-        "module_found": false,
-        "version": null
+        "module_found": true,
+        "version": "2.11.0+cu128"
       }
-    }
+    },
+    "torchaudio_import_ok": true
   },
   "download_gate_enabled": false,
+  "env_config": "runtime/audio_backends/liquid_audio_env_config.json",
   "env_gates": {
     "ENABLE_LOCAL_AUDIO_EXPERIMENT": {
       "actual": "",
@@ -57,8 +70,9 @@
     }
   },
   "env_gates_enabled": false,
+  "expected_audio_env": ".venv-audio/Scripts/python.exe",
   "experiment_id": "LIQUID-AUDIO-ENVIRONMENT-PROBE-001",
-  "generated_at": "2026-05-28T17:01:52.444707+00:00",
+  "generated_at": "2026-05-28T17:33:31.872000+00:00",
   "hardware": {
     "explicit_vram_requirement_from_source": "unknown",
     "nvidia_smi": {
@@ -72,13 +86,19 @@
       ]
     },
     "torch": {
-      "cuda_available": false,
-      "cuda_version": null,
-      "device_count": 0,
-      "devices": [],
-      "import_error": "ModuleNotFoundError: No module named 'torch'",
-      "installed": false,
-      "version": null
+      "cuda_available": true,
+      "cuda_version": "12.8",
+      "device_count": 1,
+      "devices": [
+        {
+          "index": 0,
+          "name": "NVIDIA GeForce RTX 4070 SUPER",
+          "total_memory_gb": 11.99
+        }
+      ],
+      "import_error": "",
+      "installed": true,
+      "version": "2.11.0+cu128"
     }
   },
   "license_tracking": {
@@ -128,10 +148,11 @@
     "path_failures": []
   },
   "python": {
-    "executable": "C:\\Users\\tarik\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "executable": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Scripts\\python.exe",
     "platform": "Windows-11-10.0.26200-SP0",
     "version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
   },
+  "running_inside_audio_env": true,
   "sales_brain_replacement_allowed": false,
   "side_effects": {
     "audio_files_committed": false,
@@ -160,5 +181,5 @@
     "model_card": "https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B",
     "source_repo": "https://github.com/Liquid4All/liquid-audio"
   },
-  "status": "missing_dependencies"
+  "status": "environment_ready_no_model"
 }

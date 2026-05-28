@@ -355,6 +355,7 @@ BINARY_EXTENSIONS = {
 SKIP_DIRS = {
     ".git",
     ".tmp",
+    ".venv-audio",
     ".venv-llm",
     "__pycache__",
     "hf-cache",

@@ -71,6 +71,10 @@ def main() -> int:
         failures.append("decision next_phase_recommendation must be present")
     if not str(decision.get("recommendation_id") or "").strip():
         failures.append("decision recommendation_id must be present")
+    if "install_success" not in decision:
+        failures.append("decision install_success must be recorded")
+    if decision.get("install_success") is False and not str(decision.get("exact_blocker") or "").strip():
+        failures.append("decision exact_blocker must be recorded when install failed")
     if decision.get("environment_status") != environment.get("status"):
         failures.append("decision environment_status must mirror environment result")
     if decision.get("smoke_status") != smoke.get("status"):
