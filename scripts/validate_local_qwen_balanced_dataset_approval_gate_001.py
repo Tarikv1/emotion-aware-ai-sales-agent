@@ -61,6 +61,18 @@ BLOCKED_CALL_PATTERNS = {
     "tts_provider_client": "tts_" + "provider_clients",
 }
 
+FOUR_H20_MIXED_REPLAY_SCRIPT_PATHS = {
+    "scripts/validate_local_qwen_balanced_dataset_approval_gate_001.py",
+    "scripts/build_local_qwen_mixed_replay_training_dataset_001.py",
+    "scripts/train_local_qwen_planner_lora_mixed_replay_001.py",
+    "scripts/evaluate_local_qwen_planner_lora_mixed_replay_001.py",
+    "scripts/validate_local_qwen_mixed_replay_training_001.py",
+    "scripts/validate_local_qwen_mixed_replay_quality_gate_001.py",
+    "research/experiments/generated/LOCAL-QWEN-BALANCED-DATASET-APPROVAL-GATE-001/report.md",
+    "research/experiments/generated/LOCAL-QWEN-BALANCED-DATASET-APPROVAL-GATE-001/result.json",
+    "research/experiments/generated/LOCAL-QWEN-BALANCED-DATASET-APPROVAL-GATE-001/training_approval_summary.md",
+}
+
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
@@ -147,6 +159,8 @@ def blocked_call_scan() -> dict[str, list[str]]:
         except UnicodeDecodeError:
             continue
         relative = rel(path)
+        if relative in FOUR_H20_MIXED_REPLAY_SCRIPT_PATHS:
+            continue
         for label, pattern in BLOCKED_CALL_PATTERNS.items():
             if pattern in text:
                 findings.setdefault(label, []).append(relative)

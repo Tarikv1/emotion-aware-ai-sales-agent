@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-QWEN-BALANCED-DATASET-ARTIFACTS-VALIDATION-001",
-  "validated_at": "2026-05-27T23:10:14.892705+00:00",
+  "validated_at": "2026-05-28T01:48:49.185494+00:00",
   "status": "pass",
   "checks": {
     "balanced_dataset_exists": true,
