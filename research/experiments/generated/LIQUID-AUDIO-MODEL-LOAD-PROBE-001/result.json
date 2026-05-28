@@ -1,0 +1,129 @@
+{
+  "active_python_env": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\.venv-audio\\Scripts\\python.exe",
+  "audio_files_generated": false,
+  "blocker": "",
+  "config": "runtime/audio_backends/liquid_audio_model_probe_config.json",
+  "cpu_memory": {
+    "after_mb": 1036.99,
+    "before_mb": 20.41
+  },
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "exact_blocker": "",
+  "expected_python_env": ".venv-audio/Scripts/python.exe",
+  "experiment_id": "LIQUID-AUDIO-MODEL-LOAD-PROBE-001",
+  "full_model_load_attempted": true,
+  "full_model_load_succeeded": true,
+  "full_model_load_time_seconds": 2.436,
+  "generated_at": "2026-05-28T18:02:40.562365+00:00",
+  "gpu_memory": {
+    "cuda_available": true,
+    "device_name": "NVIDIA GeForce RTX 4070 SUPER",
+    "max_memory_allocated_bytes": 6215645696,
+    "max_memory_reserved_bytes": 6387924992,
+    "mem_get_info_free_bytes": 5187305472,
+    "mem_get_info_total_bytes": 12878086144,
+    "memory_allocated_bytes": 3031321088,
+    "memory_reserved_bytes": 6387924992,
+    "peak_reserved_ratio_of_total": 0.496
+  },
+  "inference_run": false,
+  "live_wiring_allowed": false,
+  "load_attempted": true,
+  "load_gates": {
+    "ENABLE_LOCAL_AUDIO_EXPERIMENT": {
+      "actual": "1",
+      "enabled": true,
+      "expected": "1"
+    },
+    "LOCAL_LIQUID_ALLOW_MODEL_LOAD": {
+      "actual": "1",
+      "enabled": true,
+      "expected": "1"
+    },
+    "LOCAL_LIQUID_AUDIO_ENABLED": {
+      "actual": "true",
+      "enabled": true,
+      "expected": "true"
+    }
+  },
+  "load_gates_enabled": true,
+  "load_succeeded": true,
+  "model_id": "LiquidAI/LFM2.5-Audio-1.5B",
+  "model_inventory": {
+    "model_file_count": 34,
+    "model_path": "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b",
+    "model_path_exists": true,
+    "model_weight_file_count": 3,
+    "sample_filenames": [
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/.gitattributes",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/chat_template.jinja",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/config.json",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/LICENSE",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/model.safetensors",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/README.md",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/special_tokens_map.json",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/tmp_92a2b70e-77a1-4dde-8f95-dd65dde837b4",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/tmp_96b2bb6c-e867-4daa-8ec0-1005817a319e",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/tokenizer-e351c8d8-checkpoint125.safetensors",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/tokenizer.json",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/tokenizer_config.json",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/audio_detokenizer/config.json",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/audio_detokenizer/model.safetensors",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/audio_detokenizer/tokenizer.json",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/audio_detokenizer/tokenizer_config.json",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/.cache/huggingface/.gitignore",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/.cache/huggingface/.gitignore.lock",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/.cache/huggingface/CACHEDIR.TAG",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/.cache/huggingface/download/.gitattributes.metadata",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/.cache/huggingface/download/chat_template.jinja.metadata",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/.cache/huggingface/download/config.json.metadata",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/.cache/huggingface/download/LICENSE.metadata",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/.cache/huggingface/download/model.safetensors.metadata",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/.cache/huggingface/download/README.md.metadata",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/.cache/huggingface/download/special_tokens_map.json.metadata",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/.cache/huggingface/download/tokenizer-e351c8d8-checkpoint125.safetensors.metadata",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/.cache/huggingface/download/tokenizer.json.metadata",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/.cache/huggingface/download/tokenizer_config.json.metadata",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/.cache/huggingface/download/audio_detokenizer/config.json.metadata"
+    ],
+    "sample_weight_filenames": [
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/model.safetensors",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/tokenizer-e351c8d8-checkpoint125.safetensors",
+      "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/audio_detokenizer/model.safetensors"
+    ],
+    "total_approx_bytes": 3963321699
+  },
+  "processor_load_attempted": true,
+  "processor_load_succeeded": true,
+  "processor_load_time_seconds": 1.14,
+  "running_inside_audio_env": true,
+  "sales_brain_replacement_allowed": false,
+  "side_effects": {
+    "audio_files_committed": false,
+    "audio_files_generated": false,
+    "elevenlabs_calls_made": false,
+    "inference_run": false,
+    "live_runtime_wiring_changed": false,
+    "live_tts_calls_made": false,
+    "live_wiring_allowed": false,
+    "local_model_generation_made": false,
+    "model_download_attempted": false,
+    "model_downloads_performed": false,
+    "model_weights_committed": false,
+    "ollama_generation_made": false,
+    "openai_api_calls_made": false,
+    "provider_calls_made": false,
+    "raw_private_audio_used": false,
+    "raw_private_transcripts_included": false,
+    "response_text_changed": false,
+    "runtime_behavior_changed": false,
+    "sales_brain_replacement_allowed": false,
+    "training_performed": false
+  },
+  "status": "load_succeeded",
+  "tracked_forbidden_files": {
+    "audio_files": [],
+    "model_weights_or_local_artifacts": []
+  }
+}

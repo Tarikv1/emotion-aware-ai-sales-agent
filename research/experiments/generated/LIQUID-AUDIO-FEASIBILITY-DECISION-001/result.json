@@ -1,5 +1,5 @@
 {
-  "actual_smoke_recommended": false,
+  "actual_smoke_recommended": true,
   "dependency_status": {
     "liquid_audio_import_ok": true,
     "missing_optional": [
@@ -41,15 +41,15 @@
     },
     "torchaudio_import_ok": true
   },
-  "download_phase_recommended": true,
+  "download_phase_recommended": false,
   "env_setup_result": "research/experiments/generated/LIQUID-AUDIO-ENV-SETUP-001/result.json",
   "env_setup_status": "pass",
   "environment_probe_result": "research/experiments/generated/LIQUID-AUDIO-ENVIRONMENT-PROBE-001/result.json",
   "environment_ready": true,
-  "environment_status": "environment_ready_no_model",
+  "environment_status": "model_loaded_ready_for_smoke",
   "exact_blocker": "",
   "experiment_id": "LIQUID-AUDIO-FEASIBILITY-DECISION-001",
-  "generated_at": "2026-05-28T17:33:37.572811+00:00",
+  "generated_at": "2026-05-28T18:03:18.174997+00:00",
   "hardware_status": {
     "assessment": "cuda_available",
     "cuda_available": true,
@@ -57,9 +57,11 @@
   },
   "install_success": true,
   "live_wiring_allowed": false,
-  "model_present": false,
-  "next_phase_recommendation": "Proceed only to a gated model download and ASR/TTS smoke phase after explicit approval. Keep artifacts under ignored local_artifacts paths.",
-  "recommendation_id": "gated_download_phase_next",
+  "model_load_result": "research/experiments/generated/LIQUID-AUDIO-MODEL-LOAD-PROBE-001/result.json",
+  "model_load_succeeded": true,
+  "model_present": true,
+  "next_phase_recommendation": "Run the gated ASR/TTS smoke with synthetic inputs only; keep Liquid out of live runtime and out of sales-brain decisions.",
+  "recommendation_id": "asr_tts_smoke_next",
   "sales_brain_replacement_allowed": false,
   "side_effects": {
     "audio_files_committed": false,

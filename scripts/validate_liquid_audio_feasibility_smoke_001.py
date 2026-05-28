@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "runtime" / "audio_backends" / "liquid_audio_feasibility_config.json"
 RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-FEASIBILITY-SMOKE-001" / "result.json"
 REPORT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-FEASIBILITY-SMOKE-001" / "report.md"
-ALLOWED_STATUSES = {"not_run", "model_missing", "blocked", "pass"}
+ALLOWED_STATUSES = {"not_run", "model_missing", "ready_for_smoke_next", "blocked", "pass"}
 FORBIDDEN_WEIGHT_SUFFIXES = (".safetensors", ".bin", ".gguf", ".pt", ".pth", ".ckpt", ".onnx")
 FORBIDDEN_AUDIO_SUFFIXES = (".mp3", ".wav", ".flac", ".m4a", ".ogg")
 
@@ -60,7 +60,7 @@ def main() -> int:
     status = result.get("status")
     if status not in ALLOWED_STATUSES:
         failures.append(f"invalid smoke status: {status!r}")
-    if status in {"not_run", "model_missing", "blocked"} and not str(result.get("blocker") or "").strip():
+    if status in {"not_run", "model_missing", "ready_for_smoke_next", "blocked"} and not str(result.get("blocker") or "").strip():
         failures.append("non-running smoke result must record a blocker")
     if result.get("live_wiring_allowed") is not False:
         failures.append("smoke live_wiring_allowed must be false")

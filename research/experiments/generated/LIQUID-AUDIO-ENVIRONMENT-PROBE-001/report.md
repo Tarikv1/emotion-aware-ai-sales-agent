@@ -1,14 +1,15 @@
 # LIQUID-AUDIO-ENVIRONMENT-PROBE-001
 
-- status: environment_ready_no_model
+- status: model_loaded_ready_for_smoke
 - active_python_env: `D:\Codex\active\emotion-aware-ai-sales-agent\.venv-audio\Scripts\python.exe`
 - expected_audio_env: `.venv-audio/Scripts/python.exe`
 - running_inside_audio_env: true
 - missing_required: none
 - torch_installed: true
 - cuda_available: true
-- model_present: false
-- model_download_attempted: false
+- model_present: true
+- model_load_succeeded: true
+- model_download_attempted: true
 - local_model_path_ignored: true
 - output_audio_path_ignored: true
 - live_wiring_allowed: false

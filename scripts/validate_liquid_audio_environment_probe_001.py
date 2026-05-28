@@ -18,6 +18,8 @@ ALLOWED_STATUSES = {
     "model_missing",
     "environment_ready_no_model",
     "ready_for_download_phase",
+    "model_present_ready_for_load",
+    "model_loaded_ready_for_smoke",
     "blocked",
 }
 FORBIDDEN_WEIGHT_SUFFIXES = (".safetensors", ".bin", ".gguf", ".pt", ".pth", ".ckpt", ".onnx")

@@ -33,16 +33,20 @@
   },
   "expected_audio_env": ".venv-audio/Scripts/python.exe",
   "experiment_id": "LIQUID-AUDIO-FEASIBILITY-SMOKE-001",
-  "generated_at": "2026-05-28T17:33:37.562973+00:00",
+  "generated_at": "2026-05-28T18:03:18.163837+00:00",
   "interleaved_s2s_smoke": {
     "reason": "Optional future mode only after model/runtime support and gates are verified.",
     "status": "not_run"
   },
   "live_wiring_allowed": false,
   "model_download_attempted": false,
-  "model_files_sample": [],
+  "model_files_sample": [
+    "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/model.safetensors",
+    "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/tokenizer-e351c8d8-checkpoint125.safetensors",
+    "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/audio_detokenizer/model.safetensors"
+  ],
   "model_id": "LiquidAI/LFM2.5-Audio-1.5B",
-  "model_present": false,
+  "model_present": true,
   "sales_brain_replacement_allowed": false,
   "side_effects": {
     "audio_files_committed": false,

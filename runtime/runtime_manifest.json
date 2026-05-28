@@ -959,6 +959,17 @@
       ]
     },
     {
+      "path": "runtime/audio_backends/liquid_audio_model_probe_config.json",
+      "path_type": "file",
+      "tier": "audio-backend-local-model-probe-config",
+      "runtime_role": "Gated Liquid Audio model download and load-only probe config using ignored local_artifacts paths; it blocks inference, generated audio, live wiring, and sales-brain replacement by default.",
+      "behavior_surface": [
+        "Liquid Audio model download gate",
+        "Liquid Audio load-only probe boundary",
+        "no inference or live runtime wiring"
+      ]
+    },
+    {
       "path": "runtime/audio_backends/benchmark_plans",
       "path_type": "directory",
       "tier": "audio-benchmark-research-plans",

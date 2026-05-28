@@ -72,7 +72,7 @@
   "env_gates_enabled": false,
   "expected_audio_env": ".venv-audio/Scripts/python.exe",
   "experiment_id": "LIQUID-AUDIO-ENVIRONMENT-PROBE-001",
-  "generated_at": "2026-05-28T17:33:31.872000+00:00",
+  "generated_at": "2026-05-28T18:03:12.345408+00:00",
   "hardware": {
     "explicit_vram_requirement_from_source": "unknown",
     "nvidia_smi": {
@@ -109,10 +109,12 @@
   "live_wiring_allowed": false,
   "model_status": {
     "model_download_allowed_by_default": false,
-    "model_download_attempted": false,
-    "model_files_present": 0,
+    "model_download_attempted": true,
+    "model_download_succeeded": true,
+    "model_files_present": 3,
     "model_id": "LiquidAI/LFM2.5-Audio-1.5B",
-    "model_present": false
+    "model_load_succeeded": true,
+    "model_present": true
   },
   "path_status": {
     "cache_path": {
@@ -126,12 +128,16 @@
       "under_local_artifacts": true
     },
     "local_model_path": {
-      "exists": false,
+      "exists": true,
       "expected_under_local_artifacts": true,
       "git_ignored": true,
-      "is_dir": false,
-      "model_file_count": 0,
-      "model_files_sample": [],
+      "is_dir": true,
+      "model_file_count": 3,
+      "model_files_sample": [
+        "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/model.safetensors",
+        "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/tokenizer-e351c8d8-checkpoint125.safetensors",
+        "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b/audio_detokenizer/model.safetensors"
+      ],
       "path": "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b",
       "under_local_artifacts": true
     },
@@ -181,5 +187,5 @@
     "model_card": "https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B",
     "source_repo": "https://github.com/Liquid4All/liquid-audio"
   },
-  "status": "environment_ready_no_model"
+  "status": "model_loaded_ready_for_smoke"
 }

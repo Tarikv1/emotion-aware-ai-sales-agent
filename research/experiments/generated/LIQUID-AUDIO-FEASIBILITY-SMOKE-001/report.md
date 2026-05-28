@@ -2,7 +2,7 @@
 
 - status: not_run
 - blocker: ENABLE_LOCAL_AUDIO_EXPERIMENT=1 and LOCAL_LIQUID_AUDIO_ENABLED=true are required for smoke execution.
-- model_present: false
+- model_present: true
 - model_download_attempted: false
 - smoke_run: false
 - asr_smoke_status: not_run

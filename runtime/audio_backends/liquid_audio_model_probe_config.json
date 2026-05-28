@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "config_id": "liquid-audio-model-probe-config-001",
+  "phase": "4I1C",
+  "backend_id": "liquid_audio_lfm25",
+  "model_id": "LiquidAI/LFM2.5-Audio-1.5B",
+  "source_repo": "https://github.com/Liquid4All/liquid-audio",
+  "model_card": "https://huggingface.co/LiquidAI/LFM2.5-Audio-1.5B",
+  "license_docs": "https://docs.liquid.ai/lfm/help/model-license",
+  "audio_model_docs": "https://docs.liquid.ai/lfm/models/audio-models",
+  "local_model_path": "local_artifacts/audio_models/liquid/lfm2.5-audio-1.5b",
+  "cache_path": "local_artifacts/cache/huggingface",
+  "output_audio_path": "local_artifacts/audio_outputs/liquid",
+  "python_executable": ".venv-audio/Scripts/python.exe",
+  "download_env_required": {
+    "ENABLE_LOCAL_AUDIO_EXPERIMENT": "1",
+    "LOCAL_LIQUID_AUDIO_ENABLED": "true",
+    "LOCAL_LIQUID_ALLOW_MODEL_DOWNLOAD": "1"
+  },
+  "load_probe_env_required": {
+    "ENABLE_LOCAL_AUDIO_EXPERIMENT": "1",
+    "LOCAL_LIQUID_AUDIO_ENABLED": "true",
+    "LOCAL_LIQUID_ALLOW_MODEL_LOAD": "1"
+  },
+  "inference_env_required": {
+    "LOCAL_LIQUID_ALLOW_INFERENCE": "1"
+  },
+  "default_download_allowed": false,
+  "default_load_allowed": false,
+  "default_inference_allowed": false,
+  "live_wiring_allowed": false,
+  "sales_brain_replacement_allowed": false,
+  "model_weights_commit_allowed": false,
+  "generated_audio_commit_allowed": false,
+  "load_probe_policy": {
+    "processor_load_first": true,
+    "full_model_load_allowed_only_with_gate": true,
+    "full_model_device_preference": "cuda",
+    "full_model_dtype": "bfloat16",
+    "generation_allowed": false,
+    "audio_generation_allowed": false
+  }
+}

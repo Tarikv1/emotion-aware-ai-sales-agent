@@ -20,6 +20,8 @@ ENV_OUT_DIR = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-EN
 ENV_RESULT_PATH = ENV_OUT_DIR / "result.json"
 ENV_REPORT_PATH = ENV_OUT_DIR / "report.md"
 SETUP_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-ENV-SETUP-001" / "result.json"
+MODEL_DOWNLOAD_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-MODEL-DOWNLOAD-001" / "result.json"
+MODEL_LOAD_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-MODEL-LOAD-PROBE-001" / "result.json"
 SMOKE_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-FEASIBILITY-SMOKE-001" / "result.json"
 DECISION_OUT_DIR = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-FEASIBILITY-DECISION-001"
 DECISION_RESULT_PATH = DECISION_OUT_DIR / "result.json"
@@ -40,6 +42,8 @@ ALLOWED_STATUSES = {
     "model_missing",
     "environment_ready_no_model",
     "ready_for_download_phase",
+    "model_present_ready_for_load",
+    "model_loaded_ready_for_smoke",
     "blocked",
 }
 
@@ -239,13 +243,14 @@ def decide_status(
     path_failures: list[str],
     env_gates_enabled: bool,
     download_gate_enabled: bool,
+    load_succeeded: bool,
 ) -> str:
     if path_failures:
         return "blocked"
     if dependencies_missing:
         return "missing_dependencies"
     if model_present:
-        return "environment_ready_no_model"
+        return "model_loaded_ready_for_smoke" if load_succeeded else "model_present_ready_for_load"
     if env_gates_enabled and download_gate_enabled:
         return "ready_for_download_phase"
     if env_gates_enabled:
@@ -260,9 +265,12 @@ def decision_from_environment(environment: dict[str, Any]) -> dict[str, Any]:
     hardware = environment.get("hardware") if isinstance(environment.get("hardware"), dict) else {}
     smoke = read_json(SMOKE_RESULT_PATH)
     setup = read_json(SETUP_RESULT_PATH)
+    model_download = read_json(MODEL_DOWNLOAD_RESULT_PATH)
+    model_load = read_json(MODEL_LOAD_RESULT_PATH)
 
-    environment_ready = status in {"environment_ready_no_model", "ready_for_download_phase"} and not dependency_status.get("missing_required")
+    environment_ready = status in {"environment_ready_no_model", "ready_for_download_phase", "model_present_ready_for_load", "model_loaded_ready_for_smoke"} and not dependency_status.get("missing_required")
     model_present = bool(model_status.get("model_present"))
+    model_load_succeeded = bool(model_load.get("load_succeeded"))
     cuda_available = bool((hardware.get("torch") or {}).get("cuda_available")) if isinstance(hardware.get("torch"), dict) else False
     hardware_note = "cuda_available" if cuda_available else "cuda_unavailable_or_unknown_no_source_vram_requirement"
     setup_blocker = str(setup.get("exact_blocker") or "").strip()
@@ -279,7 +287,12 @@ def decision_from_environment(environment: dict[str, Any]) -> dict[str, Any]:
         next_phase = "Proceed only to a gated download and ASR/TTS smoke phase after explicit approval. Keep artifacts under ignored local_artifacts paths."
         download_recommended = True
         smoke_recommended = False
-    elif environment_ready and model_present:
+    elif environment_ready and model_present and not model_load_succeeded:
+        recommendation_id = "gated_load_probe_next"
+        next_phase = "Model files are present; run the gated load-only probe before any ASR/TTS smoke."
+        download_recommended = False
+        smoke_recommended = False
+    elif environment_ready and model_present and model_load_succeeded:
         recommendation_id = "asr_tts_smoke_next"
         next_phase = "Run the gated ASR/TTS smoke script with synthetic inputs only; do not wire Liquid into live runtime."
         download_recommended = False
@@ -304,6 +317,9 @@ def decision_from_environment(environment: dict[str, Any]) -> dict[str, Any]:
         "env_setup_status": setup.get("status", "not_available"),
         "install_success": setup.get("install_success"),
         "exact_blocker": setup_blocker,
+        "model_download_result": rel(MODEL_DOWNLOAD_RESULT_PATH) if MODEL_DOWNLOAD_RESULT_PATH.is_file() else "",
+        "model_load_result": rel(MODEL_LOAD_RESULT_PATH) if MODEL_LOAD_RESULT_PATH.is_file() else "",
+        "model_load_succeeded": model_load_succeeded,
         "environment_ready": environment_ready,
         "dependency_status": dependency_status,
         "hardware_status": {
@@ -394,12 +410,16 @@ def main() -> int:
 
     missing_required = [name for name, item in required.items() if not item["module_found"]]
     model_present = bool(local_model["model_file_count"] > 0)
+    model_download = read_json(MODEL_DOWNLOAD_RESULT_PATH)
+    model_load = read_json(MODEL_LOAD_RESULT_PATH)
+    model_load_succeeded = bool(model_load.get("load_succeeded"))
     status = decide_status(
         missing_required,
         model_present,
         path_failures,
         env_gates_enabled,
         download_gate_enabled,
+        model_load_succeeded,
     )
     assert status in ALLOWED_STATUSES
 
@@ -451,8 +471,10 @@ def main() -> int:
             "model_id": config.get("model_id"),
             "model_present": model_present,
             "model_files_present": local_model["model_file_count"],
-            "model_download_attempted": False,
+            "model_download_attempted": bool(model_download.get("model_download_attempted")),
+            "model_download_succeeded": bool(model_download.get("model_download_succeeded")),
             "model_download_allowed_by_default": False,
+            "model_load_succeeded": model_load_succeeded,
         },
         "license_tracking": config.get("license_tracking"),
         "live_wiring_allowed": False,
@@ -473,7 +495,8 @@ def main() -> int:
             f"- torch_installed: {str(torch_info.get('installed')).lower()}",
             f"- cuda_available: {str(torch_info.get('cuda_available')).lower()}",
             f"- model_present: {str(model_present).lower()}",
-            f"- model_download_attempted: false",
+            f"- model_load_succeeded: {str(model_load_succeeded).lower()}",
+            f"- model_download_attempted: {str((read_json(MODEL_DOWNLOAD_RESULT_PATH).get('model_download_attempted') if MODEL_DOWNLOAD_RESULT_PATH.is_file() else False)).lower()}",
             f"- local_model_path_ignored: {str(local_model.get('git_ignored')).lower()}",
             f"- output_audio_path_ignored: {str(output_audio.get('git_ignored')).lower()}",
             f"- live_wiring_allowed: false",

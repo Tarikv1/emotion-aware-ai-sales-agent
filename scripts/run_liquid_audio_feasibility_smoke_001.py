@@ -14,6 +14,7 @@ CONFIG_PATH = ROOT / "runtime" / "audio_backends" / "liquid_audio_feasibility_co
 ENV_CONFIG_PATH = ROOT / "runtime" / "audio_backends" / "liquid_audio_env_config.json"
 ENV_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-ENVIRONMENT-PROBE-001" / "result.json"
 SETUP_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-ENV-SETUP-001" / "result.json"
+MODEL_LOAD_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-MODEL-LOAD-PROBE-001" / "result.json"
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-FEASIBILITY-SMOKE-001"
 RESULT_PATH = OUT_DIR / "result.json"
 REPORT_PATH = OUT_DIR / "report.md"
@@ -90,13 +91,15 @@ def side_effects() -> dict[str, bool]:
 def write_decision(smoke: dict[str, Any]) -> None:
     environment = read_json(ENV_RESULT_PATH)
     setup = read_json(SETUP_RESULT_PATH)
+    model_load = read_json(MODEL_LOAD_RESULT_PATH)
     dependency_status = environment.get("dependency_status") if isinstance(environment.get("dependency_status"), dict) else {}
     model_status = environment.get("model_status") if isinstance(environment.get("model_status"), dict) else {}
     hardware = environment.get("hardware") if isinstance(environment.get("hardware"), dict) else {}
     torch_info = hardware.get("torch") if isinstance(hardware.get("torch"), dict) else {}
     environment_status = str(environment.get("status") or "not_available")
     model_present = bool(model_status.get("model_present") or smoke.get("model_present"))
-    environment_ready = environment_status in {"environment_ready_no_model", "ready_for_download_phase"} and not dependency_status.get("missing_required")
+    model_load_succeeded = bool(model_load.get("load_succeeded"))
+    environment_ready = environment_status in {"environment_ready_no_model", "ready_for_download_phase", "model_present_ready_for_load", "model_loaded_ready_for_smoke"} and not dependency_status.get("missing_required")
     setup_blocker = str(setup.get("exact_blocker") or "").strip()
 
     if environment_status == "missing_dependencies":
@@ -111,7 +114,12 @@ def write_decision(smoke: dict[str, Any]) -> None:
         next_phase = "Proceed only to a gated model download and ASR/TTS smoke phase after explicit approval. Keep artifacts under ignored local_artifacts paths."
         download_recommended = True
         smoke_recommended = False
-    elif environment_ready and model_present:
+    elif environment_ready and model_present and not model_load_succeeded:
+        recommendation_id = "gated_load_probe_next"
+        next_phase = "Model files are present; run the gated load-only probe before any ASR/TTS smoke."
+        download_recommended = False
+        smoke_recommended = False
+    elif environment_ready and model_present and model_load_succeeded:
         recommendation_id = "asr_tts_smoke_next"
         next_phase = "Run the gated ASR/TTS smoke with synthetic inputs only; keep Liquid out of live runtime and out of sales-brain decisions."
         download_recommended = False
@@ -131,6 +139,8 @@ def write_decision(smoke: dict[str, Any]) -> None:
         "env_setup_status": setup.get("status", "not_available"),
         "install_success": setup.get("install_success"),
         "exact_blocker": setup_blocker,
+        "model_load_result": rel(MODEL_LOAD_RESULT_PATH) if MODEL_LOAD_RESULT_PATH.is_file() else "",
+        "model_load_succeeded": model_load_succeeded,
         "smoke_result": rel(RESULT_PATH),
         "environment_status": environment_status,
         "environment_ready": environment_ready,
@@ -197,6 +207,7 @@ def main() -> int:
         and gates.get("LOCAL_LIQUID_AUDIO_ENABLED", {}).get("enabled")
     )
     download_allowed = bool(gates.get("LOCAL_LIQUID_ALLOW_MODEL_DOWNLOAD", {}).get("enabled"))
+    inference_allowed = bool(env_flag("LOCAL_LIQUID_ALLOW_INFERENCE", "1"))
     model_path = ROOT / str(config.get("local_model_path") or "")
     present_files = model_files(model_path)
     model_present = bool(present_files)
@@ -213,6 +224,9 @@ def main() -> int:
     elif not model_present and download_allowed:
         status = "blocked"
         blocker = "Download gate is enabled, but this Phase 4I1 skeleton does not perform downloads automatically."
+    elif model_present and not inference_allowed:
+        status = "ready_for_smoke_next"
+        blocker = "Model files are present, but LOCAL_LIQUID_ALLOW_INFERENCE=1 is not set; ASR/TTS/S2S smoke remains deferred."
     else:
         status = "blocked"
         blocker = "Model appears present, but Phase 4I1 does not load Liquid or run inference by default."
