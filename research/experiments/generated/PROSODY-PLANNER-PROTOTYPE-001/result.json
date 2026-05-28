@@ -1,11 +1,11 @@
 {
   "experiment_id": "PROSODY-PLANNER-PROTOTYPE-001",
-  "phase": "4I2",
+  "phase": "4I4",
   "status": "pass",
   "planner": "runtime/audio_backends/prosody_planner.py",
   "taxonomy_label_count": 267,
   "composition_rule_count": 46,
-  "sales_mapping_count": 138,
+  "sales_mapping_count": 92,
   "examples_count": 45,
   "examples": [
     {

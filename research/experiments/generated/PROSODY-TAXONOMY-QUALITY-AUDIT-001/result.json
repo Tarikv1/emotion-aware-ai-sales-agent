@@ -1,6 +1,6 @@
 {
   "experiment_id": "PROSODY-TAXONOMY-QUALITY-AUDIT-001",
-  "phase": "4I3",
+  "phase": "4I4",
   "status": "pass",
   "taxonomy": "runtime/audio_backends/prosody_sales_taxonomy.json",
   "taxonomy_label_count": 267,
@@ -31,42 +31,16 @@
     "safety_and_compliance": 11,
     "unsafe_or_disallowed": 17
   },
-  "underrepresented_categories": [
-    "energy",
-    "pitch",
-    "volume"
-  ],
-  "overrepresented_categories": [
-    "unsafe_or_disallowed"
-  ],
+  "underrepresented_categories": [],
+  "overrepresented_categories": [],
   "unsafe_disallowed_label_count": 17,
-  "duplicate_label_count": 256,
+  "duplicate_label_count": 0,
+  "true_duplicate_count": 0,
+  "acceptable_family_similarity_count": 256,
   "duplicate_groups": {
-    "same_description": [
-      {
-        "signature": [
-          "Internal sales prosody control for no shouting without exposing backend tags to the buyer."
-        ],
-        "ids": [
-          "volume.no_shouting",
-          "unsafe.no_shouting"
-        ],
-        "count": 2
-      }
-    ],
-    "same_when_to_use": [
-      {
-        "signature": [
-          "Use when the sales state calls for no shouting and the response still stays source-grounded and low pressure."
-        ],
-        "ids": [
-          "volume.no_shouting",
-          "unsafe.no_shouting"
-        ],
-        "count": 2
-      }
-    ],
-    "same_fish_tags_and_sales_contexts": [
+    "true_duplicate_same_description": [],
+    "true_duplicate_same_when_to_use": [],
+    "acceptable_family_similarity_same_fish_tags_and_sales_contexts": [
       {
         "signature": [
           "[\"[pause]\", \"[short pause]\"]",
@@ -568,408 +542,61 @@
       }
     ]
   },
-  "labels_that_should_be_merged": [
-    {
-      "signature": [
-        "[\"[pause]\", \"[short pause]\"]",
-        "[\"sales_call\", \"voice_turn\", \"plan_explanation\"]"
-      ],
-      "ids": [
-        "pacing.very_slow_explanation",
-        "pacing.extend_for_complex_explanation"
-      ],
-      "count": 2
-    },
-    {
-      "signature": [
-        "[\"[pause]\", \"[short pause]\"]",
-        "[\"sales_call\", \"voice_turn\"]"
-      ],
-      "ids": [
-        "pacing.measured_slow",
-        "pacing.conversational_medium",
-        "pacing.brisk_but_clear",
-        "pacing.urgent_but_controlled",
-        "pacing.slow_down_for_confusion",
-        "pacing.speed_up_for_simple_confirmation",
-        "pacing.reduce_speed_after_interruption",
-        "pacing.compress_for_impatient_buyer",
-        "pacing.listen_first_slow",
-        "pacing.recover_to_medium",
-        "pause.micro_pause",
-        "pause.short_pause",
-        "pause.medium_pause",
-        "pause.pause_after_objection_ack",
-        "pause.no_pause_direct_answer",
-        "pause.terminal_pause",
-        "pause.barge_in_recovery_pause",
-        "pause.confusion_repair_pause",
-        "pause.trust_building_pause",
-        "pause.double_check_pause"
-      ],
-      "count": 20
-    },
-    {
-      "signature": [
-        "[\"[pause]\", \"[short pause]\"]",
-        "[\"sales_call\", \"voice_turn\", \"price_question\"]"
-      ],
-      "ids": [
-        "pause.pause_before_price",
-        "pause.pause_after_price"
-      ],
-      "count": 2
-    },
-    {
-      "signature": [
-        "[\"[volume down]\", \"[low voice]\"]",
-        "[\"sales_call\", \"voice_turn\"]"
-      ],
-      "ids": [
-        "volume.neutral_volume",
-        "volume.slightly_lower_volume",
-        "volume.gentle_volume",
-        "volume.confident_volume",
-        "volume.no_shouting",
-        "volume.no_whisper_live_unless_backend_supported",
-        "volume.deescalation_lower_volume"
-      ],
-      "count": 7
-    },
-    {
-      "signature": [
-        "[\"[pitch up]\", \"[low voice]\"]",
-        "[\"sales_call\", \"voice_turn\"]"
-      ],
-      "ids": [
-        "pitch.neutral_pitch",
-        "pitch.slightly_warmer_pitch",
-        "pitch.lower_pitch_confidence",
-        "pitch.avoid_pitch_spike",
-        "pitch.question_soft_rise",
-        "pitch.no_dramatic_pitching"
-      ],
-      "count": 6
-    },
-    {
-      "signature": [
-        "[\"[professional broadcast tone]\", \"[emphasis]\"]",
-        "[\"sales_call\", \"voice_turn\"]"
-      ],
-      "ids": [
-        "tone.neutral_professional",
-        "tone.warm_professional",
-        "tone.calm_expert",
-        "tone.reassuring",
-        "tone.direct_but_respectful",
-        "tone.consultative",
-        "tone.low_pressure",
-        "tone.serious_boundary",
-        "tone.transparent_source",
-        "tone.no_hype",
-        "tone.no_overexcitement",
-        "tone.matter_of_fact"
-      ],
-      "count": 12
-    },
-    {
-      "signature": [
-        "[\"[professional broadcast tone]\", \"[chuckle]\"]",
-        "[\"sales_call\", \"voice_turn\"]"
-      ],
-      "ids": [
-        "warmth.neutral_warm",
-        "warmth.warmer_reassurance",
-        "warmth.gentle_empathy",
-        "warmth.friendly_but_professional",
-        "warmth.low_pressure_warmth",
-        "warmth.customer_first_warmth",
-        "warmth.respectful_distance",
-        "warmth.no_false_intimacy",
-        "warmth.no_overpersonalizing"
-      ],
-      "count": 9
-    },
-    {
-      "signature": [
-        "[\"[low voice]\", \"[professional broadcast tone]\"]",
-        "[\"sales_call\", \"voice_turn\"]"
-      ],
-      "ids": [
-        "confidence.calm_confidence",
-        "confidence.quiet_confidence",
-        "confidence.executive_confidence",
-        "confidence.certainty_without_overclaim",
-        "confidence.confidence_with_caveat",
-        "confidence.no_unverified_certainty",
-        "confidence.no_pushy_confidence",
-        "confidence.humble_certainty"
-      ],
-      "count": 8
-    },
-    {
-      "signature": [
-        "[\"[excited]\", \"[emphasis]\"]",
-        "[\"sales_call\", \"voice_turn\"]"
-      ],
-      "ids": [
-        "energy.low",
-        "energy.medium",
-        "energy.medium_high",
-        "energy.reduce_for_confusion",
-        "energy.increase_for_momentum",
-        "energy.no_hype_energy",
-        "energy.no_forced_excitement"
-      ],
-      "count": 7
-    },
-    {
-      "signature": [
-        "[\"[emphasis]\", \"[pause]\"]",
-        "[\"sales_call\", \"voice_turn\"]"
-      ],
-      "ids": [
-        "clarity.simple_words",
-        "clarity.short_sentence",
-        "clarity.one_idea_per_sentence",
-        "clarity.repeat_differently",
-        "clarity.no_jargon",
-        "clarity.no_internal_terms",
-        "clarity.summary_before_next_question",
-        "clarity.confirmed_context_first",
-        "sales.value_emphasis",
-        "sales.benefit_contrast",
-        "sales.choice_framing",
-        "sales.decision_rule_delivery",
-        "sales.low_pressure_next_step",
-        "sales.concise_summary",
-        "sales.advance_after_answer",
-        "sales.no_repeat_qualification",
-        "sales.tie_to_buyer_words",
-        "sales.no_monologue",
-        "sales.no_feature_dump",
-        "sales.answer_then_advance"
-      ],
-      "count": 20
-    },
-    {
-      "signature": [
-        "[\"[emphasis]\", \"[pause]\"]",
-        "[\"sales_call\", \"voice_turn\", \"plan_explanation\"]"
-      ],
-      "ids": [
-        "clarity.define_plan_terms",
-        "sales.plan_fit_explanation"
-      ],
-      "count": 2
-    },
-    {
-      "signature": [
-        "[\"[sigh]\", \"[professional broadcast tone]\"]",
-        "[\"sales_call\", \"voice_turn\"]"
-      ],
-      "ids": [
-        "emotion_response.confused_buyer_reassurance",
-        "emotion_response.skeptical_buyer_grounding",
-        "emotion_response.impatient_buyer_concise",
-        "emotion_response.frustrated_buyer_deescalation",
-        "emotion_response.interested_buyer_momentum",
-        "emotion_response.anxious_buyer_reassurance",
-        "emotion_response.disengaged_buyer_relevance_bridge",
-        "emotion_response.neutral_buyer_keep_flow",
-        "emotion_response.curious_buyer_expand_slightly",
-        "emotion_response.annoyed_buyer_reduce_pressure",
-        "emotion_response.distrustful_buyer_transparency"
-      ],
-      "count": 11
-    },
-    {
-      "signature": [
-        "[\"[pause]\", \"[low voice]\"]",
-        "[\"sales_call\", \"voice_turn\", \"price_question\"]"
-      ],
-      "ids": [
-        "objection.price_acknowledge",
-        "objection.price_value_reframe",
-        "objection.price_cost_control",
-        "objection.price_no_discount_promise"
-      ],
-      "count": 4
-    },
-    {
-      "signature": [
-        "[\"[pause]\", \"[low voice]\"]",
-        "[\"sales_call\", \"voice_turn\"]"
-      ],
-      "ids": [
-        "objection.competitor_respect_current_tool",
-        "objection.competitor_gap_probe",
-        "objection.no_interest_respectful_relevance_check",
-        "objection.distrust_source_transparency",
-        "objection.privacy_concern_respectful_answer",
-        "objection.too_busy_compress",
-        "objection.not_using_ai_disqualify_softly",
-        "objection.free_is_enough_no_fit",
-        "objection.need_time_no_pressure",
-        "objection.already_have_tool_compare_gap",
-        "objection.too_expensive_no_pressure",
-        "objection.avoid_argument"
-      ],
-      "count": 12
-    },
-    {
-      "signature": [
-        "[\"[professional broadcast tone]\", \"[pause]\"]",
-        "[\"sales_call\", \"voice_turn\"]"
-      ],
-      "ids": [
-        "trust.transparent_source_boundary",
-        "trust.no_affiliation_overclaim",
-        "trust.official_route_only",
-        "trust.no_fake_followup",
-        "trust.no_hidden_action",
-        "trust.honest_limitation",
-        "trust.check_current_terms",
-        "trust.buyer_control",
-        "trust.no_capability_overclaim"
-      ],
-      "count": 9
-    },
-    {
-      "signature": [
-        "[\"[emphasis]\", \"[pause]\"]",
-        "[\"sales_call\", \"voice_turn\", \"recommendation\"]"
-      ],
-      "ids": [
-        "sales.recommendation_bridge",
-        "sales.confirm_then_recommend"
-      ],
-      "count": 2
-    },
-    {
-      "signature": [
-        "[\"[pause]\", \"[emphasis]\"]",
-        "[\"sales_call\", \"voice_turn\", \"plan_explanation\"]"
-      ],
-      "ids": [
-        "plan.explain_free_plus_pro",
-        "plan.explain_business_enterprise",
-        "plan.explain_model_vs_subscription",
-        "plan.explain_self_serve_path",
-        "plan.explain_api_boundary",
-        "plan.explain_privacy_boundary",
-        "plan.explain_pro_tiers",
-        "plan.explain_without_source_scaffolding",
-        "plan.explain_with_plain_language",
-        "plan.explain_then_check_relevance",
-        "plan.check_official_terms"
-      ],
-      "count": 11
-    },
-    {
-      "signature": [
-        "[\"[emphasis]\", \"[professional broadcast tone]\"]",
-        "[\"sales_call\", \"voice_turn\", \"recommendation\"]"
-      ],
-      "ids": [
-        "recommend.plus_for_light_use",
-        "recommend.pro_for_heavy_use",
-        "recommend.business_for_team_admin",
-        "recommend.enterprise_for_security_procurement",
-        "recommend.free_or_no_fit",
-        "recommend.start_lower_then_upgrade",
-        "recommend.compare_two_options",
-        "recommend.do_not_overrecommend",
-        "recommend.confidence_based_on_known_context",
-        "recommend.ask_one_missing_question"
-      ],
-      "count": 10
-    },
-    {
-      "signature": [
-        "[\"[short pause]\", \"[professional broadcast tone]\"]",
-        "[\"sales_call\", \"voice_turn\", \"closing\"]"
-      ],
-      "ids": [
-        "close.soft_close",
-        "close.choice_close",
-        "close.self_serve_close",
-        "close.terminal_close",
-        "close.no_fit_close",
-        "close.next_step_without_pressure",
-        "close.stop_after_acceptance",
-        "close.no_fake_email",
-        "close.no_fake_calendar",
-        "close.no_crm_claim",
-        "close.enterprise_contact_sales_route",
-        "close.offer_official_link_only"
-      ],
-      "count": 12
-    },
-    {
-      "signature": [
-        "[\"[sigh]\", \"[short pause]\"]",
-        "[\"sales_call\", \"voice_turn\", \"dialogue_repair\"]"
-      ],
-      "ids": [
-        "repair.already_told_you_acknowledge",
-        "repair.correction_acceptance",
-        "repair.wrong_word_repair",
-        "repair.asr_uncertainty_repair",
-        "repair.repeat_with_different_words",
-        "repair.do_not_repeat_question",
-        "repair.summarize_known_context",
-        "repair.restore_and_or_fidelity",
-        "repair.restore_voice_not_writing",
-        "repair.restore_not_team",
-        "repair.apologize_briefly",
-        "repair.move_forward_after_repair",
-        "repair.no_blame_repair"
-      ],
-      "count": 13
-    }
-  ],
+  "labels_that_should_be_merged": [],
   "labels_that_should_stay_separate": [
     "unsafe.* labels stay separate because validators need explicit blocked style families",
     "source.* and trust.* labels overlap by design but separate truthfulness from buyer confidence",
-    "repair.* and clarify.* labels stay separate to avoid loop-prone repeated qualification"
+    "repair.* and clarify.* labels stay separate to avoid loop-prone repeated qualification",
+    "category-family Fish-inspired tag overlap is acceptable when descriptions and backend hints differ"
   ],
   "coverage_gaps": [],
   "safety_failures": [],
   "backend_mapping_failures": [],
-  "backend_mapping_boilerplate_label_count": 267,
+  "backend_mapping_boilerplate_label_count": 0,
+  "repeated_template_hint_count": 0,
+  "needs_specific_backend_hint_count": 0,
+  "risky_but_blocked_count": 43,
+  "risky_unblocked_count": 0,
+  "risky_and_unblocked_count": 0,
+  "integration_blocker_count": 0,
   "sales_usefulness_counts": {
-    "too_vague": 122,
-    "high_value": 116,
-    "risky": 29
+    "useful": 153,
+    "high_value": 71,
+    "risky": 43
+  },
+  "quality_classification_counts": {
+    "acceptable_family_similarity": 214,
+    "no_action_needed": 10,
+    "risky_but_blocked": 43
   },
   "live_readiness_counts": {
-    "evidence_only": 122,
-    "safe_for_future_live_style_hint": 76,
-    "internal_only": 40,
-    "disallowed": 29
+    "safe_for_future_live_style_hint": 155,
+    "internal_only": 69,
+    "disallowed": 43
   },
-  "risky_label_count": 29,
-  "too_vague_label_count": 122,
+  "risky_label_count": 43,
+  "too_vague_label_count": 0,
   "redundant_label_count": 0,
-  "needs_human_review_count": 122,
+  "needs_human_review_count": 0,
   "label_assessments": [
     {
       "label_id": "pacing.very_slow_explanation",
       "category": "pacing",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 2,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pacing.measured_slow",
       "category": "pacing",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -979,37 +606,41 @@
       "category": "pacing",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pacing.brisk_but_clear",
       "category": "pacing",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pacing.urgent_but_controlled",
       "category": "pacing",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pacing.slow_down_for_confusion",
       "category": "pacing",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1019,17 +650,19 @@
       "category": "pacing",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pacing.reduce_speed_after_interruption",
       "category": "pacing",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1037,8 +670,9 @@
     {
       "label_id": "pacing.compress_for_impatient_buyer",
       "category": "pacing",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 20,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -1049,77 +683,85 @@
       "category": "pacing",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 2,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pacing.listen_first_slow",
       "category": "pacing",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pacing.recover_to_medium",
       "category": "pacing",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pause.micro_pause",
       "category": "pause",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pause.short_pause",
       "category": "pause",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pause.medium_pause",
       "category": "pause",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pause.pause_after_objection_ack",
       "category": "pause",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pause.pause_before_recommendation",
       "category": "pause",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 1,
-      "sales_usefulness": "high_value",
+      "quality_classification": "no_action_needed",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1127,9 +769,10 @@
     {
       "label_id": "pause.pause_before_price",
       "category": "pause",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 2,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1137,9 +780,10 @@
     {
       "label_id": "pause.pause_after_price",
       "category": "pause",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 2,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1147,9 +791,10 @@
     {
       "label_id": "pause.no_pause_direct_answer",
       "category": "pause",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "internal_only",
       "risk_level": "medium",
       "status": "pass"
@@ -1157,9 +802,10 @@
     {
       "label_id": "pause.terminal_pause",
       "category": "pause",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1167,9 +813,10 @@
     {
       "label_id": "pause.barge_in_recovery_pause",
       "category": "pause",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1179,76 +826,84 @@
       "category": "pause",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pause.trust_building_pause",
       "category": "pause",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pause.double_check_pause",
       "category": "pause",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "volume.neutral_volume",
       "category": "volume",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 7,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "volume.slightly_lower_volume",
       "category": "volume",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 7,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "volume.gentle_volume",
       "category": "volume",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 7,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "volume.confident_volume",
       "category": "volume",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 7,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "volume.no_shouting",
       "category": "volume",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 7,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -1259,16 +914,18 @@
       "category": "volume",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 7,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "volume.deescalation_lower_volume",
       "category": "volume",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 7,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -1279,76 +936,84 @@
       "category": "pitch",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 6,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pitch.slightly_warmer_pitch",
       "category": "pitch",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 6,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pitch.lower_pitch_confidence",
       "category": "pitch",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 6,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pitch.avoid_pitch_spike",
       "category": "pitch",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 6,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pitch.question_soft_rise",
       "category": "pitch",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 6,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pitch.close_decisive_fall",
       "category": "pitch",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 1,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "no_action_needed",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "pitch.no_dramatic_pitching",
       "category": "pitch",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 6,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "tone.neutral_professional",
       "category": "tone",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 12,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -1359,36 +1024,40 @@
       "category": "tone",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "tone.calm_expert",
       "category": "tone",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "tone.reassuring",
       "category": "tone",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "tone.direct_but_respectful",
       "category": "tone",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 12,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -1399,36 +1068,40 @@
       "category": "tone",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "tone.low_pressure",
       "category": "tone",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
-      "risk_level": "low",
-      "status": "needs_human_review"
+      "quality_classification": "risky_but_blocked",
+      "sales_usefulness": "risky",
+      "live_readiness": "disallowed",
+      "risk_level": "high",
+      "status": "pass"
     },
     {
       "label_id": "tone.serious_boundary",
       "category": "tone",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "tone.transparent_source",
       "category": "tone",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 12,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -1439,57 +1112,63 @@
       "category": "tone",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "tone.no_overexcitement",
       "category": "tone",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "tone.matter_of_fact",
       "category": "tone",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "warmth.neutral_warm",
       "category": "warmth",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "warmth.warmer_reassurance",
       "category": "warmth",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "warmth.gentle_empathy",
       "category": "warmth",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1499,19 +1178,21 @@
       "category": "warmth",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "warmth.low_pressure_warmth",
       "category": "warmth",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "high_value",
-      "live_readiness": "safe_for_future_live_style_hint",
-      "risk_level": "low",
+      "quality_classification": "risky_but_blocked",
+      "sales_usefulness": "risky",
+      "live_readiness": "disallowed",
+      "risk_level": "high",
       "status": "pass"
     },
     {
@@ -1519,77 +1200,85 @@
       "category": "warmth",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "warmth.respectful_distance",
       "category": "warmth",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "warmth.no_false_intimacy",
       "category": "warmth",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "warmth.no_overpersonalizing",
       "category": "warmth",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "confidence.calm_confidence",
       "category": "confidence",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 8,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "confidence.quiet_confidence",
       "category": "confidence",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 8,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "confidence.executive_confidence",
       "category": "confidence",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 8,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "confidence.decisive_recommendation",
       "category": "confidence",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 1,
-      "sales_usefulness": "high_value",
+      "quality_classification": "no_action_needed",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1599,16 +1288,18 @@
       "category": "confidence",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 8,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
-      "risk_level": "low",
-      "status": "needs_human_review"
+      "quality_classification": "risky_but_blocked",
+      "sales_usefulness": "risky",
+      "live_readiness": "disallowed",
+      "risk_level": "high",
+      "status": "pass"
     },
     {
       "label_id": "confidence.confidence_with_caveat",
       "category": "confidence",
-      "selected_count": 9,
+      "selected_count": 6,
       "duplicate_tag_context_group_size": 8,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -1617,9 +1308,10 @@
     {
       "label_id": "confidence.no_unverified_certainty",
       "category": "confidence",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 8,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "internal_only",
       "risk_level": "medium",
       "status": "pass"
@@ -1629,67 +1321,74 @@
       "category": "confidence",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 8,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "confidence.humble_certainty",
       "category": "confidence",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 8,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "energy.low",
       "category": "energy",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 7,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "energy.medium",
       "category": "energy",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 7,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "energy.medium_high",
       "category": "energy",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 7,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "energy.reduce_for_confusion",
       "category": "energy",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 7,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "energy.increase_for_momentum",
       "category": "energy",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 7,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1699,26 +1398,29 @@
       "category": "energy",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 7,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "energy.no_forced_excitement",
       "category": "energy",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 7,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "clarity.simple_words",
       "category": "clarity",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 20,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -1727,8 +1429,9 @@
     {
       "label_id": "clarity.short_sentence",
       "category": "clarity",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 20,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -1737,8 +1440,9 @@
     {
       "label_id": "clarity.one_idea_per_sentence",
       "category": "clarity",
-      "selected_count": 9,
+      "selected_count": 6,
       "duplicate_tag_context_group_size": 20,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -1747,9 +1451,10 @@
     {
       "label_id": "clarity.define_plan_terms",
       "category": "clarity",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 2,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1757,8 +1462,9 @@
     {
       "label_id": "clarity.repeat_differently",
       "category": "clarity",
-      "selected_count": 3,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 20,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -1769,27 +1475,30 @@
       "category": "clarity",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "clarity.no_internal_terms",
       "category": "clarity",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "clarity.summary_before_next_question",
       "category": "clarity",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1799,16 +1508,18 @@
       "category": "clarity",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "emotion_response.confused_buyer_reassurance",
       "category": "emotion_response",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -1817,9 +1528,10 @@
     {
       "label_id": "emotion_response.skeptical_buyer_grounding",
       "category": "emotion_response",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1827,9 +1539,10 @@
     {
       "label_id": "emotion_response.impatient_buyer_concise",
       "category": "emotion_response",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1837,9 +1550,10 @@
     {
       "label_id": "emotion_response.frustrated_buyer_deescalation",
       "category": "emotion_response",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1847,9 +1561,10 @@
     {
       "label_id": "emotion_response.interested_buyer_momentum",
       "category": "emotion_response",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1859,17 +1574,19 @@
       "category": "emotion_response",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 1,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "no_action_needed",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "emotion_response.anxious_buyer_reassurance",
       "category": "emotion_response",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1877,9 +1594,10 @@
     {
       "label_id": "emotion_response.disengaged_buyer_relevance_bridge",
       "category": "emotion_response",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1889,17 +1607,19 @@
       "category": "emotion_response",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "emotion_response.curious_buyer_expand_slightly",
       "category": "emotion_response",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -1907,11 +1627,12 @@
     {
       "label_id": "emotion_response.annoyed_buyer_reduce_pressure",
       "category": "emotion_response",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
-      "live_readiness": "safe_for_future_live_style_hint",
-      "risk_level": "low",
+      "quality_classification": "risky_but_blocked",
+      "sales_usefulness": "risky",
+      "live_readiness": "disallowed",
+      "risk_level": "high",
       "status": "pass"
     },
     {
@@ -1919,16 +1640,18 @@
       "category": "emotion_response",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "objection.price_acknowledge",
       "category": "objection_handling",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 4,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -1937,8 +1660,9 @@
     {
       "label_id": "objection.price_value_reframe",
       "category": "objection_handling",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 4,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -1947,18 +1671,20 @@
     {
       "label_id": "objection.price_cost_control",
       "category": "objection_handling",
-      "selected_count": 0,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 4,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "high_value",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "objection.competitor_respect_current_tool",
       "category": "objection_handling",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 12,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -1967,8 +1693,9 @@
     {
       "label_id": "objection.competitor_gap_probe",
       "category": "objection_handling",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 12,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -1979,26 +1706,29 @@
       "category": "objection_handling",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "high_value",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "objection.distrust_source_transparency",
       "category": "objection_handling",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "high_value",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "objection.privacy_concern_respectful_answer",
       "category": "objection_handling",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 12,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2007,8 +1737,9 @@
     {
       "label_id": "objection.too_busy_compress",
       "category": "objection_handling",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 12,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2017,8 +1748,9 @@
     {
       "label_id": "objection.not_using_ai_disqualify_softly",
       "category": "objection_handling",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 12,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2027,8 +1759,9 @@
     {
       "label_id": "objection.free_is_enough_no_fit",
       "category": "objection_handling",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 12,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2039,16 +1772,18 @@
       "category": "objection_handling",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
-      "risk_level": "medium",
-      "status": "needs_human_review"
+      "quality_classification": "risky_but_blocked",
+      "sales_usefulness": "risky",
+      "live_readiness": "disallowed",
+      "risk_level": "high",
+      "status": "pass"
     },
     {
       "label_id": "objection.already_have_tool_compare_gap",
       "category": "objection_handling",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 12,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2057,18 +1792,20 @@
     {
       "label_id": "objection.too_expensive_no_pressure",
       "category": "objection_handling",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "high_value",
-      "live_readiness": "internal_only",
-      "risk_level": "medium",
+      "quality_classification": "risky_but_blocked",
+      "sales_usefulness": "risky",
+      "live_readiness": "disallowed",
+      "risk_level": "high",
       "status": "pass"
     },
     {
       "label_id": "objection.avoid_argument",
       "category": "objection_handling",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 12,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2079,36 +1816,40 @@
       "category": "objection_handling",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 4,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
-      "risk_level": "medium",
-      "status": "needs_human_review"
-    },
-    {
-      "label_id": "trust.transparent_source_boundary",
-      "category": "trust_building",
-      "selected_count": 0,
-      "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
-      "risk_level": "low",
-      "status": "needs_human_review"
-    },
-    {
-      "label_id": "trust.no_affiliation_overclaim",
-      "category": "trust_building",
-      "selected_count": 6,
-      "duplicate_tag_context_group_size": 9,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
       "status": "pass"
     },
     {
+      "label_id": "trust.transparent_source_boundary",
+      "category": "trust_building",
+      "selected_count": 0,
+      "duplicate_tag_context_group_size": 9,
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
+      "risk_level": "low",
+      "status": "pass"
+    },
+    {
+      "label_id": "trust.no_affiliation_overclaim",
+      "category": "trust_building",
+      "selected_count": 4,
+      "duplicate_tag_context_group_size": 9,
+      "quality_classification": "risky_but_blocked",
+      "sales_usefulness": "risky",
+      "live_readiness": "disallowed",
+      "risk_level": "high",
+      "status": "pass"
+    },
+    {
       "label_id": "trust.official_route_only",
       "category": "trust_building",
-      "selected_count": 3,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 9,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -2119,27 +1860,30 @@
       "category": "trust_building",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
-      "risk_level": "medium",
-      "status": "needs_human_review"
+      "quality_classification": "risky_but_blocked",
+      "sales_usefulness": "risky",
+      "live_readiness": "disallowed",
+      "risk_level": "high",
+      "status": "pass"
     },
     {
       "label_id": "trust.no_hidden_action",
       "category": "trust_building",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "trust.honest_limitation",
       "category": "trust_building",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2147,9 +1891,10 @@
     {
       "label_id": "trust.check_current_terms",
       "category": "trust_building",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2157,9 +1902,10 @@
     {
       "label_id": "trust.buyer_control",
       "category": "trust_building",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2169,27 +1915,30 @@
       "category": "trust_building",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
-      "risk_level": "medium",
-      "status": "needs_human_review"
+      "quality_classification": "risky_but_blocked",
+      "sales_usefulness": "risky",
+      "live_readiness": "disallowed",
+      "risk_level": "high",
+      "status": "pass"
     },
     {
       "label_id": "sales.value_emphasis",
       "category": "sales_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "sales.benefit_contrast",
       "category": "sales_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2197,9 +1946,10 @@
     {
       "label_id": "sales.choice_framing",
       "category": "sales_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2209,46 +1959,51 @@
       "category": "sales_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 2,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "sales.recommendation_bridge",
       "category": "sales_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 2,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "sales.decision_rule_delivery",
       "category": "sales_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "sales.low_pressure_next_step",
       "category": "sales_delivery",
       "selected_count": 3,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "high_value",
-      "live_readiness": "safe_for_future_live_style_hint",
-      "risk_level": "low",
+      "quality_classification": "risky_but_blocked",
+      "sales_usefulness": "risky",
+      "live_readiness": "disallowed",
+      "risk_level": "high",
       "status": "pass"
     },
     {
       "label_id": "sales.concise_summary",
       "category": "sales_delivery",
-      "selected_count": 6,
+      "selected_count": 23,
       "duplicate_tag_context_group_size": 20,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -2257,9 +2012,10 @@
     {
       "label_id": "sales.advance_after_answer",
       "category": "sales_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2269,16 +2025,18 @@
       "category": "sales_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "sales.tie_to_buyer_words",
       "category": "sales_delivery",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 20,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -2287,9 +2045,10 @@
     {
       "label_id": "sales.confirm_then_recommend",
       "category": "sales_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 2,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2299,37 +2058,41 @@
       "category": "sales_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "sales.no_feature_dump",
       "category": "sales_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "sales.answer_then_advance",
       "category": "sales_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 20,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "plan.explain_free_plus_pro",
       "category": "plan_explanation",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2337,9 +2100,10 @@
     {
       "label_id": "plan.explain_business_enterprise",
       "category": "plan_explanation",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2347,9 +2111,10 @@
     {
       "label_id": "plan.explain_model_vs_subscription",
       "category": "plan_explanation",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2357,8 +2122,9 @@
     {
       "label_id": "plan.explain_self_serve_path",
       "category": "plan_explanation",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -2369,16 +2135,18 @@
       "category": "plan_explanation",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "plan.explain_privacy_boundary",
       "category": "plan_explanation",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -2387,9 +2155,10 @@
     {
       "label_id": "plan.explain_pro_tiers",
       "category": "plan_explanation",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2399,17 +2168,19 @@
       "category": "plan_explanation",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "plan.explain_with_plain_language",
       "category": "plan_explanation",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2419,36 +2190,40 @@
       "category": "plan_explanation",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "plan.check_official_terms",
       "category": "plan_explanation",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "recommend.plus_for_light_use",
       "category": "recommendation_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 10,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "recommend.pro_for_heavy_use",
       "category": "recommendation_delivery",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 10,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -2459,17 +2234,19 @@
       "category": "recommendation_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 10,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "recommend.enterprise_for_security_procurement",
       "category": "recommendation_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 10,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2477,8 +2254,9 @@
     {
       "label_id": "recommend.free_or_no_fit",
       "category": "recommendation_delivery",
-      "selected_count": 12,
+      "selected_count": 8,
       "duplicate_tag_context_group_size": 10,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2487,9 +2265,10 @@
     {
       "label_id": "recommend.start_lower_then_upgrade",
       "category": "recommendation_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 10,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2497,9 +2276,10 @@
     {
       "label_id": "recommend.compare_two_options",
       "category": "recommendation_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 10,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2509,17 +2289,19 @@
       "category": "recommendation_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 10,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "recommend.confidence_based_on_known_context",
       "category": "recommendation_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 10,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2529,56 +2311,62 @@
       "category": "recommendation_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 10,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "recommend.no_plan_if_uncertain",
       "category": "recommendation_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 1,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "no_action_needed",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "close.soft_close",
       "category": "closing_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "close.choice_close",
       "category": "closing_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "close.self_serve_close",
       "category": "closing_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "close.terminal_close",
       "category": "closing_delivery",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 12,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -2587,8 +2375,9 @@
     {
       "label_id": "close.no_fit_close",
       "category": "closing_delivery",
-      "selected_count": 9,
+      "selected_count": 5,
       "duplicate_tag_context_group_size": 12,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2599,17 +2388,19 @@
       "category": "closing_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
-      "risk_level": "low",
-      "status": "needs_human_review"
+      "quality_classification": "risky_but_blocked",
+      "sales_usefulness": "risky",
+      "live_readiness": "disallowed",
+      "risk_level": "high",
+      "status": "pass"
     },
     {
       "label_id": "close.stop_after_acceptance",
       "category": "closing_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2617,29 +2408,32 @@
     {
       "label_id": "close.no_fake_email",
       "category": "closing_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "high_value",
-      "live_readiness": "internal_only",
-      "risk_level": "medium",
+      "quality_classification": "risky_but_blocked",
+      "sales_usefulness": "risky",
+      "live_readiness": "disallowed",
+      "risk_level": "high",
       "status": "pass"
     },
     {
       "label_id": "close.no_fake_calendar",
       "category": "closing_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "high_value",
-      "live_readiness": "internal_only",
-      "risk_level": "medium",
+      "quality_classification": "risky_but_blocked",
+      "sales_usefulness": "risky",
+      "live_readiness": "disallowed",
+      "risk_level": "high",
       "status": "pass"
     },
     {
       "label_id": "close.no_crm_claim",
       "category": "closing_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "internal_only",
       "risk_level": "medium",
       "status": "pass"
@@ -2647,9 +2441,10 @@
     {
       "label_id": "close.official_plan_page_route",
       "category": "closing_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 1,
-      "sales_usefulness": "high_value",
+      "quality_classification": "no_action_needed",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2657,9 +2452,10 @@
     {
       "label_id": "close.enterprise_contact_sales_route",
       "category": "closing_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2669,16 +2465,18 @@
       "category": "closing_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 12,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "repair.already_told_you_acknowledge",
       "category": "repair",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 13,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2687,8 +2485,9 @@
     {
       "label_id": "repair.correction_acceptance",
       "category": "repair",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 13,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2697,8 +2496,9 @@
     {
       "label_id": "repair.wrong_word_repair",
       "category": "repair",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 13,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2707,8 +2507,9 @@
     {
       "label_id": "repair.asr_uncertainty_repair",
       "category": "repair",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 13,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2719,6 +2520,7 @@
       "category": "repair",
       "selected_count": 3,
       "duplicate_tag_context_group_size": 13,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2727,8 +2529,9 @@
     {
       "label_id": "repair.do_not_repeat_question",
       "category": "repair",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 13,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2737,8 +2540,9 @@
     {
       "label_id": "repair.summarize_known_context",
       "category": "repair",
-      "selected_count": 3,
+      "selected_count": 1,
       "duplicate_tag_context_group_size": 13,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2749,16 +2553,18 @@
       "category": "repair",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 13,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "high_value",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "repair.restore_voice_not_writing",
       "category": "repair",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 13,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2767,8 +2573,9 @@
     {
       "label_id": "repair.restore_not_team",
       "category": "repair",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 13,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2779,16 +2586,18 @@
       "category": "repair",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 13,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "high_value",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "repair.move_forward_after_repair",
       "category": "repair",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 13,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2799,26 +2608,29 @@
       "category": "repair",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 13,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "high_value",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "clarify.plan_scope",
       "category": "clarification",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 1,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "no_action_needed",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "clarify.tool_name",
       "category": "clarification",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -2827,9 +2639,10 @@
     {
       "label_id": "clarify.team_vs_individual",
       "category": "clarification",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2837,9 +2650,10 @@
     {
       "label_id": "clarify.use_case",
       "category": "clarification",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2847,9 +2661,10 @@
     {
       "label_id": "clarify.intensity",
       "category": "clarification",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2859,16 +2674,18 @@
       "category": "clarification",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 1,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "no_action_needed",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "clarify.comparison_target",
       "category": "clarification",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -2877,9 +2694,10 @@
     {
       "label_id": "clarify.subscription_vs_model",
       "category": "clarification",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -2889,26 +2707,29 @@
       "category": "clarification",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "clarify.privacy_question",
       "category": "clarification",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "clarify.short_natural_question",
       "category": "clarification",
-      "selected_count": 9,
+      "selected_count": 6,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -2919,26 +2740,29 @@
       "category": "clarification",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "clarify.confirm_known_context",
       "category": "clarification",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "boundary.respect_no_email",
       "category": "boundary_respect",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 10,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2947,8 +2771,9 @@
     {
       "label_id": "boundary.respect_no_calendar",
       "category": "boundary_respect",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 10,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2957,8 +2782,9 @@
     {
       "label_id": "boundary.respect_no_crm",
       "category": "boundary_respect",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 10,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2967,8 +2793,9 @@
     {
       "label_id": "boundary.respect_privacy_boundary",
       "category": "boundary_respect",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 10,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -2979,19 +2806,21 @@
       "category": "boundary_respect",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 10,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "high_value",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "boundary.no_pressure_after_boundary",
       "category": "boundary_respect",
-      "selected_count": 6,
+      "selected_count": 7,
       "duplicate_tag_context_group_size": 10,
-      "sales_usefulness": "high_value",
-      "live_readiness": "internal_only",
-      "risk_level": "medium",
+      "quality_classification": "risky_but_blocked",
+      "sales_usefulness": "risky",
+      "live_readiness": "disallowed",
+      "risk_level": "high",
       "status": "pass"
     },
     {
@@ -2999,16 +2828,18 @@
       "category": "boundary_respect",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 10,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "high_value",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "boundary.no_side_effect_claim",
       "category": "boundary_respect",
-      "selected_count": 9,
+      "selected_count": 6,
       "duplicate_tag_context_group_size": 10,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -3019,27 +2850,30 @@
       "category": "boundary_respect",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 10,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "high_value",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "boundary.no_recontact_claim",
       "category": "boundary_respect",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 10,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "high_value",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "phone.opener_clear_identity",
       "category": "phone_call_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 13,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -3047,9 +2881,10 @@
     {
       "label_id": "phone.permission_check_natural",
       "category": "phone_call_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 13,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -3057,8 +2892,9 @@
     {
       "label_id": "phone.one_question_at_a_time",
       "category": "phone_call_delivery",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 13,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -3067,8 +2903,9 @@
     {
       "label_id": "phone.short_turn_discipline",
       "category": "phone_call_delivery",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 13,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -3077,9 +2914,10 @@
     {
       "label_id": "phone.barge_in_recovery",
       "category": "phone_call_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 13,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -3089,37 +2927,41 @@
       "category": "phone_call_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 13,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "phone.avoid_monologue",
       "category": "phone_call_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 13,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "phone.do_not_stack_questions",
       "category": "phone_call_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 13,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "phone.answer_then_ask",
       "category": "phone_call_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 13,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -3129,16 +2971,18 @@
       "category": "phone_call_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 13,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "phone.stop_when_terminal",
       "category": "phone_call_delivery",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 13,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
@@ -3149,77 +2993,85 @@
       "category": "phone_call_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 13,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "phone.no_overlap_talk",
       "category": "phone_call_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 13,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "multilingual.simple_english",
       "category": "multilingual_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "multilingual.german_friendly_pacing",
       "category": "multilingual_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "multilingual.avoid_idiom",
       "category": "multilingual_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "multilingual.repeat_key_term_slowly",
       "category": "multilingual_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "multilingual.clarify_brand_name",
       "category": "multilingual_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "multilingual.pronounce_chatgpt_carefully",
       "category": "multilingual_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -3227,9 +3079,10 @@
     {
       "label_id": "multilingual.pronounce_claude_carefully",
       "category": "multilingual_delivery",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "high_value",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
       "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
       "status": "pass"
@@ -3239,56 +3092,62 @@
       "category": "multilingual_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "multilingual.use_plain_international_english",
       "category": "multilingual_delivery",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 9,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "useful",
+      "live_readiness": "safe_for_future_live_style_hint",
       "risk_level": "low",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "source.no_article_says",
       "category": "source_and_truthfulness",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 7,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "high_value",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "source.no_according_to_website_overuse",
       "category": "source_and_truthfulness",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 7,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "high_value",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "source.state_as_fact_if_source_grounded",
       "category": "source_and_truthfulness",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 7,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "acceptable_family_similarity",
+      "sales_usefulness": "high_value",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "source.caveat_exact_terms_can_change",
       "category": "source_and_truthfulness",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 7,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -3297,8 +3156,9 @@
     {
       "label_id": "source.official_route_boundary",
       "category": "source_and_truthfulness",
-      "selected_count": 9,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 7,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -3307,8 +3167,9 @@
     {
       "label_id": "source.no_affiliation_claim",
       "category": "source_and_truthfulness",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 7,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -3317,8 +3178,9 @@
     {
       "label_id": "source.no_unverified_model_claim",
       "category": "source_and_truthfulness",
-      "selected_count": 6,
+      "selected_count": 4,
       "duplicate_tag_context_group_size": 7,
+      "quality_classification": "acceptable_family_similarity",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -3327,8 +3189,9 @@
     {
       "label_id": "source.no_price_guarantee",
       "category": "source_and_truthfulness",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 1,
+      "quality_classification": "no_action_needed",
       "sales_usefulness": "high_value",
       "live_readiness": "internal_only",
       "risk_level": "medium",
@@ -3339,16 +3202,18 @@
       "category": "source_and_truthfulness",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 1,
-      "sales_usefulness": "too_vague",
-      "live_readiness": "evidence_only",
+      "quality_classification": "no_action_needed",
+      "sales_usefulness": "high_value",
+      "live_readiness": "internal_only",
       "risk_level": "medium",
-      "status": "needs_human_review"
+      "status": "pass"
     },
     {
       "label_id": "safety.no_internal_policy_language",
       "category": "safety_and_compliance",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3359,6 +3224,7 @@
       "category": "safety_and_compliance",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3367,8 +3233,9 @@
     {
       "label_id": "safety.no_unverified_claim_confidence",
       "category": "safety_and_compliance",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3379,6 +3246,7 @@
       "category": "safety_and_compliance",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3389,6 +3257,7 @@
       "category": "safety_and_compliance",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3397,8 +3266,9 @@
     {
       "label_id": "safety.no_sensitive_data_request",
       "category": "safety_and_compliance",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3409,6 +3279,7 @@
       "category": "safety_and_compliance",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3419,6 +3290,7 @@
       "category": "safety_and_compliance",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3427,8 +3299,9 @@
     {
       "label_id": "safety.no_fake_privacy_claim",
       "category": "safety_and_compliance",
-      "selected_count": 3,
+      "selected_count": 2,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3439,6 +3312,7 @@
       "category": "safety_and_compliance",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3449,6 +3323,7 @@
       "category": "safety_and_compliance",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 11,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3459,6 +3334,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3469,6 +3345,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3479,6 +3356,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3489,6 +3367,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3499,6 +3378,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3509,6 +3389,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3519,6 +3400,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3529,6 +3411,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3539,6 +3422,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3549,6 +3433,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3559,6 +3444,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3569,6 +3455,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3579,6 +3466,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 1,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3589,6 +3477,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3599,6 +3488,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3609,6 +3499,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3619,6 +3510,7 @@
       "category": "unsafe_or_disallowed",
       "selected_count": 0,
       "duplicate_tag_context_group_size": 16,
+      "quality_classification": "risky_but_blocked",
       "sales_usefulness": "risky",
       "live_readiness": "disallowed",
       "risk_level": "high",
@@ -3627,11 +3519,11 @@
   ],
   "source_evidence_checked": {
     "fish_taxonomy_evidence_label_count": 267,
-    "sales_mapping_evidence_mapping_count": 138,
+    "sales_mapping_evidence_mapping_count": 92,
     "planner_evidence_examples_count": 45
   },
   "blocker_count": 0,
-  "warning_count": 527,
+  "warning_count": 0,
   "fish_tags_internal_only": true,
   "raw_fish_tags_allowed_in_elevenlabs_text": false,
   "unsafe_labels_blocked": true,

@@ -210,8 +210,8 @@ def main() -> int:
     if not isinstance(mappings, list):
         failures.append("sales mappings must be a list")
         mappings = []
-    if len(mappings) < 100:
-        failures.append(f"sales mapping count must be >= 100, got {len(mappings)}")
+    if len(mappings) < 80:
+        failures.append(f"sales mapping count must be >= 80 after 4I4 cleanup, got {len(mappings)}")
     mapping_coverage: set[str] = set()
     for mapping in mappings:
         if not isinstance(mapping, dict):

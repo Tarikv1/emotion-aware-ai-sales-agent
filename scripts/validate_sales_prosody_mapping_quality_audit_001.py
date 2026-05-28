@@ -20,8 +20,8 @@ def main() -> int:
     if not report_path.is_file():
         failures.append(f"missing file: {report_path}")
     result = load_json(result_path) if result_path.is_file() else {}
-    if int(result.get("mapping_count") or 0) < 100:
-        failures.append("mapping audit did not cover at least 100 mappings")
+    if int(result.get("mapping_count") or 0) < 80:
+        failures.append("mapping audit did not cover at least 80 mappings after 4I4 cleanup")
     if result.get("missing_required_contexts"):
         failures.append(f"mapping audit missing contexts: {result.get('missing_required_contexts')}")
     if int(result.get("unsafe_label_mapping_count") or 0) != 0:

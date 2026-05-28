@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "rules_id": "fish-inspired-sales-prosody-composition-rules-001",
-  "phase": "4I2",
-  "updated_on": "2026-05-28",
+  "phase": "4I4",
+  "updated_on": "2026-05-29",
   "purpose": "Deterministic composition rules for combining primitive internal prosody labels into safe sales voice profiles.",
   "boundary_flags": {
     "fish_install_performed": false,
@@ -48,8 +48,18 @@
         "pause_policy": "confusion_repair_pause"
       },
       "text_shaping_guidance": "Slow down, define one plan term, then check relevance.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for confused buyer plan explanation. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.confused_buyer_price",
@@ -76,8 +86,18 @@
         "pause_policy": "pause_before_and_after_price"
       },
       "text_shaping_guidance": "State the price boundary plainly and avoid extra plan detail.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for confused buyer price. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.skeptical_buyer_source_question",
@@ -104,8 +124,18 @@
         "pause_policy": "trust_building_pause"
       },
       "text_shaping_guidance": "Answer source and affiliation directly, then route to official terms.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for skeptical buyer source question. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.skeptical_buyer_competitor_objection",
@@ -131,8 +161,18 @@
         "pause_policy": "short_after_objection_ack"
       },
       "text_shaping_guidance": "Respect the current tool before asking one gap question.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for skeptical buyer competitor objection. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "Stop after buyer acceptance or refusal where relevant. Do not add pressure, fake side effects, raw bracket tags, provider calls, live TTS, or runtime wiring.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.impatient_buyer_direct_price",
@@ -158,8 +198,18 @@
         "pause_policy": "no_pause_direct_answer"
       },
       "text_shaping_guidance": "Give the direct answer first, then one optional next step.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for impatient buyer direct price. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.price_objection_heavy_use",
@@ -186,8 +236,18 @@
         "pause_policy": "short_after_objection_ack"
       },
       "text_shaping_guidance": "Acknowledge cost, tie value to heavy use, and keep the caveat.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for price objection heavy use. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "Stop after buyer acceptance or refusal where relevant. Do not add pressure, fake side effects, raw bracket tags, provider calls, live TTS, or runtime wiring.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.price_objection_low_budget",
@@ -213,8 +273,18 @@
         "pause_policy": "short_after_objection_ack"
       },
       "text_shaping_guidance": "Normalize no-fit and avoid defending price.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for price objection low budget. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "Stop after buyer acceptance or refusal where relevant. Do not add pressure, fake side effects, raw bracket tags, provider calls, live TTS, or runtime wiring.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.current_tool_objection",
@@ -238,8 +308,18 @@
         "pause_policy": "short_after_objection_ack"
       },
       "text_shaping_guidance": "Compare only around the buyer's stated gap.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for current tool objection. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "Stop after buyer acceptance or refusal where relevant. Do not add pressure, fake side effects, raw bracket tags, provider calls, live TTS, or runtime wiring.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.privacy_concern",
@@ -264,8 +344,18 @@
         "pause_policy": "trust_building_pause"
       },
       "text_shaping_guidance": "Answer privacy within known limits and avoid collecting data.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for privacy concern. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.buyer_already_told_you",
@@ -290,8 +380,18 @@
         "pause_policy": "confusion_repair_pause"
       },
       "text_shaping_guidance": "Acknowledge, summarize known context, and move forward.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for buyer already told you. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.buyer_correction",
@@ -316,8 +416,18 @@
         "pause_policy": "short_after_objection_ack"
       },
       "text_shaping_guidance": "Accept correction briefly and use the corrected term.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for buyer correction. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.asr_uncertainty",
@@ -341,8 +451,18 @@
         "pause_policy": "confusion_repair_pause"
       },
       "text_shaping_guidance": "Ask one natural repair question without exposing classifier language.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for asr uncertainty. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.buyer_same_question_again",
@@ -366,8 +486,18 @@
         "pause_policy": "medium_pause"
       },
       "text_shaping_guidance": "Answer differently and summarize before the next question.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for buyer same question again. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.use_case_discovery",
@@ -391,8 +521,18 @@
         "pause_policy": "short_pause"
       },
       "text_shaping_guidance": "Ask one use-case question.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for use case discovery. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.intensity_discovery",
@@ -416,8 +556,18 @@
         "pause_policy": "short_pause"
       },
       "text_shaping_guidance": "Ask for usage intensity in plain language.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for intensity discovery. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.team_vs_individual_clarification",
@@ -441,8 +591,18 @@
         "pause_policy": "short_pause"
       },
       "text_shaping_guidance": "Clarify team versus individual without assuming.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for team vs individual clarification. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.recommendation_after_enough_context",
@@ -468,8 +628,18 @@
         "pause_policy": "short_before_recommendation"
       },
       "text_shaping_guidance": "Confirm context, then make one recommendation.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for recommendation after enough context. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.plus_vs_pro_comparison",
@@ -494,8 +664,18 @@
         "pause_policy": "short_pause"
       },
       "text_shaping_guidance": "Compare two options using the buyer's intensity.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for plus vs pro comparison. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.pro_tier_selection",
@@ -519,8 +699,18 @@
         "pause_policy": "pause_before_recommendation"
       },
       "text_shaping_guidance": "State the tier logic and caveat current terms.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for pro tier selection. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.no_fit_close",
@@ -546,8 +736,18 @@
         "pause_policy": "terminal_pause"
       },
       "text_shaping_guidance": "Close cleanly without trying to rescue the sale.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for no fit close. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "Stop after buyer acceptance or refusal where relevant. Do not add pressure, fake side effects, raw bracket tags, provider calls, live TTS, or runtime wiring.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.terminal_acceptance",
@@ -572,8 +772,18 @@
         "pause_policy": "terminal_pause"
       },
       "text_shaping_guidance": "Stop selling after acceptance.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for terminal acceptance. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "Stop after buyer acceptance or refusal where relevant. Do not add pressure, fake side effects, raw bracket tags, provider calls, live TTS, or runtime wiring.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.boundary_no_email",
@@ -598,8 +808,18 @@
         "pause_policy": "terminal_pause"
       },
       "text_shaping_guidance": "Respect no-email boundary and do not claim a follow-up.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for boundary no email. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "Stop after buyer acceptance or refusal where relevant. Do not add pressure, fake side effects, raw bracket tags, provider calls, live TTS, or runtime wiring.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.boundary_no_crm",
@@ -624,8 +844,18 @@
         "pause_policy": "terminal_pause"
       },
       "text_shaping_guidance": "Do not imply CRM writes or hidden actions.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for boundary no crm. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "Stop after buyer acceptance or refusal where relevant. Do not add pressure, fake side effects, raw bracket tags, provider calls, live TTS, or runtime wiring.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.boundary_no_calendar",
@@ -650,8 +880,18 @@
         "pause_policy": "terminal_pause"
       },
       "text_shaping_guidance": "Do not claim calendar actions.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for boundary no calendar. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "Stop after buyer acceptance or refusal where relevant. Do not add pressure, fake side effects, raw bracket tags, provider calls, live TTS, or runtime wiring.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.source_affiliation_answer",
@@ -676,8 +916,18 @@
         "pause_policy": "trust_building_pause"
       },
       "text_shaping_guidance": "Be direct about affiliation and source boundary.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for source affiliation answer. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.opening_permission_check",
@@ -702,8 +952,18 @@
         "pause_policy": "micro_pause"
       },
       "text_shaping_guidance": "Open clearly and ask permission naturally.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for opening permission check. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.barge_in_recovery",
@@ -727,8 +987,18 @@
         "pause_policy": "barge_in_recovery_pause"
       },
       "text_shaping_guidance": "Yield, pause, and resume with the buyer's point.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for barge in recovery. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.buyer_frustration",
@@ -753,8 +1023,18 @@
         "pause_policy": "short_after_objection_ack"
       },
       "text_shaping_guidance": "Lower pressure and avoid argument.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for buyer frustration. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.buyer_disengaged",
@@ -778,8 +1058,18 @@
         "pause_policy": "short_pause"
       },
       "text_shaping_guidance": "Bridge to relevance and ask one concise question.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for buyer disengaged. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.buyer_interested",
@@ -803,8 +1093,18 @@
         "pause_policy": "short_before_recommendation"
       },
       "text_shaping_guidance": "Use momentum without hype.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for buyer interested. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.buyer_not_using_ai",
@@ -828,8 +1128,18 @@
         "pause_policy": "terminal_pause"
       },
       "text_shaping_guidance": "Softly disqualify if there is no AI use case.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for buyer not using ai. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.buyer_using_chatgpt_and_other_tools",
@@ -853,8 +1163,18 @@
         "pause_policy": "short_pause"
       },
       "text_shaping_guidance": "Ask which gap remains instead of attacking tools.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for buyer using chatgpt and other tools. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.buyer_chatgpt_or_maybe_claude",
@@ -879,8 +1199,18 @@
         "pause_policy": "confusion_repair_pause"
       },
       "text_shaping_guidance": "Repair the tool name uncertainty naturally.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for buyer chatgpt or maybe claude. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.plans_are_models_or_subscriptions",
@@ -904,8 +1234,18 @@
         "pause_policy": "short_pause"
       },
       "text_shaping_guidance": "Separate subscription from model in plain language.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for plans are models or subscriptions. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.signup_path",
@@ -929,8 +1269,18 @@
         "pause_policy": "short_pause"
       },
       "text_shaping_guidance": "Route to the official self-serve path.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for signup path. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.upgrade_path",
@@ -954,8 +1304,18 @@
         "pause_policy": "short_pause"
       },
       "text_shaping_guidance": "Explain upgrade path without urgency.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for upgrade path. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.data_privacy_training",
@@ -980,8 +1340,18 @@
         "pause_policy": "trust_building_pause"
       },
       "text_shaping_guidance": "Caveat exact privacy terms and route to official terms.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for data privacy training. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.wrong_product_question",
@@ -1005,8 +1375,18 @@
         "pause_policy": "short_pause"
       },
       "text_shaping_guidance": "Repair product mismatch and ask one clarifier.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for wrong product question. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.unsupported_claim_request",
@@ -1031,8 +1411,18 @@
         "pause_policy": "trust_building_pause"
       },
       "text_shaping_guidance": "Refuse the unsupported claim and give the verifiable boundary.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for unsupported claim request. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.final_goodbye",
@@ -1057,8 +1447,18 @@
         "pause_policy": "terminal_pause"
       },
       "text_shaping_guidance": "End politely without reopening the sale.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for final goodbye. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.anxious_buyer_reassurance",
@@ -1082,8 +1482,18 @@
         "pause_policy": "short_pause"
       },
       "text_shaping_guidance": "Reassure without overpromising.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for anxious buyer reassurance. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.curious_buyer_expand_slightly",
@@ -1107,8 +1517,18 @@
         "pause_policy": "short_pause"
       },
       "text_shaping_guidance": "Expand one level, then check relevance.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for curious buyer expand slightly. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.annoyed_buyer_reduce_pressure",
@@ -1132,8 +1552,18 @@
         "pause_policy": "short_after_objection_ack"
       },
       "text_shaping_guidance": "Reduce pressure and stop pushing.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for annoyed buyer reduce pressure. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "Stop after buyer acceptance or refusal where relevant. Do not add pressure, fake side effects, raw bracket tags, provider calls, live TTS, or runtime wiring.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.enterprise_security_procurement",
@@ -1158,8 +1588,18 @@
         "pause_policy": "pause_before_recommendation"
       },
       "text_shaping_guidance": "Recommend enterprise route only when security/procurement needs exist.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for enterprise security procurement. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.free_is_enough_no_fit",
@@ -1183,8 +1623,18 @@
         "pause_policy": "terminal_pause"
       },
       "text_shaping_guidance": "Treat free as enough when paid value is not established.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for free is enough no fit. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     },
     {
       "rule_id": "rule.too_busy_compress",
@@ -1208,8 +1658,19 @@
         "pause_policy": "no_pause_direct_answer"
       },
       "text_shaping_guidance": "Compress to one sentence and one option.",
-      "backend_notes": "Use internal labels only. Plain text and current provider paths must not receive raw bracket tags.",
-      "safety_notes": "No provider call, no live TTS, no runtime wiring, and no buyer-facing Fish tag injection."
+      "backend_notes": "Evidence-only rule for too busy compress. Current ElevenLabs text remains plain; future mapping may use sentence shape, punctuation, or reviewed style hints only. Raw Fish-style tags are disallowed.",
+      "safety_notes": "No provider call, no live TTS, no runtime wiring, no buyer-facing Fish tag injection, and no response text behavior change.",
+      "conflict_resolution": {
+        "priority_order": [
+          "safety_and_boundary",
+          "repair_or_asr_uncertainty",
+          "terminal_close",
+          "objection_handling",
+          "sales_momentum"
+        ],
+        "instructions": "When labels conflict, prefer boundary respect, source truthfulness, and repair over energy, urgency, or closing pressure."
+      }
     }
-  ]
+  ],
+  "cleanup_version": "4I4-cleanup-001"
 }

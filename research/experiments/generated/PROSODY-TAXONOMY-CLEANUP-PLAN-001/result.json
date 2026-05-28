@@ -1,0 +1,73 @@
+{
+  "experiment_id": "PROSODY-TAXONOMY-CLEANUP-PLAN-001",
+  "phase": "4I4",
+  "status": "pass",
+  "input_evidence": [
+    "research/experiments/generated/PROSODY-TAXONOMY-QUALITY-AUDIT-001/result.json",
+    "research/experiments/generated/SALES-PROSODY-MAPPING-QUALITY-AUDIT-001/result.json",
+    "research/experiments/generated/PROSODY-PLANNER-DRY-RUN-AUDIT-001/result.json",
+    "research/experiments/generated/PROSODY-TAXONOMY-QUALITY-DECISION-001/result.json"
+  ],
+  "issue_classification": {
+    "true_duplicate_label": "Exact same descriptions or when_to_use fields should be rewritten or merged.",
+    "acceptable_family_similarity": "Shared Fish-inspired tags and sales contexts are expected inside category families and should not be counted as true duplicates.",
+    "too_vague_label": "Generic labels without sales-state-specific guidance need stronger descriptions and hints.",
+    "boilerplate_backend_hint": "Repeated provider hints must be rewritten with concrete text/pause/style mapping limits.",
+    "risky_label_needs_restriction": "High-risk and unsafe labels stay internal-only, live-disallowed, and populated with disallowed_for contexts.",
+    "mapping_duplicate_variant": "Triplicated base/low/medium rows without behavior changes should be collapsed.",
+    "mapping_should_be_parameterized": "Friction and engagement variants should live as parameters when selected labels and examples are otherwise identical.",
+    "mapping_needs_human_review": "Mappings with loop risk, terminal-close pressure, or unsupported claims require review.",
+    "no_action_needed": "Required coverage families and blocked unsafe styles should remain separate."
+  },
+  "total_labels_reviewed": 267,
+  "duplicate_clusters_before": 256,
+  "labels_to_merge_remove": 0,
+  "labels_to_keep_but_clarify": 122,
+  "labels_to_mark_internal_only_evidence_only": 29,
+  "labels_whose_backend_hints_need_rewriting": 267,
+  "mapping_variants_to_collapse": 46,
+  "mapping_variants_to_keep": 92,
+  "expected_label_count_after_cleanup": 267,
+  "expected_mapping_count_after_cleanup": 92,
+  "expected_duplicate_mapping_signature_count_after_cleanup": 0,
+  "constraints": {
+    "taxonomy_label_count_minimum": 220,
+    "mapping_count_minimum": 80,
+    "preserve_required_categories": true,
+    "preserve_unsafe_disallowed_labels": true,
+    "fish_tags_internal_only": true,
+    "elevenlabs_current_path_unchanged": true
+  },
+  "before_metrics": {
+    "taxonomy_label_count": 267,
+    "duplicate_label_count": 256,
+    "too_vague_label_count": 122,
+    "backend_hint_boilerplate_count": 267,
+    "mapping_count": 138,
+    "mapping_duplicate_signature_count": 46,
+    "true_duplicate_count": 0
+  },
+  "boundary_flags": {
+    "fish_install_performed": false,
+    "fish_inference_performed": false,
+    "liquid_inference_performed": false,
+    "kokoro_inference_performed": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "local_model_generation_made": false,
+    "ollama_generation_made": false,
+    "training_performed": false,
+    "model_weights_committed": false,
+    "audio_files_committed": false,
+    "live_runtime_wiring_changed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "spoken_text_tag_injection_allowed": false
+  },
+  "provider_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false
+}

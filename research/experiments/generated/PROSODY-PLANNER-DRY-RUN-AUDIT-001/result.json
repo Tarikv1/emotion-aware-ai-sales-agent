@@ -1,14 +1,18 @@
 {
   "experiment_id": "PROSODY-PLANNER-DRY-RUN-AUDIT-001",
-  "phase": "4I3",
+  "phase": "4I4",
   "status": "pass",
   "case_count": 60,
   "dry_run_status_counts": {
-    "pass": 55,
-    "warning": 5,
+    "pass": 56,
+    "warning": 4,
     "fail": 0,
     "needs_human_review": 0,
     "unknown": 0
+  },
+  "classification_counts": {
+    "no_action_needed": 56,
+    "mapping_fallback_only": 4
   },
   "cases": [
     {
@@ -47,6 +51,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -85,6 +92,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -124,6 +134,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -137,9 +150,9 @@
       },
       "selected_labels": [
         "objection.competitor_respect_current_tool",
-        "objection.competitor_gap_probe",
         "tone.direct_but_respectful",
-        "sales.tie_to_buyer_words"
+        "sales.tie_to_buyer_words",
+        "objection.competitor_gap_probe"
       ],
       "selected_composition_rule": [
         "rule.skeptical_buyer_competitor_objection"
@@ -161,6 +174,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -176,7 +192,8 @@
         "emotion_response.impatient_buyer_concise",
         "pacing.compress_for_impatient_buyer",
         "pause.no_pause_direct_answer",
-        "clarity.short_sentence"
+        "clarity.short_sentence",
+        "objection.price_cost_control"
       ],
       "selected_composition_rule": [
         "rule.impatient_buyer_direct_price"
@@ -198,6 +215,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -236,6 +256,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -273,6 +296,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -287,7 +313,8 @@
         "emotion_response.frustrated_buyer_deescalation",
         "volume.deescalation_lower_volume",
         "tone.direct_but_respectful",
-        "objection.avoid_argument"
+        "objection.avoid_argument",
+        "sales.concise_summary"
       ],
       "selected_composition_rule": [
         "rule.buyer_frustration"
@@ -309,6 +336,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -321,8 +351,8 @@
       },
       "selected_labels": [
         "emotion_response.interested_buyer_momentum",
-        "energy.increase_for_momentum",
-        "sales.advance_after_answer"
+        "sales.advance_after_answer",
+        "energy.increase_for_momentum"
       ],
       "selected_composition_rule": [
         "rule.buyer_interested"
@@ -344,6 +374,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -355,9 +388,9 @@
         "buyer_engagement_level": "low"
       },
       "selected_labels": [
-        "emotion_response.disengaged_buyer_relevance_bridge",
         "sales.concise_summary",
-        "clarify.short_natural_question"
+        "clarify.short_natural_question",
+        "emotion_response.disengaged_buyer_relevance_bridge"
       ],
       "selected_composition_rule": [
         "rule.buyer_disengaged"
@@ -379,6 +412,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -419,6 +455,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -432,8 +471,8 @@
       "selected_labels": [
         "repair.already_told_you_acknowledge",
         "repair.do_not_repeat_question",
-        "repair.summarize_known_context",
         "repair.move_forward_after_repair",
+        "repair.summarize_known_context",
         "emotion_response.frustrated_buyer_deescalation",
         "volume.deescalation_lower_volume",
         "tone.direct_but_respectful",
@@ -460,6 +499,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -473,8 +515,8 @@
       "selected_labels": [
         "repair.correction_acceptance",
         "repair.wrong_word_repair",
-        "repair.move_forward_after_repair",
-        "confidence.confidence_with_caveat"
+        "confidence.confidence_with_caveat",
+        "repair.move_forward_after_repair"
       ],
       "selected_composition_rule": [
         "rule.buyer_correction"
@@ -496,6 +538,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -531,6 +576,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -566,6 +614,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -601,6 +652,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -636,6 +690,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -671,6 +728,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -684,9 +744,9 @@
       },
       "selected_labels": [
         "sales.confirm_then_recommend",
-        "recommend.confidence_based_on_known_context",
         "confidence.decisive_recommendation",
         "pause.pause_before_recommendation",
+        "recommend.confidence_based_on_known_context",
         "emotion_response.interested_buyer_momentum",
         "energy.increase_for_momentum",
         "sales.advance_after_answer"
@@ -712,6 +772,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -751,6 +814,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -763,8 +829,8 @@
       },
       "selected_labels": [
         "emotion_response.interested_buyer_momentum",
-        "energy.increase_for_momentum",
         "sales.advance_after_answer",
+        "energy.increase_for_momentum",
         "plan.explain_pro_tiers",
         "recommend.pro_for_heavy_use",
         "confidence.confidence_with_caveat"
@@ -790,6 +856,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -802,10 +871,10 @@
         "close_readiness": "no_fit"
       },
       "selected_labels": [
-        "close.no_fit_close",
         "recommend.free_or_no_fit",
         "trust.buyer_control",
-        "boundary.no_pressure_after_boundary"
+        "boundary.no_pressure_after_boundary",
+        "close.no_fit_close"
       ],
       "selected_composition_rule": [
         "rule.no_fit_close"
@@ -827,6 +896,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -840,11 +912,10 @@
       },
       "selected_labels": [
         "close.terminal_close",
-        "close.stop_after_acceptance",
         "phone.stop_when_terminal",
+        "close.stop_after_acceptance",
         "emotion_response.interested_buyer_momentum",
-        "energy.increase_for_momentum",
-        "sales.advance_after_answer"
+        "energy.increase_for_momentum"
       ],
       "selected_composition_rule": [
         "rule.terminal_acceptance",
@@ -863,10 +934,13 @@
       },
       "spoken_text_tag_injection_allowed": false,
       "unsafe_labels_selected": false,
-      "loop_risk_labels_selected": true,
-      "status": "warning",
+      "loop_risk_labels_selected": false,
+      "status": "pass",
       "reason": [
-        "terminal acceptance may continue selling"
+        "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -903,6 +977,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -939,6 +1016,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -975,6 +1055,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1011,6 +1094,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1046,6 +1132,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1081,6 +1170,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1116,6 +1208,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1152,6 +1247,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1187,6 +1285,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1226,6 +1327,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1265,6 +1369,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1301,6 +1408,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1336,6 +1446,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1372,6 +1485,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1408,6 +1524,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1421,8 +1540,8 @@
       },
       "selected_labels": [
         "objection.too_busy_compress",
-        "pacing.compress_for_impatient_buyer",
-        "sales.concise_summary"
+        "sales.concise_summary",
+        "pacing.compress_for_impatient_buyer"
       ],
       "selected_composition_rule": [],
       "backend_hints": {
@@ -1442,6 +1561,9 @@
       "status": "warning",
       "reason": [
         "no composition rule matched"
+      ],
+      "classifications": [
+        "mapping_fallback_only"
       ]
     },
     {
@@ -1482,6 +1604,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1517,6 +1642,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1529,8 +1657,8 @@
       },
       "selected_labels": [
         "objection.too_busy_compress",
-        "pacing.compress_for_impatient_buyer",
-        "sales.concise_summary"
+        "sales.concise_summary",
+        "pacing.compress_for_impatient_buyer"
       ],
       "selected_composition_rule": [
         "rule.too_busy_compress"
@@ -1552,6 +1680,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1565,7 +1696,8 @@
       "selected_labels": [
         "emotion_response.anxious_buyer_reassurance",
         "warmth.gentle_empathy",
-        "pacing.measured_slow"
+        "pacing.measured_slow",
+        "sales.concise_summary"
       ],
       "selected_composition_rule": [
         "rule.anxious_buyer_reassurance"
@@ -1587,6 +1719,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1622,6 +1757,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1635,7 +1773,8 @@
       "selected_labels": [
         "emotion_response.annoyed_buyer_reduce_pressure",
         "volume.deescalation_lower_volume",
-        "boundary.no_pressure_after_boundary"
+        "boundary.no_pressure_after_boundary",
+        "sales.concise_summary"
       ],
       "selected_composition_rule": [
         "rule.annoyed_buyer_reduce_pressure"
@@ -1657,6 +1796,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1691,6 +1833,9 @@
       "status": "warning",
       "reason": [
         "no composition rule matched"
+      ],
+      "classifications": [
+        "mapping_fallback_only"
       ]
     },
     {
@@ -1703,8 +1848,8 @@
       },
       "selected_labels": [
         "objection.too_busy_compress",
-        "pacing.compress_for_impatient_buyer",
-        "sales.concise_summary"
+        "sales.concise_summary",
+        "pacing.compress_for_impatient_buyer"
       ],
       "selected_composition_rule": [],
       "backend_hints": {
@@ -1724,6 +1869,9 @@
       "status": "warning",
       "reason": [
         "no composition rule matched"
+      ],
+      "classifications": [
+        "mapping_fallback_only"
       ]
     },
     {
@@ -1763,6 +1911,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1803,6 +1954,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1839,6 +1993,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1875,6 +2032,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1913,6 +2073,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1926,8 +2089,8 @@
       },
       "selected_labels": [
         "emotion_response.interested_buyer_momentum",
-        "energy.increase_for_momentum",
-        "sales.advance_after_answer"
+        "sales.advance_after_answer",
+        "energy.increase_for_momentum"
       ],
       "selected_composition_rule": [
         "rule.buyer_interested"
@@ -1949,6 +2112,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -1988,6 +2154,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -2032,6 +2201,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -2068,6 +2240,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -2103,6 +2278,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -2138,6 +2316,9 @@
       "status": "warning",
       "reason": [
         "no composition rule matched"
+      ],
+      "classifications": [
+        "mapping_fallback_only"
       ]
     },
     {
@@ -2180,6 +2361,9 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     },
     {
@@ -2217,11 +2401,14 @@
       "status": "pass",
       "reason": [
         "planner selected a bounded internal prosody plan"
+      ],
+      "classifications": [
+        "no_action_needed"
       ]
     }
   ],
   "unsafe_label_case_count": 0,
-  "loop_risk_case_count": 1,
+  "loop_risk_case_count": 0,
   "fish_tags_internal_only": true,
   "raw_fish_tags_allowed_in_elevenlabs_text": false,
   "spoken_text_tag_injection_allowed": false,

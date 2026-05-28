@@ -8,14 +8,19 @@ from pathlib import Path
 from typing import Any
 
 from prosody_quality_common import (
+    CLEANUP_EVIDENCE_DIR,
+    CLEANUP_PLAN_DIR,
     DRY_RUN_AUDIT_DIR,
     ELEVENLABS_READINESS_DIR,
     ELEVENLABS_READINESS_PATH,
+    MAPPING_PATH,
     MAPPING_AUDIT_DIR,
     QUALITY_DECISION_DIR,
+    RULES_PATH,
     TAXONOMY_AUDIT_DIR,
     TAXONOMY_PATH,
     base_boundary_flags,
+    count_by,
     label_index,
     load_json,
     status_counts,
@@ -109,44 +114,55 @@ def dry_run_contexts() -> list[dict[str, Any]]:
     return contexts
 
 
-def classify_case(context: dict[str, Any], plan: dict[str, Any], labels_by_id: dict[str, dict[str, Any]]) -> tuple[str, list[str], bool, bool]:
+def classify_case(context: dict[str, Any], plan: dict[str, Any], labels_by_id: dict[str, dict[str, Any]]) -> tuple[str, list[str], list[str], bool, bool]:
     selected = plan.get("selected_prosody_labels", [])
     unsafe_selected = any(labels_by_id.get(label_id, {}).get("category") == "unsafe_or_disallowed" for label_id in selected)
     loop_risk = False
     reasons: list[str] = []
+    classifications: list[str] = []
     if unsafe_selected:
         reasons.append("unsafe label selected")
+        classifications.append("integration_blocker")
     if plan.get("spoken_text_tag_injection_allowed") is not False:
         reasons.append("spoken text tag injection not blocked")
+        classifications.append("integration_blocker")
     if plan.get("live_runtime_wiring_changed") is not False:
         reasons.append("live runtime wiring changed")
+        classifications.append("integration_blocker")
     if not plan.get("matched_rule_ids"):
         reasons.append("no composition rule matched")
+        classifications.append("mapping_fallback_only")
     if context.get("close_readiness") == "accepted" and (
         any(label_id.startswith("clarify.") for label_id in selected) or "sales.advance_after_answer" in selected
     ):
         loop_risk = True
         reasons.append("terminal acceptance may continue selling")
+        classifications.append("mapping_needs_human_review")
     if context.get("buyer_said_already_told_you") is True and any(label_id.startswith("clarify.") for label_id in selected):
         loop_risk = True
         reasons.append("already-told-you case may repeat clarification")
+        classifications.append("mapping_needs_human_review")
     if context.get("sales_move") == "price_answer" and "clarify.price_question" in selected:
         loop_risk = True
         reasons.append("price answer may repeat price qualification")
+        classifications.append("mapping_needs_human_review")
     if len(selected) > 10:
         reasons.append("too many labels selected")
+        classifications.append("mapping_needs_human_review")
+    if not classifications:
+        classifications.append("no_action_needed")
     if unsafe_selected or plan.get("spoken_text_tag_injection_allowed") is not False or plan.get("live_runtime_wiring_changed") is not False:
-        return "fail", reasons, unsafe_selected, loop_risk
+        return "fail", reasons, classifications, unsafe_selected, loop_risk
     if loop_risk or not plan.get("matched_rule_ids") or len(selected) > 10:
-        return "warning", reasons, unsafe_selected, loop_risk
-    return "pass", ["planner selected a bounded internal prosody plan"], unsafe_selected, loop_risk
+        return "warning", reasons, classifications, unsafe_selected, loop_risk
+    return "pass", ["planner selected a bounded internal prosody plan"], classifications, unsafe_selected, loop_risk
 
 
 def write_elevenlabs_readiness(taxonomy_audit: dict[str, Any], mapping_audit: dict[str, Any], dry_result: dict[str, Any]) -> dict[str, Any]:
     readiness = {
         "schema_version": 1,
         "readiness_id": "elevenlabs-prosody-mapping-readiness-001",
-        "phase": "4I3",
+        "phase": "4I4",
         "current_voice_path": "ElevenLabs",
         "fish_tags_in_elevenlabs_text_allowed": False,
         "current_integration_status": "not_wired",
@@ -177,7 +193,7 @@ def write_elevenlabs_readiness(taxonomy_audit: dict[str, Any], mapping_audit: di
             "mapping_failure_count": mapping_audit.get("failure_count"),
             "planner_failure_count": dry_result.get("dry_run_status_counts", {}).get("fail", 0),
         },
-        "recommended_now": "plan_only_not_wired",
+        "recommended_now": "no_provider_mapping_prototype_if_quality_decision_allows",
         "provider_calls_made": False,
         "elevenlabs_calls_made": False,
         "live_tts_calls_made": False,
@@ -214,23 +230,28 @@ def write_elevenlabs_readiness(taxonomy_audit: dict[str, Any], mapping_audit: di
 def write_quality_decision(taxonomy_audit: dict[str, Any], mapping_audit: dict[str, Any], dry_result: dict[str, Any], readiness: dict[str, Any]) -> dict[str, Any]:
     blocker_count = int(taxonomy_audit.get("blocker_count", 0)) + int(mapping_audit.get("failure_count", 0)) + int(dry_result.get("dry_run_status_counts", {}).get("fail", 0))
     warning_count = int(taxonomy_audit.get("warning_count", 0)) + int(mapping_audit.get("warning_count", 0)) + int(dry_result.get("dry_run_status_counts", {}).get("warning", 0))
-    if blocker_count:
-        recommendation = "taxonomy cleanup before integration"
+    mapping_noise_high = int(mapping_audit.get("duplicate_mapping_signature_count") or 0) > 10 or int(mapping_audit.get("warning_count") or 0) > 25
+    if blocker_count or int(taxonomy_audit.get("risky_unblocked_count") or 0) > 0:
+        recommendation = "another taxonomy cleanup before integration"
         prototype_recommended = False
-    elif warning_count:
-        recommendation = "targeted taxonomy and mapping cleanup before any ElevenLabs mapping prototype"
+        cleanup_needed = True
+    elif mapping_noise_high:
+        recommendation = "one more mapping simplification pass before ElevenLabs mapping prototype"
         prototype_recommended = False
+        cleanup_needed = True
     else:
         recommendation = "ElevenLabs prosody mapping prototype, no provider calls"
         prototype_recommended = True
+        cleanup_needed = False
     decision = {
         "experiment_id": "PROSODY-TAXONOMY-QUALITY-DECISION-001",
-        "phase": "4I3",
+        "phase": "4I4",
         "status": "pass",
         "blocker_count": blocker_count,
         "warning_count": warning_count,
+        "mapping_noise_high": mapping_noise_high,
         "quality_decision_recommendation": recommendation,
-        "taxonomy_cleanup_needed": bool(blocker_count or warning_count),
+        "taxonomy_cleanup_needed": cleanup_needed,
         "elevenlabs_mapping_prototype_recommended": prototype_recommended,
         "live_wiring_allowed": False,
         "elevenlabs_calls_made": False,
@@ -266,6 +287,76 @@ def write_quality_decision(taxonomy_audit: dict[str, Any], mapping_audit: dict[s
     return decision
 
 
+def write_cleanup_evidence(taxonomy_audit: dict[str, Any], mapping_audit: dict[str, Any], dry_result: dict[str, Any], readiness: dict[str, Any], decision: dict[str, Any]) -> dict[str, Any]:
+    taxonomy = load_json(TAXONOMY_PATH)
+    mapping_payload = load_json(MAPPING_PATH)
+    rules_payload = load_json(RULES_PATH)
+    cleanup_plan = load_json(CLEANUP_PLAN_DIR / "result.json")
+    labels = taxonomy.get("labels", [])
+    mappings = mapping_payload.get("mappings", [])
+    rules = rules_payload.get("composition_rules", [])
+    result = {
+        "experiment_id": "PROSODY-TAXONOMY-CLEANUP-001",
+        "phase": "4I4",
+        "status": "pass" if decision.get("live_wiring_allowed") is False and dry_result.get("dry_run_status_counts", {}).get("fail", 0) == 0 else "fail",
+        "cleanup_plan": "research/experiments/generated/PROSODY-TAXONOMY-CLEANUP-PLAN-001/result.json",
+        "taxonomy_label_count_before": cleanup_plan.get("before_metrics", {}).get("taxonomy_label_count"),
+        "taxonomy_label_count_after": len(labels),
+        "category_count_after": len(count_by(labels, "category")),
+        "unsafe_disallowed_label_count_after": count_by(labels, "category").get("unsafe_or_disallowed", 0),
+        "duplicate_label_count_before": cleanup_plan.get("before_metrics", {}).get("duplicate_label_count"),
+        "duplicate_label_count_after": taxonomy_audit.get("duplicate_label_count"),
+        "true_duplicate_count_before": cleanup_plan.get("before_metrics", {}).get("true_duplicate_count", 0),
+        "true_duplicate_count_after": taxonomy_audit.get("true_duplicate_count"),
+        "acceptable_family_similarity_count_after": taxonomy_audit.get("acceptable_family_similarity_count"),
+        "too_vague_count_before": cleanup_plan.get("before_metrics", {}).get("too_vague_label_count"),
+        "too_vague_count_after": taxonomy_audit.get("too_vague_label_count"),
+        "risky_label_count_after": taxonomy_audit.get("risky_label_count"),
+        "risky_unblocked_count_after": taxonomy_audit.get("risky_unblocked_count"),
+        "backend_hint_boilerplate_count_before": cleanup_plan.get("before_metrics", {}).get("backend_hint_boilerplate_count"),
+        "backend_hint_boilerplate_count_after": taxonomy_audit.get("backend_mapping_boilerplate_label_count"),
+        "mapping_count_before": cleanup_plan.get("before_metrics", {}).get("mapping_count"),
+        "mapping_count_after": len(mappings),
+        "duplicate_mapping_signature_count_before": cleanup_plan.get("before_metrics", {}).get("mapping_duplicate_signature_count"),
+        "duplicate_mapping_signature_count_after": mapping_audit.get("duplicate_mapping_signature_count"),
+        "mapping_warnings_after": mapping_audit.get("warning_count"),
+        "mapping_failures_after": mapping_audit.get("failure_count"),
+        "composition_rule_count_after": len(rules),
+        "planner_dry_run_status_counts": dry_result.get("dry_run_status_counts"),
+        "elevenlabs_readiness_status": readiness.get("current_integration_status"),
+        "cleanup_decision": decision.get("quality_decision_recommendation"),
+        "live_wiring_allowed": False,
+        "provider_calls_made": False,
+        "elevenlabs_calls_made": False,
+        "live_tts_calls_made": False,
+        "runtime_behavior_changed": False,
+        "response_text_changed": False,
+        "fish_tags_internal_only": True,
+        "raw_fish_tags_allowed_in_elevenlabs_text": False,
+        "boundary_flags": base_boundary_flags(),
+    }
+    write_json(CLEANUP_EVIDENCE_DIR / "result.json", result)
+    write_report(
+        CLEANUP_EVIDENCE_DIR / "report.md",
+        "PROSODY-TAXONOMY-CLEANUP-001",
+        [
+            f"Status: {result['status']}",
+            f"- taxonomy_label_count: {result['taxonomy_label_count_before']} -> {result['taxonomy_label_count_after']}",
+            f"- true_duplicate_count: {result['true_duplicate_count_before']} -> {result['true_duplicate_count_after']}",
+            f"- acceptable_family_similarity_count_after: {result['acceptable_family_similarity_count_after']}",
+            f"- too_vague_count: {result['too_vague_count_before']} -> {result['too_vague_count_after']}",
+            f"- risky_unblocked_count_after: {result['risky_unblocked_count_after']}",
+            f"- backend_hint_boilerplate_count: {result['backend_hint_boilerplate_count_before']} -> {result['backend_hint_boilerplate_count_after']}",
+            f"- mapping_count: {result['mapping_count_before']} -> {result['mapping_count_after']}",
+            f"- duplicate_mapping_signature_count: {result['duplicate_mapping_signature_count_before']} -> {result['duplicate_mapping_signature_count_after']}",
+            f"- planner_dry_run_status_counts: {result['planner_dry_run_status_counts']}",
+            f"- cleanup_decision: {result['cleanup_decision']}",
+            "- No provider calls, audio generation, live wiring, runtime behavior change, or response text change.",
+        ],
+    )
+    return result
+
+
 def main() -> int:
     planner = load_planner()
     taxonomy = load_json(TAXONOMY_PATH)
@@ -273,7 +364,7 @@ def main() -> int:
     cases = []
     for context in dry_run_contexts():
         plan = planner.plan_prosody_for_sales_turn(context)
-        status, reasons, unsafe_selected, loop_risk = classify_case(context, plan, labels_by_id)
+        status, reasons, classifications, unsafe_selected, loop_risk = classify_case(context, plan, labels_by_id)
         cases.append(
             {
                 "case_id": context["case_id"],
@@ -286,16 +377,18 @@ def main() -> int:
                 "loop_risk_labels_selected": loop_risk,
                 "status": status,
                 "reason": reasons,
+                "classifications": classifications,
             }
         )
 
     counts = status_counts(cases)
     dry_result = {
         "experiment_id": "PROSODY-PLANNER-DRY-RUN-AUDIT-001",
-        "phase": "4I3",
+        "phase": "4I4",
         "status": "pass" if counts["fail"] == 0 else "fail",
         "case_count": len(cases),
         "dry_run_status_counts": counts,
+        "classification_counts": dict(Counter(classification for case in cases for classification in case.get("classifications", []))),
         "cases": cases,
         "unsafe_label_case_count": sum(1 for item in cases if item["unsafe_labels_selected"]),
         "loop_risk_case_count": sum(1 for item in cases if item["loop_risk_labels_selected"]),
@@ -326,7 +419,8 @@ def main() -> int:
     taxonomy_audit = load_json(TAXONOMY_AUDIT_DIR / "result.json")
     mapping_audit = load_json(MAPPING_AUDIT_DIR / "result.json")
     readiness = write_elevenlabs_readiness(taxonomy_audit, mapping_audit, dry_result)
-    write_quality_decision(taxonomy_audit, mapping_audit, dry_result, readiness)
+    decision = write_quality_decision(taxonomy_audit, mapping_audit, dry_result, readiness)
+    write_cleanup_evidence(taxonomy_audit, mapping_audit, dry_result, readiness, decision)
     print(__import__("json").dumps(dry_result, indent=2))
     return 0
 

@@ -1,6 +1,6 @@
 {
   "experiment_id": "ELEVENLABS-PROSODY-MAPPING-READINESS-001",
-  "phase": "4I3",
+  "phase": "4I4",
   "status": "pass",
   "plan": "runtime/audio_backends/elevenlabs_prosody_mapping_readiness.json",
   "schema_version": 1,
@@ -35,7 +35,7 @@
     "mapping_failure_count": 0,
     "planner_failure_count": 0
   },
-  "recommended_now": "plan_only_not_wired",
+  "recommended_now": "no_provider_mapping_prototype_if_quality_decision_allows",
   "provider_calls_made": false,
   "elevenlabs_calls_made": false,
   "live_tts_calls_made": false,

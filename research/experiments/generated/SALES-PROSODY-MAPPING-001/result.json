@@ -1,11 +1,11 @@
 {
   "experiment_id": "SALES-PROSODY-MAPPING-001",
-  "phase": "4I2",
+  "phase": "4I4",
   "status": "pass",
   "composition_rules": "runtime/audio_backends/prosody_composition_rules.json",
   "sales_mapping": "runtime/audio_backends/sales_prosody_mapping.json",
   "composition_rule_count": 46,
-  "sales_mapping_count": 138,
+  "sales_mapping_count": 92,
   "examples_count": 45,
   "examples": [
     {

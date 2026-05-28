@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "readiness_id": "elevenlabs-prosody-mapping-readiness-001",
-  "phase": "4I3",
+  "phase": "4I4",
   "current_voice_path": "ElevenLabs",
   "fish_tags_in_elevenlabs_text_allowed": false,
   "current_integration_status": "not_wired",
@@ -32,7 +32,7 @@
     "mapping_failure_count": 0,
     "planner_failure_count": 0
   },
-  "recommended_now": "plan_only_not_wired",
+  "recommended_now": "no_provider_mapping_prototype_if_quality_decision_allows",
   "provider_calls_made": false,
   "elevenlabs_calls_made": false,
   "live_tts_calls_made": false,

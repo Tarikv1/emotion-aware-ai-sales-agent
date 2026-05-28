@@ -170,8 +170,29 @@ def plan_prosody_for_sales_turn(context: dict[str, Any]) -> dict[str, Any]:
     for rule in selected_rules:
         selected_label_ids.extend(rule.get("selected_label_ids", []))
         avoid_label_ids.extend(rule.get("avoid_label_ids", []))
-    selected_label_ids = [label_id for label_id in _dedupe(selected_label_ids) if label_id in labels_by_id]
+    requested_label_ids = _dedupe(selected_label_ids)
+    unknown_label_ids = [label_id for label_id in requested_label_ids if label_id not in labels_by_id]
+    unsafe_selected_ids = [
+        label_id
+        for label_id in requested_label_ids
+        if label_id in labels_by_id and labels_by_id[label_id].get("category") == "unsafe_or_disallowed"
+    ]
     avoid_label_ids = [label_id for label_id in _dedupe(avoid_label_ids) if label_id in labels_by_id]
+    avoid_set = set(avoid_label_ids)
+    selected_label_ids = [
+        label_id
+        for label_id in requested_label_ids
+        if label_id in labels_by_id
+        and labels_by_id[label_id].get("category") != "unsafe_or_disallowed"
+        and label_id not in avoid_set
+    ]
+    warnings: list[str] = []
+    if unknown_label_ids:
+        warnings.append(f"unknown labels ignored: {unknown_label_ids}")
+    if unsafe_selected_ids:
+        warnings.append(f"unsafe labels blocked from selection: {unsafe_selected_ids}")
+    if not selected_rules:
+        warnings.append("no composition rule matched; using best sales-state mapping only")
 
     first_rule = selected_rules[0] if selected_rules else {}
     output_style = first_rule.get("output_style", {}) if isinstance(first_rule.get("output_style"), dict) else {}
@@ -180,6 +201,8 @@ def plan_prosody_for_sales_turn(context: dict[str, Any]) -> dict[str, Any]:
         fish_tags.extend(labels_by_id[label_id].get("fish_inspired_tags", []))
 
     return {
+        "cleanup_version": taxonomy.get("cleanup_version", "none"),
+        "taxonomy_version": taxonomy.get("schema_version", 1),
         "voice_intent": selected_mapping.get("sales_move", normalized["sales_move"]),
         "selected_prosody_labels": selected_label_ids,
         "pace": output_style.get("pace") or selected_mapping.get("pace", "medium"),
@@ -190,6 +213,8 @@ def plan_prosody_for_sales_turn(context: dict[str, Any]) -> dict[str, Any]:
         "emphasis_terms": selected_mapping.get("emphasis_policy", []),
         "avoid": _dedupe(list(selected_mapping.get("avoid_styles", [])) + avoid_label_ids),
         "backend_hints": _backend_hints(policy, str(normalized.get("backend_id") or "plain_text_fallback")),
+        "planner_warnings": warnings,
+        "internal_only_label_ids": [label_id for label_id in selected_label_ids if labels_by_id[label_id].get("internal_only") is True],
         "fish_inspired_tags_internal_only": True,
         "fish_inspired_tags_internal_only_values": _dedupe(fish_tags),
         "spoken_text_tag_injection_allowed": False,
@@ -232,4 +257,13 @@ def validate_prosody_plan(plan: dict[str, Any]) -> list[str]:
         errors.append("backend_hints must be a dict")
     elif backend_hints.get("tag_injection_allowed") is not False:
         errors.append("backend_hints.tag_injection_allowed must remain false")
+    else:
+        hint_texts: list[str] = []
+        for value in backend_hints.values():
+            if isinstance(value, str):
+                hint_texts.append(value)
+            elif isinstance(value, list):
+                hint_texts.extend(str(item) for item in value)
+        if any("[" in value and "]" in value for value in hint_texts):
+            errors.append("backend_hints must not contain raw bracket tags")
     return errors
