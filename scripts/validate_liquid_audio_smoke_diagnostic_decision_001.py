@@ -63,6 +63,20 @@ def main() -> int:
         failures.append("interleaved S2S probe must not be recommended as immediate next step")
     if result.get("liquid_remains_offline_candidate_or_inspiration") is not True:
         failures.append("decision must keep Liquid as offline candidate/inspiration")
+    if result.get("primary_recommendation") != "liquid_architecture_inspiration_only":
+        failures.append("primary_recommendation must retire Liquid to architecture inspiration only")
+    if result.get("liquid_tts_listening_review_next") != "completed":
+        failures.append("liquid_tts_listening_review_next must be completed")
+    if result.get("liquid_tts_quality_status") != "failed_manual_review":
+        failures.append("liquid_tts_quality_status must be failed_manual_review")
+    if result.get("liquid_asr_prompt_mode_fix_next") != "not recommended now":
+        failures.append("liquid_asr_prompt_mode_fix_next must be not recommended now")
+    if result.get("kokoro_tts_benchmark_recommended_next") is not True:
+        failures.append("Kokoro TTS benchmark must be the recommended local baseline next")
+    if result.get("elevenlabs_remains_current_voice_path") is not True:
+        failures.append("ElevenLabs must remain the current voice path")
+    if result.get("liquid_architecture_inspiration_only") is not True:
+        failures.append("Liquid must be architecture inspiration only")
     if not str(result.get("primary_recommendation") or "").strip():
         failures.append("primary_recommendation must be recorded")
     ranked = result.get("ranked_recommendations") if isinstance(result.get("ranked_recommendations"), list) else []
@@ -75,12 +89,24 @@ def main() -> int:
         "liquid_architecture_inspiration_only",
         "liquid_independent_asr_benchmark_next",
         "liquid_interleaved_s2s_probe_next",
+        "kokoro_tts_benchmark_next",
     ):
         if expected not in options:
             failures.append(f"missing decision option {expected}")
+    for item in ranked:
+        if not isinstance(item, dict):
+            continue
+        if item.get("option") in {
+            "liquid_asr_prompt_mode_fix_next",
+            "liquid_independent_asr_benchmark_next",
+            "liquid_interleaved_s2s_probe_next",
+        } and item.get("recommended") is not False:
+            failures.append(f"{item.get('option')} must not be recommended after failed manual TTS review")
     report_lower = report.lower()
     if "live ready" in report_lower or "live_wiring_allowed: true" in report_lower:
         failures.append("decision report must not claim live readiness")
+    if "failed manual listening review" not in report_lower and "failed manual review" not in report_lower:
+        failures.append("decision report must mention failed manual listening review")
 
     for key in (
         "provider_calls_made",

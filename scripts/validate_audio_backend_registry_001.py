@@ -108,11 +108,31 @@ def main() -> int:
     liquid = by_id.get("liquid_audio_lfm25", {})
     if liquid.get("live_runtime_allowed") is not False:
         failures.append("Liquid must not be live-runtime allowed")
-    if liquid.get("integration_classification") != "integration_candidate":
-        failures.append("Liquid must be an integration/feasibility candidate")
+    if liquid.get("integration_classification") != "architecture_inspiration_only":
+        failures.append("Liquid must be architecture_inspiration_only after manual listening review")
+    if liquid.get("tts_backend_candidate_status") != "rejected_by_manual_listening_review":
+        failures.append("Liquid TTS status must be rejected_by_manual_listening_review")
+    for key in (
+        "near_term_voice_backend_allowed",
+        "thesis_demo_tts_allowed",
+        "product_fallback_tts_allowed",
+        "sales_brain_replacement_allowed",
+    ):
+        if key in liquid and liquid.get(key) is not False:
+            failures.append(f"Liquid {key} must be false")
+    for key in (
+        "near_term_voice_backend_allowed",
+        "thesis_demo_tts_allowed",
+        "product_fallback_tts_allowed",
+    ):
+        if key not in liquid:
+            failures.append(f"Liquid missing retirement flag: {key}")
     liquid_role = str(liquid.get("role_in_project") or "").lower()
-    if "sales brain" not in liquid_role or "must not replace" not in liquid_role:
-        failures.append("Liquid role must explicitly keep it out of the sales brain")
+    if "architecture inspiration" not in liquid_role or "must not replace" not in liquid_role:
+        failures.append("Liquid role must explicitly keep it as architecture inspiration and out of replacement paths")
+    liquid_note = str(liquid.get("phase_4i1g_manual_review_note") or "").lower()
+    if "unintelligible" not in liquid_note or "architecture inspiration only" not in liquid_note:
+        failures.append("Liquid Phase 4I1G note must record failed listening review and architecture-only status")
     for required_capability in ("ASR", "TTS", "speech-to-speech"):
         if required_capability not in liquid.get("capability_classification", []):
             failures.append(f"Liquid missing capability classification: {required_capability}")

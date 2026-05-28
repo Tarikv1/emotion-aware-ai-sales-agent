@@ -14,6 +14,7 @@ LOAD_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUD
 ARCH_PLAN_PATH = ROOT / "runtime" / "audio_backends" / "speech_to_speech_architecture_plan.json"
 IMPLEMENTATION_AUDIT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-SMOKE-IMPLEMENTATION-AUDIT-001" / "result.json"
 LISTENING_REVIEW_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-LISTENING-REVIEW-001" / "result.json"
+MANUAL_LISTENING_REVIEW_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-LISTENING-REVIEW-MANUAL-001" / "result.json"
 ASR_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-SYNTHETIC-ASR-SMOKE-001" / "result.json"
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / "LIQUID-AUDIO-LATENCY-AUDIT-001"
 RESULT_PATH = OUT_DIR / "result.json"
@@ -102,56 +103,105 @@ def numeric(summary: dict[str, Any], key: str) -> float | None:
 def write_diagnostic_decision(latency: dict[str, Any]) -> dict[str, Any]:
     implementation = read_json(IMPLEMENTATION_AUDIT_PATH)
     listening = read_json(LISTENING_REVIEW_PATH)
+    manual = read_json(MANUAL_LISTENING_REVIEW_PATH)
     asr = read_json(ASR_RESULT_PATH)
     asr_failure = str(implementation.get("primary_asr_failure_cause") or "unknown")
     tts_review_entries = len(listening.get("review_entries") or []) if isinstance(listening.get("review_entries"), list) else 0
     asr_succeeded = int(asr.get("asr_succeeded_count") or 0)
+    manual_failed = manual.get("listening_review_status") == "fail_quality"
 
-    ranked = [
-        {
-            "rank": 1,
-            "option": "liquid_tts_listening_review_next",
-            "recommended": tts_review_entries > 0,
-            "rationale": "TTS generated valid local audio but quality has not been manually reviewed.",
-        },
-        {
-            "rank": 2,
-            "option": "liquid_asr_prompt_mode_fix_next",
-            "recommended": "prompt_mode" in asr_failure or "loopback" in asr_failure,
-            "rationale": "ASR outputs looked like assistant responses and the current setup cannot isolate model quality.",
-        },
-        {
-            "rank": 3,
-            "option": "liquid_architecture_inspiration_only",
-            "recommended": latency.get("current_smoke_live_usable") is False,
-            "rationale": "Current TTS total latency and RTF are too slow for live voice without further optimization and verifier-safe streaming.",
-        },
-        {
-            "rank": 4,
-            "option": "liquid_independent_asr_benchmark_next",
-            "recommended": False,
-            "rationale": "Not recommended until ASR prompt/mode is fixed or a clean independent synthetic/recorded audio source is prepared.",
-        },
-        {
-            "rank": 5,
-            "option": "liquid_interleaved_s2s_probe_next",
-            "recommended": False,
-            "rationale": "Do not probe interleaved S2S yet; verifier gating and the current prompt/mode issue must be resolved first.",
-        },
-    ]
+    if manual_failed:
+        ranked = [
+            {
+                "rank": 1,
+                "option": "liquid_architecture_inspiration_only",
+                "recommended": True,
+                "rationale": "Human listening review found all generated Liquid TTS files unintelligible/gibberish.",
+            },
+            {
+                "rank": 2,
+                "option": "kokoro_tts_benchmark_next",
+                "recommended": True,
+                "rationale": "Move practical local TTS baseline work to Kokoro while ElevenLabs remains the current voice path.",
+            },
+            {
+                "rank": 3,
+                "option": "liquid_tts_listening_review_next",
+                "recommended": False,
+                "rationale": "Completed; the manual listening result failed quality/intelligibility.",
+            },
+            {
+                "rank": 4,
+                "option": "liquid_asr_prompt_mode_fix_next",
+                "recommended": False,
+                "rationale": "Not recommended now because Liquid TTS quality failed manual review.",
+            },
+            {
+                "rank": 5,
+                "option": "liquid_independent_asr_benchmark_next",
+                "recommended": False,
+                "rationale": "Not recommended now; do not spend near-term effort on Liquid ASR/TTS runtime.",
+            },
+            {
+                "rank": 6,
+                "option": "liquid_interleaved_s2s_probe_next",
+                "recommended": False,
+                "rationale": "Not recommended now; retain Liquid only for future speech-to-speech architecture inspiration.",
+            },
+        ]
+    else:
+        ranked = [
+            {
+                "rank": 1,
+                "option": "liquid_tts_listening_review_next",
+                "recommended": tts_review_entries > 0,
+                "rationale": "TTS generated valid local audio but quality has not been manually reviewed.",
+            },
+            {
+                "rank": 2,
+                "option": "liquid_asr_prompt_mode_fix_next",
+                "recommended": "prompt_mode" in asr_failure or "loopback" in asr_failure,
+                "rationale": "ASR outputs looked like assistant responses and the current setup cannot isolate model quality.",
+            },
+            {
+                "rank": 3,
+                "option": "liquid_architecture_inspiration_only",
+                "recommended": latency.get("current_smoke_live_usable") is False,
+                "rationale": "Current TTS total latency and RTF are too slow for live voice without further optimization and verifier-safe streaming.",
+            },
+            {
+                "rank": 4,
+                "option": "liquid_independent_asr_benchmark_next",
+                "recommended": False,
+                "rationale": "Not recommended until ASR prompt/mode is fixed or a clean independent synthetic/recorded audio source is prepared.",
+            },
+            {
+                "rank": 5,
+                "option": "liquid_interleaved_s2s_probe_next",
+                "recommended": False,
+                "rationale": "Do not probe interleaved S2S yet; verifier gating and the current prompt/mode issue must be resolved first.",
+            },
+        ]
     decision = {
         "experiment_id": "LIQUID-AUDIO-SMOKE-DIAGNOSTIC-DECISION-001",
         "generated_at": utc_now(),
         "status": "pass",
         "implementation_audit": rel(IMPLEMENTATION_AUDIT_PATH),
         "listening_review": rel(LISTENING_REVIEW_PATH),
+        "manual_listening_review": rel(MANUAL_LISTENING_REVIEW_PATH),
         "latency_audit": rel(RESULT_PATH),
         "primary_recommendation": ranked[0]["option"],
         "ranked_recommendations": ranked,
         "likely_asr_failure_cause": asr_failure,
         "independent_asr_benchmark_recommended": False,
         "interleaved_s2s_probe_recommended": False,
+        "liquid_tts_listening_review_next": "completed" if manual_failed else "pending",
+        "liquid_tts_quality_status": "failed_manual_review" if manual_failed else "pending_manual_review",
+        "liquid_asr_prompt_mode_fix_next": "not recommended now" if manual_failed else "recommended_before_independent_benchmark",
+        "kokoro_tts_benchmark_recommended_next": manual_failed,
+        "elevenlabs_remains_current_voice_path": True,
         "liquid_remains_offline_candidate_or_inspiration": True,
+        "liquid_architecture_inspiration_only": manual_failed,
         "asr_setup_correct_enough_for_independent_benchmark": asr_succeeded > 0 and "prompt_mode" not in asr_failure,
         "live_wiring_allowed": False,
         "sales_brain_replacement_allowed": False,
@@ -172,11 +222,20 @@ def write_diagnostic_decision(latency: dict[str, Any]) -> dict[str, Any]:
                 f"- status: {decision['status']}",
                 f"- primary_recommendation: `{decision['primary_recommendation']}`",
                 f"- likely_asr_failure_cause: {decision['likely_asr_failure_cause']}",
+                f"- liquid_tts_listening_review_next: {decision['liquid_tts_listening_review_next']}",
+                f"- liquid_tts_quality_status: {decision['liquid_tts_quality_status']}",
+                f"- liquid_asr_prompt_mode_fix_next: {decision['liquid_asr_prompt_mode_fix_next']}",
                 f"- independent_asr_benchmark_recommended: {str(decision['independent_asr_benchmark_recommended']).lower()}",
                 f"- interleaved_s2s_probe_recommended: {str(decision['interleaved_s2s_probe_recommended']).lower()}",
+                f"- kokoro_tts_benchmark_recommended_next: {str(decision['kokoro_tts_benchmark_recommended_next']).lower()}",
+                f"- elevenlabs_remains_current_voice_path: {str(decision['elevenlabs_remains_current_voice_path']).lower()}",
                 f"- liquid_remains_offline_candidate_or_inspiration: {str(decision['liquid_remains_offline_candidate_or_inspiration']).lower()}",
                 "- live_wiring_allowed: false",
                 "- sales_brain_replacement_allowed: false",
+                "",
+                "## Rationale",
+                "",
+                "Liquid TTS quality failed manual listening review, so do not spend more near-term effort on Liquid ASR/TTS runtime. Use Liquid only for architectural inspiration. Move practical voice work to Kokoro benchmark and/or ElevenLabs prosody/latency comparison.",
                 "",
                 "## Ranked Recommendations",
                 "",

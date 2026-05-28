@@ -86,6 +86,28 @@ def main() -> int:
         failures.append("decision recommendation must be present")
     if manual.get("listening_review_status") == "pending_manual_review" and recommendation != "user_listen_and_fill_review":
         failures.append("pending manual review must recommend user_listen_and_fill_review")
+    if manual.get("listening_review_status") == "fail_quality":
+        if recommendation != "liquid_architecture_inspiration_only":
+            failures.append("failed manual quality review must recommend liquid_architecture_inspiration_only")
+        if decision.get("liquid_architecture_inspiration_only") is not True:
+            failures.append("failed review decision must mark liquid_architecture_inspiration_only true")
+        if decision.get("liquid_thesis_or_offline_only") is not False:
+            failures.append("failed review decision must not keep Liquid as thesis/offline TTS")
+        if decision.get("compare_liquid_against_kokoro_and_elevenlabs") is not False:
+            failures.append("failed review decision must not recommend comparing Liquid as a near-term voice backend")
+        if decision.get("quality_based_on_manual_review") is not True:
+            failures.append("failed review decision must record quality_based_on_manual_review true")
+        if decision.get("thesis_demo_tts_allowed") is not False:
+            failures.append("failed review decision must reject thesis demo TTS suitability")
+        if decision.get("product_fallback_tts_allowed") is not False:
+            failures.append("failed review decision must reject product fallback TTS suitability")
+        if decision.get("elevenlabs_remains_current_voice_path") is not True:
+            failures.append("failed review decision must keep ElevenLabs as current voice path")
+        if decision.get("liquid_tts_backend_candidate_status") != "rejected_by_manual_listening_review":
+            failures.append("failed review decision must mark Liquid TTS rejected by manual listening review")
+        rationale = str(decision.get("rationale") or "").lower()
+        if "unintelligible" not in rationale or "architecture inspiration" not in rationale:
+            failures.append("failed review rationale must cite unintelligible audio and architecture-inspiration-only status")
     if decision.get("quality_inferred_from_latency") is not False:
         failures.append("decision must not infer quality from latency")
     if decision.get("live_readiness_claimed") is not False:

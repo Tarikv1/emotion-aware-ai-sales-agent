@@ -131,7 +131,7 @@
         "local_tts",
         "local_asr",
         "local_speech_to_speech",
-        "production_candidate"
+        "research_only"
       ],
       "capability_classification": [
         "ASR",
@@ -139,9 +139,15 @@
         "speech-to-speech",
         "interleaved_audio_text_generation"
       ],
-      "integration_classification": "integration_candidate",
-      "role_in_project": "High strategic feasibility candidate for local ASR, local TTS, and future speech-to-speech audio interface. It must not replace the project-owned sales brain, campaign facts, memory ledger, source grounding, or verifier.",
-      "integration_priority": "high_strategic_priority_feasibility_probe_only",
+      "integration_classification": "architecture_inspiration_only",
+      "role_in_project": "Speech-to-speech / ASR / TTS architecture inspiration and feasibility record. Phase 4I1G manual listening review found generated Liquid TTS audio unintelligible, so Liquid must not be used as a TTS/voice backend and must not replace the project-owned sales brain, campaign facts, memory ledger, source grounding, verifier, or ElevenLabs voice path.",
+      "tts_backend_candidate_status": "rejected_by_manual_listening_review",
+      "near_term_voice_backend_allowed": false,
+      "thesis_demo_tts_allowed": false,
+      "product_fallback_tts_allowed": false,
+      "sales_brain_replacement_allowed": false,
+      "phase_4i1g_manual_review_note": "Phase 4I1G manual listening review found generated Liquid TTS audio unintelligible; no recognizable words or sentences. Liquid retained as architecture inspiration only.",
+      "integration_priority": "architecture_inspiration_only_no_near_term_voice_backend",
       "live_runtime_allowed": false,
       "provider_calls_required": false,
       "model_weights_download_required": true,
@@ -150,9 +156,10 @@
         "English-only support stated on the model card",
         "integration complexity around interleaved audio/text generation",
         "custom LFM Open License commercial threshold",
-        "risk of treating a speech-to-speech model as an unverified sales brain"
+        "risk of treating a speech-to-speech model as an unverified sales brain",
+        "Phase 4I1G manual listening review found generated TTS output unintelligible/gibberish"
       ],
-      "recommended_next_phase": "Liquid feasibility probe only: install/package metadata check first, then gated model download and ASR/TTS/S2S benchmark only after explicit approval.",
+      "recommended_next_phase": "No near-term Liquid ASR/TTS runtime work. Retain Liquid as architecture inspiration only; move practical local TTS baseline work to Kokoro while ElevenLabs remains the current voice path.",
       "source_evidence": [
         {
           "url": "https://github.com/Liquid4All/liquid-audio",

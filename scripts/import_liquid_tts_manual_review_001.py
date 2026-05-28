@@ -154,7 +154,10 @@ def decision_for_status(status: str, averages: dict[str, float | None]) -> tuple
     if status == "pass_for_offline_fallback":
         return "compare_liquid_tts_against_kokoro_and_elevenlabs_latency_quality", "Manual review supports fallback exploration; compare against Kokoro and ElevenLabs before any product decision."
     if status == "fail_quality":
-        return "keep_liquid_as_architecture_inspiration_only", "Manual quality review failed; do not promote Liquid TTS beyond architecture inspiration."
+        return (
+            "liquid_architecture_inspiration_only",
+            "Human listening review found all generated Liquid TTS files unintelligible/gibberish. Liquid should not be used as TTS/voice backend. Keep it as architecture inspiration only.",
+        )
     return "continue_manual_review_or_collect_second_listener", "Manual review is incomplete or inconclusive; collect the missing ratings or a second listener review."
 
 
@@ -208,6 +211,19 @@ def pending_result(reason: str) -> dict[str, Any]:
 
 
 def write_result_report(result: dict[str, Any]) -> None:
+    outcome_lines = []
+    if result.get("listening_review_status") == "fail_quality":
+        outcome_lines = [
+            "",
+            "## Outcome",
+            "",
+            "- Liquid TTS failed manual listening review.",
+            "- Failure type: quality/intelligibility, not latency.",
+            "- Liquid is not suitable for thesis demo audio.",
+            "- Liquid is not suitable as a product fallback voice.",
+            "- Liquid should not replace ElevenLabs.",
+            "- Liquid remains architecture inspiration only.",
+        ]
     write_json(RESULT_PATH, result)
     write_text(
         REPORT_PATH,
@@ -228,6 +244,7 @@ def write_result_report(result: dict[str, Any]) -> None:
                 "## Averages",
                 "",
                 json.dumps(result.get("averages", {}), indent=2),
+                *outcome_lines,
             ]
         ),
     )
@@ -247,7 +264,13 @@ def write_decision(result: dict[str, Any]) -> dict[str, Any]:
         "live_readiness_claimed": False,
         "compare_liquid_against_kokoro_and_elevenlabs": recommendation == "compare_liquid_tts_against_kokoro_and_elevenlabs_latency_quality",
         "liquid_thesis_or_offline_only": recommendation == "keep_liquid_as_thesis_offline_demo_candidate_only",
-        "liquid_architecture_inspiration_only": recommendation == "keep_liquid_as_architecture_inspiration_only",
+        "liquid_architecture_inspiration_only": recommendation == "liquid_architecture_inspiration_only",
+        "quality_based_on_manual_review": result.get("quality_based_on_manual_review") is True,
+        "thesis_demo_tts_allowed": result.get("thesis_demo_tts_allowed") is True,
+        "product_fallback_tts_allowed": result.get("product_fallback_tts_allowed") is True,
+        "elevenlabs_remains_current_voice_path": result.get("elevenlabs_remains_current_voice_path") is True,
+        "liquid_tts_backend_candidate_status": result.get("liquid_tts_backend_candidate_status"),
+        "liquid_should_replace_elevenlabs": False,
         "provider_calls_made": False,
         "openai_api_calls_made": False,
         "elevenlabs_calls_made": False,
@@ -274,6 +297,11 @@ def write_decision(result: dict[str, Any]) -> dict[str, Any]:
                 f"- listening_review_status: {decision['listening_review_status']}",
                 f"- recommendation: `{decision['recommendation']}`",
                 "- quality_inferred_from_latency: false",
+                f"- quality_based_on_manual_review: {str(decision['quality_based_on_manual_review']).lower()}",
+                f"- thesis_demo_tts_allowed: {str(decision['thesis_demo_tts_allowed']).lower()}",
+                f"- product_fallback_tts_allowed: {str(decision['product_fallback_tts_allowed']).lower()}",
+                f"- liquid_architecture_inspiration_only: {str(decision['liquid_architecture_inspiration_only']).lower()}",
+                f"- elevenlabs_remains_current_voice_path: {str(decision['elevenlabs_remains_current_voice_path']).lower()}",
                 "- live_readiness_claimed: false",
                 "- live_wiring_allowed: false",
                 "- sales_brain_replacement_allowed: false",
@@ -323,6 +351,7 @@ def main() -> int:
 
     averages = compute_averages(validated_entries)
     status = "needs_more_review" if validation_errors else classify(averages, len(validated_entries), len(expected_entries))
+    fail_quality = status == "fail_quality"
     result = {
         "experiment_id": "LIQUID-AUDIO-LISTENING-REVIEW-MANUAL-001",
         "generated_at": utc_now(),
@@ -336,6 +365,16 @@ def main() -> int:
         "validated_review_entries": len(validated_entries),
         "entries": validated_entries,
         "averages": averages,
+        "manual_review_source": filled.get("manual_review_source") or "manual_review_filled_json",
+        "review_summary": filled.get("review_summary") or "",
+        "quality_based_on_manual_review": len(validated_entries) == len(expected_entries) and not validation_errors,
+        "liquid_tts_backend_candidate_status": "rejected_by_manual_listening_review" if fail_quality else status,
+        "failure_type": "quality_intelligibility" if fail_quality else "",
+        "thesis_demo_tts_allowed": status == "pass_for_thesis_demo",
+        "product_fallback_tts_allowed": status == "pass_for_offline_fallback",
+        "elevenlabs_remains_current_voice_path": True,
+        "liquid_should_replace_elevenlabs": False,
+        "liquid_architecture_inspiration_only": fail_quality,
         "quality_inferred_from_latency": False,
         "live_readiness_claimed": False,
         "provider_calls_made": False,
