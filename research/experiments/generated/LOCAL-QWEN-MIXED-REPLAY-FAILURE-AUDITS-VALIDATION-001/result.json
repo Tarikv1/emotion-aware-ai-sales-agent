@@ -1,0 +1,38 @@
+{
+  "experiment_id": "LOCAL-QWEN-MIXED-REPLAY-FAILURE-AUDITS-VALIDATION-001",
+  "validated_at": "2026-05-28T09:41:04.338752+00:00",
+  "status": "pass",
+  "audit_ids": [
+    "LOCAL-QWEN-MIXED-REPLAY-EVAL-FAILURE-AUDIT-001",
+    "LOCAL-QWEN-MIXED-REPLAY-TRAIN-VS-EVAL-AUDIT-001",
+    "LOCAL-QWEN-MIXED-REPLAY-DECODING-AUDIT-001"
+  ],
+  "checks": {
+    "audit_evidence_exists": true,
+    "no_local_qwen_calls": true,
+    "no_training": true,
+    "no_provider_openai_tts_calls": true,
+    "no_raw_private_transcript_copied": true,
+    "no_model_adapters_committed": true,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false
+  },
+  "changed_files": [],
+  "failures": [],
+  "side_effects": {
+    "local_model_calls_made": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "model_download_attempted": false,
+    "model_redownloaded": false,
+    "model_weights_committed": false,
+    "adapter_files_committed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcript_included": false,
+    "raw_private_transcript_copied_to_public_evidence": false,
+    "case_text_stored_in_evidence": false
+  }
+}

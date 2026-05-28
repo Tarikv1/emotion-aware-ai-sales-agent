@@ -1,0 +1,80 @@
+{
+  "experiment_id": "LOCAL-QWEN-MIXED-REPLAY-NEXT-DECISION-001",
+  "generated_at": "2026-05-28T09:40:38.499364+00:00",
+  "status": "pass",
+  "inputs": {
+    "failure_audit": "research/experiments/generated/LOCAL-QWEN-MIXED-REPLAY-EVAL-FAILURE-AUDIT-001/result.json",
+    "train_vs_eval_audit": "research/experiments/generated/LOCAL-QWEN-MIXED-REPLAY-TRAIN-VS-EVAL-AUDIT-001/result.json",
+    "decoding_audit": "research/experiments/generated/LOCAL-QWEN-MIXED-REPLAY-DECODING-AUDIT-001/result.json"
+  },
+  "recommended_next_option": "option_4_two_head_architecture",
+  "recommended_options": [
+    "option_4_two_head_architecture",
+    "option_2_label_simplification",
+    "option_6_smaller_task_for_lora",
+    "option_3_constrained_decoding"
+  ],
+  "option_scores": {
+    "option_1_more_data": 6,
+    "option_2_label_simplification": 161,
+    "option_3_constrained_decoding": 16,
+    "option_4_two_head_architecture": 196,
+    "option_5_retrieval_example_conditioning": 10,
+    "option_6_smaller_task_for_lora": 276,
+    "option_7_different_base_model_comparison": 3
+  },
+  "rationale": {
+    "dominant_blocker": "Structured semantic and response-plan selection, not pure JSON formatting.",
+    "evidence": {
+      "strict_semantic_failures": 120,
+      "response_plan_failures": 138,
+      "wrong_action": 45,
+      "wrong_strategy": 60,
+      "wrong_sales_move": 9,
+      "format_failure_case_count": 16,
+      "semantic_failure_case_count": 138,
+      "train_sample_much_better_than_heldout": true,
+      "train_underfitting_response_plan": true
+    }
+  },
+  "rejected_options": {
+    "option_1_more_data": "Not the immediate next step: train_sample is better than held-out, but represented target cards still fail and train response-plan exactness is weak.",
+    "option_5_retrieval_example_conditioning": "Useful later as an offline ablation, but it does not address structured-label brittleness by itself.",
+    "option_7_different_base_model_comparison": "Premature before reducing task shape; a different base could mask the architecture issue without proving it."
+  },
+  "more_training_recommended_immediately": false,
+  "data_expansion_recommended": false,
+  "data_expansion_recommendation": "Do not expand to 1000-2000 rows yet; first simplify the target and decide which head owns labels.",
+  "label_simplification_recommended": true,
+  "constrained_decoding_recommended": true,
+  "constrained_decoding_scope": "Secondary guardrail for invalid labels/schema drift, not the main quality fix.",
+  "two_head_architecture_recommended": true,
+  "retrieval_example_conditioning_recommended": "defer",
+  "different_base_model_comparison_recommended": "defer",
+  "local_lora_scope_recommended": "Train local LLM only for buyer-facing say/objection wording after deterministic labels are stable.",
+  "live_wiring_allowed": false,
+  "adapter_live_ready": false,
+  "quality_gate_passed": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "provider_side_effects_made": false,
+  "local_model_calls_made": false,
+  "training_rerun": false,
+  "recommendation_does_not_claim_live_readiness": true,
+  "side_effects": {
+    "local_model_calls_made": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "model_download_attempted": false,
+    "model_redownloaded": false,
+    "model_weights_committed": false,
+    "adapter_files_committed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcript_included": false,
+    "raw_private_transcript_copied_to_public_evidence": false,
+    "case_text_stored_in_evidence": false
+  }
+}

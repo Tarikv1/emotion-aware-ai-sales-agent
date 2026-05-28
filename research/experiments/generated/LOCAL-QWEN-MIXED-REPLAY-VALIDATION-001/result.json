@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-QWEN-MIXED-REPLAY-VALIDATION-001",
-  "generated_at": "2026-05-28T01:49:04.294998+00:00",
+  "generated_at": "2026-05-28T09:41:14.596502+00:00",
   "status": "pass",
   "pass": true,
   "blockers": [],
@@ -16,13 +16,7 @@
   "live_wiring_allowed": false,
   "adapter_files_committed": false,
   "tracked_weight_files": [],
-  "changed_files": [
-    "research/experiments/generated/LOCAL-QWEN-BALANCED-DATASET-APPROVAL-GATE-001/result.json",
-    "research/experiments/generated/LOCAL-QWEN-BALANCED-DATASET-ARTIFACTS-VALIDATION-001/result.json",
-    "research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/result.json",
-    "research/experiments/generated/LOCAL-QWEN-NEXT-MIXED-REPLAY-TRAINING-PLAN-001/result.json",
-    "scripts/validate_local_qwen_balanced_dataset_approval_gate_001.py"
-  ],
+  "changed_files": [],
   "held_out_contamination": {
     "passed": true,
     "leak_count": 0,

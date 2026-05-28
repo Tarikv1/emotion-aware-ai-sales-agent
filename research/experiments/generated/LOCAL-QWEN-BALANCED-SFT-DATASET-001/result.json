@@ -1,6 +1,6 @@
 {
   "experiment_id": "LOCAL-QWEN-BALANCED-SFT-DATASET-001",
-  "generated_at": "2026-05-28T01:48:44.423742+00:00",
+  "generated_at": "2026-05-28T09:41:22.661561+00:00",
   "status": "pass",
   "inputs": {
     "source_dataset": "research/experiments/generated/LOCAL-QWEN-SFT-DATASET-001",

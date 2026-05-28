@@ -1,0 +1,1045 @@
+{
+  "experiment_id": "LOCAL-QWEN-MIXED-REPLAY-TRAIN-VS-EVAL-AUDIT-001",
+  "generated_at": "2026-05-28T09:40:34.136430+00:00",
+  "status": "pass",
+  "inputs": {
+    "eval_result": "research/experiments/generated/LOCAL-QWEN-LORA-MIXED-REPLAY-EVAL-001/result.json",
+    "mixed_replay_dataset_result": "research/experiments/generated/LOCAL-QWEN-MIXED-REPLAY-TRAINING-DATASET-001/result.json",
+    "balanced_sft_dataset_result": "research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/result.json",
+    "failure_audit_result": "research/experiments/generated/LOCAL-QWEN-MIXED-REPLAY-EVAL-FAILURE-AUDIT-001/result.json"
+  },
+  "split_rate_summary": {
+    "train_sample": {
+      "case_count": 40,
+      "schema_rate": 0.975,
+      "compact_contract_rate": 0.975,
+      "verifier_rate": 0.9,
+      "strict_semantic_rate": 0.625,
+      "response_plan_rate": 0.075,
+      "equivalence_rate": 0.55,
+      "exact_rate": 0.075,
+      "safety_rate": 0.9
+    },
+    "validation": {
+      "case_count": 65,
+      "schema_rate": 0.9846,
+      "compact_contract_rate": 0.8769,
+      "verifier_rate": 0.7077,
+      "strict_semantic_rate": 0.2,
+      "response_plan_rate": 0.0308,
+      "equivalence_rate": 0.0923,
+      "exact_rate": 0.0308,
+      "safety_rate": 0.7077
+    },
+    "test": {
+      "case_count": 66,
+      "schema_rate": 0.9697,
+      "compact_contract_rate": 0.9242,
+      "verifier_rate": 0.7879,
+      "strict_semantic_rate": 0.1212,
+      "response_plan_rate": 0.0152,
+      "equivalence_rate": 0.1212,
+      "exact_rate": 0.0152,
+      "safety_rate": 0.7879
+    },
+    "ood_test": {
+      "case_count": 10,
+      "schema_rate": 0.9,
+      "compact_contract_rate": 0.7,
+      "verifier_rate": 0.8,
+      "strict_semantic_rate": 0.0,
+      "response_plan_rate": 0.0,
+      "equivalence_rate": 0.0,
+      "exact_rate": 0.0,
+      "safety_rate": 0.8
+    }
+  },
+  "train_sample_vs_heldout": {
+    "train_sample_strict_semantic_rate": 0.625,
+    "validation_strict_semantic_rate": 0.2,
+    "test_strict_semantic_rate": 0.1212,
+    "validation_test_strict_semantic_rate": 0.1603,
+    "train_sample_much_better_than_heldout": true,
+    "caveat": "train_sample is the first 40 mixed-train rows, not a full train-set evaluation."
+  },
+  "semantic_groups_pass_train_fail_heldout": [
+    {
+      "semantic_group": "plan_fit_and_recommendation",
+      "train_sample_semantic_pass_rate": 0.75,
+      "heldout_semantic_pass_rate": 0.0667,
+      "heldout_case_count": 30
+    },
+    {
+      "semantic_group": "plan_change_and_signup",
+      "train_sample_semantic_pass_rate": 1.0,
+      "heldout_semantic_pass_rate": 0.0667,
+      "heldout_case_count": 30
+    }
+  ],
+  "semantic_group_performance": {
+    "train_sample": [
+      {
+        "semantic_group": "orientation_or_explanation",
+        "case_count": 7,
+        "semantic_pass_count": 4,
+        "semantic_pass_rate": 0.5714,
+        "full_pass_count": 0,
+        "full_pass_rate": 0.0
+      },
+      {
+        "semantic_group": "usage_intensity",
+        "case_count": 7,
+        "semantic_pass_count": 7,
+        "semantic_pass_rate": 1.0,
+        "full_pass_count": 0,
+        "full_pass_rate": 0.0
+      },
+      {
+        "semantic_group": "adoption_current_tool_context",
+        "case_count": 6,
+        "semantic_pass_count": 4,
+        "semantic_pass_rate": 0.6667,
+        "full_pass_count": 0,
+        "full_pass_rate": 0.0
+      },
+      {
+        "semantic_group": "plan_fit_and_recommendation",
+        "case_count": 4,
+        "semantic_pass_count": 3,
+        "semantic_pass_rate": 0.75,
+        "full_pass_count": 0,
+        "full_pass_rate": 0.0
+      },
+      {
+        "semantic_group": "plan_change_and_signup",
+        "case_count": 3,
+        "semantic_pass_count": 3,
+        "semantic_pass_rate": 1.0,
+        "full_pass_count": 2,
+        "full_pass_rate": 0.6667
+      },
+      {
+        "semantic_group": "safety_and_boundary",
+        "case_count": 3,
+        "semantic_pass_count": 0,
+        "semantic_pass_rate": 0.0,
+        "full_pass_count": 0,
+        "full_pass_rate": 0.0
+      },
+      {
+        "semantic_group": "objections_and_competitor_context",
+        "case_count": 3,
+        "semantic_pass_count": 1,
+        "semantic_pass_rate": 0.3333,
+        "full_pass_count": 0,
+        "full_pass_rate": 0.0
+      },
+      {
+        "semantic_group": "individual_not_team_and_team_scope",
+        "case_count": 3,
+        "semantic_pass_count": 0,
+        "semantic_pass_rate": 0.0,
+        "full_pass_count": 0,
+        "full_pass_rate": 0.0
+      },
+      {
+        "semantic_group": "use_case_scope",
+        "case_count": 2,
+        "semantic_pass_count": 1,
+        "semantic_pass_rate": 0.5,
+        "full_pass_count": 1,
+        "full_pass_rate": 0.5
+      },
+      {
+        "semantic_group": "price_and_value",
+        "case_count": 2,
+        "semantic_pass_count": 1,
+        "semantic_pass_rate": 0.5,
+        "full_pass_count": 0,
+        "full_pass_rate": 0.0
+      }
+    ],
+    "heldout": [
+      {
+        "semantic_group": "plan_fit_and_recommendation",
+        "case_count": 30,
+        "semantic_pass_count": 2,
+        "semantic_pass_rate": 0.0667,
+        "full_pass_count": 1,
+        "full_pass_rate": 0.0333
+      },
+      {
+        "semantic_group": "plan_change_and_signup",
+        "case_count": 30,
+        "semantic_pass_count": 2,
+        "semantic_pass_rate": 0.0667,
+        "full_pass_count": 2,
+        "full_pass_rate": 0.0667
+      },
+      {
+        "semantic_group": "safety_and_boundary",
+        "case_count": 30,
+        "semantic_pass_count": 2,
+        "semantic_pass_rate": 0.0667,
+        "full_pass_count": 0,
+        "full_pass_rate": 0.0
+      },
+      {
+        "semantic_group": "objections_and_competitor_context",
+        "case_count": 30,
+        "semantic_pass_count": 8,
+        "semantic_pass_rate": 0.2667,
+        "full_pass_count": 0,
+        "full_pass_rate": 0.0
+      },
+      {
+        "semantic_group": "price_and_value",
+        "case_count": 11,
+        "semantic_pass_count": 7,
+        "semantic_pass_rate": 0.6364,
+        "full_pass_count": 0,
+        "full_pass_rate": 0.0
+      },
+      {
+        "semantic_group": "ood_control",
+        "case_count": 10,
+        "semantic_pass_count": 0,
+        "semantic_pass_rate": 0.0,
+        "full_pass_count": 0,
+        "full_pass_rate": 0.0
+      }
+    ]
+  },
+  "target_cards_underrepresented_in_train": [
+    {
+      "target_card_id": "plan_change_signup_path",
+      "train_count": 3
+    },
+    {
+      "target_card_id": "plan_change_upgrade_later",
+      "train_count": 4
+    }
+  ],
+  "target_cards_represented_but_still_fail": [
+    {
+      "target_card_id": "safety_wrong_product",
+      "train_count": 7,
+      "heldout_case_count": 19,
+      "heldout_semantic_failure_count": 19,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "plan_change_signup_path",
+      "train_count": 3,
+      "heldout_case_count": 14,
+      "heldout_semantic_failure_count": 14,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "plan_change_upgrade_later",
+      "train_count": 4,
+      "heldout_case_count": 14,
+      "heldout_semantic_failure_count": 14,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "objection_competitor_current_tool",
+      "train_count": 13,
+      "heldout_case_count": 8,
+      "heldout_semantic_failure_count": 8,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "plan_fit_no_fit_free_enough",
+      "train_count": 9,
+      "heldout_case_count": 8,
+      "heldout_semantic_failure_count": 8,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "objection_not_interested",
+      "train_count": 11,
+      "heldout_case_count": 8,
+      "heldout_semantic_failure_count": 7,
+      "heldout_semantic_failure_rate": 0.875
+    },
+    {
+      "target_card_id": "plan_fit_pro_choice",
+      "train_count": 13,
+      "heldout_case_count": 7,
+      "heldout_semantic_failure_count": 7,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "plan_fit_recommend_after_context",
+      "train_count": 13,
+      "heldout_case_count": 7,
+      "heldout_semantic_failure_count": 7,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "safety_raw_url_or_transcript",
+      "train_count": 14,
+      "heldout_case_count": 7,
+      "heldout_semantic_failure_count": 7,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "safety_unsupported_policy_privacy",
+      "train_count": 14,
+      "heldout_case_count": 7,
+      "heldout_semantic_failure_count": 7,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "plan_fit_plus_enough",
+      "train_count": 13,
+      "heldout_case_count": 8,
+      "heldout_semantic_failure_count": 6,
+      "heldout_semantic_failure_rate": 0.75
+    },
+    {
+      "target_card_id": "safety_no_crm_email_calendar",
+      "train_count": 19,
+      "heldout_case_count": 7,
+      "heldout_semantic_failure_count": 5,
+      "heldout_semantic_failure_rate": 0.7143
+    },
+    {
+      "target_card_id": "objection_price_with_current_tool",
+      "train_count": 13,
+      "heldout_case_count": 7,
+      "heldout_semantic_failure_count": 4,
+      "heldout_semantic_failure_rate": 0.5714
+    },
+    {
+      "target_card_id": "price_pro_direct",
+      "train_count": 13,
+      "heldout_case_count": 6,
+      "heldout_semantic_failure_count": 4,
+      "heldout_semantic_failure_rate": 0.6667
+    },
+    {
+      "target_card_id": "objection_chatgpt_vs_current_tool",
+      "train_count": 13,
+      "heldout_case_count": 7,
+      "heldout_semantic_failure_count": 3,
+      "heldout_semantic_failure_rate": 0.4286
+    }
+  ],
+  "source_type_correlation": [
+    {
+      "source_type": "deterministic_paraphrase",
+      "case_count": 95,
+      "semantic_pass_count": 17,
+      "semantic_pass_rate": 0.1789,
+      "full_pass_count": 3,
+      "full_pass_rate": 0.0316
+    },
+    {
+      "source_type": "synthetic_control",
+      "case_count": 20,
+      "semantic_pass_count": 2,
+      "semantic_pass_rate": 0.1,
+      "full_pass_count": 0,
+      "full_pass_rate": 0.0
+    },
+    {
+      "source_type": "negative_control",
+      "case_count": 15,
+      "semantic_pass_count": 1,
+      "semantic_pass_rate": 0.0667,
+      "full_pass_count": 0,
+      "full_pass_rate": 0.0
+    },
+    {
+      "source_type": "ood_control",
+      "case_count": 10,
+      "semantic_pass_count": 0,
+      "semantic_pass_rate": 0.0,
+      "full_pass_count": 0,
+      "full_pass_rate": 0.0
+    },
+    {
+      "source_type": "original_gold",
+      "case_count": 1,
+      "semantic_pass_count": 1,
+      "semantic_pass_rate": 1.0,
+      "full_pass_count": 0,
+      "full_pass_rate": 0.0
+    }
+  ],
+  "buyer_text_length_correlation": {
+    "median": 47,
+    "low_or_equal": {
+      "case_count": 74,
+      "average_length": 38.84,
+      "semantic_pass_rate": 0.1351
+    },
+    "high": {
+      "case_count": 67,
+      "average_length": 60.46,
+      "semantic_pass_rate": 0.1642
+    }
+  },
+  "target_json_length_correlation": {
+    "median": 598,
+    "low_or_equal": {
+      "case_count": 71,
+      "average_length": 554.63,
+      "semantic_pass_rate": 0.0986
+    },
+    "high": {
+      "case_count": 70,
+      "average_length": 620.97,
+      "semantic_pass_rate": 0.2
+    }
+  },
+  "say_diversity_correlation": [
+    {
+      "target_card_id": "safety_wrong_product",
+      "train_count": 7,
+      "unique_train_say_count": 2,
+      "heldout_case_count": 19,
+      "heldout_semantic_failure_count": 19,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "plan_change_upgrade_later",
+      "train_count": 4,
+      "unique_train_say_count": 1,
+      "heldout_case_count": 14,
+      "heldout_semantic_failure_count": 14,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "plan_change_signup_path",
+      "train_count": 3,
+      "unique_train_say_count": 1,
+      "heldout_case_count": 14,
+      "heldout_semantic_failure_count": 14,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "plan_fit_plus_enough",
+      "train_count": 13,
+      "unique_train_say_count": 2,
+      "heldout_case_count": 8,
+      "heldout_semantic_failure_count": 6,
+      "heldout_semantic_failure_rate": 0.75
+    },
+    {
+      "target_card_id": "plan_fit_no_fit_free_enough",
+      "train_count": 9,
+      "unique_train_say_count": 2,
+      "heldout_case_count": 8,
+      "heldout_semantic_failure_count": 8,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "objection_not_interested",
+      "train_count": 11,
+      "unique_train_say_count": 1,
+      "heldout_case_count": 8,
+      "heldout_semantic_failure_count": 7,
+      "heldout_semantic_failure_rate": 0.875
+    },
+    {
+      "target_card_id": "objection_competitor_current_tool",
+      "train_count": 13,
+      "unique_train_say_count": 2,
+      "heldout_case_count": 8,
+      "heldout_semantic_failure_count": 8,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "plan_fit_recommend_after_context",
+      "train_count": 13,
+      "unique_train_say_count": 1,
+      "heldout_case_count": 7,
+      "heldout_semantic_failure_count": 7,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "plan_fit_pro_choice",
+      "train_count": 13,
+      "unique_train_say_count": 2,
+      "heldout_case_count": 7,
+      "heldout_semantic_failure_count": 7,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "safety_raw_url_or_transcript",
+      "train_count": 14,
+      "unique_train_say_count": 2,
+      "heldout_case_count": 7,
+      "heldout_semantic_failure_count": 7,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "safety_unsupported_policy_privacy",
+      "train_count": 14,
+      "unique_train_say_count": 3,
+      "heldout_case_count": 7,
+      "heldout_semantic_failure_count": 7,
+      "heldout_semantic_failure_rate": 1.0
+    },
+    {
+      "target_card_id": "safety_no_crm_email_calendar",
+      "train_count": 19,
+      "unique_train_say_count": 3,
+      "heldout_case_count": 7,
+      "heldout_semantic_failure_count": 5,
+      "heldout_semantic_failure_rate": 0.7143
+    },
+    {
+      "target_card_id": "objection_chatgpt_vs_current_tool",
+      "train_count": 13,
+      "unique_train_say_count": 2,
+      "heldout_case_count": 7,
+      "heldout_semantic_failure_count": 3,
+      "heldout_semantic_failure_rate": 0.4286
+    },
+    {
+      "target_card_id": "objection_price_with_current_tool",
+      "train_count": 13,
+      "unique_train_say_count": 2,
+      "heldout_case_count": 7,
+      "heldout_semantic_failure_count": 4,
+      "heldout_semantic_failure_rate": 0.5714
+    },
+    {
+      "target_card_id": "price_pro_direct",
+      "train_count": 13,
+      "unique_train_say_count": 2,
+      "heldout_case_count": 6,
+      "heldout_semantic_failure_count": 4,
+      "heldout_semantic_failure_rate": 0.6667
+    },
+    {
+      "target_card_id": "price_plus_direct",
+      "train_count": 16,
+      "unique_train_say_count": 2,
+      "heldout_case_count": 5,
+      "heldout_semantic_failure_count": 0,
+      "heldout_semantic_failure_rate": 0.0
+    },
+    {
+      "target_card_id": "plan_change_terminal_close",
+      "train_count": 45,
+      "unique_train_say_count": 1,
+      "heldout_case_count": 2,
+      "heldout_semantic_failure_count": 0,
+      "heldout_semantic_failure_rate": 0.0
+    }
+  ],
+  "rare_label_failure_correlation": {
+    "act": [
+      {
+        "label": "signup_question",
+        "train_count": 3,
+        "heldout_case_count": 14,
+        "heldout_semantic_failure_count": 14,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "plan_change_question",
+        "train_count": 4,
+        "heldout_case_count": 14,
+        "heldout_semantic_failure_count": 14,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "pro_tier_question",
+        "train_count": 13,
+        "heldout_case_count": 7,
+        "heldout_semantic_failure_count": 7,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "competitor_objection",
+        "train_count": 26,
+        "heldout_case_count": 15,
+        "heldout_semantic_failure_count": 11,
+        "heldout_semantic_failure_rate": 0.7333
+      },
+      {
+        "label": "plan_fit_question",
+        "train_count": 26,
+        "heldout_case_count": 15,
+        "heldout_semantic_failure_count": 13,
+        "heldout_semantic_failure_rate": 0.8667
+      },
+      {
+        "label": "no_fit",
+        "train_count": 27,
+        "heldout_case_count": 35,
+        "heldout_semantic_failure_count": 34,
+        "heldout_semantic_failure_rate": 0.9714
+      },
+      {
+        "label": "price_question",
+        "train_count": 29,
+        "heldout_case_count": 11,
+        "heldout_semantic_failure_count": 4,
+        "heldout_semantic_failure_rate": 0.3636
+      },
+      {
+        "label": "price_objection",
+        "train_count": 32,
+        "heldout_case_count": 7,
+        "heldout_semantic_failure_count": 4,
+        "heldout_semantic_failure_rate": 0.5714
+      },
+      {
+        "label": "terminal_acceptance",
+        "train_count": 45,
+        "heldout_case_count": 2,
+        "heldout_semantic_failure_count": 0,
+        "heldout_semantic_failure_rate": 0.0
+      },
+      {
+        "label": "safety_boundary",
+        "train_count": 47,
+        "heldout_case_count": 21,
+        "heldout_semantic_failure_count": 19,
+        "heldout_semantic_failure_rate": 0.9048
+      }
+    ],
+    "sub": [
+      {
+        "label": "side_effect_boundary_request",
+        "train_count": 3,
+        "heldout_case_count": 3,
+        "heldout_semantic_failure_count": 3,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "privacy_question",
+        "train_count": 3,
+        "heldout_case_count": 2,
+        "heldout_semantic_failure_count": 2,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "signup_path_question",
+        "train_count": 3,
+        "heldout_case_count": 14,
+        "heldout_semantic_failure_count": 14,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "unsupported_fact_request",
+        "train_count": 3,
+        "heldout_case_count": 3,
+        "heldout_semantic_failure_count": 3,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "no_crm_request",
+        "train_count": 4,
+        "heldout_case_count": 3,
+        "heldout_semantic_failure_count": 2,
+        "heldout_semantic_failure_rate": 0.6667
+      },
+      {
+        "label": "midcycle_upgrade_question",
+        "train_count": 4,
+        "heldout_case_count": 14,
+        "heldout_semantic_failure_count": 14,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "raw_url_request",
+        "train_count": 5,
+        "heldout_case_count": 3,
+        "heldout_semantic_failure_count": 3,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "wrong_product_question",
+        "train_count": 7,
+        "heldout_case_count": 19,
+        "heldout_semantic_failure_count": 19,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "internal_policy_request",
+        "train_count": 8,
+        "heldout_case_count": 2,
+        "heldout_semantic_failure_count": 2,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "raw_transcript_request",
+        "train_count": 9,
+        "heldout_case_count": 4,
+        "heldout_semantic_failure_count": 4,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "no_calendar_request",
+        "train_count": 12,
+        "heldout_case_count": 1,
+        "heldout_semantic_failure_count": 0,
+        "heldout_semantic_failure_rate": 0.0
+      },
+      {
+        "label": "plus_price_question",
+        "train_count": 16,
+        "heldout_case_count": 5,
+        "heldout_semantic_failure_count": 0,
+        "heldout_semantic_failure_rate": 0.0
+      },
+      {
+        "label": "no_interest",
+        "train_count": 20,
+        "heldout_case_count": 16,
+        "heldout_semantic_failure_count": 15,
+        "heldout_semantic_failure_rate": 0.9375
+      },
+      {
+        "label": "pro_tier_choice",
+        "train_count": 26,
+        "heldout_case_count": 13,
+        "heldout_semantic_failure_count": 11,
+        "heldout_semantic_failure_rate": 0.8462
+      },
+      {
+        "label": "plus_sufficiency_question",
+        "train_count": 26,
+        "heldout_case_count": 15,
+        "heldout_semantic_failure_count": 13,
+        "heldout_semantic_failure_rate": 0.8667
+      },
+      {
+        "label": "current_competitor_tool",
+        "train_count": 39,
+        "heldout_case_count": 22,
+        "heldout_semantic_failure_count": 15,
+        "heldout_semantic_failure_rate": 0.6818
+      },
+      {
+        "label": "terminal_thanks_acceptance",
+        "train_count": 45,
+        "heldout_case_count": 2,
+        "heldout_semantic_failure_count": 0,
+        "heldout_semantic_failure_rate": 0.0
+      }
+    ],
+    "action": [
+      {
+        "label": "answer_signup_path",
+        "train_count": 3,
+        "heldout_case_count": 14,
+        "heldout_semantic_failure_count": 14,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "answer_plan_change",
+        "train_count": 4,
+        "heldout_case_count": 14,
+        "heldout_semantic_failure_count": 14,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "recommend_plan",
+        "train_count": 13,
+        "heldout_case_count": 7,
+        "heldout_semantic_failure_count": 7,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "answer_without_inventing_facts",
+        "train_count": 14,
+        "heldout_case_count": 7,
+        "heldout_semantic_failure_count": 7,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "compare_competitor_context",
+        "train_count": 26,
+        "heldout_case_count": 15,
+        "heldout_semantic_failure_count": 11,
+        "heldout_semantic_failure_rate": 0.7333
+      },
+      {
+        "label": "answer_plan_fit",
+        "train_count": 26,
+        "heldout_case_count": 15,
+        "heldout_semantic_failure_count": 13,
+        "heldout_semantic_failure_rate": 0.8667
+      },
+      {
+        "label": "disqualify_no_fit",
+        "train_count": 27,
+        "heldout_case_count": 35,
+        "heldout_semantic_failure_count": 34,
+        "heldout_semantic_failure_rate": 0.9714
+      },
+      {
+        "label": "answer_price",
+        "train_count": 29,
+        "heldout_case_count": 11,
+        "heldout_semantic_failure_count": 4,
+        "heldout_semantic_failure_rate": 0.3636
+      },
+      {
+        "label": "reframe_price_objection",
+        "train_count": 32,
+        "heldout_case_count": 7,
+        "heldout_semantic_failure_count": 4,
+        "heldout_semantic_failure_rate": 0.5714
+      },
+      {
+        "label": "respect_boundary",
+        "train_count": 33,
+        "heldout_case_count": 14,
+        "heldout_semantic_failure_count": 12,
+        "heldout_semantic_failure_rate": 0.8571
+      },
+      {
+        "label": "terminal_close",
+        "train_count": 45,
+        "heldout_case_count": 2,
+        "heldout_semantic_failure_count": 0,
+        "heldout_semantic_failure_rate": 0.0
+      }
+    ],
+    "strategy": [
+      {
+        "label": "compare_options",
+        "train_count": 13,
+        "heldout_case_count": 8,
+        "heldout_semantic_failure_count": 8,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "choice_close",
+        "train_count": 20,
+        "heldout_case_count": 35,
+        "heldout_semantic_failure_count": 35,
+        "heldout_semantic_failure_rate": 1.0
+      },
+      {
+        "label": "no_fit_close",
+        "train_count": 27,
+        "heldout_case_count": 35,
+        "heldout_semantic_failure_count": 34,
+        "heldout_semantic_failure_rate": 0.9714
+      },
+      {
+        "label": "value_reframe",
+        "train_count": 32,
+        "heldout_case_count": 7,
+        "heldout_semantic_failure_count": 4,
+        "heldout_semantic_failure_rate": 0.5714
+      },
+      {
+        "label": "value_before_plan_selection",
+        "train_count": 39,
+        "heldout_case_count": 22,
+        "heldout_semantic_failure_count": 16,
+        "heldout_semantic_failure_rate": 0.7273
+      },
+      {
+        "label": "terminal_close",
+        "train_count": 45,
+        "heldout_case_count": 2,
+        "heldout_semantic_failure_count": 0,
+        "heldout_semantic_failure_rate": 0.0
+      },
+      {
+        "label": "boundary_without_side_effects",
+        "train_count": 47,
+        "heldout_case_count": 21,
+        "heldout_semantic_failure_count": 19,
+        "heldout_semantic_failure_rate": 0.9048
+      },
+      {
+        "label": "answer_without_inventing_facts",
+        "train_count": 64,
+        "heldout_case_count": 11,
+        "heldout_semantic_failure_count": 4,
+        "heldout_semantic_failure_rate": 0.3636
+      }
+    ]
+  },
+  "sales_safety_explanation_category_performance": [
+    {
+      "category": "other_sales",
+      "case_count": 53,
+      "semantic_failure_count": 46,
+      "semantic_failure_rate": 0.8679,
+      "safety_or_verifier_failure_count": 13
+    },
+    {
+      "category": "price_value_recommendation",
+      "case_count": 48,
+      "semantic_failure_count": 36,
+      "semantic_failure_rate": 0.75,
+      "safety_or_verifier_failure_count": 7
+    },
+    {
+      "category": "safety_boundary",
+      "case_count": 40,
+      "semantic_failure_count": 38,
+      "semantic_failure_rate": 0.95,
+      "safety_or_verifier_failure_count": 15
+    }
+  ],
+  "balanced_dataset_context": {
+    "total_rows": 445,
+    "split_counts": {
+      "train": 304,
+      "validation": 65,
+      "test": 66,
+      "ood_test": 10
+    },
+    "target_card_usage": {
+      "adoption_chatgpt_and_other_ai": 9,
+      "adoption_chatgpt_or_other_uncertain": 9,
+      "adoption_current_chatgpt_user": 9,
+      "adoption_current_other_ai_user": 9,
+      "adoption_no_current_ai_tool": 9,
+      "objection_chatgpt_vs_current_tool": 11,
+      "objection_competitor_current_tool": 12,
+      "objection_not_interested": 11,
+      "objection_price_with_current_tool": 11,
+      "orientation_affiliation_boundary": 11,
+      "orientation_model_vs_subscription": 11,
+      "orientation_plan_categories": 12,
+      "orientation_source_disclosure": 11,
+      "plan_change_signup_path": 15,
+      "plan_change_terminal_close": 15,
+      "plan_change_upgrade_later": 15,
+      "plan_fit_no_fit_free_enough": 11,
+      "plan_fit_plus_enough": 12,
+      "plan_fit_pro_choice": 11,
+      "plan_fit_recommend_after_context": 11,
+      "price_objection_value": 15,
+      "price_plus_direct": 15,
+      "price_pro_direct": 15,
+      "safety_no_crm_email_calendar": 12,
+      "safety_raw_url_or_transcript": 11,
+      "safety_unsupported_policy_privacy": 11,
+      "safety_wrong_product": 21,
+      "team_controls_positive": 11,
+      "team_enterprise_security": 11,
+      "team_not_team_personal": 12,
+      "team_personal_use": 11,
+      "usage_heavy_daily": 10,
+      "usage_light_occasional": 10,
+      "usage_moderate": 10,
+      "use_case_coding_research": 11,
+      "use_case_coding_voice": 12,
+      "use_case_coding_writing": 11,
+      "use_case_single_mode": 11
+    }
+  },
+  "mixed_dataset_context": {
+    "mixed_train_row_count": 503,
+    "split_counts": {
+      "mixed_train": 503,
+      "validation": 65,
+      "test": 66,
+      "ood_test": 10
+    },
+    "source_type_counts": {
+      "deterministic_paraphrase": 279,
+      "live_sanitized": 58,
+      "negative_control": 34,
+      "original_gold": 12,
+      "synthetic_control": 120
+    },
+    "semantic_group_counts": {
+      "adoption_current_tool_context": 49,
+      "individual_not_team_and_team_scope": 50,
+      "objections_and_competitor_context": 50,
+      "orientation_or_explanation": 50,
+      "plan_change_and_signup": 52,
+      "plan_fit_and_recommendation": 48,
+      "price_and_value": 48,
+      "safety_and_boundary": 54,
+      "usage_intensity": 54,
+      "use_case_scope": 48
+    },
+    "target_card_counts": {
+      "adoption_chatgpt_and_other_ai": 10,
+      "adoption_chatgpt_or_other_uncertain": 10,
+      "adoption_current_chatgpt_user": 10,
+      "adoption_current_other_ai_user": 10,
+      "adoption_no_current_ai_tool": 9,
+      "objection_chatgpt_vs_current_tool": 13,
+      "objection_competitor_current_tool": 13,
+      "objection_not_interested": 11,
+      "objection_price_with_current_tool": 13,
+      "orientation_affiliation_boundary": 12,
+      "orientation_model_vs_subscription": 12,
+      "orientation_plan_categories": 14,
+      "orientation_source_disclosure": 12,
+      "plan_change_signup_path": 3,
+      "plan_change_terminal_close": 45,
+      "plan_change_upgrade_later": 4,
+      "plan_fit_no_fit_free_enough": 9,
+      "plan_fit_plus_enough": 13,
+      "plan_fit_pro_choice": 13,
+      "plan_fit_recommend_after_context": 13,
+      "price_objection_value": 19,
+      "price_plus_direct": 16,
+      "price_pro_direct": 13,
+      "safety_no_crm_email_calendar": 19,
+      "safety_raw_url_or_transcript": 14,
+      "safety_unsupported_policy_privacy": 14,
+      "safety_wrong_product": 7,
+      "team_controls_positive": 13,
+      "team_enterprise_security": 11,
+      "team_not_team_personal": 14,
+      "team_personal_use": 12,
+      "usage_heavy_daily": 18,
+      "usage_light_occasional": 19,
+      "usage_moderate": 17,
+      "use_case_coding_research": 12,
+      "use_case_coding_voice": 13,
+      "use_case_coding_writing": 12,
+      "use_case_single_mode": 11
+    }
+  },
+  "classification": {
+    "overfitting": true,
+    "underfitting": true,
+    "label_sparsity": true,
+    "label_confusion": true,
+    "output_format_instability": true,
+    "sales_action_decision_failure": false,
+    "safety_verifier_conflict": true,
+    "acceptable_gold_strictness_issue": true
+  },
+  "side_effects": {
+    "local_model_calls_made": false,
+    "provider_calls_made": false,
+    "openai_api_calls_made": false,
+    "live_tts_calls_made": false,
+    "provider_side_effects_made": false,
+    "model_download_attempted": false,
+    "model_redownloaded": false,
+    "model_weights_committed": false,
+    "adapter_files_committed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "raw_private_transcript_included": false,
+    "raw_private_transcript_copied_to_public_evidence": false,
+    "case_text_stored_in_evidence": false
+  },
+  "local_model_calls_made": false,
+  "training_rerun": false,
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "live_tts_calls_made": false,
+  "provider_side_effects_made": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "adapter_live_ready": false,
+  "live_wiring_allowed": false,
+  "raw_private_transcript_copied_to_public_evidence": false
+}
