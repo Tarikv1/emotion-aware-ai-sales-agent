@@ -1,0 +1,86 @@
+# NON-LLM-ACTION-SELECTOR-DATA-SOURCES-001
+
+- Status: pass
+- Usable training/eval rows: 455
+- Provider/OpenAI/Ultravox/ElevenLabs/local LLM/Ollama calls: false
+- Live runtime wiring allowed: false
+
+## Discovered Sources
+
+- `research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/result.json`
+  - role: candidate source
+  - usage: reference
+  - usable_row_count: 435
+- `research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/report.md`
+  - role: candidate source
+  - usage: reference
+  - usable_row_count: 0
+- `research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/train.jsonl`
+  - role: committed sanitized/synthetic action-target rows
+  - usage: training_eval
+  - usable_row_count: 304
+  - available_action_labels: answer_plan_change, answer_price, answer_privacy_boundary, answer_signup_path, answer_source_or_affiliation, ask_usage_intensity, ask_use_case_gap, clarify_team_vs_individual, compare_pro_tiers, disqualify_no_fit, explain_subscription_vs_model, handle_competitor_context, handle_price_objection, orient_plan_options, recommend_business_or_enterprise, recommend_plus, recommend_pro, respect_boundary, terminal_close
+- `research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/validation.jsonl`
+  - role: committed sanitized/synthetic action-target rows
+  - usage: training_eval
+  - usable_row_count: 65
+  - available_action_labels: answer_plan_change, answer_price, answer_privacy_boundary, answer_signup_path, compare_pro_tiers, disqualify_no_fit, handle_competitor_context, handle_price_objection, recommend_plus, recommend_pro, respect_boundary, terminal_close
+- `research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/test.jsonl`
+  - role: committed sanitized/synthetic action-target rows
+  - usage: training_eval
+  - usable_row_count: 66
+  - available_action_labels: answer_plan_change, answer_price, answer_privacy_boundary, answer_signup_path, compare_pro_tiers, disqualify_no_fit, handle_competitor_context, handle_price_objection, recommend_plus, recommend_pro, respect_boundary, terminal_close
+- `research/experiments/generated/LOCAL-OLLAMA-SMALL-LIVE-ACTION-MODEL-BENCHMARK-001/result.json`
+  - role: small-model latency and validity benchmark evidence
+  - usage: reference
+  - usable_row_count: 20
+  - compatibility: benchmark result rows do not carry buyer text; script cases are used for test-only rows
+- `research/experiments/generated/LOCAL-OLLAMA-SMALL-LIVE-ACTION-MODEL-BENCHMARK-001/report.md`
+  - role: small-model latency and validity benchmark evidence
+  - usage: reference
+  - usable_row_count: 0
+- `research/experiments/generated/LOCAL-OLLAMA-SMALL-LIVE-ACTION-MODEL-DECISION-001/result.json`
+  - role: small-model decision evidence recommending non-LLM path
+  - usage: reference
+  - usable_row_count: 0
+  - compatibility: decision evidence only, not training rows
+- `research/experiments/generated/LOCAL-OLLAMA-SMALL-LIVE-ACTION-MODEL-DECISION-001/report.md`
+  - role: small-model decision evidence recommending non-LLM path
+  - usage: reference
+  - usable_row_count: 0
+- `runtime/llm_brain/training/qwen_balanced_planner_dataset_spec.json`
+  - role: balanced dataset policy and split requirements
+  - usage: reference
+  - usable_row_count: 0
+- `runtime/llm_brain/training/qwen_compact_target_cards.json`
+  - role: canonical compact planner target cards
+  - usage: reference
+  - usable_row_count: 38
+  - available_action_labels: answer_plan_change, answer_price, answer_signup_path, answer_source_or_affiliation, ask_usage_intensity, ask_use_case_gap, clarify_team_vs_individual, compare_pro_tiers, disqualify_no_fit, explain_subscription_vs_model, handle_competitor_context, handle_price_objection, orient_plan_options, recommend_business_or_enterprise, recommend_plus, recommend_pro, respect_boundary, terminal_close
+- `runtime/llm_brain/training/qwen_live_action_contract.json`
+  - role: prior live-action action-id contract
+  - usage: reference
+  - usable_row_count: 0
+  - available_action_labels: orient_plan_options, ask_adoption_state, ask_use_case_gap, ask_usage_intensity, answer_price, answer_plan_fit, compare_plus_vs_pro, handle_price_objection, handle_competitor_context, answer_signup_path, answer_plan_change, answer_source_or_affiliation, respect_boundary, terminal_close, disqualify_no_fit, clarify_unclear_tool, clarify_question_scope, replan_after_repeat
+  - compatibility: prior contract has fewer repair and plan-detail labels than Phase 4K0
+- `runtime/llm_brain/compact_planner_contract.py`
+  - role: compact planner label/value contract
+  - usage: reference
+  - usable_row_count: 0
+- `runtime/llm_brain/live_action_prompt.py`
+  - role: disabled prior live-action prompt renderer
+  - usage: reference
+  - usable_row_count: 0
+- `runtime/llm_brain/live_action_verifier.py`
+  - role: prior live-action verifier and action validation rules
+  - usage: reference
+  - usable_row_count: 0
+- `runtime/audio_backends/ultravox_sales_brain_tool_contract.json`
+  - role: hosted voice tool boundary contract
+  - usage: reference
+  - usable_row_count: 0
+- `scripts/benchmark_ollama_small_live_action_models_001.py`
+  - role: committed synthetic live-action benchmark case definitions
+  - usage: test_only
+  - usable_row_count: 20
+  - available_action_labels: answer_plan_change, answer_price, answer_privacy_boundary, answer_signup_path, answer_source_or_affiliation, ask_usage_intensity, ask_use_case_gap, avoid_repetition_rephrase, clarify_question_scope, clarify_team_vs_individual, disqualify_no_fit, handle_competitor_context, handle_price_objection, orient_plan_options, repair_already_told_you, repair_asr_uncertainty, respect_boundary, terminal_close

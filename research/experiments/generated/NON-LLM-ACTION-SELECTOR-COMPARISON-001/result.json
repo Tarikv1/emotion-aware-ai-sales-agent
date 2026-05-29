@@ -1,0 +1,54 @@
+{
+  "experiment_id": "NON-LLM-ACTION-SELECTOR-COMPARISON-001",
+  "generated_at": "2026-05-29T22:26:01.769067+00:00",
+  "status": "pass",
+  "inputs": {
+    "non_llm_eval": "research/experiments/generated/NON-LLM-ACTION-SELECTOR-EVAL-001/result.json",
+    "small_model_benchmark": "research/experiments/generated/LOCAL-OLLAMA-SMALL-LIVE-ACTION-MODEL-BENCHMARK-001/result.json",
+    "small_model_decision": "research/experiments/generated/LOCAL-OLLAMA-SMALL-LIVE-ACTION-MODEL-DECISION-001/result.json"
+  },
+  "reran_ollama": false,
+  "non_llm_baseline_compared": "rule_based",
+  "latency": {
+    "non_llm_p50_ms": 0.2473,
+    "non_llm_p90_ms": 0.3565,
+    "non_llm_p99_ms": 0.4983,
+    "small_model_name": "smollm2:1.7b",
+    "small_model_mode": "ultra_minimal_action_id_only",
+    "small_model_p50_ms": 2411.0,
+    "small_model_p90_ms": 2427.0,
+    "small_model_p99_ms": 2435.0,
+    "p50_speedup_vs_small_model": 9749.292357460574
+  },
+  "action_id_validity": {
+    "non_llm_test_accuracy": 0.9512195121951219,
+    "small_model_verifier_pass_rate": 1.0,
+    "small_model_verifier_pass_count": 20,
+    "small_model_case_count": 20
+  },
+  "malformed_rate": {
+    "non_llm_malformed_rate": 0.0,
+    "small_model_malformed_rate": 0.0,
+    "small_model_malformed_output_count": 0
+  },
+  "verifier_pass": {
+    "non_llm_contract_valid": true,
+    "small_model_verifier_pass_count": 20
+  },
+  "portability": "non-LLM selector uses Python standard library rules plus optional already-installed scikit-learn; no model server, weights, or provider account required.",
+  "interpretability": "rule baseline emits matched_features and reasons; sklearn baseline is less transparent but still bounded to controlled labels.",
+  "data_training_cost": "non-LLM baseline trains only a classical classifier on committed sanitized/synthetic rows when scikit-learn exists; no neural training or model downloads.",
+  "live_safety_risk": "lower than small local LLM for this phase because output is action_id metadata only, no buyer-facing text and no side effects.",
+  "project_owned_selector_candidate": true,
+  "non_llm_selector_role": "fast proposal layer only, not a full conversation brain",
+  "response_renderer_and_verifier_remain_separate": true,
+  "live_runtime_wiring_allowed": false,
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "ultravox_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "local_llm_calls_made": false,
+  "ollama_calls_made": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false
+}

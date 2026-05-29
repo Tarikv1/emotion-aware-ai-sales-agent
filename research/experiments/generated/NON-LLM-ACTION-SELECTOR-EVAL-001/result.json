@@ -1,0 +1,1551 @@
+{
+  "experiment_id": "NON-LLM-ACTION-SELECTOR-EVAL-001",
+  "generated_at": "2026-05-29T22:25:57.029385+00:00",
+  "status": "pass",
+  "dataset": "research/experiments/generated/NON-LLM-ACTION-SELECTOR-DATASET-001",
+  "baseline_metrics": {
+    "rule_based": {
+      "baseline_name": "rule_based",
+      "validation": {
+        "row_count": 65,
+        "accuracy": 0.9538461538461539,
+        "macro_f1": 0.7802197802197802,
+        "fallback_rate": 0.0,
+        "fallback_count": 0,
+        "per_label": {
+          "answer_plan_change": {
+            "support": 13,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "answer_price": {
+            "support": 5,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "answer_privacy_boundary": {
+            "support": 3,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "answer_signup_path": {
+            "support": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "ask_usage_intensity": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "compare_plus_vs_pro": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "compare_pro_tiers": {
+            "support": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "disqualify_no_fit": {
+            "support": 14,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "handle_competitor_context": {
+            "support": 7,
+            "precision": 1.0,
+            "recall": 0.8571428571428571,
+            "f1": 0.923076923076923
+          },
+          "handle_price_objection": {
+            "support": 4,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "recommend_plus": {
+            "support": 5,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "recommend_pro": {
+            "support": 5,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "respect_boundary": {
+            "support": 5,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "terminal_close": {
+            "support": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "confusion_matrix": {
+          "answer_plan_change": {
+            "answer_plan_change": 13
+          },
+          "answer_price": {
+            "answer_price": 5
+          },
+          "answer_privacy_boundary": {
+            "answer_privacy_boundary": 3
+          },
+          "answer_signup_path": {
+            "answer_signup_path": 1
+          },
+          "compare_pro_tiers": {
+            "compare_plus_vs_pro": 2
+          },
+          "disqualify_no_fit": {
+            "disqualify_no_fit": 14
+          },
+          "handle_competitor_context": {
+            "ask_usage_intensity": 1,
+            "handle_competitor_context": 6
+          },
+          "handle_price_objection": {
+            "handle_price_objection": 4
+          },
+          "recommend_plus": {
+            "recommend_plus": 5
+          },
+          "recommend_pro": {
+            "recommend_pro": 5
+          },
+          "respect_boundary": {
+            "respect_boundary": 5
+          },
+          "terminal_close": {
+            "terminal_close": 1
+          }
+        },
+        "special_case_metrics": {
+          "safety_boundary_accuracy": {
+            "name": "safety_boundary_accuracy",
+            "case_count": 8,
+            "accuracy": 1.0,
+            "correct": 8
+          },
+          "already_told_you_repair_accuracy": {
+            "name": "already_told_you_repair_accuracy",
+            "case_count": 0,
+            "accuracy": null,
+            "correct": 0
+          },
+          "terminal_close_accuracy": {
+            "name": "terminal_close_accuracy",
+            "case_count": 1,
+            "accuracy": 1.0,
+            "correct": 1
+          },
+          "price_question_accuracy": {
+            "name": "price_question_accuracy",
+            "case_count": 5,
+            "accuracy": 1.0,
+            "correct": 5
+          },
+          "competitor_objection_accuracy": {
+            "name": "competitor_objection_accuracy",
+            "case_count": 7,
+            "accuracy": 0.8571428571428571,
+            "correct": 6
+          },
+          "no_fit_accuracy": {
+            "name": "no_fit_accuracy",
+            "case_count": 14,
+            "accuracy": 1.0,
+            "correct": 14
+          },
+          "team_vs_individual_accuracy": {
+            "name": "team_vs_individual_accuracy",
+            "case_count": 0,
+            "accuracy": null,
+            "correct": 0
+          },
+          "and_or_fidelity_cases": {
+            "name": "and_or_fidelity_cases",
+            "case_count": 16,
+            "accuracy": 0.9375,
+            "correct": 15
+          },
+          "voice_writing_fidelity_cases": {
+            "name": "voice_writing_fidelity_cases",
+            "case_count": 1,
+            "accuracy": 1.0,
+            "correct": 1
+          }
+        }
+      },
+      "test": {
+        "row_count": 82,
+        "accuracy": 0.9512195121951219,
+        "macro_f1": 0.8267632850241546,
+        "fallback_rate": 0.024390243902439025,
+        "fallback_count": 2,
+        "per_label": {
+          "answer_plan_change": {
+            "support": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "answer_price": {
+            "support": 6,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "answer_privacy_boundary": {
+            "support": 4,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "answer_signup_path": {
+            "support": 13,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "answer_source_or_affiliation": {
+            "support": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "ask_usage_intensity": {
+            "support": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "ask_use_case_gap": {
+            "support": 1,
+            "precision": 0.3333333333333333,
+            "recall": 1.0,
+            "f1": 0.5
+          },
+          "avoid_repetition_rephrase": {
+            "support": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "clarify_question_scope": {
+            "support": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "clarify_team_vs_individual": {
+            "support": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "compare_plus_vs_pro": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "compare_pro_tiers": {
+            "support": 5,
+            "precision": 1.0,
+            "recall": 0.8,
+            "f1": 0.888888888888889
+          },
+          "disqualify_no_fit": {
+            "support": 13,
+            "precision": 1.0,
+            "recall": 0.9230769230769231,
+            "f1": 0.9600000000000001
+          },
+          "handle_competitor_context": {
+            "support": 9,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "handle_price_objection": {
+            "support": 4,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "orient_plan_options": {
+            "support": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "recommend_plus": {
+            "support": 3,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "recommend_pro": {
+            "support": 2,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "repair_already_told_you": {
+            "support": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "repair_asr_uncertainty": {
+            "support": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "repair_buyer_correction": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "respect_boundary": {
+            "support": 11,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "terminal_close": {
+            "support": 2,
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.6666666666666666
+          }
+        },
+        "confusion_matrix": {
+          "answer_plan_change": {
+            "answer_plan_change": 1
+          },
+          "answer_price": {
+            "answer_price": 6
+          },
+          "answer_privacy_boundary": {
+            "answer_privacy_boundary": 4
+          },
+          "answer_signup_path": {
+            "answer_signup_path": 13
+          },
+          "answer_source_or_affiliation": {
+            "answer_source_or_affiliation": 1
+          },
+          "ask_usage_intensity": {
+            "ask_usage_intensity": 1
+          },
+          "ask_use_case_gap": {
+            "ask_use_case_gap": 1
+          },
+          "avoid_repetition_rephrase": {
+            "avoid_repetition_rephrase": 1
+          },
+          "clarify_question_scope": {
+            "clarify_question_scope": 1
+          },
+          "clarify_team_vs_individual": {
+            "repair_buyer_correction": 1
+          },
+          "compare_pro_tiers": {
+            "compare_plus_vs_pro": 1,
+            "compare_pro_tiers": 4
+          },
+          "disqualify_no_fit": {
+            "ask_use_case_gap": 1,
+            "disqualify_no_fit": 12
+          },
+          "handle_competitor_context": {
+            "handle_competitor_context": 9
+          },
+          "handle_price_objection": {
+            "handle_price_objection": 4
+          },
+          "orient_plan_options": {
+            "orient_plan_options": 1
+          },
+          "recommend_plus": {
+            "recommend_plus": 3
+          },
+          "recommend_pro": {
+            "recommend_pro": 2
+          },
+          "repair_already_told_you": {
+            "repair_already_told_you": 1
+          },
+          "repair_asr_uncertainty": {
+            "repair_asr_uncertainty": 1
+          },
+          "respect_boundary": {
+            "respect_boundary": 11
+          },
+          "terminal_close": {
+            "ask_use_case_gap": 1,
+            "terminal_close": 1
+          }
+        },
+        "special_case_metrics": {
+          "safety_boundary_accuracy": {
+            "name": "safety_boundary_accuracy",
+            "case_count": 15,
+            "accuracy": 1.0,
+            "correct": 15
+          },
+          "already_told_you_repair_accuracy": {
+            "name": "already_told_you_repair_accuracy",
+            "case_count": 1,
+            "accuracy": 1.0,
+            "correct": 1
+          },
+          "terminal_close_accuracy": {
+            "name": "terminal_close_accuracy",
+            "case_count": 2,
+            "accuracy": 0.5,
+            "correct": 1
+          },
+          "price_question_accuracy": {
+            "name": "price_question_accuracy",
+            "case_count": 6,
+            "accuracy": 1.0,
+            "correct": 6
+          },
+          "competitor_objection_accuracy": {
+            "name": "competitor_objection_accuracy",
+            "case_count": 9,
+            "accuracy": 1.0,
+            "correct": 9
+          },
+          "no_fit_accuracy": {
+            "name": "no_fit_accuracy",
+            "case_count": 13,
+            "accuracy": 0.9230769230769231,
+            "correct": 12
+          },
+          "team_vs_individual_accuracy": {
+            "name": "team_vs_individual_accuracy",
+            "case_count": 1,
+            "accuracy": 0.0,
+            "correct": 0
+          },
+          "and_or_fidelity_cases": {
+            "name": "and_or_fidelity_cases",
+            "case_count": 9,
+            "accuracy": 1.0,
+            "correct": 9
+          },
+          "voice_writing_fidelity_cases": {
+            "name": "voice_writing_fidelity_cases",
+            "case_count": 4,
+            "accuracy": 1.0,
+            "correct": 4
+          }
+        }
+      },
+      "latency_ms": {
+        "sample_count": 500,
+        "p50": 0.2473,
+        "p90": 0.3565,
+        "p99": 0.4983,
+        "max": 0.5429
+      },
+      "prediction_samples": {
+        "validation": [
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_241",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.92,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:price"
+            ],
+            "reasons": [
+              "direct_price_question"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_244",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.92,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:price"
+            ],
+            "reasons": [
+              "direct_price_question"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_247",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.92,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:price"
+            ],
+            "reasons": [
+              "direct_price_question"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_250",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.92,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:price"
+            ],
+            "reasons": [
+              "direct_price_question"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_253",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.92,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:price"
+            ],
+            "reasons": [
+              "direct_price_question"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_260",
+            "target_action_id": "recommend_plus",
+            "predicted_action_id": "recommend_plus",
+            "confidence": 0.84,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:plus_fit"
+            ],
+            "reasons": [
+              "plus_sufficiency_question"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_262",
+            "target_action_id": "recommend_pro",
+            "predicted_action_id": "recommend_pro",
+            "confidence": 0.86,
+            "fallback_required": false,
+            "matched_features": [
+              "relation:and",
+              "recommend:pro"
+            ],
+            "reasons": [
+              "heavy_individual_use_plan_recommendation"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_264",
+            "target_action_id": "recommend_plus",
+            "predicted_action_id": "recommend_plus",
+            "confidence": 0.84,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:plus_fit"
+            ],
+            "reasons": [
+              "plus_sufficiency_question"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_266",
+            "target_action_id": "recommend_pro",
+            "predicted_action_id": "recommend_pro",
+            "confidence": 0.86,
+            "fallback_required": false,
+            "matched_features": [
+              "relation:and",
+              "mode:voice",
+              "recommend:pro"
+            ],
+            "reasons": [
+              "heavy_individual_use_plan_recommendation"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_268",
+            "target_action_id": "recommend_plus",
+            "predicted_action_id": "recommend_plus",
+            "confidence": 0.84,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:plus_fit"
+            ],
+            "reasons": [
+              "plus_sufficiency_question"
+            ]
+          }
+        ],
+        "test": [
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_239",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.92,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:price"
+            ],
+            "reasons": [
+              "direct_price_question"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_242",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.92,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:price"
+            ],
+            "reasons": [
+              "direct_price_question"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_245",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.92,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:price"
+            ],
+            "reasons": [
+              "direct_price_question"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_248",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.92,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:price"
+            ],
+            "reasons": [
+              "direct_price_question"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_251",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.92,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:price"
+            ],
+            "reasons": [
+              "direct_price_question"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_254",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.92,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:price"
+            ],
+            "reasons": [
+              "direct_price_question"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_261",
+            "target_action_id": "compare_pro_tiers",
+            "predicted_action_id": "compare_pro_tiers",
+            "confidence": 0.87,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:pro_choice"
+            ],
+            "reasons": [
+              "pro_choice_question"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_263",
+            "target_action_id": "disqualify_no_fit",
+            "predicted_action_id": "disqualify_no_fit",
+            "confidence": 0.93,
+            "fallback_required": false,
+            "matched_features": [
+              "fit:no"
+            ],
+            "reasons": [
+              "no_fit_or_wrong_product"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_265",
+            "target_action_id": "compare_pro_tiers",
+            "predicted_action_id": "compare_plus_vs_pro",
+            "confidence": 0.9,
+            "fallback_required": false,
+            "matched_features": [
+              "topic:plus_vs_pro"
+            ],
+            "reasons": [
+              "plus_vs_pro_question"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_267",
+            "target_action_id": "disqualify_no_fit",
+            "predicted_action_id": "ask_use_case_gap",
+            "confidence": 0.55,
+            "fallback_required": true,
+            "matched_features": [
+              "fallback:diagnostic"
+            ],
+            "reasons": [
+              "default_diagnostic_next_step"
+            ]
+          }
+        ]
+      }
+    },
+    "sklearn_tfidf_logistic_regression": {
+      "baseline_name": "sklearn_tfidf_logistic_regression",
+      "validation": {
+        "row_count": 65,
+        "accuracy": 0.6307692307692307,
+        "macro_f1": 0.38918140682846564,
+        "fallback_rate": 0.0,
+        "fallback_count": 0,
+        "per_label": {
+          "answer_plan_change": {
+            "support": 13,
+            "precision": 1.0,
+            "recall": 0.5384615384615384,
+            "f1": 0.7000000000000001
+          },
+          "answer_price": {
+            "support": 5,
+            "precision": 0.7142857142857143,
+            "recall": 1.0,
+            "f1": 0.8333333333333333
+          },
+          "answer_privacy_boundary": {
+            "support": 3,
+            "precision": 1.0,
+            "recall": 0.3333333333333333,
+            "f1": 0.5
+          },
+          "answer_signup_path": {
+            "support": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "answer_source_or_affiliation": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "ask_usage_intensity": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "ask_use_case_gap": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "clarify_team_vs_individual": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "compare_pro_tiers": {
+            "support": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "disqualify_no_fit": {
+            "support": 14,
+            "precision": 0.75,
+            "recall": 0.6428571428571429,
+            "f1": 0.6923076923076924
+          },
+          "handle_competitor_context": {
+            "support": 7,
+            "precision": 1.0,
+            "recall": 0.5714285714285714,
+            "f1": 0.7272727272727273
+          },
+          "handle_price_objection": {
+            "support": 4,
+            "precision": 0.5714285714285714,
+            "recall": 1.0,
+            "f1": 0.7272727272727273
+          },
+          "recommend_business_or_enterprise": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "recommend_plus": {
+            "support": 5,
+            "precision": 0.625,
+            "recall": 1.0,
+            "f1": 0.7692307692307693
+          },
+          "recommend_pro": {
+            "support": 5,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "respect_boundary": {
+            "support": 5,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "terminal_close": {
+            "support": 1,
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1": 0.6666666666666666
+          }
+        },
+        "confusion_matrix": {
+          "answer_plan_change": {
+            "answer_plan_change": 7,
+            "ask_use_case_gap": 2,
+            "recommend_plus": 3,
+            "terminal_close": 1
+          },
+          "answer_price": {
+            "answer_price": 5
+          },
+          "answer_privacy_boundary": {
+            "answer_privacy_boundary": 1,
+            "answer_source_or_affiliation": 2
+          },
+          "answer_signup_path": {
+            "clarify_team_vs_individual": 1
+          },
+          "compare_pro_tiers": {
+            "answer_price": 2
+          },
+          "disqualify_no_fit": {
+            "ask_use_case_gap": 1,
+            "disqualify_no_fit": 9,
+            "handle_price_objection": 3,
+            "recommend_business_or_enterprise": 1
+          },
+          "handle_competitor_context": {
+            "disqualify_no_fit": 3,
+            "handle_competitor_context": 4
+          },
+          "handle_price_objection": {
+            "handle_price_objection": 4
+          },
+          "recommend_plus": {
+            "recommend_plus": 5
+          },
+          "recommend_pro": {
+            "ask_usage_intensity": 5
+          },
+          "respect_boundary": {
+            "respect_boundary": 5
+          },
+          "terminal_close": {
+            "terminal_close": 1
+          }
+        },
+        "special_case_metrics": {
+          "safety_boundary_accuracy": {
+            "name": "safety_boundary_accuracy",
+            "case_count": 8,
+            "accuracy": 0.75,
+            "correct": 6
+          },
+          "already_told_you_repair_accuracy": {
+            "name": "already_told_you_repair_accuracy",
+            "case_count": 0,
+            "accuracy": null,
+            "correct": 0
+          },
+          "terminal_close_accuracy": {
+            "name": "terminal_close_accuracy",
+            "case_count": 1,
+            "accuracy": 1.0,
+            "correct": 1
+          },
+          "price_question_accuracy": {
+            "name": "price_question_accuracy",
+            "case_count": 5,
+            "accuracy": 1.0,
+            "correct": 5
+          },
+          "competitor_objection_accuracy": {
+            "name": "competitor_objection_accuracy",
+            "case_count": 7,
+            "accuracy": 0.5714285714285714,
+            "correct": 4
+          },
+          "no_fit_accuracy": {
+            "name": "no_fit_accuracy",
+            "case_count": 14,
+            "accuracy": 0.6428571428571429,
+            "correct": 9
+          },
+          "team_vs_individual_accuracy": {
+            "name": "team_vs_individual_accuracy",
+            "case_count": 0,
+            "accuracy": null,
+            "correct": 0
+          },
+          "and_or_fidelity_cases": {
+            "name": "and_or_fidelity_cases",
+            "case_count": 16,
+            "accuracy": 0.5,
+            "correct": 8
+          },
+          "voice_writing_fidelity_cases": {
+            "name": "voice_writing_fidelity_cases",
+            "case_count": 1,
+            "accuracy": 0.0,
+            "correct": 0
+          }
+        }
+      },
+      "test": {
+        "row_count": 82,
+        "accuracy": 0.5609756097560976,
+        "macro_f1": 0.3913087556135684,
+        "fallback_rate": 0.0,
+        "fallback_count": 0,
+        "per_label": {
+          "answer_plan_change": {
+            "support": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "answer_price": {
+            "support": 6,
+            "precision": 0.8571428571428571,
+            "recall": 1.0,
+            "f1": 0.923076923076923
+          },
+          "answer_privacy_boundary": {
+            "support": 4,
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.8571428571428571
+          },
+          "answer_signup_path": {
+            "support": 13,
+            "precision": 1.0,
+            "recall": 0.3076923076923077,
+            "f1": 0.47058823529411764
+          },
+          "answer_source_or_affiliation": {
+            "support": 1,
+            "precision": 0.2,
+            "recall": 1.0,
+            "f1": 0.33333333333333337
+          },
+          "ask_usage_intensity": {
+            "support": 1,
+            "precision": 0.2,
+            "recall": 1.0,
+            "f1": 0.33333333333333337
+          },
+          "ask_use_case_gap": {
+            "support": 1,
+            "precision": 0.2,
+            "recall": 1.0,
+            "f1": 0.33333333333333337
+          },
+          "avoid_repetition_rephrase": {
+            "support": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "clarify_question_scope": {
+            "support": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "clarify_team_vs_individual": {
+            "support": 1,
+            "precision": 0.14285714285714285,
+            "recall": 1.0,
+            "f1": 0.25
+          },
+          "compare_pro_tiers": {
+            "support": 5,
+            "precision": 1.0,
+            "recall": 0.8,
+            "f1": 0.888888888888889
+          },
+          "disqualify_no_fit": {
+            "support": 13,
+            "precision": 0.5555555555555556,
+            "recall": 0.38461538461538464,
+            "f1": 0.4545454545454546
+          },
+          "handle_competitor_context": {
+            "support": 9,
+            "precision": 0.5714285714285714,
+            "recall": 0.4444444444444444,
+            "f1": 0.5
+          },
+          "handle_price_objection": {
+            "support": 4,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "orient_plan_options": {
+            "support": 1,
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1": 0.6666666666666666
+          },
+          "recommend_business_or_enterprise": {
+            "support": 0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "recommend_plus": {
+            "support": 3,
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571
+          },
+          "recommend_pro": {
+            "support": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "repair_already_told_you": {
+            "support": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "repair_asr_uncertainty": {
+            "support": 1,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "respect_boundary": {
+            "support": 11,
+            "precision": 0.625,
+            "recall": 0.9090909090909091,
+            "f1": 0.7407407407407406
+          },
+          "terminal_close": {
+            "support": 2,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "confusion_matrix": {
+          "answer_plan_change": {
+            "ask_use_case_gap": 1
+          },
+          "answer_price": {
+            "answer_price": 6
+          },
+          "answer_privacy_boundary": {
+            "answer_privacy_boundary": 3,
+            "answer_source_or_affiliation": 1
+          },
+          "answer_signup_path": {
+            "answer_signup_path": 4,
+            "answer_source_or_affiliation": 1,
+            "clarify_team_vs_individual": 2,
+            "recommend_plus": 1,
+            "respect_boundary": 5
+          },
+          "answer_source_or_affiliation": {
+            "answer_source_or_affiliation": 1
+          },
+          "ask_usage_intensity": {
+            "ask_usage_intensity": 1
+          },
+          "ask_use_case_gap": {
+            "ask_use_case_gap": 1
+          },
+          "avoid_repetition_rephrase": {
+            "answer_source_or_affiliation": 1
+          },
+          "clarify_question_scope": {
+            "answer_source_or_affiliation": 1
+          },
+          "clarify_team_vs_individual": {
+            "clarify_team_vs_individual": 1
+          },
+          "compare_pro_tiers": {
+            "compare_pro_tiers": 4,
+            "orient_plan_options": 1
+          },
+          "disqualify_no_fit": {
+            "ask_usage_intensity": 1,
+            "ask_use_case_gap": 1,
+            "clarify_team_vs_individual": 3,
+            "disqualify_no_fit": 5,
+            "handle_price_objection": 1,
+            "recommend_business_or_enterprise": 1,
+            "respect_boundary": 1
+          },
+          "handle_competitor_context": {
+            "ask_use_case_gap": 1,
+            "disqualify_no_fit": 4,
+            "handle_competitor_context": 4
+          },
+          "handle_price_objection": {
+            "answer_price": 1,
+            "handle_competitor_context": 3
+          },
+          "orient_plan_options": {
+            "orient_plan_options": 1
+          },
+          "recommend_plus": {
+            "recommend_plus": 3
+          },
+          "recommend_pro": {
+            "ask_usage_intensity": 2
+          },
+          "repair_already_told_you": {
+            "ask_usage_intensity": 1
+          },
+          "repair_asr_uncertainty": {
+            "ask_use_case_gap": 1
+          },
+          "respect_boundary": {
+            "clarify_team_vs_individual": 1,
+            "respect_boundary": 10
+          },
+          "terminal_close": {
+            "terminal_close": 2
+          }
+        },
+        "special_case_metrics": {
+          "safety_boundary_accuracy": {
+            "name": "safety_boundary_accuracy",
+            "case_count": 15,
+            "accuracy": 0.8666666666666667,
+            "correct": 13
+          },
+          "already_told_you_repair_accuracy": {
+            "name": "already_told_you_repair_accuracy",
+            "case_count": 1,
+            "accuracy": 0.0,
+            "correct": 0
+          },
+          "terminal_close_accuracy": {
+            "name": "terminal_close_accuracy",
+            "case_count": 2,
+            "accuracy": 1.0,
+            "correct": 2
+          },
+          "price_question_accuracy": {
+            "name": "price_question_accuracy",
+            "case_count": 6,
+            "accuracy": 1.0,
+            "correct": 6
+          },
+          "competitor_objection_accuracy": {
+            "name": "competitor_objection_accuracy",
+            "case_count": 9,
+            "accuracy": 0.4444444444444444,
+            "correct": 4
+          },
+          "no_fit_accuracy": {
+            "name": "no_fit_accuracy",
+            "case_count": 13,
+            "accuracy": 0.38461538461538464,
+            "correct": 5
+          },
+          "team_vs_individual_accuracy": {
+            "name": "team_vs_individual_accuracy",
+            "case_count": 1,
+            "accuracy": 1.0,
+            "correct": 1
+          },
+          "and_or_fidelity_cases": {
+            "name": "and_or_fidelity_cases",
+            "case_count": 9,
+            "accuracy": 0.4444444444444444,
+            "correct": 4
+          },
+          "voice_writing_fidelity_cases": {
+            "name": "voice_writing_fidelity_cases",
+            "case_count": 4,
+            "accuracy": 0.25,
+            "correct": 1
+          }
+        }
+      },
+      "latency_ms": {
+        "sample_count": 500,
+        "p50": 0.4152,
+        "p90": 0.5538,
+        "p99": 0.8119,
+        "max": 0.8635
+      },
+      "prediction_samples": {
+        "validation": [
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_241",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.2537,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.2537"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_244",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.2185,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.2185"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_247",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.4518,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.4518"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_250",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.2721,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.2721"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_253",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.275,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.2750"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_260",
+            "target_action_id": "recommend_plus",
+            "predicted_action_id": "recommend_plus",
+            "confidence": 0.1056,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.1056"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_262",
+            "target_action_id": "recommend_pro",
+            "predicted_action_id": "ask_usage_intensity",
+            "confidence": 0.2757,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.2757"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_264",
+            "target_action_id": "recommend_plus",
+            "predicted_action_id": "recommend_plus",
+            "confidence": 0.4386,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.4386"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_266",
+            "target_action_id": "recommend_pro",
+            "predicted_action_id": "ask_usage_intensity",
+            "confidence": 0.1853,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.1853"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_268",
+            "target_action_id": "recommend_plus",
+            "predicted_action_id": "recommend_plus",
+            "confidence": 0.2464,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.2464"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          }
+        ],
+        "test": [
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_239",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.3535,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.3535"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_242",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.2311,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.2311"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_245",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.2449,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.2449"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_248",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.418,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.4180"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_251",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.2527,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.2527"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_price_and_value_254",
+            "target_action_id": "answer_price",
+            "predicted_action_id": "answer_price",
+            "confidence": 0.2926,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.2926"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_261",
+            "target_action_id": "compare_pro_tiers",
+            "predicted_action_id": "compare_pro_tiers",
+            "confidence": 0.5746,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.5746"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_263",
+            "target_action_id": "disqualify_no_fit",
+            "predicted_action_id": "respect_boundary",
+            "confidence": 0.1177,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.1177"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_265",
+            "target_action_id": "compare_pro_tiers",
+            "predicted_action_id": "orient_plan_options",
+            "confidence": 0.1427,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.1427"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          },
+          {
+            "case_id": "qwen_balanced::balanced_plan_fit_and_recommendation_267",
+            "target_action_id": "disqualify_no_fit",
+            "predicted_action_id": "disqualify_no_fit",
+            "confidence": 0.3407,
+            "fallback_required": false,
+            "matched_features": [
+              "model:tfidf_logistic_regression",
+              "probability:0.3407"
+            ],
+            "reasons": [
+              "sklearn_tfidf_logistic_regression"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "sklearn_status": {
+    "available": true,
+    "reason": ""
+  },
+  "latency_target_ms": {
+    "p50_preferred": 5,
+    "p90_acceptable": 20,
+    "p99_acceptable": 50
+  },
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "ultravox_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "local_llm_calls_made": false,
+  "ollama_calls_made": false,
+  "live_runtime_wiring_allowed": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false
+}

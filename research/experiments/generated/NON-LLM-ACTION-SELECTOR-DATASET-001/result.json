@@ -1,0 +1,150 @@
+{
+  "experiment_id": "NON-LLM-ACTION-SELECTOR-DATASET-001",
+  "generated_at": "2026-05-29T22:25:51.923032+00:00",
+  "status": "pass",
+  "source_artifacts": {
+    "primary_dataset": "research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001",
+    "benchmark_cases": "scripts/benchmark_ollama_small_live_action_models_001.py",
+    "labels": "runtime/action_selector/action_selector_labels.json"
+  },
+  "split_counts": {
+    "train": 304,
+    "validation": 65,
+    "test": 82
+  },
+  "total_rows": 451,
+  "safe_rows_available": 451,
+  "row_count_blocker": "",
+  "label_count": 23,
+  "label_distribution": {
+    "train": {
+      "answer_plan_change": 1,
+      "answer_price": 19,
+      "answer_privacy_boundary": 4,
+      "answer_signup_path": 1,
+      "answer_source_or_affiliation": 22,
+      "ask_usage_intensity": 45,
+      "ask_use_case_gap": 75,
+      "clarify_team_vs_individual": 23,
+      "compare_pro_tiers": 4,
+      "disqualify_no_fit": 8,
+      "explain_subscription_vs_model": 11,
+      "handle_competitor_context": 8,
+      "handle_price_objection": 19,
+      "orient_plan_options": 12,
+      "recommend_business_or_enterprise": 22,
+      "recommend_plus": 4,
+      "recommend_pro": 4,
+      "respect_boundary": 9,
+      "terminal_close": 13
+    },
+    "validation": {
+      "answer_plan_change": 13,
+      "answer_price": 5,
+      "answer_privacy_boundary": 3,
+      "answer_signup_path": 1,
+      "compare_pro_tiers": 2,
+      "disqualify_no_fit": 14,
+      "handle_competitor_context": 7,
+      "handle_price_objection": 4,
+      "recommend_plus": 5,
+      "recommend_pro": 5,
+      "respect_boundary": 5,
+      "terminal_close": 1
+    },
+    "test": {
+      "answer_plan_change": 1,
+      "answer_price": 6,
+      "answer_privacy_boundary": 4,
+      "answer_signup_path": 13,
+      "answer_source_or_affiliation": 1,
+      "ask_usage_intensity": 1,
+      "ask_use_case_gap": 1,
+      "avoid_repetition_rephrase": 1,
+      "clarify_question_scope": 1,
+      "clarify_team_vs_individual": 1,
+      "compare_pro_tiers": 5,
+      "disqualify_no_fit": 13,
+      "handle_competitor_context": 9,
+      "handle_price_objection": 4,
+      "orient_plan_options": 1,
+      "recommend_plus": 3,
+      "recommend_pro": 2,
+      "repair_already_told_you": 1,
+      "repair_asr_uncertainty": 1,
+      "respect_boundary": 11,
+      "terminal_close": 2
+    }
+  },
+  "total_label_distribution": {
+    "answer_plan_change": 15,
+    "answer_price": 30,
+    "answer_privacy_boundary": 11,
+    "answer_signup_path": 15,
+    "answer_source_or_affiliation": 23,
+    "ask_usage_intensity": 46,
+    "ask_use_case_gap": 76,
+    "avoid_repetition_rephrase": 1,
+    "clarify_question_scope": 1,
+    "clarify_team_vs_individual": 24,
+    "compare_pro_tiers": 11,
+    "disqualify_no_fit": 35,
+    "explain_subscription_vs_model": 11,
+    "handle_competitor_context": 24,
+    "handle_price_objection": 27,
+    "orient_plan_options": 13,
+    "recommend_business_or_enterprise": 22,
+    "recommend_plus": 12,
+    "recommend_pro": 11,
+    "repair_already_told_you": 1,
+    "repair_asr_uncertainty": 1,
+    "respect_boundary": 25,
+    "terminal_close": 16
+  },
+  "rare_labels": {
+    "avoid_repetition_rephrase": 1,
+    "clarify_question_scope": 1,
+    "repair_already_told_you": 1,
+    "repair_asr_uncertainty": 1
+  },
+  "unused_controlled_labels": [
+    "ask_adoption_state",
+    "clarify_tool_name",
+    "compare_plus_vs_pro",
+    "repair_buyer_correction"
+  ],
+  "heldout_exact_text_overlap": {
+    "train_validation": [],
+    "train_test": [],
+    "validation_test": []
+  },
+  "heldout_case_id_overlap": {
+    "train_validation": [],
+    "train_test": [],
+    "validation_test": []
+  },
+  "source_file_counts": {
+    "research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/test.jsonl": 66,
+    "research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/train.jsonl": 304,
+    "research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/validation.jsonl": 65,
+    "scripts/benchmark_ollama_small_live_action_models_001.py": 16
+  },
+  "privacy": {
+    "sanitized_only": true,
+    "raw_private_data": false,
+    "audio_data_used": false,
+    "generated_audio_used": false
+  },
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "ultravox_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "local_llm_calls_made": false,
+  "ollama_calls_made": false,
+  "model_training_performed": false,
+  "live_runtime_wiring_allowed": false,
+  "side_effects_allowed": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "failures": []
+}

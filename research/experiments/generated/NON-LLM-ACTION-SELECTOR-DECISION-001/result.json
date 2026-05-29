@@ -1,0 +1,30 @@
+{
+  "experiment_id": "NON-LLM-ACTION-SELECTOR-DECISION-001",
+  "generated_at": "2026-05-29T22:26:01.769212+00:00",
+  "status": "pass",
+  "recommendation_id": "shadow_mode_integration_design_next",
+  "recommendation": "Recommend a shadow-mode integration design next; keep live wiring false until verifier and renderer boundaries are reviewed.",
+  "non_llm_selector_role": "fast action-id proposal layer only",
+  "evidence_summary": {
+    "non_llm_test_accuracy": 0.9512195121951219,
+    "non_llm_p99_ms": 0.4983,
+    "small_model_p50_ms": 2411.0,
+    "non_llm_p50_ms": 0.2473,
+    "p50_speedup_vs_small_model": 9749.292357460574,
+    "preferred_live_action_selector_candidate": true
+  },
+  "non_llm_selector_is_full_conversation_brain": false,
+  "response_renderer_and_verifier_remain_separate": true,
+  "project_owned_selector_candidate": true,
+  "claims_live_readiness": false,
+  "live_wiring_allowed": false,
+  "response_text_changed": false,
+  "runtime_behavior_changed": false,
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "ultravox_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "local_llm_calls_made": false,
+  "ollama_calls_made": false,
+  "model_training_performed": false
+}
