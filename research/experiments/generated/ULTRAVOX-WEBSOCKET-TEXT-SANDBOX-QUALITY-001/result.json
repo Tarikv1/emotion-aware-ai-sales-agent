@@ -1,0 +1,40 @@
+{
+  "evaluation_id": "ULTRAVOX-WEBSOCKET-TEXT-SANDBOX-QUALITY-001",
+  "phase": "4J4",
+  "source_sandbox_evaluation_id": "ULTRAVOX-WEBSOCKET-TEXT-SANDBOX-001",
+  "sandbox_run_status": "websocket_text_turns_tool_boundary_observed",
+  "tool_boundary_enforced": true,
+  "project_tool_called": true,
+  "ultravox_invented_product_facts": false,
+  "ultravox_claimed_side_effects": false,
+  "source_boundary_respected": true,
+  "no_crm_email_calendar_claims": true,
+  "no_openai_affiliation_claim": true,
+  "response_follows_project_tool": true,
+  "memory_conflict_count": 0,
+  "transcript_quality_notes": [
+    "Observed transcript stayed within the project-tool response boundary."
+  ],
+  "latency_notes": [
+    "tunnel_start_latency_ms: 869.798",
+    "public_endpoint_valid_request_latency_ms: 193.192",
+    "create_call_latency_ms: 537.179",
+    "websocket_connect_latency_ms: 256.983",
+    "ping_round_trip_ms: 163.015"
+  ],
+  "blocker_classification": null,
+  "agent_transcript_count": 87,
+  "user_transcript_count": 3,
+  "synthetic_turns_attempted": 3,
+  "synthetic_turns_completed": 3,
+  "http_tool_endpoint_request_count": 4,
+  "tool_result_sent_count": 0,
+  "product_truth_drift_count": 0,
+  "unsupported_claim_count": 0,
+  "fake_side_effect_count": 0,
+  "live_wiring_allowed": false,
+  "production_call_allowed": false,
+  "real_customer_data_allowed": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false
+}

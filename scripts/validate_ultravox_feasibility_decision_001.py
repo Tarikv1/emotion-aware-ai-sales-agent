@@ -11,6 +11,8 @@ MOCK_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-TOOL-B
 HOSTED_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-HOSTED-SANDBOX-001" / "result.json"
 LOCAL_ENDPOINT_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-LOCAL-TOOL-ENDPOINT-001" / "result.json"
 TUNNEL_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-TUNNEL-SANDBOX-001" / "result.json"
+WEBSOCKET_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WEBSOCKET-TEXT-SANDBOX-001" / "result.json"
+WEBSOCKET_QUALITY_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WEBSOCKET-TEXT-SANDBOX-QUALITY-001" / "result.json"
 DECISION_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001" / "result.json"
 DECISION_REPORT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001" / "report.md"
 
@@ -97,11 +99,31 @@ def expected_tunnel_recommendation(tunnel: dict[str, Any]) -> str:
     return "keep Ultravox as research/reference only"
 
 
+def expected_websocket_recommendation(websocket: dict[str, Any], quality: dict[str, Any] | None) -> str:
+    if websocket.get("websocket_connected") is not True:
+        return "fix joinUrl/WebSocket client"
+    if websocket.get("synthetic_turns_attempted", 0) > 0 and websocket.get("synthetic_turns_completed", 0) == 0:
+        return "audio-input WebSocket sandbox or browser WebRTC SDK next"
+    if quality is not None:
+        if quality.get("project_tool_called") is not True:
+            return "fix tool declaration/prompt/session payload"
+        if quality.get("tool_boundary_enforced") is True:
+            return "limited synthetic voice/audio sandbox next"
+        return "keep Ultravox as research only"
+    if websocket.get("tool_boundary_enforced") is True:
+        return "limited synthetic voice/audio sandbox next"
+    if websocket.get("tool_call_attempted") is not True:
+        return "fix tool declaration/prompt/session payload"
+    return "keep Ultravox as research only"
+
+
 def main() -> None:
     mock = load_json(MOCK_RESULT)
     hosted = load_json(HOSTED_RESULT)
     local_endpoint = load_json(LOCAL_ENDPOINT_RESULT) if LOCAL_ENDPOINT_RESULT.is_file() else None
     tunnel = load_json(TUNNEL_RESULT) if TUNNEL_RESULT.is_file() else None
+    websocket = load_json(WEBSOCKET_RESULT) if WEBSOCKET_RESULT.is_file() else None
+    websocket_quality = load_json(WEBSOCKET_QUALITY_RESULT) if WEBSOCKET_QUALITY_RESULT.is_file() else None
     decision = load_json(DECISION_RESULT)
     report_text = DECISION_REPORT.read_text(encoding="utf-8") if DECISION_REPORT.is_file() else ""
     if not report_text:
@@ -109,20 +131,36 @@ def main() -> None:
 
     if decision.get("evaluation_id") != "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001":
         fail("unexpected feasibility decision evaluation_id")
-    if decision.get("phase") not in {"4J1", "4J2", "4J3"}:
-        fail("feasibility decision must record phase 4J1, 4J2, or 4J3")
-    expected = expected_tunnel_recommendation(tunnel) if decision.get("phase") == "4J3" and tunnel is not None else expected_recommendation(mock, hosted, local_endpoint)
+    if decision.get("phase") not in {"4J1", "4J2", "4J3", "4J4"}:
+        fail("feasibility decision must record phase 4J1, 4J2, 4J3, or 4J4")
+    if decision.get("phase") == "4J4":
+        if websocket is None:
+            fail("phase 4J4 decision requires websocket sandbox evidence")
+        expected = expected_websocket_recommendation(websocket, websocket_quality)
+    else:
+        expected = expected_tunnel_recommendation(tunnel) if decision.get("phase") == "4J3" and tunnel is not None else expected_recommendation(mock, hosted, local_endpoint)
     if decision.get("recommendation") != expected:
         fail(f"recommendation must be {expected!r}, got {decision.get('recommendation')!r}")
 
     for key in ("live_wiring_allowed", "production_call_allowed", "real_customer_data_allowed"):
         if decision.get(key) is not False:
             fail(f"{key} must always stay false")
-    active_evidence = tunnel if decision.get("phase") == "4J3" and tunnel is not None else hosted
+    if decision.get("phase") == "4J4" and websocket is not None:
+        active_evidence = websocket
+    else:
+        active_evidence = tunnel if decision.get("phase") == "4J3" and tunnel is not None else hosted
     for key in ("sandbox_run", "provider_call_made", "tool_call_attempted", "tool_call_succeeded", "public_tool_endpoint_required", "public_tool_endpoint_available"):
         if active_evidence.get(key) is not None and decision.get(key) != active_evidence.get(key):
             fail(f"{key} must match active sandbox evidence")
-    if local_endpoint is not None and decision.get("phase") != "4J3":
+    if decision.get("phase") == "4J4" and websocket is not None:
+        for key in ("ultravox_session_created", "join_url_received", "websocket_connected", "synthetic_turns_attempted", "synthetic_turns_completed", "http_tool_endpoint_request_count", "tool_result_sent_count"):
+            if decision.get(key) != websocket.get(key):
+                fail(f"{key} must match websocket sandbox evidence")
+        if websocket_quality is not None:
+            for key in ("tool_boundary_enforced", "project_tool_called", "response_follows_project_tool"):
+                if decision.get(key) != websocket_quality.get(key):
+                    fail(f"{key} must match websocket quality evidence")
+    if local_endpoint is not None and decision.get("phase") not in {"4J3", "4J4"}:
         if decision.get("local_tool_endpoint_completed") is not True:
             fail("decision must record completed local endpoint")
         if decision.get("local_tool_endpoint_passed") is not True:
@@ -150,7 +188,29 @@ def main() -> None:
         "Project runtime owns the sales brain and campaign truth.",
         "Public tool endpoint required:",
     ]
-    if decision.get("phase") == "4J3":
+    if decision.get("phase") == "4J4":
+        required_report_lines.remove("Public tool endpoint required:")
+        required_report_lines.extend(
+            [
+                "WebSocket sandbox run status:",
+                "WebSocket quality blocker classification:",
+                "Provider call made:",
+                "Ultravox session created:",
+                "Join URL received:",
+                "WebSocket connected:",
+                "Synthetic turns attempted:",
+                "Synthetic turns completed:",
+                "Tool call attempted:",
+                "Tool call succeeded:",
+                "Tool boundary enforced:",
+                "Project tool called:",
+                "Response follows project tool:",
+                "HTTP tool endpoint request count:",
+                "Tool result sent count:",
+                "Real customer data allowed: `false`",
+            ]
+        )
+    elif decision.get("phase") == "4J3":
         required_report_lines.remove("Public tool endpoint required:")
         required_report_lines.extend(
             [

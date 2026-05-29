@@ -1,38 +1,27 @@
-# ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001 Report
+# ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001
 
-Recommendation: `implement WebSocket/browser client sandbox`
-Tunnel sandbox run status: `provider_session_created_no_interaction`
-Blocker: `Provider session was created with the temporary HTTP tool, but no automated conversation was run and no provider tool call was observed.`
-Explicit cloudflared path present: `true`
-Explicit cloudflared path exists: `true`
-Cloudflared available: `true`
-Cloudflared DNS failed before: `true`
-Ngrok available: `true`
-Ngrok auth configured: `True`
-Ngrok path source: `known_windows_path`
-Selected preferred tool: `ngrok`
-Tunnel preflight only: `false`
-Tunnel attempted: `true`
-Tunnel tool used: `ngrok`
-DNS success: `true`
-HTTP success: `true`
-Auth preflight success: `true`
-Public endpoint test passed: `true`
-Provider call attempted: `true`
+Recommendation: `limited synthetic voice/audio sandbox next`
+Blocker: `None`
+WebSocket sandbox run status: `websocket_text_turns_tool_boundary_observed`
+WebSocket quality blocker classification: `None`
 Provider call made: `true`
 Ultravox session created: `true`
-Tool call attempted: `false`
-Tool call succeeded: `false`
-Hosted turns attempted: `0`
+Join URL received: `true`
+WebSocket connected: `true`
+Synthetic turns attempted: `3`
+Synthetic turns completed: `3`
+Tool call attempted: `true`
+Tool call succeeded: `true`
+Tool boundary enforced: `true`
+Project tool called: `true`
+Response follows project tool: `true`
+HTTP tool endpoint request count: `4`
+Tool result sent count: `0`
 Product truth drift count: `0`
-Fake side-effect count: `0`
+Fake side effect count: `0`
 Live wiring allowed: `false`
 Production call allowed: `false`
 Real customer data allowed: `false`
-Runtime behavior changed: `false`
-Response text changed: `false`
 
 Project runtime owns canonical memory.
 Project runtime owns the sales brain and campaign truth.
-Ultravox remains a hosted speech-native interface candidate only.
-Side effects remain blocked.
