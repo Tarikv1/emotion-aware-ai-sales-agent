@@ -1,26 +1,30 @@
 # ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001
 
-Recommendation: `prepare local synthetic audio inputs manually`
-Blocker: `System.Speech failed; SAPI.SpVoice fallback failed. Exception calling "Speak" with "1" argument(s): "No voice installed on the system or none available with the current security setting." At line:6 char:1 + $synth.Speak('What is this?') | Out-Null + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ + CategoryInfo : NotSpecified: (:) [], ParentContainsErrorRecordException + FullyQualifiedErrorId : InvalidOperationException SAPI.SpVoice generation failed: (-2147352567, 'Exception occurred.', (0, None, None, None, 0, -2147200960), None)`
-WebSocket audio sandbox run status: `blocked_synthetic_audio_generation_failed`
-WebSocket audio quality blocker classification: `synthetic_audio_generation_failed`
-Provider call made: `false`
-Ultravox session created: `false`
-Join URL received: `false`
-WebSocket connected: `false`
+Recommendation: `limited synthetic voice conversation evaluation next`
+Blocker: `None`
+WebSocket audio sandbox run status: `websocket_audio_tool_boundary_agent_audio_observed`
+WebSocket audio quality blocker classification: `None`
+Provider call made: `true`
+Ultravox session created: `true`
+Join URL received: `true`
+WebSocket connected: `true`
+Manual audio inputs found: `true`
+Manual audio conversion succeeded: `true`
+Prepared audio input count: `2`
+Manual audio converter used: `python_wave_pcm_integer_resample`
 Synthetic audio generation succeeded: `false`
-Synthetic audio turns attempted: `0`
-Synthetic audio turns completed: `0`
-User transcript count: `0`
-Agent transcript count: `0`
-Agent audio chunks received: `0`
-Agent audio bytes received: `0`
-Tool call attempted: `false`
-Tool call succeeded: `false`
-Tool boundary enforced: `false`
-Project tool called: `false`
-Response follows project tool: `false`
-Local HTTP tool request count: `0`
+Synthetic audio turns attempted: `2`
+Synthetic audio turns completed: `2`
+User transcript count: `2`
+Agent transcript count: `47`
+Agent audio chunks received: `575`
+Agent audio bytes received: `1096316`
+Tool call attempted: `true`
+Tool call succeeded: `true`
+Tool boundary enforced: `true`
+Project tool called: `true`
+Response follows project tool: `true`
+Local HTTP tool request count: `2`
 Product truth drift count: `0`
 Fake side effect count: `0`
 Live wiring allowed: `false`

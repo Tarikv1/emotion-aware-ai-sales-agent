@@ -52,11 +52,13 @@ def main() -> None:
 
     if quality.get("evaluation_id") != "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-QUALITY-001":
         fail("unexpected audio quality evaluation_id")
-    if quality.get("phase") != "4J5":
-        fail("audio quality must record phase 4J5")
+    if quality.get("phase") != "4J5B":
+        fail("audio quality must record phase 4J5B")
 
     for key in (
         "audio_input_generation_succeeded",
+        "manual_audio_inputs_found",
+        "manual_audio_conversion_succeeded",
         "user_transcript_observed",
         "agent_audio_observed",
         "agent_transcript_observed",
@@ -77,6 +79,10 @@ def main() -> None:
 
     if quality.get("project_tool_called") != (sandbox.get("local_http_tool_request_count", 0) > 0 or sandbox.get("tool_result_sent_count", 0) > 0):
         fail("project_tool_called must match sandbox tool evidence")
+    if quality.get("manual_audio_inputs_found") != (sandbox.get("manual_audio_inputs_found") is True):
+        fail("manual_audio_inputs_found must match sandbox evidence")
+    if quality.get("manual_audio_conversion_succeeded") != (sandbox.get("manual_audio_conversion_succeeded") is True):
+        fail("manual_audio_conversion_succeeded must match sandbox evidence")
     if quality.get("agent_audio_observed") != (sandbox.get("agent_audio_chunks_received", 0) > 0):
         fail("agent_audio_observed must match audio chunk evidence")
     if quality.get("user_transcript_observed") != (sandbox.get("user_transcript_count", 0) > 0):
@@ -85,7 +91,7 @@ def main() -> None:
         fail("tool boundary cannot be enforced without project tool evidence")
 
     if sandbox.get("synthetic_audio_turns_attempted", 0) == 0:
-        allowed_zero_turn_blockers = {"no_automated_audio_interaction", "synthetic_audio_generation_failed"}
+        allowed_zero_turn_blockers = {"no_automated_audio_interaction", "manual_audio_inputs_missing", "manual_audio_conversion_failed"}
         if quality.get("blocker_classification") not in allowed_zero_turn_blockers:
             fail("no automated audio interaction must be classified honestly")
         if quality.get("tool_boundary_enforced") is not False:
@@ -101,6 +107,10 @@ def main() -> None:
 
     required_report_lines = [
         "Audio input generation succeeded:",
+        "Manual audio inputs found:",
+        "Manual audio conversion succeeded:",
+        "Prepared audio input count:",
+        "Manual audio converter used:",
         "User transcript observed:",
         "Agent audio observed:",
         "Agent transcript observed:",

@@ -11,11 +11,13 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "runtime" / "audio_backends" / "ultravox_websocket_audio_sandbox_config.json"
 RUNNER_PATH = ROOT / "scripts" / "run_ultravox_websocket_audio_sandbox_001.py"
-INPUT_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-SYNTHETIC-AUDIO-INPUTS-001" / "result.json"
+INPUT_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-MANUAL-AUDIO-INPUTS-001" / "result.json"
 RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001" / "result.json"
 REPORT_PATH = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001" / "report.md"
 ENV_PATH = ROOT / "runtime" / "config" / "local" / "ultravox.env"
 LOCAL_ARTIFACT_PREFIXES = (
+    "local_artifacts/audio_outputs/ultravox/manual_inputs/",
+    "local_artifacts/audio_outputs/ultravox/prepared_inputs/",
     "local_artifacts/audio_outputs/ultravox/synthetic_inputs/",
     "local_artifacts/audio_outputs/ultravox/agent_outputs/",
 )
@@ -110,14 +112,18 @@ def main() -> None:
 
     if result.get("evaluation_id") != "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001":
         fail("unexpected audio sandbox evaluation_id")
-    if result.get("phase") != "4J5":
-        fail("audio sandbox must record phase 4J5")
+    if result.get("phase") != "4J5B":
+        fail("audio sandbox must record phase 4J5B")
     if ENV_PATH.exists() and not git_ignored(ENV_PATH):
         fail("runtime/config/local/ultravox.env exists but is not ignored by Git")
     if result.get("env_file_exists") and result.get("env_file_ignored") is not True:
         fail("env file was used or present without ignored evidence")
 
     for key in (
+        "manual_audio_inputs_found",
+        "manual_audio_input_folder_exists",
+        "manual_audio_conversion_attempted",
+        "manual_audio_conversion_succeeded",
         "provider_call_made",
         "session_created",
         "websocket_connected",
@@ -134,6 +140,9 @@ def main() -> None:
             fail(f"result missing boolean field: {key}")
 
     for key in (
+        "manual_audio_input_files_found",
+        "manual_audio_expected_case_count",
+        "prepared_audio_inputs_count",
         "synthetic_audio_turns_attempted",
         "synthetic_audio_turns_completed",
         "user_transcript_count",
@@ -186,6 +195,10 @@ def main() -> None:
         ):
             if env_gates.get(gate) is not True:
                 fail(f"provider call made without enabled gate: {gate}")
+        if input_result.get("conversion_succeeded") is not True or result.get("manual_audio_conversion_succeeded") is not True:
+            fail("provider call made despite missing prepared manual audio conversion")
+        if int(result.get("prepared_audio_inputs_count", 0)) < int(result.get("max_audio_turns", 2)):
+            fail("provider call made without enough prepared manual audio inputs")
 
     for key in ("input_audio_files", "agent_audio_files_written_under_local_artifacts"):
         paths = result.get(key)
@@ -201,13 +214,20 @@ def main() -> None:
     if result.get("audio_sandbox_success_claimed") is True:
         if result.get("user_transcript_count", 0) <= 0 and result.get("agent_audio_chunks_received", 0) <= 0:
             fail("audio sandbox success claimed without user transcript or agent audio evidence")
-    if result.get("provider_call_made") and input_result.get("generation_succeeded") is not True:
-        fail("provider call made despite missing synthetic audio input generation")
+    if result.get("manual_audio_inputs_found") != (input_result.get("input_files_found", 0) >= int(result.get("max_audio_turns", 2))):
+        fail("manual_audio_inputs_found must match manual input evidence")
+    if result.get("manual_audio_conversion_succeeded") != (input_result.get("conversion_succeeded") is True):
+        fail("manual_audio_conversion_succeeded must match manual input evidence")
+    if result.get("prepared_audio_inputs_count") != input_result.get("prepared_case_count"):
+        fail("prepared_audio_inputs_count must match manual input evidence")
 
     required_report_lines = [
         "Provider call made:",
         "Ultravox session created:",
         "WebSocket connected:",
+        "Manual audio inputs found:",
+        "Prepared audio input count:",
+        "Manual audio converter used:",
         "Audio turns attempted:",
         "User transcript count:",
         "Agent audio chunks received:",

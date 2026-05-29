@@ -26,11 +26,6 @@ except Exception:  # pragma: no cover - dependency presence is evidence, not log
     websocket_client = None  # type: ignore[assignment]
 
 from runtime.audio_backends.ultravox_local_tool_server import build_server, handle_request  # noqa: E402
-from scripts.generate_ultravox_synthetic_audio_inputs_001 import (  # noqa: E402
-    RESULT_PATH as AUDIO_INPUT_RESULT_PATH,
-    generate_synthetic_audio_inputs,
-    persist_result as persist_audio_input_result,
-)
 from scripts.load_local_ultravox_env_001 import (  # noqa: E402
     ALLOW_GATE,
     API_KEY_ENV,
@@ -67,6 +62,8 @@ from scripts.run_ultravox_websocket_text_sandbox_001 import (  # noqa: E402
 
 CONFIG_PATH = ROOT / "runtime" / "audio_backends" / "ultravox_websocket_audio_sandbox_config.json"
 PROMPT_PATH = ROOT / "runtime" / "audio_backends" / "ultravox_sandbox_agent_prompt.md"
+SYNTHETIC_AUDIO_INPUT_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-SYNTHETIC-AUDIO-INPUTS-001" / "result.json"
+MANUAL_AUDIO_INPUT_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-MANUAL-AUDIO-INPUTS-001" / "result.json"
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001"
 RESULT_PATH = OUT_DIR / "result.json"
 REPORT_PATH = OUT_DIR / "report.md"
@@ -92,6 +89,12 @@ def rel(path: Path) -> str:
 
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_optional_json(path: Path) -> dict[str, Any]:
+    if not path.is_file():
+        return {}
+    return load_json(path)
 
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
@@ -175,12 +178,24 @@ def boundary_fields() -> dict[str, Any]:
     }
 
 
-def read_or_generate_audio_inputs() -> dict[str, Any]:
-    if AUDIO_INPUT_RESULT_PATH.is_file():
-        return load_json(AUDIO_INPUT_RESULT_PATH)
-    result = generate_synthetic_audio_inputs()
-    persist_audio_input_result(result)
-    return result
+def read_manual_audio_inputs() -> dict[str, Any]:
+    if MANUAL_AUDIO_INPUT_RESULT_PATH.is_file():
+        return load_json(MANUAL_AUDIO_INPUT_RESULT_PATH)
+    return {
+        "evaluation_id": "ULTRAVOX-MANUAL-AUDIO-INPUTS-001",
+        "phase": "4J5B",
+        "status": "missing_manual_input_evidence",
+        "manual_input_folder_exists": False,
+        "input_files_found": 0,
+        "expected_case_count": 2,
+        "prepared_case_count": 0,
+        "conversion_attempted": False,
+        "conversion_succeeded": False,
+        "converter_used": None,
+        "blockers": ["Manual audio input preparation evidence is missing; run scripts/prepare_ultravox_manual_audio_inputs_001.py first."],
+        "prepared_files": [],
+        "provider_calls_made": False,
+    }
 
 
 def read_input_audio(path: Path, expected_sample_rate: int) -> tuple[bytes, float, dict[str, Any]]:
@@ -220,7 +235,7 @@ def build_call_body(tool_url: str, tool_token: str, config: dict[str, Any]) -> d
     base_prompt = PROMPT_PATH.read_text(encoding="utf-8") if PROMPT_PATH.is_file() else ""
     system_prompt = (
         base_prompt
-        + "\n\nPhase 4J5 WebSocket audio sandbox addition: this is synthetic local audio only, not a phone call, microphone test, CRM, email, calendar, or live runtime test. "
+        + "\n\nPhase 4J5B WebSocket audio sandbox addition: this is prepared manual synthetic/non-customer local audio only, not a phone call, microphone test, CRM, email, calendar, or live runtime test. "
         "Use project_sales_brain_next_move for every product or sales answer. "
         "When the tool gives a buyer_facing_response and verifier_status is passed, speak only that safe buyer-facing response. "
         "If tool output is missing, ask a short clarification rather than inventing product facts."
@@ -260,6 +275,7 @@ def build_call_body(tool_url: str, tool_token: str, config: dict[str, Any]) -> d
             "realCustomerData": "false",
             "outboundPhoneCall": "false",
             "audioInput": "true",
+            "manualAudioInput": "true",
             "liveWiring": "false",
         },
     }
@@ -551,6 +567,7 @@ def run_websocket_audio_turns(join_url: str, result: dict[str, Any], local_url: 
             status["input_audio_duration_seconds"] = duration_seconds
             status["input_audio_metadata"] = audio_metadata
             result["synthetic_audio_turns_attempted"] += 1
+            result["audio_turns_attempted"] += 1
             result["hosted_turns_attempted"] += 1
             turn_origin = time.perf_counter()
             before_user = result["user_transcript_count"]
@@ -567,7 +584,7 @@ def run_websocket_audio_turns(join_url: str, result: dict[str, Any], local_url: 
                 status["completed"] = True
             if index == 1 and after_user <= before_user:
                 result["run_status"] = "websocket_audio_no_user_transcript"
-                result["blocker"] = "No user transcript appeared after the first synthetic audio turn; stopped to avoid wasting provider minutes."
+                result["blocker"] = "No user transcript appeared after the first manual audio turn; stopped to avoid wasting provider minutes."
                 break
             if after_user > before_user and after_tool_requests <= before_tool_requests:
                 result["run_status"] = "websocket_audio_no_tool_invocation"
@@ -577,7 +594,7 @@ def run_websocket_audio_turns(join_url: str, result: dict[str, Any], local_url: 
     except Exception as error:
         result["websocket_errors"].append(sanitize_for_evidence(error))
         if result["websocket_connected"]:
-            result["blocker"] = "WebSocket connected, but synthetic audio exchange failed."
+            result["blocker"] = "WebSocket connected, but manual audio exchange failed."
             result["run_status"] = "websocket_audio_exchange_failed"
         else:
             result["blocker"] = "Could not join Ultravox session via returned joinUrl."
@@ -598,13 +615,22 @@ def run_websocket_audio_turns(join_url: str, result: dict[str, Any], local_url: 
                 result["websocket_close_error"] = sanitize_for_evidence(error)
 
 
-def base_result(env_metadata: dict[str, bool], gates: dict[str, bool], config: dict[str, Any], input_result: dict[str, Any]) -> dict[str, Any]:
+def base_result(
+    env_metadata: dict[str, bool],
+    gates: dict[str, bool],
+    config: dict[str, Any],
+    manual_input_result: dict[str, Any],
+    synthetic_input_result: dict[str, Any],
+) -> dict[str, Any]:
     turns = list(config["synthetic_audio_turns"])[: int(config["max_audio_turns"])]
-    input_paths = list(input_result.get("output_paths", []))[: int(config["max_audio_turns"])]
+    prepared_files = list(manual_input_result.get("prepared_files", []))[: int(config["max_audio_turns"])]
+    input_paths = [str(item.get("path")) for item in prepared_files if isinstance(item, dict) and item.get("path")]
+    manual_inputs_found = manual_input_result.get("input_files_found", 0) >= int(config["max_audio_turns"])
+    manual_conversion_succeeded = manual_input_result.get("conversion_succeeded") is True
     return {
         "evaluation_id": "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001",
-        "phase": "4J5",
-        "phase_detail": "4J5",
+        "phase": "4J5B",
+        "phase_detail": "4J5B",
         "run_status": "not_run",
         "blocker": None,
         "env_file_exists": env_metadata["env_file_exists"],
@@ -614,8 +640,18 @@ def base_result(env_metadata: dict[str, bool], gates: dict[str, bool], config: d
         "tool_token_present": bool(os.environ.get(TOOL_TOKEN_ENV)),
         "env_gates": gates,
         "websocket_dependency_available": websocket_dependency_available(),
-        "audio_input_generation_succeeded": input_result.get("generation_succeeded") is True,
-        "audio_input_result_path": rel(AUDIO_INPUT_RESULT_PATH),
+        "synthetic_audio_generation_succeeded": synthetic_input_result.get("generation_succeeded") is True,
+        "synthetic_audio_input_result_path": rel(SYNTHETIC_AUDIO_INPUT_RESULT_PATH),
+        "audio_input_generation_succeeded": manual_conversion_succeeded,
+        "manual_audio_input_result_path": rel(MANUAL_AUDIO_INPUT_RESULT_PATH),
+        "manual_audio_inputs_found": manual_inputs_found,
+        "manual_audio_input_folder_exists": manual_input_result.get("manual_input_folder_exists") is True,
+        "manual_audio_input_files_found": int(manual_input_result.get("input_files_found", 0) or 0),
+        "manual_audio_expected_case_count": int(manual_input_result.get("expected_case_count", 2) or 2),
+        "manual_audio_conversion_attempted": manual_input_result.get("conversion_attempted") is True,
+        "manual_audio_conversion_succeeded": manual_conversion_succeeded,
+        "manual_audio_converter_used": manual_input_result.get("converter_used"),
+        "prepared_audio_inputs_count": int(manual_input_result.get("prepared_case_count", 0) or 0),
         "input_audio_files": input_paths,
         "local_endpoint_host": config["local_endpoint_host"],
         "local_endpoint_port": int(config["local_endpoint_port"]),
@@ -689,6 +725,8 @@ def base_result(env_metadata: dict[str, bool], gates: dict[str, bool], config: d
         "call_started_received": False,
         "synthetic_audio_turns_attempted": 0,
         "synthetic_audio_turns_completed": 0,
+        "audio_turns_attempted": 0,
+        "audio_turns_completed": 0,
         "hosted_turns_attempted": 0,
         "client_tool_invocation_count": 0,
         "data_connection_tool_invocation_count": 0,
@@ -764,6 +802,7 @@ def finalize_counts(result: dict[str, Any], local_server: Any | None, provider_e
     result["http_tool_endpoint_request_count"] = len(http_events)
     result["provider_tool_success_event_count"] = len(success_events)
     result["synthetic_audio_turns_completed"] = len([turn for turn in result["synthetic_audio_turns_status"] if turn.get("completed")])
+    result["audio_turns_completed"] = result["synthetic_audio_turns_completed"]
     flags = count_quality_flags(result["agent_response_texts_sanitized"])
     result.update(flags)
     result["tool_call_attempted"] = (
@@ -783,10 +822,10 @@ def finalize_counts(result: dict[str, Any], local_server: Any | None, provider_e
         return
     if result["websocket_connected"] and result["user_transcript_count"] == 0 and result["synthetic_audio_turns_attempted"] > 0:
         result["run_status"] = "websocket_audio_no_user_transcript"
-        result["blocker"] = "Synthetic audio was sent, but no user transcript was observed."
+        result["blocker"] = "Manual audio was sent, but no user transcript was observed."
     elif result["websocket_connected"] and result["user_transcript_count"] > 0 and not result["tool_call_attempted"]:
         result["run_status"] = "websocket_audio_no_tool_invocation"
-        result["blocker"] = "Synthetic audio produced a user transcript, but no project tool call was observed."
+        result["blocker"] = "Manual audio produced a user transcript, but no project tool call was observed."
     elif result["websocket_connected"] and result["tool_call_succeeded"] and result["agent_audio_chunks_received"] > 0:
         result["run_status"] = "websocket_audio_tool_boundary_agent_audio_observed"
     elif result["websocket_connected"] and result["tool_call_succeeded"]:
@@ -794,7 +833,7 @@ def finalize_counts(result: dict[str, Any], local_server: Any | None, provider_e
         result["blocker"] = "Project tool call worked, but no binary agent audio was observed."
     elif result["ultravox_session_created"] and not result["websocket_connected"]:
         result["run_status"] = "websocket_connect_failed"
-        result["blocker"] = "Provider session was created, but the WebSocket join failed before synthetic audio turns."
+        result["blocker"] = "Provider session was created, but the WebSocket join failed before manual audio turns."
     elif result["provider_call_made"] and not result["ultravox_session_created"]:
         result["run_status"] = "provider_create_failed"
         result["blocker"] = "Provider create-call request failed before WebSocket join."
@@ -802,7 +841,8 @@ def finalize_counts(result: dict[str, Any], local_server: Any | None, provider_e
 
 def build_result() -> dict[str, Any]:
     config = load_json(CONFIG_PATH)
-    input_result = read_or_generate_audio_inputs()
+    manual_input_result = read_manual_audio_inputs()
+    synthetic_input_result = load_optional_json(SYNTHETIC_AUDIO_INPUT_RESULT_PATH)
     try:
         env_metadata = load_local_ultravox_env()
         unsafe_secret_file = False
@@ -816,20 +856,30 @@ def build_result() -> dict[str, Any]:
         }
         unsafe_secret_file = True
     gates = env_gates(env_metadata)
-    result = base_result(env_metadata, gates, config, input_result)
+    result = base_result(env_metadata, gates, config, manual_input_result, synthetic_input_result)
     if unsafe_secret_file:
         result["run_status"] = "unsafe_secret_file"
         result["blocker"] = "runtime/config/local/ultravox.env exists but is not ignored by Git; script refused to read it."
         return result
-    if input_result.get("generation_succeeded") is not True:
-        result["run_status"] = "blocked_synthetic_audio_generation_failed"
-        result["blocker"] = input_result.get("blocker") or "Synthetic audio input generation did not succeed."
+    if manual_input_result.get("status") in {"missing_manual_inputs", "missing_manual_input_evidence"} or not result["manual_audio_inputs_found"]:
+        result["run_status"] = "missing_manual_inputs"
+        blockers = manual_input_result.get("blockers")
+        result["blocker"] = "; ".join(str(item) for item in blockers) if isinstance(blockers, list) and blockers else "Manual local test clips are missing."
+        return result
+    if manual_input_result.get("conversion_succeeded") is not True:
+        result["run_status"] = "manual_audio_conversion_failed"
+        blockers = manual_input_result.get("blockers")
+        result["blocker"] = "; ".join(str(item) for item in blockers) if isinstance(blockers, list) and blockers else "Manual audio conversion did not produce prepared 48 kHz mono PCM WAV files."
+        return result
+    if result["prepared_audio_inputs_count"] < int(config["max_audio_turns"]):
+        result["run_status"] = "prepared_manual_audio_missing"
+        result["blocker"] = "Prepared manual audio inputs are missing or incomplete."
         return result
     for path_text in result["input_audio_files"]:
         path = ROOT / path_text
         if not path.is_file():
-            result["run_status"] = "blocked_synthetic_audio_missing"
-            result["blocker"] = f"Synthetic input audio is missing: {path_text}"
+            result["run_status"] = "prepared_manual_audio_missing"
+            result["blocker"] = f"Prepared manual input audio is missing: {path_text}"
             return result
     if not websocket_dependency_available():
         result["run_status"] = "blocked_websocket_dependency_missing"
@@ -964,14 +1014,16 @@ def build_result() -> dict[str, Any]:
 
 
 def recommendation_for(result: dict[str, Any]) -> str:
-    if result.get("audio_input_generation_succeeded") is not True:
-        return "prepare local synthetic audio inputs manually"
+    if result.get("manual_audio_inputs_found") is not True:
+        return "add manual local test clips"
+    if result.get("manual_audio_conversion_succeeded") is not True or result.get("prepared_audio_inputs_count", 0) < 2:
+        return "install/enable ffmpeg or provide 48kHz mono PCM WAV"
     if result.get("websocket_connected") and result.get("user_transcript_count", 0) == 0 and result.get("synthetic_audio_turns_attempted", 0) > 0:
-        return "fix audio format/chunking/sample rate"
+        return "fix audio chunking/sample rate/encoding"
     if result.get("user_transcript_count", 0) > 0 and not result.get("tool_call_attempted"):
         return "fix prompt/tool declaration for audio mode"
     if result.get("tool_boundary_enforced") and result.get("agent_audio_chunks_received", 0) > 0 and result.get("product_truth_drift_count", 0) == 0 and result.get("fake_side_effect_count", 0) == 0:
-        return "manual listening review of agent audio next"
+        return "manual listening review of Ultravox agent audio next"
     if result.get("tool_call_attempted") and not result.get("tool_boundary_enforced"):
         return "do not proceed"
     if result.get("provider_call_made") and not result.get("session_created"):
@@ -984,7 +1036,7 @@ def recommendation_for(result: dict[str, Any]) -> str:
 def build_interim_decision(result: dict[str, Any]) -> dict[str, Any]:
     return {
         "evaluation_id": "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001",
-        "phase": "4J5",
+        "phase": "4J5B",
         "recommendation": recommendation_for(result),
         "blocker": result.get("blocker"),
         "websocket_audio_sandbox_run_status": result.get("run_status"),
@@ -996,7 +1048,11 @@ def build_interim_decision(result: dict[str, Any]) -> dict[str, Any]:
         "session_created": result.get("session_created"),
         "join_url_received": result.get("join_url_received"),
         "websocket_connected": result.get("websocket_connected"),
-        "synthetic_audio_generation_succeeded": result.get("audio_input_generation_succeeded"),
+        "synthetic_audio_generation_succeeded": result.get("synthetic_audio_generation_succeeded"),
+        "manual_audio_inputs_found": result.get("manual_audio_inputs_found"),
+        "manual_audio_conversion_succeeded": result.get("manual_audio_conversion_succeeded"),
+        "prepared_audio_inputs_count": result.get("prepared_audio_inputs_count"),
+        "manual_audio_converter_used": result.get("manual_audio_converter_used"),
         "synthetic_audio_turns_attempted": result.get("synthetic_audio_turns_attempted"),
         "synthetic_audio_turns_completed": result.get("synthetic_audio_turns_completed"),
         "user_transcript_count": result.get("user_transcript_count"),
@@ -1025,7 +1081,8 @@ def build_interim_decision(result: dict[str, Any]) -> dict[str, Any]:
         "runtime_behavior_changed": False,
         "response_text_changed": False,
         "decision_logic": [
-            "If synthetic audio generation fails: prepare local synthetic audio inputs manually.",
+            "If manual audio files are missing: add manual local test clips.",
+            "If conversion fails: install/enable ffmpeg or provide 48kHz mono PCM WAV.",
             "If WebSocket connects but no user transcript appears: fix audio format/chunking/sample rate.",
             "If user transcript appears but the tool call does not: fix prompt/tool declaration for audio mode.",
             "If tool call works and agent audio returns: run manual listening review of agent audio next.",
@@ -1048,7 +1105,10 @@ def render_result_report(result: dict[str, Any]) -> str:
             f"Env file ignored: `{str(result['env_file_ignored']).lower()}`",
             f"API key present: `{str(result['api_key_present']).lower()}`",
             f"Tool token present: `{str(result['tool_token_present']).lower()}`",
-            f"Synthetic audio generated: `{str(result['audio_input_generation_succeeded']).lower()}`",
+            f"Manual audio inputs found: `{str(result['manual_audio_inputs_found']).lower()}`",
+            f"Prepared audio input count: `{result['prepared_audio_inputs_count']}`",
+            f"Manual audio converter used: `{result['manual_audio_converter_used']}`",
+            f"Synthetic audio generated: `{str(result['synthetic_audio_generation_succeeded']).lower()}`",
             f"Public endpoint preflight passed: `{str(result['public_endpoint_preflight_passed']).lower()}`",
             "",
             "## Hosted Session",
@@ -1105,6 +1165,9 @@ def render_interim_decision_report(decision: dict[str, Any]) -> str:
             f"Ultravox session created: `{str(decision['ultravox_session_created']).lower()}`",
             f"Join URL received: `{str(decision['join_url_received']).lower()}`",
             f"WebSocket connected: `{str(decision['websocket_connected']).lower()}`",
+            f"Manual audio inputs found: `{str(decision['manual_audio_inputs_found']).lower()}`",
+            f"Prepared audio input count: `{decision['prepared_audio_inputs_count']}`",
+            f"Manual audio converter used: `{decision['manual_audio_converter_used']}`",
             f"Synthetic audio generation succeeded: `{str(decision['synthetic_audio_generation_succeeded']).lower()}`",
             f"Synthetic audio turns attempted: `{decision['synthetic_audio_turns_attempted']}`",
             f"Synthetic audio turns completed: `{decision['synthetic_audio_turns_completed']}`",

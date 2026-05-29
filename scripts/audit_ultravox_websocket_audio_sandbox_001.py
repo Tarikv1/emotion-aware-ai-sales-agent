@@ -7,7 +7,8 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-INPUT_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-SYNTHETIC-AUDIO-INPUTS-001" / "result.json"
+SYNTHETIC_INPUT_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-SYNTHETIC-AUDIO-INPUTS-001" / "result.json"
+MANUAL_INPUT_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-MANUAL-AUDIO-INPUTS-001" / "result.json"
 SANDBOX_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001" / "result.json"
 QUALITY_DIR = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-QUALITY-001"
 QUALITY_RESULT_PATH = QUALITY_DIR / "result.json"
@@ -19,6 +20,12 @@ DECISION_REPORT_PATH = DECISION_DIR / "report.md"
 
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_optional_json(path: Path) -> dict[str, Any]:
+    if not path.is_file():
+        return {}
+    return load_json(path)
 
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
@@ -55,9 +62,11 @@ def expected_response_match(sandbox: dict[str, Any]) -> bool:
     return False
 
 
-def classify_blocker(input_result: dict[str, Any], sandbox: dict[str, Any], project_tool_called: bool, response_follows_project_tool: bool) -> str | None:
-    if input_result.get("generation_succeeded") is not True:
-        return "synthetic_audio_generation_failed"
+def classify_blocker(manual_input: dict[str, Any], sandbox: dict[str, Any], project_tool_called: bool, response_follows_project_tool: bool) -> str | None:
+    if manual_input.get("status") in {"missing_manual_inputs", "missing_manual_input_evidence"} or sandbox.get("manual_audio_inputs_found") is not True:
+        return "manual_audio_inputs_missing"
+    if manual_input.get("conversion_succeeded") is not True or sandbox.get("manual_audio_conversion_succeeded") is not True:
+        return "manual_audio_conversion_failed"
     if sandbox.get("synthetic_audio_turns_attempted", 0) == 0:
         return "no_automated_audio_interaction"
     if sandbox.get("websocket_connected") is not True:
@@ -75,10 +84,12 @@ def classify_blocker(input_result: dict[str, Any], sandbox: dict[str, Any], proj
     return None
 
 
-def transcript_quality_notes(input_result: dict[str, Any], sandbox: dict[str, Any], response_follows: bool) -> list[str]:
+def transcript_quality_notes(manual_input: dict[str, Any], sandbox: dict[str, Any], response_follows: bool) -> list[str]:
     notes: list[str] = []
-    if input_result.get("generation_succeeded") is not True:
-        notes.append("Synthetic audio input generation failed, so no automated audio interaction should be accepted.")
+    if manual_input.get("status") in {"missing_manual_inputs", "missing_manual_input_evidence"}:
+        notes.append("Manual local test clips were missing, so no automated audio interaction should be accepted.")
+    elif manual_input.get("conversion_succeeded") is not True:
+        notes.append("Manual audio input preparation failed, so no automated audio interaction should be accepted.")
     if sandbox.get("synthetic_audio_turns_attempted", 0) == 0:
         notes.append("No synthetic audio turn was sent to Ultravox.")
     if sandbox.get("user_transcript_count", 0) == 0 and sandbox.get("synthetic_audio_turns_attempted", 0) > 0:
@@ -92,7 +103,7 @@ def transcript_quality_notes(input_result: dict[str, Any], sandbox: dict[str, An
     if sandbox.get("agent_transcript_count", 0) > 0 and not response_follows:
         notes.append("Observed agent transcript did not clearly match the project sales-brain buyer_facing_response.")
     if not notes:
-        notes.append("Synthetic audio produced transcript and agent audio evidence while staying inside the project-tool boundary.")
+        notes.append("Prepared manual audio produced transcript and agent audio evidence while staying inside the project-tool boundary.")
     return notes
 
 
@@ -110,7 +121,7 @@ def latency_notes(sandbox: dict[str, Any]) -> list[str]:
     return notes
 
 
-def build_quality_result(input_result: dict[str, Any], sandbox: dict[str, Any]) -> dict[str, Any]:
+def build_quality_result(manual_input: dict[str, Any], synthetic_input: dict[str, Any], sandbox: dict[str, Any]) -> dict[str, Any]:
     project_tool_called = sandbox.get("local_http_tool_request_count", 0) > 0 or sandbox.get("tool_result_sent_count", 0) > 0
     invented_product_facts = sandbox.get("product_truth_drift_count", 0) > 0 or sandbox.get("unsupported_claim_count", 0) > 0
     claimed_side_effects = sandbox.get("fake_side_effect_count", 0) > 0
@@ -125,13 +136,18 @@ def build_quality_result(input_result: dict[str, Any], sandbox: dict[str, Any]) 
         and not claimed_side_effects
         and sandbox.get("internal_label_leak_count", 0) == 0
     )
-    blocker_classification = classify_blocker(input_result, sandbox, project_tool_called, response_follows)
+    blocker_classification = classify_blocker(manual_input, sandbox, project_tool_called, response_follows)
     return {
         "evaluation_id": "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-QUALITY-001",
-        "phase": "4J5",
+        "phase": "4J5B",
         "source_sandbox_evaluation_id": sandbox.get("evaluation_id"),
         "sandbox_run_status": sandbox.get("run_status"),
-        "audio_input_generation_succeeded": input_result.get("generation_succeeded") is True,
+        "audio_input_generation_succeeded": manual_input.get("conversion_succeeded") is True,
+        "synthetic_audio_generation_succeeded": synthetic_input.get("generation_succeeded") is True,
+        "manual_audio_inputs_found": sandbox.get("manual_audio_inputs_found") is True,
+        "manual_audio_conversion_succeeded": sandbox.get("manual_audio_conversion_succeeded") is True,
+        "prepared_audio_inputs_count": int(sandbox.get("prepared_audio_inputs_count", 0) or 0),
+        "manual_audio_converter_used": sandbox.get("manual_audio_converter_used"),
         "user_transcript_observed": user_transcript_observed,
         "agent_audio_observed": agent_audio_observed,
         "agent_transcript_observed": agent_transcript_observed,
@@ -143,7 +159,7 @@ def build_quality_result(input_result: dict[str, Any], sandbox: dict[str, Any]) 
         "no_openai_affiliation_claim": no_openai_affiliation,
         "response_follows_project_tool": response_follows,
         "memory_conflict_count": int(sandbox.get("memory_conflict_count", 0)),
-        "transcript_quality_notes": transcript_quality_notes(input_result, sandbox, response_follows),
+        "transcript_quality_notes": transcript_quality_notes(manual_input, sandbox, response_follows),
         "latency_notes": latency_notes(sandbox),
         "blocker_classification": blocker_classification,
         "synthetic_audio_turns_attempted": sandbox.get("synthetic_audio_turns_attempted", 0),
@@ -168,11 +184,13 @@ def build_quality_result(input_result: dict[str, Any], sandbox: dict[str, Any]) 
     }
 
 
-def recommendation_for(input_result: dict[str, Any], sandbox: dict[str, Any], quality: dict[str, Any]) -> str:
-    if input_result.get("generation_succeeded") is not True:
-        return "prepare local synthetic audio inputs manually"
+def recommendation_for(manual_input: dict[str, Any], sandbox: dict[str, Any], quality: dict[str, Any]) -> str:
+    if manual_input.get("status") in {"missing_manual_inputs", "missing_manual_input_evidence"} or quality.get("manual_audio_inputs_found") is not True:
+        return "add manual local test clips"
+    if manual_input.get("conversion_succeeded") is not True or quality.get("manual_audio_conversion_succeeded") is not True:
+        return "install/enable ffmpeg or provide 48kHz mono PCM WAV"
     if sandbox.get("websocket_connected") and sandbox.get("user_transcript_count", 0) == 0 and sandbox.get("synthetic_audio_turns_attempted", 0) > 0:
-        return "fix audio format/chunking/sample rate"
+        return "fix audio chunking/sample rate/encoding"
     if sandbox.get("user_transcript_count", 0) > 0 and quality.get("project_tool_called") is not True:
         return "fix prompt/tool declaration for audio mode"
     if quality.get("tool_boundary_enforced") is not True and quality.get("project_tool_called"):
@@ -180,17 +198,17 @@ def recommendation_for(input_result: dict[str, Any], sandbox: dict[str, Any], qu
     if quality.get("tool_boundary_enforced") and quality.get("agent_audio_observed") and quality.get("response_follows_project_tool"):
         return "limited synthetic voice conversation evaluation next"
     if quality.get("project_tool_called") and quality.get("agent_audio_observed"):
-        return "manual listening review of agent audio next"
+        return "manual listening review of Ultravox agent audio next"
     if quality.get("project_tool_called") and not quality.get("agent_audio_observed"):
         return "manual listening review blocked until agent audio returns"
     return "keep Ultravox as research only"
 
 
-def build_decision(input_result: dict[str, Any], sandbox: dict[str, Any], quality: dict[str, Any]) -> dict[str, Any]:
+def build_decision(manual_input: dict[str, Any], synthetic_input: dict[str, Any], sandbox: dict[str, Any], quality: dict[str, Any]) -> dict[str, Any]:
     return {
         "evaluation_id": "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001",
-        "phase": "4J5",
-        "recommendation": recommendation_for(input_result, sandbox, quality),
+        "phase": "4J5B",
+        "recommendation": recommendation_for(manual_input, sandbox, quality),
         "blocker": sandbox.get("blocker") or quality.get("blocker_classification"),
         "websocket_audio_sandbox_run_status": sandbox.get("run_status"),
         "websocket_audio_quality_blocker_classification": quality.get("blocker_classification"),
@@ -201,7 +219,11 @@ def build_decision(input_result: dict[str, Any], sandbox: dict[str, Any], qualit
         "session_created": sandbox.get("session_created"),
         "join_url_received": sandbox.get("join_url_received"),
         "websocket_connected": sandbox.get("websocket_connected"),
-        "synthetic_audio_generation_succeeded": input_result.get("generation_succeeded"),
+        "synthetic_audio_generation_succeeded": synthetic_input.get("generation_succeeded"),
+        "manual_audio_inputs_found": quality.get("manual_audio_inputs_found"),
+        "manual_audio_conversion_succeeded": quality.get("manual_audio_conversion_succeeded"),
+        "prepared_audio_inputs_count": quality.get("prepared_audio_inputs_count"),
+        "manual_audio_converter_used": quality.get("manual_audio_converter_used"),
         "synthetic_audio_turns_attempted": sandbox.get("synthetic_audio_turns_attempted"),
         "synthetic_audio_turns_completed": sandbox.get("synthetic_audio_turns_completed"),
         "user_transcript_count": sandbox.get("user_transcript_count"),
@@ -230,10 +252,11 @@ def build_decision(input_result: dict[str, Any], sandbox: dict[str, Any], qualit
         "runtime_behavior_changed": False,
         "response_text_changed": False,
         "decision_logic": [
-            "If synthetic audio generation fails: prepare local synthetic audio inputs manually.",
-            "If WebSocket connects but no user transcript appears: fix audio format/chunking/sample rate.",
+            "If manual audio files are missing: add manual local test clips.",
+            "If conversion fails: install/enable ffmpeg or provide 48kHz mono PCM WAV.",
+            "If WebSocket connects but no user transcript appears: fix audio chunking/sample rate/encoding.",
             "If user transcript appears but tool call does not: fix prompt/tool declaration for audio mode.",
-            "If tool call works and agent audio returns: manual listening review of agent audio next.",
+            "If tool call works and agent audio returns: manual listening review of Ultravox agent audio next.",
             "If tool boundary works and quality seems promising: limited synthetic voice conversation evaluation next.",
             "If boundary fails: do not proceed.",
             "Always keep live wiring, production calls, and real customer data disallowed.",
@@ -247,6 +270,10 @@ def render_quality_report(quality: dict[str, Any]) -> str:
             "# ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-QUALITY-001",
             "",
             f"Audio input generation succeeded: `{str(quality['audio_input_generation_succeeded']).lower()}`",
+            f"Manual audio inputs found: `{str(quality['manual_audio_inputs_found']).lower()}`",
+            f"Manual audio conversion succeeded: `{str(quality['manual_audio_conversion_succeeded']).lower()}`",
+            f"Prepared audio input count: `{quality['prepared_audio_inputs_count']}`",
+            f"Manual audio converter used: `{quality['manual_audio_converter_used']}`",
             f"User transcript observed: `{str(quality['user_transcript_observed']).lower()}`",
             f"Agent audio observed: `{str(quality['agent_audio_observed']).lower()}`",
             f"Agent transcript observed: `{str(quality['agent_transcript_observed']).lower()}`",
@@ -290,6 +317,10 @@ def render_decision_report(decision: dict[str, Any]) -> str:
             f"Ultravox session created: `{str(decision['ultravox_session_created']).lower()}`",
             f"Join URL received: `{str(decision['join_url_received']).lower()}`",
             f"WebSocket connected: `{str(decision['websocket_connected']).lower()}`",
+            f"Manual audio inputs found: `{str(decision['manual_audio_inputs_found']).lower()}`",
+            f"Manual audio conversion succeeded: `{str(decision['manual_audio_conversion_succeeded']).lower()}`",
+            f"Prepared audio input count: `{decision['prepared_audio_inputs_count']}`",
+            f"Manual audio converter used: `{decision['manual_audio_converter_used']}`",
             f"Synthetic audio generation succeeded: `{str(decision['synthetic_audio_generation_succeeded']).lower()}`",
             f"Synthetic audio turns attempted: `{decision['synthetic_audio_turns_attempted']}`",
             f"Synthetic audio turns completed: `{decision['synthetic_audio_turns_completed']}`",
@@ -317,10 +348,11 @@ def render_decision_report(decision: dict[str, Any]) -> str:
 
 
 def main() -> None:
-    input_result = load_json(INPUT_RESULT_PATH)
+    manual_input = load_json(MANUAL_INPUT_RESULT_PATH)
+    synthetic_input = load_optional_json(SYNTHETIC_INPUT_RESULT_PATH)
     sandbox = load_json(SANDBOX_RESULT_PATH)
-    quality = build_quality_result(input_result, sandbox)
-    decision = build_decision(input_result, sandbox, quality)
+    quality = build_quality_result(manual_input, synthetic_input, sandbox)
+    decision = build_decision(manual_input, synthetic_input, sandbox, quality)
     write_json(QUALITY_RESULT_PATH, quality)
     write_text(QUALITY_REPORT_PATH, render_quality_report(quality))
     write_json(DECISION_RESULT_PATH, decision)

@@ -14,6 +14,7 @@ TUNNEL_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-TUNN
 WEBSOCKET_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WEBSOCKET-TEXT-SANDBOX-001" / "result.json"
 WEBSOCKET_QUALITY_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WEBSOCKET-TEXT-SANDBOX-QUALITY-001" / "result.json"
 AUDIO_INPUT_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-SYNTHETIC-AUDIO-INPUTS-001" / "result.json"
+MANUAL_AUDIO_INPUT_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-MANUAL-AUDIO-INPUTS-001" / "result.json"
 AUDIO_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001" / "result.json"
 AUDIO_QUALITY_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-QUALITY-001" / "result.json"
 DECISION_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001" / "result.json"
@@ -139,6 +140,27 @@ def expected_audio_recommendation(audio_input: dict[str, Any], audio: dict[str, 
     return "keep Ultravox as research only"
 
 
+def expected_manual_audio_recommendation(manual_input: dict[str, Any], audio: dict[str, Any], quality: dict[str, Any] | None) -> str:
+    if manual_input.get("status") in {"missing_manual_inputs", "missing_manual_input_evidence"} or audio.get("manual_audio_inputs_found") is not True:
+        return "add manual local test clips"
+    if manual_input.get("conversion_succeeded") is not True or audio.get("manual_audio_conversion_succeeded") is not True:
+        return "install/enable ffmpeg or provide 48kHz mono PCM WAV"
+    if audio.get("websocket_connected") and audio.get("user_transcript_count", 0) == 0 and audio.get("synthetic_audio_turns_attempted", 0) > 0:
+        return "fix audio chunking/sample rate/encoding"
+    if audio.get("user_transcript_count", 0) > 0 and (quality is None or quality.get("project_tool_called") is not True):
+        return "fix prompt/tool declaration for audio mode"
+    if quality is not None:
+        if quality.get("tool_boundary_enforced") is not True and quality.get("project_tool_called"):
+            return "do not proceed"
+        if quality.get("tool_boundary_enforced") and quality.get("agent_audio_observed") and quality.get("response_follows_project_tool"):
+            return "limited synthetic voice conversation evaluation next"
+        if quality.get("project_tool_called") and quality.get("agent_audio_observed"):
+            return "manual listening review of Ultravox agent audio next"
+        if quality.get("project_tool_called") and not quality.get("agent_audio_observed"):
+            return "manual listening review blocked until agent audio returns"
+    return "keep Ultravox as research only"
+
+
 def main() -> None:
     mock = load_json(MOCK_RESULT)
     hosted = load_json(HOSTED_RESULT)
@@ -147,6 +169,7 @@ def main() -> None:
     websocket = load_json(WEBSOCKET_RESULT) if WEBSOCKET_RESULT.is_file() else None
     websocket_quality = load_json(WEBSOCKET_QUALITY_RESULT) if WEBSOCKET_QUALITY_RESULT.is_file() else None
     audio_input = load_json(AUDIO_INPUT_RESULT) if AUDIO_INPUT_RESULT.is_file() else None
+    manual_audio_input = load_json(MANUAL_AUDIO_INPUT_RESULT) if MANUAL_AUDIO_INPUT_RESULT.is_file() else None
     audio = load_json(AUDIO_RESULT) if AUDIO_RESULT.is_file() else None
     audio_quality = load_json(AUDIO_QUALITY_RESULT) if AUDIO_QUALITY_RESULT.is_file() else None
     decision = load_json(DECISION_RESULT)
@@ -156,9 +179,15 @@ def main() -> None:
 
     if decision.get("evaluation_id") != "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001":
         fail("unexpected feasibility decision evaluation_id")
-    if decision.get("phase") not in {"4J1", "4J2", "4J3", "4J4", "4J5"}:
-        fail("feasibility decision must record phase 4J1, 4J2, 4J3, 4J4, or 4J5")
-    if decision.get("phase") == "4J5":
+    if decision.get("phase") not in {"4J1", "4J2", "4J3", "4J4", "4J5", "4J5B"}:
+        fail("feasibility decision must record phase 4J1, 4J2, 4J3, 4J4, 4J5, or 4J5B")
+    if decision.get("phase") == "4J5B":
+        if manual_audio_input is None:
+            fail("phase 4J5B decision requires manual audio input evidence")
+        if audio is None:
+            fail("phase 4J5B decision requires websocket audio sandbox evidence")
+        expected = expected_manual_audio_recommendation(manual_audio_input, audio, audio_quality)
+    elif decision.get("phase") == "4J5":
         if audio_input is None:
             fail("phase 4J5 decision requires synthetic audio input evidence")
         if audio is None:
@@ -176,7 +205,7 @@ def main() -> None:
     for key in ("live_wiring_allowed", "production_call_allowed", "real_customer_data_allowed"):
         if decision.get(key) is not False:
             fail(f"{key} must always stay false")
-    if decision.get("phase") == "4J5" and audio is not None:
+    if decision.get("phase") in {"4J5", "4J5B"} and audio is not None:
         active_evidence = audio
     elif decision.get("phase") == "4J4" and websocket is not None:
         active_evidence = websocket
@@ -185,14 +214,23 @@ def main() -> None:
     for key in ("sandbox_run", "provider_call_made", "tool_call_attempted", "tool_call_succeeded", "public_tool_endpoint_required", "public_tool_endpoint_available"):
         if active_evidence.get(key) is not None and decision.get(key) != active_evidence.get(key):
             fail(f"{key} must match active sandbox evidence")
-    if decision.get("phase") == "4J5" and audio is not None:
+    if decision.get("phase") in {"4J5", "4J5B"} and audio is not None:
         for key in ("session_created", "join_url_received", "websocket_connected", "synthetic_audio_turns_attempted", "synthetic_audio_turns_completed", "user_transcript_count", "agent_transcript_count", "agent_audio_chunks_received", "agent_audio_bytes_received", "local_http_tool_request_count"):
             if decision.get(key) != audio.get(key):
                 fail(f"{key} must match websocket audio sandbox evidence")
         if decision.get("ultravox_session_created") != audio.get("session_created"):
             fail("ultravox_session_created must match audio session_created evidence")
-        if audio_input is not None and decision.get("synthetic_audio_generation_succeeded") != audio_input.get("generation_succeeded"):
+        if decision.get("phase") == "4J5" and audio_input is not None and decision.get("synthetic_audio_generation_succeeded") != audio_input.get("generation_succeeded"):
             fail("synthetic_audio_generation_succeeded must match audio input evidence")
+        if decision.get("phase") == "4J5B":
+            if decision.get("manual_audio_inputs_found") != audio.get("manual_audio_inputs_found"):
+                fail("manual_audio_inputs_found must match websocket audio sandbox evidence")
+            if decision.get("manual_audio_conversion_succeeded") != audio.get("manual_audio_conversion_succeeded"):
+                fail("manual_audio_conversion_succeeded must match websocket audio sandbox evidence")
+            if decision.get("prepared_audio_inputs_count") != audio.get("prepared_audio_inputs_count"):
+                fail("prepared_audio_inputs_count must match websocket audio sandbox evidence")
+            if decision.get("manual_audio_converter_used") != audio.get("manual_audio_converter_used"):
+                fail("manual_audio_converter_used must match websocket audio sandbox evidence")
         if audio_quality is not None:
             for key in ("tool_boundary_enforced", "project_tool_called", "response_follows_project_tool"):
                 if decision.get(key) != audio_quality.get(key):
@@ -205,7 +243,7 @@ def main() -> None:
             for key in ("tool_boundary_enforced", "project_tool_called", "response_follows_project_tool"):
                 if decision.get(key) != websocket_quality.get(key):
                     fail(f"{key} must match websocket quality evidence")
-    if local_endpoint is not None and decision.get("phase") not in {"4J3", "4J4", "4J5"}:
+    if local_endpoint is not None and decision.get("phase") not in {"4J3", "4J4", "4J5", "4J5B"}:
         if decision.get("local_tool_endpoint_completed") is not True:
             fail("decision must record completed local endpoint")
         if decision.get("local_tool_endpoint_passed") is not True:
@@ -233,7 +271,7 @@ def main() -> None:
         "Project runtime owns the sales brain and campaign truth.",
         "Public tool endpoint required:",
     ]
-    if decision.get("phase") == "4J5":
+    if decision.get("phase") in {"4J5", "4J5B"}:
         required_report_lines.remove("Public tool endpoint required:")
         required_report_lines.extend(
             [
@@ -243,6 +281,10 @@ def main() -> None:
                 "Ultravox session created:",
                 "Join URL received:",
                 "WebSocket connected:",
+                "Manual audio inputs found:",
+                "Manual audio conversion succeeded:",
+                "Prepared audio input count:",
+                "Manual audio converter used:",
                 "Synthetic audio generation succeeded:",
                 "Synthetic audio turns attempted:",
                 "Synthetic audio turns completed:",

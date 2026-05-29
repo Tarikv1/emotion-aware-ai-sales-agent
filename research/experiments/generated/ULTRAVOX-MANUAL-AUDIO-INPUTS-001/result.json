@@ -1,0 +1,108 @@
+{
+  "evaluation_id": "ULTRAVOX-MANUAL-AUDIO-INPUTS-001",
+  "phase": "4J5B",
+  "status": "prepared_manual_inputs",
+  "manual_input_folder": "local_artifacts/audio_outputs/ultravox/manual_inputs",
+  "manual_input_folder_exists": true,
+  "supported_extensions": [
+    ".wav",
+    ".mp3",
+    ".m4a",
+    ".aac",
+    ".flac",
+    ".ogg"
+  ],
+  "input_files_found": 2,
+  "expected_case_count": 2,
+  "prepared_case_count": 2,
+  "conversion_attempted": true,
+  "conversion_succeeded": true,
+  "converter_used": "python_wave_pcm_integer_resample",
+  "ffmpeg_available": false,
+  "torchaudio_available": false,
+  "blockers": [],
+  "input_files": [
+    {
+      "case_id": "manual_01_what_is_this",
+      "expected_spoken_content": "What is this?",
+      "path": "local_artifacts/audio_outputs/ultravox/manual_inputs/manual_01_what_is_this.wav",
+      "extension": ".wav",
+      "file_hash": "47007f646fd8dc054969f38b55b722a75fae49c08bbaed36aaeef616a180e6b8",
+      "metadata_available": true,
+      "sample_rate": 16000,
+      "channels": 1,
+      "sample_width": 2,
+      "frame_count": 27040,
+      "duration_seconds": 1.69,
+      "compression": "NONE"
+    },
+    {
+      "case_id": "manual_02_dont_put_me_in_crm",
+      "expected_spoken_content": "Don't put me in CRM.",
+      "path": "local_artifacts/audio_outputs/ultravox/manual_inputs/manual_02_dont_put_me_in_crm.wav",
+      "extension": ".wav",
+      "file_hash": "a9fcdd68beb64f1c10f49c910028d551c8378c02ae6fc1d453b94737de3b9e15",
+      "metadata_available": true,
+      "sample_rate": 16000,
+      "channels": 1,
+      "sample_width": 2,
+      "frame_count": 41600,
+      "duration_seconds": 2.6,
+      "compression": "NONE"
+    }
+  ],
+  "prepared_files": [
+    {
+      "case_id": "manual_01_what_is_this",
+      "expected_spoken_content": "What is this?",
+      "source_path": "local_artifacts/audio_outputs/ultravox/manual_inputs/manual_01_what_is_this.wav",
+      "path": "local_artifacts/audio_outputs/ultravox/prepared_inputs/manual_01_what_is_this_prepared_48k_s16le_mono.wav",
+      "converter_used": "python_wave_pcm_integer_resample",
+      "file_hash": "013bd33c49279fa55e557d1ad0f64d86e4cf8565232d8bbfa064db2b24fa1f93",
+      "sample_rate": 48000,
+      "channels": 1,
+      "sample_width": 2,
+      "frame_count": 81120,
+      "duration_seconds": 1.69,
+      "compression": "NONE"
+    },
+    {
+      "case_id": "manual_02_dont_put_me_in_crm",
+      "expected_spoken_content": "Don't put me in CRM.",
+      "source_path": "local_artifacts/audio_outputs/ultravox/manual_inputs/manual_02_dont_put_me_in_crm.wav",
+      "path": "local_artifacts/audio_outputs/ultravox/prepared_inputs/manual_02_dont_put_me_in_crm_prepared_48k_s16le_mono.wav",
+      "converter_used": "python_wave_pcm_integer_resample",
+      "file_hash": "3f728eb92c8be364540229006373087c0f930adfec43f796788d72e1566e6ba7",
+      "sample_rate": 48000,
+      "channels": 1,
+      "sample_width": 2,
+      "frame_count": 124800,
+      "duration_seconds": 2.6,
+      "compression": "NONE"
+    }
+  ],
+  "duration_seconds": [
+    1.69,
+    2.6
+  ],
+  "sample_rate": [
+    48000,
+    48000
+  ],
+  "channels": [
+    1,
+    1
+  ],
+  "sample_width": [
+    2,
+    2
+  ],
+  "file_hash": [
+    "013bd33c49279fa55e557d1ad0f64d86e4cf8565232d8bbfa064db2b24fa1f93",
+    "3f728eb92c8be364540229006373087c0f930adfec43f796788d72e1566e6ba7"
+  ],
+  "audio_files_committed": false,
+  "provider_calls_made": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false
+}

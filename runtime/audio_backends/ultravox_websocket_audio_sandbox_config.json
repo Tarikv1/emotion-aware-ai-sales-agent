@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "phase": "4J5",
+  "phase": "4J5B",
   "sandbox_id": "ultravox_websocket_synthetic_audio_sandbox",
   "provider_calls_allowed_by_default": false,
   "required_env_gates": [
@@ -22,6 +22,9 @@
   "max_hosted_sessions": 1,
   "max_audio_turns": 2,
   "synthetic_audio_only": true,
+  "manual_audio_input_mode": true,
+  "manual_audio_input_folder": "local_artifacts/audio_outputs/ultravox/manual_inputs",
+  "prepared_audio_input_folder": "local_artifacts/audio_outputs/ultravox/prepared_inputs",
   "synthetic_audio_turns": [
     "What is this?",
     "Don't put me in CRM."
