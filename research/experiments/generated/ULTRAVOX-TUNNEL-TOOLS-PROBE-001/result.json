@@ -1,6 +1,10 @@
 {
   "evaluation_id": "ULTRAVOX-TUNNEL-TOOLS-PROBE-001",
   "phase": "4J3",
+  "env_file_exists": true,
+  "env_file_ignored_by_git": true,
+  "env_file_loaded": true,
+  "unsafe_secret_file": false,
   "probe_only": true,
   "tunnel_opened": false,
   "provider_calls_made": false,
@@ -9,33 +13,56 @@
   "real_customer_data_used": false,
   "raw_private_audio_or_transcripts_used": false,
   "secrets_logged": false,
+  "explicit_cloudflared_path_present": true,
+  "explicit_cloudflared_path_exists": true,
+  "explicit_cloudflared_version_ok": true,
+  "explicit_cloudflared_executable": "C:\\Program Files (x86)\\cloudflared\\cloudflared.exe",
+  "cloudflared_available": true,
+  "selected_tunnel_tool": "cloudflared",
+  "selected_tunnel_executable": "C:\\Program Files (x86)\\cloudflared\\cloudflared.exe",
   "candidate_tunnel_tools": {
     "cloudflared": {
       "name": "cloudflared",
-      "available": false,
-      "path_present": false,
-      "version": null,
+      "available": true,
+      "path_present": true,
+      "path_exists": true,
+      "source": "explicit_env",
+      "executable": "C:\\Program Files (x86)\\cloudflared\\cloudflared.exe",
+      "version": "cloudflared version 2026.5.2 (built 2026-05-27T10:15 UTC)",
+      "version_ok": true,
       "tunnel_opened": false
     },
     "ngrok": {
       "name": "ngrok",
       "available": false,
       "path_present": false,
+      "path_exists": false,
+      "source": "PATH",
+      "executable": null,
       "version": null,
+      "version_ok": false,
       "tunnel_opened": false
     },
     "localtunnel": {
       "name": "localtunnel",
       "available": false,
       "path_present": false,
+      "path_exists": false,
+      "source": "PATH",
+      "executable": null,
       "version": null,
+      "version_ok": false,
       "tunnel_opened": false
     },
     "lt": {
       "name": "lt",
       "available": false,
       "path_present": false,
+      "path_exists": false,
+      "source": "PATH",
+      "executable": null,
       "version": null,
+      "version_ok": false,
       "tunnel_opened": false
     },
     "npx": {
@@ -49,13 +76,56 @@
       "tunnel_opened": false
     }
   },
-  "usable_tunnel_tools": [],
+  "cloudflared_discovery": {
+    "explicit_cloudflared_path_present": true,
+    "explicit_cloudflared_path_exists": true,
+    "explicit_cloudflared_version_ok": true,
+    "explicit_cloudflared_executable": "C:\\Program Files (x86)\\cloudflared\\cloudflared.exe",
+    "path_lookup": {
+      "name": "cloudflared",
+      "available": false,
+      "path_present": false,
+      "path_exists": false,
+      "source": "PATH",
+      "executable": null,
+      "version": null,
+      "version_ok": false,
+      "tunnel_opened": false
+    },
+    "known_windows_paths": [
+      {
+        "name": "cloudflared",
+        "available": true,
+        "path_present": true,
+        "path_exists": true,
+        "source": "known_windows_path",
+        "executable": "C:\\Program Files (x86)\\cloudflared\\cloudflared.exe",
+        "version": "cloudflared version 2026.5.2 (built 2026-05-27T10:15 UTC)",
+        "version_ok": true,
+        "tunnel_opened": false
+      },
+      {
+        "name": "cloudflared",
+        "available": false,
+        "path_present": true,
+        "path_exists": false,
+        "source": "known_windows_path",
+        "executable": "C:\\Program Files\\cloudflared\\cloudflared.exe",
+        "version": null,
+        "version_ok": false,
+        "tunnel_opened": false
+      }
+    ]
+  },
+  "usable_tunnel_tools": [
+    "cloudflared"
+  ],
   "preferred_order": [
     "cloudflared",
     "ngrok",
     "localtunnel"
   ],
-  "selected_if_gated": null,
+  "selected_if_gated": "cloudflared",
   "live_wiring_allowed": false,
   "production_call_allowed": false,
   "runtime_behavior_changed": false,

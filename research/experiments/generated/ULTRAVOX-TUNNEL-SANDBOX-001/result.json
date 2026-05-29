@@ -1,8 +1,8 @@
 {
   "evaluation_id": "ULTRAVOX-TUNNEL-SANDBOX-001",
   "phase": "4J3",
-  "run_status": "blocked_no_tunnel_tool",
-  "blocker": "No already-installed supported tunnel CLI found. Install cloudflared or ngrok and rerun.",
+  "run_status": "blocked_tunnel_test_failed",
+  "blocker": "Public tunnel endpoint preflight failed before provider call.",
   "env_file_exists": true,
   "env_file_ignored_by_git": true,
   "env_file_loaded": true,
@@ -16,22 +16,127 @@
     "LOCAL_ULTRAVOX_ALLOW_PUBLIC_TOOL_TUNNEL=1": true,
     "PROJECT_ULTRAVOX_TOOL_TOKEN present": true
   },
+  "explicit_cloudflared_path_present": true,
+  "explicit_cloudflared_path_exists": true,
+  "explicit_cloudflared_version_ok": true,
+  "explicit_cloudflared_executable": "C:\\Program Files (x86)\\cloudflared\\cloudflared.exe",
+  "cloudflared_available": true,
+  "selected_tunnel_tool": "cloudflared",
+  "selected_tunnel_executable": "C:\\Program Files (x86)\\cloudflared\\cloudflared.exe",
   "local_endpoint_host": "127.0.0.1",
   "local_endpoint_port": 8765,
   "local_endpoint_path": "/ultravox/project-sales-brain-next-move",
   "local_endpoint_method": "POST",
-  "local_server_started": false,
-  "tunnel_attempted": false,
-  "tunnel_tool_used": null,
-  "tunnel_url_created": false,
-  "tunnel_url_redacted_or_domain_only": null,
+  "local_server_started": true,
+  "tunnel_attempted": true,
+  "tunnel_tool_used": "cloudflared",
+  "tunnel_url_created": true,
+  "tunnel_url_redacted_or_domain_only": "compression-asin-dinner-offline.trycloudflare.com",
   "tunnel_stop_result": {
-    "attempted": false,
-    "terminated": false,
-    "killed": false
+    "attempted": true,
+    "terminated": true,
+    "killed": false,
+    "exit_code": 1
   },
   "local_public_endpoint_test_passed": false,
-  "public_endpoint_test": {},
+  "public_endpoint_test": {
+    "valid_request_status": 0,
+    "valid_request_passed": false,
+    "valid_request_latency_ms": 0.364,
+    "valid_request_attempts": [
+      {
+        "attempt": 1,
+        "status": 0,
+        "error": "url_error",
+        "reason": "[Errno 11001] getaddrinfo failed",
+        "latency_ms": 55.114
+      },
+      {
+        "attempt": 2,
+        "status": 0,
+        "error": "url_error",
+        "reason": "[Errno 11001] getaddrinfo failed",
+        "latency_ms": 2.021
+      },
+      {
+        "attempt": 3,
+        "status": 0,
+        "error": "url_error",
+        "reason": "[Errno 11001] getaddrinfo failed",
+        "latency_ms": 2.112
+      },
+      {
+        "attempt": 4,
+        "status": 0,
+        "error": "url_error",
+        "reason": "[Errno 11001] getaddrinfo failed",
+        "latency_ms": 1.388
+      },
+      {
+        "attempt": 5,
+        "status": 0,
+        "error": "url_error",
+        "reason": "[Errno 11001] getaddrinfo failed",
+        "latency_ms": 2.033
+      },
+      {
+        "attempt": 6,
+        "status": 0,
+        "error": "url_error",
+        "reason": "[Errno 11001] getaddrinfo failed",
+        "latency_ms": 1.771
+      },
+      {
+        "attempt": 7,
+        "status": 0,
+        "error": "url_error",
+        "reason": "[Errno 11001] getaddrinfo failed",
+        "latency_ms": 0.377
+      },
+      {
+        "attempt": 8,
+        "status": 0,
+        "error": "url_error",
+        "reason": "[Errno 11001] getaddrinfo failed",
+        "latency_ms": 0.355
+      },
+      {
+        "attempt": 9,
+        "status": 0,
+        "error": "url_error",
+        "reason": "[Errno 11001] getaddrinfo failed",
+        "latency_ms": 0.423
+      },
+      {
+        "attempt": 10,
+        "status": 0,
+        "error": "url_error",
+        "reason": "[Errno 11001] getaddrinfo failed",
+        "latency_ms": 5.009
+      },
+      {
+        "attempt": 11,
+        "status": 0,
+        "error": "url_error",
+        "reason": "[Errno 11001] getaddrinfo failed",
+        "latency_ms": 2.074
+      },
+      {
+        "attempt": 12,
+        "status": 0,
+        "error": "url_error",
+        "reason": "[Errno 11001] getaddrinfo failed",
+        "latency_ms": 0.364
+      }
+    ],
+    "missing_token_status": 0,
+    "missing_token_rejected": false,
+    "invalid_token_status": 0,
+    "invalid_token_rejected": false,
+    "response_schema_errors": [],
+    "auth_token_printed": false,
+    "passed": false
+  },
   "provider_call_attempted": false,
   "provider_call_made": false,
   "sandbox_run": false,
@@ -47,8 +152,8 @@
     "Don't put me in CRM."
   ],
   "public_tool_endpoint_required": true,
-  "public_tool_endpoint_available": false,
-  "public_tool_endpoint_host": null,
+  "public_tool_endpoint_available": true,
+  "public_tool_endpoint_host": "compression-asin-dinner-offline.trycloudflare.com",
   "browser_websocket_session_mode_used": "none",
   "provider_minutes_budget_note": "user reported about 30 minutes free use; phase intentionally minimal",
   "product_truth_drift_count": 0,
@@ -59,7 +164,10 @@
   "source_boundary_violation_count": 0,
   "memory_conflict_count": 0,
   "tool_response_followed_count": 0,
-  "latency_metrics": {},
+  "latency_metrics": {
+    "tunnel_start_latency_ms": 5248.807,
+    "public_endpoint_valid_request_latency_ms": 0.364
+  },
   "transcript_metadata": {
     "available": false,
     "stored": false,
@@ -114,5 +222,11 @@
     "No API key or tool token value is printed or written to evidence.",
     "Public tunnel is skipped unless tunnel gates are enabled.",
     "Provider call is skipped unless provider gates are enabled and the public endpoint preflight passes."
-  ]
+  ],
+  "tunnel_start_details": {
+    "start_error": null,
+    "start_latency_ms": 5248.807,
+    "log_line_count": 6,
+    "process_exited_before_url": false
+  }
 }

@@ -5,7 +5,6 @@ import json
 import os
 import queue
 import re
-import shutil
 import subprocess
 import sys
 import threading
@@ -30,6 +29,7 @@ from scripts.load_local_ultravox_env_001 import (  # noqa: E402
     UnsafeUltravoxEnvFile,
     load_local_ultravox_env,
 )
+from scripts.probe_ultravox_tunnel_tools_001 import discover_tunnel_tools  # noqa: E402
 
 
 CONFIG_PATH = ROOT / "runtime" / "audio_backends" / "ultravox_tunnel_sandbox_config.json"
@@ -51,6 +51,7 @@ TOOL_TOKEN_ENV = "PROJECT_ULTRAVOX_TOOL_TOKEN"
 TUNNEL_GATE = "LOCAL_ULTRAVOX_ALLOW_PUBLIC_TOOL_TUNNEL"
 TOOL_AUTH_TOKEN_NAME = "projectToolToken"
 TUNNEL_START_TIMEOUT_SECONDS = 25
+PUBLIC_ENDPOINT_PREFLIGHT_ATTEMPTS = 12
 PROVIDER_TOOL_OBSERVATION_SECONDS = 2
 
 
@@ -140,6 +141,21 @@ def boundary_fields() -> dict[str, Any]:
     }
 
 
+def add_tunnel_discovery(result: dict[str, Any], discovery: dict[str, Any]) -> None:
+    cloudflared_discovery = discovery["cloudflared_discovery"]
+    result.update(
+        {
+            "explicit_cloudflared_path_present": cloudflared_discovery["explicit_cloudflared_path_present"],
+            "explicit_cloudflared_path_exists": cloudflared_discovery["explicit_cloudflared_path_exists"],
+            "explicit_cloudflared_version_ok": cloudflared_discovery["explicit_cloudflared_version_ok"],
+            "explicit_cloudflared_executable": cloudflared_discovery["explicit_cloudflared_executable"],
+            "cloudflared_available": discovery["cloudflared"]["available"],
+            "selected_tunnel_tool": discovery["selected_tunnel_tool"],
+            "selected_tunnel_executable": discovery["selected_tunnel_executable"],
+        }
+    )
+
+
 def build_request_payload() -> dict[str, Any]:
     return {
         "session_id": "tunnel-sandbox-local-preflight-001",
@@ -153,6 +169,14 @@ def build_request_payload() -> dict[str, Any]:
     }
 
 
+def safe_json_payload(body: str) -> dict[str, Any]:
+    try:
+        payload = json.loads(body)
+    except json.JSONDecodeError:
+        return {"error": "non_json_response", "body_stored": False}
+    return payload if isinstance(payload, dict) else {"error": "json_object_expected", "body_stored": False}
+
+
 def post_tool_json(url: str, payload: dict[str, Any], token: str | None) -> tuple[int, dict[str, Any], float]:
     headers = {"Content-Type": "application/json"}
     if token is not None:
@@ -162,16 +186,40 @@ def post_tool_json(url: str, payload: dict[str, Any], token: str | None) -> tupl
     try:
         with urllib.request.urlopen(request, timeout=10) as response:
             body = response.read().decode("utf-8")
-            return response.status, json.loads(body), elapsed_ms(start)
+            return response.status, safe_json_payload(body), elapsed_ms(start)
     except urllib.error.HTTPError as error:
         body = error.read().decode("utf-8")
-        return error.code, json.loads(body) if body else {}, elapsed_ms(start)
+        return error.code, safe_json_payload(body) if body else {}, elapsed_ms(start)
+    except urllib.error.URLError as error:
+        return 0, {
+            "error": "url_error",
+            "error_type": type(error).__name__,
+            "reason": sanitize_text(str(getattr(error, "reason", error)))[:240],
+            "detail_stored": False,
+        }, elapsed_ms(start)
 
 
 def evaluate_public_endpoint_test(public_url: str, path: str, token: str) -> dict[str, Any]:
     endpoint_url = public_url.rstrip("/") + path
     sample = build_request_payload()
-    valid_status, valid_response, latency_ms = post_tool_json(endpoint_url, sample, token)
+    valid_status = 0
+    valid_response: dict[str, Any] = {}
+    latency_ms = 0.0
+    valid_attempts: list[dict[str, Any]] = []
+    for attempt in range(1, PUBLIC_ENDPOINT_PREFLIGHT_ATTEMPTS + 1):
+        valid_status, valid_response, latency_ms = post_tool_json(endpoint_url, sample, token)
+        valid_attempts.append(
+            {
+                "attempt": attempt,
+                "status": valid_status,
+                "error": valid_response.get("error"),
+                "reason": valid_response.get("reason"),
+                "latency_ms": latency_ms,
+            }
+        )
+        if valid_status == 200:
+            break
+        time.sleep(1.0)
     missing_status, _, _ = post_tool_json(endpoint_url, sample, None)
     invalid_status, _, _ = post_tool_json(endpoint_url, sample, "invalid-token")
     validation_errors = validate_ultravox_tool_response(valid_response) if valid_status == 200 else []
@@ -185,6 +233,7 @@ def evaluate_public_endpoint_test(public_url: str, path: str, token: str) -> dic
         "valid_request_status": valid_status,
         "valid_request_passed": valid_passed,
         "valid_request_latency_ms": latency_ms,
+        "valid_request_attempts": valid_attempts,
         "missing_token_status": missing_status,
         "missing_token_rejected": missing_status == 401,
         "invalid_token_status": invalid_status,
@@ -193,18 +242,6 @@ def evaluate_public_endpoint_test(public_url: str, path: str, token: str) -> dic
         "auth_token_printed": False,
         "passed": valid_passed and missing_status == 401 and invalid_status == 401,
     }
-
-
-def available_tunnel_tool() -> tuple[str | None, str | None]:
-    if shutil.which("cloudflared"):
-        return "cloudflared", shutil.which("cloudflared")
-    if shutil.which("ngrok"):
-        return "ngrok", shutil.which("ngrok")
-    if shutil.which("localtunnel"):
-        return "localtunnel", shutil.which("localtunnel")
-    if shutil.which("lt"):
-        return "lt", shutil.which("lt")
-    return None, None
 
 
 def command_for_tunnel(tool: str, executable: str, port: int) -> list[str]:
@@ -219,13 +256,11 @@ def command_for_tunnel(tool: str, executable: str, port: int) -> list[str]:
 
 
 def parse_https_url(line: str) -> str | None:
-    match = re.search(r"https://[A-Za-z0-9_.-]+(?::[0-9]+)?", line)
-    if not match:
-        return None
-    candidate = match.group(0).rstrip(".,)")
-    parsed = urlparse(candidate)
-    if parsed.scheme == "https" and parsed.netloc:
-        return f"https://{parsed.netloc}"
+    for match in re.finditer(r"https://[A-Za-z0-9_.-]+(?::[0-9]+)?", line):
+        candidate = match.group(0).rstrip(".,)")
+        parsed = urlparse(candidate)
+        if parsed.scheme == "https" and parsed.netloc.endswith(".trycloudflare.com"):
+            return f"https://{parsed.netloc}"
     return None
 
 
@@ -485,6 +520,13 @@ def base_result(env_metadata: dict[str, bool], gates: dict[str, bool]) -> dict[s
         "api_key_present": env_metadata["api_key_present"],
         "tool_token_present": bool(os.environ.get(TOOL_TOKEN_ENV)),
         "env_gates": gates,
+        "explicit_cloudflared_path_present": False,
+        "explicit_cloudflared_path_exists": False,
+        "explicit_cloudflared_version_ok": False,
+        "explicit_cloudflared_executable": None,
+        "cloudflared_available": False,
+        "selected_tunnel_tool": None,
+        "selected_tunnel_executable": None,
         "local_endpoint_host": config["local_endpoint_host"],
         "local_endpoint_port": config["local_endpoint_port"],
         "local_endpoint_path": config["local_endpoint_path"],
@@ -573,6 +615,8 @@ def build_result() -> dict[str, Any]:
         result["run_status"] = "unsafe_secret_file"
         result["blocker"] = "runtime/config/local/ultravox.env exists but is not ignored by Git; script refused to read it."
         return result
+    discovery = discover_tunnel_tools()
+    add_tunnel_discovery(result, discovery)
     if not tunnel_gates_enabled(gates):
         result["run_status"] = "not_run_tunnel_gates_disabled"
         result["blocker"] = "Temporary public tool tunnel gates were not fully enabled; tunnel skipped."
@@ -582,7 +626,12 @@ def build_result() -> dict[str, Any]:
         result["blocker"] = "Provider gates were not fully enabled; tunnel skipped to avoid public exposure without a provider test."
         return result
 
-    tunnel_tool, tunnel_executable = available_tunnel_tool()
+    if result["explicit_cloudflared_path_present"] and not result["explicit_cloudflared_path_exists"]:
+        result["run_status"] = "blocked_explicit_cloudflared_path_missing"
+        result["blocker"] = "ULTRAVOX_TUNNEL_CLOUDFLARED_PATH was present, but the executable path does not exist."
+        return result
+    tunnel_tool = discovery["selected_tunnel_tool"]
+    tunnel_executable = discovery["selected_tunnel_executable_for_run"]
     if not tunnel_tool or not tunnel_executable:
         result["run_status"] = "blocked_no_tunnel_tool"
         result["blocker"] = "No already-installed supported tunnel CLI found. Install cloudflared or ngrok and rerun."
@@ -683,6 +732,10 @@ def quality_reason(result: dict[str, Any]) -> str | None:
         return None
     if result["run_status"] == "blocked_no_tunnel_tool":
         return "no_tunnel_tool"
+    if result["run_status"] == "blocked_explicit_cloudflared_path_missing":
+        return "explicit_cloudflared_path_missing"
+    if result["run_status"] == "blocked_tunnel_url_not_detected":
+        return "tunnel_url_not_detected"
     if result["run_status"] == "blocked_tunnel_test_failed":
         return "tunnel_test_failed"
     if result["run_status"] == "provider_session_created_no_interaction":
@@ -732,10 +785,14 @@ def build_quality_result(result: dict[str, Any]) -> dict[str, Any]:
 
 def recommendation_for(result: dict[str, Any]) -> str:
     status = result["run_status"]
+    if status == "blocked_explicit_cloudflared_path_missing":
+        return "fix ULTRAVOX_TUNNEL_CLOUDFLARED_PATH"
+    if status == "blocked_tunnel_url_not_detected":
+        return "fix tunnel URL parsing"
     if status == "blocked_no_tunnel_tool":
         return "install cloudflared or ngrok, rerun"
     if status == "blocked_tunnel_test_failed":
-        return "fix auth/endpoint before provider call"
+        return "fix tunnel/endpoint/auth before provider call"
     if status == "provider_create_failed":
         return "fix API/session payload"
     if status == "provider_session_created_no_interaction":
@@ -765,6 +822,9 @@ def build_decision(result: dict[str, Any]) -> dict[str, Any]:
         "provider_call_attempted": result["provider_call_attempted"],
         "tunnel_attempted": result["tunnel_attempted"],
         "tunnel_tool_used": result["tunnel_tool_used"],
+        "explicit_cloudflared_path_present": result["explicit_cloudflared_path_present"],
+        "explicit_cloudflared_path_exists": result["explicit_cloudflared_path_exists"],
+        "cloudflared_available": result["cloudflared_available"],
         "tunnel_url_created": result["tunnel_url_created"],
         "local_public_endpoint_test_passed": result["local_public_endpoint_test_passed"],
         "ultravox_session_created": result["ultravox_session_created"],
@@ -788,6 +848,8 @@ def build_decision(result: dict[str, Any]) -> dict[str, Any]:
         "response_text_changed": False,
         "decision_logic": [
             "If no tunnel tool exists: install cloudflared or ngrok, rerun.",
+            "If explicit cloudflared path does not exist: fix ULTRAVOX_TUNNEL_CLOUDFLARED_PATH.",
+            "If cloudflared starts but no HTTPS URL is found: fix tunnel URL parsing.",
             "If tunnel endpoint test fails: fix auth/endpoint before provider call.",
             "If provider session cannot be created: fix API/session payload.",
             "If session created but interaction is not automated: implement WebSocket/browser client sandbox.",
@@ -809,6 +871,10 @@ def render_result_report(result: dict[str, Any]) -> str:
             f"Env file loaded: `{str(result['env_file_loaded']).lower()}`",
             f"API key present: `{str(result['api_key_present']).lower()}`",
             f"Tool token present: `{str(result['tool_token_present']).lower()}`",
+            f"Explicit cloudflared path present: `{str(result['explicit_cloudflared_path_present']).lower()}`",
+            f"Explicit cloudflared path exists: `{str(result['explicit_cloudflared_path_exists']).lower()}`",
+            f"Explicit cloudflared version ok: `{str(result['explicit_cloudflared_version_ok']).lower()}`",
+            f"Cloudflared available: `{str(result['cloudflared_available']).lower()}`",
             f"Local server started: `{str(result['local_server_started']).lower()}`",
             f"Tunnel attempted: `{str(result['tunnel_attempted']).lower()}`",
             f"Tunnel tool used: `{result['tunnel_tool_used']}`",
@@ -871,6 +937,9 @@ def render_decision_report(decision: dict[str, Any]) -> str:
             f"Recommendation: `{decision['recommendation']}`",
             f"Tunnel sandbox run status: `{decision['tunnel_sandbox_run_status']}`",
             f"Blocker: `{decision['blocker']}`",
+            f"Explicit cloudflared path present: `{str(decision['explicit_cloudflared_path_present']).lower()}`",
+            f"Explicit cloudflared path exists: `{str(decision['explicit_cloudflared_path_exists']).lower()}`",
+            f"Cloudflared available: `{str(decision['cloudflared_available']).lower()}`",
             f"Tunnel attempted: `{str(decision['tunnel_attempted']).lower()}`",
             f"Tunnel tool used: `{decision['tunnel_tool_used']}`",
             f"Public endpoint test passed: `{str(decision['local_public_endpoint_test_passed']).lower()}`",

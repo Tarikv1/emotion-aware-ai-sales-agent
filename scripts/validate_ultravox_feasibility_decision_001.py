@@ -58,10 +58,14 @@ def expected_recommendation(mock: dict[str, Any], hosted: dict[str, Any], local_
 
 def expected_tunnel_recommendation(tunnel: dict[str, Any]) -> str:
     status = tunnel.get("run_status")
+    if status == "blocked_explicit_cloudflared_path_missing":
+        return "fix ULTRAVOX_TUNNEL_CLOUDFLARED_PATH"
+    if status == "blocked_tunnel_url_not_detected":
+        return "fix tunnel URL parsing"
     if status == "blocked_no_tunnel_tool":
         return "install cloudflared or ngrok, rerun"
     if status == "blocked_tunnel_test_failed":
-        return "fix auth/endpoint before provider call"
+        return "fix tunnel/endpoint/auth before provider call"
     if status == "provider_create_failed":
         return "fix API/session payload"
     if status == "provider_session_created_no_interaction":
@@ -136,6 +140,9 @@ def main() -> None:
         required_report_lines.remove("Public tool endpoint required:")
         required_report_lines.extend(
             [
+                "Explicit cloudflared path present:",
+                "Explicit cloudflared path exists:",
+                "Cloudflared available:",
                 "Tunnel attempted:",
                 "Public endpoint test passed:",
                 "Provider call attempted:",

@@ -1,10 +1,13 @@
 # ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001 Report
 
-Recommendation: `install cloudflared or ngrok, rerun`
-Tunnel sandbox run status: `blocked_no_tunnel_tool`
-Blocker: `No already-installed supported tunnel CLI found. Install cloudflared or ngrok and rerun.`
-Tunnel attempted: `false`
-Tunnel tool used: `None`
+Recommendation: `fix tunnel/endpoint/auth before provider call`
+Tunnel sandbox run status: `blocked_tunnel_test_failed`
+Blocker: `Public tunnel endpoint preflight failed before provider call.`
+Explicit cloudflared path present: `true`
+Explicit cloudflared path exists: `true`
+Cloudflared available: `true`
+Tunnel attempted: `true`
+Tunnel tool used: `cloudflared`
 Public endpoint test passed: `false`
 Provider call attempted: `false`
 Provider call made: `false`

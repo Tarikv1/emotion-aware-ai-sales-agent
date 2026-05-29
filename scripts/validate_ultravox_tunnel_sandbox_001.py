@@ -69,6 +69,20 @@ def main() -> None:
         fail("unexpected tunnel sandbox evaluation_id")
     if result.get("phase") != "4J3":
         fail("tunnel sandbox must record phase 4J3")
+    for key in (
+        "explicit_cloudflared_path_present",
+        "explicit_cloudflared_path_exists",
+        "explicit_cloudflared_version_ok",
+        "cloudflared_available",
+    ):
+        if not isinstance(result.get(key), bool):
+            fail(f"{key} must be a boolean")
+    if result.get("explicit_cloudflared_path_present") and result.get("explicit_cloudflared_executable") in {"", None}:
+        fail("explicit cloudflared path evidence must include a safe executable path or redacted marker")
+    if result.get("run_status") == "blocked_explicit_cloudflared_path_missing" and result.get("explicit_cloudflared_path_exists") is not False:
+        fail("missing explicit cloudflared path blocker must record path_exists false")
+    if result.get("run_status") == "blocked_tunnel_url_not_detected" and result.get("tunnel_attempted") is not True:
+        fail("tunnel URL parsing blocker must follow a tunnel attempt")
     if config.get("tunnel_allowed_by_default") is not False:
         fail("tunnel config must block tunnel by default")
     if local_config.get("auth_required") is not True:

@@ -1,17 +1,21 @@
 # ULTRAVOX-TUNNEL-SANDBOX-001 Report
 
-Run status: `blocked_no_tunnel_tool`
-Blocker: `No already-installed supported tunnel CLI found. Install cloudflared or ngrok and rerun.`
+Run status: `blocked_tunnel_test_failed`
+Blocker: `Public tunnel endpoint preflight failed before provider call.`
 Env file exists: `true`
 Env file ignored by Git: `true`
 Env file loaded: `true`
 API key present: `true`
 Tool token present: `true`
-Local server started: `false`
-Tunnel attempted: `false`
-Tunnel tool used: `None`
-Tunnel URL created: `false`
-Tunnel URL redacted/domain only: `None`
+Explicit cloudflared path present: `true`
+Explicit cloudflared path exists: `true`
+Explicit cloudflared version ok: `true`
+Cloudflared available: `true`
+Local server started: `true`
+Tunnel attempted: `true`
+Tunnel tool used: `cloudflared`
+Tunnel URL created: `true`
+Tunnel URL redacted/domain only: `compression-asin-dinner-offline.trycloudflare.com`
 Public endpoint test passed: `false`
 Provider call attempted: `false`
 Provider call made: `false`
