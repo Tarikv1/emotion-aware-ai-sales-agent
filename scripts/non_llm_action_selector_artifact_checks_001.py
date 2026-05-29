@@ -19,12 +19,20 @@ SHADOW_REPLAY_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-SHADOW-REPLAY-001"
 SHADOW_MODE_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-SHADOW-MODE-001"
 SHADOW_SAFETY_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-SHADOW-SAFETY-AUDIT-001"
 SHADOW_DECISION_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-SHADOW-DECISION-001"
+RUNTIME_SHADOW_POINTS_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-POINTS-001"
+RUNTIME_SHADOW_LOG_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-LOG-001"
+RUNTIME_SHADOW_REPLAY_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-REPLAY-001"
+RUNTIME_SHADOW_AUDIT_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-AUDIT-001"
+RUNTIME_SHADOW_DECISION_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-DECISION-001"
 
 LABELS_PATH = ROOT / "runtime" / "action_selector" / "action_selector_labels.json"
 CONTRACT_PATH = ROOT / "runtime" / "action_selector" / "action_selector_contract.py"
 SELECTOR_PATH = ROOT / "runtime" / "action_selector" / "non_llm_action_selector.py"
 SHADOW_CONTRACT_PATH = ROOT / "runtime" / "action_selector" / "shadow_mode_contract.py"
 SHADOW_EVALUATOR_PATH = ROOT / "runtime" / "action_selector" / "shadow_mode_evaluator.py"
+RUNTIME_SHADOW_CONFIG_PATH = ROOT / "runtime" / "action_selector" / "shadow_runtime_logging_config.json"
+RUNTIME_SHADOW_LOGGER_PATH = ROOT / "runtime" / "action_selector" / "shadow_runtime_logger.py"
+RUNTIME_SHADOW_HOOK_PATH = ROOT / "runtime" / "action_selector" / "shadow_runtime_hook.py"
 
 REQUESTED_SOURCE_PATHS = [
     ROOT / "scripts" / "build_non_llm_action_selector_dataset_001.py",
@@ -41,10 +49,18 @@ REQUESTED_SOURCE_PATHS = [
     ROOT / "scripts" / "validate_non_llm_action_selector_shadow_mode_001.py",
     ROOT / "scripts" / "validate_non_llm_action_selector_shadow_safety_001.py",
     ROOT / "scripts" / "validate_non_llm_action_selector_shadow_decision_001.py",
+    ROOT / "scripts" / "run_non_llm_action_selector_runtime_shadow_replay_001.py",
+    ROOT / "scripts" / "audit_non_llm_action_selector_runtime_shadow_logging_001.py",
+    ROOT / "scripts" / "validate_non_llm_action_selector_runtime_shadow_points_001.py",
+    ROOT / "scripts" / "validate_non_llm_action_selector_runtime_shadow_replay_001.py",
+    ROOT / "scripts" / "validate_non_llm_action_selector_runtime_shadow_audit_001.py",
+    ROOT / "scripts" / "validate_non_llm_action_selector_runtime_shadow_decision_001.py",
     CONTRACT_PATH,
     SELECTOR_PATH,
     SHADOW_CONTRACT_PATH,
     SHADOW_EVALUATOR_PATH,
+    RUNTIME_SHADOW_LOGGER_PATH,
+    RUNTIME_SHADOW_HOOK_PATH,
 ]
 
 WEIGHT_SUFFIXES = (
@@ -123,6 +139,10 @@ def dataset_rows() -> dict[str, list[dict[str, Any]]]:
 
 def shadow_replay_rows() -> list[dict[str, Any]]:
     return read_jsonl(SHADOW_REPLAY_DIR / "replay.jsonl")
+
+
+def runtime_shadow_log_rows() -> list[dict[str, Any]]:
+    return read_jsonl(RUNTIME_SHADOW_LOG_DIR / "result.jsonl")
 
 
 def normalized_text(value: Any) -> str:

@@ -1,0 +1,145 @@
+{
+  "experiment_id": "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-POINTS-001",
+  "generated_at": "2026-05-29T23:33:03Z",
+  "status": "pass",
+  "candidate_observation_points": [
+    {
+      "file": "runtime/core/realtime_turns.py",
+      "function": "build_runtime_decision(case, expected=None, campaign=None)",
+      "available_inputs": [
+        "case_id",
+        "campaign_id through caller",
+        "campaign object when supplied",
+        "classified buyer transcript through classify_runtime_input",
+        "runtime next_action",
+        "call_control",
+        "agent_response",
+        "bridge_response",
+        "response_mode"
+      ],
+      "unavailable_inputs": [
+        "raw live audio",
+        "live provider state",
+        "durable memory mutation result",
+        "canonical non-LLM selector action_id"
+      ],
+      "risk_level": "medium",
+      "can_be_read_only": true,
+      "might_alter_runtime_behavior": true,
+      "notes": "Good replay/design observation point after runtime_decision is built. Do not wire in this phase."
+    },
+    {
+      "file": "runtime/core/realtime_turns.py",
+      "function": "run_case(case, campaigns=None)",
+      "available_inputs": [
+        "case",
+        "campaign_id",
+        "campaign metadata",
+        "expected_runtime",
+        "runtime_decision",
+        "scores"
+      ],
+      "unavailable_inputs": [
+        "live session memory object",
+        "TTS/prosody state",
+        "provider state"
+      ],
+      "risk_level": "low",
+      "can_be_read_only": true,
+      "might_alter_runtime_behavior": false,
+      "notes": "Safest existing replay-only observation point. Useful for offline comparison, not live runtime."
+    },
+    {
+      "file": "runtime/core/contextual_buyer_semantics.py",
+      "function": "classify_contextual_buyer_semantics(transcript, session_state, campaign, dialogue_reasoning=None)",
+      "available_inputs": [
+        "buyer transcript",
+        "normalized text",
+        "session turns",
+        "campaign",
+        "previous question metadata",
+        "confirmed and cleared memory gaps",
+        "semantic frame action_id",
+        "candidate_response"
+      ],
+      "unavailable_inputs": [
+        "actual TTS/prosody output",
+        "post-render runtime response metadata",
+        "external provider state"
+      ],
+      "risk_level": "high",
+      "can_be_read_only": true,
+      "might_alter_runtime_behavior": true,
+      "notes": "Richest future hook point, but it touches raw transcript and response decisions. Only consider disabled import after metadata extraction and safety validation."
+    },
+    {
+      "file": "runtime/campaigns/public_openai_chatgpt_plans_dialogue.py",
+      "function": "classify_turn(...)",
+      "available_inputs": [
+        "campaign",
+        "transcript",
+        "normalized text",
+        "turns",
+        "previous question metadata",
+        "commercial state",
+        "campaign-specific action_id",
+        "campaign-specific response"
+      ],
+      "unavailable_inputs": [
+        "cross-campaign runtime action taxonomy",
+        "TTS/prosody state",
+        "provider state"
+      ],
+      "risk_level": "medium",
+      "can_be_read_only": true,
+      "might_alter_runtime_behavior": true,
+      "notes": "Campaign-specific diagnostic point. Not broad enough for the generic runtime shadow logger."
+    },
+    {
+      "file": "runtime/core/live_voice_session_policy.py",
+      "function": "response helper layer",
+      "available_inputs": [
+        "normalized text in helper calls",
+        "turn history for selected helpers",
+        "campaign object for selected helpers",
+        "buyer-facing response text"
+      ],
+      "unavailable_inputs": [
+        "single canonical turn context",
+        "stable runtime action metadata",
+        "unified safety boundary state"
+      ],
+      "risk_level": "high",
+      "can_be_read_only": true,
+      "might_alter_runtime_behavior": true,
+      "notes": "Do not hook here. It is response-generation-adjacent and easy to confuse with runtime control."
+    },
+    {
+      "file": "runtime/action_selector/shadow_runtime_hook.py",
+      "function": "maybe_log_action_selector_shadow_turn(turn_context)",
+      "available_inputs": [
+        "future caller-supplied sanitized turn context",
+        "campaign_id",
+        "turn_id",
+        "runtime_action_id_if_available",
+        "runtime_response_text_available"
+      ],
+      "unavailable_inputs": [
+        "no runtime inputs until explicitly imported by runtime",
+        "no live side effects",
+        "no provider state"
+      ],
+      "risk_level": "low",
+      "can_be_read_only": true,
+      "might_alter_runtime_behavior": false,
+      "notes": "Preferred phase output: importable stub that remains unwired and disabled by default."
+    }
+  ],
+  "recommended_safest_hook_point": "runtime/action_selector/shadow_runtime_hook.py::maybe_log_action_selector_shadow_turn as an unwired disabled stub; for future runtime comparison, observe after contextual_buyer_semantics returns a semantic frame or after realtime_turns.build_runtime_decision builds runtime_decision.",
+  "implementation_mode_recommendation": "disabled_by_default_instrumentation",
+  "live_runtime_wiring_allowed": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "provider_calls_made": false,
+  "local_llm_calls_made": false
+}

@@ -1,0 +1,30 @@
+{
+  "feature_id": "non_llm_action_selector_runtime_shadow_logging",
+  "schema_version": 1,
+  "enabled_by_default": false,
+  "env_gate": "ACTION_SELECTOR_SHADOW_LOGGING_ENABLED=1",
+  "live_runtime_wiring_allowed": false,
+  "response_text_change_allowed": false,
+  "runtime_behavior_change_allowed": false,
+  "memory_mutation_allowed": false,
+  "provider_calls_allowed": false,
+  "side_effects_allowed": false,
+  "buyer_facing_text_generation_allowed": false,
+  "default_output_path": "research/experiments/generated/NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-LOG-001/result.jsonl",
+  "redaction_policy": {
+    "no_raw_private_transcripts": true,
+    "sanitized_synthetic_or_public_replay_only_by_default": true,
+    "live_private_text_must_not_be_copied_into_public_evidence": true
+  },
+  "allowed_modes": [
+    "design_only",
+    "offline_replay_shadow",
+    "disabled_runtime_hook"
+  ],
+  "disallowed_modes": [
+    "live_control",
+    "response_replacement",
+    "side_effect_execution",
+    "memory_mutation"
+  ]
+}
