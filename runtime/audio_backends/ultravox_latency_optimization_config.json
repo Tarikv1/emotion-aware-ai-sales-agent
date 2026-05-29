@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "phase": "4J8",
+  "benchmark_id": "ultravox_latency_optimization_001",
+  "provider_calls_allowed_by_default": false,
+  "required_env_gates": [
+    "ENABLE_ULTRAVOX_SANDBOX=1",
+    "LOCAL_ULTRAVOX_ALLOW_PROVIDER_CALLS=1",
+    "ULTRAVOX_API_KEY present",
+    "LOCAL_ULTRAVOX_ALLOW_PUBLIC_TOOL_TUNNEL=1",
+    "PROJECT_ULTRAVOX_TOOL_TOKEN present"
+  ],
+  "use_ngrok_tunnel": true,
+  "local_endpoint_host": "127.0.0.1",
+  "local_endpoint_port": 8765,
+  "local_endpoint_path": "/ultravox/project-sales-brain-next-move",
+  "websocket_mode": "serverWebSocket",
+  "input_sample_rate": 48000,
+  "output_sample_rate": 48000,
+  "input_audio_format": "s16le_pcm",
+  "existing_audio_only": true,
+  "no_new_audio_generation": true,
+  "no_microphone": true,
+  "no_outbound_phone": true,
+  "real_customer_data_allowed": false,
+  "raw_audio_commit_allowed": false,
+  "live_wiring_allowed": false,
+  "production_call_allowed": false,
+  "max_provider_runs": 1,
+  "max_hosted_sessions": 1,
+  "max_audio_turns": 4,
+  "warmup_turn_count": 1,
+  "measured_turn_count": 3,
+  "manual_audio_input_result_path": "research/experiments/generated/ULTRAVOX-MANUAL-AUDIO-INPUTS-001/result.json",
+  "prepared_audio_input_folder": "local_artifacts/audio_outputs/ultravox/prepared_inputs",
+  "audio_turn_sequence": [
+    {
+      "case_id": "manual_01_what_is_this",
+      "expected_spoken_content": "What is this?"
+    },
+    {
+      "case_id": "manual_02_dont_put_me_in_crm",
+      "expected_spoken_content": "Don't put me in CRM."
+    },
+    {
+      "case_id": "manual_01_what_is_this",
+      "expected_spoken_content": "What is this?"
+    },
+    {
+      "case_id": "manual_02_dont_put_me_in_crm",
+      "expected_spoken_content": "Don't put me in CRM."
+    }
+  ],
+  "repeated_synthetic_inputs_note": "The two prepared manual synthetic inputs are reused only to measure warm-turn latency, not conversation quality.",
+  "optimized_call_payload": {
+    "model": "fixie-ai/ultravox",
+    "temperature": 0,
+    "recordingEnabled": false,
+    "firstSpeaker": "FIRST_SPEAKER_USER",
+    "transcriptOptional": false,
+    "initialOutputMedium": "MESSAGE_MEDIUM_VOICE",
+    "serverWebSocketClientBufferSizeMs": 40,
+    "joinTimeout": "15s",
+    "maxDuration": "75s",
+    "voice": null,
+    "response_length_instruction": "one or two sentences max"
+  },
+  "candidate_optimization_knobs": [
+    {
+      "option_id": "voice_selection",
+      "classification": "supported_but_needs_value",
+      "sent_in_optimized_payload": false,
+      "reason": "Ultravox supports a voice field, but no known built-in Ultravox voice value is available locally. Do not guess."
+    },
+    {
+      "option_id": "initial_output_medium",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "value": "MESSAGE_MEDIUM_VOICE"
+    },
+    {
+      "option_id": "model",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "value": "fixie-ai/ultravox"
+    },
+    {
+      "option_id": "temperature",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "value": 0
+    },
+    {
+      "option_id": "system_prompt_brevity",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true
+    },
+    {
+      "option_id": "first_message_behavior",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "value": "FIRST_SPEAKER_USER"
+    },
+    {
+      "option_id": "response_length_control",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "implementation": "prompt_only"
+    },
+    {
+      "option_id": "tool_declaration",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "implementation": "same project-owned temporary HTTP tool"
+    },
+    {
+      "option_id": "server_websocket_client_buffer",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "value": 40
+    },
+    {
+      "option_id": "low_latency_mode",
+      "classification": "unknown",
+      "sent_in_optimized_payload": false,
+      "reason": "No documented generic low-latency mode was confirmed in official docs."
+    }
+  ]
+}

@@ -126,7 +126,10 @@ def main() -> None:
     ):
         assert_false(result, key)
 
-    if decision.get("phase") == "4J7":
+    if decision.get("phase") == "4J8":
+        if decision.get("latency_optimization_audit_id") != "ULTRAVOX-LATENCY-OPTIMIZATION-AUDIT-001":
+            fail("phase 4J8 decision must reference the latency optimization audit")
+    elif decision.get("phase") == "4J7":
         if decision.get("warm_session_latency_audit_id") != "ULTRAVOX-WARM-SESSION-LATENCY-AUDIT-001":
             fail("phase 4J7 decision must reference the warm-session latency audit")
     elif decision.get("recommendation") != "warm-session latency benchmark next":
@@ -163,9 +166,11 @@ def main() -> None:
     for line in required_report_lines:
         if line not in report:
             fail(f"manual review import report missing line: {line}")
-    if decision.get("phase") == "4J7":
+    if decision.get("phase") in {"4J7", "4J8"}:
         if "Warm p50 first-agent-audio latency seconds:" not in decision_report:
-            fail("phase 4J7 decision report must include warm-session latency metrics")
+            fail("phase 4J7/4J8 decision report must include warm-session latency metrics")
+        if decision.get("phase") == "4J8" and "Decision category:" not in decision_report:
+            fail("phase 4J8 decision report must include decision category")
     elif "Recommendation: `warm-session latency benchmark next`" not in decision_report:
         fail("decision report must include warm-session latency benchmark recommendation")
     if "Secondary recommendation: `test Ultravox voice/voice-ID options later`" not in decision_report:

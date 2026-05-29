@@ -19,6 +19,8 @@ AUDIO_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WEBSO
 AUDIO_QUALITY_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-QUALITY-001" / "result.json"
 WARM_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WARM-SESSION-LATENCY-001" / "result.json"
 WARM_AUDIT_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WARM-SESSION-LATENCY-AUDIT-001" / "result.json"
+OPTIMIZATION_BENCHMARK_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-LATENCY-OPTIMIZATION-BENCHMARK-001" / "result.json"
+OPTIMIZATION_AUDIT_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-LATENCY-OPTIMIZATION-AUDIT-001" / "result.json"
 DECISION_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001" / "result.json"
 DECISION_REPORT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001" / "report.md"
 
@@ -176,6 +178,8 @@ def main() -> None:
     audio_quality = load_json(AUDIO_QUALITY_RESULT) if AUDIO_QUALITY_RESULT.is_file() else None
     warm = load_json(WARM_RESULT) if WARM_RESULT.is_file() else None
     warm_audit = load_json(WARM_AUDIT_RESULT) if WARM_AUDIT_RESULT.is_file() else None
+    optimization = load_json(OPTIMIZATION_BENCHMARK_RESULT) if OPTIMIZATION_BENCHMARK_RESULT.is_file() else None
+    optimization_audit = load_json(OPTIMIZATION_AUDIT_RESULT) if OPTIMIZATION_AUDIT_RESULT.is_file() else None
     decision = load_json(DECISION_RESULT)
     report_text = DECISION_REPORT.read_text(encoding="utf-8") if DECISION_REPORT.is_file() else ""
     if not report_text:
@@ -183,9 +187,15 @@ def main() -> None:
 
     if decision.get("evaluation_id") != "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001":
         fail("unexpected feasibility decision evaluation_id")
-    if decision.get("phase") not in {"4J1", "4J2", "4J3", "4J4", "4J5", "4J5B", "4J7"}:
-        fail("feasibility decision must record phase 4J1, 4J2, 4J3, 4J4, 4J5, 4J5B, or 4J7")
-    if decision.get("phase") == "4J7":
+    if decision.get("phase") not in {"4J1", "4J2", "4J3", "4J4", "4J5", "4J5B", "4J7", "4J8"}:
+        fail("feasibility decision must record phase 4J1, 4J2, 4J3, 4J4, 4J5, 4J5B, 4J7, or 4J8")
+    if decision.get("phase") == "4J8":
+        if optimization is None:
+            fail("phase 4J8 decision requires optimization benchmark evidence")
+        if optimization_audit is None:
+            fail("phase 4J8 decision requires optimization audit evidence")
+        expected = optimization_audit.get("recommendation")
+    elif decision.get("phase") == "4J7":
         if warm is None:
             fail("phase 4J7 decision requires warm-session latency evidence")
         if warm_audit is None:
@@ -215,7 +225,9 @@ def main() -> None:
     for key in ("live_wiring_allowed", "production_call_allowed", "real_customer_data_allowed"):
         if decision.get(key) is not False:
             fail(f"{key} must always stay false")
-    if decision.get("phase") == "4J7" and warm is not None:
+    if decision.get("phase") == "4J8" and optimization is not None:
+        active_evidence = optimization
+    elif decision.get("phase") == "4J7" and warm is not None:
         active_evidence = warm
     elif decision.get("phase") in {"4J5", "4J5B"} and audio is not None:
         active_evidence = audio
@@ -226,6 +238,30 @@ def main() -> None:
     for key in ("sandbox_run", "provider_call_made", "tool_call_attempted", "tool_call_succeeded", "public_tool_endpoint_required", "public_tool_endpoint_available"):
         if active_evidence.get(key) is not None and decision.get(key) != active_evidence.get(key):
             fail(f"{key} must match active sandbox evidence")
+    if decision.get("phase") == "4J8" and optimization is not None and optimization_audit is not None:
+        for key in ("session_created", "join_url_received", "websocket_connected", "audio_turns_attempted", "audio_turns_completed"):
+            if decision.get(key) != optimization.get(key):
+                fail(f"{key} must match optimization benchmark evidence")
+        if decision.get("ultravox_session_created") != optimization.get("session_created"):
+            fail("ultravox_session_created must match optimization session_created evidence")
+        expected_audit_fields = {
+            "warm_measured_turn_count": "optimized_warm_measured_turn_count",
+            "warm_p50_first_agent_audio_latency_seconds": "optimized_warm_p50_first_agent_audio_latency_seconds",
+            "warm_p90_first_agent_audio_latency_seconds": "optimized_warm_p90_first_agent_audio_latency_seconds",
+            "tool_request_count": "tool_request_count",
+            "tool_boundary_passed": "tool_boundary_passed",
+            "product_truth_drift_count": "product_truth_drift_count",
+            "fake_side_effect_count": "fake_side_effect_count",
+            "crm_email_calendar_claim_count": "crm_email_calendar_claim_count",
+            "strong_live_target_met": "strong_live_target_met",
+            "early_demo_target_met": "early_demo_target_met",
+            "latency_classification": "latency_band",
+        }
+        for decision_key, audit_key in expected_audit_fields.items():
+            if decision.get(decision_key) != optimization_audit.get(audit_key):
+                fail(f"{decision_key} must match optimization audit evidence")
+        if decision.get("latency_optimization_audit_id") != "ULTRAVOX-LATENCY-OPTIMIZATION-AUDIT-001":
+            fail("phase 4J8 decision must point at optimization audit")
     if decision.get("phase") == "4J7" and warm is not None and warm_audit is not None:
         for key in ("session_created", "join_url_received", "websocket_connected", "audio_turns_attempted", "audio_turns_completed"):
             if decision.get(key) != warm.get(key):
@@ -278,7 +314,7 @@ def main() -> None:
             for key in ("tool_boundary_enforced", "project_tool_called", "response_follows_project_tool"):
                 if decision.get(key) != websocket_quality.get(key):
                     fail(f"{key} must match websocket quality evidence")
-    if local_endpoint is not None and decision.get("phase") not in {"4J3", "4J4", "4J5", "4J5B", "4J7"}:
+    if local_endpoint is not None and decision.get("phase") not in {"4J3", "4J4", "4J5", "4J5B", "4J7", "4J8"}:
         if decision.get("local_tool_endpoint_completed") is not True:
             fail("decision must record completed local endpoint")
         if decision.get("local_tool_endpoint_passed") is not True:
@@ -306,11 +342,11 @@ def main() -> None:
         "Project runtime owns the sales brain and campaign truth.",
         "Public tool endpoint required:",
     ]
-    if decision.get("phase") == "4J7":
+    if decision.get("phase") in {"4J7", "4J8"}:
         required_report_lines.remove("Public tool endpoint required:")
         required_report_lines.extend(
             [
-                "Warm-session latency run status:",
+                "Latency optimization run status:" if decision.get("phase") == "4J8" else "Warm-session latency run status:",
                 "Provider call made:",
                 "Ultravox session created:",
                 "Join URL received:",
@@ -333,6 +369,8 @@ def main() -> None:
                 "Final ElevenLabs replacement claimed: `false`",
             ]
         )
+        if decision.get("phase") == "4J8":
+            required_report_lines.extend(["P50 improvement seconds:", "P90 improvement seconds:", "Decision category:"])
     elif decision.get("phase") in {"4J5", "4J5B"}:
         required_report_lines.remove("Public tool endpoint required:")
         required_report_lines.extend(

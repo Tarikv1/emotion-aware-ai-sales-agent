@@ -16,6 +16,7 @@ FEASIBILITY_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "ULT
 FEASIBILITY_REPORT_PATH = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001" / "report.md"
 REVIEW_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001" / "result.json"
 REVIEW_REPORT_PATH = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001" / "report.md"
+OPTIMIZATION_AUDIT_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-LATENCY-OPTIMIZATION-AUDIT-001" / "result.json"
 SECRET_PATTERN = re.compile(
     r"(sk-[A-Za-z0-9_-]{20,}|[A-Za-z0-9]{8}\.[A-Za-z0-9]{32}|ULTRAVOX_API_KEY\s*=\s*(?!\.\.\.|<redacted>|your-api-key)[^\s]+|PROJECT_ULTRAVOX_TOOL_TOKEN\s*=\s*(?!\.\.\.|<redacted>|your-token)[^\s]+|Authorization:\s*Bearer\s+[A-Za-z0-9]|X-API-Key:\s*(?!<redacted>|your-api-key)[A-Za-z0-9]|X-Project-Tool-Token:\s*(?!<redacted>|your-token)[A-Za-z0-9]|wss://[^\"'\s]+|https://voice\.ultravox\.ai/[^\"'\s]+)"
 )
@@ -100,6 +101,7 @@ def main() -> None:
     feasibility_report = FEASIBILITY_REPORT_PATH.read_text(encoding="utf-8") if FEASIBILITY_REPORT_PATH.is_file() else ""
     review = load_json(REVIEW_RESULT_PATH)
     review_report = REVIEW_REPORT_PATH.read_text(encoding="utf-8") if REVIEW_REPORT_PATH.is_file() else ""
+    optimization_audit = load_json(OPTIMIZATION_AUDIT_RESULT_PATH) if OPTIMIZATION_AUDIT_RESULT_PATH.is_file() else {}
     if not audit_report:
         fail(f"missing file: {rel(AUDIT_REPORT_PATH)}")
     if not feasibility_report:
@@ -108,7 +110,7 @@ def main() -> None:
         fail(f"missing file: {rel(REVIEW_REPORT_PATH)}")
     assert_no_secret(
         "warm-session audit and refreshed decisions",
-        json.dumps(warm) + json.dumps(audit) + audit_report + json.dumps(feasibility) + feasibility_report + json.dumps(review) + review_report,
+        json.dumps(warm) + json.dumps(audit) + audit_report + json.dumps(feasibility) + feasibility_report + json.dumps(review) + review_report + json.dumps(optimization_audit),
     )
 
     if audit.get("evaluation_id") != "ULTRAVOX-WARM-SESSION-LATENCY-AUDIT-001":
@@ -152,12 +154,20 @@ def main() -> None:
         assert_false(feasibility, key)
         assert_false(review, key)
     for decision in (feasibility, review):
-        if decision.get("phase") != "4J7":
-            fail("refreshed decisions must record phase 4J7")
-        if decision.get("recommendation") != audit.get("recommendation"):
-            fail("refreshed decision recommendation must match warm audit")
-        if decision.get("warm_session_latency_audit_id") != "ULTRAVOX-WARM-SESSION-LATENCY-AUDIT-001":
-            fail("refreshed decision must point at warm latency audit")
+        if decision.get("phase") == "4J8":
+            if not optimization_audit:
+                fail("phase 4J8 decisions require optimization audit evidence")
+            if decision.get("recommendation") != optimization_audit.get("recommendation"):
+                fail("phase 4J8 decision recommendation must match optimization audit")
+            if decision.get("latency_optimization_audit_id") != "ULTRAVOX-LATENCY-OPTIMIZATION-AUDIT-001":
+                fail("phase 4J8 decision must point at optimization audit")
+        elif decision.get("phase") == "4J7":
+            if decision.get("recommendation") != audit.get("recommendation"):
+                fail("refreshed decision recommendation must match warm audit")
+            if decision.get("warm_session_latency_audit_id") != "ULTRAVOX-WARM-SESSION-LATENCY-AUDIT-001":
+                fail("refreshed decision must point at warm latency audit")
+        else:
+            fail("refreshed decisions must record phase 4J7 or 4J8")
         if decision.get("no_final_elevenlabs_replacement_claim") is not True:
             fail("refreshed decision must keep no-final-ElevenLabs-replacement claim")
     for line in (

@@ -1,0 +1,241 @@
+{
+  "evaluation_id": "ULTRAVOX-LATENCY-SETTINGS-OPTIONS-001",
+  "phase": "4J8",
+  "config_path": "runtime/audio_backends/ultravox_latency_optimization_config.json",
+  "provider_call_made": false,
+  "docs_fetch_performed": false,
+  "official_sources": [
+    {
+      "url": "https://docs.ultravox.ai/api-reference/calls/calls-post",
+      "used_for": [
+        "systemPrompt",
+        "temperature",
+        "model",
+        "voice",
+        "initialOutputMedium",
+        "selectedTools",
+        "firstSpeaker",
+        "firstSpeakerSettings",
+        "serverWebSocket",
+        "recordingEnabled",
+        "joinTimeout",
+        "maxDuration"
+      ]
+    },
+    {
+      "url": "https://docs.ultravox.ai/api-reference/calls/calls-stages-get",
+      "used_for": [
+        "stage fields such as temperature, model, systemPrompt, voice, externalVoice, voiceOverrides"
+      ]
+    },
+    {
+      "url": "https://docs.ultravox.ai/agents/making-calls",
+      "used_for": [
+        "direct call override examples for voice, temperature, model, firstSpeakerSettings, selectedTools"
+      ]
+    },
+    {
+      "url": "https://docs.ultravox.ai/voices/overview",
+      "used_for": [
+        "built-in voices, voice cloning, and bring-your-own TTS option categories"
+      ]
+    }
+  ],
+  "repo_files_inspected": [
+    "scripts/run_ultravox_warm_session_latency_benchmark_001.py",
+    "scripts/run_ultravox_websocket_audio_sandbox_001.py",
+    "scripts/run_ultravox_003_synthetic_audio_turn.py",
+    "config/local/voice_ids.json"
+  ],
+  "current_scripts_payload_keys_seen": [
+    "model",
+    "recordingEnabled",
+    "firstSpeaker",
+    "transcriptOptional",
+    "initialOutputMedium",
+    "languageHint",
+    "joinTimeout",
+    "maxDuration",
+    "systemPrompt",
+    "selectedTools",
+    "medium",
+    "serverWebSocket",
+    "inputSampleRate",
+    "outputSampleRate",
+    "clientBufferSizeMs",
+    "dataMessages",
+    "metadata",
+    "voice"
+  ],
+  "voice_availability": {
+    "voice_ids_file_present": true,
+    "local_voice_provider_groups": [
+      "elevenlabs"
+    ],
+    "ultravox_builtin_voice_value_available": false,
+    "note": "Local voice_ids.json contains provider-specific voice IDs, but no confirmed built-in Ultravox voice ID/name for the hosted sandbox."
+  },
+  "voice_change_possible_in_current_sandbox": false,
+  "prompt_brevity_change_possible": true,
+  "response_length_constraints_supported": "prompt_only",
+  "tool_prompt_complexity_reduction_likely_to_help": "plausible_not_proven",
+  "documented_low_latency_mode": "unknown",
+  "unsupported_parameters_sent_as_confirmed": false,
+  "optimized_payload_keys_considered_supported": [
+    "firstSpeaker",
+    "initialOutputMedium",
+    "medium",
+    "medium.serverWebSocket.clientBufferSizeMs",
+    "model",
+    "selectedTools",
+    "selectedTools.temporaryTool",
+    "serverWebSocket",
+    "systemPrompt",
+    "temperature"
+  ],
+  "options": [
+    {
+      "option_id": "system_prompt_brevity",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "payload_keys": [
+        "systemPrompt"
+      ],
+      "evidence": "Create Call supports systemPrompt; current scripts already build the call prompt locally."
+    },
+    {
+      "option_id": "voice_selection",
+      "classification": "supported_but_needs_value",
+      "sent_in_optimized_payload": false,
+      "payload_keys": [
+        "voice"
+      ],
+      "evidence": "Create Call supports voice by ID or unique name, and Voices docs describe built-in voices, but no known Ultravox voice value exists in local config.",
+      "risk": "Guessing a voice could break the one allowed provider run."
+    },
+    {
+      "option_id": "initial_output_medium",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "payload_keys": [
+        "initialOutputMedium"
+      ],
+      "evidence": "Create Call supports initialOutputMedium with voice/text choices; current scripts use voice for audio latency measurement.",
+      "optimized_value": "MESSAGE_MEDIUM_VOICE"
+    },
+    {
+      "option_id": "output_medium_controls",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "payload_keys": [
+        "medium",
+        "serverWebSocket",
+        "initialOutputMedium"
+      ],
+      "evidence": "Create Call supports medium.serverWebSocket and initialOutputMedium; the benchmark keeps serverWebSocket voice output."
+    },
+    {
+      "option_id": "server_websocket_client_buffer",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "payload_keys": [
+        "medium.serverWebSocket.clientBufferSizeMs"
+      ],
+      "evidence": "Create Call serverWebSocket includes clientBufferSizeMs. The docs confirm the field, but not a generic latency guarantee.",
+      "optimized_value": 40
+    },
+    {
+      "option_id": "model",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "payload_keys": [
+        "model"
+      ],
+      "evidence": "Create Call supports model; current local Ultravox scripts already send fixie-ai/ultravox.",
+      "optimized_value": "fixie-ai/ultravox"
+    },
+    {
+      "option_id": "temperature",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "payload_keys": [
+        "temperature"
+      ],
+      "evidence": "Create Call supports temperature between 0 and 1; optimized run uses deterministic temperature 0.",
+      "optimized_value": 0
+    },
+    {
+      "option_id": "prompt_call_stage_simplification",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "payload_keys": [
+        "systemPrompt",
+        "selectedTools"
+      ],
+      "evidence": "Create Call supports systemPrompt and selectedTools in the first stage; prompt complexity can be reduced without moving sales logic into Ultravox."
+    },
+    {
+      "option_id": "first_message_behavior",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "payload_keys": [
+        "firstSpeaker"
+      ],
+      "evidence": "Create Call supports firstSpeaker and firstSpeakerSettings. Existing local scripts have used FIRST_SPEAKER_USER for audio-turn tests.",
+      "optimized_value": "FIRST_SPEAKER_USER"
+    },
+    {
+      "option_id": "response_length_control",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "payload_keys": [
+        "systemPrompt"
+      ],
+      "evidence": "No max-output-token field was confirmed for Create Call; response length is constrained by prompt wording only.",
+      "optimized_value": "one or two sentences max"
+    },
+    {
+      "option_id": "tool_choice_wording",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "payload_keys": [
+        "selectedTools"
+      ],
+      "evidence": "Create Call supports selectedTools. The optimized run keeps the same project-owned temporary HTTP tool and shortens wording around using it."
+    },
+    {
+      "option_id": "tool_declaration",
+      "classification": "supported_now",
+      "sent_in_optimized_payload": true,
+      "payload_keys": [
+        "selectedTools.temporaryTool"
+      ],
+      "evidence": "Create Call selectedTools supports temporary tools; current scripts already route to the local project sales-brain endpoint."
+    },
+    {
+      "option_id": "voice_overrides",
+      "classification": "supported_but_needs_value",
+      "sent_in_optimized_payload": false,
+      "payload_keys": [
+        "voiceOverrides"
+      ],
+      "evidence": "Create Call documents voiceOverrides only when a voice is set. The sandbox has no known voice value, so overrides are not sent."
+    },
+    {
+      "option_id": "external_voice",
+      "classification": "not_safe",
+      "sent_in_optimized_payload": false,
+      "payload_keys": [
+        "externalVoice"
+      ],
+      "evidence": "External voice providers would require separate provider keys and could trigger non-Ultravox TTS usage, which this phase forbids."
+    },
+    {
+      "option_id": "low_latency_mode",
+      "classification": "unknown",
+      "sent_in_optimized_payload": false,
+      "payload_keys": [],
+      "evidence": "No documented generic low-latency mode was confirmed in official Create Call or call-stage docs."
+    }
+  ]
+}

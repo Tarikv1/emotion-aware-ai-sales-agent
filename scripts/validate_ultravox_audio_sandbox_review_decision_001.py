@@ -15,6 +15,7 @@ TRANSCRIPT_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-
 LATENCY_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-LATENCY-AUDIT-001" / "result.json"
 TOOL_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-TOOL-BOUNDARY-AUDIT-001" / "result.json"
 WARM_AUDIT_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WARM-SESSION-LATENCY-AUDIT-001" / "result.json"
+OPTIMIZATION_AUDIT_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-LATENCY-OPTIMIZATION-AUDIT-001" / "result.json"
 DECISION_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001" / "result.json"
 DECISION_REPORT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001" / "report.md"
 SECRET_PATTERN = re.compile(
@@ -79,20 +80,24 @@ def main() -> None:
     latency = load_json(LATENCY_RESULT)
     tool = load_json(TOOL_RESULT)
     warm_audit = load_optional_json(WARM_AUDIT_RESULT)
+    optimization_audit = load_optional_json(OPTIMIZATION_AUDIT_RESULT)
     decision = load_json(DECISION_RESULT)
     report = DECISION_REPORT.read_text(encoding="utf-8") if DECISION_REPORT.is_file() else ""
     if not report:
         fail(f"missing file: {rel(DECISION_REPORT)}")
     assert_no_secret(
         "review decision evidence",
-        json.dumps(packet) + json.dumps(manual) + json.dumps(manual_import) + json.dumps(transcript) + json.dumps(latency) + json.dumps(tool) + json.dumps(warm_audit) + json.dumps(decision) + report,
+        json.dumps(packet) + json.dumps(manual) + json.dumps(manual_import) + json.dumps(transcript) + json.dumps(latency) + json.dumps(tool) + json.dumps(warm_audit) + json.dumps(optimization_audit) + json.dumps(decision) + report,
     )
 
     if decision.get("evaluation_id") != "ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001":
         fail("unexpected audio sandbox review decision evaluation_id")
-    if decision.get("phase") not in {"4J6", "4J6B", "4J7"}:
-        fail("review decision must record phase 4J6, 4J6B, or 4J7")
-    expected = warm_audit.get("recommendation") if decision.get("phase") == "4J7" and warm_audit else expected_recommendation(manual_import, transcript, latency, tool, decision)
+    if decision.get("phase") not in {"4J6", "4J6B", "4J7", "4J8"}:
+        fail("review decision must record phase 4J6, 4J6B, 4J7, or 4J8")
+    if decision.get("phase") == "4J8" and optimization_audit:
+        expected = optimization_audit.get("recommendation")
+    else:
+        expected = warm_audit.get("recommendation") if decision.get("phase") == "4J7" and warm_audit else expected_recommendation(manual_import, transcript, latency, tool, decision)
     if decision.get("recommendation") != expected:
         fail(f"recommendation must be {expected!r}, got {decision.get('recommendation')!r}")
     expected_manual_status = manual_import.get("listening_review_status") or "pending_manual_review"
@@ -115,7 +120,10 @@ def main() -> None:
         assert_false(decision, key)
     if decision.get("next_provider_run_allowed_now") is not False:
         fail("next provider run must not be allowed by this review decision")
-    expected_tool_boundary = warm_audit.get("tool_boundary_passed") if decision.get("phase") == "4J7" and warm_audit else True
+    if decision.get("phase") == "4J8" and optimization_audit:
+        expected_tool_boundary = optimization_audit.get("tool_boundary_passed")
+    else:
+        expected_tool_boundary = warm_audit.get("tool_boundary_passed") if decision.get("phase") == "4J7" and warm_audit else True
     if decision.get("tool_boundary_passed") is not expected_tool_boundary:
         fail("review decision must preserve current tool-boundary evidence")
     if decision.get("transcript_quality_passed") is not True:
@@ -131,7 +139,7 @@ def main() -> None:
         "Runtime behavior changed: `false`",
         "Response text changed: `false`",
     ]
-    if decision.get("phase") == "4J7":
+    if decision.get("phase") in {"4J7", "4J8"}:
         required_report_lines.extend(
             [
                 "Warm measured turn count:",
@@ -142,6 +150,8 @@ def main() -> None:
                 "Latency classification:",
             ]
         )
+        if decision.get("phase") == "4J8":
+            required_report_lines.append("Decision category:")
     if manual_import.get("quality_promising") is True:
         required_report_lines.extend(
             [
