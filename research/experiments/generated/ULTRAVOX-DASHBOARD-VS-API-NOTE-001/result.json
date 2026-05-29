@@ -1,0 +1,16 @@
+{
+  "evaluation_id": "ULTRAVOX-DASHBOARD-VS-API-NOTE-001",
+  "phase": "4J1",
+  "dashboard_may_be_useful_later": true,
+  "api_script_path_used_first": true,
+  "reason_api_first": "repo evidence and reproducibility come before durable dashboard setup",
+  "durable_dashboard_setup_waits_for": [
+    "tool schema is stable",
+    "public HTTPS tool endpoint or client-tool strategy is decided",
+    "secret handling is confirmed",
+    "synthetic sandbox passes"
+  ],
+  "manual_dashboard_upload_performed": false,
+  "secrets_recorded": false,
+  "no_manual_dashboard_upload_note": "No manual dashboard upload was performed in this phase."
+}

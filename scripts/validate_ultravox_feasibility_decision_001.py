@@ -32,15 +32,19 @@ def load_json(path: Path) -> dict[str, Any]:
 
 def expected_recommendation(mock: dict[str, Any], hosted: dict[str, Any]) -> str:
     mock_passed = mock.get("summary", {}).get("tool_boundary_passed") is True
-    provider_run = hosted.get("provider_call_made") is True and hosted.get("run_status") == "provider_run"
+    provider_run = hosted.get("provider_call_made") is True and hosted.get("sandbox_run") is True
     provider_tool_calls_work = hosted.get("tool_calls_work") is True
     provider_failed_boundary = hosted.get("tool_boundary_supported") is False or hosted.get("run_status") == "failed"
+    if hosted.get("run_status") in {"blocked_missing_api_key", "not_run"}:
+        return "provide Ultravox key and rerun gated sandbox when ready"
+    if hosted.get("run_status") == "blocked_no_public_tool_endpoint":
+        return "design safe temporary HTTPS tool endpoint or client-tool strategy next"
     if not mock_passed:
         return "fix tool contract before any provider sandbox"
-    if mock_passed and not provider_run:
-        return "optional gated Ultravox hosted sandbox next"
+    if provider_run and hosted.get("tool_call_attempted") is False:
+        return "do not proceed; keep Ultravox as research only until tool boundary works"
     if provider_run and provider_tool_calls_work:
-        return "limited synthetic voice call evaluation next"
+        return "limited synthetic voice conversation test next, still no real customers and no phone calls"
     if provider_failed_boundary:
         return "keep Ultravox as research/reference only"
     return "keep Ultravox as research/reference only"
@@ -56,6 +60,8 @@ def main() -> None:
 
     if decision.get("evaluation_id") != "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001":
         fail("unexpected feasibility decision evaluation_id")
+    if decision.get("phase") != "4J1":
+        fail("feasibility decision must record phase 4J1")
     expected = expected_recommendation(mock, hosted)
     if decision.get("recommendation") != expected:
         fail(f"recommendation must be {expected!r}, got {decision.get('recommendation')!r}")
@@ -63,6 +69,9 @@ def main() -> None:
     for key in ("live_wiring_allowed", "production_call_allowed", "real_customer_data_allowed"):
         if decision.get(key) is not False:
             fail(f"{key} must always stay false")
+    for key in ("sandbox_run", "provider_call_made", "tool_call_attempted", "tool_call_succeeded", "public_tool_endpoint_required", "public_tool_endpoint_available"):
+        if decision.get(key) != hosted.get(key):
+            fail(f"{key} must match hosted sandbox evidence")
     if decision.get("memory_ownership_decision") != "project_runtime_owns_canonical_memory":
         fail("canonical memory ownership must stay with project runtime")
     if decision.get("sales_brain_ownership_decision") != "project_runtime_owns_sales_brain_and_campaign_truth":
@@ -82,6 +91,7 @@ def main() -> None:
         "Production call allowed: `false`",
         "Project runtime owns canonical memory.",
         "Project runtime owns the sales brain and campaign truth.",
+        "Public tool endpoint required:",
     ]
     for line in required_report_lines:
         if line not in report_text:

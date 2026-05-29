@@ -1,9 +1,14 @@
 # ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001 Report
 
-Recommendation: `optional gated Ultravox hosted sandbox next`
+Recommendation: `provide Ultravox key and rerun gated sandbox when ready`
 Mock boundary passed: `true`
 Hosted sandbox run status: `not_run`
+Sandbox run: `false`
 Provider call made: `false`
+Tool call attempted: `false`
+Tool call succeeded: `false`
+Public tool endpoint required: `true`
+Public tool endpoint available: `false`
 Tool calls work: `none`
 Live wiring allowed: `false`
 Production call allowed: `false`

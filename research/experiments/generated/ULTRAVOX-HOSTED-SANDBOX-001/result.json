@@ -1,9 +1,15 @@
 {
   "evaluation_id": "ULTRAVOX-HOSTED-SANDBOX-001",
-  "phase": "4J0",
+  "phase": "4J1",
   "backend_id": "ultravox_hosted_realtime",
   "run_status": "not_run",
+  "sandbox_run": false,
   "blocker": "Ultravox env gates were not enabled; provider sandbox skipped by default.",
+  "env_file_exists": true,
+  "env_file_ignored_by_git": true,
+  "env_file_loaded": true,
+  "env_file_used": true,
+  "api_key_present": false,
   "env_gates": {
     "ENABLE_ULTRAVOX_SANDBOX=1": false,
     "ULTRAVOX_API_KEY present": false,
@@ -11,16 +17,49 @@
   },
   "provider_call_made": false,
   "provider_call_attempted": false,
+  "browser_websocket_session_mode_used": "none",
+  "public_tool_endpoint_required": true,
+  "public_tool_endpoint_available": false,
+  "public_tool_endpoint_host": null,
+  "tool_call_supported": "unknown",
+  "tool_call_attempted": false,
+  "tool_call_succeeded": false,
   "tool_boundary_supported": null,
   "tool_calls_work": null,
-  "latency_ms": null,
+  "synthetic_case_count": 0,
+  "synthetic_cases_planned": [
+    "What is this?",
+    "I use ChatGPT and other AI tools.",
+    "Don't put me in CRM."
+  ],
+  "provider_minutes_budget_note": "user reported about 30 minutes free use; phase intentionally minimal",
+  "product_truth_drift_count": 0,
+  "unsupported_claim_count": 0,
+  "fake_side_effect_count": 0,
+  "crm_email_calendar_claim_count": 0,
+  "internal_label_leak_count": 0,
+  "source_boundary_violation_count": 0,
+  "memory_conflict_count": 0,
+  "latency_metrics": {},
+  "transcript_metadata": {
+    "available": false,
+    "stored": false,
+    "sanitized": true
+  },
   "response_metadata": {},
-  "tool_call_behavior": "not_observed_without_provider_run",
+  "create_call": {
+    "api_call_made": false
+  },
+  "delete_call": {
+    "delete_api_call_made": false
+  },
+  "outbound_phone_call_made": false,
   "outbound_phone_calls_made": false,
   "real_customer_data_used": false,
   "synthetic_prompts_only": true,
   "raw_private_audio_or_transcripts_used": false,
   "transcripts_sanitized": true,
+  "raw_audio_stored": false,
   "audio_committed": false,
   "model_weights_downloaded": false,
   "openai_api_calls_made": false,
@@ -32,10 +71,36 @@
   "production_call_allowed": false,
   "runtime_behavior_changed": false,
   "response_text_changed": false,
+  "source_grounding": [
+    {
+      "url": "https://docs.ultravox.ai/gettingstarted/how-ultravox-works",
+      "claim": "Ultravox supports REST call creation and joining through SDKs, telephony, or WebSockets; API integration gives control over custom tools and call flows."
+    },
+    {
+      "url": "https://docs.ultravox.ai/tools/overview",
+      "claim": "Tools connect agents to external systems and can retrieve information or perform actions."
+    },
+    {
+      "url": "https://docs.ultravox.ai/tools/custom/http-vs-client-tools",
+      "claim": "HTTP tools run on your server and Ultravox calls them via HTTP; client tools run in the client application."
+    },
+    {
+      "url": "https://docs.ultravox.ai/tools/custom/durable-vs-temporary-tools",
+      "claim": "Temporary tools are defined inline for API-created calls; durable tools are reusable and can be managed through API or web app."
+    },
+    {
+      "url": "https://docs.ultravox.ai/agents/call-stages",
+      "claim": "Call stages can use tools for stage changes and need explicit prompt/tool configuration."
+    },
+    {
+      "url": "https://docs.ultravox.ai/gettingstarted/prompting",
+      "claim": "Prompts should contain full voice-agent behavior, including tool use and spoken-response guidance."
+    }
+  ],
   "notes": [
-    "Default path produces not_run evidence only.",
-    "No outbound phone call is supported by this phase.",
+    "No outbound phone call is supported or attempted.",
     "No real customer audio or transcript is accepted.",
-    "Provider-call branch remains gated and blocked until the hosted tool-call boundary is reviewed."
+    "No API key value is printed or written to evidence.",
+    "Provider call is skipped unless env gates and a public HTTPS tool endpoint are both available."
   ]
 }
