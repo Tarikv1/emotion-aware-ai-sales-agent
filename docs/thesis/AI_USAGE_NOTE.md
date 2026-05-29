@@ -37,6 +37,7 @@ This means:
 - human review remains necessary for live-call quality, voice naturalness, product claims, ethics, and compliance
 - manual listening review can override technically successful audio generation when intelligibility or quality fails
 - local model experiments and generated evidence do not replace independent evaluation of latency, quality, or product readiness
+- hosted provider sandbox evidence does not replace independent review of tool ownership, product truth, side-effect safety, latency, voice quality, or live-readiness claims
 
 ## Practical Interpretation For This Project
 
@@ -44,7 +45,7 @@ AI assistance is permitted as part of the engineering and research workflow for 
 
 The final thesis text, framing, argumentation, and submission remain authored and owned by the student.
 
-Codex and ChatGPT have been used to help create phase prompts, implement local code and documentation changes, design validators, summarize generated evidence, interpret local experiment results, and keep public/private/source boundaries visible. The user made project decisions and manual qualitative judgments, including the Liquid TTS retirement after manual listening review. The project should not state that AI autonomously verified sales effectiveness, live readiness, voice quality, or production readiness.
+Codex and ChatGPT have been used to help create phase prompts, implement local code and documentation changes, design validators, summarize generated evidence, interpret local experiment results, and keep public/private/source boundaries visible. The user made project decisions and manual qualitative judgments, including the Liquid TTS retirement after manual listening review and the Ultravox audio classification as promising but latency-limited. The project should not state that AI autonomously verified sales effectiveness, live readiness, voice quality, or production readiness.
 
 ## Draft Wording For Thesis Or Appendix
 

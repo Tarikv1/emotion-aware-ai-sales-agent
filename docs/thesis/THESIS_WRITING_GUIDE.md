@@ -51,6 +51,7 @@ The thesis is no longer only a small prompt-comparison project. It now has sever
 - local LLM feasibility and rejection for live per-turn use
 - internal prosody/emotion-control taxonomy and planner design
 - audio-model research branches with negative results
+- Ultravox hosted speech-interface sandbox evidence and latency-limited conclusion
 - private call-center data policy and future learning path
 - thesis/product review gates and reproducibility discipline
 
@@ -72,6 +73,7 @@ Post-May-22 writing boundary:
 - local LLMs are research-only until quality and live-latency gates pass
 - Liquid is architecture inspiration only after failed manual listening review
 - Fish-inspired tags are internal controls only and must not leak into buyer-facing ElevenLabs speech
+- Ultravox is a promising hosted speech-interface candidate, not the current runtime path or final ElevenLabs replacement
 - live ASR, TTS, latency, turn-taking, and voice naturalness need live rehearsal evidence
 - raw private transcripts should not be copied into thesis files
 

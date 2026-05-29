@@ -125,9 +125,13 @@ As of the 2026-05-29 thesis update, "sales-ready" should be evaluated more stric
 - memory and loop resistance: does it avoid asking for information already provided and stop after terminal acceptance?
 - source-grounded product claims: are product, price, privacy, API, Enterprise, and plan claims backed by the campaign source bundle or clearly caveated?
 - side-effect safety: does it avoid claiming email, calendar, CRM, payment, official affiliation, hidden tracking, or unsupported follow-up actions?
-- latency budget: any model in the live turn must still fit the perceived live voice target; 2-3 seconds is the working target and higher latency is problematic.
+- tool-boundary enforcement: if a hosted speech interface or tool layer is used, does product truth, canonical memory, verifier logic, and side-effect authority remain inside the project runtime?
+- latency budget: any model or hosted speech interface in the live turn must still fit the perceived live voice target; 2-3 seconds is the working target and higher latency is problematic.
+- warm-turn latency: are p50 and p90 first-agent-audio latencies measured separately from setup/session creation and interpreted as live-demo, thesis-demo, or product-readiness evidence only when gates pass?
 - voice/TTS intelligibility: can a listener understand the spoken words without relying on transcript text?
+- TTS/voice naturalness: does the selected voice sound natural enough for the intended demo or fallback use, and is voice-ID mismatch separated from provider quality?
 - prosody and emotional delivery: does delivery match buyer emotion and sales move while avoiding hype, manipulation, fake laughter, flirting, shouting, guilt, or fear pressure?
+- manual listening review: are intelligibility, naturalness, voice quality, sales tone, pacing, artifact severity, thesis-demo suitability, and product-fallback suitability recorded separately from automated checks?
 
 Evidence interpretation:
 

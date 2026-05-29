@@ -2,12 +2,11 @@
 
 ## Baseline Verification
 
-- Verified thesis-doc baseline commit: `09228e0c23548ae799ca7baf7ede9ced7aea83ad`
-- Commit message: `docs(thesis): update project methodology and decision records`
-- Commit date: `2026-05-25 01:29:50 +0200`
-- Verification command: `git log --format="%H`t%ci`t%s" -- docs/thesis`
-- Result: no later commit touching `docs/thesis` was found before thesis documentation edits.
-- Baseline status: using the known 2026-05-25 thesis checkpoint, not the older 2026-05-22 checkpoint.
+- Verified latest thesis-doc baseline commit: `10117b6df799b869783b4a840503947bf67a1734`
+- Commit message: `docs(thesis): update project documentation from latest evidence`
+- Commit date: `2026-05-29T00:52:29+02:00`
+- Known checkpoint checked: `09228e0c23548ae799ca7baf7ede9ced7aea83ad`, `2026-05-25T01:29:50+02:00`
+- Finding: the known 2026-05-25 checkpoint is not the latest thesis-doc update. The update range for this phase is `10117b6df799b869783b4a840503947bf67a1734..HEAD` before these docs edits.
 
 ## Thesis Files Discovered
 
@@ -28,53 +27,64 @@
 
 ## Files Updated
 
-All discovered thesis files were updated where needed:
-
-- decision log: added post-baseline decisions for OpenAI sales behavior, sales-ready definition, semantic mapping, ElevenLabs voice resolution, LLM role, local LLM rejection for live use, Liquid retirement, Fish-inspired prosody taxonomy, ElevenLabs mapping readiness, and validator/quality-gate separation.
-- roadmap: shifted current work toward prosody cleanup, no-provider ElevenLabs mapping prototype planning, non-LLM/action-selector research, and thesis evidence consolidation.
-- methodology log: added entries for OpenAI semantic sales readiness, local LLM research, Liquid retirement, prosody taxonomy/audit, and this thesis update.
-- reference registry and speech realism references: added Liquid, Fish, Kokoro, PyTorch, local LLM/Ollama benchmark evidence, and prosody-control boundaries.
-- rubric, prompt workflow, baseline spec, project brief, outline, writing guide, AI usage note, collaboration note, and first experiment plan: updated current methodology and limitation framing.
-
-Docs checker support files were updated narrowly:
-
-- `scripts/check_thesis_reference_registry.py`: allowed `example.invalid` as reserved synthetic non-reference test data.
-- `scripts/validate_thesis_reference_registry.py`: raised the wrapper timeout from 30 to 90 seconds because the current repo reference scan exceeded the stale 30-second budget.
+- `docs/thesis/DECISION_LOG.md`: added Ultravox hosted-interface and cleaned prosody/mapping decisions.
+- `docs/thesis/METHODOLOGY_LOG.md`: added Ultravox and prosody cleanup entries, and corrected the thesis baseline to `10117b6d`.
+- `docs/thesis/ROADMAP.md`: moved near-term work from prosody cleanup to thesis consolidation, sales-dialogue quality work, and non-LLM/action-selector research; marked Ultravox latency testing stopped for now.
+- `docs/thesis/THESIS_REFERENCE_REGISTRY.md`: updated Ultravox references/evidence and Fish/prosody status.
+- `docs/thesis/SPEECH_REALISM_REFERENCES.md`: added Ultravox hosted speech-interface source notes and current boundaries.
+- `docs/thesis/EVALUATION_RUBRIC.md`: added tool-boundary, warm-turn latency, voice naturalness, and manual listening-review dimensions.
+- `docs/thesis/BASELINE_SPEC.md`, `PROJECT_BRIEF.md`, `PROMPT_EVAL_WORKFLOW.md`, `AI_USAGE_NOTE.md`, `COLLABORATION_NOTE.md`, `THESIS_WRITING_GUIDE.md`, and `THESIS_OUTLINE.md`: updated current architecture/methodology framing.
+- `research/experiments/generated/THESIS-DOCS-UPDATE-001/result.json` and this report: corrected the baseline and recorded the new evidence range.
 
 ## Files Intentionally Not Updated
 
-- No discovered `docs/thesis` file was intentionally skipped.
-- Runtime, campaign, model, adapter, checkpoint, and audio files were intentionally not edited because this phase is documentation/evidence only.
+- `docs/thesis/FIRST_EXPERIMENT_PLAN.md`: historical phase-1 plan; the post-baseline Ultravox/prosody conclusions do not belong in the first experiment definition.
+- `runtime/**`: this phase is documentation/evidence only.
+- `runtime/campaigns/**`: campaign behavior and response text were out of scope.
+- `scripts/**`: no checker or runtime script change was needed.
+- `local_artifacts/**`: no model weights, generated audio, or local artifacts were copied.
 
 ## Evidence Reviewed
 
-The update used committed/generated evidence after `09228e0c23548ae799ca7baf7ede9ced7aea83ad`, including:
+Post-baseline evidence after `10117b6d`:
 
-- OpenAI live/sales chain: `ELEVENLABS-VOICE-RESOLUTION-AUDIT-001`, `PUBLIC-OPENAI-LIVE-SALES-FLOW-001`, `PUBLIC-OPENAI-LIVE-SALES-READINESS-001`, `PUBLIC-OPENAI-DECISION-STAGE-SELLING-001`, `PUBLIC-OPENAI-MEMORY-PROGRESSION-001`, `PUBLIC-OPENAI-INTENT-PRIORITY-001`, `PUBLIC-OPENAI-SPOKEN-SALES-NATURALNESS-001`, `PUBLIC-OPENAI-COMMERCIAL-CLOSING-001`, `PUBLIC-OPENAI-SEMANTIC-UNDERSTANDING-001`, and `PUBLIC-OPENAI-LIVE-SEMANTIC-PIPELINE-001`.
-- Local LLM chain: `LOCAL-LLM-CONVERSATION-BRAIN-FEASIBILITY-001`, `LOCAL-QWEN-GOLDSET-EVAL-001`, Qwen SFT/QLoRA/tiny/curriculum/mixed-replay evidence, `LOCAL-QWEN-TWO-HEAD-ARCHITECTURE-001`, Qwen/Ollama latency decisions, and `LOCAL-OLLAMA-SMALL-LIVE-ACTION-MODEL-DECISION-001`.
-- Audio/prosody chain: `LOCAL-AUDIO-BACKEND-REGISTRY-001`, Liquid feasibility/listening/retirement evidence, `FISH-INSPIRED-PROSODY-TAXONOMY-001`, `PROSODY-TAXONOMY-QUALITY-DECISION-001`, and `ELEVENLABS-PROSODY-MAPPING-READINESS-001`.
+- Prosody cleanup and mapping: `PROSODY-TAXONOMY-CLEANUP-001`, `ELEVENLABS-PROSODY-MAPPING-PROTOTYPE-001`, `ELEVENLABS-PROSODY-MAPPING-QUALITY-AUDIT-001`, `ELEVENLABS-PROSODY-MAPPING-DECISION-001`
+- Ultravox tool and hosted sandbox: `ULTRAVOX-TOOL-BOUNDARY-MOCK-001`, `ULTRAVOX-LOCAL-TOOL-ENDPOINT-001`, `ULTRAVOX-TUNNEL-SANDBOX-001`, `ULTRAVOX-WEBSOCKET-TEXT-SANDBOX-001`, `ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001`
+- Ultravox review and latency: `ULTRAVOX-AUDIO-LISTENING-REVIEW-MANUAL-001`, `ULTRAVOX-WARM-SESSION-LATENCY-001`, `ULTRAVOX-WARM-SESSION-LATENCY-AUDIT-001`, `ULTRAVOX-LATENCY-OPTIMIZATION-BENCHMARK-001`, `ULTRAVOX-LATENCY-OPTIMIZATION-AUDIT-001`, `ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001`
 
 ## Major Decisions Reflected
 
-- Sales-ready means active selling, not only product explanation.
-- Scenario-specific patches are not enough; semantic frame mapping and buyer-state tracking are now core methodology.
-- Future LLM role is conversation planner only; deterministic layers own memory, verification, source/fact boundaries, side-effect safety, and anti-loop checks.
-- Qwen2.5-7B and tested local small models are not live-ready; action-id-only selector and non-LLM selector paths remain future research.
-- Liquid is retired as TTS/voice backend after failed manual listening review.
-- Fish-inspired prosody labels are internal, backend-neutral, sales-safe, and not live-wired.
-- ElevenLabs remains the current live voice path.
-- Evidence validators and quality gates are separate; manual live/listening review remains necessary.
+- Ultravox is a promising hosted speech-native interface candidate with a working sandbox tool boundary, not the current runtime path and not the final ElevenLabs replacement.
+- Project runtime remains owner of campaign truth, sales-brain decisions, canonical memory, source/fact boundaries, verifier logic, and side-effect safety.
+- Ultravox audio quality is promising in manual review, but warm-turn latency is not live-ready.
+- Stop Ultravox provider latency testing for now.
+- Prosody cleanup preserved 267 labels, 24 categories, and 46 composition rules; mappings were cleaned from 138 to 92; duplicate mapping signatures, vague labels, backend hint boilerplate, mapping warnings, and mapping failures were reduced to 0.
+- The ElevenLabs prosody mapping prototype produced 62 examples with 62 pass, 0 warning, and 0 fail, without provider calls, response text changes, raw Fish tag leakage, or live wiring.
+
+## References Added Or Updated
+
+- Ultravox docs: overview, docs root, how Ultravox works, tools overview, HTTP versus client tools, authentication, durable versus temporary tools, WebSocket, data messages, call stages, making-calls, prompting, SDK, voices, hosted voice join-host validator pattern, pricing, repository, and model cards.
+- Fish Audio S2 / fish-speech / s2-pro / speech.fish.audio status updated with cleaned taxonomy and mapping counts.
+- Speech realism references updated with Ultravox hosted speech-interface boundaries and latency caveat.
 
 ## Side Effects
 
-- Provider/model/audio calls made: false
-- OpenAI API calls made: false
-- Local LLM/Ollama generation made: false
-- Liquid/Fish/Kokoro inference made: false
-- ElevenLabs/live TTS calls made: false
-- Model downloads/training made: false
-- Audio generation made: false
-- Raw private transcript copied: false
+- Provider/model/audio calls made by this docs update: false
+- OpenAI API calls made by this docs update: false
+- Local LLM/Ollama generation made by this docs update: false
+- Liquid/Fish/Kokoro inference made by this docs update: false
+- ElevenLabs/live TTS calls made by this docs update: false
+- Model downloads/training made by this docs update: false
+- Audio generation made by this docs update: false
+- Raw private transcript/audio copied: false
 - Runtime behavior changed: false
 - Response text changed: false
 - Live runtime wiring changed: false
+
+## Validation
+
+- `python scripts\validate_thesis_reference_registry.py`: pass. Initial run exposed missing Ultravox URL coverage; registry was updated with the exact source/docs and validator host-pattern references, then the validator passed.
+- `python scripts\validate_thesis_update_gate.py`: pass.
+- `python scripts\validate_runtime_manifest.py`: pass; reported `runtime_behavior_changed: false` and `response_text_changed: false`.
+- `python scripts\validate_project_drift_guard.py`: pass.
+- `git diff --check`: pass. Git printed line-ending warnings only; no whitespace errors.

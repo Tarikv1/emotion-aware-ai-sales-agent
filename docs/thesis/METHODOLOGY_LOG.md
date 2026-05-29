@@ -16,15 +16,35 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-29 - Ultravox hosted speech-interface sandbox and latency stop decision
+
+- Objective: evaluate Ultravox as a hosted speech-native interface candidate while keeping campaign truth, sales-brain decisions, canonical memory, verifier logic, and side-effect safety inside the project runtime.
+- Action taken: recorded a mock tool-boundary pass, local authenticated HTTP endpoint pass, tunnel strategy and ngrok fallback evidence, WebSocket text sandbox, WebSocket manual-audio sandbox, transcript/tool-boundary quality audits, manual listening review import, warm-session latency benchmark, latency optimization probe, and final stop-provider-testing decision.
+- Data used: synthetic text prompts, prepared manual synthetic audio inputs, committed generated reports, sanitized transcripts, and local/public endpoint preflight evidence. No real customer data, raw private transcript/audio copying, ElevenLabs calls, OpenAI API calls, local LLM generation, model training, production calls, outbound phone calls, or live runtime wiring were used in this thesis-doc update phase.
+- Output created: Ultravox generated evidence from `ULTRAVOX-TOOL-BOUNDARY-MOCK-001` through `ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001`.
+- What was learned: the hosted speech-interface/tool-boundary architecture works in sandbox, and audio quality is promising, but current warm-turn latency is not live-ready. Baseline warm latency was p50 4.638s and p90 5.148s; the optimization probe measured p50 4.69s and p90 6.073s, so it did not justify further provider latency testing now.
+- Why it matters for the thesis: Ultravox is a useful alternative architecture path for speech-native hosting and tool calls, but it must not be written as the current runtime, production-ready, or a final ElevenLabs replacement.
+- Open questions: whether future provider settings, model/voice options, or platform changes can materially reduce latency without moving product truth or side-effect authority out of the project runtime.
+
+### 2026-05-29 - Prosody cleanup and no-provider ElevenLabs mapping prototype
+
+- Objective: turn the Fish-inspired prosody taxonomy from an audited design artifact into a cleaner no-provider mapping prototype for ElevenLabs-style delivery hints, without provider calls or live wiring.
+- Action taken: applied the cleanup plan, kept 267 labels and 24 categories, reduced mappings from 138 to 92, removed duplicate mapping signatures, vague labels, backend hint boilerplate, mapping warnings, and mapping failures, then generated and audited 62 no-provider ElevenLabs mapping examples.
+- Data used: project-owned taxonomy/mapping JSON, deterministic planner output, synthetic sales/prosody examples, and generated audits. Fish, Liquid, Kokoro, OpenAI, ElevenLabs, local LLM/Ollama generation, training, model downloads, provider APIs, live TTS, and live runtime wiring were not used.
+- Output created: `PROSODY-TAXONOMY-CLEANUP-001`, `ELEVENLABS-PROSODY-MAPPING-PROTOTYPE-001`, `ELEVENLABS-PROSODY-MAPPING-QUALITY-AUDIT-001`, and `ELEVENLABS-PROSODY-MAPPING-DECISION-001`.
+- What was learned: an internal prosody taxonomy can be mapped into safe text-shaping/style-hint evidence without leaking raw Fish tags or changing response text, but this is still not audio-quality proof.
+- Why it matters for the thesis: delivery control can now be described as a staged evidence path: taxonomy, cleanup, no-provider mapping, provider-sample generation only after explicit approval, then listening review.
+- Open questions: whether an approved future provider sample run shows an audible improvement over the current ElevenLabs delivery.
+
 ### 2026-05-29 - Thesis update from post-checkpoint evidence
 
 - Objective: update thesis-facing documentation from committed evidence after the latest thesis-doc checkpoint without changing runtime behavior or copying private raw transcripts.
-- Action taken: verified the latest `docs/thesis` commit as `09228e0c23548ae799ca7baf7ede9ced7aea83ad` from `2026-05-25 01:29:50 +0200`, reviewed post-baseline generated evidence selectively, and recorded this update under `THESIS-DOCS-UPDATE-001`.
+- Action taken: verified the latest pre-update `docs/thesis` commit as `10117b6df799b869783b4a840503947bf67a1734` from `2026-05-29T00:52:29+02:00`, confirmed the older known checkpoint `09228e0c23548ae799ca7baf7ede9ced7aea83ad` was no longer the latest thesis-doc baseline, reviewed `10117b6df799b869783b4a840503947bf67a1734..HEAD` generated evidence selectively, and updated `THESIS-DOCS-UPDATE-001`.
 - Data used: committed generated evidence, runtime/config manifests, scripts, git history, and user-confirmed planning decisions cross-checked against local evidence. No provider call, local model generation, audio inference, live TTS, real customer data, or raw private transcript copying was used.
 - Output created: updated thesis docs and `research/experiments/generated/THESIS-DOCS-UPDATE-001/`.
 - What was learned: the project has moved from "can answer product questions" toward "can sell with source grounding, semantic understanding, objection handling, loop resistance, fit-based recommendation, safe no-fit, and delivery control." That is a stronger and stricter target than the earlier prompt baseline.
 - Why it matters for the thesis: final writing must distinguish architecture research, evidence integrity, quality gates, manual review, and live/product readiness instead of flattening them into a single "passed tests" claim.
-- Open questions: how much of the next phase should clean the prosody taxonomy versus test a non-LLM/action-id selector baseline.
+- Open questions: whether the next phase should prioritize sales-dialogue quality work, a non-LLM/action-id selector baseline, or thesis writing consolidation.
 
 ### 2026-05-29 - Fish-inspired prosody taxonomy and quality audit
 

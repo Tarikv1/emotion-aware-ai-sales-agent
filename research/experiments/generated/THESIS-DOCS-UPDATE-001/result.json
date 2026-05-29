@@ -2,14 +2,26 @@
   "experiment_id": "THESIS-DOCS-UPDATE-001",
   "status": "pass",
   "verified_thesis_baseline": {
+    "commit": "10117b6df799b869783b4a840503947bf67a1734",
+    "short_commit": "10117b6d",
+    "message": "docs(thesis): update project documentation from latest evidence",
+    "date": "2026-05-29T00:52:29+02:00",
+    "basis": "Latest commit touching docs/thesis verified with git log -- docs/thesis before this thesis documentation update."
+  },
+  "known_checkpoint_verified": {
     "commit": "09228e0c23548ae799ca7baf7ede9ced7aea83ad",
     "message": "docs(thesis): update project methodology and decision records",
-    "date": "2026-05-25 01:29:50 +0200",
-    "basis": "Latest commit touching docs/thesis as verified with git log -- docs/thesis before thesis documentation edits."
+    "date": "2026-05-25T01:29:50+02:00",
+    "is_latest_thesis_doc_commit": false,
+    "finding": "A later thesis-doc update exists, so the 2026-05-25 checkpoint is not the current thesis-doc baseline."
   },
-  "known_checkpoint_used": true,
-  "later_thesis_doc_commit_found": false,
   "baseline_recorded_before_thesis_doc_edits": true,
+  "update_range_reviewed": "10117b6df799b869783b4a840503947bf67a1734..HEAD before this docs update",
+  "latest_evidence_commit_reviewed": {
+    "commit": "61dbdd91668b7c0358831f7cc064e4c9846da3d2",
+    "message": "test(audio): probe Ultravox latency optimization settings",
+    "date": "2026-05-29T22:59:26+02:00"
+  },
   "thesis_files_discovered": [
     "docs/thesis/AI_USAGE_NOTE.md",
     "docs/thesis/BASELINE_SPEC.md",
@@ -32,7 +44,6 @@
     "docs/thesis/COLLABORATION_NOTE.md",
     "docs/thesis/DECISION_LOG.md",
     "docs/thesis/EVALUATION_RUBRIC.md",
-    "docs/thesis/FIRST_EXPERIMENT_PLAN.md",
     "docs/thesis/METHODOLOGY_LOG.md",
     "docs/thesis/PROJECT_BRIEF.md",
     "docs/thesis/PROMPT_EVAL_WORKFLOW.md",
@@ -42,113 +53,122 @@
     "docs/thesis/THESIS_REFERENCE_REGISTRY.md",
     "docs/thesis/THESIS_WRITING_GUIDE.md"
   ],
-  "thesis_files_intentionally_not_updated": [],
-  "checker_files_updated": [
+  "thesis_files_intentionally_not_updated": [
     {
-      "path": "scripts/check_thesis_reference_registry.py",
-      "why": "Allowed the reserved synthetic example.invalid domain as non-reference test data rather than a thesis source."
-    },
-    {
-      "path": "scripts/validate_thesis_reference_registry.py",
-      "why": "Raised the reference guard wrapper timeout from 30 to 90 seconds after the current repo scan exceeded the stale 30-second budget."
+      "path": "docs/thesis/FIRST_EXPERIMENT_PLAN.md",
+      "why": "Historical phase-1 experiment plan; no post-baseline prosody or Ultravox decision belongs in the first experiment definition."
     }
   ],
   "non_thesis_files_intentionally_not_updated": [
     {
       "path": "runtime/**",
-      "why": "This was a documentation/evidence update only; runtime behavior must remain unchanged."
+      "why": "This phase updates thesis documentation and evidence only."
     },
     {
       "path": "runtime/campaigns/**",
-      "why": "Campaign behavior and response text were out of scope for this phase."
+      "why": "Campaign behavior and response text were out of scope."
     },
     {
       "path": "local_artifacts/**",
-      "why": "Model weights, adapters, checkpoints, and generated audio were out of scope and not touched."
+      "why": "Model weights, audio files, and local artifacts were out of scope and not copied."
+    },
+    {
+      "path": "scripts/**",
+      "why": "No checker or runtime script changes were needed for this update phase."
     }
   ],
   "phase_evidence_ranges_reviewed": [
-    "git log 09228e0c23548ae799ca7baf7ede9ced7aea83ad..HEAD",
-    "ELEVENLABS-VOICE-RESOLUTION-AUDIT-001",
-    "PUBLIC-OPENAI-LIVE-SALES-FLOW-001",
-    "PUBLIC-OPENAI-LIVE-SALES-READINESS-001",
-    "PUBLIC-OPENAI-DECISION-STAGE-SELLING-001",
-    "PUBLIC-OPENAI-MEMORY-PROGRESSION-001",
-    "PUBLIC-OPENAI-INTENT-PRIORITY-001",
-    "PUBLIC-OPENAI-SPOKEN-SALES-NATURALNESS-001",
-    "PUBLIC-OPENAI-COMMERCIAL-CLOSING-001",
-    "PUBLIC-OPENAI-SEMANTIC-UNDERSTANDING-001",
-    "PUBLIC-OPENAI-LIVE-SEMANTIC-PIPELINE-001",
-    "COMMERCIAL-SALES-PERFORMANCE-GATE-001",
-    "LOCAL-LLM-CONVERSATION-BRAIN-FEASIBILITY-001",
-    "LOCAL-QWEN-GOLDSET-EVAL-001",
-    "LOCAL-QWEN-QLORA-TRAINING-DRY-RUN-001",
-    "LOCAL-QWEN-LORA-TINY-OVERFIT-001",
-    "LOCAL-QWEN-LORA-CURRICULUM-EVAL-001",
-    "LOCAL-QWEN-MIXED-REPLAY-QUALITY-GATE-001",
-    "LOCAL-QWEN-TWO-HEAD-ARCHITECTURE-001",
-    "LOCAL-QWEN-LIVE-ACTION-LATENCY-DECISION-001",
-    "LOCAL-QWEN7B-BACKEND-PRUNING-DECISION-001",
-    "LOCAL-OLLAMA-SMALL-LIVE-ACTION-MODEL-DECISION-001",
-    "LOCAL-AUDIO-BACKEND-REGISTRY-001",
-    "LIQUID-AUDIO-LISTENING-REVIEW-DECISION-001",
-    "FISH-INSPIRED-PROSODY-TAXONOMY-001",
-    "PROSODY-TAXONOMY-QUALITY-DECISION-001",
-    "ELEVENLABS-PROSODY-MAPPING-READINESS-001"
+    "git log 10117b6df799b869783b4a840503947bf67a1734..HEAD",
+    "PROSODY-TAXONOMY-CLEANUP-001",
+    "ELEVENLABS-PROSODY-MAPPING-PROTOTYPE-001",
+    "ELEVENLABS-PROSODY-MAPPING-QUALITY-AUDIT-001",
+    "ELEVENLABS-PROSODY-MAPPING-DECISION-001",
+    "ULTRAVOX-TOOL-BOUNDARY-MOCK-001",
+    "ULTRAVOX-LOCAL-TOOL-ENDPOINT-001",
+    "ULTRAVOX-TUNNEL-SANDBOX-001",
+    "ULTRAVOX-WEBSOCKET-TEXT-SANDBOX-001",
+    "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001",
+    "ULTRAVOX-AUDIO-LISTENING-REVIEW-MANUAL-001",
+    "ULTRAVOX-WARM-SESSION-LATENCY-001",
+    "ULTRAVOX-WARM-SESSION-LATENCY-AUDIT-001",
+    "ULTRAVOX-LATENCY-OPTIMIZATION-BENCHMARK-001",
+    "ULTRAVOX-LATENCY-OPTIMIZATION-AUDIT-001",
+    "ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001"
   ],
   "major_decisions_added": [
-    "OpenAI public fixture remains source-grounded and self-serve while post-baseline work improves live sales behavior.",
-    "Sales-ready means active selling, objection handling, decision movement, fit-based recommendation or disqualification, and loop resistance, not only product explanation.",
-    "Dialogue methodology shifted from exact scenario patching toward semantic frame mapping, buyer-state tracking, relation fidelity, ASR alias handling, memory progression, and generalized intent/action planning.",
-    "ElevenLabs voice mismatch was treated as configuration/environment precedence, not a hardcoded campaign voice bug.",
-    "Future LLM role is conversation move planner only; deterministic layers own memory, verifier, source/fact boundary, safety, side-effect boundary, and anti-loop checks.",
-    "Qwen2.5-7B, Qwen LoRA adapters, Ollama Qwen 7B, and tested small local models are not live-ready for per-turn voice use.",
-    "Action-id-only selection, distilled small selectors, and non-LLM classifier/action selectors remain future research paths.",
-    "Liquid Audio is retired as TTS/voice backend after failed manual listening review and retained as architecture inspiration only.",
-    "Fish Audio S2 is inspiration for an internal backend-neutral prosody taxonomy; Fish is not installed/run and raw tags must not leak into buyer-facing speech.",
-    "ElevenLabs remains the current live voice path; Kokoro remains optional/future benchmark only.",
-    "Evidence validators and quality gates are separate; validator pass is not sales/live/product readiness."
+    "Ultravox is a promising hosted speech-native interface candidate with a working sandbox tool boundary, not the current runtime path and not a final ElevenLabs replacement.",
+    "Project runtime remains owner of campaign truth, sales-brain decisions, canonical memory, source/fact boundaries, verifier logic, and side-effect safety.",
+    "Ultravox warm-turn latency is not live-ready: baseline p50 4.638s and p90 5.148s; optimized p50 4.69s and p90 6.073s.",
+    "Stop Ultravox provider latency testing for now unless provider settings, model/voice options, or platform changes plausibly reduce latency.",
+    "Prosody cleanup preserved 267 labels, 24 categories, and 46 composition rules while reducing sales mappings from 138 to 92 and eliminating duplicate mapping signatures, vague labels, backend hint boilerplate, mapping warnings, and mapping failures.",
+    "The ElevenLabs prosody mapping prototype is no-provider design evidence only: 62 examples, 62 pass, 0 warning, 0 fail, no raw Fish tag leakage, no response text change, and no live wiring."
   ],
   "references_added_or_updated": [
-    "Liquid Audio repository/model/license references",
-    "Fish Audio S2, fish-speech, s2-pro, speech.fish.audio references",
-    "Kokoro repository/model/license references",
-    "PyTorch local install selector reference",
-    "Local LLM/Ollama benchmark evidence registry and model identifiers"
+    "Ultravox overview, docs root, how-it-works, tools overview, HTTP versus client tools, authentication, durable versus temporary tools, WebSocket, data messages, call stages, making-calls, prompting, SDK, voices, hosted voice join-host validator pattern, pricing, repository, and model-card references",
+    "Fish Audio S2 / fish-speech entry updated with cleaned taxonomy and mapping counts",
+    "Speech realism references updated with Ultravox hosted speech-interface boundaries",
+    "Thesis outline, writing guide, project brief, baseline spec, rubric, prompt workflow, AI usage note, and collaboration note updated for Ultravox and current prosody evidence"
   ],
   "methodology_updates": [
-    "Phase-based implementation from committed evidence packets",
-    "Source-grounded public product fixture method",
-    "Semantic mapping over scenario-specific patching",
-    "Manual live/listening review as qualitative ground truth",
-    "Evidence validators versus quality gates split",
-    "Local model and audio experiments gated and isolated",
-    "No live runtime wiring without explicit quality and latency gates"
+    "Verified the newer 2026-05-29 thesis baseline rather than reusing the 2026-05-25 checkpoint.",
+    "Recorded hosted speech-interface provider sandbox evidence as architecture research, not product readiness.",
+    "Separated tool-boundary success, manual listening review, warm-turn latency, thesis-demo suitability, live-demo readiness, and production readiness.",
+    "Recorded no-provider prosody mapping as staged design evidence before any future provider sample generation.",
+    "Kept provider calls, audio generation, local model generation, raw private data copying, and runtime behavior edits out of this thesis-doc update phase."
   ],
   "evaluation_rubric_updates": [
-    "Spoken naturalness and TTS intelligibility",
-    "Sales momentum",
-    "Semantic understanding",
-    "Memory and loop resistance",
-    "Source-grounded product claims",
-    "Side-effect safety",
-    "Latency budget",
-    "Prosody/emotional delivery",
-    "Manual listening review",
+    "Tool-boundary enforcement",
+    "Warm-turn latency p50/p90 interpretation",
+    "TTS/voice naturalness and voice-ID mismatch",
+    "Manual listening-review dimensions",
     "Live-demo readiness versus thesis-demo readiness versus product readiness"
   ],
+  "ultravox_conclusion_included": true,
+  "liquid_retirement_included": true,
+  "fish_prosody_taxonomy_included": true,
+  "local_llm_conclusion_included": true,
+  "side_effect_result": "no side effects in this thesis-doc update; reviewed Ultravox evidence also recorded zero fake side effects and zero CRM/email/calendar claims in the accepted sandbox/audit results",
   "runtime_behavior_changed": false,
   "response_text_changed": false,
-  "provider_model_audio_calls_made": false,
-  "raw_private_transcript_copied": false,
+  "provider_model_audio_calls_made_by_this_update": false,
+  "raw_private_transcript_or_audio_copied": false,
   "live_runtime_wiring_changed": false,
-  "provider_calls_made": false,
-  "openai_api_calls_made": false,
-  "local_llm_or_ollama_generation_made": false,
-  "liquid_fish_kokoro_inference_made": false,
-  "elevenlabs_or_live_tts_calls_made": false,
-  "model_downloads_made": false,
-  "model_training_made": false,
-  "audio_generation_made": false,
-  "model_weights_or_checkpoints_committed": false
+  "provider_calls_made_by_this_update": false,
+  "openai_api_calls_made_by_this_update": false,
+  "local_llm_or_ollama_generation_made_by_this_update": false,
+  "liquid_fish_kokoro_inference_made_by_this_update": false,
+  "elevenlabs_or_live_tts_calls_made_by_this_update": false,
+  "model_downloads_made_by_this_update": false,
+  "model_training_made_by_this_update": false,
+  "audio_generation_made_by_this_update": false,
+  "model_weights_or_checkpoints_committed_by_this_update": false,
+  "validation": {
+    "status": "pass",
+    "validators_run": [
+      {
+        "command": "python scripts\\validate_thesis_reference_registry.py",
+        "status": "pass",
+        "note": "Initial run exposed missing Ultravox URL coverage; registry was updated with the exact source/docs and validator host-pattern references, then the validator passed."
+      },
+      {
+        "command": "python scripts\\validate_thesis_update_gate.py",
+        "status": "pass"
+      },
+      {
+        "command": "python scripts\\validate_runtime_manifest.py",
+        "status": "pass",
+        "runtime_behavior_changed": false,
+        "response_text_changed": false
+      },
+      {
+        "command": "python scripts\\validate_project_drift_guard.py",
+        "status": "pass"
+      },
+      {
+        "command": "git diff --check",
+        "status": "pass",
+        "note": "Only existing Git line-ending warnings were printed; no whitespace errors."
+      }
+    ]
+  }
 }

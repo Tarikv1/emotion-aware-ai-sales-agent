@@ -15,6 +15,52 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-140 - Keep Ultravox as a promising but latency-limited hosted speech interface candidate
+
+- Date: 2026-05-29
+- Status: accepted
+- Decision: keep Ultravox as an evaluated hosted speech-native interface candidate, not the current runtime path and not an ElevenLabs replacement. Ultravox may own hosted speech input/output, session transport, WebSocket flow, short-term session mechanics, and provider tool invocation. The project runtime must continue to own campaign truth, sales-brain decisions, canonical buyer memory, source/fact boundaries, verifier logic, and side-effect safety.
+- Why:
+  - `ULTRAVOX-TOOL-BOUNDARY-MOCK-001` and `ULTRAVOX-LOCAL-TOOL-ENDPOINT-001` passed 8/8 synthetic cases with auth and side-effect safety
+  - cloudflared Quick Tunnel did not become the usable path because local DNS/trycloudflare resolution failed; ngrok worked after auth/config and public-endpoint preflight
+  - `ULTRAVOX-WEBSOCKET-TEXT-SANDBOX-001` created a hosted session, connected by WebSocket, completed three synthetic text turns, and observed the project HTTP tool boundary without product-truth drift or fake side effects
+  - `ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001` completed two manual-audio turns, observed user transcripts, received agent audio, called the local HTTP project tool, and kept product-truth drift, fake side effects, CRM/email/calendar claims, and source-boundary violations at zero
+  - manual listening review classified audio quality as promising, with intelligibility 5/5, voice quality 5/5, naturalness 3/5, sales tone 3.5/5, pacing 4.5/5, artifact severity 1/5, thesis-demo suitability 4/5, and product-fallback suitability 5/5
+  - warm-turn latency remained too slow: baseline warm p50 4.638s and p90 5.148s; optimized p50 4.69s and p90 6.073s
+- Alternatives considered:
+  - let Ultravox own sales logic, product truth, or canonical memory
+  - treat successful WebSocket/audio sandbox evidence as live-production readiness
+  - claim Ultravox replaces ElevenLabs before voice/voice-ID comparison and latency gates pass
+  - continue provider latency probing immediately after the optimization probe did not improve results
+- Consequences:
+  - stop Ultravox provider latency testing for now
+  - no live wiring, production call, outbound phone call, real customer use, CRM/email/calendar side effect, or final ElevenLabs replacement claim is allowed
+  - Ultravox remains useful for thesis discussion as an alternative hosted speech-interface architecture path with a working tool boundary but unacceptable current latency for live production calls
+  - revisit only if provider settings, model/voice options, or platform changes plausibly reduce latency
+
+### DEC-139 - Accept cleaned prosody taxonomy and no-provider ElevenLabs mapping prototype as evidence only
+
+- Date: 2026-05-29
+- Status: accepted
+- Decision: accept the cleaned Fish-inspired internal prosody taxonomy and no-provider ElevenLabs mapping prototype as thesis evidence and future delivery-control design input, while keeping the current live speech path unchanged.
+- Why:
+  - `PROSODY-TAXONOMY-CLEANUP-001` preserved 267 labels across 24 categories and 46 composition rules while reducing duplicate mapping signatures to 0, vague labels to 0, backend hint boilerplate to 0, mapping warnings to 0, and mapping failures to 0
+  - sales-prosody mappings were reduced from 138 to 92 after cleanup
+  - Fish tags remain internal only, raw Fish tags are still disallowed in ElevenLabs text, and Fish was not installed or run
+  - `ELEVENLABS-PROSODY-MAPPING-PROTOTYPE-001` created 62 no-provider mapping examples
+  - `ELEVENLABS-PROSODY-MAPPING-QUALITY-AUDIT-001` passed 62/62 examples with 0 warnings and 0 failures, no raw Fish tag leakage, no internal label leakage, no fake side effects, no raw URL speech, and no live wiring allowed
+  - `ELEVENLABS-PROSODY-MAPPING-DECISION-001` recommends a future offline ElevenLabs sample-generation phase only after explicit provider-call approval
+- Alternatives considered:
+  - treat the cleaned mapping prototype as a live ElevenLabs integration
+  - generate provider audio immediately to validate mapping quality
+  - inject bracket tags or internal labels into buyer-facing speech
+  - retire the prosody taxonomy because it is not yet audio-validated
+- Consequences:
+  - this is design and evidence, not audio-quality proof
+  - ElevenLabs remains the current live voice path
+  - future provider sample generation requires explicit provider-call approval and listening review
+  - runtime behavior, response text, and live speech wiring remain unchanged
+
 ### DEC-138 - Treat evidence validators and quality gates as separate instruments
 
 - Date: 2026-05-29

@@ -29,23 +29,24 @@ Status convention:
 
 ## Checkpoint Board
 
-Active phase: evidence consolidation after source-grounded OpenAI sales-readiness work, local LLM feasibility rejection for live use, Liquid TTS retirement, and Fish-inspired prosody taxonomy/audit.
+Active phase: thesis evidence consolidation after source-grounded OpenAI sales-readiness work, local LLM feasibility rejection for live use, Liquid TTS retirement, cleaned prosody/mapping evidence, and Ultravox hosted speech-interface sandbox results.
 
 Current checkpoint:
 
-- [ ] Current: clean up the Fish-inspired prosody taxonomy and sales-prosody mappings before any ElevenLabs mapping prototype. The 4I3 quality decision found no blockers but recorded many warnings and recommended targeted cleanup, not live mapping. Keep Fish tags internal, raw tag injection disabled, ElevenLabs provider calls disabled, and live runtime wiring false.
+- [ ] Current: consolidate thesis documentation and evidence from post-`10117b6d` prosody and Ultravox commits. Keep runtime behavior, campaign behavior, response text, provider calls, audio generation, local model generation, and live wiring unchanged.
 
 Next checkpoints:
 
-- [ ] Next: after cleanup, design an ElevenLabs prosody mapping prototype without provider calls. Limit it to text shaping, punctuation/pause shaping, sentence length control, optional style prompt/settings only if supported, and no raw bracket tags.
-- [ ] Next: test a non-LLM classifier/action-selector baseline against the OpenAI semantic/live-action cases. This is now a serious path because Qwen 7B and tested small local models did not meet both quality and live-turn latency expectations.
-- [ ] Next: decide whether the strongest small action-id-only model result deserves distillation or fine-tuning. Do not return to full local LLM response generation unless the model can meet quality and roughly 2-3 second live-turn latency gates.
-- [ ] Next: consolidate thesis writing evidence around the OpenAI fixture, semantic sales-dialogue evolution, local LLM feasibility rejection, audio-model research branch, prosody control layer, validator optimism, and manual review methodology.
+- [ ] Next: continue sales-dialogue quality work or test a non-LLM classifier/action-selector baseline against the OpenAI semantic/live-action cases. This remains serious because Qwen 7B and tested small local models did not meet both quality and live-turn latency expectations.
+- [ ] Next: decide whether the strongest action-id-only selector path deserves distillation, fine-tuning, or a simpler non-LLM baseline. Do not return to full local LLM response generation unless the model can meet quality and roughly 2-3 second live-turn latency gates.
+- [ ] Next: consolidate thesis writing evidence around the OpenAI fixture, semantic sales-dialogue evolution, local LLM feasibility rejection, audio-model research branch, prosody control layer, Ultravox hosted-interface evidence, validator optimism, and manual review methodology.
+- [ ] Future research: revisit Ultravox only if provider settings, model/voice options, or platform changes can plausibly reduce warm-turn latency. Do not treat Ultravox as live-ready or as the final ElevenLabs replacement.
 - [ ] Future research: design a reusable source-grounded campaign intake workflow for real client campaigns. The workflow should collect official/product-owner sources, create claim objects, separate campaign facts from universal dialogue, define close modes, and run isolation/contamination checks before live routing.
 - [ ] Future research: define compliance, consent, retention, handoff, and sales-review requirements before any real customer deployment or production claim.
 - [ ] Future research: Kokoro local TTS benchmark only if local TTS fallback becomes thesis-relevant. It is not an immediate ElevenLabs replacement.
 - [ ] Rejected/retired: Liquid as TTS/voice backend, thesis-demo TTS, product fallback TTS, and sales-brain replacement after failed manual listening review. Retain as architecture inspiration only.
-- [ ] Blocked: live local LLM wiring, Fish runtime integration, Fish tag injection into spoken text, Liquid/Kokoro live runtime wiring, provider side effects, email/calendar/CRM claims, payment collection, and official OpenAI representation.
+- [ ] Rejected/retired for now: continued Ultravox provider latency probing after the optimization probe failed to improve p50/p90. Keep Ultravox as a promising but latency-limited architecture candidate.
+- [ ] Blocked: live local LLM wiring, Fish runtime integration, Fish tag injection into spoken text, Liquid/Kokoro/Ultravox live runtime wiring, provider side effects, email/calendar/CRM claims, payment collection, outbound phone calls, production calls, real customer use, and official OpenAI representation.
 - [ ] Parked after `PROD-101` until Tarik resumes: select the next remaining English customer-move classifier slice only if recommendation-roleplay positives, adjacent controls, and the stable English guard pass.
 - [ ] Next after `PROD-079`: select the next remaining English customer-move classifier slice only if provider-comparison regression stays stable.
 - [ ] Future persuasion-tactics checkpoint candidate: define and test `guided_option_selection` only after current coverage-boundary/runtime regression work is stable. Guardrails: use only after fit or interest is established, present two real options fairly, preserve `neither`, `not now`, and `explain the difference`, avoid fake urgency, and never pretend the customer already agreed.
@@ -73,13 +74,17 @@ Next checkpoints:
 
 Recently completed checkpoints:
 
+- [x] Ultravox hosted speech-interface research chain, including mock tool-boundary pass, local HTTP sales-brain endpoint pass, ngrok fallback after cloudflared DNS failure, WebSocket text sandbox, WebSocket manual-audio sandbox, transcript/tool-boundary audits, manual listening review, warm-session latency benchmark, latency optimization probe, and final stop-provider-testing decision. Current conclusion: Ultravox is promising as a hosted speech-native interface candidate with a working sandbox tool boundary and promising audio quality, but warm-turn latency is not live-ready; no live wiring, production call, real customer use, outbound phone call, CRM/email/calendar side effect, or final ElevenLabs replacement claim is allowed.
+
+- [x] Prosody taxonomy cleanup and ElevenLabs no-provider mapping prototype. Cleanup preserved 267 labels, 24 categories, and 46 composition rules; reduced sales mappings from 138 to 92; reduced duplicate mapping signatures, vague labels, backend hint boilerplate, mapping warnings, and mapping failures to 0; then generated 62 ElevenLabs mapping examples with 62 pass, 0 warning, 0 fail. Fish tags remain internal, no raw tag leakage is allowed, no provider calls were made, response text did not change, and live wiring remains false.
+
 - [x] Post-baseline OpenAI sales-readiness chain, including voice/config diagnostics, live sales-flow relevance, sales readiness, memory progression, intent priority, spoken sales naturalness, decision-stage selling, commercial closing, semantic understanding, and live semantic pipeline evidence. This keeps the fixture source-grounded and self-serve while changing the evaluation target from passive product explanation to active selling, objection handling, fit-based recommendation/disqualification, and loop resistance. No provider calls, raw private transcript copying, fake side effects, raw URL speech, or official OpenAI affiliation claims are introduced.
 
 - [x] Local LLM conversation-brain feasibility chain, including Qwen2.5-7B compact planner smokes, an 80-case gold-set evaluation, SFT/QLoRA dataset and training probes, tiny overfit, curriculum and mixed-replay failure audits, a two-head architecture decision, Qwen/Ollama latency benchmarks, and small-model action benchmark decisions. Current conclusion: full local LLM response generation is not live-ready; action-id-only selection, distilled small selectors, or non-LLM classifier/action selectors remain research paths; no live LLM wiring is allowed.
 
 - [x] Liquid Audio feasibility and retirement chain. Setup, model download/load, and synthetic TTS smoke were technically successful, but manual listening review found generated speech unintelligible/gibberish with no recognizable words. Liquid is retired as TTS/voice backend and kept only as speech-to-speech architecture inspiration.
 
-- [x] Fish-inspired sales prosody taxonomy and 4I3 quality audit. The project now has 267 internal labels, 24 categories, 46 composition rules, 138 sales mappings, 45 examples, a deterministic planner prototype, quality audits, dry-run evidence, and an ElevenLabs mapping readiness plan. Fish's 15,000+ tag universe is inspiration only, not imported; Fish tags remain internal; tag injection into spoken text is false; live wiring is false; cleanup is recommended before mapping prototype.
+- [x] Fish-inspired sales prosody taxonomy and 4I3 quality audit. The project now has 267 internal labels, 24 categories, 46 composition rules, 92 cleaned sales mappings, a deterministic planner prototype, quality audits, dry-run evidence, an ElevenLabs mapping readiness plan, and a no-provider ElevenLabs mapping prototype. Fish's 15,000+ tag universe is inspiration only, not imported; Fish tags remain internal; tag injection into spoken text is false; live wiring is false.
 
 - [x] `PUBLIC-OPENAI-CLOSE-SEMANTICS-001`, which changes the OpenAI fixture from appointment-style framing to `self_serve_plan_fit`, keeps `self_serve_purchase_link` as the primary individual close mode, routes Enterprise to `contact_sales`, keeps raw URLs out of spoken final responses, preserves the official URL in metadata, keeps `can_send_email` false, and verifies 64 close scenarios including 32 multi-turn cases. It keeps provider calls, live TTS, local LLM calls, email sending, calendar creation, CRM writes, payment collection, OpenAI affiliation claims, real customer data, and `PROD-102` disabled.
 
@@ -720,20 +725,21 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Clean the Fish-inspired prosody taxonomy/mapping warnings before any ElevenLabs prosody mapping prototype. Do not call ElevenLabs, generate audio, wire live runtime, inject Fish tags, open `PROD-102`, add email/calendar/CRM side effects, or claim official OpenAI representation.
+Consolidate thesis evidence and then choose between sales-dialogue quality work and a non-LLM/action-selector baseline. Do not call providers, generate audio, wire live runtime, inject Fish tags, open `PROD-102`, add email/calendar/CRM side effects, run production calls, or claim official OpenAI representation.
 
 Purpose:
 
-- merge or clarify duplicate/vague prosody labels found by the 4I3 audit
-- keep unsafe/disallowed labels blocked from future live style hints
-- preserve Fish-inspired labels as internal project controls, not provider text
-- keep ElevenLabs as the current voice path but leave prosody mapping not wired
-- use the cleaned taxonomy as possible input to a future no-provider ElevenLabs mapping prototype
-- keep private raw transcript text out of public thesis evidence
+- keep `10117b6d..HEAD` evidence reflected in thesis docs without changing runtime behavior
+- preserve ElevenLabs as the current live voice path
+- keep Ultravox as a promising but latency-limited hosted speech-interface candidate, not a replacement
+- keep Fish-inspired labels as internal project controls, not provider text
+- keep local LLM and local audio models out of live runtime until quality and latency gates pass
+- keep private raw transcript/audio out of public thesis evidence
 
 Immediate evidence artifacts:
 
 - OpenAI semantic/sales readiness: `PUBLIC-OPENAI-LIVE-SALES-READINESS-001`, `PUBLIC-OPENAI-SEMANTIC-UNDERSTANDING-001`, `PUBLIC-OPENAI-LIVE-SEMANTIC-PIPELINE-001`
 - Local LLM feasibility and rejection for live use: `LOCAL-QWEN-GOLDSET-EVAL-001`, `LOCAL-QWEN-TWO-HEAD-ARCHITECTURE-001`, `LOCAL-QWEN-LIVE-ACTION-LATENCY-DECISION-001`, `LOCAL-OLLAMA-SMALL-LIVE-ACTION-MODEL-DECISION-001`
 - Liquid retirement: `LIQUID-AUDIO-LISTENING-REVIEW-DECISION-001`
-- Prosody taxonomy and audit: `FISH-INSPIRED-PROSODY-TAXONOMY-001`, `PROSODY-TAXONOMY-QUALITY-DECISION-001`, `ELEVENLABS-PROSODY-MAPPING-READINESS-001`
+- Prosody cleanup and mapping: `PROSODY-TAXONOMY-CLEANUP-001`, `ELEVENLABS-PROSODY-MAPPING-PROTOTYPE-001`, `ELEVENLABS-PROSODY-MAPPING-QUALITY-AUDIT-001`, `ELEVENLABS-PROSODY-MAPPING-DECISION-001`
+- Ultravox hosted speech-interface evidence: `ULTRAVOX-WEBSOCKET-TEXT-SANDBOX-001`, `ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001`, `ULTRAVOX-AUDIO-LISTENING-REVIEW-MANUAL-001`, `ULTRAVOX-WARM-SESSION-LATENCY-001`, `ULTRAVOX-LATENCY-OPTIMIZATION-AUDIT-001`, `ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001`

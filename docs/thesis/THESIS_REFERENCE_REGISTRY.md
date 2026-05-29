@@ -494,23 +494,45 @@ Thesis caution:
 
 - provider docs justify engineering choices, not objective quality claims. Audio quality claims require measured runs and listening review.
 
-### ULTRAVOX-001 realtime voice evaluation
+### Ultravox hosted speech-interface evaluation
 
-Detailed source index:
+Detailed source and evidence index:
 
 - `research/experiments/generated/ULTRAVOX-001/ULTRAVOX-001-bounded-realtime-voice-evaluation-report.md`
 - `research/experiments/generated/ULTRAVOX-002/ULTRAVOX-002-synthetic-live-smoke-report.md`
 - `research/experiments/generated/ULTRAVOX-003/ULTRAVOX-003-synthetic-audio-turn-report.md`
+- `research/experiments/generated/ULTRAVOX-TOOL-BOUNDARY-MOCK-001/`
+- `research/experiments/generated/ULTRAVOX-LOCAL-TOOL-ENDPOINT-001/`
+- `research/experiments/generated/ULTRAVOX-TUNNEL-SANDBOX-001/`
+- `research/experiments/generated/ULTRAVOX-WEBSOCKET-TEXT-SANDBOX-001/`
+- `research/experiments/generated/ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001/`
+- `research/experiments/generated/ULTRAVOX-AUDIO-LISTENING-REVIEW-MANUAL-001/`
+- `research/experiments/generated/ULTRAVOX-WARM-SESSION-LATENCY-001/`
+- `research/experiments/generated/ULTRAVOX-LATENCY-OPTIMIZATION-AUDIT-001/`
+- `research/experiments/generated/ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001/`
 
 Provider and open-source sources used:
 
 - UltraVox overview: https://docs.ultravox.ai/overview
+- UltraVox docs root: https://docs.ultravox.ai/
 - UltraVox how it works: https://docs.ultravox.ai/gettingstarted/how-ultravox-works
+- UltraVox tools overview: https://docs.ultravox.ai/tools/overview
+- UltraVox HTTP versus client tools: https://docs.ultravox.ai/tools/custom/http-vs-client-tools
+- UltraVox tool authentication: https://docs.ultravox.ai/tools/custom/authentication
+- UltraVox durable versus temporary tools: https://docs.ultravox.ai/tools/custom/durable-vs-temporary-tools
 - UltraVox Create Call API: https://docs.ultravox.ai/api-reference/calls/calls-post
+- UltraVox call stages docs: https://docs.ultravox.ai/agents/call-stages
+- UltraVox making calls docs: https://docs.ultravox.ai/agents/making-calls
+- UltraVox call stages API: https://docs.ultravox.ai/api-reference/calls/calls-stages-get
+- UltraVox prompting docs: https://docs.ultravox.ai/gettingstarted/prompting
 - UltraVox calls API endpoint: https://api.ultravox.ai/api/calls
 - UltraVox call delete endpoint template: https://api.ultravox.ai/api/calls/
 - UltraVox WebSocket integration: https://docs.ultravox.ai/apps/websockets
+- UltraVox data messages: https://docs.ultravox.ai/apps/datamessages
+- UltraVox SDKs: https://docs.ultravox.ai/apps/sdks
 - UltraVox custom tools: https://docs.ultravox.ai/tools/custom/overview
+- UltraVox voices overview: https://docs.ultravox.ai/voices/overview
+- UltraVox hosted voice join host pattern used by validators: https://voice\.ultravox\.ai/
 - UltraVox FAQ: https://docs.ultravox.ai/gettingstarted/faq
 - UltraVox pricing: https://www.ultravox.ai/pricing
 - fixie-ai/ultravox GitHub repository: https://github.com/fixie-ai/ultravox
@@ -521,20 +543,26 @@ Project use:
 
 - bounded realtime voice architecture evaluation
 - synthetic hosted API smoke testing
-- hosted API versus hosted console versus open-source self-hosting decision support
+- hosted HTTP tool and WebSocket sandbox decision support
 - provider boundary, retention, lock-in, and guarded-runtime control analysis
+- hosted speech-interface architecture comparison against the current ElevenLabs path
 
 Current project status:
 
-- `ULTRAVOX-001` is dry-run only
-- `ULTRAVOX-002` is approved for one synthetic hosted API smoke test with env-only key handling
-- `ULTRAVOX-003` ran one synthetic customer-audio hosted API turn with env-only key handling and fixture fallback; the result is transport-positive but latency/quality-inconclusive because no transcript or agent audio was received
-- customer audio, voice cloning, durable provider agents, provider-owned business logic, and runtime integration remain blocked
+- local mock tool boundary passed
+- local HTTP sales-brain endpoint passed 8/8 synthetic cases with auth and side-effect safety
+- public tunneling was required for hosted HTTP tool calls; cloudflared Quick Tunnel failed due local DNS/trycloudflare resolution and ngrok worked after auth/config
+- WebSocket text sandbox created a hosted session, connected over WebSocket, completed synthetic text turns, and observed the project HTTP tool boundary without product-truth drift or fake side effects
+- WebSocket manual-audio sandbox completed two manual-audio turns, observed user transcripts, returned agent audio, and called the local HTTP project tool
+- manual listening review classified audio as promising, with intelligibility 5/5, voice quality 5/5, naturalness 3/5, sales tone 3.5/5, pacing 4.5/5, artifact severity 1/5, thesis-demo suitability 4/5, and product-fallback suitability 5/5
+- warm-session latency remained not live-ready: baseline p50 4.638s and p90 5.148s; optimized p50 4.69s and p90 6.073s
+- current decision: stop provider latency testing for now, keep Ultravox as a promising but latency-limited hosted speech-interface candidate, and do not claim final ElevenLabs replacement
+- real customer audio, raw private transcripts, outbound phone calls, voice cloning, durable provider agents, provider-owned business logic, runtime integration, and production calls remain blocked
 - `PROD-102` remains closed
 
 Thesis caution:
 
-- UltraVox provider docs and model cards justify system-design hypotheses, not latency or quality claims. A future synthetic live run must measure latency and preserve protected-response exactness before any thesis or product claim.
+- UltraVox provider docs and model cards justify system-design hypotheses, not product readiness. Sandbox passes prove a tool-boundary path can work under constraints; they do not prove live sales quality. Cite latency, manual listening review, and no-live-wiring boundaries separately.
 
 ### ElevenLabs voice design and remixing
 
@@ -583,7 +611,7 @@ Project use:
   - Fish speech docs: https://speech.fish.audio/
   - Fish license file: https://github.com/fishaudio/fish-speech/blob/main/LICENSE
 - Project use: inspiration for internal backend-neutral prosody/emotion-control taxonomy and deterministic prosody planner.
-- Current project status: Fish is not installed, run, or wired. The project records Fish's 15,000+ tag support as inspiration only, does not import the full tag universe, and blocks raw Fish tags from ElevenLabs spoken text.
+- Current project status: Fish is not installed, run, or wired. The project records Fish's 15,000+ tag support as inspiration only, does not import the full tag universe, and blocks raw Fish tags from ElevenLabs spoken text. The cleaned internal taxonomy records 267 labels, 24 categories, 46 composition rules, and 92 sales mappings after reducing duplicate mapping signatures, vague labels, backend hint boilerplate, mapping warnings, and mapping failures to 0.
 - License/commercial note: registry evidence records a research/non-commercial license posture and separate commercial license requirement.
 - Thesis caution: cite Fish as architecture/control inspiration only, not as an implementation dependency or measured provider-quality result.
 

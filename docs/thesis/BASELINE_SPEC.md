@@ -161,6 +161,7 @@ Current baseline as of 2026-05-29:
 - deterministic/campaign-owned dialogue remains the active live-response authority
 - source-grounded campaign configs own product truth, plan names, price/source claims, privacy boundaries, close routes, and no-fit language
 - ElevenLabs remains the current live TTS path
+- Ultravox is an evaluated hosted speech-native interface candidate, but it is not live-wired and is not the final ElevenLabs replacement
 - local LLMs are research-only and are not live-wired
 - Liquid, Fish, and Kokoro are not live-wired
 - Liquid is architecture inspiration only after failed manual listening review
@@ -181,3 +182,4 @@ Current local LLM conclusion:
 - full local LLM response generation is not live-ready
 - action-id-only selection, distilled small selectors, and non-LLM classifier/action selectors are future research paths
 - no local LLM live wiring is allowed until quality and roughly 2-3 second live-turn latency gates pass
+- no Ultravox live wiring is allowed until tool-boundary, voice/voice-ID comparison, and warm-turn latency gates pass

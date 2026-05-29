@@ -47,6 +47,7 @@ Likely contributions:
 - emotion-to-strategy adaptation experiments
 - replay-first live failure methodology and adversarial regression matrix design
 - bilingual runtime and voice checkpoints
+- hosted speech-interface/tool-boundary evidence with latency limits
 - privacy-first private-call learning scaffold
 - language-aware speech-realism reference layer for future voice naturalness work
 
@@ -389,6 +390,8 @@ Discuss the evolution:
 - planned speech-realism layer
 - Liquid Audio feasibility and retirement after failed manual listening review
 - Fish-inspired internal prosody taxonomy and deterministic planner
+- no-provider ElevenLabs prosody mapping prototype
+- Ultravox hosted speech-interface sandbox, manual listening review, and latency-limited conclusion
 - Kokoro as optional future local TTS benchmark candidate
 - ElevenLabs as the current live voice path
 - live TTS gating for generic campaigns
@@ -409,6 +412,12 @@ Evidence sources:
 - `research/experiments/generated/FISH-INSPIRED-PROSODY-TAXONOMY-001/`
 - `research/experiments/generated/PROSODY-TAXONOMY-QUALITY-DECISION-001/`
 - `research/experiments/generated/ELEVENLABS-PROSODY-MAPPING-READINESS-001/`
+- `research/experiments/generated/PROSODY-TAXONOMY-CLEANUP-001/`
+- `research/experiments/generated/ELEVENLABS-PROSODY-MAPPING-PROTOTYPE-001/`
+- `research/experiments/generated/ELEVENLABS-PROSODY-MAPPING-QUALITY-AUDIT-001/`
+- `research/experiments/generated/ULTRAVOX-WEBSOCKET-TEXT-SANDBOX-001/`
+- `research/experiments/generated/ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001/`
+- `research/experiments/generated/ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001/`
 - `research/experiments/generated/LIVE-DEMO-GENERIC-CAMPAIGN-LIVE-TTS-GATE-001/`
 - `research/experiments/generated/LIVE-DEMO-TTS-AUDIO-PLAYBACK-001/`
 - `research/experiments/generated/PUBLIC-OPENAI-CLOSE-SEMANTICS-001/`

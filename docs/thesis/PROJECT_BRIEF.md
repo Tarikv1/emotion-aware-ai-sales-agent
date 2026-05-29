@@ -47,6 +47,7 @@ Constraints for the first version:
 - semantic frame mapping, buyer-state tracking, and loop resistance for sales dialogue
 - local LLM/action-selector research as an isolated future-planning track
 - internal backend-neutral prosody planning as a future delivery-control layer
+- hosted speech-native interface evaluation as an isolated architecture research track
 
 ## Out of scope
 
@@ -60,7 +61,7 @@ Constraints for the first version:
 - fake email, calendar, CRM, or payment side effects
 - production deployment or real customer use without compliance, consent, retention, and handoff review
 - live local LLM response generation
-- Liquid, Fish, or Kokoro live voice/runtime wiring
+- Liquid, Fish, Kokoro, or Ultravox live voice/runtime wiring
 - raw Fish-style tags in buyer-facing speech
 
 ## Current risks
@@ -110,6 +111,7 @@ Current architecture posture:
 - a future LLM may act as conversation move planner, but it must not own campaign facts, source truth, side effects, or final safety boundaries
 - deterministic memory/verifier layers should store what happened, detect loops, enforce source/safety boundaries, and request at most one replan before hard fallback
 - the current live voice path remains ElevenLabs
+- Ultravox is a promising hosted speech-interface candidate with a working sandbox tool boundary, but current latency is not live-ready and it is not a final ElevenLabs replacement
 - Liquid is architecture inspiration only after failed manual listening review
 - Fish Audio S2 is inspiration for internal prosody labels only; Fish tags must not leak into ElevenLabs speech
 - Kokoro remains optional/future local TTS benchmark candidate, not an immediate replacement

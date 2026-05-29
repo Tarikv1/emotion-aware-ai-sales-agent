@@ -74,6 +74,7 @@ For post-baseline campaign/dialogue phases, use:
 - source-grounded claim objects for product-specific facts
 - deterministic replay for live-observed failures
 - exact regression cases plus generalized variants and negative controls
+- hosted speech-provider tool-boundary checks when a provider interface may call the project runtime
 - cross-campaign contamination checks when campaign facts or selectors change
 - universal isolation checks when real product fixtures are added
 - human/live review for ASR, TTS, latency, voice naturalness, and sales-quality judgments
@@ -108,6 +109,7 @@ Validator interpretation:
 - quality gates can fail without blocking an honest evidence commit
 - passing validators must not be written as live/product readiness
 - manual live tests and listening reviews are required after architecture changes that affect sales flow, voice delivery, TTS, latency, or perceived naturalness
+- provider sandbox passes must not be treated as live wiring approval unless tool ownership, product truth, side-effect safety, latency, and listening-review gates all pass
 
 Operational workflow:
 

@@ -55,6 +55,7 @@ The post-May-22 development workflow also used iterative human/AI collaboration:
 - Deterministic validation is treated as engineering evidence, not a substitute for Tarik's live listening review, sales-expert review, or compliance review.
 - Tarik clarified that sales-ready means active selling, objection handling, fit-based recommendation/disqualification, decision movement, and loop resistance, not only product explanation.
 - Tarik made the manual qualitative judgment that Liquid TTS output was unintelligible/gibberish, which caused Liquid's retirement as a voice backend despite successful setup and synthetic smoke generation.
+- Tarik made the manual qualitative judgment that Ultravox audio quality was promising for thesis/demo and fallback exploration, while latency evidence kept it out of live runtime and prevented any final ElevenLabs replacement claim.
 - AI-assisted development supported prompt design, implementation planning, debugging, validator design, evidence interpretation, and documentation updates, but final project decisions and thesis claims remain Tarik's responsibility.
 
 ## Draft Wording For Thesis
