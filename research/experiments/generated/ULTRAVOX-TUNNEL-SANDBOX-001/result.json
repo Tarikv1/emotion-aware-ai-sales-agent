@@ -1,20 +1,20 @@
 {
   "evaluation_id": "ULTRAVOX-TUNNEL-SANDBOX-001",
   "phase": "4J3",
-  "run_status": "not_run_tunnel_gates_disabled",
-  "blocker": "Temporary public tool tunnel gates were not fully enabled; tunnel skipped.",
+  "run_status": "blocked_no_tunnel_tool",
+  "blocker": "No already-installed supported tunnel CLI found. Install cloudflared or ngrok and rerun.",
   "env_file_exists": true,
   "env_file_ignored_by_git": true,
   "env_file_loaded": true,
   "env_file_used": true,
   "api_key_present": true,
-  "tool_token_present": false,
+  "tool_token_present": true,
   "env_gates": {
     "ENABLE_ULTRAVOX_SANDBOX=1": true,
     "LOCAL_ULTRAVOX_ALLOW_PROVIDER_CALLS=1": true,
     "ULTRAVOX_API_KEY present": true,
-    "LOCAL_ULTRAVOX_ALLOW_PUBLIC_TOOL_TUNNEL=1": false,
-    "PROJECT_ULTRAVOX_TOOL_TOKEN present": false
+    "LOCAL_ULTRAVOX_ALLOW_PUBLIC_TOOL_TUNNEL=1": true,
+    "PROJECT_ULTRAVOX_TOOL_TOKEN present": true
   },
   "local_endpoint_host": "127.0.0.1",
   "local_endpoint_port": 8765,

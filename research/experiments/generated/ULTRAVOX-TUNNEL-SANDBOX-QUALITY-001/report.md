@@ -6,7 +6,7 @@ Ultravox session created: `false`
 Tool call attempted: `false`
 Tool call succeeded: `false`
 Hosted turns attempted: `0`
-Hosted turns not run reason: `not_run_tunnel_gates_disabled`
+Hosted turns not run reason: `no_tunnel_tool`
 Product truth drift count: `0`
 Unsupported claim count: `0`
 Fake side-effect count: `0`

@@ -7,7 +7,7 @@
   "tool_call_attempted": false,
   "tool_call_succeeded": false,
   "hosted_turns_attempted": 0,
-  "hosted_turns_not_run_reason": "not_run_tunnel_gates_disabled",
+  "hosted_turns_not_run_reason": "no_tunnel_tool",
   "product_truth_drift_count": 0,
   "unsupported_claim_count": 0,
   "fake_side_effect_count": 0,

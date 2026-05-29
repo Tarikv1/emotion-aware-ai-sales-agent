@@ -1,12 +1,12 @@
 # ULTRAVOX-TUNNEL-SANDBOX-001 Report
 
-Run status: `not_run_tunnel_gates_disabled`
-Blocker: `Temporary public tool tunnel gates were not fully enabled; tunnel skipped.`
+Run status: `blocked_no_tunnel_tool`
+Blocker: `No already-installed supported tunnel CLI found. Install cloudflared or ngrok and rerun.`
 Env file exists: `true`
 Env file ignored by Git: `true`
 Env file loaded: `true`
 API key present: `true`
-Tool token present: `false`
+Tool token present: `true`
 Local server started: `false`
 Tunnel attempted: `false`
 Tunnel tool used: `None`

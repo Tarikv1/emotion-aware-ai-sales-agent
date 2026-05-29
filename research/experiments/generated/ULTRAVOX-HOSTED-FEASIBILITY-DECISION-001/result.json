@@ -1,9 +1,9 @@
 {
   "evaluation_id": "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001",
   "phase": "4J3",
-  "recommendation": "provide tunnel gate and tool token, then rerun gated tunnel sandbox when ready",
-  "tunnel_sandbox_run_status": "not_run_tunnel_gates_disabled",
-  "blocker": "Temporary public tool tunnel gates were not fully enabled; tunnel skipped.",
+  "recommendation": "install cloudflared or ngrok, rerun",
+  "tunnel_sandbox_run_status": "blocked_no_tunnel_tool",
+  "blocker": "No already-installed supported tunnel CLI found. Install cloudflared or ngrok and rerun.",
   "sandbox_run": false,
   "provider_call_made": false,
   "provider_call_attempted": false,

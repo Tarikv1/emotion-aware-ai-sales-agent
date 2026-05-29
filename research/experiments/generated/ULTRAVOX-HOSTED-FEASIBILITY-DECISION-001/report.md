@@ -1,8 +1,8 @@
 # ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001 Report
 
-Recommendation: `provide tunnel gate and tool token, then rerun gated tunnel sandbox when ready`
-Tunnel sandbox run status: `not_run_tunnel_gates_disabled`
-Blocker: `Temporary public tool tunnel gates were not fully enabled; tunnel skipped.`
+Recommendation: `install cloudflared or ngrok, rerun`
+Tunnel sandbox run status: `blocked_no_tunnel_tool`
+Blocker: `No already-installed supported tunnel CLI found. Install cloudflared or ngrok and rerun.`
 Tunnel attempted: `false`
 Tunnel tool used: `None`
 Public endpoint test passed: `false`
