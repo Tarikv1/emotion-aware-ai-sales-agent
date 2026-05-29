@@ -1,8 +1,8 @@
 # ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001 Report
 
-Recommendation: `provide Ultravox key and rerun gated sandbox when ready`
+Recommendation: `design safe temporary HTTPS tool endpoint or client-tool strategy next`
 Mock boundary passed: `true`
-Hosted sandbox run status: `not_run`
+Hosted sandbox run status: `blocked_no_public_tool_endpoint`
 Sandbox run: `false`
 Provider call made: `false`
 Tool call attempted: `false`

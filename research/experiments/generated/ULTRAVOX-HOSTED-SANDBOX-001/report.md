@@ -1,12 +1,12 @@
 # ULTRAVOX-HOSTED-SANDBOX-001 Report
 
-Run status: `not_run`
+Run status: `blocked_no_public_tool_endpoint`
 Sandbox run: `false`
-Blocker: Ultravox env gates were not enabled; provider sandbox skipped by default.
+Blocker: Ultravox hosted HTTP tools require a public HTTPS tool endpoint or a client-tool strategy; none is available in this phase.
 Env file exists: `true`
 Env file ignored by Git: `true`
 Env file loaded: `true`
-API key present: `false`
+API key present: `true`
 Provider call made: `false`
 Tool call attempted: `false`
 Tool call succeeded: `false`
@@ -24,9 +24,9 @@ Response text changed: `false`
 
 ## Env Gates
 
-- ENABLE_ULTRAVOX_SANDBOX=1: `false`
-- ULTRAVOX_API_KEY present: `false`
-- LOCAL_ULTRAVOX_ALLOW_PROVIDER_CALLS=1: `false`
+- ENABLE_ULTRAVOX_SANDBOX=1: `true`
+- ULTRAVOX_API_KEY present: `true`
+- LOCAL_ULTRAVOX_ALLOW_PROVIDER_CALLS=1: `true`
 
 ## Tool Boundary
 

@@ -1,9 +1,9 @@
 {
   "evaluation_id": "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001",
   "phase": "4J1",
-  "recommendation": "provide Ultravox key and rerun gated sandbox when ready",
+  "recommendation": "design safe temporary HTTPS tool endpoint or client-tool strategy next",
   "mock_boundary_passed": true,
-  "hosted_sandbox_run_status": "not_run",
+  "hosted_sandbox_run_status": "blocked_no_public_tool_endpoint",
   "sandbox_run": false,
   "provider_call_made": false,
   "tool_call_attempted": false,

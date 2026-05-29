@@ -6,11 +6,11 @@
   "env_file_exists": true,
   "env_file_ignored_by_git": true,
   "env_file_loaded": true,
-  "api_key_present": false,
+  "api_key_present": true,
   "env_gates": {
-    "ENABLE_ULTRAVOX_SANDBOX=1": false,
-    "ULTRAVOX_API_KEY present": false,
-    "LOCAL_ULTRAVOX_ALLOW_PROVIDER_CALLS=1": false
+    "ENABLE_ULTRAVOX_SANDBOX=1": true,
+    "ULTRAVOX_API_KEY present": true,
+    "LOCAL_ULTRAVOX_ALLOW_PROVIDER_CALLS=1": true
   },
   "outbound_phone_call_made": false,
   "browser_websocket_session_mode_used": "none",
