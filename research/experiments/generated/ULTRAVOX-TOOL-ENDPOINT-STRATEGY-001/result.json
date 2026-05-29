@@ -1,0 +1,72 @@
+{
+  "evaluation_id": "ULTRAVOX-TOOL-ENDPOINT-STRATEGY-001",
+  "phase": "4J2",
+  "blocker_resolved_by": "local_http_tool_endpoint_prototype",
+  "primary_next_path": "local_http_endpoint_first_then_gated_temporary_https_tunnel",
+  "temporary_per_call_tool_preferred_for_testing": true,
+  "dashboard_durable_tool_waits": true,
+  "options": [
+    {
+      "option_id": "http_tool_temporary_https_tunnel",
+      "status": "primary_next_path_after_local_validation",
+      "summary": "Build a local HTTP endpoint first, then expose it in a later gated phase with a short-lived HTTPS tunnel.",
+      "strengths": [
+        "quickest hosted sandbox path",
+        "matches Ultravox HTTP tool model",
+        "keeps project runtime as sales brain",
+        "temporary per-call tool can avoid durable dashboard setup during early testing"
+      ],
+      "risks": [
+        "public endpoint exposure",
+        "auth required",
+        "tunnel provider logging and URL leakage risk",
+        "must stop tunnel immediately after run"
+      ]
+    },
+    {
+      "option_id": "client_tool",
+      "status": "secondary_for_browser_demo",
+      "summary": "Run the tool in a browser or client app rather than exposing a server endpoint.",
+      "strengths": [
+        "lower server exposure",
+        "fits a future browser or WebRTC demo"
+      ],
+      "risks": [
+        "requires web client or SDK work",
+        "less direct for the next hosted sandbox",
+        "needs separate client-side auth and evidence handling"
+      ]
+    },
+    {
+      "option_id": "data_connection_tool",
+      "status": "long_term_secondary",
+      "summary": "Use a real-time websocket/server-side data connection for richer tool interaction.",
+      "strengths": [
+        "potentially good long-term session integration",
+        "can support richer real-time state handoff"
+      ],
+      "risks": [
+        "more complex",
+        "not first sandbox path unless HTTP tools are blocked",
+        "higher implementation and verification load"
+      ]
+    }
+  ],
+  "risk_controls": [
+    "localhost-only endpoint in this phase",
+    "no public tunnel in this phase",
+    "random auth token required",
+    "synthetic prompts only",
+    "no real customer data",
+    "no outbound phone calls",
+    "logs sanitized",
+    "side_effects_allowed false",
+    "dashboard/durable tool waits until endpoint schema is stable"
+  ],
+  "provider_calls_made": false,
+  "public_tunnel_opened": false,
+  "live_wiring_allowed": false,
+  "production_call_allowed": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false
+}

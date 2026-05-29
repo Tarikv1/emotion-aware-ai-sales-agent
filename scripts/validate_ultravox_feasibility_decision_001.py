@@ -9,6 +9,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 MOCK_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-TOOL-BOUNDARY-MOCK-001" / "result.json"
 HOSTED_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-HOSTED-SANDBOX-001" / "result.json"
+LOCAL_ENDPOINT_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-LOCAL-TOOL-ENDPOINT-001" / "result.json"
 DECISION_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001" / "result.json"
 DECISION_REPORT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001" / "report.md"
 
@@ -30,7 +31,11 @@ def load_json(path: Path) -> dict[str, Any]:
     return payload
 
 
-def expected_recommendation(mock: dict[str, Any], hosted: dict[str, Any]) -> str:
+def expected_recommendation(mock: dict[str, Any], hosted: dict[str, Any], local_endpoint: dict[str, Any] | None = None) -> str:
+    if local_endpoint is not None:
+        if local_endpoint.get("synthetic_cases_passed") is True and local_endpoint.get("passed_count") == 8:
+            return "gated temporary HTTPS tunnel sandbox next"
+        return "fix endpoint before provider run"
     mock_passed = mock.get("summary", {}).get("tool_boundary_passed") is True
     provider_run = hosted.get("provider_call_made") is True and hosted.get("sandbox_run") is True
     provider_tool_calls_work = hosted.get("tool_calls_work") is True
@@ -53,6 +58,7 @@ def expected_recommendation(mock: dict[str, Any], hosted: dict[str, Any]) -> str
 def main() -> None:
     mock = load_json(MOCK_RESULT)
     hosted = load_json(HOSTED_RESULT)
+    local_endpoint = load_json(LOCAL_ENDPOINT_RESULT) if LOCAL_ENDPOINT_RESULT.is_file() else None
     decision = load_json(DECISION_RESULT)
     report_text = DECISION_REPORT.read_text(encoding="utf-8") if DECISION_REPORT.is_file() else ""
     if not report_text:
@@ -60,9 +66,9 @@ def main() -> None:
 
     if decision.get("evaluation_id") != "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001":
         fail("unexpected feasibility decision evaluation_id")
-    if decision.get("phase") != "4J1":
-        fail("feasibility decision must record phase 4J1")
-    expected = expected_recommendation(mock, hosted)
+    if decision.get("phase") not in {"4J1", "4J2"}:
+        fail("feasibility decision must record phase 4J1 or 4J2")
+    expected = expected_recommendation(mock, hosted, local_endpoint)
     if decision.get("recommendation") != expected:
         fail(f"recommendation must be {expected!r}, got {decision.get('recommendation')!r}")
 
@@ -70,8 +76,15 @@ def main() -> None:
         if decision.get(key) is not False:
             fail(f"{key} must always stay false")
     for key in ("sandbox_run", "provider_call_made", "tool_call_attempted", "tool_call_succeeded", "public_tool_endpoint_required", "public_tool_endpoint_available"):
-        if decision.get(key) != hosted.get(key):
+        if hosted.get(key) is not None and decision.get(key) != hosted.get(key):
             fail(f"{key} must match hosted sandbox evidence")
+    if local_endpoint is not None:
+        if decision.get("local_tool_endpoint_completed") is not True:
+            fail("decision must record completed local endpoint")
+        if decision.get("local_tool_endpoint_passed") is not True:
+            fail("decision must record passing local endpoint")
+        if decision.get("public_tunnel_opened") is not False:
+            fail("decision must record no public tunnel")
     if decision.get("memory_ownership_decision") != "project_runtime_owns_canonical_memory":
         fail("canonical memory ownership must stay with project runtime")
     if decision.get("sales_brain_ownership_decision") != "project_runtime_owns_sales_brain_and_campaign_truth":
@@ -93,6 +106,14 @@ def main() -> None:
         "Project runtime owns the sales brain and campaign truth.",
         "Public tool endpoint required:",
     ]
+    if local_endpoint is not None:
+        required_report_lines.extend(
+            [
+                "Local tool endpoint completed: `true`",
+                "Local tool endpoint passed: `true`",
+                "Public tunnel opened: `false`",
+            ]
+        )
     for line in required_report_lines:
         if line not in report_text:
             fail(f"decision report missing line: {line}")

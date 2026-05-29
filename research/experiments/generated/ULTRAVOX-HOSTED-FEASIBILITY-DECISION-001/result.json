@@ -1,8 +1,10 @@
 {
   "evaluation_id": "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001",
-  "phase": "4J1",
-  "recommendation": "design safe temporary HTTPS tool endpoint or client-tool strategy next",
+  "phase": "4J2",
+  "recommendation": "gated temporary HTTPS tunnel sandbox next",
   "mock_boundary_passed": true,
+  "local_tool_endpoint_completed": true,
+  "local_tool_endpoint_passed": true,
   "hosted_sandbox_run_status": "blocked_no_public_tool_endpoint",
   "sandbox_run": false,
   "provider_call_made": false,
@@ -10,6 +12,7 @@
   "tool_call_succeeded": false,
   "public_tool_endpoint_required": true,
   "public_tool_endpoint_available": false,
+  "public_tunnel_opened": false,
   "latency_metrics": {},
   "tool_calls_work": null,
   "tool_boundary_supported": null,
@@ -23,10 +26,10 @@
   "runtime_behavior_changed": false,
   "response_text_changed": false,
   "decision_logic": [
-    "If sandbox did not run because gates or key are missing: provide Ultravox key and rerun gated sandbox when ready.",
-    "If sandbox did not run because public tool endpoint is required: design safe temporary HTTPS tool endpoint or client-tool strategy next.",
-    "If provider sandbox runs but tool boundary cannot be enforced: do not proceed; keep Ultravox as research only until tool boundary works.",
-    "If provider sandbox runs and tool boundary works: limited synthetic voice conversation test next, still no real customers and no phone calls.",
-    "If latency or voice quality is poor: keep as architecture candidate only."
+    "If local endpoint fails: fix endpoint before provider run.",
+    "If local endpoint passes: gated temporary HTTPS tunnel sandbox next.",
+    "If future provider sandbox runs but tool boundary cannot be enforced: do not proceed; keep Ultravox as research only until tool boundary works.",
+    "If future provider sandbox runs and tool boundary works: limited synthetic voice conversation test next, still no real customers and no phone calls.",
+    "Always keep live wiring, production calls, and real customer data disabled."
   ]
 }

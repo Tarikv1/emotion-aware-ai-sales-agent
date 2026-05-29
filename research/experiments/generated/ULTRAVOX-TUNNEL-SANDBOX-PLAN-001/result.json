@@ -1,0 +1,46 @@
+{
+  "evaluation_id": "ULTRAVOX-TUNNEL-SANDBOX-PLAN-001",
+  "phase": "4J2",
+  "public_tunnel_opened": false,
+  "provider_calls_made": false,
+  "do_not_open_tunnel_in_this_phase": true,
+  "candidate_tunnel_choices": [
+    "ngrok",
+    "cloudflared tunnel",
+    "localtunnel"
+  ],
+  "required_future_gates": [
+    "ENABLE_ULTRAVOX_SANDBOX=1",
+    "LOCAL_ULTRAVOX_ALLOW_PROVIDER_CALLS=1",
+    "LOCAL_ULTRAVOX_ALLOW_PUBLIC_TOOL_TUNNEL=1",
+    "PROJECT_ULTRAVOX_TOOL_TOKEN present",
+    "ULTRAVOX_API_KEY present"
+  ],
+  "minimum_safety_controls": [
+    "random auth token",
+    "synthetic prompts only",
+    "no real customer data",
+    "no outbound phone",
+    "endpoint path unguessable if possible",
+    "short-lived tunnel",
+    "logs sanitized",
+    "stop tunnel after run"
+  ],
+  "future_evidence_required": [
+    "tunnel provider selected",
+    "public endpoint host recorded without secrets",
+    "auth token presence recorded without value",
+    "Ultravox provider call count",
+    "tool call attempted and succeeded flags",
+    "synthetic case count at most 3",
+    "latency metrics if available",
+    "no raw audio stored",
+    "tunnel stopped after run"
+  ],
+  "dashboard_durable_tool_waits": true,
+  "live_wiring_allowed": false,
+  "production_call_allowed": false,
+  "real_customer_data_allowed": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false
+}
