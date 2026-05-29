@@ -1,0 +1,4436 @@
+{
+  "experiment_id": "NON-LLM-ACTION-SELECTOR-SHADOW-MODE-001",
+  "generated_at": "2026-05-29T23:06:22.447933+00:00",
+  "status": "pass",
+  "shadow_mode_only": true,
+  "selector": "rule_based",
+  "replay_dataset": "research/experiments/generated/NON-LLM-ACTION-SELECTOR-SHADOW-REPLAY-001/replay.jsonl",
+  "metrics": {
+    "replay_case_count": 147,
+    "selector_valid_action_count": 147,
+    "fallback_count": 1,
+    "safety_block_count": 23,
+    "agreement_with_expected_count": 141,
+    "agreement_with_runtime_count": 0,
+    "runtime_action_available_count": 0,
+    "compatible_with_runtime_count": 0,
+    "compatible_with_expected_count": 144,
+    "selector_possible_improvement_count": 0,
+    "selector_possible_regression_count": 1,
+    "unsafe_selector_count": 0,
+    "unknown_count": 2,
+    "agreement_classification_counts": {
+      "compatible_action": 3,
+      "same_action": 141,
+      "selector_possible_regression": 1,
+      "unknown": 2
+    },
+    "per_label_proposal_counts": {
+      "answer_plan_change": 14,
+      "answer_price": 11,
+      "answer_privacy_boundary": 7,
+      "answer_signup_path": 14,
+      "answer_source_or_affiliation": 1,
+      "ask_usage_intensity": 2,
+      "ask_use_case_gap": 2,
+      "avoid_repetition_rephrase": 1,
+      "clarify_question_scope": 1,
+      "compare_plus_vs_pro": 3,
+      "compare_pro_tiers": 4,
+      "disqualify_no_fit": 26,
+      "handle_competitor_context": 15,
+      "handle_price_objection": 8,
+      "orient_plan_options": 1,
+      "recommend_plus": 8,
+      "recommend_pro": 7,
+      "repair_already_told_you": 1,
+      "repair_asr_uncertainty": 1,
+      "repair_buyer_correction": 1,
+      "respect_boundary": 16,
+      "terminal_close": 3
+    },
+    "rare_label_behavior": {
+      "ask_use_case_gap": {
+        "expected_count": 1,
+        "proposal_count": 2,
+        "accuracy": 1.0
+      },
+      "clarify_team_vs_individual": {
+        "expected_count": 1,
+        "proposal_count": 0,
+        "accuracy": 0.0
+      },
+      "ask_usage_intensity": {
+        "expected_count": 1,
+        "proposal_count": 2,
+        "accuracy": 1.0
+      },
+      "orient_plan_options": {
+        "expected_count": 1,
+        "proposal_count": 1,
+        "accuracy": 1.0
+      },
+      "avoid_repetition_rephrase": {
+        "expected_count": 1,
+        "proposal_count": 1,
+        "accuracy": 1.0
+      },
+      "repair_already_told_you": {
+        "expected_count": 1,
+        "proposal_count": 1,
+        "accuracy": 1.0
+      },
+      "repair_asr_uncertainty": {
+        "expected_count": 1,
+        "proposal_count": 1,
+        "accuracy": 1.0
+      },
+      "answer_source_or_affiliation": {
+        "expected_count": 1,
+        "proposal_count": 1,
+        "accuracy": 1.0
+      },
+      "clarify_question_scope": {
+        "expected_count": 1,
+        "proposal_count": 1,
+        "accuracy": 1.0
+      }
+    },
+    "boundary_case_accuracy": {
+      "case_count": 23,
+      "correct": 23,
+      "accuracy": 1.0
+    },
+    "repair_case_accuracy": {
+      "case_count": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    "terminal_close_accuracy": {
+      "case_count": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    "no_fit_accuracy": {
+      "case_count": 27,
+      "correct": 26,
+      "accuracy": 0.9629629629629629
+    },
+    "latency_ms": {
+      "sample_count": 147,
+      "p50": 1.0265,
+      "p90": 1.4348,
+      "p99": 1.9931,
+      "max": 2.0758,
+      "mean": 1.1127312925170068
+    }
+  },
+  "case_results": [
+    {
+      "replay_case_id": "shadow_replay::validation::001",
+      "buyer_utterance_text": "What is the Plus price? I need a clean answer.",
+      "context_summary": "team=individual; tools=Plus price; safety=False; compact_action=answer_price; compact_sub=plus_price_question",
+      "expected_action_id": "answer_price",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_price",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "direct_price_question"
+      ],
+      "matched_features": [
+        "topic:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.81,
+      "category": "price",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::002",
+      "buyer_utterance_text": "Just tell me Plus cost. Keep it to one next step.",
+      "context_summary": "team=individual; tools=Plus cost; safety=False; compact_action=answer_price; compact_sub=plus_price_question",
+      "expected_action_id": "answer_price",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_price",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "direct_price_question"
+      ],
+      "matched_features": [
+        "topic:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.266,
+      "category": "price",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::003",
+      "buyer_utterance_text": "How much is Plus? Variant 2.",
+      "context_summary": "team=individual; tools=Plus price; safety=False; compact_action=answer_price; compact_sub=plus_price_question",
+      "expected_action_id": "answer_price",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_price",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "direct_price_question"
+      ],
+      "matched_features": [
+        "topic:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.398,
+      "category": "price",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::004",
+      "buyer_utterance_text": "What is the Plus price? Right now. Variant 2.",
+      "context_summary": "team=individual; tools=Plus price; safety=False; compact_action=answer_price; compact_sub=plus_price_question",
+      "expected_action_id": "answer_price",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_price",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "direct_price_question"
+      ],
+      "matched_features": [
+        "topic:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.4105,
+      "category": "price",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::005",
+      "buyer_utterance_text": "Just tell me Plus cost. For this plan decision. Variant 2.",
+      "context_summary": "team=individual; tools=Plus cost; safety=False; compact_action=answer_price; compact_sub=plus_price_question",
+      "expected_action_id": "answer_price",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_price",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "direct_price_question"
+      ],
+      "matched_features": [
+        "topic:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.4542,
+      "category": "price",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::006",
+      "buyer_utterance_text": "Would Plus be enough for me? Right now.",
+      "context_summary": "team=individual; tools=Plus enough; safety=False; compact_action=answer_plan_fit; compact_sub=plus_sufficiency_question",
+      "expected_action_id": "recommend_plus",
+      "runtime_action_id": "",
+      "selector_action_id": "recommend_plus",
+      "selector_confidence": 0.84,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plus_sufficiency_question"
+      ],
+      "matched_features": [
+        "topic:plus_fit"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 2.0758,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::007",
+      "buyer_utterance_text": "For heavy coding and research, which plan? Right now.",
+      "context_summary": "team=individual; use=heavy coding,research; tools=heavy coding,research; safety=False; compact_action=recommend_plan; compact_sub=plus_sufficiency_question",
+      "expected_action_id": "recommend_pro",
+      "runtime_action_id": "",
+      "selector_action_id": "recommend_pro",
+      "selector_confidence": 0.86,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "heavy_individual_use_plan_recommendation"
+      ],
+      "matched_features": [
+        "relation:and",
+        "recommend:pro"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0223,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::008",
+      "buyer_utterance_text": "Can I stay on Plus? For this plan decision.",
+      "context_summary": "team=individual; tools=Plus; safety=False; compact_action=answer_plan_fit; compact_sub=plus_sufficiency_question",
+      "expected_action_id": "recommend_plus",
+      "runtime_action_id": "",
+      "selector_action_id": "recommend_plus",
+      "selector_confidence": 0.84,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plus_sufficiency_question"
+      ],
+      "matched_features": [
+        "topic:plus_fit"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0875,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::009",
+      "buyer_utterance_text": "I use it every day for coding and voice; pick a plan. For this plan decision.",
+      "context_summary": "team=individual; use=every day,coding,voice; tools=every day,coding,voice; safety=False; compact_action=recommend_plan; compact_sub=plus_sufficiency_question",
+      "expected_action_id": "recommend_pro",
+      "runtime_action_id": "",
+      "selector_action_id": "recommend_pro",
+      "selector_confidence": 0.86,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "heavy_individual_use_plan_recommendation"
+      ],
+      "matched_features": [
+        "relation:and",
+        "mode:voice",
+        "recommend:pro"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9777,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::010",
+      "buyer_utterance_text": "Is Plus enough? Before I choose anything.",
+      "context_summary": "team=individual; tools=Plus enough; safety=False; compact_action=answer_plan_fit; compact_sub=plus_sufficiency_question",
+      "expected_action_id": "recommend_plus",
+      "runtime_action_id": "",
+      "selector_action_id": "recommend_plus",
+      "selector_confidence": 0.84,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plus_sufficiency_question"
+      ],
+      "matched_features": [
+        "topic:plus_fit"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9719,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::011",
+      "buyer_utterance_text": "Free is enough for now. Before I choose anything.",
+      "context_summary": "team=individual; tools=Free enough; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0168,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::012",
+      "buyer_utterance_text": "For heavy coding and research, which plan? In this call.",
+      "context_summary": "team=individual; use=heavy coding,research; tools=heavy coding,research; safety=False; compact_action=recommend_plan; compact_sub=plus_sufficiency_question",
+      "expected_action_id": "recommend_pro",
+      "runtime_action_id": "",
+      "selector_action_id": "recommend_pro",
+      "selector_confidence": 0.86,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "heavy_individual_use_plan_recommendation"
+      ],
+      "matched_features": [
+        "relation:and",
+        "recommend:pro"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0521,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::013",
+      "buyer_utterance_text": "Plus vs Pro, what fits? That is my current context.",
+      "context_summary": "team=individual; tools=Plus,Pro; safety=False; compact_action=answer_plan_fit; compact_sub=pro_tier_choice",
+      "expected_action_id": "compare_pro_tiers",
+      "runtime_action_id": "",
+      "selector_action_id": "compare_plus_vs_pro",
+      "selector_confidence": 0.9,
+      "agreement_classification": "compatible_action",
+      "agreement_with_expected": false,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plus_vs_pro_question"
+      ],
+      "matched_features": [
+        "topic:plus_vs_pro"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9766,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::014",
+      "buyer_utterance_text": "Is Plus enough? For my setup.",
+      "context_summary": "team=individual; tools=Plus enough; safety=False; compact_action=answer_plan_fit; compact_sub=plus_sufficiency_question",
+      "expected_action_id": "recommend_plus",
+      "runtime_action_id": "",
+      "selector_action_id": "recommend_plus",
+      "selector_confidence": 0.84,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plus_sufficiency_question"
+      ],
+      "matched_features": [
+        "topic:plus_fit"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9381,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::015",
+      "buyer_utterance_text": "Free is enough for now. For my setup.",
+      "context_summary": "team=individual; tools=Free enough; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9297,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::016",
+      "buyer_utterance_text": "For heavy coding and research, which plan? Please keep it simple.",
+      "context_summary": "team=individual; use=heavy coding,research; tools=heavy coding,research; safety=False; compact_action=recommend_plan; compact_sub=plus_sufficiency_question",
+      "expected_action_id": "recommend_pro",
+      "runtime_action_id": "",
+      "selector_action_id": "recommend_pro",
+      "selector_confidence": 0.86,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "heavy_individual_use_plan_recommendation"
+      ],
+      "matched_features": [
+        "relation:and",
+        "recommend:pro"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.2024,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::017",
+      "buyer_utterance_text": "Plus vs Pro, what fits? I want the practical answer.",
+      "context_summary": "team=individual; tools=Plus,Pro; safety=False; compact_action=answer_plan_fit; compact_sub=pro_tier_choice",
+      "expected_action_id": "compare_pro_tiers",
+      "runtime_action_id": "",
+      "selector_action_id": "compare_plus_vs_pro",
+      "selector_confidence": 0.9,
+      "agreement_classification": "compatible_action",
+      "agreement_with_expected": false,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plus_vs_pro_question"
+      ],
+      "matched_features": [
+        "topic:plus_vs_pro"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9938,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::018",
+      "buyer_utterance_text": "Is Plus enough? I am deciding today.",
+      "context_summary": "team=individual; tools=Plus enough; safety=False; compact_action=answer_plan_fit; compact_sub=plus_sufficiency_question",
+      "expected_action_id": "recommend_plus",
+      "runtime_action_id": "",
+      "selector_action_id": "recommend_plus",
+      "selector_confidence": 0.84,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plus_sufficiency_question"
+      ],
+      "matched_features": [
+        "topic:plus_fit"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9477,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::019",
+      "buyer_utterance_text": "Free is enough for now. I am deciding today.",
+      "context_summary": "team=individual; tools=Free enough; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.3112,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::020",
+      "buyer_utterance_text": "For heavy coding and research, which plan? I need a clean answer.",
+      "context_summary": "team=individual; use=heavy coding,research; tools=heavy coding,research; safety=False; compact_action=recommend_plan; compact_sub=plus_sufficiency_question",
+      "expected_action_id": "recommend_pro",
+      "runtime_action_id": "",
+      "selector_action_id": "recommend_pro",
+      "selector_confidence": 0.86,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "heavy_individual_use_plan_recommendation"
+      ],
+      "matched_features": [
+        "relation:and",
+        "recommend:pro"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.7251,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::021",
+      "buyer_utterance_text": "Can I upgrade midcycle? Right now.",
+      "context_summary": "team=individual; tools=upgrade midcycle; safety=False; compact_action=answer_plan_change; compact_sub=midcycle_upgrade_question",
+      "expected_action_id": "answer_plan_change",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_plan_change",
+      "selector_confidence": 0.91,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plan_change_question"
+      ],
+      "matched_features": [
+        "topic:plan_change"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9511,
+      "category": "plan_change",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::022",
+      "buyer_utterance_text": "Thanks, that is all. Right now.",
+      "context_summary": "team=individual; tools=thanks; safety=False; compact_action=terminal_close; compact_sub=terminal_thanks_acceptance",
+      "expected_action_id": "terminal_close",
+      "runtime_action_id": "",
+      "selector_action_id": "terminal_close",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "terminal_acceptance_or_thanks"
+      ],
+      "matched_features": [
+        "close:terminal"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.5665,
+      "category": "terminal_close",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::023",
+      "buyer_utterance_text": "Can I close this myself online? For this plan decision.",
+      "context_summary": "team=individual; tools=close this myself online; safety=False; compact_action=answer_signup_path; compact_sub=signup_path_question",
+      "expected_action_id": "answer_signup_path",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_signup_path",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "signup_path_question"
+      ],
+      "matched_features": [
+        "topic:signup"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.2181,
+      "category": "signup",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::024",
+      "buyer_utterance_text": "Can I start lower and upgrade later? Before I choose anything.",
+      "context_summary": "team=individual; tools=start lower,upgrade later; safety=False; compact_action=answer_plan_change; compact_sub=midcycle_upgrade_question",
+      "expected_action_id": "answer_plan_change",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_plan_change",
+      "selector_confidence": 0.91,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plan_change_question"
+      ],
+      "matched_features": [
+        "relation:and",
+        "topic:plan_change"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9635,
+      "category": "plan_change",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::025",
+      "buyer_utterance_text": "Can I upgrade midcycle? In this call.",
+      "context_summary": "team=individual; tools=upgrade midcycle; safety=False; compact_action=answer_plan_change; compact_sub=midcycle_upgrade_question",
+      "expected_action_id": "answer_plan_change",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_plan_change",
+      "selector_confidence": 0.91,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plan_change_question"
+      ],
+      "matched_features": [
+        "topic:plan_change"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.1739,
+      "category": "plan_change",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::026",
+      "buyer_utterance_text": "If I choose Plus now, can I move up later? That is my current context.",
+      "context_summary": "team=individual; tools=Plus now,move up later; safety=False; compact_action=answer_plan_change; compact_sub=midcycle_upgrade_question",
+      "expected_action_id": "answer_plan_change",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_plan_change",
+      "selector_confidence": 0.91,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plan_change_question"
+      ],
+      "matched_features": [
+        "topic:plan_change"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.341,
+      "category": "plan_change",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::027",
+      "buyer_utterance_text": "Can I start lower and upgrade later? For my setup.",
+      "context_summary": "team=individual; tools=start lower,upgrade later; safety=False; compact_action=answer_plan_change; compact_sub=midcycle_upgrade_question",
+      "expected_action_id": "answer_plan_change",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_plan_change",
+      "selector_confidence": 0.91,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plan_change_question"
+      ],
+      "matched_features": [
+        "relation:and",
+        "topic:plan_change"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.005,
+      "category": "plan_change",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::028",
+      "buyer_utterance_text": "Can I upgrade midcycle? Please keep it simple.",
+      "context_summary": "team=individual; tools=upgrade midcycle; safety=False; compact_action=answer_plan_change; compact_sub=midcycle_upgrade_question",
+      "expected_action_id": "answer_plan_change",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_plan_change",
+      "selector_confidence": 0.91,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plan_change_question"
+      ],
+      "matched_features": [
+        "topic:plan_change"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0491,
+      "category": "plan_change",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::029",
+      "buyer_utterance_text": "If I choose Plus now, can I move up later? I want the practical answer.",
+      "context_summary": "team=individual; tools=Plus now,move up later; safety=False; compact_action=answer_plan_change; compact_sub=midcycle_upgrade_question",
+      "expected_action_id": "answer_plan_change",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_plan_change",
+      "selector_confidence": 0.91,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plan_change_question"
+      ],
+      "matched_features": [
+        "topic:plan_change"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.5522,
+      "category": "plan_change",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::030",
+      "buyer_utterance_text": "Can I start lower and upgrade later? I am deciding today.",
+      "context_summary": "team=individual; tools=start lower,upgrade later; safety=False; compact_action=answer_plan_change; compact_sub=midcycle_upgrade_question",
+      "expected_action_id": "answer_plan_change",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_plan_change",
+      "selector_confidence": 0.91,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plan_change_question"
+      ],
+      "matched_features": [
+        "relation:and",
+        "topic:plan_change"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.1634,
+      "category": "plan_change",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::031",
+      "buyer_utterance_text": "Can I upgrade midcycle? I need a clean answer.",
+      "context_summary": "team=individual; tools=upgrade midcycle; safety=False; compact_action=answer_plan_change; compact_sub=midcycle_upgrade_question",
+      "expected_action_id": "answer_plan_change",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_plan_change",
+      "selector_confidence": 0.91,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plan_change_question"
+      ],
+      "matched_features": [
+        "topic:plan_change"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.948,
+      "category": "plan_change",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::032",
+      "buyer_utterance_text": "If I choose Plus now, can I move up later? Keep it to one next step.",
+      "context_summary": "team=individual; tools=Plus now,move up later; safety=False; compact_action=answer_plan_change; compact_sub=midcycle_upgrade_question",
+      "expected_action_id": "answer_plan_change",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_plan_change",
+      "selector_confidence": 0.91,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plan_change_question"
+      ],
+      "matched_features": [
+        "topic:plan_change"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.4632,
+      "category": "plan_change",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::033",
+      "buyer_utterance_text": "Can I start lower and upgrade later? Variant 2.",
+      "context_summary": "team=individual; tools=start lower,upgrade later; safety=False; compact_action=answer_plan_change; compact_sub=midcycle_upgrade_question",
+      "expected_action_id": "answer_plan_change",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_plan_change",
+      "selector_confidence": 0.91,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plan_change_question"
+      ],
+      "matched_features": [
+        "relation:and",
+        "topic:plan_change"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.274,
+      "category": "plan_change",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::034",
+      "buyer_utterance_text": "Can I upgrade midcycle? Right now. Variant 2.",
+      "context_summary": "team=individual; tools=upgrade midcycle; safety=False; compact_action=answer_plan_change; compact_sub=midcycle_upgrade_question",
+      "expected_action_id": "answer_plan_change",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_plan_change",
+      "selector_confidence": 0.91,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plan_change_question"
+      ],
+      "matched_features": [
+        "topic:plan_change"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9571,
+      "category": "plan_change",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::035",
+      "buyer_utterance_text": "If I choose Plus now, can I move up later? For this plan decision. Variant 2.",
+      "context_summary": "team=individual; tools=Plus now,move up later; safety=False; compact_action=answer_plan_change; compact_sub=midcycle_upgrade_question",
+      "expected_action_id": "answer_plan_change",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_plan_change",
+      "selector_confidence": 0.91,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plan_change_question"
+      ],
+      "matched_features": [
+        "topic:plan_change"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.1642,
+      "category": "plan_change",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::036",
+      "buyer_utterance_text": "This is about my phone plan. Right now.",
+      "context_summary": "team=individual; tools=phone plan; safety=False; compact_action=disqualify_no_fit; compact_sub=wrong_product_question",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.3729,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::037",
+      "buyer_utterance_text": "Wrong product. For this plan decision.",
+      "context_summary": "team=individual; tools=wrong product; safety=False; compact_action=disqualify_no_fit; compact_sub=wrong_product_question",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0909,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::038",
+      "buyer_utterance_text": "Give me the raw URL. Before I choose anything.",
+      "context_summary": "team=individual; tools=raw URL; safety=True; compact_action=respect_boundary; compact_sub=raw_url_request",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0456,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::039",
+      "buyer_utterance_text": "I need billing support, not plans. Before I choose anything.",
+      "context_summary": "team=individual; tools=billing support,not plans; safety=False; compact_action=disqualify_no_fit; compact_sub=wrong_product_question",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.5276,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::040",
+      "buyer_utterance_text": "Paste the raw transcript. In this call.",
+      "context_summary": "team=individual; tools=transcript; safety=True; compact_action=respect_boundary; compact_sub=raw_transcript_request",
+      "expected_action_id": "answer_privacy_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_privacy_boundary",
+      "selector_confidence": 0.94,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "privacy_or_transcript_boundary"
+      ],
+      "matched_features": [
+        "safety:privacy"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.1364,
+      "category": "privacy",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::041",
+      "buyer_utterance_text": "This is about my phone plan. In this call.",
+      "context_summary": "team=individual; tools=phone plan; safety=False; compact_action=disqualify_no_fit; compact_sub=wrong_product_question",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.098,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::042",
+      "buyer_utterance_text": "Can you show the exact call transcript? That is my current context.",
+      "context_summary": "team=individual; tools=exact call transcript; safety=True; compact_action=respect_boundary; compact_sub=raw_transcript_request",
+      "expected_action_id": "answer_privacy_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_privacy_boundary",
+      "selector_confidence": 0.94,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "privacy_or_transcript_boundary"
+      ],
+      "matched_features": [
+        "safety:privacy"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.9931,
+      "category": "privacy",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::043",
+      "buyer_utterance_text": "Wrong product. That is my current context.",
+      "context_summary": "team=individual; tools=wrong product; safety=False; compact_action=disqualify_no_fit; compact_sub=wrong_product_question",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.3001,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::044",
+      "buyer_utterance_text": "Give me the raw URL. For my setup.",
+      "context_summary": "team=individual; tools=raw URL; safety=True; compact_action=respect_boundary; compact_sub=raw_url_request",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0689,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::045",
+      "buyer_utterance_text": "I need billing support, not plans. For my setup.",
+      "context_summary": "team=individual; tools=billing support,not plans; safety=False; compact_action=disqualify_no_fit; compact_sub=wrong_product_question",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.4512,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::046",
+      "buyer_utterance_text": "Guarantee it has no limits. Please keep it simple.",
+      "context_summary": "team=individual; tools=unsupported claim request; safety=True; compact_action=answer_without_inventing_facts; compact_sub=unsupported_fact_request",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.1724,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::047",
+      "buyer_utterance_text": "Can you show the exact call transcript? I want the practical answer.",
+      "context_summary": "team=individual; tools=exact call transcript; safety=True; compact_action=respect_boundary; compact_sub=raw_transcript_request",
+      "expected_action_id": "answer_privacy_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_privacy_boundary",
+      "selector_confidence": 0.94,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "privacy_or_transcript_boundary"
+      ],
+      "matched_features": [
+        "safety:privacy"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9748,
+      "category": "privacy",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::048",
+      "buyer_utterance_text": "Do not put me in CRM. I am deciding today.",
+      "context_summary": "team=individual; tools=CRM; safety=True; compact_action=respect_boundary; compact_sub=no_crm_request",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.2029,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::049",
+      "buyer_utterance_text": "I need billing support, not plans. I am deciding today.",
+      "context_summary": "team=individual; tools=billing support,not plans; safety=False; compact_action=disqualify_no_fit; compact_sub=wrong_product_question",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.2876,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::050",
+      "buyer_utterance_text": "Guarantee it has no limits. I need a clean answer.",
+      "context_summary": "team=individual; tools=unsupported claim request; safety=True; compact_action=answer_without_inventing_facts; compact_sub=unsupported_fact_request",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9871,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::051",
+      "buyer_utterance_text": "Not interested.",
+      "context_summary": "team=individual; tools=not interested; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0751,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::052",
+      "buyer_utterance_text": "ChatGPT or Gemini for research? Right now.",
+      "context_summary": "team=individual; tools=ChatGPT,Gemini; safety=False; compact_action=compare_competitor_context; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "ask_usage_intensity",
+      "selector_confidence": 0.82,
+      "agreement_classification": "unknown",
+      "agreement_with_expected": false,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "use_case_known_intensity_unknown"
+      ],
+      "matched_features": [
+        "relation:or",
+        "topic:use_case"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.49,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::053",
+      "buyer_utterance_text": "Copilot is included already, so Pro feels expensive. Right now.",
+      "context_summary": "team=individual; tools=Copilot,Pro feels expensive; safety=False; compact_action=reframe_price_objection; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_price_objection",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_price_objection",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "price_value_objection"
+      ],
+      "matched_features": [
+        "objection:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.177,
+      "category": "price_objection",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::054",
+      "buyer_utterance_text": "Current tool versus ChatGPT is my question. For this plan decision.",
+      "context_summary": "team=individual; tools=current tool,ChatGPT; safety=False; compact_action=compare_competitor_context; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_competitor_context",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "competitor_comparison_or_objection"
+      ],
+      "matched_features": [
+        "objection:competitor"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9912,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::055",
+      "buyer_utterance_text": "I use Claude, why switch? Before I choose anything.",
+      "context_summary": "team=individual; tools=Claude,why switch; safety=False; compact_action=compare_competitor_context; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_competitor_context",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "competitor_comparison_or_objection"
+      ],
+      "matched_features": [
+        "objection:competitor"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.659,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::056",
+      "buyer_utterance_text": "Claude is enough and price matters. Before I choose anything.",
+      "context_summary": "team=individual; tools=Claude is enough,price matters; safety=False; compact_action=reframe_price_objection; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_price_objection",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_price_objection",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "price_value_objection"
+      ],
+      "matched_features": [
+        "relation:and",
+        "objection:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.1936,
+      "category": "price_objection",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::057",
+      "buyer_utterance_text": "I am skeptical and not buying. In this call.",
+      "context_summary": "team=individual; tools=skeptical,not buying; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "relation:and",
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9507,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::058",
+      "buyer_utterance_text": "Current tool versus ChatGPT is my question. That is my current context.",
+      "context_summary": "team=individual; tools=current tool,ChatGPT; safety=False; compact_action=compare_competitor_context; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_competitor_context",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "competitor_comparison_or_objection"
+      ],
+      "matched_features": [
+        "objection:competitor"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.1934,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::059",
+      "buyer_utterance_text": "I use Claude, why switch? For my setup.",
+      "context_summary": "team=individual; tools=Claude,why switch; safety=False; compact_action=compare_competitor_context; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_competitor_context",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "competitor_comparison_or_objection"
+      ],
+      "matched_features": [
+        "objection:competitor"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.5464,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::060",
+      "buyer_utterance_text": "Claude is enough and price matters. For my setup.",
+      "context_summary": "team=individual; tools=Claude is enough,price matters; safety=False; compact_action=reframe_price_objection; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_price_objection",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_price_objection",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "price_value_objection"
+      ],
+      "matched_features": [
+        "relation:and",
+        "objection:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9775,
+      "category": "price_objection",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::061",
+      "buyer_utterance_text": "I am skeptical and not buying. Please keep it simple.",
+      "context_summary": "team=individual; tools=skeptical,not buying; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "relation:and",
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.1526,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::062",
+      "buyer_utterance_text": "Current tool versus ChatGPT is my question. I want the practical answer.",
+      "context_summary": "team=individual; tools=current tool,ChatGPT; safety=False; compact_action=compare_competitor_context; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_competitor_context",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "competitor_comparison_or_objection"
+      ],
+      "matched_features": [
+        "objection:competitor"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.2845,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::063",
+      "buyer_utterance_text": "I use Claude, why switch? I am deciding today.",
+      "context_summary": "team=individual; tools=Claude,why switch; safety=False; compact_action=compare_competitor_context; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_competitor_context",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "competitor_comparison_or_objection"
+      ],
+      "matched_features": [
+        "objection:competitor"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.2117,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::064",
+      "buyer_utterance_text": "Claude is enough and price matters. I am deciding today.",
+      "context_summary": "team=individual; tools=Claude is enough,price matters; safety=False; compact_action=reframe_price_objection; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_price_objection",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_price_objection",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "price_value_objection"
+      ],
+      "matched_features": [
+        "relation:and",
+        "objection:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9602,
+      "category": "price_objection",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::validation::065",
+      "buyer_utterance_text": "I am skeptical and not buying. I need a clean answer.",
+      "context_summary": "team=individual; tools=skeptical,not buying; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "relation:and",
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.2606,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::001",
+      "buyer_utterance_text": "How much is Pro? I am deciding today.",
+      "context_summary": "team=individual; tools=Pro price; safety=False; compact_action=answer_price; compact_sub=pro_tier_choice",
+      "expected_action_id": "answer_price",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_price",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "direct_price_question"
+      ],
+      "matched_features": [
+        "topic:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.302,
+      "category": "price",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::002",
+      "buyer_utterance_text": "What does Pro cost? I need a clean answer.",
+      "context_summary": "team=individual; tools=Pro cost; safety=False; compact_action=answer_price; compact_sub=pro_tier_choice",
+      "expected_action_id": "answer_price",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_price",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "direct_price_question"
+      ],
+      "matched_features": [
+        "topic:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.004,
+      "category": "price",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::003",
+      "buyer_utterance_text": "Tell me the Pro price without selling me. Keep it to one next step.",
+      "context_summary": "team=individual; tools=Pro price; safety=False; compact_action=answer_price; compact_sub=pro_tier_choice",
+      "expected_action_id": "answer_price",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_price",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "direct_price_question"
+      ],
+      "matched_features": [
+        "topic:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.2601,
+      "category": "price",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::004",
+      "buyer_utterance_text": "How much is Pro? Variant 2.",
+      "context_summary": "team=individual; tools=Pro price; safety=False; compact_action=answer_price; compact_sub=pro_tier_choice",
+      "expected_action_id": "answer_price",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_price",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "direct_price_question"
+      ],
+      "matched_features": [
+        "topic:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0984,
+      "category": "price",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::005",
+      "buyer_utterance_text": "What does Pro cost? Right now. Variant 2.",
+      "context_summary": "team=individual; tools=Pro cost; safety=False; compact_action=answer_price; compact_sub=pro_tier_choice",
+      "expected_action_id": "answer_price",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_price",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "direct_price_question"
+      ],
+      "matched_features": [
+        "topic:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0385,
+      "category": "price",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::006",
+      "buyer_utterance_text": "Tell me the Pro price without selling me. For this plan decision. Variant 2.",
+      "context_summary": "team=individual; tools=Pro price; safety=False; compact_action=answer_price; compact_sub=pro_tier_choice",
+      "expected_action_id": "answer_price",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_price",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "direct_price_question"
+      ],
+      "matched_features": [
+        "topic:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9754,
+      "category": "price",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::007",
+      "buyer_utterance_text": "Should I choose Pro? Right now.",
+      "context_summary": "team=individual; tools=choose Pro; safety=False; compact_action=answer_plan_fit; compact_sub=pro_tier_choice",
+      "expected_action_id": "compare_pro_tiers",
+      "runtime_action_id": "",
+      "selector_action_id": "compare_pro_tiers",
+      "selector_confidence": 0.87,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "pro_choice_question"
+      ],
+      "matched_features": [
+        "topic:pro_choice"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.4348,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::008",
+      "buyer_utterance_text": "No paid plan fits me. Right now.",
+      "context_summary": "team=individual; tools=no paid plan; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.306,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::009",
+      "buyer_utterance_text": "Plus vs Pro, what fits? For this plan decision.",
+      "context_summary": "team=individual; tools=Plus,Pro; safety=False; compact_action=answer_plan_fit; compact_sub=pro_tier_choice",
+      "expected_action_id": "compare_pro_tiers",
+      "runtime_action_id": "",
+      "selector_action_id": "compare_plus_vs_pro",
+      "selector_confidence": 0.9,
+      "agreement_classification": "compatible_action",
+      "agreement_with_expected": false,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plus_vs_pro_question"
+      ],
+      "matched_features": [
+        "topic:plus_vs_pro"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9686,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::010",
+      "buyer_utterance_text": "Current tool is enough. For this plan decision.",
+      "context_summary": "team=individual; tools=current tool is enough; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "ask_use_case_gap",
+      "selector_confidence": 0.55,
+      "agreement_classification": "selector_possible_regression",
+      "agreement_with_expected": false,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "default_diagnostic_next_step"
+      ],
+      "matched_features": [
+        "fallback:diagnostic"
+      ],
+      "fallback_required": true,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.3024,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::011",
+      "buyer_utterance_text": "Is Pro better? Before I choose anything.",
+      "context_summary": "team=individual; tools=Pro better; safety=False; compact_action=answer_plan_fit; compact_sub=pro_tier_choice",
+      "expected_action_id": "compare_pro_tiers",
+      "runtime_action_id": "",
+      "selector_action_id": "compare_pro_tiers",
+      "selector_confidence": 0.87,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "pro_choice_question"
+      ],
+      "matched_features": [
+        "topic:pro_choice"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.5607,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::012",
+      "buyer_utterance_text": "Would Plus be enough for me? In this call.",
+      "context_summary": "team=individual; tools=Plus enough; safety=False; compact_action=answer_plan_fit; compact_sub=plus_sufficiency_question",
+      "expected_action_id": "recommend_plus",
+      "runtime_action_id": "",
+      "selector_action_id": "recommend_plus",
+      "selector_confidence": 0.84,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plus_sufficiency_question"
+      ],
+      "matched_features": [
+        "topic:plus_fit"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9742,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::013",
+      "buyer_utterance_text": "No paid plan fits me. In this call.",
+      "context_summary": "team=individual; tools=no paid plan; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.1665,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::014",
+      "buyer_utterance_text": "I use it every day for coding and voice; pick a plan. That is my current context.",
+      "context_summary": "team=individual; use=every day,coding,voice; tools=every day,coding,voice; safety=False; compact_action=recommend_plan; compact_sub=plus_sufficiency_question",
+      "expected_action_id": "recommend_pro",
+      "runtime_action_id": "",
+      "selector_action_id": "recommend_pro",
+      "selector_confidence": 0.86,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "heavy_individual_use_plan_recommendation"
+      ],
+      "matched_features": [
+        "relation:and",
+        "mode:voice",
+        "recommend:pro"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.4916,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::015",
+      "buyer_utterance_text": "Is Pro better? For my setup.",
+      "context_summary": "team=individual; tools=Pro better; safety=False; compact_action=answer_plan_fit; compact_sub=pro_tier_choice",
+      "expected_action_id": "compare_pro_tiers",
+      "runtime_action_id": "",
+      "selector_action_id": "compare_pro_tiers",
+      "selector_confidence": 0.87,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "pro_choice_question"
+      ],
+      "matched_features": [
+        "topic:pro_choice"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.141,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::016",
+      "buyer_utterance_text": "Would Plus be enough for me? Please keep it simple.",
+      "context_summary": "team=individual; tools=Plus enough; safety=False; compact_action=answer_plan_fit; compact_sub=plus_sufficiency_question",
+      "expected_action_id": "recommend_plus",
+      "runtime_action_id": "",
+      "selector_action_id": "recommend_plus",
+      "selector_confidence": 0.84,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plus_sufficiency_question"
+      ],
+      "matched_features": [
+        "topic:plus_fit"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.1351,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::017",
+      "buyer_utterance_text": "No paid plan fits me. Please keep it simple.",
+      "context_summary": "team=individual; tools=no paid plan; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9909,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::018",
+      "buyer_utterance_text": "I use it every day for coding and voice; pick a plan. I want the practical answer.",
+      "context_summary": "team=individual; use=every day,coding,voice; tools=every day,coding,voice; safety=False; compact_action=recommend_plan; compact_sub=plus_sufficiency_question",
+      "expected_action_id": "recommend_pro",
+      "runtime_action_id": "",
+      "selector_action_id": "recommend_pro",
+      "selector_confidence": 0.86,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "heavy_individual_use_plan_recommendation"
+      ],
+      "matched_features": [
+        "relation:and",
+        "mode:voice",
+        "recommend:pro"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0299,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::019",
+      "buyer_utterance_text": "Is Pro better? I am deciding today.",
+      "context_summary": "team=individual; tools=Pro better; safety=False; compact_action=answer_plan_fit; compact_sub=pro_tier_choice",
+      "expected_action_id": "compare_pro_tiers",
+      "runtime_action_id": "",
+      "selector_action_id": "compare_pro_tiers",
+      "selector_confidence": 0.87,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "pro_choice_question"
+      ],
+      "matched_features": [
+        "topic:pro_choice"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9868,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::020",
+      "buyer_utterance_text": "Would Plus be enough for me? I need a clean answer.",
+      "context_summary": "team=individual; tools=Plus enough; safety=False; compact_action=answer_plan_fit; compact_sub=plus_sufficiency_question",
+      "expected_action_id": "recommend_plus",
+      "runtime_action_id": "",
+      "selector_action_id": "recommend_plus",
+      "selector_confidence": 0.84,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plus_sufficiency_question"
+      ],
+      "matched_features": [
+        "topic:plus_fit"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.1154,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::021",
+      "buyer_utterance_text": "No paid plan fits me. I need a clean answer.",
+      "context_summary": "team=individual; tools=no paid plan; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0457,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::022",
+      "buyer_utterance_text": "Show me the self-serve signup path. Right now.",
+      "context_summary": "team=individual; tools=self-serve signup path; safety=False; compact_action=answer_signup_path; compact_sub=signup_path_question",
+      "expected_action_id": "answer_signup_path",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_signup_path",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "signup_path_question"
+      ],
+      "matched_features": [
+        "topic:signup"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.079,
+      "category": "signup",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::023",
+      "buyer_utterance_text": "If I choose Plus now, can I move up later? For this plan decision.",
+      "context_summary": "team=individual; tools=Plus now,move up later; safety=False; compact_action=answer_plan_change; compact_sub=midcycle_upgrade_question",
+      "expected_action_id": "answer_plan_change",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_plan_change",
+      "selector_confidence": 0.91,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plan_change_question"
+      ],
+      "matched_features": [
+        "topic:plan_change"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0317,
+      "category": "plan_change",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::024",
+      "buyer_utterance_text": "Sounds fine, I will look later. For this plan decision.",
+      "context_summary": "team=individual; tools=look later; safety=False; compact_action=terminal_close; compact_sub=terminal_thanks_acceptance",
+      "expected_action_id": "terminal_close",
+      "runtime_action_id": "",
+      "selector_action_id": "terminal_close",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "terminal_acceptance_or_thanks"
+      ],
+      "matched_features": [
+        "close:terminal"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.979,
+      "category": "terminal_close",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::025",
+      "buyer_utterance_text": "Where do I sign up? Before I choose anything.",
+      "context_summary": "team=individual; tools=sign up; safety=False; compact_action=answer_signup_path; compact_sub=signup_path_question",
+      "expected_action_id": "answer_signup_path",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_signup_path",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "signup_path_question"
+      ],
+      "matched_features": [
+        "topic:signup"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0809,
+      "category": "signup",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::026",
+      "buyer_utterance_text": "Show me the self-serve signup path. In this call.",
+      "context_summary": "team=individual; tools=self-serve signup path; safety=False; compact_action=answer_signup_path; compact_sub=signup_path_question",
+      "expected_action_id": "answer_signup_path",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_signup_path",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "signup_path_question"
+      ],
+      "matched_features": [
+        "topic:signup"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0215,
+      "category": "signup",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::027",
+      "buyer_utterance_text": "Can I close this myself online? That is my current context.",
+      "context_summary": "team=individual; tools=close this myself online; safety=False; compact_action=answer_signup_path; compact_sub=signup_path_question",
+      "expected_action_id": "answer_signup_path",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_signup_path",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "signup_path_question"
+      ],
+      "matched_features": [
+        "topic:signup"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0067,
+      "category": "signup",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::028",
+      "buyer_utterance_text": "Where do I sign up? For my setup.",
+      "context_summary": "team=individual; tools=sign up; safety=False; compact_action=answer_signup_path; compact_sub=signup_path_question",
+      "expected_action_id": "answer_signup_path",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_signup_path",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "signup_path_question"
+      ],
+      "matched_features": [
+        "topic:signup"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9371,
+      "category": "signup",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::029",
+      "buyer_utterance_text": "Show me the self-serve signup path. Please keep it simple.",
+      "context_summary": "team=individual; tools=self-serve signup path; safety=False; compact_action=answer_signup_path; compact_sub=signup_path_question",
+      "expected_action_id": "answer_signup_path",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_signup_path",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "signup_path_question"
+      ],
+      "matched_features": [
+        "topic:signup"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0513,
+      "category": "signup",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::030",
+      "buyer_utterance_text": "Can I close this myself online? I want the practical answer.",
+      "context_summary": "team=individual; tools=close this myself online; safety=False; compact_action=answer_signup_path; compact_sub=signup_path_question",
+      "expected_action_id": "answer_signup_path",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_signup_path",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "signup_path_question"
+      ],
+      "matched_features": [
+        "topic:signup"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9589,
+      "category": "signup",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::031",
+      "buyer_utterance_text": "Where do I sign up? I am deciding today.",
+      "context_summary": "team=individual; tools=sign up; safety=False; compact_action=answer_signup_path; compact_sub=signup_path_question",
+      "expected_action_id": "answer_signup_path",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_signup_path",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "signup_path_question"
+      ],
+      "matched_features": [
+        "topic:signup"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9751,
+      "category": "signup",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::032",
+      "buyer_utterance_text": "Show me the self-serve signup path. I need a clean answer.",
+      "context_summary": "team=individual; tools=self-serve signup path; safety=False; compact_action=answer_signup_path; compact_sub=signup_path_question",
+      "expected_action_id": "answer_signup_path",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_signup_path",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "signup_path_question"
+      ],
+      "matched_features": [
+        "topic:signup"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9654,
+      "category": "signup",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::033",
+      "buyer_utterance_text": "Can I close this myself online? Keep it to one next step.",
+      "context_summary": "team=individual; tools=close this myself online; safety=False; compact_action=answer_signup_path; compact_sub=signup_path_question",
+      "expected_action_id": "answer_signup_path",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_signup_path",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "signup_path_question"
+      ],
+      "matched_features": [
+        "topic:signup"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9761,
+      "category": "signup",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::034",
+      "buyer_utterance_text": "Where do I sign up? Variant 2.",
+      "context_summary": "team=individual; tools=sign up; safety=False; compact_action=answer_signup_path; compact_sub=signup_path_question",
+      "expected_action_id": "answer_signup_path",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_signup_path",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "signup_path_question"
+      ],
+      "matched_features": [
+        "topic:signup"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0152,
+      "category": "signup",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::035",
+      "buyer_utterance_text": "Show me the self-serve signup path. Right now. Variant 2.",
+      "context_summary": "team=individual; tools=self-serve signup path; safety=False; compact_action=answer_signup_path; compact_sub=signup_path_question",
+      "expected_action_id": "answer_signup_path",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_signup_path",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "signup_path_question"
+      ],
+      "matched_features": [
+        "topic:signup"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9531,
+      "category": "signup",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::036",
+      "buyer_utterance_text": "Can I close this myself online? For this plan decision. Variant 2.",
+      "context_summary": "team=individual; tools=close this myself online; safety=False; compact_action=answer_signup_path; compact_sub=signup_path_question",
+      "expected_action_id": "answer_signup_path",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_signup_path",
+      "selector_confidence": 0.92,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "signup_path_question"
+      ],
+      "matched_features": [
+        "topic:signup"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9431,
+      "category": "signup",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::037",
+      "buyer_utterance_text": "Can you show the exact call transcript? For this plan decision.",
+      "context_summary": "team=individual; tools=exact call transcript; safety=True; compact_action=respect_boundary; compact_sub=raw_transcript_request",
+      "expected_action_id": "answer_privacy_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_privacy_boundary",
+      "selector_confidence": 0.94,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "privacy_or_transcript_boundary"
+      ],
+      "matched_features": [
+        "safety:privacy"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0436,
+      "category": "privacy",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::038",
+      "buyer_utterance_text": "Do not put me in CRM. Before I choose anything.",
+      "context_summary": "team=individual; tools=CRM; safety=True; compact_action=respect_boundary; compact_sub=no_crm_request",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9816,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::039",
+      "buyer_utterance_text": "Tell me the internal policy. Before I choose anything.",
+      "context_summary": "team=individual; tools=policy request; safety=True; compact_action=answer_without_inventing_facts; compact_sub=internal_policy_request",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9353,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::040",
+      "buyer_utterance_text": "Do not email me. In this call.",
+      "context_summary": "team=individual; tools=email; safety=True; compact_action=respect_boundary; compact_sub=side_effect_boundary_request",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.921,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::041",
+      "buyer_utterance_text": "Guarantee it has no limits. In this call.",
+      "context_summary": "team=individual; tools=unsupported claim request; safety=True; compact_action=answer_without_inventing_facts; compact_sub=unsupported_fact_request",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0493,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::042",
+      "buyer_utterance_text": "Do not schedule calendar. That is my current context.",
+      "context_summary": "team=individual; tools=calendar; safety=True; compact_action=respect_boundary; compact_sub=no_calendar_request",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9706,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::043",
+      "buyer_utterance_text": "Do you train on my data? That is my current context.",
+      "context_summary": "team=individual; tools=train on my data; safety=True; compact_action=answer_without_inventing_facts; compact_sub=privacy_question",
+      "expected_action_id": "answer_privacy_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_privacy_boundary",
+      "selector_confidence": 0.94,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "privacy_or_transcript_boundary"
+      ],
+      "matched_features": [
+        "safety:privacy"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9326,
+      "category": "privacy",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::044",
+      "buyer_utterance_text": "Do not put me in CRM. For my setup.",
+      "context_summary": "team=individual; tools=CRM; safety=True; compact_action=respect_boundary; compact_sub=no_crm_request",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.915,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::045",
+      "buyer_utterance_text": "Tell me the internal policy. For my setup.",
+      "context_summary": "team=individual; tools=policy request; safety=True; compact_action=answer_without_inventing_facts; compact_sub=internal_policy_request",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9281,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::046",
+      "buyer_utterance_text": "Do not email me. Please keep it simple.",
+      "context_summary": "team=individual; tools=email; safety=True; compact_action=respect_boundary; compact_sub=side_effect_boundary_request",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9859,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::047",
+      "buyer_utterance_text": "This is about my phone plan. Please keep it simple.",
+      "context_summary": "team=individual; tools=phone plan; safety=False; compact_action=disqualify_no_fit; compact_sub=wrong_product_question",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0059,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::048",
+      "buyer_utterance_text": "Do you train on my data? I want the practical answer.",
+      "context_summary": "team=individual; tools=train on my data; safety=True; compact_action=answer_without_inventing_facts; compact_sub=privacy_question",
+      "expected_action_id": "answer_privacy_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_privacy_boundary",
+      "selector_confidence": 0.94,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "privacy_or_transcript_boundary"
+      ],
+      "matched_features": [
+        "safety:privacy"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9278,
+      "category": "privacy",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::049",
+      "buyer_utterance_text": "Give me the raw URL. I am deciding today.",
+      "context_summary": "team=individual; tools=raw URL; safety=True; compact_action=respect_boundary; compact_sub=raw_url_request",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.1424,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::050",
+      "buyer_utterance_text": "Do not email me. I need a clean answer.",
+      "context_summary": "team=individual; tools=email; safety=True; compact_action=respect_boundary; compact_sub=side_effect_boundary_request",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0627,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::051",
+      "buyer_utterance_text": "This is about my phone plan. I need a clean answer.",
+      "context_summary": "team=individual; tools=phone plan; safety=False; compact_action=disqualify_no_fit; compact_sub=wrong_product_question",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9906,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::052",
+      "buyer_utterance_text": "Gemini is enough. Right now.",
+      "context_summary": "team=individual; tools=Gemini is enough; safety=False; compact_action=compare_competitor_context; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_competitor_context",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "competitor_comparison_or_objection"
+      ],
+      "matched_features": [
+        "objection:competitor"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9428,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::053",
+      "buyer_utterance_text": "I am skeptical and not buying. Right now.",
+      "context_summary": "team=individual; tools=skeptical,not buying; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "relation:and",
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0594,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::054",
+      "buyer_utterance_text": "Copilot covers coding already. For this plan decision.",
+      "context_summary": "team=individual; tools=Copilot covers coding; safety=False; compact_action=compare_competitor_context; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_competitor_context",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "competitor_comparison_or_objection"
+      ],
+      "matched_features": [
+        "objection:competitor"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0391,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::055",
+      "buyer_utterance_text": "Current tool is enough, I do not want to switch. For this plan decision.",
+      "context_summary": "team=individual; tools=current tool is enough,do not want to switch; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9686,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::056",
+      "buyer_utterance_text": "ChatGPT vs Claude, why switch? Before I choose anything.",
+      "context_summary": "team=individual; tools=ChatGPT,Claude; safety=False; compact_action=compare_competitor_context; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_competitor_context",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "competitor_comparison_or_objection"
+      ],
+      "matched_features": [
+        "objection:competitor"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9823,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::057",
+      "buyer_utterance_text": "Gemini is enough. In this call.",
+      "context_summary": "team=individual; tools=Gemini is enough; safety=False; compact_action=compare_competitor_context; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_competitor_context",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "competitor_comparison_or_objection"
+      ],
+      "matched_features": [
+        "objection:competitor"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9958,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::058",
+      "buyer_utterance_text": "Copilot is included already, so Pro feels expensive. In this call.",
+      "context_summary": "team=individual; tools=Copilot,Pro feels expensive; safety=False; compact_action=reframe_price_objection; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_price_objection",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_price_objection",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "price_value_objection"
+      ],
+      "matched_features": [
+        "objection:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0513,
+      "category": "price_objection",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::059",
+      "buyer_utterance_text": "Current tool is enough, I do not want to switch. That is my current context.",
+      "context_summary": "team=individual; tools=current tool is enough,do not want to switch; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0025,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::060",
+      "buyer_utterance_text": "ChatGPT vs Claude, why switch? For my setup.",
+      "context_summary": "team=individual; tools=ChatGPT,Claude; safety=False; compact_action=compare_competitor_context; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_competitor_context",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "competitor_comparison_or_objection"
+      ],
+      "matched_features": [
+        "objection:competitor"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9629,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::061",
+      "buyer_utterance_text": "Gemini is enough. Please keep it simple.",
+      "context_summary": "team=individual; tools=Gemini is enough; safety=False; compact_action=compare_competitor_context; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_competitor_context",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "competitor_comparison_or_objection"
+      ],
+      "matched_features": [
+        "objection:competitor"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9807,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::062",
+      "buyer_utterance_text": "Copilot is included already, so Pro feels expensive. Please keep it simple.",
+      "context_summary": "team=individual; tools=Copilot,Pro feels expensive; safety=False; compact_action=reframe_price_objection; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_price_objection",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_price_objection",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "price_value_objection"
+      ],
+      "matched_features": [
+        "objection:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9711,
+      "category": "price_objection",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::063",
+      "buyer_utterance_text": "Current tool is enough, I do not want to switch. I want the practical answer.",
+      "context_summary": "team=individual; tools=current tool is enough,do not want to switch; safety=False; compact_action=disqualify_no_fit; compact_sub=no_interest",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0515,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::064",
+      "buyer_utterance_text": "ChatGPT vs Claude, why switch? I am deciding today.",
+      "context_summary": "team=individual; tools=ChatGPT,Claude; safety=False; compact_action=compare_competitor_context; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_competitor_context",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "competitor_comparison_or_objection"
+      ],
+      "matched_features": [
+        "objection:competitor"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9579,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::065",
+      "buyer_utterance_text": "Gemini is enough. I need a clean answer.",
+      "context_summary": "team=individual; tools=Gemini is enough; safety=False; compact_action=compare_competitor_context; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_competitor_context",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "competitor_comparison_or_objection"
+      ],
+      "matched_features": [
+        "objection:competitor"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9469,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::066",
+      "buyer_utterance_text": "Copilot is included already, so Pro feels expensive. I need a clean answer.",
+      "context_summary": "team=individual; tools=Copilot,Pro feels expensive; safety=False; compact_action=reframe_price_objection; compact_sub=current_competitor_tool",
+      "expected_action_id": "handle_price_objection",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_price_objection",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "price_value_objection"
+      ],
+      "matched_features": [
+        "objection:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0265,
+      "category": "price_objection",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::067",
+      "buyer_utterance_text": "Ok, I will check that, thanks.",
+      "context_summary": "safety=False",
+      "expected_action_id": "terminal_close",
+      "runtime_action_id": "",
+      "selector_action_id": "terminal_close",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "terminal_acceptance_or_thanks"
+      ],
+      "matched_features": [
+        "close:terminal"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9328,
+      "category": "terminal_close",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::068",
+      "buyer_utterance_text": "I use ChatGPT and Claude.",
+      "context_summary": "safety=False",
+      "expected_action_id": "ask_use_case_gap",
+      "runtime_action_id": "",
+      "selector_action_id": "ask_use_case_gap",
+      "selector_confidence": 0.84,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "current_tool_context"
+      ],
+      "matched_features": [
+        "relation:and",
+        "topic:current_tool"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9485,
+      "category": "use_case",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::069",
+      "buyer_utterance_text": "I am by myself, not a team.",
+      "context_summary": "team=individual; safety=False",
+      "expected_action_id": "clarify_team_vs_individual",
+      "runtime_action_id": "",
+      "selector_action_id": "repair_buyer_correction",
+      "selector_confidence": 0.86,
+      "agreement_classification": "unknown",
+      "agreement_with_expected": false,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "buyer_correction_marker"
+      ],
+      "matched_features": [
+        "team:not_team",
+        "repair:buyer_correction"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.966,
+      "category": "team_vs_individual",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::070",
+      "buyer_utterance_text": "I use it for coding workflow and voice.",
+      "context_summary": "safety=False",
+      "expected_action_id": "ask_usage_intensity",
+      "runtime_action_id": "",
+      "selector_action_id": "ask_usage_intensity",
+      "selector_confidence": 0.82,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "use_case_known_intensity_unknown"
+      ],
+      "matched_features": [
+        "relation:and",
+        "mode:voice",
+        "topic:use_case"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9745,
+      "category": "usage_intensity",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::071",
+      "buyer_utterance_text": "What are the plans actually?",
+      "context_summary": "safety=False",
+      "expected_action_id": "orient_plan_options",
+      "runtime_action_id": "",
+      "selector_action_id": "orient_plan_options",
+      "selector_confidence": 0.88,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "plan_orientation_question"
+      ],
+      "matched_features": [
+        "topic:plan_options"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9712,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::072",
+      "buyer_utterance_text": "Plus sounds expensive for what it is.",
+      "context_summary": "safety=False",
+      "expected_action_id": "handle_price_objection",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_price_objection",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "price_value_objection"
+      ],
+      "matched_features": [
+        "objection:price"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9804,
+      "category": "price_objection",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::073",
+      "buyer_utterance_text": "Why not just use Claude instead?",
+      "context_summary": "safety=False",
+      "expected_action_id": "handle_competitor_context",
+      "runtime_action_id": "",
+      "selector_action_id": "handle_competitor_context",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "competitor_comparison_or_objection"
+      ],
+      "matched_features": [
+        "objection:competitor"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9241,
+      "category": "competitor_context",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::074",
+      "buyer_utterance_text": "Can you just buy Plus for me?",
+      "context_summary": "safety=True",
+      "expected_action_id": "respect_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "unsupported_side_effect_or_boundary_first"
+      ],
+      "matched_features": [
+        "safety:side_effect"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9187,
+      "category": "boundary",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::075",
+      "buyer_utterance_text": "You just asked that.",
+      "context_summary": "safety=False",
+      "expected_action_id": "avoid_repetition_rephrase",
+      "runtime_action_id": "",
+      "selector_action_id": "avoid_repetition_rephrase",
+      "selector_confidence": 0.94,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "repeat_risk_signal"
+      ],
+      "matched_features": [
+        "repair:avoid_repetition"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9491,
+      "category": "already_told_you",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::076",
+      "buyer_utterance_text": "I already told you, coding and voice.",
+      "context_summary": "use=coding,voice; safety=False",
+      "expected_action_id": "repair_already_told_you",
+      "runtime_action_id": "",
+      "selector_action_id": "repair_already_told_you",
+      "selector_confidence": 0.96,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "buyer_reports_repeated_question"
+      ],
+      "matched_features": [
+        "relation:and",
+        "mode:voice",
+        "repair:already_told_you"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9527,
+      "category": "already_told_you",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::077",
+      "buyer_utterance_text": "I use cloud for this maybe, or Claude, not sure.",
+      "context_summary": "safety=False",
+      "expected_action_id": "repair_asr_uncertainty",
+      "runtime_action_id": "",
+      "selector_action_id": "repair_asr_uncertainty",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "ambiguous_tool_or_asr"
+      ],
+      "matched_features": [
+        "relation:or",
+        "repair:asr_uncertainty"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9702,
+      "category": "asr_uncertainty",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::078",
+      "buyer_utterance_text": "I barely use AI and the free plan is enough.",
+      "context_summary": "safety=False",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "relation:and",
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 1.0623,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::079",
+      "buyer_utterance_text": "Are you from OpenAI or just recommending this?",
+      "context_summary": "safety=False",
+      "expected_action_id": "answer_source_or_affiliation",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_source_or_affiliation",
+      "selector_confidence": 0.9,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "source_or_affiliation_question"
+      ],
+      "matched_features": [
+        "relation:or",
+        "topic:source_affiliation"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9781,
+      "category": "source_affiliation",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::080",
+      "buyer_utterance_text": "Do you store what I say in this call?",
+      "context_summary": "safety=True",
+      "expected_action_id": "answer_privacy_boundary",
+      "runtime_action_id": "",
+      "selector_action_id": "answer_privacy_boundary",
+      "selector_confidence": 0.94,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "boundary_safe",
+      "reasons": [
+        "privacy_or_transcript_boundary"
+      ],
+      "matched_features": [
+        "safety:privacy"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9471,
+      "category": "privacy",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::081",
+      "buyer_utterance_text": "I need help with Gmail, not ChatGPT.",
+      "context_summary": "safety=False",
+      "expected_action_id": "disqualify_no_fit",
+      "runtime_action_id": "",
+      "selector_action_id": "disqualify_no_fit",
+      "selector_confidence": 0.93,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "no_fit_or_wrong_product"
+      ],
+      "matched_features": [
+        "fit:no"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9154,
+      "category": "no_fit",
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "replay_case_id": "shadow_replay::test::082",
+      "buyer_utterance_text": "I am confused. What are you actually asking me?",
+      "context_summary": "safety=False",
+      "expected_action_id": "clarify_question_scope",
+      "runtime_action_id": "",
+      "selector_action_id": "clarify_question_scope",
+      "selector_confidence": 0.82,
+      "agreement_classification": "same_action",
+      "agreement_with_expected": true,
+      "agreement_with_runtime": false,
+      "safety_status": "safe",
+      "reasons": [
+        "confused_or_unclear_question_scope"
+      ],
+      "matched_features": [
+        "clarify:question_scope"
+      ],
+      "fallback_required": false,
+      "would_change_runtime": false,
+      "side_effects_allowed": false,
+      "buyer_facing_text_generated": false,
+      "live_runtime_wiring_allowed": false,
+      "should_not_change_runtime": true,
+      "latency_ms": 0.9559,
+      "category": "other",
+      "sanitized": true,
+      "raw_private_data": false
+    }
+  ],
+  "side_effects_allowed": false,
+  "buyer_facing_text_generated": false,
+  "live_runtime_wiring_allowed": false,
+  "should_not_change_runtime": true,
+  "response_text_changed": false,
+  "runtime_behavior_changed": false,
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "ultravox_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "local_llm_calls_made": false,
+  "ollama_calls_made": false
+}

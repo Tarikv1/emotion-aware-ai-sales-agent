@@ -2,10 +2,10 @@
 
 - Status: pass
 - Non-LLM baseline: rule_based
-- Non-LLM p50/p90/p99 ms: 0.2473/0.3565/0.4983
+- Non-LLM p50/p90/p99 ms: 0.2717/0.3519/0.4602
 - Small-model p50/p90/p99 ms: 2411.0/2427.0/2435.0
-- P50 speedup vs small model: 9749.3x
-- Non-LLM test accuracy: 0.9512
+- P50 speedup vs small model: 8873.8x
+- Non-LLM test accuracy: 0.9634
 - Small-model verifier pass rate: 1.0000
 - Reran Ollama: false
 - Provider/OpenAI/Ultravox/ElevenLabs/local LLM/Ollama calls: false

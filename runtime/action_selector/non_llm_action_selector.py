@@ -177,7 +177,7 @@ class RuleBasedActionSelector:
                 requires_clarification=True,
             )
 
-        if _regex(text, r"\b(thanks|thank you|that works|i will check|sounds good|ok i will)\b") and not text.endswith("?"):
+        if _regex(text, r"\b(thanks|thank you|that works|i will check|sounds good|sounds fine|ok i will|look later)\b") and not text.endswith("?"):
             return self._output("terminal_close", 0.9, ["terminal_acceptance_or_thanks"], matched + ["close:terminal"])
 
         if _contains(

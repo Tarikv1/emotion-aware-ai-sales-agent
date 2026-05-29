@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "contract_version": "NON-LLM-ACTION-SELECTOR-SHADOW-CONTRACT-001",
+  "enabled_for_live_runtime": false,
+  "side_effects_allowed": false,
+  "buyer_facing_text_generation_allowed": false,
+  "live_runtime_wiring_allowed": false,
+  "should_not_change_runtime": true,
+  "compatible_action_families": {
+    "diagnostic": ["ask_adoption_state", "ask_use_case_gap", "ask_usage_intensity", "clarify_question_scope"],
+    "plan_orientation": ["orient_plan_options", "explain_subscription_vs_model"],
+    "plan_fit": ["compare_plus_vs_pro", "compare_pro_tiers", "recommend_plus", "recommend_pro", "recommend_business_or_enterprise"],
+    "direct_answer": ["answer_price", "answer_signup_path", "answer_plan_change", "answer_source_or_affiliation", "answer_privacy_boundary"],
+    "objection": ["handle_price_objection", "handle_competitor_context"],
+    "safety_boundary": ["respect_boundary", "answer_privacy_boundary"],
+    "repair": ["repair_already_told_you", "repair_buyer_correction", "repair_asr_uncertainty", "avoid_repetition_rephrase"],
+    "terminal": ["terminal_close"],
+    "no_fit": ["disqualify_no_fit"],
+    "team_scope": ["clarify_team_vs_individual", "recommend_business_or_enterprise"]
+  },
+  "more_specific_than": {
+    "ask_use_case_gap": ["ask_usage_intensity", "clarify_team_vs_individual", "clarify_tool_name", "clarify_question_scope"],
+    "orient_plan_options": ["explain_subscription_vs_model", "compare_plus_vs_pro", "compare_pro_tiers", "recommend_plus", "recommend_pro", "recommend_business_or_enterprise"],
+    "respect_boundary": ["answer_privacy_boundary"]
+  },
+  "safety_priority_actions": ["respect_boundary", "answer_privacy_boundary"],
+  "terminal_actions": ["terminal_close"],
+  "repair_actions": ["repair_already_told_you", "repair_buyer_correction", "repair_asr_uncertainty", "avoid_repetition_rephrase"],
+  "no_fit_actions": ["disqualify_no_fit"],
+  "direct_answer_actions": ["answer_price", "answer_signup_path", "answer_plan_change", "answer_source_or_affiliation", "answer_privacy_boundary"]
+}

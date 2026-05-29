@@ -1,16 +1,16 @@
 {
   "experiment_id": "NON-LLM-ACTION-SELECTOR-DECISION-001",
-  "generated_at": "2026-05-29T22:26:01.769212+00:00",
+  "generated_at": "2026-05-29T23:06:29.389048+00:00",
   "status": "pass",
   "recommendation_id": "shadow_mode_integration_design_next",
   "recommendation": "Recommend a shadow-mode integration design next; keep live wiring false until verifier and renderer boundaries are reviewed.",
   "non_llm_selector_role": "fast action-id proposal layer only",
   "evidence_summary": {
-    "non_llm_test_accuracy": 0.9512195121951219,
-    "non_llm_p99_ms": 0.4983,
+    "non_llm_test_accuracy": 0.9634146341463414,
+    "non_llm_p99_ms": 0.4602,
     "small_model_p50_ms": 2411.0,
-    "non_llm_p50_ms": 0.2473,
-    "p50_speedup_vs_small_model": 9749.292357460574,
+    "non_llm_p50_ms": 0.2717,
+    "p50_speedup_vs_small_model": 8873.757821126243,
     "preferred_live_action_selector_candidate": true
   },
   "non_llm_selector_is_full_conversation_brain": false,

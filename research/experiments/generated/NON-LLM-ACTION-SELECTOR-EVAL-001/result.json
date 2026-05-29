@@ -1,6 +1,6 @@
 {
   "experiment_id": "NON-LLM-ACTION-SELECTOR-EVAL-001",
-  "generated_at": "2026-05-29T22:25:57.029385+00:00",
+  "generated_at": "2026-05-29T23:05:40.460686+00:00",
   "status": "pass",
   "dataset": "research/experiments/generated/NON-LLM-ACTION-SELECTOR-DATASET-001",
   "baseline_metrics": {
@@ -196,10 +196,10 @@
       },
       "test": {
         "row_count": 82,
-        "accuracy": 0.9512195121951219,
-        "macro_f1": 0.8267632850241546,
-        "fallback_rate": 0.024390243902439025,
-        "fallback_count": 2,
+        "accuracy": 0.9634146341463414,
+        "macro_f1": 0.8485024154589372,
+        "fallback_rate": 0.012195121951219513,
+        "fallback_count": 1,
         "per_label": {
           "answer_plan_change": {
             "support": 1,
@@ -239,9 +239,9 @@
           },
           "ask_use_case_gap": {
             "support": 1,
-            "precision": 0.3333333333333333,
+            "precision": 0.5,
             "recall": 1.0,
-            "f1": 0.5
+            "f1": 0.6666666666666666
           },
           "avoid_repetition_rephrase": {
             "support": 1,
@@ -336,8 +336,8 @@
           "terminal_close": {
             "support": 2,
             "precision": 1.0,
-            "recall": 0.5,
-            "f1": 0.6666666666666666
+            "recall": 1.0,
+            "f1": 1.0
           }
         },
         "confusion_matrix": {
@@ -404,8 +404,7 @@
             "respect_boundary": 11
           },
           "terminal_close": {
-            "ask_use_case_gap": 1,
-            "terminal_close": 1
+            "terminal_close": 2
           }
         },
         "special_case_metrics": {
@@ -424,8 +423,8 @@
           "terminal_close_accuracy": {
             "name": "terminal_close_accuracy",
             "case_count": 2,
-            "accuracy": 0.5,
-            "correct": 1
+            "accuracy": 1.0,
+            "correct": 2
           },
           "price_question_accuracy": {
             "name": "price_question_accuracy",
@@ -467,10 +466,10 @@
       },
       "latency_ms": {
         "sample_count": 500,
-        "p50": 0.2473,
-        "p90": 0.3565,
-        "p99": 0.4983,
-        "max": 0.5429
+        "p50": 0.2717,
+        "p90": 0.3519,
+        "p99": 0.4602,
+        "max": 0.6099
       },
       "prediction_samples": {
         "validation": [
@@ -1237,10 +1236,10 @@
       },
       "latency_ms": {
         "sample_count": 500,
-        "p50": 0.4152,
-        "p90": 0.5538,
-        "p99": 0.8119,
-        "max": 0.8635
+        "p50": 0.4204,
+        "p90": 0.48,
+        "p99": 0.5303,
+        "max": 0.6735
       },
       "prediction_samples": {
         "validation": [

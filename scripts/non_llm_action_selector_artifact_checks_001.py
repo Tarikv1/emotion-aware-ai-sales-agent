@@ -15,10 +15,16 @@ DATASET_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-DATASET-001"
 EVAL_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-EVAL-001"
 COMPARISON_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-COMPARISON-001"
 DECISION_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-DECISION-001"
+SHADOW_REPLAY_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-SHADOW-REPLAY-001"
+SHADOW_MODE_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-SHADOW-MODE-001"
+SHADOW_SAFETY_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-SHADOW-SAFETY-AUDIT-001"
+SHADOW_DECISION_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-SHADOW-DECISION-001"
 
 LABELS_PATH = ROOT / "runtime" / "action_selector" / "action_selector_labels.json"
 CONTRACT_PATH = ROOT / "runtime" / "action_selector" / "action_selector_contract.py"
 SELECTOR_PATH = ROOT / "runtime" / "action_selector" / "non_llm_action_selector.py"
+SHADOW_CONTRACT_PATH = ROOT / "runtime" / "action_selector" / "shadow_mode_contract.py"
+SHADOW_EVALUATOR_PATH = ROOT / "runtime" / "action_selector" / "shadow_mode_evaluator.py"
 
 REQUESTED_SOURCE_PATHS = [
     ROOT / "scripts" / "build_non_llm_action_selector_dataset_001.py",
@@ -28,8 +34,17 @@ REQUESTED_SOURCE_PATHS = [
     ROOT / "scripts" / "validate_non_llm_action_selector_eval_001.py",
     ROOT / "scripts" / "validate_non_llm_action_selector_comparison_001.py",
     ROOT / "scripts" / "validate_non_llm_action_selector_decision_001.py",
+    ROOT / "scripts" / "build_non_llm_action_selector_shadow_replay_001.py",
+    ROOT / "scripts" / "run_non_llm_action_selector_shadow_mode_001.py",
+    ROOT / "scripts" / "audit_non_llm_action_selector_shadow_safety_001.py",
+    ROOT / "scripts" / "validate_non_llm_action_selector_shadow_replay_001.py",
+    ROOT / "scripts" / "validate_non_llm_action_selector_shadow_mode_001.py",
+    ROOT / "scripts" / "validate_non_llm_action_selector_shadow_safety_001.py",
+    ROOT / "scripts" / "validate_non_llm_action_selector_shadow_decision_001.py",
     CONTRACT_PATH,
     SELECTOR_PATH,
+    SHADOW_CONTRACT_PATH,
+    SHADOW_EVALUATOR_PATH,
 ]
 
 WEIGHT_SUFFIXES = (
@@ -104,6 +119,10 @@ def dataset_rows() -> dict[str, list[dict[str, Any]]]:
         split: read_jsonl(DATASET_DIR / f"{split}.jsonl")
         for split in ("train", "validation", "test")
     }
+
+
+def shadow_replay_rows() -> list[dict[str, Any]]:
+    return read_jsonl(SHADOW_REPLAY_DIR / "replay.jsonl")
 
 
 def normalized_text(value: Any) -> str:
@@ -233,4 +252,43 @@ def controlled_label_failures(rows_by_split: dict[str, list[dict[str, Any]]] | N
             action_id = str(row.get("target_action_id") or "")
             if action_id not in allowed:
                 failures.append(f"{split}[{index}].target_action_id is not controlled: {action_id}")
+    return failures
+
+
+def no_shadow_text_or_runtime_change_failures(payload: dict[str, Any], label: str) -> list[str]:
+    failures: list[str] = []
+    false_keys = [
+        "side_effects_allowed",
+        "buyer_facing_text_generated",
+        "live_runtime_wiring_allowed",
+        "response_text_changed",
+        "runtime_behavior_changed",
+        "provider_calls_made",
+        "openai_api_calls_made",
+        "ultravox_calls_made",
+        "elevenlabs_calls_made",
+        "local_llm_calls_made",
+        "ollama_calls_made",
+    ]
+    failures.extend(false_flag_failures(payload, false_keys, label))
+    if payload.get("should_not_change_runtime") is not True:
+        failures.append(f"{label}.should_not_change_runtime must be true")
+    return failures
+
+
+def no_private_or_audio_shadow_failures(rows: list[dict[str, Any]]) -> list[str]:
+    failures: list[str] = []
+    audio_keys = {"audio", "audio_path", "audio_file", "wav_path", "mp3_path", "generated_audio"}
+    for index, row in enumerate(rows, start=1):
+        label = f"shadow_replay[{index}]"
+        if row.get("sanitized") is not True:
+            failures.append(f"{label}.sanitized is not true")
+        if row.get("raw_private_data") is not False:
+            failures.append(f"{label}.raw_private_data is not false")
+        present_audio = sorted(audio_keys & set(row))
+        if present_audio:
+            failures.append(f"{label} contains audio field(s): {present_audio}")
+        source = normalized_text(row.get("source_file"))
+        if "data/private" in source or "private-restricted" in source:
+            failures.append(f"{label}.source_file references private data: {row.get('source_file')}")
     return failures

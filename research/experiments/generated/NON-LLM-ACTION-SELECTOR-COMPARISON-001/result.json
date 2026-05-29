@@ -1,6 +1,6 @@
 {
   "experiment_id": "NON-LLM-ACTION-SELECTOR-COMPARISON-001",
-  "generated_at": "2026-05-29T22:26:01.769067+00:00",
+  "generated_at": "2026-05-29T23:06:29.388934+00:00",
   "status": "pass",
   "inputs": {
     "non_llm_eval": "research/experiments/generated/NON-LLM-ACTION-SELECTOR-EVAL-001/result.json",
@@ -10,18 +10,18 @@
   "reran_ollama": false,
   "non_llm_baseline_compared": "rule_based",
   "latency": {
-    "non_llm_p50_ms": 0.2473,
-    "non_llm_p90_ms": 0.3565,
-    "non_llm_p99_ms": 0.4983,
+    "non_llm_p50_ms": 0.2717,
+    "non_llm_p90_ms": 0.3519,
+    "non_llm_p99_ms": 0.4602,
     "small_model_name": "smollm2:1.7b",
     "small_model_mode": "ultra_minimal_action_id_only",
     "small_model_p50_ms": 2411.0,
     "small_model_p90_ms": 2427.0,
     "small_model_p99_ms": 2435.0,
-    "p50_speedup_vs_small_model": 9749.292357460574
+    "p50_speedup_vs_small_model": 8873.757821126243
   },
   "action_id_validity": {
-    "non_llm_test_accuracy": 0.9512195121951219,
+    "non_llm_test_accuracy": 0.9634146341463414,
     "small_model_verifier_pass_rate": 1.0,
     "small_model_verifier_pass_count": 20,
     "small_model_case_count": 20

@@ -1,0 +1,31 @@
+{
+  "experiment_id": "NON-LLM-ACTION-SELECTOR-SHADOW-DECISION-001",
+  "generated_at": "2026-05-29T23:06:25.932774+00:00",
+  "status": "pass",
+  "recommendation_id": "read_only_runtime_shadow_logging_design_next",
+  "recommendation": "Agreement and safety are strong; design read-only runtime shadow logging next, with live behavior still unchanged.",
+  "evidence_summary": {
+    "replay_case_count": 147,
+    "agreement_with_expected_count": 141,
+    "exact_accuracy": 0.9591836734693877,
+    "compatible_with_expected_count": 144,
+    "compatible_rate": 0.9795918367346939,
+    "safety_blockers_count": 0,
+    "latency_p99_ms": 1.9931,
+    "repair_accuracy": 1.0
+  },
+  "claims_live_readiness": false,
+  "side_effects_allowed": false,
+  "buyer_facing_text_generated": false,
+  "live_runtime_wiring_allowed": false,
+  "should_not_change_runtime": true,
+  "live_wiring_allowed": false,
+  "response_text_changed": false,
+  "runtime_behavior_changed": false,
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "ultravox_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "local_llm_calls_made": false,
+  "ollama_calls_made": false
+}
