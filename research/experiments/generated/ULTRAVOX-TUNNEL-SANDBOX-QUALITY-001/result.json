@@ -7,7 +7,7 @@
   "tool_call_attempted": false,
   "tool_call_succeeded": false,
   "hosted_turns_attempted": 0,
-  "hosted_turns_not_run_reason": "tunnel_test_failed",
+  "hosted_turns_not_run_reason": "blocked_tunnel_dns_failed",
   "product_truth_drift_count": 0,
   "unsupported_claim_count": 0,
   "fake_side_effect_count": 0,
@@ -17,9 +17,12 @@
   "memory_conflict_count": 0,
   "tool_response_followed_count": 0,
   "latency_metrics": {
-    "tunnel_start_latency_ms": 5248.807,
-    "public_endpoint_valid_request_latency_ms": 0.364
+    "tunnel_start_latency_ms": 4705.024
   },
+  "dns_success": false,
+  "http_success": false,
+  "auth_preflight_success": false,
+  "provider_call_gate_passed": false,
   "outbound_phone_call_made": false,
   "real_customer_data_used": false,
   "raw_private_audio_or_transcripts_used": false,

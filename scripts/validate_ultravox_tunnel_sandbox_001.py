@@ -74,6 +74,14 @@ def main() -> None:
         "explicit_cloudflared_path_exists",
         "explicit_cloudflared_version_ok",
         "cloudflared_available",
+        "tunnel_preflight_only",
+        "dns_success",
+        "http_success",
+        "auth_preflight_success",
+        "valid_request_success",
+        "missing_token_401",
+        "invalid_token_401",
+        "provider_call_gate_passed",
     ):
         if not isinstance(result.get(key), bool):
             fail(f"{key} must be a boolean")
@@ -83,6 +91,22 @@ def main() -> None:
         fail("missing explicit cloudflared path blocker must record path_exists false")
     if result.get("run_status") == "blocked_tunnel_url_not_detected" and result.get("tunnel_attempted") is not True:
         fail("tunnel URL parsing blocker must follow a tunnel attempt")
+    for key in ("dns_attempt_count", "http_attempt_count"):
+        if not isinstance(result.get(key), int):
+            fail(f"{key} must be an integer")
+    for key in ("dns_first_success_seconds", "http_first_success_seconds"):
+        if key not in result:
+            fail(f"{key} must exist")
+    if result.get("provider_call_attempted") and result.get("provider_call_gate_passed") is not True:
+        fail("provider call must not be attempted unless DNS, HTTP, and auth preflight gates passed")
+    if result.get("tunnel_preflight_only") and result.get("provider_call_attempted") is not False:
+        fail("provider call must not be attempted in tunnel-preflight-only mode")
+    if result.get("run_status") == "blocked_tunnel_dns_failed" and result.get("dns_success") is not False:
+        fail("DNS failure status must record dns_success false")
+    if result.get("run_status") == "blocked_tunnel_http_failed" and result.get("http_success") is not False:
+        fail("HTTP failure status must record http_success false")
+    if result.get("run_status") == "blocked_tunnel_auth_failed" and result.get("auth_preflight_success") is not False:
+        fail("auth failure status must record auth_preflight_success false")
     if config.get("tunnel_allowed_by_default") is not False:
         fail("tunnel config must block tunnel by default")
     if local_config.get("auth_required") is not True:
@@ -103,6 +127,8 @@ def main() -> None:
         fail("provider call must not be made unless provider gates are enabled")
     if result.get("provider_call_made") and result.get("local_public_endpoint_test_passed") is not True:
         fail("provider call must not happen before public endpoint preflight passes")
+    if result.get("provider_call_made") and not (result.get("dns_success") and result.get("http_success") and result.get("auth_preflight_success")):
+        fail("provider call must not happen before DNS, HTTP, and auth preflight pass")
     if result.get("tunnel_url_created") and not result.get("tunnel_url_redacted_or_domain_only"):
         fail("tunnel evidence must store redacted/domain-only URL metadata")
     if result.get("tunnel_url_redacted_or_domain_only") and str(result["tunnel_url_redacted_or_domain_only"]).startswith("https://"):

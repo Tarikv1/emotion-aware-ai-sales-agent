@@ -1,13 +1,17 @@
 # ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001 Report
 
-Recommendation: `fix tunnel/endpoint/auth before provider call`
-Tunnel sandbox run status: `blocked_tunnel_test_failed`
-Blocker: `Public tunnel endpoint preflight failed before provider call.`
+Recommendation: `retry tunnel later, test local DNS/trycloudflare reachability, or use ngrok/cloudflared named tunnel`
+Tunnel sandbox run status: `blocked_tunnel_dns_failed`
+Blocker: `Tunnel URL was created, but DNS readiness did not succeed before provider call.`
 Explicit cloudflared path present: `true`
 Explicit cloudflared path exists: `true`
 Cloudflared available: `true`
+Tunnel preflight only: `true`
 Tunnel attempted: `true`
 Tunnel tool used: `cloudflared`
+DNS success: `false`
+HTTP success: `false`
+Auth preflight success: `false`
 Public endpoint test passed: `false`
 Provider call attempted: `false`
 Provider call made: `false`

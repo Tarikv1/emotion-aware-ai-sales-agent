@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import queue
 import re
+import socket
 import subprocess
 import sys
 import threading
@@ -41,6 +43,9 @@ REPORT_PATH = OUT_DIR / "report.md"
 QUALITY_DIR = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-TUNNEL-SANDBOX-QUALITY-001"
 QUALITY_RESULT_PATH = QUALITY_DIR / "result.json"
 QUALITY_REPORT_PATH = QUALITY_DIR / "report.md"
+DIAGNOSTICS_DIR = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-TUNNEL-DIAGNOSTICS-001"
+DIAGNOSTICS_RESULT_PATH = DIAGNOSTICS_DIR / "result.json"
+DIAGNOSTICS_REPORT_PATH = DIAGNOSTICS_DIR / "report.md"
 DECISION_DIR = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001"
 DECISION_RESULT_PATH = DECISION_DIR / "result.json"
 DECISION_REPORT_PATH = DECISION_DIR / "report.md"
@@ -51,8 +56,11 @@ TOOL_TOKEN_ENV = "PROJECT_ULTRAVOX_TOOL_TOKEN"
 TUNNEL_GATE = "LOCAL_ULTRAVOX_ALLOW_PUBLIC_TOOL_TUNNEL"
 TOOL_AUTH_TOKEN_NAME = "projectToolToken"
 TUNNEL_START_TIMEOUT_SECONDS = 25
-PUBLIC_ENDPOINT_PREFLIGHT_ATTEMPTS = 12
+DNS_READINESS_TIMEOUT_SECONDS = 60
+HTTP_READINESS_TIMEOUT_SECONDS = 60
+READINESS_INTERVAL_SECONDS = 2
 PROVIDER_TOOL_OBSERVATION_SECONDS = 2
+ANSI_PATTERN = re.compile(r"\x1b\[[0-9;]*[A-Za-z]")
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -78,6 +86,17 @@ def sanitize_text(text: str) -> str:
         if value:
             text = text.replace(value, "<redacted>")
     return " ".join(text.split())[:1000]
+
+
+def strip_ansi_line(line: str) -> str:
+    return ANSI_PATTERN.sub("", line).strip().strip("\"'[](){}<>")
+
+
+def clean_log_line(line: str) -> str:
+    cleaned = strip_ansi_line(line)
+    cleaned = re.sub(r"https://[A-Za-z0-9_.-]+\.trycloudflare\.com(?::[0-9]+)?", "https://<trycloudflare-domain-redacted>", cleaned)
+    cleaned = cleaned.strip().strip("\"'[](){}<>")
+    return sanitize_text(cleaned)
 
 
 def read_error_body(error: urllib.error.HTTPError) -> str:
@@ -150,6 +169,7 @@ def add_tunnel_discovery(result: dict[str, Any], discovery: dict[str, Any]) -> N
             "explicit_cloudflared_version_ok": cloudflared_discovery["explicit_cloudflared_version_ok"],
             "explicit_cloudflared_executable": cloudflared_discovery["explicit_cloudflared_executable"],
             "cloudflared_available": discovery["cloudflared"]["available"],
+            "cloudflared_version": discovery["cloudflared"].get("version"),
             "selected_tunnel_tool": discovery["selected_tunnel_tool"],
             "selected_tunnel_executable": discovery["selected_tunnel_executable"],
         }
@@ -199,48 +219,115 @@ def post_tool_json(url: str, payload: dict[str, Any], token: str | None) -> tupl
         }, elapsed_ms(start)
 
 
-def evaluate_public_endpoint_test(public_url: str, path: str, token: str) -> dict[str, Any]:
+def validate_tool_response_payload(status: int, response: dict[str, Any]) -> tuple[bool, list[str]]:
+    validation_errors = validate_ultravox_tool_response(response) if status == 200 else []
+    valid_passed = (
+        status == 200
+        and not validation_errors
+        and response.get("side_effects_allowed") is False
+        and response.get("allowed_to_speak") is True
+    )
+    return valid_passed, validation_errors
+
+
+def auth_preflight(public_url: str, path: str, token: str) -> dict[str, Any]:
     endpoint_url = public_url.rstrip("/") + path
     sample = build_request_payload()
-    valid_status = 0
-    valid_response: dict[str, Any] = {}
-    latency_ms = 0.0
-    valid_attempts: list[dict[str, Any]] = []
-    for attempt in range(1, PUBLIC_ENDPOINT_PREFLIGHT_ATTEMPTS + 1):
-        valid_status, valid_response, latency_ms = post_tool_json(endpoint_url, sample, token)
-        valid_attempts.append(
-            {
-                "attempt": attempt,
-                "status": valid_status,
-                "error": valid_response.get("error"),
-                "reason": valid_response.get("reason"),
-                "latency_ms": latency_ms,
-            }
-        )
-        if valid_status == 200:
-            break
-        time.sleep(1.0)
+    valid_status, valid_response, latency_ms = post_tool_json(endpoint_url, sample, token)
     missing_status, _, _ = post_tool_json(endpoint_url, sample, None)
     invalid_status, _, _ = post_tool_json(endpoint_url, sample, "invalid-token")
-    validation_errors = validate_ultravox_tool_response(valid_response) if valid_status == 200 else []
-    valid_passed = (
-        valid_status == 200
-        and not validation_errors
-        and valid_response.get("side_effects_allowed") is False
-        and valid_response.get("allowed_to_speak") is True
-    )
+    valid_passed, validation_errors = validate_tool_response_payload(valid_status, valid_response)
     return {
         "valid_request_status": valid_status,
         "valid_request_passed": valid_passed,
+        "valid_request_success": valid_passed,
         "valid_request_latency_ms": latency_ms,
-        "valid_request_attempts": valid_attempts,
+        "valid_request_error": valid_response.get("error"),
+        "valid_request_error_reason": valid_response.get("reason"),
         "missing_token_status": missing_status,
         "missing_token_rejected": missing_status == 401,
+        "missing_token_401": missing_status == 401,
         "invalid_token_status": invalid_status,
         "invalid_token_rejected": invalid_status == 401,
+        "invalid_token_401": invalid_status == 401,
         "response_schema_errors": validation_errors,
         "auth_token_printed": False,
         "passed": valid_passed and missing_status == 401 and invalid_status == 401,
+        "auth_preflight_success": valid_passed and missing_status == 401 and invalid_status == 401,
+    }
+
+
+def wait_for_dns_ready(host: str) -> dict[str, Any]:
+    start = time.monotonic()
+    deadline = start + DNS_READINESS_TIMEOUT_SECONDS
+    attempt_count = 0
+    last_error = None
+    first_success_seconds = None
+    while time.monotonic() <= deadline:
+        attempt_count += 1
+        try:
+            socket.getaddrinfo(host, 443, type=socket.SOCK_STREAM)
+            first_success_seconds = round(time.monotonic() - start, 3)
+            return {
+                "dns_success": True,
+                "dns_attempt_count": attempt_count,
+                "dns_first_success_seconds": first_success_seconds,
+                "dns_last_error": None,
+            }
+        except OSError as error:
+            last_error = sanitize_text(str(error))[:240]
+            time.sleep(READINESS_INTERVAL_SECONDS)
+    return {
+        "dns_success": False,
+        "dns_attempt_count": attempt_count,
+        "dns_first_success_seconds": first_success_seconds,
+        "dns_last_error": last_error,
+    }
+
+
+def wait_for_http_ready(public_url: str, path: str, token: str) -> dict[str, Any]:
+    endpoint_url = public_url.rstrip("/") + path
+    sample = build_request_payload()
+    start = time.monotonic()
+    deadline = start + HTTP_READINESS_TIMEOUT_SECONDS
+    attempt_count = 0
+    last_status = None
+    last_error = None
+    first_success_seconds = None
+    attempts: list[dict[str, Any]] = []
+    while time.monotonic() <= deadline:
+        attempt_count += 1
+        status, response, latency_ms = post_tool_json(endpoint_url, sample, token)
+        last_status = status
+        last_error = response.get("reason") or response.get("error")
+        success, _ = validate_tool_response_payload(status, response)
+        attempts.append(
+            {
+                "attempt": attempt_count,
+                "status": status,
+                "error": response.get("error"),
+                "reason": response.get("reason"),
+                "latency_ms": latency_ms,
+            }
+        )
+        if success:
+            first_success_seconds = round(time.monotonic() - start, 3)
+            return {
+                "http_success": True,
+                "http_attempt_count": attempt_count,
+                "http_first_success_seconds": first_success_seconds,
+                "http_last_status": last_status,
+                "http_last_error": None,
+                "http_attempts": attempts,
+            }
+        time.sleep(READINESS_INTERVAL_SECONDS)
+    return {
+        "http_success": False,
+        "http_attempt_count": attempt_count,
+        "http_first_success_seconds": first_success_seconds,
+        "http_last_status": last_status,
+        "http_last_error": sanitize_text(str(last_error))[:240] if last_error else None,
+        "http_attempts": attempts,
     }
 
 
@@ -256,8 +343,9 @@ def command_for_tunnel(tool: str, executable: str, port: int) -> list[str]:
 
 
 def parse_https_url(line: str) -> str | None:
-    for match in re.finditer(r"https://[A-Za-z0-9_.-]+(?::[0-9]+)?", line):
-        candidate = match.group(0).rstrip(".,)")
+    cleaned = strip_ansi_line(line)
+    for match in re.finditer(r"https://[A-Za-z0-9_.-]+(?::[0-9]+)?", cleaned):
+        candidate = match.group(0).strip().strip("\"'[](){}<>").rstrip(".,);:")
         parsed = urlparse(candidate)
         if parsed.scheme == "https" and parsed.netloc.endswith(".trycloudflare.com"):
             return f"https://{parsed.netloc}"
@@ -294,6 +382,7 @@ def start_tunnel(tool: str, executable: str, port: int) -> tuple[subprocess.Pope
     thread = threading.Thread(target=reader, daemon=True)
     thread.start()
     log_line_count = 0
+    log_lines_sanitized: list[str] = []
     public_url = None
     deadline = time.monotonic() + TUNNEL_START_TIMEOUT_SECONDS
     while time.monotonic() < deadline:
@@ -304,18 +393,25 @@ def start_tunnel(tool: str, executable: str, port: int) -> tuple[subprocess.Pope
         except queue.Empty:
             continue
         log_line_count += 1
+        cleaned_line = clean_log_line(line)
+        if cleaned_line:
+            log_lines_sanitized.append(cleaned_line[:500])
         parsed = parse_https_url(line)
         if parsed:
             public_url = parsed
             break
 
     while not output_queue.empty():
-        output_queue.get_nowait()
+        line = output_queue.get_nowait()
         log_line_count += 1
+        cleaned_line = clean_log_line(line)
+        if cleaned_line:
+            log_lines_sanitized.append(cleaned_line[:500])
     details = {
         "start_error": None,
         "start_latency_ms": elapsed_ms(start),
         "log_line_count": log_line_count,
+        "cloudflared_log_lines_sanitized": log_lines_sanitized[:20],
         "process_exited_before_url": process.poll() is not None and public_url is None,
     }
     return process, public_url, details
@@ -525,8 +621,10 @@ def base_result(env_metadata: dict[str, bool], gates: dict[str, bool]) -> dict[s
         "explicit_cloudflared_version_ok": False,
         "explicit_cloudflared_executable": None,
         "cloudflared_available": False,
+        "cloudflared_version": None,
         "selected_tunnel_tool": None,
         "selected_tunnel_executable": None,
+        "tunnel_preflight_only": False,
         "local_endpoint_host": config["local_endpoint_host"],
         "local_endpoint_port": config["local_endpoint_port"],
         "local_endpoint_path": config["local_endpoint_path"],
@@ -536,7 +634,22 @@ def base_result(env_metadata: dict[str, bool], gates: dict[str, bool]) -> dict[s
         "tunnel_tool_used": None,
         "tunnel_url_created": False,
         "tunnel_url_redacted_or_domain_only": None,
+        "tunnel_url_full_recorded": False,
         "tunnel_stop_result": {"attempted": False, "terminated": False, "killed": False},
+        "dns_success": False,
+        "dns_attempt_count": 0,
+        "dns_first_success_seconds": None,
+        "dns_last_error": None,
+        "http_success": False,
+        "http_attempt_count": 0,
+        "http_first_success_seconds": None,
+        "http_last_status": None,
+        "http_last_error": None,
+        "auth_preflight_success": False,
+        "valid_request_success": False,
+        "missing_token_401": False,
+        "invalid_token_401": False,
+        "provider_call_gate_passed": False,
         "local_public_endpoint_test_passed": False,
         "public_endpoint_test": {},
         "provider_call_attempted": False,
@@ -595,7 +708,7 @@ def base_result(env_metadata: dict[str, bool], gates: dict[str, bool]) -> dict[s
     }
 
 
-def build_result() -> dict[str, Any]:
+def build_result(*, tunnel_preflight_only: bool = False) -> dict[str, Any]:
     try:
         env_metadata = load_local_ultravox_env()
         unsafe_secret_file = False
@@ -610,6 +723,7 @@ def build_result() -> dict[str, Any]:
         unsafe_secret_file = True
     gates = env_gates(env_metadata)
     result = base_result(env_metadata, gates)
+    result["tunnel_preflight_only"] = tunnel_preflight_only
 
     if unsafe_secret_file:
         result["run_status"] = "unsafe_secret_file"
@@ -671,16 +785,42 @@ def build_result() -> dict[str, Any]:
 
         result["tunnel_url_created"] = True
         result["tunnel_url_redacted_or_domain_only"] = parsed.netloc
+        result["tunnel_url_full_recorded"] = False
         result["public_tool_endpoint_available"] = True
         result["public_tool_endpoint_host"] = parsed.netloc
 
-        public_test = evaluate_public_endpoint_test(public_url, str(local_config["path"]), token)
-        result["public_endpoint_test"] = public_test
-        result["local_public_endpoint_test_passed"] = public_test["passed"]
-        result["latency_metrics"]["public_endpoint_valid_request_latency_ms"] = public_test.get("valid_request_latency_ms")
-        if not public_test["passed"]:
-            result["run_status"] = "blocked_tunnel_test_failed"
-            result["blocker"] = "Public tunnel endpoint preflight failed before provider call."
+        dns_result = wait_for_dns_ready(parsed.netloc)
+        result.update(dns_result)
+        if not dns_result["dns_success"]:
+            result["run_status"] = "blocked_tunnel_dns_failed"
+            result["blocker"] = "Tunnel URL was created, but DNS readiness did not succeed before provider call."
+            return result
+
+        http_result = wait_for_http_ready(public_url, str(local_config["path"]), token)
+        result.update({key: value for key, value in http_result.items() if key != "http_attempts"})
+        result["http_readiness"] = http_result
+        if not http_result["http_success"]:
+            result["run_status"] = "blocked_tunnel_http_failed"
+            result["blocker"] = "Tunnel DNS resolved, but HTTP readiness did not succeed before provider call."
+            return result
+
+        auth_result = auth_preflight(public_url, str(local_config["path"]), token)
+        result["public_endpoint_test"] = auth_result
+        result["auth_preflight_success"] = auth_result["auth_preflight_success"]
+        result["valid_request_success"] = auth_result["valid_request_success"]
+        result["missing_token_401"] = auth_result["missing_token_401"]
+        result["invalid_token_401"] = auth_result["invalid_token_401"]
+        result["local_public_endpoint_test_passed"] = auth_result["passed"]
+        result["latency_metrics"]["public_endpoint_valid_request_latency_ms"] = auth_result.get("valid_request_latency_ms")
+        if not auth_result["passed"]:
+            result["run_status"] = "blocked_tunnel_auth_failed"
+            result["blocker"] = "Tunnel HTTP readiness passed, but auth preflight failed before provider call."
+            return result
+        result["provider_call_gate_passed"] = True
+
+        if tunnel_preflight_only:
+            result["run_status"] = "preflight_only_passed"
+            result["blocker"] = "Tunnel preflight-only mode passed; provider call intentionally skipped."
             return result
 
         provider_event_start = len(local_server.sanitized_events)
@@ -736,8 +876,10 @@ def quality_reason(result: dict[str, Any]) -> str | None:
         return "explicit_cloudflared_path_missing"
     if result["run_status"] == "blocked_tunnel_url_not_detected":
         return "tunnel_url_not_detected"
-    if result["run_status"] == "blocked_tunnel_test_failed":
-        return "tunnel_test_failed"
+    if result["run_status"] in {"blocked_tunnel_dns_failed", "blocked_tunnel_http_failed", "blocked_tunnel_auth_failed", "blocked_tunnel_test_failed"}:
+        return result["run_status"]
+    if result["run_status"] == "preflight_only_passed":
+        return "preflight_only_no_provider"
     if result["run_status"] == "provider_session_created_no_interaction":
         return "hosted_session_created_but_no_interaction"
     if result["run_status"] == "provider_create_failed":
@@ -769,6 +911,10 @@ def build_quality_result(result: dict[str, Any]) -> dict[str, Any]:
         "memory_conflict_count": result["memory_conflict_count"],
         "tool_response_followed_count": result["tool_response_followed_count"],
         "latency_metrics": result["latency_metrics"],
+        "dns_success": result["dns_success"],
+        "http_success": result["http_success"],
+        "auth_preflight_success": result["auth_preflight_success"],
+        "provider_call_gate_passed": result["provider_call_gate_passed"],
         "outbound_phone_call_made": False,
         "real_customer_data_used": False,
         "raw_private_audio_or_transcripts_used": False,
@@ -789,10 +935,18 @@ def recommendation_for(result: dict[str, Any]) -> str:
         return "fix ULTRAVOX_TUNNEL_CLOUDFLARED_PATH"
     if status == "blocked_tunnel_url_not_detected":
         return "fix tunnel URL parsing"
+    if status == "blocked_tunnel_dns_failed":
+        return "retry tunnel later, test local DNS/trycloudflare reachability, or use ngrok/cloudflared named tunnel"
+    if status == "blocked_tunnel_http_failed":
+        return "fix tunnel target/local server path"
+    if status == "blocked_tunnel_auth_failed":
+        return "fix token/header handling"
     if status == "blocked_no_tunnel_tool":
         return "install cloudflared or ngrok, rerun"
     if status == "blocked_tunnel_test_failed":
         return "fix tunnel/endpoint/auth before provider call"
+    if status == "preflight_only_passed":
+        return "run gated provider sandbox next"
     if status == "provider_create_failed":
         return "fix API/session payload"
     if status == "provider_session_created_no_interaction":
@@ -826,6 +980,16 @@ def build_decision(result: dict[str, Any]) -> dict[str, Any]:
         "explicit_cloudflared_path_exists": result["explicit_cloudflared_path_exists"],
         "cloudflared_available": result["cloudflared_available"],
         "tunnel_url_created": result["tunnel_url_created"],
+        "dns_success": result["dns_success"],
+        "dns_attempt_count": result["dns_attempt_count"],
+        "dns_last_error": result["dns_last_error"],
+        "http_success": result["http_success"],
+        "http_attempt_count": result["http_attempt_count"],
+        "http_last_status": result["http_last_status"],
+        "http_last_error": result["http_last_error"],
+        "auth_preflight_success": result["auth_preflight_success"],
+        "provider_call_gate_passed": result["provider_call_gate_passed"],
+        "tunnel_preflight_only": result["tunnel_preflight_only"],
         "local_public_endpoint_test_passed": result["local_public_endpoint_test_passed"],
         "ultravox_session_created": result["ultravox_session_created"],
         "tool_call_attempted": result["tool_call_attempted"],
@@ -850,7 +1014,10 @@ def build_decision(result: dict[str, Any]) -> dict[str, Any]:
             "If no tunnel tool exists: install cloudflared or ngrok, rerun.",
             "If explicit cloudflared path does not exist: fix ULTRAVOX_TUNNEL_CLOUDFLARED_PATH.",
             "If cloudflared starts but no HTTPS URL is found: fix tunnel URL parsing.",
-            "If tunnel endpoint test fails: fix auth/endpoint before provider call.",
+            "If DNS fails: retry tunnel later, test local DNS/trycloudflare reachability, or use ngrok/cloudflared named tunnel.",
+            "If DNS succeeds but HTTP fails: fix tunnel target/local server path.",
+            "If auth preflight fails: fix token/header handling.",
+            "If all preflight passes and provider call was not run because tunnel-preflight-only: run gated provider sandbox next.",
             "If provider session cannot be created: fix API/session payload.",
             "If session created but interaction is not automated: implement WebSocket/browser client sandbox.",
             "If tool call works with no drift: limited synthetic voice conversation test next.",
@@ -875,11 +1042,20 @@ def render_result_report(result: dict[str, Any]) -> str:
             f"Explicit cloudflared path exists: `{str(result['explicit_cloudflared_path_exists']).lower()}`",
             f"Explicit cloudflared version ok: `{str(result['explicit_cloudflared_version_ok']).lower()}`",
             f"Cloudflared available: `{str(result['cloudflared_available']).lower()}`",
+            f"Tunnel preflight only: `{str(result['tunnel_preflight_only']).lower()}`",
             f"Local server started: `{str(result['local_server_started']).lower()}`",
             f"Tunnel attempted: `{str(result['tunnel_attempted']).lower()}`",
             f"Tunnel tool used: `{result['tunnel_tool_used']}`",
             f"Tunnel URL created: `{str(result['tunnel_url_created']).lower()}`",
             f"Tunnel URL redacted/domain only: `{result['tunnel_url_redacted_or_domain_only']}`",
+            f"DNS success: `{str(result['dns_success']).lower()}`",
+            f"DNS attempts: `{result['dns_attempt_count']}`",
+            f"DNS last error: `{result['dns_last_error']}`",
+            f"HTTP success: `{str(result['http_success']).lower()}`",
+            f"HTTP attempts: `{result['http_attempt_count']}`",
+            f"HTTP last status: `{result['http_last_status']}`",
+            f"HTTP last error: `{result['http_last_error']}`",
+            f"Auth preflight success: `{str(result['auth_preflight_success']).lower()}`",
             f"Public endpoint test passed: `{str(result['local_public_endpoint_test_passed']).lower()}`",
             f"Provider call attempted: `{str(result['provider_call_attempted']).lower()}`",
             f"Provider call made: `{str(result['provider_call_made']).lower()}`",
@@ -915,6 +1091,9 @@ def render_quality_report(result: dict[str, Any]) -> str:
             f"Tool call succeeded: `{str(result['tool_call_succeeded']).lower()}`",
             f"Hosted turns attempted: `{result['hosted_turns_attempted']}`",
             f"Hosted turns not run reason: `{result['hosted_turns_not_run_reason']}`",
+            f"DNS success: `{str(result['dns_success']).lower()}`",
+            f"HTTP success: `{str(result['http_success']).lower()}`",
+            f"Auth preflight success: `{str(result['auth_preflight_success']).lower()}`",
             f"Product truth drift count: `{result['product_truth_drift_count']}`",
             f"Unsupported claim count: `{result['unsupported_claim_count']}`",
             f"Fake side-effect count: `{result['fake_side_effect_count']}`",
@@ -940,8 +1119,12 @@ def render_decision_report(decision: dict[str, Any]) -> str:
             f"Explicit cloudflared path present: `{str(decision['explicit_cloudflared_path_present']).lower()}`",
             f"Explicit cloudflared path exists: `{str(decision['explicit_cloudflared_path_exists']).lower()}`",
             f"Cloudflared available: `{str(decision['cloudflared_available']).lower()}`",
+            f"Tunnel preflight only: `{str(decision['tunnel_preflight_only']).lower()}`",
             f"Tunnel attempted: `{str(decision['tunnel_attempted']).lower()}`",
             f"Tunnel tool used: `{decision['tunnel_tool_used']}`",
+            f"DNS success: `{str(decision['dns_success']).lower()}`",
+            f"HTTP success: `{str(decision['http_success']).lower()}`",
+            f"Auth preflight success: `{str(decision['auth_preflight_success']).lower()}`",
             f"Public endpoint test passed: `{str(decision['local_public_endpoint_test_passed']).lower()}`",
             f"Provider call attempted: `{str(decision['provider_call_attempted']).lower()}`",
             f"Provider call made: `{str(decision['provider_call_made']).lower()}`",
@@ -966,14 +1149,101 @@ def render_decision_report(decision: dict[str, Any]) -> str:
     )
 
 
+def build_diagnostics_result(result: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "evaluation_id": "ULTRAVOX-TUNNEL-DIAGNOSTICS-001",
+        "phase": "4J3E",
+        "cloudflared_available": result["cloudflared_available"],
+        "cloudflared_version": result["cloudflared_version"],
+        "explicit_cloudflared_path_used": result["selected_tunnel_tool"] == "cloudflared" and result["explicit_cloudflared_path_present"],
+        "explicit_cloudflared_path_present": result["explicit_cloudflared_path_present"],
+        "explicit_cloudflared_path_exists": result["explicit_cloudflared_path_exists"],
+        "tunnel_preflight_only": result["tunnel_preflight_only"],
+        "tunnel_attempted": result["tunnel_attempted"],
+        "tunnel_url_created": result["tunnel_url_created"],
+        "tunnel_url_domain_only": result["tunnel_url_redacted_or_domain_only"],
+        "tunnel_url_full_recorded": False,
+        "dns_success": result["dns_success"],
+        "dns_attempt_count": result["dns_attempt_count"],
+        "dns_first_success_seconds": result["dns_first_success_seconds"],
+        "dns_last_error": result["dns_last_error"],
+        "http_success": result["http_success"],
+        "http_attempt_count": result["http_attempt_count"],
+        "http_first_success_seconds": result["http_first_success_seconds"],
+        "http_last_status": result["http_last_status"],
+        "http_last_error": result["http_last_error"],
+        "auth_preflight_success": result["auth_preflight_success"],
+        "valid_request_success": result["valid_request_success"],
+        "missing_token_401": result["missing_token_401"],
+        "invalid_token_401": result["invalid_token_401"],
+        "provider_call_attempted": result["provider_call_attempted"],
+        "provider_call_made": result["provider_call_made"],
+        "blocker": result["blocker"],
+        "secrets_logged": False,
+        "raw_audio_committed": False,
+        "audio_committed": False,
+        "raw_private_audio_or_transcripts_used": False,
+        "outbound_phone_call_made": False,
+        "real_customer_data_used": False,
+        "live_wiring_allowed": False,
+        "production_call_allowed": False,
+        "runtime_behavior_changed": False,
+        "response_text_changed": False,
+    }
+
+
+def render_diagnostics_report(result: dict[str, Any]) -> str:
+    return "\n".join(
+        [
+            "# ULTRAVOX-TUNNEL-DIAGNOSTICS-001 Report",
+            "",
+            f"Cloudflared available: `{str(result['cloudflared_available']).lower()}`",
+            f"Cloudflared version: `{result['cloudflared_version']}`",
+            f"Explicit cloudflared path used: `{str(result['explicit_cloudflared_path_used']).lower()}`",
+            f"Tunnel preflight only: `{str(result['tunnel_preflight_only']).lower()}`",
+            f"Tunnel attempted: `{str(result['tunnel_attempted']).lower()}`",
+            f"Tunnel URL created: `{str(result['tunnel_url_created']).lower()}`",
+            f"Tunnel URL domain only: `{result['tunnel_url_domain_only']}`",
+            f"Tunnel URL full recorded: `{str(result['tunnel_url_full_recorded']).lower()}`",
+            f"DNS success: `{str(result['dns_success']).lower()}`",
+            f"DNS attempts: `{result['dns_attempt_count']}`",
+            f"DNS first success seconds: `{result['dns_first_success_seconds']}`",
+            f"DNS last error: `{result['dns_last_error']}`",
+            f"HTTP success: `{str(result['http_success']).lower()}`",
+            f"HTTP attempts: `{result['http_attempt_count']}`",
+            f"HTTP first success seconds: `{result['http_first_success_seconds']}`",
+            f"HTTP last status: `{result['http_last_status']}`",
+            f"HTTP last error: `{result['http_last_error']}`",
+            f"Auth preflight success: `{str(result['auth_preflight_success']).lower()}`",
+            f"Valid request success: `{str(result['valid_request_success']).lower()}`",
+            f"Missing token 401: `{str(result['missing_token_401']).lower()}`",
+            f"Invalid token 401: `{str(result['invalid_token_401']).lower()}`",
+            f"Provider call attempted: `{str(result['provider_call_attempted']).lower()}`",
+            f"Provider call made: `{str(result['provider_call_made']).lower()}`",
+            f"Blocker: `{result['blocker']}`",
+            f"Secrets logged: `{str(result['secrets_logged']).lower()}`",
+            f"Audio committed: `{str(result['audio_committed']).lower()}`",
+            f"Live wiring allowed: `{str(result['live_wiring_allowed']).lower()}`",
+            f"Production call allowed: `{str(result['production_call_allowed']).lower()}`",
+            "",
+        ]
+    )
+
+
 def main() -> None:
-    result = build_result()
+    parser = argparse.ArgumentParser(description="Run the gated Ultravox tunnel sandbox.")
+    parser.add_argument("--tunnel-preflight-only", action="store_true", help="Run tunnel/DNS/HTTP/auth preflight without any Ultravox provider call.")
+    args = parser.parse_args()
+    result = build_result(tunnel_preflight_only=args.tunnel_preflight_only)
     quality = build_quality_result(result)
     decision = build_decision(result)
+    diagnostics = build_diagnostics_result(result)
     write_json(RESULT_PATH, result)
     write_text(REPORT_PATH, render_result_report(result))
     write_json(QUALITY_RESULT_PATH, quality)
     write_text(QUALITY_REPORT_PATH, render_quality_report(quality))
+    write_json(DIAGNOSTICS_RESULT_PATH, diagnostics)
+    write_text(DIAGNOSTICS_REPORT_PATH, render_diagnostics_report(diagnostics))
     write_json(DECISION_RESULT_PATH, decision)
     write_text(DECISION_REPORT_PATH, render_decision_report(decision))
     print(json.dumps(result, indent=2, ensure_ascii=False))

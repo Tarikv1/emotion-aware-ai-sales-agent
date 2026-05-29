@@ -54,6 +54,9 @@ def main() -> None:
     for key in ("sandbox_run", "provider_call_made", "ultravox_session_created", "tool_call_attempted", "tool_call_succeeded", "hosted_turns_attempted"):
         if result.get(key) != tunnel.get(key):
             fail(f"{key} must match tunnel sandbox evidence")
+    for key in ("dns_success", "http_success", "auth_preflight_success", "provider_call_gate_passed"):
+        if result.get(key) != tunnel.get(key):
+            fail(f"{key} must match tunnel sandbox evidence")
     if result.get("hosted_turns_attempted") == 0 and not result.get("hosted_turns_not_run_reason"):
         fail("quality evidence must explain why hosted turns were not run")
     for field in (

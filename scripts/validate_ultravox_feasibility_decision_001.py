@@ -62,10 +62,18 @@ def expected_tunnel_recommendation(tunnel: dict[str, Any]) -> str:
         return "fix ULTRAVOX_TUNNEL_CLOUDFLARED_PATH"
     if status == "blocked_tunnel_url_not_detected":
         return "fix tunnel URL parsing"
+    if status == "blocked_tunnel_dns_failed":
+        return "retry tunnel later, test local DNS/trycloudflare reachability, or use ngrok/cloudflared named tunnel"
+    if status == "blocked_tunnel_http_failed":
+        return "fix tunnel target/local server path"
+    if status == "blocked_tunnel_auth_failed":
+        return "fix token/header handling"
     if status == "blocked_no_tunnel_tool":
         return "install cloudflared or ngrok, rerun"
     if status == "blocked_tunnel_test_failed":
         return "fix tunnel/endpoint/auth before provider call"
+    if status == "preflight_only_passed":
+        return "run gated provider sandbox next"
     if status == "provider_create_failed":
         return "fix API/session payload"
     if status == "provider_session_created_no_interaction":
@@ -143,7 +151,11 @@ def main() -> None:
                 "Explicit cloudflared path present:",
                 "Explicit cloudflared path exists:",
                 "Cloudflared available:",
+                "Tunnel preflight only:",
                 "Tunnel attempted:",
+                "DNS success:",
+                "HTTP success:",
+                "Auth preflight success:",
                 "Public endpoint test passed:",
                 "Provider call attempted:",
             ]
