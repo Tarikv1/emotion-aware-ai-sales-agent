@@ -10,6 +10,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 PACKET_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-LISTENING-REVIEW-001" / "result.json"
 MANUAL_TEMPLATE_JSON = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-LISTENING-REVIEW-MANUAL-001" / "manual_review_template.json"
+MANUAL_IMPORT_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-LISTENING-REVIEW-MANUAL-001" / "result.json"
 TRANSCRIPT_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-TRANSCRIPT-QUALITY-001" / "result.json"
 LATENCY_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-LATENCY-AUDIT-001" / "result.json"
 TOOL_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-TOOL-BOUNDARY-AUDIT-001" / "result.json"
@@ -37,6 +38,12 @@ def load_json(path: Path) -> dict[str, Any]:
     return payload
 
 
+def load_optional_json(path: Path) -> dict[str, Any]:
+    if not path.is_file():
+        return {}
+    return load_json(path)
+
+
 def assert_no_secret(label: str, text: str) -> None:
     match = SECRET_PATTERN.search(text)
     if match:
@@ -48,17 +55,17 @@ def assert_false(payload: dict[str, Any], key: str) -> None:
         fail(f"{key} must be false")
 
 
-def expected_recommendation(packet: dict[str, Any], transcript: dict[str, Any], latency: dict[str, Any], tool: dict[str, Any], decision: dict[str, Any]) -> str:
-    manual = decision.get("manual_listening_review_status")
-    if manual == "pending_manual_review" or packet.get("status") == "pending_manual_review":
+def expected_recommendation(manual_import: dict[str, Any], transcript: dict[str, Any], latency: dict[str, Any], tool: dict[str, Any], decision: dict[str, Any]) -> str:
+    manual = manual_import.get("listening_review_status") or decision.get("manual_listening_review_status")
+    if manual in {None, "pending_manual_review"}:
         return "user_listen_to_ultravox_agent_audio"
     if transcript.get("transcript_quality_passed") is not True:
         return "fix audio format / turn timing before another provider run"
     if tool.get("tool_boundary_passed") is not True:
         return "fix tool declaration/prompt before more audio testing"
-    if latency.get("live_ready_latency") is not True:
-        return "run warm-session latency benchmark next, still synthetic only"
-    if decision.get("user_audio_review_good") is True:
+    if manual_import.get("quality_promising") is True and latency.get("live_ready_latency") is not True:
+        return "warm-session latency benchmark next"
+    if manual_import.get("quality_promising") is True:
         return "limited synthetic voice conversation evaluation next"
     return "user_listen_to_ultravox_agent_audio"
 
@@ -66,6 +73,7 @@ def expected_recommendation(packet: dict[str, Any], transcript: dict[str, Any], 
 def main() -> None:
     packet = load_json(PACKET_RESULT)
     manual = load_json(MANUAL_TEMPLATE_JSON)
+    manual_import = load_optional_json(MANUAL_IMPORT_RESULT)
     transcript = load_json(TRANSCRIPT_RESULT)
     latency = load_json(LATENCY_RESULT)
     tool = load_json(TOOL_RESULT)
@@ -75,18 +83,19 @@ def main() -> None:
         fail(f"missing file: {rel(DECISION_REPORT)}")
     assert_no_secret(
         "review decision evidence",
-        json.dumps(packet) + json.dumps(manual) + json.dumps(transcript) + json.dumps(latency) + json.dumps(tool) + json.dumps(decision) + report,
+        json.dumps(packet) + json.dumps(manual) + json.dumps(manual_import) + json.dumps(transcript) + json.dumps(latency) + json.dumps(tool) + json.dumps(decision) + report,
     )
 
     if decision.get("evaluation_id") != "ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001":
         fail("unexpected audio sandbox review decision evaluation_id")
-    if decision.get("phase") != "4J6":
-        fail("review decision must record phase 4J6")
-    expected = expected_recommendation(packet, transcript, latency, tool, decision)
+    if decision.get("phase") not in {"4J6", "4J6B"}:
+        fail("review decision must record phase 4J6 or 4J6B")
+    expected = expected_recommendation(manual_import, transcript, latency, tool, decision)
     if decision.get("recommendation") != expected:
         fail(f"recommendation must be {expected!r}, got {decision.get('recommendation')!r}")
-    if decision.get("manual_listening_review_status") != "pending_manual_review":
-        fail("manual listening review should be pending until Tarik listens")
+    expected_manual_status = manual_import.get("listening_review_status") or "pending_manual_review"
+    if decision.get("manual_listening_review_status") != expected_manual_status:
+        fail("manual listening review status must match manual import result")
     for key in (
         "new_provider_call_made",
         "new_audio_generated",
@@ -103,7 +112,7 @@ def main() -> None:
     ):
         assert_false(decision, key)
     if decision.get("next_provider_run_allowed_now") is not False:
-        fail("next provider run must not be allowed while manual listening is pending")
+        fail("next provider run must not be allowed by this review decision")
     if decision.get("tool_boundary_passed") is not True:
         fail("current 4J6 decision should preserve passing tool-boundary evidence")
     if decision.get("transcript_quality_passed") is not True:
@@ -111,7 +120,7 @@ def main() -> None:
 
     required_report_lines = [
         f"Recommendation: `{expected}`",
-        "Manual listening review status: `pending_manual_review`",
+        f"Manual listening review status: `{expected_manual_status}`",
         "Next provider run allowed now: `false`",
         "Live wiring allowed: `false`",
         "Production call allowed: `false`",
@@ -119,6 +128,13 @@ def main() -> None:
         "Runtime behavior changed: `false`",
         "Response text changed: `false`",
     ]
+    if manual_import.get("quality_promising") is True:
+        required_report_lines.extend(
+            [
+                "Secondary recommendation: `test Ultravox voice/voice-ID options later`",
+                "Final ElevenLabs replacement claimed: `false`",
+            ]
+        )
     for line in required_report_lines:
         if line not in report:
             fail(f"review decision report missing line: {line}")

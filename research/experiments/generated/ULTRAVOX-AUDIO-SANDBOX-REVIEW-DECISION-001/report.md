@@ -1,14 +1,19 @@
 # ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001
 
-Recommendation: `user_listen_to_ultravox_agent_audio`
-Manual listening review status: `pending_manual_review`
-User audio review good: `None`
-Next provider run allowed now: `false`
+Recommendation: `warm-session latency benchmark next`
+Secondary recommendation: `test Ultravox voice/voice-ID options later`
+Manual listening review status: `pass_for_product_fallback`
+Quality classification: `promising`
+Audio quality promising: `true`
+Voice selection limitation noted: `true`
+Voice ID alignment needed: `true`
 Transcript quality passed: `true`
 Tool boundary passed: `true`
 Live-ready latency: `false`
 Needs warm-turn benchmark: `true`
 Current observed latency seconds: `8.599`
+Next provider run allowed now: `false`
+Final ElevenLabs replacement claimed: `false`
 
 ## Boundaries
 New provider call made: `false`

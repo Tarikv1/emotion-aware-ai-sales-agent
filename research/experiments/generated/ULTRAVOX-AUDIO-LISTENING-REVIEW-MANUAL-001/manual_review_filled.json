@@ -1,0 +1,35 @@
+{
+  "artifact_severity_scale_note": "1 means low or no artifact; 5 means severe artifact.",
+  "audio_files_committed": false,
+  "audio_files_copied": false,
+  "evaluation_id": "ULTRAVOX-AUDIO-LISTENING-REVIEW-MANUAL-001",
+  "manual_review_source": "user_supplied_phase_4J6B_review",
+  "per_audio_output_reviews": [
+    {
+      "entry_id": "agent_audio_001",
+      "local_audio_path": "local_artifacts/audio_outputs/ultravox/agent_outputs/ultravox_agent_output_001.wav",
+      "ratings": {
+        "artifact_severity": 1,
+        "compared_to_elevenlabs": "The voice was different from the ElevenLabs voice, and ElevenLabs felt more natural mainly because the voice ID was different. Ultravox could be better with another voice. A fair comparison needs voice selection/voice ID alignment.",
+        "intelligibility": 5,
+        "interruption_turn_taking_quality": 3,
+        "naturalness": 3,
+        "notes": "Ultravox audio was intelligible with no understanding problems. Voice quality was strong. Naturalness and sales tone were acceptable but likely limited by the selected voice. Pacing was good. Turn-taking cannot be strongly judged from this one output. Overall it is promising enough for thesis/demo and product-fallback exploration, but latency still needs a warm-turn benchmark.",
+        "pacing": 4.5,
+        "product_fallback_suitability": 5,
+        "sales_tone": 3.5,
+        "thesis_demo_suitability": 4,
+        "voice_quality": 5
+      },
+      "review_notes": {
+        "artifact_severity": "User did not report glitches, distortion, crackling, clipping, chopped audio, robotic noise, or non-speech artifacts; intelligibility and voice quality were rated 5/5.",
+        "naturalness": "User thinks naturalness may be related to the selected voice; a different voice could probably improve naturalness.",
+        "turn_taking": "Limited evidence. There was no real turn-taking to evaluate because only the agent output was heard; the pauses made it understandable that the agent was responding to something."
+      },
+      "status": "manual_review_completed"
+    }
+  ],
+  "phase": "4J6B",
+  "source_review_packet": "ULTRAVOX-AUDIO-LISTENING-REVIEW-001",
+  "status": "manual_review_completed"
+}
