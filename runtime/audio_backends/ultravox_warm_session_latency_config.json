@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "phase": "4J7",
+  "benchmark_id": "ultravox_warm_session_latency_001",
+  "provider_calls_allowed_by_default": false,
+  "required_env_gates": [
+    "ENABLE_ULTRAVOX_SANDBOX=1",
+    "LOCAL_ULTRAVOX_ALLOW_PROVIDER_CALLS=1",
+    "ULTRAVOX_API_KEY present",
+    "LOCAL_ULTRAVOX_ALLOW_PUBLIC_TOOL_TUNNEL=1",
+    "PROJECT_ULTRAVOX_TOOL_TOKEN present"
+  ],
+  "use_ngrok_tunnel": true,
+  "local_endpoint_host": "127.0.0.1",
+  "local_endpoint_port": 8765,
+  "local_endpoint_path": "/ultravox/project-sales-brain-next-move",
+  "websocket_mode": "serverWebSocket",
+  "input_sample_rate": 48000,
+  "output_sample_rate": 48000,
+  "input_audio_format": "s16le_pcm",
+  "existing_audio_only": true,
+  "no_new_audio_generation": true,
+  "no_microphone": true,
+  "no_outbound_phone": true,
+  "real_customer_data_allowed": false,
+  "raw_audio_commit_allowed": false,
+  "live_wiring_allowed": false,
+  "production_call_allowed": false,
+  "max_hosted_sessions": 1,
+  "max_audio_turns": 4,
+  "warmup_turn_count": 1,
+  "measured_turn_count": 3,
+  "manual_audio_input_result_path": "research/experiments/generated/ULTRAVOX-MANUAL-AUDIO-INPUTS-001/result.json",
+  "prepared_audio_input_folder": "local_artifacts/audio_outputs/ultravox/prepared_inputs",
+  "audio_turn_sequence": [
+    {
+      "case_id": "manual_01_what_is_this",
+      "expected_spoken_content": "What is this?"
+    },
+    {
+      "case_id": "manual_02_dont_put_me_in_crm",
+      "expected_spoken_content": "Don't put me in CRM."
+    },
+    {
+      "case_id": "manual_01_what_is_this",
+      "expected_spoken_content": "What is this?"
+    },
+    {
+      "case_id": "manual_02_dont_put_me_in_crm",
+      "expected_spoken_content": "Don't put me in CRM."
+    }
+  ],
+  "repeated_synthetic_inputs_note": "The two prepared manual synthetic inputs are reused only to measure warm-turn latency, not conversation quality."
+}

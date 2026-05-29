@@ -14,6 +14,7 @@ MANUAL_IMPORT_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAV
 TRANSCRIPT_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-TRANSCRIPT-QUALITY-001" / "result.json"
 LATENCY_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-LATENCY-AUDIT-001" / "result.json"
 TOOL_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-TOOL-BOUNDARY-AUDIT-001" / "result.json"
+WARM_AUDIT_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-WARM-SESSION-LATENCY-AUDIT-001" / "result.json"
 DECISION_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001" / "result.json"
 DECISION_REPORT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001" / "report.md"
 SECRET_PATTERN = re.compile(
@@ -77,20 +78,21 @@ def main() -> None:
     transcript = load_json(TRANSCRIPT_RESULT)
     latency = load_json(LATENCY_RESULT)
     tool = load_json(TOOL_RESULT)
+    warm_audit = load_optional_json(WARM_AUDIT_RESULT)
     decision = load_json(DECISION_RESULT)
     report = DECISION_REPORT.read_text(encoding="utf-8") if DECISION_REPORT.is_file() else ""
     if not report:
         fail(f"missing file: {rel(DECISION_REPORT)}")
     assert_no_secret(
         "review decision evidence",
-        json.dumps(packet) + json.dumps(manual) + json.dumps(manual_import) + json.dumps(transcript) + json.dumps(latency) + json.dumps(tool) + json.dumps(decision) + report,
+        json.dumps(packet) + json.dumps(manual) + json.dumps(manual_import) + json.dumps(transcript) + json.dumps(latency) + json.dumps(tool) + json.dumps(warm_audit) + json.dumps(decision) + report,
     )
 
     if decision.get("evaluation_id") != "ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001":
         fail("unexpected audio sandbox review decision evaluation_id")
-    if decision.get("phase") not in {"4J6", "4J6B"}:
-        fail("review decision must record phase 4J6 or 4J6B")
-    expected = expected_recommendation(manual_import, transcript, latency, tool, decision)
+    if decision.get("phase") not in {"4J6", "4J6B", "4J7"}:
+        fail("review decision must record phase 4J6, 4J6B, or 4J7")
+    expected = warm_audit.get("recommendation") if decision.get("phase") == "4J7" and warm_audit else expected_recommendation(manual_import, transcript, latency, tool, decision)
     if decision.get("recommendation") != expected:
         fail(f"recommendation must be {expected!r}, got {decision.get('recommendation')!r}")
     expected_manual_status = manual_import.get("listening_review_status") or "pending_manual_review"
@@ -113,8 +115,9 @@ def main() -> None:
         assert_false(decision, key)
     if decision.get("next_provider_run_allowed_now") is not False:
         fail("next provider run must not be allowed by this review decision")
-    if decision.get("tool_boundary_passed") is not True:
-        fail("current 4J6 decision should preserve passing tool-boundary evidence")
+    expected_tool_boundary = warm_audit.get("tool_boundary_passed") if decision.get("phase") == "4J7" and warm_audit else True
+    if decision.get("tool_boundary_passed") is not expected_tool_boundary:
+        fail("review decision must preserve current tool-boundary evidence")
     if decision.get("transcript_quality_passed") is not True:
         fail("current 4J6 decision should preserve passing transcript evidence")
 
@@ -128,6 +131,17 @@ def main() -> None:
         "Runtime behavior changed: `false`",
         "Response text changed: `false`",
     ]
+    if decision.get("phase") == "4J7":
+        required_report_lines.extend(
+            [
+                "Warm measured turn count:",
+                "Warm p50 first-agent-audio latency seconds:",
+                "Warm p90 first-agent-audio latency seconds:",
+                "Strong live target met:",
+                "Early demo target met:",
+                "Latency classification:",
+            ]
+        )
     if manual_import.get("quality_promising") is True:
         required_report_lines.extend(
             [
