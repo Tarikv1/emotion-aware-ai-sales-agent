@@ -64,13 +64,15 @@ def main() -> None:
 
     if result.get("evaluation_id") != "ULTRAVOX-TUNNEL-DIAGNOSTICS-001":
         fail("unexpected tunnel diagnostics evaluation_id")
-    if result.get("phase") not in {"4J3E", "4J3F"}:
-        fail("diagnostics must record phase 4J3E or 4J3F")
+    if result.get("phase") not in {"4J3E", "4J3F", "4J3G"}:
+        fail("diagnostics must record phase 4J3E, 4J3F, or 4J3G")
     for key in (
         "cloudflared_available",
         "cloudflared_dns_failed_before",
         "ngrok_available",
         "ngrok_version_ok",
+        "ngrok_config_check_attempted",
+        "ngrok_config_check_succeeded",
         "explicit_cloudflared_path_used",
         "explicit_cloudflared_path_present",
         "explicit_cloudflared_path_exists",
@@ -105,9 +107,11 @@ def main() -> None:
     for key in ("dns_first_success_seconds", "dns_last_error", "http_first_success_seconds", "http_last_status", "http_last_error", "blocker"):
         if key not in result:
             fail(f"{key} must exist")
-    for key in ("ngrok_version", "ngrok_path_source", "tunnel_tool_used", "selected_preferred_tool"):
+    for key in ("ngrok_version", "ngrok_path_source", "ngrok_config_path", "ngrok_auth_configured", "tunnel_tool_used", "selected_preferred_tool"):
         if key not in result:
             fail(f"{key} must exist")
+    if result.get("ngrok_auth_configured") not in {True, False, "unknown"}:
+        fail("ngrok_auth_configured must be true, false, or unknown")
     if result.get("tunnel_url_full_recorded") is not False:
         fail("diagnostics must not record the full tunnel URL")
     if result.get("provider_call_made") and not result.get("provider_call_attempted"):

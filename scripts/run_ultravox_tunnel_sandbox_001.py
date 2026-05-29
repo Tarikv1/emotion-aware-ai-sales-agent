@@ -179,6 +179,10 @@ def add_tunnel_discovery(result: dict[str, Any], discovery: dict[str, Any]) -> N
             "ngrok_version_ok": discovery["ngrok"].get("version_ok", False),
             "ngrok_version": discovery["ngrok"].get("version"),
             "ngrok_path_source": discovery["ngrok"].get("source"),
+            "ngrok_config_check_attempted": discovery["ngrok"].get("config_check_attempted", False),
+            "ngrok_config_check_succeeded": discovery["ngrok"].get("config_check_succeeded", False),
+            "ngrok_config_path": discovery["ngrok"].get("config_path"),
+            "ngrok_auth_configured": discovery["ngrok"].get("auth_configured", "unknown"),
             "explicit_ngrok_path_present": ngrok_discovery.get("explicit_ngrok_path_present", False),
             "explicit_ngrok_path_exists": ngrok_discovery.get("explicit_ngrok_path_exists", False),
             "explicit_ngrok_version_ok": ngrok_discovery.get("explicit_ngrok_version_ok", False),
@@ -667,7 +671,7 @@ def base_result(env_metadata: dict[str, bool], gates: dict[str, bool]) -> dict[s
     return {
         "evaluation_id": "ULTRAVOX-TUNNEL-SANDBOX-001",
         "phase": "4J3",
-        "phase_detail": "4J3F",
+        "phase_detail": "4J3G",
         "run_status": "not_run",
         "blocker": None,
         "env_file_exists": env_metadata["env_file_exists"],
@@ -689,6 +693,10 @@ def base_result(env_metadata: dict[str, bool], gates: dict[str, bool]) -> dict[s
         "ngrok_version_ok": False,
         "ngrok_version": None,
         "ngrok_path_source": None,
+        "ngrok_config_check_attempted": False,
+        "ngrok_config_check_succeeded": False,
+        "ngrok_config_path": None,
+        "ngrok_auth_configured": "unknown",
         "explicit_ngrok_path_present": False,
         "explicit_ngrok_path_exists": False,
         "explicit_ngrok_version_ok": False,
@@ -825,6 +833,10 @@ def build_result(*, tunnel_preflight_only: bool = False) -> dict[str, Any]:
         else:
             result["blocker"] = "No already-installed supported tunnel CLI found. Install or configure ngrok, or use a Cloudflare named tunnel."
         return result
+    if tunnel_tool == "ngrok" and result["ngrok_auth_configured"] is False:
+        result["run_status"] = "blocked_ngrok_auth_missing"
+        result["blocker"] = "Ngrok is installed, but auth/config is still missing or invalid; no tunnel or provider call attempted."
+        return result
 
     local_config = load_json(LOCAL_ENDPOINT_CONFIG_PATH)
     token = os.environ[TOOL_TOKEN_ENV]
@@ -951,6 +963,8 @@ def quality_reason(result: dict[str, Any]) -> str | None:
         return None
     if result["run_status"] == "blocked_no_tunnel_tool":
         return "no_tunnel_tool"
+    if result["run_status"] == "blocked_ngrok_auth_missing":
+        return "ngrok_auth_missing"
     if result["run_status"] == "blocked_explicit_cloudflared_path_missing":
         return "explicit_cloudflared_path_missing"
     if result["run_status"] == "blocked_tunnel_url_not_detected":
@@ -985,6 +999,7 @@ def build_quality_result(result: dict[str, Any]) -> dict[str, Any]:
         "cloudflared_dns_failed_before": result["cloudflared_dns_failed_before"],
         "ngrok_available": result["ngrok_available"],
         "ngrok_version": result["ngrok_version"],
+        "ngrok_auth_configured": result["ngrok_auth_configured"],
         "tunnel_tool_used": result["tunnel_tool_used"],
         "product_truth_drift_count": result["product_truth_drift_count"],
         "unsupported_claim_count": result["unsupported_claim_count"],
@@ -1031,6 +1046,8 @@ def recommendation_for(result: dict[str, Any]) -> str:
         return "fix tunnel endpoint/auth before provider call" if result.get("tunnel_tool_used") == "ngrok" else "fix token/header handling"
     if status == "blocked_no_tunnel_tool":
         return "install/configure ngrok or use Cloudflare named tunnel"
+    if status == "blocked_ngrok_auth_missing":
+        return "fix ngrok auth/config"
     if status == "blocked_tunnel_test_failed":
         return "fix tunnel/endpoint/auth before provider call"
     if status == "preflight_only_passed":
@@ -1071,6 +1088,10 @@ def build_decision(result: dict[str, Any]) -> dict[str, Any]:
         "ngrok_available": result["ngrok_available"],
         "ngrok_version": result["ngrok_version"],
         "ngrok_path_source": result["ngrok_path_source"],
+        "ngrok_config_check_attempted": result["ngrok_config_check_attempted"],
+        "ngrok_config_check_succeeded": result["ngrok_config_check_succeeded"],
+        "ngrok_config_path": result["ngrok_config_path"],
+        "ngrok_auth_configured": result["ngrok_auth_configured"],
         "selected_preferred_tool": result["selected_preferred_tool"],
         "tunnel_url_created": result["tunnel_url_created"],
         "tunnel_domain_only": result["tunnel_domain_only"],
@@ -1139,6 +1160,9 @@ def render_result_report(result: dict[str, Any]) -> str:
             f"Cloudflared DNS failed before: `{str(result['cloudflared_dns_failed_before']).lower()}`",
             f"Ngrok available: `{str(result['ngrok_available']).lower()}`",
             f"Ngrok version ok: `{str(result['ngrok_version_ok']).lower()}`",
+            f"Ngrok auth configured: `{result['ngrok_auth_configured']}`",
+            f"Ngrok config check succeeded: `{str(result['ngrok_config_check_succeeded']).lower()}`",
+            f"Ngrok config path: `{result['ngrok_config_path']}`",
             f"Ngrok path source: `{result['ngrok_path_source']}`",
             f"Selected preferred tool: `{result['selected_preferred_tool']}`",
             f"Tunnel preflight only: `{str(result['tunnel_preflight_only']).lower()}`",
@@ -1193,6 +1217,7 @@ def render_quality_report(result: dict[str, Any]) -> str:
             f"Cloudflared available: `{str(result['cloudflared_available']).lower()}`",
             f"Cloudflared DNS failed before: `{str(result['cloudflared_dns_failed_before']).lower()}`",
             f"Ngrok available: `{str(result['ngrok_available']).lower()}`",
+            f"Ngrok auth configured: `{result['ngrok_auth_configured']}`",
             f"Tunnel tool used: `{result['tunnel_tool_used']}`",
             f"DNS success: `{str(result['dns_success']).lower()}`",
             f"HTTP success: `{str(result['http_success']).lower()}`",
@@ -1224,6 +1249,7 @@ def render_decision_report(decision: dict[str, Any]) -> str:
             f"Cloudflared available: `{str(decision['cloudflared_available']).lower()}`",
             f"Cloudflared DNS failed before: `{str(decision['cloudflared_dns_failed_before']).lower()}`",
             f"Ngrok available: `{str(decision['ngrok_available']).lower()}`",
+            f"Ngrok auth configured: `{decision['ngrok_auth_configured']}`",
             f"Ngrok path source: `{decision['ngrok_path_source']}`",
             f"Selected preferred tool: `{decision['selected_preferred_tool']}`",
             f"Tunnel preflight only: `{str(decision['tunnel_preflight_only']).lower()}`",
@@ -1259,7 +1285,7 @@ def render_decision_report(decision: dict[str, Any]) -> str:
 def build_diagnostics_result(result: dict[str, Any]) -> dict[str, Any]:
     return {
         "evaluation_id": "ULTRAVOX-TUNNEL-DIAGNOSTICS-001",
-        "phase": "4J3F",
+        "phase": "4J3G",
         "cloudflared_available": result["cloudflared_available"],
         "cloudflared_version": result["cloudflared_version"],
         "cloudflared_dns_failed_before": result["cloudflared_dns_failed_before"],
@@ -1267,6 +1293,10 @@ def build_diagnostics_result(result: dict[str, Any]) -> dict[str, Any]:
         "ngrok_version": result["ngrok_version"],
         "ngrok_version_ok": result["ngrok_version_ok"],
         "ngrok_path_source": result["ngrok_path_source"],
+        "ngrok_config_check_attempted": result["ngrok_config_check_attempted"],
+        "ngrok_config_check_succeeded": result["ngrok_config_check_succeeded"],
+        "ngrok_config_path": result["ngrok_config_path"],
+        "ngrok_auth_configured": result["ngrok_auth_configured"],
         "tunnel_tool_used": result["tunnel_tool_used"],
         "selected_preferred_tool": result["selected_preferred_tool"],
         "explicit_cloudflared_path_used": result["selected_tunnel_tool"] == "cloudflared" and result["explicit_cloudflared_path_present"],
@@ -1316,6 +1346,9 @@ def render_diagnostics_report(result: dict[str, Any]) -> str:
             f"Cloudflared DNS failed before: `{str(result['cloudflared_dns_failed_before']).lower()}`",
             f"Ngrok available: `{str(result['ngrok_available']).lower()}`",
             f"Ngrok version: `{result['ngrok_version']}`",
+            f"Ngrok auth configured: `{result['ngrok_auth_configured']}`",
+            f"Ngrok config check succeeded: `{str(result['ngrok_config_check_succeeded']).lower()}`",
+            f"Ngrok config path: `{result['ngrok_config_path']}`",
             f"Ngrok path source: `{result['ngrok_path_source']}`",
             f"Tunnel tool used: `{result['tunnel_tool_used']}`",
             f"Selected preferred tool: `{result['selected_preferred_tool']}`",

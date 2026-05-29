@@ -1,7 +1,7 @@
 # ULTRAVOX-TUNNEL-SANDBOX-001 Report
 
-Run status: `blocked_tunnel_url_not_detected`
-Blocker: `Ngrok did not expose an HTTPS URL within the bounded startup window; fix ngrok auth/config.`
+Run status: `provider_session_created_no_interaction`
+Blocker: `Provider session was created with the temporary HTTP tool, but no automated conversation was run and no provider tool call was observed.`
 Env file exists: `true`
 Env file ignored by Git: `true`
 Env file loaded: `true`
@@ -14,26 +14,29 @@ Cloudflared available: `true`
 Cloudflared DNS failed before: `true`
 Ngrok available: `true`
 Ngrok version ok: `true`
+Ngrok auth configured: `True`
+Ngrok config check succeeded: `true`
+Ngrok config path: `C:\Users\tarik\AppData\Local\ngrok\ngrok.yml`
 Ngrok path source: `known_windows_path`
 Selected preferred tool: `ngrok`
 Tunnel preflight only: `false`
 Local server started: `true`
 Tunnel attempted: `true`
 Tunnel tool used: `ngrok`
-Tunnel URL created: `false`
-Tunnel URL redacted/domain only: `None`
-DNS success: `false`
-DNS attempts: `0`
+Tunnel URL created: `true`
+Tunnel URL redacted/domain only: `scouts-donator-preface.ngrok-free.dev`
+DNS success: `true`
+DNS attempts: `1`
 DNS last error: `None`
-HTTP success: `false`
-HTTP attempts: `0`
-HTTP last status: `None`
+HTTP success: `true`
+HTTP attempts: `1`
+HTTP last status: `200`
 HTTP last error: `None`
-Auth preflight success: `false`
-Public endpoint test passed: `false`
-Provider call attempted: `false`
-Provider call made: `false`
-Ultravox session created: `false`
+Auth preflight success: `true`
+Public endpoint test passed: `true`
+Provider call attempted: `true`
+Provider call made: `true`
+Ultravox session created: `true`
 Tool call attempted: `false`
 Tool call succeeded: `false`
 Hosted turns attempted: `0`

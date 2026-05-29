@@ -9,6 +9,9 @@ Explicit cloudflared version ok: `true`
 Cloudflared available: `true`
 Cloudflared DNS failed before: `true`
 Ngrok available: `true`
+Ngrok auth configured: `True`
+Ngrok config check succeeded: `true`
+Ngrok config path: `C:\Users\tarik\AppData\Local\ngrok\ngrok.yml`
 Ngrok path source: `known_windows_path`
 Selected tunnel tool: `ngrok`
 Selected preferred tool: `ngrok`
@@ -20,7 +23,7 @@ Provider calls made: `false`
 ## Tools
 
 - cloudflared: available `true`, version `cloudflared version 2026.5.2 (built 2026-05-27T10:15 UTC)`
-- ngrok: available `true`, version `ngrok version 3.3.1`
+- ngrok: available `true`, version `ngrok version 3.39.5`
 - localtunnel: available `false`, version `None`
 - lt: available `false`, version `None`
 - npx: available `true`, version `11.12.1`

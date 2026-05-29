@@ -1,25 +1,26 @@
 # ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001 Report
 
-Recommendation: `fix ngrok auth/config`
-Tunnel sandbox run status: `blocked_tunnel_url_not_detected`
-Blocker: `Ngrok did not expose an HTTPS URL within the bounded startup window; fix ngrok auth/config.`
+Recommendation: `implement WebSocket/browser client sandbox`
+Tunnel sandbox run status: `provider_session_created_no_interaction`
+Blocker: `Provider session was created with the temporary HTTP tool, but no automated conversation was run and no provider tool call was observed.`
 Explicit cloudflared path present: `true`
 Explicit cloudflared path exists: `true`
 Cloudflared available: `true`
 Cloudflared DNS failed before: `true`
 Ngrok available: `true`
+Ngrok auth configured: `True`
 Ngrok path source: `known_windows_path`
 Selected preferred tool: `ngrok`
 Tunnel preflight only: `false`
 Tunnel attempted: `true`
 Tunnel tool used: `ngrok`
-DNS success: `false`
-HTTP success: `false`
-Auth preflight success: `false`
-Public endpoint test passed: `false`
-Provider call attempted: `false`
-Provider call made: `false`
-Ultravox session created: `false`
+DNS success: `true`
+HTTP success: `true`
+Auth preflight success: `true`
+Public endpoint test passed: `true`
+Provider call attempted: `true`
+Provider call made: `true`
+Ultravox session created: `true`
 Tool call attempted: `false`
 Tool call succeeded: `false`
 Hosted turns attempted: `0`

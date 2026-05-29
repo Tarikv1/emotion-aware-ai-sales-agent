@@ -1,7 +1,7 @@
 {
   "evaluation_id": "ULTRAVOX-TUNNEL-TOOLS-PROBE-001",
   "phase": "4J3",
-  "phase_detail": "4J3F",
+  "phase_detail": "4J3G",
   "env_file_exists": true,
   "env_file_ignored_by_git": true,
   "env_file_loaded": true,
@@ -23,8 +23,12 @@
   "cloudflared_passed_before": false,
   "ngrok_available": true,
   "ngrok_version_ok": true,
-  "ngrok_version": "ngrok version 3.3.1",
+  "ngrok_version": "ngrok version 3.39.5",
   "ngrok_path_source": "known_windows_path",
+  "ngrok_config_check_attempted": true,
+  "ngrok_config_check_succeeded": true,
+  "ngrok_config_path": "C:\\Users\\tarik\\AppData\\Local\\ngrok\\ngrok.yml",
+  "ngrok_auth_configured": true,
   "explicit_ngrok_path_present": false,
   "explicit_ngrok_path_exists": false,
   "explicit_ngrok_version_ok": false,
@@ -50,9 +54,13 @@
       "path_exists": true,
       "source": "known_windows_path",
       "executable": "C:\\Users\\tarik\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ngrok.Ngrok_Microsoft.Winget.Source_8wekyb3d8bbwe\\ngrok.exe",
-      "version": "ngrok version 3.3.1",
+      "version": "ngrok version 3.39.5",
       "version_ok": true,
-      "tunnel_opened": false
+      "tunnel_opened": false,
+      "config_check_attempted": true,
+      "config_check_succeeded": true,
+      "config_path": "C:\\Users\\tarik\\AppData\\Local\\ngrok\\ngrok.yml",
+      "auth_configured": true
     },
     "localtunnel": {
       "name": "localtunnel",
@@ -133,6 +141,10 @@
     "explicit_ngrok_path_exists": false,
     "explicit_ngrok_version_ok": false,
     "explicit_ngrok_executable": null,
+    "ngrok_config_check_attempted": true,
+    "ngrok_config_check_succeeded": true,
+    "ngrok_config_path": "C:\\Users\\tarik\\AppData\\Local\\ngrok\\ngrok.yml",
+    "ngrok_auth_configured": true,
     "path_lookup": {
       "name": "ngrok",
       "available": false,
@@ -185,7 +197,7 @@
         "path_exists": true,
         "source": "known_windows_path",
         "executable": "C:\\Users\\tarik\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ngrok.Ngrok_Microsoft.Winget.Source_8wekyb3d8bbwe\\ngrok.exe",
-        "version": "ngrok version 3.3.1",
+        "version": "ngrok version 3.39.5",
         "version_ok": true,
         "tunnel_opened": false
       },

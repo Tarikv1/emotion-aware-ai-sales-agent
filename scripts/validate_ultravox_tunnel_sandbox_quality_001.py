@@ -57,7 +57,7 @@ def main() -> None:
     for key in ("dns_success", "http_success", "auth_preflight_success", "provider_call_gate_passed"):
         if result.get(key) != tunnel.get(key):
             fail(f"{key} must match tunnel sandbox evidence")
-    for key in ("cloudflared_available", "cloudflared_dns_failed_before", "ngrok_available", "tunnel_tool_used"):
+    for key in ("cloudflared_available", "cloudflared_dns_failed_before", "ngrok_available", "ngrok_auth_configured", "tunnel_tool_used"):
         if result.get(key) != tunnel.get(key):
             fail(f"{key} must match tunnel sandbox evidence")
     if result.get("hosted_turns_attempted") == 0 and not result.get("hosted_turns_not_run_reason"):

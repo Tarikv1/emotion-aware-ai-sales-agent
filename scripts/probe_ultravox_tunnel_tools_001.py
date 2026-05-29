@@ -38,6 +38,10 @@ KNOWN_NGROK_PATHS = [
     Path.home() / "AppData" / "Local" / "Microsoft" / "WinGet" / "Packages" / "Ngrok.Ngrok_Microsoft.Winget.Source_8wekyb3d8bbwe" / "ngrok.exe",
     Path.home() / "scoop" / "shims" / "ngrok.exe",
 ]
+KNOWN_NGROK_CONFIG_PATHS = [
+    Path.home() / "AppData" / "Local" / "ngrok" / "ngrok.yml",
+    Path.home() / ".ngrok2" / "ngrok.yml",
+]
 
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
@@ -82,6 +86,16 @@ def evidence_path(path: str | None) -> str | None:
     if not path:
         return None
     return path if path_is_safe_to_record(path) else "<redacted_path>"
+
+
+def first_existing_config_path() -> str | None:
+    explicit = os.environ.get("NGROK_CONFIG", "").strip()
+    candidates = [Path(explicit)] if explicit else []
+    candidates.extend(KNOWN_NGROK_CONFIG_PATHS)
+    for candidate in candidates:
+        if candidate.is_file():
+            return str(candidate)
+    return evidence_path(explicit) if explicit else None
 
 
 def executable_probe(name: str, version_args: list[str], *, explicit_path: str | None = None, source: str = "PATH") -> dict[str, Any]:
@@ -201,12 +215,55 @@ def discover_cloudflared() -> tuple[dict[str, Any], dict[str, Any]]:
 
 
 def discover_ngrok() -> tuple[dict[str, Any], dict[str, Any]]:
-    return discover_executable(
+    ngrok, discovery = discover_executable(
         "ngrok",
         ["version"],
         env_var=NGROK_PATH_ENV,
         known_paths=KNOWN_NGROK_PATHS,
     )
+    config_path = first_existing_config_path()
+    check = check_ngrok_config(ngrok.get("_executable_for_run"))
+    ngrok.update(
+        {
+            "config_check_attempted": check["attempted"],
+            "config_check_succeeded": check["succeeded"],
+            "config_path": evidence_path(config_path),
+            "auth_configured": check["auth_configured"],
+        }
+    )
+    discovery.update(
+        {
+            "ngrok_config_check_attempted": check["attempted"],
+            "ngrok_config_check_succeeded": check["succeeded"],
+            "ngrok_config_path": evidence_path(config_path),
+            "ngrok_auth_configured": check["auth_configured"],
+        }
+    )
+    return ngrok, discovery
+
+
+def check_ngrok_config(executable: str | None) -> dict[str, Any]:
+    if not executable:
+        return {"attempted": False, "succeeded": False, "auth_configured": "unknown"}
+    try:
+        completed = subprocess.run(
+            [executable, "config", "check"],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            timeout=5,
+            check=False,
+        )
+    except Exception:
+        return {"attempted": True, "succeeded": False, "auth_configured": "unknown"}
+    output = " ".join((completed.stdout + " " + completed.stderr).lower().split())
+    if completed.returncode == 0:
+        auth_configured: bool | str = True
+    elif "authtoken" in output or "authentication" in output or "no configuration" in output:
+        auth_configured = False
+    else:
+        auth_configured = "unknown"
+    return {"attempted": True, "succeeded": completed.returncode == 0, "auth_configured": auth_configured}
 
 
 def load_prior_tunnel_state() -> dict[str, Any]:
@@ -221,14 +278,20 @@ def load_prior_tunnel_state() -> dict[str, Any]:
     except Exception:
         prior = {}
     used_cloudflared = prior.get("tunnel_tool_used") == "cloudflared"
-    return {
-        "prior_tunnel_evidence_exists": True,
-        "cloudflared_dns_failed_before": bool(
+    cloudflared_dns_failed_before = bool(
+        prior.get("cloudflared_dns_failed_before") is True
+        or (
             used_cloudflared
             and prior.get("tunnel_url_created") is True
             and prior.get("dns_success") is False
-        ),
+        )
+    )
+    return {
+        "prior_tunnel_evidence_exists": True,
+        "cloudflared_dns_failed_before": cloudflared_dns_failed_before,
         "cloudflared_passed_before": bool(
+            prior.get("cloudflared_passed_before") is True
+            or
             used_cloudflared
             and prior.get("dns_success") is True
             and prior.get("http_success") is True
@@ -332,7 +395,7 @@ def build_result() -> dict[str, Any]:
     return {
         "evaluation_id": "ULTRAVOX-TUNNEL-TOOLS-PROBE-001",
         "phase": "4J3",
-        "phase_detail": "4J3F",
+        "phase_detail": "4J3G",
         "env_file_exists": env_metadata["env_file_exists"],
         "env_file_ignored_by_git": env_metadata["env_file_ignored_by_git"],
         "env_file_loaded": env_metadata["env_file_loaded"],
@@ -356,6 +419,10 @@ def build_result() -> dict[str, Any]:
         "ngrok_version_ok": discovery["ngrok"].get("version_ok", False),
         "ngrok_version": discovery["ngrok"].get("version"),
         "ngrok_path_source": discovery["ngrok"].get("source"),
+        "ngrok_config_check_attempted": discovery["ngrok"].get("config_check_attempted", False),
+        "ngrok_config_check_succeeded": discovery["ngrok"].get("config_check_succeeded", False),
+        "ngrok_config_path": discovery["ngrok"].get("config_path"),
+        "ngrok_auth_configured": discovery["ngrok"].get("auth_configured", "unknown"),
         "explicit_ngrok_path_present": ngrok_discovery["explicit_ngrok_path_present"],
         "explicit_ngrok_path_exists": ngrok_discovery["explicit_ngrok_path_exists"],
         "explicit_ngrok_version_ok": ngrok_discovery["explicit_ngrok_version_ok"],
@@ -396,6 +463,9 @@ def render_report(result: dict[str, Any]) -> str:
         f"Cloudflared available: `{str(result['cloudflared_available']).lower()}`",
         f"Cloudflared DNS failed before: `{str(result['cloudflared_dns_failed_before']).lower()}`",
         f"Ngrok available: `{str(result['ngrok_available']).lower()}`",
+        f"Ngrok auth configured: `{result['ngrok_auth_configured']}`",
+        f"Ngrok config check succeeded: `{str(result['ngrok_config_check_succeeded']).lower()}`",
+        f"Ngrok config path: `{result['ngrok_config_path']}`",
         f"Ngrok path source: `{result['ngrok_path_source']}`",
         f"Selected tunnel tool: `{result['selected_tunnel_tool']}`",
         f"Selected preferred tool: `{result['selected_preferred_tool']}`",

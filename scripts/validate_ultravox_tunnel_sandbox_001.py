@@ -78,6 +78,8 @@ def main() -> None:
         "cloudflared_passed_before",
         "ngrok_available",
         "ngrok_version_ok",
+        "ngrok_config_check_attempted",
+        "ngrok_config_check_succeeded",
         "explicit_ngrok_path_present",
         "explicit_ngrok_path_exists",
         "explicit_ngrok_version_ok",
@@ -97,6 +99,15 @@ def main() -> None:
     if result.get("cloudflared_dns_failed_before") and result.get("ngrok_available"):
         if result.get("selected_preferred_tool") != "ngrok":
             fail("ngrok must be the selected preferred tool after prior cloudflared DNS failure")
+    if result.get("ngrok_auth_configured") not in {True, False, "unknown"}:
+        fail("ngrok_auth_configured must be true, false, or unknown")
+    if result.get("ngrok_available") and result.get("ngrok_config_check_attempted") is not True:
+        fail("ngrok config check must be attempted when ngrok is available")
+    if result.get("run_status") == "blocked_ngrok_auth_missing":
+        if result.get("ngrok_auth_configured") is not False:
+            fail("ngrok auth missing blocker must record ngrok_auth_configured false")
+        if result.get("tunnel_attempted") is not False:
+            fail("ngrok auth missing blocker must stop before tunnel attempt")
     if result.get("run_status") == "blocked_explicit_cloudflared_path_missing" and result.get("explicit_cloudflared_path_exists") is not False:
         fail("missing explicit cloudflared path blocker must record path_exists false")
     if result.get("run_status") == "blocked_tunnel_url_not_detected" and result.get("tunnel_attempted") is not True:

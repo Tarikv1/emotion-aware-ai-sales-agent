@@ -63,6 +63,8 @@ def main() -> None:
         "cloudflared_passed_before",
         "ngrok_available",
         "ngrok_version_ok",
+        "ngrok_config_check_attempted",
+        "ngrok_config_check_succeeded",
         "explicit_ngrok_path_present",
         "explicit_ngrok_path_exists",
         "explicit_ngrok_version_ok",
@@ -79,6 +81,12 @@ def main() -> None:
             fail("cloudflared must be selected when it is available and previously passed readiness")
     if result.get("selected_preferred_tool") != result.get("selected_tunnel_tool"):
         fail("selected_preferred_tool must match selected_tunnel_tool")
+    if result.get("ngrok_available") and not result.get("ngrok_config_check_attempted"):
+        fail("ngrok config check must be attempted when ngrok is available")
+    if result.get("ngrok_auth_configured") not in {True, False, "unknown"}:
+        fail("ngrok_auth_configured must be true, false, or unknown")
+    if result.get("ngrok_auth_configured") is True and result.get("ngrok_config_check_succeeded") is not True:
+        fail("ngrok auth configured true requires successful config check")
     if result.get("selected_tunnel_tool") and not result.get("selected_tunnel_executable"):
         fail("selected tunnel executable must be recorded when a tool is selected")
     for key in (

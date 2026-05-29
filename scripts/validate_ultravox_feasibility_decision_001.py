@@ -74,6 +74,8 @@ def expected_tunnel_recommendation(tunnel: dict[str, Any]) -> str:
         return "fix tunnel endpoint/auth before provider call" if tunnel.get("tunnel_tool_used") == "ngrok" else "fix token/header handling"
     if status == "blocked_no_tunnel_tool":
         return "install/configure ngrok or use Cloudflare named tunnel"
+    if status == "blocked_ngrok_auth_missing":
+        return "fix ngrok auth/config"
     if status == "blocked_tunnel_test_failed":
         return "fix tunnel/endpoint/auth before provider call"
     if status == "preflight_only_passed":
@@ -157,6 +159,7 @@ def main() -> None:
                 "Cloudflared available:",
                 "Cloudflared DNS failed before:",
                 "Ngrok available:",
+                "Ngrok auth configured:",
                 "Ngrok path source:",
                 "Selected preferred tool:",
                 "Tunnel preflight only:",
