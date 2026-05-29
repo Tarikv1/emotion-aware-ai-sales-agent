@@ -1,0 +1,23 @@
+{
+  "evaluation_id": "ULTRAVOX-SYNTHETIC-AUDIO-INPUTS-001",
+  "phase": "4J5",
+  "generation_attempted": true,
+  "generation_succeeded": false,
+  "generator_used": "windows_system_speech_sapi",
+  "input_texts": [
+    "What is this?",
+    "Don't put me in CRM."
+  ],
+  "output_paths": [
+    "local_artifacts/audio_outputs/ultravox/synthetic_inputs/ultravox_synthetic_user_turn_01.wav",
+    "local_artifacts/audio_outputs/ultravox/synthetic_inputs/ultravox_synthetic_user_turn_02.wav"
+  ],
+  "sample_rate": null,
+  "duration_seconds": [],
+  "file_hashes": [],
+  "audio_files_committed": false,
+  "provider_calls_made": false,
+  "blocker": "System.Speech failed; SAPI.SpVoice fallback failed. Exception calling \"Speak\" with \"1\" argument(s): \"No voice installed on the system or none available with the current security setting.\" At line:6 char:1 + $synth.Speak('What is this?') | Out-Null + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ + CategoryInfo : NotSpecified: (:) [], ParentContainsErrorRecordException + FullyQualifiedErrorId : InvalidOperationException SAPI.SpVoice generation failed: (-2147352567, 'Exception occurred.', (0, None, None, None, 0, -2147200960), None)",
+  "runtime_behavior_changed": false,
+  "response_text_changed": false
+}

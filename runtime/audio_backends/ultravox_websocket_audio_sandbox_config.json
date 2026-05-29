@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "phase": "4J5",
+  "sandbox_id": "ultravox_websocket_synthetic_audio_sandbox",
+  "provider_calls_allowed_by_default": false,
+  "required_env_gates": [
+    "ENABLE_ULTRAVOX_SANDBOX=1",
+    "LOCAL_ULTRAVOX_ALLOW_PROVIDER_CALLS=1",
+    "ULTRAVOX_API_KEY present",
+    "LOCAL_ULTRAVOX_ALLOW_PUBLIC_TOOL_TUNNEL=1",
+    "PROJECT_ULTRAVOX_TOOL_TOKEN present"
+  ],
+  "use_ngrok_tunnel": true,
+  "local_endpoint_host": "127.0.0.1",
+  "local_endpoint_port": 8765,
+  "local_endpoint_path": "/ultravox/project-sales-brain-next-move",
+  "websocket_mode": "serverWebSocket",
+  "input_sample_rate": 48000,
+  "output_sample_rate": 48000,
+  "input_audio_format": "s16le_pcm",
+  "output_audio_expected": true,
+  "max_hosted_sessions": 1,
+  "max_audio_turns": 2,
+  "synthetic_audio_only": true,
+  "synthetic_audio_turns": [
+    "What is this?",
+    "Don't put me in CRM."
+  ],
+  "no_microphone": true,
+  "no_outbound_phone": true,
+  "real_customer_data_allowed": false,
+  "raw_audio_commit_allowed": false,
+  "live_wiring_allowed": false,
+  "production_call_allowed": false
+}
