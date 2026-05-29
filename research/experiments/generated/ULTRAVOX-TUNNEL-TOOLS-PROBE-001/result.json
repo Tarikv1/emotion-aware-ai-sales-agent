@@ -1,0 +1,63 @@
+{
+  "evaluation_id": "ULTRAVOX-TUNNEL-TOOLS-PROBE-001",
+  "phase": "4J3",
+  "probe_only": true,
+  "tunnel_opened": false,
+  "provider_calls_made": false,
+  "ultravox_hosted_call_made": false,
+  "outbound_phone_call_made": false,
+  "real_customer_data_used": false,
+  "raw_private_audio_or_transcripts_used": false,
+  "secrets_logged": false,
+  "candidate_tunnel_tools": {
+    "cloudflared": {
+      "name": "cloudflared",
+      "available": false,
+      "path_present": false,
+      "version": null,
+      "tunnel_opened": false
+    },
+    "ngrok": {
+      "name": "ngrok",
+      "available": false,
+      "path_present": false,
+      "version": null,
+      "tunnel_opened": false
+    },
+    "localtunnel": {
+      "name": "localtunnel",
+      "available": false,
+      "path_present": false,
+      "version": null,
+      "tunnel_opened": false
+    },
+    "lt": {
+      "name": "lt",
+      "available": false,
+      "path_present": false,
+      "version": null,
+      "tunnel_opened": false
+    },
+    "npx": {
+      "name": "npx",
+      "available": true,
+      "path_present": true,
+      "version": "11.12.1",
+      "localtunnel_via_npx_candidate": true,
+      "runner_uses_npx": false,
+      "reason_runner_uses_npx_false": "npx may install packages or hit the network, so Phase 4J3 only uses already-installed tunnel executables.",
+      "tunnel_opened": false
+    }
+  },
+  "usable_tunnel_tools": [],
+  "preferred_order": [
+    "cloudflared",
+    "ngrok",
+    "localtunnel"
+  ],
+  "selected_if_gated": null,
+  "live_wiring_allowed": false,
+  "production_call_allowed": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false
+}

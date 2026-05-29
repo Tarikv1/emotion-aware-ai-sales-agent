@@ -1,0 +1,118 @@
+{
+  "evaluation_id": "ULTRAVOX-TUNNEL-SANDBOX-001",
+  "phase": "4J3",
+  "run_status": "not_run_tunnel_gates_disabled",
+  "blocker": "Temporary public tool tunnel gates were not fully enabled; tunnel skipped.",
+  "env_file_exists": true,
+  "env_file_ignored_by_git": true,
+  "env_file_loaded": true,
+  "env_file_used": true,
+  "api_key_present": true,
+  "tool_token_present": false,
+  "env_gates": {
+    "ENABLE_ULTRAVOX_SANDBOX=1": true,
+    "LOCAL_ULTRAVOX_ALLOW_PROVIDER_CALLS=1": true,
+    "ULTRAVOX_API_KEY present": true,
+    "LOCAL_ULTRAVOX_ALLOW_PUBLIC_TOOL_TUNNEL=1": false,
+    "PROJECT_ULTRAVOX_TOOL_TOKEN present": false
+  },
+  "local_endpoint_host": "127.0.0.1",
+  "local_endpoint_port": 8765,
+  "local_endpoint_path": "/ultravox/project-sales-brain-next-move",
+  "local_endpoint_method": "POST",
+  "local_server_started": false,
+  "tunnel_attempted": false,
+  "tunnel_tool_used": null,
+  "tunnel_url_created": false,
+  "tunnel_url_redacted_or_domain_only": null,
+  "tunnel_stop_result": {
+    "attempted": false,
+    "terminated": false,
+    "killed": false
+  },
+  "local_public_endpoint_test_passed": false,
+  "public_endpoint_test": {},
+  "provider_call_attempted": false,
+  "provider_call_made": false,
+  "sandbox_run": false,
+  "ultravox_session_created": false,
+  "tool_call_supported": "unknown",
+  "tool_call_attempted": false,
+  "tool_call_succeeded": false,
+  "hosted_turns_attempted": 0,
+  "synthetic_cases_attempted": 0,
+  "synthetic_cases_planned": [
+    "What is this?",
+    "I use ChatGPT and other AI tools.",
+    "Don't put me in CRM."
+  ],
+  "public_tool_endpoint_required": true,
+  "public_tool_endpoint_available": false,
+  "public_tool_endpoint_host": null,
+  "browser_websocket_session_mode_used": "none",
+  "provider_minutes_budget_note": "user reported about 30 minutes free use; phase intentionally minimal",
+  "product_truth_drift_count": 0,
+  "unsupported_claim_count": 0,
+  "fake_side_effect_count": 0,
+  "crm_email_calendar_claim_count": 0,
+  "internal_label_leak_count": 0,
+  "source_boundary_violation_count": 0,
+  "memory_conflict_count": 0,
+  "tool_response_followed_count": 0,
+  "latency_metrics": {},
+  "transcript_metadata": {
+    "available": false,
+    "stored": false,
+    "sanitized": true
+  },
+  "create_call": {
+    "api_call_made": false
+  },
+  "delete_call": {
+    "delete_api_call_made": false
+  },
+  "source_grounding": [
+    {
+      "url": "https://docs.ultravox.ai/tools/custom/http-vs-client-tools",
+      "claim": "HTTP tools run on your server and Ultravox calls them via HTTP; HTTP tools support WebRTC, websocket, and telephony call mediums."
+    },
+    {
+      "url": "https://docs.ultravox.ai/tools/custom/authentication",
+      "claim": "HTTP tool auth can use a custom header requirement, with token values supplied at call creation through selectedTools.authTokens."
+    },
+    {
+      "url": "https://docs.ultravox.ai/tools/custom/durable-vs-temporary-tools",
+      "claim": "Temporary tools are call-scoped and defined inline for API-created calls, which fits sandbox testing before durable dashboard setup."
+    }
+  ],
+  "outbound_phone_call_made": false,
+  "outbound_phone_calls_made": false,
+  "real_customer_data_used": false,
+  "synthetic_prompts_only": true,
+  "raw_private_audio_or_transcripts_used": false,
+  "raw_private_audio_used": false,
+  "raw_private_transcripts_used": false,
+  "raw_audio_stored": false,
+  "audio_committed": false,
+  "secrets_logged": false,
+  "openai_api_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "live_tts_calls_made": false,
+  "local_model_generation_made": false,
+  "model_weights_downloaded": false,
+  "training_performed": false,
+  "crm_email_calendar_actions_made": false,
+  "side_effects_allowed": false,
+  "live_wiring_allowed": false,
+  "production_call_allowed": false,
+  "real_customer_data_allowed": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "notes": [
+    "No outbound phone call is supported or attempted.",
+    "No real customer audio or transcript is accepted.",
+    "No API key or tool token value is printed or written to evidence.",
+    "Public tunnel is skipped unless tunnel gates are enabled.",
+    "Provider call is skipped unless provider gates are enabled and the public endpoint preflight passes."
+  ]
+}

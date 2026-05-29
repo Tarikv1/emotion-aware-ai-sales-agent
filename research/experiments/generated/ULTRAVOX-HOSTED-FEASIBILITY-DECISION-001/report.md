@@ -1,18 +1,19 @@
 # ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001 Report
 
-Recommendation: `gated temporary HTTPS tunnel sandbox next`
-Mock boundary passed: `true`
-Local tool endpoint completed: `true`
-Local tool endpoint passed: `true`
-Hosted sandbox run status: `blocked_no_public_tool_endpoint`
-Sandbox run: `false`
+Recommendation: `provide tunnel gate and tool token, then rerun gated tunnel sandbox when ready`
+Tunnel sandbox run status: `not_run_tunnel_gates_disabled`
+Blocker: `Temporary public tool tunnel gates were not fully enabled; tunnel skipped.`
+Tunnel attempted: `false`
+Tunnel tool used: `None`
+Public endpoint test passed: `false`
+Provider call attempted: `false`
 Provider call made: `false`
+Ultravox session created: `false`
 Tool call attempted: `false`
 Tool call succeeded: `false`
-Public tool endpoint required: `true`
-Public tool endpoint available: `false`
-Public tunnel opened: `false`
-Tool calls work: `false`
+Hosted turns attempted: `0`
+Product truth drift count: `0`
+Fake side-effect count: `0`
 Live wiring allowed: `false`
 Production call allowed: `false`
 Real customer data allowed: `false`
@@ -23,5 +24,3 @@ Project runtime owns canonical memory.
 Project runtime owns the sales brain and campaign truth.
 Ultravox remains a hosted speech-native interface candidate only.
 Side effects remain blocked.
-
-The local HTTP endpoint prototype passed. The next provider-facing step is a gated temporary HTTPS tunnel sandbox, still synthetic only and still without outbound phone calls or real customer data.

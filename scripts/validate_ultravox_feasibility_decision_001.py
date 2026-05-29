@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MOCK_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-TOOL-BOUNDARY-MOCK-001" / "result.json"
 HOSTED_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-HOSTED-SANDBOX-001" / "result.json"
 LOCAL_ENDPOINT_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-LOCAL-TOOL-ENDPOINT-001" / "result.json"
+TUNNEL_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-TUNNEL-SANDBOX-001" / "result.json"
 DECISION_RESULT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001" / "result.json"
 DECISION_REPORT = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001" / "report.md"
 
@@ -55,10 +56,34 @@ def expected_recommendation(mock: dict[str, Any], hosted: dict[str, Any], local_
     return "keep Ultravox as research/reference only"
 
 
+def expected_tunnel_recommendation(tunnel: dict[str, Any]) -> str:
+    status = tunnel.get("run_status")
+    if status == "blocked_no_tunnel_tool":
+        return "install cloudflared or ngrok, rerun"
+    if status == "blocked_tunnel_test_failed":
+        return "fix auth/endpoint before provider call"
+    if status == "provider_create_failed":
+        return "fix API/session payload"
+    if status == "provider_session_created_no_interaction":
+        return "implement WebSocket/browser client sandbox"
+    if status == "provider_session_created_tool_called" and tunnel.get("tool_call_succeeded") is True:
+        return "limited synthetic voice conversation test next"
+    if tunnel.get("tool_call_attempted") is True and tunnel.get("tool_call_succeeded") is not True:
+        return "do not proceed"
+    if status == "not_run_tunnel_gates_disabled":
+        return "provide tunnel gate and tool token, then rerun gated tunnel sandbox when ready"
+    if status == "not_run_provider_gates_disabled":
+        return "provide Ultravox key/provider gates and rerun gated tunnel sandbox when ready"
+    if status == "unsafe_secret_file":
+        return "fix local secret file ignore rule before any sandbox"
+    return "keep Ultravox as research/reference only"
+
+
 def main() -> None:
     mock = load_json(MOCK_RESULT)
     hosted = load_json(HOSTED_RESULT)
     local_endpoint = load_json(LOCAL_ENDPOINT_RESULT) if LOCAL_ENDPOINT_RESULT.is_file() else None
+    tunnel = load_json(TUNNEL_RESULT) if TUNNEL_RESULT.is_file() else None
     decision = load_json(DECISION_RESULT)
     report_text = DECISION_REPORT.read_text(encoding="utf-8") if DECISION_REPORT.is_file() else ""
     if not report_text:
@@ -66,19 +91,20 @@ def main() -> None:
 
     if decision.get("evaluation_id") != "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001":
         fail("unexpected feasibility decision evaluation_id")
-    if decision.get("phase") not in {"4J1", "4J2"}:
-        fail("feasibility decision must record phase 4J1 or 4J2")
-    expected = expected_recommendation(mock, hosted, local_endpoint)
+    if decision.get("phase") not in {"4J1", "4J2", "4J3"}:
+        fail("feasibility decision must record phase 4J1, 4J2, or 4J3")
+    expected = expected_tunnel_recommendation(tunnel) if decision.get("phase") == "4J3" and tunnel is not None else expected_recommendation(mock, hosted, local_endpoint)
     if decision.get("recommendation") != expected:
         fail(f"recommendation must be {expected!r}, got {decision.get('recommendation')!r}")
 
     for key in ("live_wiring_allowed", "production_call_allowed", "real_customer_data_allowed"):
         if decision.get(key) is not False:
             fail(f"{key} must always stay false")
+    active_evidence = tunnel if decision.get("phase") == "4J3" and tunnel is not None else hosted
     for key in ("sandbox_run", "provider_call_made", "tool_call_attempted", "tool_call_succeeded", "public_tool_endpoint_required", "public_tool_endpoint_available"):
-        if hosted.get(key) is not None and decision.get(key) != hosted.get(key):
-            fail(f"{key} must match hosted sandbox evidence")
-    if local_endpoint is not None:
+        if active_evidence.get(key) is not None and decision.get(key) != active_evidence.get(key):
+            fail(f"{key} must match active sandbox evidence")
+    if local_endpoint is not None and decision.get("phase") != "4J3":
         if decision.get("local_tool_endpoint_completed") is not True:
             fail("decision must record completed local endpoint")
         if decision.get("local_tool_endpoint_passed") is not True:
@@ -106,7 +132,16 @@ def main() -> None:
         "Project runtime owns the sales brain and campaign truth.",
         "Public tool endpoint required:",
     ]
-    if local_endpoint is not None:
+    if decision.get("phase") == "4J3":
+        required_report_lines.remove("Public tool endpoint required:")
+        required_report_lines.extend(
+            [
+                "Tunnel attempted:",
+                "Public endpoint test passed:",
+                "Provider call attempted:",
+            ]
+        )
+    elif local_endpoint is not None:
         required_report_lines.extend(
             [
                 "Local tool endpoint completed: `true`",

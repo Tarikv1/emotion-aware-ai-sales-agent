@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "phase": "4J3",
+  "config_id": "ultravox_tunnel_sandbox_config",
+  "local_endpoint_host": "127.0.0.1",
+  "local_endpoint_port": 8765,
+  "local_endpoint_path": "/ultravox/project-sales-brain-next-move",
+  "local_endpoint_method": "POST",
+  "tunnel_allowed_by_default": false,
+  "required_env_gates": [
+    "LOCAL_ULTRAVOX_ALLOW_PUBLIC_TOOL_TUNNEL=1",
+    "PROJECT_ULTRAVOX_TOOL_TOKEN present"
+  ],
+  "provider_required_env_gates": [
+    "ENABLE_ULTRAVOX_SANDBOX=1",
+    "LOCAL_ULTRAVOX_ALLOW_PROVIDER_CALLS=1",
+    "ULTRAVOX_API_KEY present"
+  ],
+  "candidate_tunnel_tools": [
+    "cloudflared",
+    "ngrok",
+    "localtunnel"
+  ],
+  "preferred_order": [
+    "cloudflared",
+    "ngrok",
+    "localtunnel"
+  ],
+  "tunnel_lifetime": "short_lived",
+  "logs_sanitized": true,
+  "real_customer_data_allowed": false,
+  "outbound_phone_calls_allowed": false,
+  "production_call_allowed": false,
+  "live_wiring_allowed": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false
+}
