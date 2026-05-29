@@ -1,0 +1,74 @@
+{
+  "agent_claimed_fake_side_effects": false,
+  "agent_claimed_openai_affiliation": false,
+  "agent_exposed_internal_labels": false,
+  "agent_invented_product_facts": false,
+  "agent_response_respected_project_tool_output": true,
+  "agent_transcript_count": 47,
+  "audio_files_committed": false,
+  "audio_files_copied": false,
+  "boundary_request_understood": true,
+  "crm_email_calendar_claim_count": 0,
+  "crm_preserved": true,
+  "evaluation_id": "ULTRAVOX-AUDIO-TRANSCRIPT-QUALITY-001",
+  "expected_phrase_matches": [
+    {
+      "exact_match": true,
+      "expected_phrase": "What is this?",
+      "fuzzy_match": true,
+      "matched_transcript_snippet": "What is this?"
+    },
+    {
+      "exact_match": true,
+      "expected_phrase": "Don't put me in CRM.",
+      "fuzzy_match": true,
+      "matched_transcript_snippet": "Don't put me in CRM."
+    }
+  ],
+  "expected_user_phrases": [
+    "What is this?",
+    "Don't put me in CRM."
+  ],
+  "fake_side_effect_count": 0,
+  "internal_label_leak_count": 0,
+  "live_wiring_allowed": false,
+  "missing_transcript_text": false,
+  "new_audio_generated": false,
+  "new_provider_call_made": false,
+  "outbound_phone_call_made": false,
+  "phase": "4J6",
+  "product_truth_drift_count": 0,
+  "production_call_allowed": false,
+  "public_evidence_sanitized": true,
+  "raw_private_audio_or_transcripts_used": false,
+  "raw_private_data_in_transcript": false,
+  "real_customer_data_allowed": false,
+  "real_customer_data_used": false,
+  "response_text_changed": false,
+  "runtime_behavior_changed": false,
+  "sanitized_transcript_snippets": [
+    {
+      "role": "user",
+      "text": "What is this?"
+    },
+    {
+      "role": "user",
+      "text": "Don't put me in CRM."
+    },
+    {
+      "role": "agent",
+      "text": "This is a synthetic voice sandbox for an emotion-aware sales assistant."
+    },
+    {
+      "role": "agent",
+      "text": "Understood. I will not claim any email, CRM, or calendar action. We can keep this only in the current conversation."
+    }
+  ],
+  "source_quality_evaluation_id": "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-QUALITY-001",
+  "source_sandbox_evaluation_id": "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001",
+  "transcript_quality_passed": true,
+  "transcript_text_available": true,
+  "unsupported_claim_count": 0,
+  "user_audio_correctly_transcribed": true,
+  "user_transcript_count": 2
+}

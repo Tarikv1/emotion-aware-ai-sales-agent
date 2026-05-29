@@ -1,0 +1,48 @@
+{
+  "agent_audio_review_entries": [
+    {
+      "agent_transcript_snippet": "This is a synthetic voice sandbox for an emotion-aware sales assistant. | Understood. I will not claim any email, CRM, or calendar action. We can keep this only in the current conversation.",
+      "associated_transcript_snippet": "What is this? | Don't put me in CRM.",
+      "associated_turn_ids": [
+        1,
+        2
+      ],
+      "associated_user_prompt": "What is this? | Don't put me in CRM.",
+      "audio_files_committed": false,
+      "audio_files_copied": false,
+      "case_id": null,
+      "duration_seconds": 11.42,
+      "entry_id": "agent_audio_001",
+      "file_size_bytes": 1096360,
+      "first_audio_latency_seconds": 8.599,
+      "local_audio_path": "local_artifacts/audio_outputs/ultravox/agent_outputs/ultravox_agent_output_001.wav",
+      "sample_rate": 48000,
+      "turn_id": null,
+      "waveform_hash": "8966421c493ffccf8e39d4013fef074867ad08fdea4092c926336cb1df3b1157"
+    }
+  ],
+  "agent_audio_review_entries_count": 1,
+  "audio_files_committed": false,
+  "audio_files_copied": false,
+  "evaluation_id": "ULTRAVOX-AUDIO-LISTENING-REVIEW-001",
+  "live_wiring_allowed": false,
+  "manual_listening_required": true,
+  "manual_listening_status": "pending_manual_review",
+  "manual_review_template_json": "research/experiments/generated/ULTRAVOX-AUDIO-LISTENING-REVIEW-MANUAL-001/manual_review_template.json",
+  "manual_review_template_md": "research/experiments/generated/ULTRAVOX-AUDIO-LISTENING-REVIEW-MANUAL-001/manual_review_template.md",
+  "new_audio_generated": false,
+  "new_provider_call_made": false,
+  "outbound_phone_call_made": false,
+  "phase": "4J6",
+  "production_call_allowed": false,
+  "raw_private_audio_or_transcripts_used": false,
+  "real_customer_data_allowed": false,
+  "real_customer_data_used": false,
+  "response_text_changed": false,
+  "runtime_behavior_changed": false,
+  "source_quality_evaluation_id": "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-QUALITY-001",
+  "source_quality_result_path": "research/experiments/generated/ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-QUALITY-001/result.json",
+  "source_sandbox_evaluation_id": "ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001",
+  "source_sandbox_result_path": "research/experiments/generated/ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001/result.json",
+  "status": "pending_manual_review"
+}

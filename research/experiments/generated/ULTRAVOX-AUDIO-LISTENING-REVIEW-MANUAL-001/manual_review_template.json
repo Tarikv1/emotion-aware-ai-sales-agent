@@ -1,0 +1,85 @@
+{
+  "audio_files_committed": false,
+  "audio_files_copied": false,
+  "evaluation_id": "ULTRAVOX-AUDIO-LISTENING-REVIEW-MANUAL-001",
+  "manual_listening_checklist": [
+    {
+      "field": "intelligibility",
+      "scale": "1-5",
+      "value": null
+    },
+    {
+      "field": "naturalness",
+      "scale": "1-5",
+      "value": null
+    },
+    {
+      "field": "voice_quality",
+      "scale": "1-5",
+      "value": null
+    },
+    {
+      "field": "sales_tone",
+      "scale": "1-5",
+      "value": null
+    },
+    {
+      "field": "pacing",
+      "scale": "1-5",
+      "value": null
+    },
+    {
+      "field": "artifact_severity",
+      "scale": "1-5",
+      "value": null
+    },
+    {
+      "field": "interruption_turn_taking_quality",
+      "scale": "1-5",
+      "value": null
+    },
+    {
+      "field": "thesis_demo_suitability",
+      "scale": "1-5",
+      "value": null
+    },
+    {
+      "field": "product_fallback_suitability",
+      "scale": "1-5",
+      "value": null
+    },
+    {
+      "field": "compared_to_elevenlabs",
+      "scale": "free_text",
+      "value": null
+    },
+    {
+      "field": "notes",
+      "scale": "free_text",
+      "value": null
+    }
+  ],
+  "per_audio_output_reviews": [
+    {
+      "entry_id": "agent_audio_001",
+      "local_audio_path": "local_artifacts/audio_outputs/ultravox/agent_outputs/ultravox_agent_output_001.wav",
+      "ratings": {
+        "artifact_severity": null,
+        "compared_to_elevenlabs": null,
+        "intelligibility": null,
+        "interruption_turn_taking_quality": null,
+        "naturalness": null,
+        "notes": null,
+        "pacing": null,
+        "product_fallback_suitability": null,
+        "sales_tone": null,
+        "thesis_demo_suitability": null,
+        "voice_quality": null
+      },
+      "status": "pending_manual_review"
+    }
+  ],
+  "phase": "4J6",
+  "source_review_packet": "ULTRAVOX-AUDIO-LISTENING-REVIEW-001",
+  "status": "pending_manual_review"
+}

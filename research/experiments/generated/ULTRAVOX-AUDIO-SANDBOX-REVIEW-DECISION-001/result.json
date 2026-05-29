@@ -1,0 +1,33 @@
+{
+  "audio_files_committed": false,
+  "audio_files_copied": false,
+  "current_observed_latency_seconds": 8.599,
+  "decision_logic": [
+    "If audio listening review is pending: user_listen_to_ultravox_agent_audio.",
+    "If transcript quality is poor: fix audio format / turn timing before another provider run.",
+    "If transcript quality is good but latency high: run warm-session latency benchmark next, still synthetic only.",
+    "If tool boundary failed: fix tool declaration/prompt before more audio testing.",
+    "If transcript quality and tool boundary pass, and user audio review is good: limited synthetic voice conversation evaluation next.",
+    "Always keep live wiring, production calls, and real customer data disallowed."
+  ],
+  "evaluation_id": "ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001",
+  "live_ready_latency": false,
+  "live_wiring_allowed": false,
+  "manual_listening_review_status": "pending_manual_review",
+  "needs_warm_turn_benchmark": true,
+  "new_audio_generated": false,
+  "new_provider_call_made": false,
+  "next_provider_run_allowed_now": false,
+  "outbound_phone_call_made": false,
+  "phase": "4J6",
+  "production_call_allowed": false,
+  "raw_private_audio_or_transcripts_used": false,
+  "real_customer_data_allowed": false,
+  "real_customer_data_used": false,
+  "recommendation": "user_listen_to_ultravox_agent_audio",
+  "response_text_changed": false,
+  "runtime_behavior_changed": false,
+  "tool_boundary_passed": true,
+  "transcript_quality_passed": true,
+  "user_audio_review_good": null
+}
