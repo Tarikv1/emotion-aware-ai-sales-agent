@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "phase": "4J0",
+  "plan_id": "ultravox_hosted_realtime_integration_architecture_plan",
+  "source_urls": [
+    "https://docs.ultravox.ai/",
+    "https://docs.ultravox.ai/gettingstarted/how-ultravox-works",
+    "https://docs.ultravox.ai/tools/overview",
+    "https://docs.ultravox.ai/agents/call-stages",
+    "https://docs.ultravox.ai/gettingstarted/prompting",
+    "https://github.com/fixie-ai/ultravox"
+  ],
+  "project_sales_brain_owner": "project_runtime",
+  "campaign_truth_owner": "project_runtime",
+  "canonical_memory_owner": "project_runtime",
+  "ultravox_product_truth_owner": false,
+  "live_wiring_allowed": false,
+  "production_call_allowed": false,
+  "modes": [
+    {
+      "mode_id": "mode_a",
+      "name": "Ultravox owns conversation",
+      "status": "rejected_not_allowed",
+      "reason": [
+        "Product truth and campaign facts must remain project-owned.",
+        "Final sales logic must remain project-owned.",
+        "Canonical memory, verifier, and side-effect prevention must remain project-owned."
+      ],
+      "flow": [
+        "buyer speech",
+        "Ultravox conversation logic",
+        "Ultravox response"
+      ],
+      "rejection_boundary": "Ultravox must not own product truth, campaign facts, final sales logic, side effects, or source-grounded claims."
+    },
+    {
+      "mode_id": "mode_b",
+      "name": "Ultravox calls our project sales-brain tool",
+      "status": "preferred_sandbox_candidate",
+      "flow": [
+        "buyer speech",
+        "Ultravox speech-native interaction",
+        "tool call to project sandbox sales brain",
+        "project returns approved next move plus response text plus prosody hints",
+        "Ultravox speaks response"
+      ],
+      "tool_request_schema": {
+        "session_id": "string synthetic session id",
+        "buyer_utterance_text": "sanitized text from the buyer turn",
+        "ultravox_session_summary": "short-term Ultravox session summary, sanitized",
+        "project_memory_summary": "project-owned canonical memory summary",
+        "current_campaign_id": "project campaign id",
+        "detected_emotion_hint": "optional speech-native emotion hint",
+        "turn_index": "integer turn counter",
+        "requested_action_context": "short context label for the current stage or buyer ask"
+      },
+      "tool_response_schema": {
+        "allowed_to_speak": "boolean",
+        "buyer_facing_response": "short phone-friendly response text",
+        "next_action_id": "project-owned next action id",
+        "project_memory_updates": "sanitized project memory update proposals",
+        "prosody_hints": "backend-neutral hints, never raw provider tags",
+        "must_not_say": "blocked phrases or claim categories",
+        "source_boundary": "grounding and claim boundary object",
+        "side_effects_allowed": false,
+        "call_should_end": "boolean",
+        "verifier_status": "passed or blocked status from project verifier",
+        "safety_warnings": "sanitized warning list"
+      },
+      "memory_handoff_rules": [
+        "Ultravox may carry short-term session continuity for spoken turn-taking.",
+        "Project runtime owns canonical buyer memory.",
+        "Project memory wins over Ultravox session memory on conflict.",
+        "Only sanitized summaries may enter public evidence.",
+        "Raw private audio and raw private transcripts are never copied into evidence."
+      ],
+      "verifier_boundary": {
+        "verifier_owner": "project_runtime",
+        "blocks": [
+          "unsupported product claims",
+          "raw URLs unless explicitly allowed",
+          "email/calendar/CRM action claims",
+          "internal policy language",
+          "raw provider prosody tags",
+          "private transcript or audio leakage"
+        ],
+        "ultravox_must_speak_only_if": "tool response allowed_to_speak is true and verifier_status is not blocked"
+      },
+      "side_effect_prohibition": {
+        "side_effects_allowed": false,
+        "blocked_side_effects": [
+          "CRM write",
+          "email send",
+          "calendar booking",
+          "outbound phone call",
+          "production lead update"
+        ],
+        "fake_follow_up_claims_allowed": false
+      },
+      "transcript_evidence_handling": {
+        "synthetic_prompts_only": true,
+        "sanitize_transcripts": true,
+        "raw_private_audio_allowed": false,
+        "raw_private_transcript_allowed": false,
+        "audio_committed": false
+      },
+      "failure_fallback": [
+        "If tool call fails, ask a natural clarification or end safely.",
+        "If verifier blocks the response, do not speak the blocked text.",
+        "If project memory conflicts with Ultravox session memory, use project memory.",
+        "If provider tool calling cannot preserve this boundary, keep Ultravox as research/reference only."
+      ]
+    },
+    {
+      "mode_id": "mode_c",
+      "name": "Ultravox as speech frontend only",
+      "status": "fallback_candidate",
+      "flow": [
+        "buyer speech",
+        "Ultravox transcript/understanding",
+        "project runtime",
+        "project returns text",
+        "Ultravox speaks"
+      ],
+      "reason": [
+        "Preserves project ownership of truth and sales logic.",
+        "May be less speech-native than Mode B because the tool boundary is outside the main turn policy."
+      ]
+    }
+  ],
+  "sandbox_boundary": {
+    "provider_calls_allowed_by_default": false,
+    "provider_calls_allowed_only_with_env_gates": true,
+    "outbound_phone_calls_allowed": false,
+    "live_wiring_allowed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false
+  }
+}

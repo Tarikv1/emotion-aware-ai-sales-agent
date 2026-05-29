@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "phase": "4J0",
+  "tool_name": "project_sales_brain_next_move",
+  "synthetic_only": true,
+  "purpose": "Safe sandbox contract proving that Ultravox can call the project-owned sales brain without owning product truth, campaign facts, memory, side effects, or final sales logic.",
+  "request_fields": {
+    "session_id": {
+      "type": "string",
+      "required": true,
+      "privacy": "synthetic_or_sanitized"
+    },
+    "buyer_utterance_text": {
+      "type": "string",
+      "required": true,
+      "privacy": "synthetic_or_sanitized"
+    },
+    "ultravox_session_summary": {
+      "type": "string",
+      "required": true,
+      "privacy": "short_term_sanitized_context_only"
+    },
+    "project_memory_summary": {
+      "type": "string",
+      "required": true,
+      "privacy": "project_runtime_owned_summary"
+    },
+    "current_campaign_id": {
+      "type": "string",
+      "required": true,
+      "privacy": "synthetic_campaign_id"
+    },
+    "detected_emotion_hint": {
+      "type": "string",
+      "required": true,
+      "privacy": "synthetic_or_derived_hint"
+    },
+    "turn_index": {
+      "type": "integer",
+      "required": true,
+      "privacy": "non_sensitive"
+    },
+    "requested_action_context": {
+      "type": "string",
+      "required": true,
+      "privacy": "sanitized_stage_or_intent"
+    }
+  },
+  "response_fields": {
+    "allowed_to_speak": {
+      "type": "boolean",
+      "required": true
+    },
+    "buyer_facing_response": {
+      "type": "string",
+      "required": true,
+      "constraints": [
+        "short",
+        "phone-friendly",
+        "no internal labels"
+      ]
+    },
+    "next_action_id": {
+      "type": "string",
+      "required": true
+    },
+    "project_memory_updates": {
+      "type": "array",
+      "required": true,
+      "privacy": "sanitized_update_proposals"
+    },
+    "prosody_hints": {
+      "type": "object",
+      "required": true,
+      "constraints": [
+        "backend-neutral",
+        "no raw provider tags"
+      ]
+    },
+    "must_not_say": {
+      "type": "array",
+      "required": true
+    },
+    "source_boundary": {
+      "type": "object",
+      "required": true
+    },
+    "side_effects_allowed": {
+      "type": "boolean",
+      "required": true,
+      "constant": false
+    },
+    "call_should_end": {
+      "type": "boolean",
+      "required": true
+    },
+    "verifier_status": {
+      "type": "string",
+      "required": true,
+      "allowed_values": [
+        "passed",
+        "blocked"
+      ]
+    },
+    "safety_warnings": {
+      "type": "array",
+      "required": true
+    }
+  },
+  "hard_rules": [
+    "no CRM/email/calendar side effects",
+    "no fake follow-up",
+    "no unsupported product claims",
+    "no raw Fish tags",
+    "no internal policy language",
+    "no raw private transcript/audio in public evidence",
+    "if unsure, return natural clarification"
+  ],
+  "blocked_outputs": [
+    "I emailed you",
+    "I added you to the CRM",
+    "I booked your calendar",
+    "raw pricing not approved by campaign truth",
+    "raw URLs unless explicitly allowed",
+    "raw provider prosody tags",
+    "internal verifier or memory-owner labels in buyer-facing speech"
+  ],
+  "ownership": {
+    "sales_brain_owner": "project_runtime",
+    "campaign_truth_owner": "project_runtime",
+    "canonical_memory_owner": "project_runtime",
+    "ultravox_session_memory_role": "short_term_spoken_context_only",
+    "conflict_policy": "project_runtime_memory_wins"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "evaluation_id": "ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001",
+  "phase": "4J0",
+  "recommendation": "optional gated Ultravox hosted sandbox next",
+  "mock_boundary_passed": true,
+  "hosted_sandbox_run_status": "not_run",
+  "provider_call_made": false,
+  "tool_calls_work": null,
+  "tool_boundary_supported": null,
+  "live_wiring_allowed": false,
+  "production_call_allowed": false,
+  "real_customer_data_allowed": false,
+  "memory_ownership_decision": "project_runtime_owns_canonical_memory",
+  "sales_brain_ownership_decision": "project_runtime_owns_sales_brain_and_campaign_truth",
+  "ultravox_product_truth_owner": false,
+  "side_effects_allowed": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "decision_logic": [
+    "If mock boundary fails: fix tool contract before any provider sandbox.",
+    "If mock boundary passes and provider call not run: optional gated Ultravox hosted sandbox next.",
+    "If provider sandbox runs and tool calls work: limited synthetic voice call evaluation next.",
+    "If provider sandbox fails or cannot support the tool boundary: keep Ultravox as research/reference only."
+  ]
+}

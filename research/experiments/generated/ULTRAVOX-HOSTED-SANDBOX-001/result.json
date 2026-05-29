@@ -1,0 +1,41 @@
+{
+  "evaluation_id": "ULTRAVOX-HOSTED-SANDBOX-001",
+  "phase": "4J0",
+  "backend_id": "ultravox_hosted_realtime",
+  "run_status": "not_run",
+  "blocker": "Ultravox env gates were not enabled; provider sandbox skipped by default.",
+  "env_gates": {
+    "ENABLE_ULTRAVOX_SANDBOX=1": false,
+    "ULTRAVOX_API_KEY present": false,
+    "LOCAL_ULTRAVOX_ALLOW_PROVIDER_CALLS=1": false
+  },
+  "provider_call_made": false,
+  "provider_call_attempted": false,
+  "tool_boundary_supported": null,
+  "tool_calls_work": null,
+  "latency_ms": null,
+  "response_metadata": {},
+  "tool_call_behavior": "not_observed_without_provider_run",
+  "outbound_phone_calls_made": false,
+  "real_customer_data_used": false,
+  "synthetic_prompts_only": true,
+  "raw_private_audio_or_transcripts_used": false,
+  "transcripts_sanitized": true,
+  "audio_committed": false,
+  "model_weights_downloaded": false,
+  "openai_api_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "live_tts_calls_made": false,
+  "local_model_generation_made": false,
+  "training_performed": false,
+  "live_wiring_allowed": false,
+  "production_call_allowed": false,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "notes": [
+    "Default path produces not_run evidence only.",
+    "No outbound phone call is supported by this phase.",
+    "No real customer audio or transcript is accepted.",
+    "Provider-call branch remains gated and blocked until the hosted tool-call boundary is reviewed."
+  ]
+}

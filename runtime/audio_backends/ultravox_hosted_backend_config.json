@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "phase": "4J0",
+  "backend_id": "ultravox_hosted_realtime",
+  "source_urls": [
+    "https://docs.ultravox.ai/",
+    "https://docs.ultravox.ai/gettingstarted/how-ultravox-works",
+    "https://docs.ultravox.ai/tools/overview",
+    "https://docs.ultravox.ai/agents/call-stages",
+    "https://docs.ultravox.ai/gettingstarted/prompting",
+    "https://github.com/fixie-ai/ultravox"
+  ],
+  "role_in_project": "hosted_speech_native_interface_candidate",
+  "not_sales_brain": true,
+  "project_sales_brain_required": true,
+  "canonical_memory_owner": "project_runtime",
+  "ultravox_session_memory_allowed": true,
+  "final_campaign_truth_owner": "project_runtime",
+  "tool_call_required_for_sales_moves": true,
+  "live_wiring_allowed": false,
+  "outbound_phone_calls_allowed": false,
+  "provider_calls_allowed_by_default": false,
+  "provider_calls_allowed_only_with_env_gates": true,
+  "secrets_required": [
+    "ULTRAVOX_API_KEY"
+  ],
+  "env_gates": [
+    "ENABLE_ULTRAVOX_SANDBOX=1",
+    "ULTRAVOX_API_KEY present",
+    "LOCAL_ULTRAVOX_ALLOW_PROVIDER_CALLS=1"
+  ],
+  "evidence_policy": [
+    "no raw private audio",
+    "no customer data",
+    "synthetic/sanitized prompts only",
+    "transcripts sanitized",
+    "no audio committed"
+  ],
+  "ultravox_may_handle": [
+    "speech input",
+    "speech-native understanding",
+    "voice output",
+    "turn-taking",
+    "telephony/websocket/session layer",
+    "short-term session continuity",
+    "calling the project sales-brain tool"
+  ],
+  "project_must_retain": [
+    "campaign configuration",
+    "source-grounded product facts",
+    "sales-brain decision rules",
+    "canonical buyer memory",
+    "verifier/safety boundaries",
+    "fake side-effect prevention",
+    "CRM/email/calendar blocking",
+    "raw URL speech blocking unless explicitly allowed",
+    "canonical evidence logging"
+  ],
+  "memory_conflict_policy": "Ultravox session memory may summarize short-term spoken context, but project runtime canonical memory wins on conflict.",
+  "boundary_flags": {
+    "provider_calls_made": false,
+    "outbound_phone_calls_made": false,
+    "openai_api_calls_made": false,
+    "elevenlabs_calls_made": false,
+    "live_tts_calls_made": false,
+    "local_model_generation_made": false,
+    "model_downloads_performed": false,
+    "training_performed": false,
+    "live_runtime_wiring_changed": false,
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "real_customer_data_used": false,
+    "raw_private_audio_or_transcripts_used": false,
+    "audio_files_committed": false,
+    "api_keys_committed": false
+  },
+  "decision_status": "sandbox_architecture_only_no_live_wiring"
+}

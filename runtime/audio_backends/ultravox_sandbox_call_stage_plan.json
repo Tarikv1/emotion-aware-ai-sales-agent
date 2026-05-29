@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "phase": "4J0",
+  "plan_id": "ultravox_sandbox_call_stage_plan",
+  "live_wiring_allowed": false,
+  "production_call_allowed": false,
+  "provider_calls_allowed_by_default": false,
+  "tool_required": "project_sales_brain_next_move",
+  "stages": [
+    {
+      "stage_id": "opening_orientation",
+      "purpose": "Explain what the synthetic voice sandbox is when the buyer asks who or what this is.",
+      "tool_required": true,
+      "allowed_result": "short orientation"
+    },
+    {
+      "stage_id": "discovery",
+      "purpose": "Understand the buyer's current tools, use case, and constraints without inventing product facts.",
+      "tool_required": true,
+      "allowed_result": "clarifying question or grounded next move"
+    },
+    {
+      "stage_id": "objection_handling",
+      "purpose": "Handle objections about existing tools, price, team size, memory, or privacy boundaries.",
+      "tool_required": true,
+      "allowed_result": "bounded answer or natural clarification"
+    },
+    {
+      "stage_id": "recommendation",
+      "purpose": "Offer only project-approved next moves returned by the tool.",
+      "tool_required": true,
+      "allowed_result": "approved recommendation text"
+    },
+    {
+      "stage_id": "close",
+      "purpose": "End or hand off safely without claiming signup, email, calendar, or CRM actions.",
+      "tool_required": true,
+      "allowed_result": "safe close or human-review suggestion"
+    },
+    {
+      "stage_id": "boundary_stop",
+      "purpose": "Respect stop, no-contact, no-email, and no-CRM requests immediately.",
+      "tool_required": true,
+      "allowed_result": "boundary acknowledgement"
+    },
+    {
+      "stage_id": "fallback",
+      "purpose": "Use a short clarification or safe stop if the tool fails or the verifier blocks a response.",
+      "tool_required": true,
+      "allowed_result": "clarification or safe stop"
+    }
+  ],
+  "global_boundaries": {
+    "do_not_invent_product_facts": true,
+    "do_not_claim_email_calendar_crm_actions": true,
+    "do_not_claim_openai_affiliation": true,
+    "do_not_expose_internal_labels": true,
+    "no_raw_url_speech_unless_explicitly_allowed": true,
+    "no_outbound_phone_calls": true,
+    "no_live_wiring": true
+  }
+}
