@@ -7,16 +7,20 @@ Explicit cloudflared path present: `true`
 Explicit cloudflared path exists: `true`
 Explicit cloudflared version ok: `true`
 Cloudflared available: `true`
-Selected tunnel tool: `cloudflared`
-Selected tunnel executable: `C:\Program Files (x86)\cloudflared\cloudflared.exe`
-Selected if gated: `cloudflared`
+Cloudflared DNS failed before: `true`
+Ngrok available: `true`
+Ngrok path source: `known_windows_path`
+Selected tunnel tool: `ngrok`
+Selected preferred tool: `ngrok`
+Selected tunnel executable: `C:\Users\tarik\AppData\Local\Microsoft\WinGet\Packages\Ngrok.Ngrok_Microsoft.Winget.Source_8wekyb3d8bbwe\ngrok.exe`
+Selected if gated: `ngrok`
 Tunnel opened: `false`
 Provider calls made: `false`
 
 ## Tools
 
 - cloudflared: available `true`, version `cloudflared version 2026.5.2 (built 2026-05-27T10:15 UTC)`
-- ngrok: available `false`, version `None`
+- ngrok: available `true`, version `ngrok version 3.3.1`
 - localtunnel: available `false`, version `None`
 - lt: available `false`, version `None`
 - npx: available `true`, version `11.12.1`

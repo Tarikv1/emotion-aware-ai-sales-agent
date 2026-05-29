@@ -61,6 +61,7 @@ HTTP_READINESS_TIMEOUT_SECONDS = 60
 READINESS_INTERVAL_SECONDS = 2
 PROVIDER_TOOL_OBSERVATION_SECONDS = 2
 ANSI_PATTERN = re.compile(r"\x1b\[[0-9;]*[A-Za-z]")
+NGROK_API_URL = "http://127.0.0.1:4040/api/tunnels"
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -95,6 +96,7 @@ def strip_ansi_line(line: str) -> str:
 def clean_log_line(line: str) -> str:
     cleaned = strip_ansi_line(line)
     cleaned = re.sub(r"https://[A-Za-z0-9_.-]+\.trycloudflare\.com(?::[0-9]+)?", "https://<trycloudflare-domain-redacted>", cleaned)
+    cleaned = re.sub(r"https://[A-Za-z0-9_.-]*ngrok[A-Za-z0-9_.-]*(?::[0-9]+)?", "https://<ngrok-domain-redacted>", cleaned)
     cleaned = cleaned.strip().strip("\"'[](){}<>")
     return sanitize_text(cleaned)
 
@@ -162,6 +164,7 @@ def boundary_fields() -> dict[str, Any]:
 
 def add_tunnel_discovery(result: dict[str, Any], discovery: dict[str, Any]) -> None:
     cloudflared_discovery = discovery["cloudflared_discovery"]
+    ngrok_discovery = discovery.get("ngrok_discovery", {})
     result.update(
         {
             "explicit_cloudflared_path_present": cloudflared_discovery["explicit_cloudflared_path_present"],
@@ -170,7 +173,17 @@ def add_tunnel_discovery(result: dict[str, Any], discovery: dict[str, Any]) -> N
             "explicit_cloudflared_executable": cloudflared_discovery["explicit_cloudflared_executable"],
             "cloudflared_available": discovery["cloudflared"]["available"],
             "cloudflared_version": discovery["cloudflared"].get("version"),
+            "cloudflared_dns_failed_before": discovery.get("cloudflared_dns_failed_before", False),
+            "cloudflared_passed_before": discovery.get("cloudflared_passed_before", False),
+            "ngrok_available": discovery["ngrok"]["available"],
+            "ngrok_version_ok": discovery["ngrok"].get("version_ok", False),
+            "ngrok_version": discovery["ngrok"].get("version"),
+            "ngrok_path_source": discovery["ngrok"].get("source"),
+            "explicit_ngrok_path_present": ngrok_discovery.get("explicit_ngrok_path_present", False),
+            "explicit_ngrok_path_exists": ngrok_discovery.get("explicit_ngrok_path_exists", False),
+            "explicit_ngrok_version_ok": ngrok_discovery.get("explicit_ngrok_version_ok", False),
             "selected_tunnel_tool": discovery["selected_tunnel_tool"],
+            "selected_preferred_tool": discovery.get("selected_preferred_tool"),
             "selected_tunnel_executable": discovery["selected_tunnel_executable"],
         }
     )
@@ -342,14 +355,43 @@ def command_for_tunnel(tool: str, executable: str, port: int) -> list[str]:
     raise ValueError(f"unsupported tunnel tool: {tool}")
 
 
-def parse_https_url(line: str) -> str | None:
+def supported_tunnel_host(tool: str, host: str) -> bool:
+    lowered = host.lower()
+    if tool == "cloudflared":
+        return lowered.endswith(".trycloudflare.com")
+    if tool == "ngrok":
+        return "ngrok" in lowered and not lowered.startswith("127.") and lowered != "localhost"
+    if tool in {"localtunnel", "lt"}:
+        return lowered.endswith(".loca.lt")
+    return False
+
+
+def parse_https_url(line: str, tool: str) -> str | None:
     cleaned = strip_ansi_line(line)
     for match in re.finditer(r"https://[A-Za-z0-9_.-]+(?::[0-9]+)?", cleaned):
         candidate = match.group(0).strip().strip("\"'[](){}<>").rstrip(".,);:")
         parsed = urlparse(candidate)
-        if parsed.scheme == "https" and parsed.netloc.endswith(".trycloudflare.com"):
+        if parsed.scheme == "https" and supported_tunnel_host(tool, parsed.netloc):
             return f"https://{parsed.netloc}"
     return None
+
+
+def read_ngrok_public_url(port: int) -> tuple[str | None, str | None]:
+    try:
+        with urllib.request.urlopen(NGROK_API_URL, timeout=1) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+    except Exception as error:
+        return None, sanitize_text(str(error))[:240]
+    local_targets = {f"http://127.0.0.1:{port}", f"http://localhost:{port}", f"127.0.0.1:{port}", f"localhost:{port}"}
+    for tunnel in payload.get("tunnels", []):
+        public_url = tunnel.get("public_url")
+        config = tunnel.get("config") or {}
+        address = str(config.get("addr") or "")
+        if isinstance(public_url, str) and public_url.startswith("https://") and any(target in address for target in local_targets):
+            parsed = urlparse(public_url)
+            if parsed.scheme == "https" and parsed.netloc and supported_tunnel_host("ngrok", parsed.netloc):
+                return f"https://{parsed.netloc}", None
+    return None, "ngrok local API had no matching HTTPS tunnel for the local endpoint"
 
 
 def start_tunnel(tool: str, executable: str, port: int) -> tuple[subprocess.Popen[str] | None, str | None, dict[str, Any]]:
@@ -384,10 +426,21 @@ def start_tunnel(tool: str, executable: str, port: int) -> tuple[subprocess.Pope
     log_line_count = 0
     log_lines_sanitized: list[str] = []
     public_url = None
+    public_url_source = None
+    ngrok_api_attempt_count = 0
+    ngrok_api_last_error = None
     deadline = time.monotonic() + TUNNEL_START_TIMEOUT_SECONDS
     while time.monotonic() < deadline:
         if process.poll() is not None:
             break
+        if tool == "ngrok":
+            ngrok_api_attempt_count += 1
+            api_url, api_error = read_ngrok_public_url(port)
+            ngrok_api_last_error = api_error
+            if api_url:
+                public_url = api_url
+                public_url_source = "ngrok_local_api"
+                break
         try:
             line = output_queue.get(timeout=0.2)
         except queue.Empty:
@@ -396,9 +449,10 @@ def start_tunnel(tool: str, executable: str, port: int) -> tuple[subprocess.Pope
         cleaned_line = clean_log_line(line)
         if cleaned_line:
             log_lines_sanitized.append(cleaned_line[:500])
-        parsed = parse_https_url(line)
+        parsed = parse_https_url(line, tool)
         if parsed:
             public_url = parsed
+            public_url_source = "process_output"
             break
 
     while not output_queue.empty():
@@ -411,7 +465,13 @@ def start_tunnel(tool: str, executable: str, port: int) -> tuple[subprocess.Pope
         "start_error": None,
         "start_latency_ms": elapsed_ms(start),
         "log_line_count": log_line_count,
-        "cloudflared_log_lines_sanitized": log_lines_sanitized[:20],
+        "tunnel_log_lines_sanitized": log_lines_sanitized[:20],
+        "cloudflared_log_lines_sanitized": log_lines_sanitized[:20] if tool == "cloudflared" else [],
+        "ngrok_log_lines_sanitized": log_lines_sanitized[:20] if tool == "ngrok" else [],
+        "public_url_source": public_url_source,
+        "ngrok_local_api_used": tool == "ngrok",
+        "ngrok_local_api_attempt_count": ngrok_api_attempt_count,
+        "ngrok_local_api_last_error": ngrok_api_last_error,
         "process_exited_before_url": process.poll() is not None and public_url is None,
     }
     return process, public_url, details
@@ -607,6 +667,7 @@ def base_result(env_metadata: dict[str, bool], gates: dict[str, bool]) -> dict[s
     return {
         "evaluation_id": "ULTRAVOX-TUNNEL-SANDBOX-001",
         "phase": "4J3",
+        "phase_detail": "4J3F",
         "run_status": "not_run",
         "blocker": None,
         "env_file_exists": env_metadata["env_file_exists"],
@@ -622,7 +683,17 @@ def base_result(env_metadata: dict[str, bool], gates: dict[str, bool]) -> dict[s
         "explicit_cloudflared_executable": None,
         "cloudflared_available": False,
         "cloudflared_version": None,
+        "cloudflared_dns_failed_before": False,
+        "cloudflared_passed_before": False,
+        "ngrok_available": False,
+        "ngrok_version_ok": False,
+        "ngrok_version": None,
+        "ngrok_path_source": None,
+        "explicit_ngrok_path_present": False,
+        "explicit_ngrok_path_exists": False,
+        "explicit_ngrok_version_ok": False,
         "selected_tunnel_tool": None,
+        "selected_preferred_tool": None,
         "selected_tunnel_executable": None,
         "tunnel_preflight_only": False,
         "local_endpoint_host": config["local_endpoint_host"],
@@ -634,6 +705,7 @@ def base_result(env_metadata: dict[str, bool], gates: dict[str, bool]) -> dict[s
         "tunnel_tool_used": None,
         "tunnel_url_created": False,
         "tunnel_url_redacted_or_domain_only": None,
+        "tunnel_domain_only": None,
         "tunnel_url_full_recorded": False,
         "tunnel_stop_result": {"attempted": False, "terminated": False, "killed": False},
         "dns_success": False,
@@ -748,7 +820,10 @@ def build_result(*, tunnel_preflight_only: bool = False) -> dict[str, Any]:
     tunnel_executable = discovery["selected_tunnel_executable_for_run"]
     if not tunnel_tool or not tunnel_executable:
         result["run_status"] = "blocked_no_tunnel_tool"
-        result["blocker"] = "No already-installed supported tunnel CLI found. Install cloudflared or ngrok and rerun."
+        if result["cloudflared_dns_failed_before"]:
+            result["blocker"] = "Cloudflared quick tunnel DNS failed before, and no available ngrok fallback was selected."
+        else:
+            result["blocker"] = "No already-installed supported tunnel CLI found. Install or configure ngrok, or use a Cloudflare named tunnel."
         return result
 
     local_config = load_json(LOCAL_ENDPOINT_CONFIG_PATH)
@@ -775,7 +850,10 @@ def build_result(*, tunnel_preflight_only: bool = False) -> dict[str, Any]:
         result["tunnel_start_details"] = tunnel_details
         if not public_url:
             result["run_status"] = "blocked_tunnel_url_not_detected"
-            result["blocker"] = tunnel_details.get("start_error") or "Tunnel process did not expose an HTTPS URL within the bounded startup window."
+            if tunnel_tool == "ngrok":
+                result["blocker"] = tunnel_details.get("start_error") or "Ngrok did not expose an HTTPS URL within the bounded startup window; fix ngrok auth/config."
+            else:
+                result["blocker"] = tunnel_details.get("start_error") or "Tunnel process did not expose an HTTPS URL within the bounded startup window."
             return result
         parsed = urlparse(public_url)
         if parsed.scheme != "https" or not parsed.netloc:
@@ -785,6 +863,7 @@ def build_result(*, tunnel_preflight_only: bool = False) -> dict[str, Any]:
 
         result["tunnel_url_created"] = True
         result["tunnel_url_redacted_or_domain_only"] = parsed.netloc
+        result["tunnel_domain_only"] = parsed.netloc
         result["tunnel_url_full_recorded"] = False
         result["public_tool_endpoint_available"] = True
         result["public_tool_endpoint_host"] = parsed.netloc
@@ -902,6 +981,11 @@ def build_quality_result(result: dict[str, Any]) -> dict[str, Any]:
         "tool_call_succeeded": result["tool_call_succeeded"],
         "hosted_turns_attempted": result["hosted_turns_attempted"],
         "hosted_turns_not_run_reason": quality_reason(result),
+        "cloudflared_available": result["cloudflared_available"],
+        "cloudflared_dns_failed_before": result["cloudflared_dns_failed_before"],
+        "ngrok_available": result["ngrok_available"],
+        "ngrok_version": result["ngrok_version"],
+        "tunnel_tool_used": result["tunnel_tool_used"],
         "product_truth_drift_count": result["product_truth_drift_count"],
         "unsupported_claim_count": result["unsupported_claim_count"],
         "fake_side_effect_count": result["fake_side_effect_count"],
@@ -934,15 +1018,19 @@ def recommendation_for(result: dict[str, Any]) -> str:
     if status == "blocked_explicit_cloudflared_path_missing":
         return "fix ULTRAVOX_TUNNEL_CLOUDFLARED_PATH"
     if status == "blocked_tunnel_url_not_detected":
+        if result.get("tunnel_tool_used") == "ngrok":
+            return "fix ngrok auth/config"
         return "fix tunnel URL parsing"
     if status == "blocked_tunnel_dns_failed":
+        if result.get("tunnel_tool_used") == "ngrok":
+            return "fix tunnel endpoint/auth before provider call"
         return "retry tunnel later, test local DNS/trycloudflare reachability, or use ngrok/cloudflared named tunnel"
     if status == "blocked_tunnel_http_failed":
-        return "fix tunnel target/local server path"
+        return "fix tunnel endpoint/auth before provider call" if result.get("tunnel_tool_used") == "ngrok" else "fix tunnel target/local server path"
     if status == "blocked_tunnel_auth_failed":
-        return "fix token/header handling"
+        return "fix tunnel endpoint/auth before provider call" if result.get("tunnel_tool_used") == "ngrok" else "fix token/header handling"
     if status == "blocked_no_tunnel_tool":
-        return "install cloudflared or ngrok, rerun"
+        return "install/configure ngrok or use Cloudflare named tunnel"
     if status == "blocked_tunnel_test_failed":
         return "fix tunnel/endpoint/auth before provider call"
     if status == "preflight_only_passed":
@@ -979,7 +1067,13 @@ def build_decision(result: dict[str, Any]) -> dict[str, Any]:
         "explicit_cloudflared_path_present": result["explicit_cloudflared_path_present"],
         "explicit_cloudflared_path_exists": result["explicit_cloudflared_path_exists"],
         "cloudflared_available": result["cloudflared_available"],
+        "cloudflared_dns_failed_before": result["cloudflared_dns_failed_before"],
+        "ngrok_available": result["ngrok_available"],
+        "ngrok_version": result["ngrok_version"],
+        "ngrok_path_source": result["ngrok_path_source"],
+        "selected_preferred_tool": result["selected_preferred_tool"],
         "tunnel_url_created": result["tunnel_url_created"],
+        "tunnel_domain_only": result["tunnel_domain_only"],
         "dns_success": result["dns_success"],
         "dns_attempt_count": result["dns_attempt_count"],
         "dns_last_error": result["dns_last_error"],
@@ -1011,9 +1105,9 @@ def build_decision(result: dict[str, Any]) -> dict[str, Any]:
         "runtime_behavior_changed": False,
         "response_text_changed": False,
         "decision_logic": [
-            "If no tunnel tool exists: install cloudflared or ngrok, rerun.",
+            "If ngrok unavailable after cloudflared DNS failure: install/configure ngrok or use Cloudflare named tunnel.",
             "If explicit cloudflared path does not exist: fix ULTRAVOX_TUNNEL_CLOUDFLARED_PATH.",
-            "If cloudflared starts but no HTTPS URL is found: fix tunnel URL parsing.",
+            "If ngrok tunnel URL cannot be created: fix ngrok auth/config.",
             "If DNS fails: retry tunnel later, test local DNS/trycloudflare reachability, or use ngrok/cloudflared named tunnel.",
             "If DNS succeeds but HTTP fails: fix tunnel target/local server path.",
             "If auth preflight fails: fix token/header handling.",
@@ -1042,6 +1136,11 @@ def render_result_report(result: dict[str, Any]) -> str:
             f"Explicit cloudflared path exists: `{str(result['explicit_cloudflared_path_exists']).lower()}`",
             f"Explicit cloudflared version ok: `{str(result['explicit_cloudflared_version_ok']).lower()}`",
             f"Cloudflared available: `{str(result['cloudflared_available']).lower()}`",
+            f"Cloudflared DNS failed before: `{str(result['cloudflared_dns_failed_before']).lower()}`",
+            f"Ngrok available: `{str(result['ngrok_available']).lower()}`",
+            f"Ngrok version ok: `{str(result['ngrok_version_ok']).lower()}`",
+            f"Ngrok path source: `{result['ngrok_path_source']}`",
+            f"Selected preferred tool: `{result['selected_preferred_tool']}`",
             f"Tunnel preflight only: `{str(result['tunnel_preflight_only']).lower()}`",
             f"Local server started: `{str(result['local_server_started']).lower()}`",
             f"Tunnel attempted: `{str(result['tunnel_attempted']).lower()}`",
@@ -1091,6 +1190,10 @@ def render_quality_report(result: dict[str, Any]) -> str:
             f"Tool call succeeded: `{str(result['tool_call_succeeded']).lower()}`",
             f"Hosted turns attempted: `{result['hosted_turns_attempted']}`",
             f"Hosted turns not run reason: `{result['hosted_turns_not_run_reason']}`",
+            f"Cloudflared available: `{str(result['cloudflared_available']).lower()}`",
+            f"Cloudflared DNS failed before: `{str(result['cloudflared_dns_failed_before']).lower()}`",
+            f"Ngrok available: `{str(result['ngrok_available']).lower()}`",
+            f"Tunnel tool used: `{result['tunnel_tool_used']}`",
             f"DNS success: `{str(result['dns_success']).lower()}`",
             f"HTTP success: `{str(result['http_success']).lower()}`",
             f"Auth preflight success: `{str(result['auth_preflight_success']).lower()}`",
@@ -1119,6 +1222,10 @@ def render_decision_report(decision: dict[str, Any]) -> str:
             f"Explicit cloudflared path present: `{str(decision['explicit_cloudflared_path_present']).lower()}`",
             f"Explicit cloudflared path exists: `{str(decision['explicit_cloudflared_path_exists']).lower()}`",
             f"Cloudflared available: `{str(decision['cloudflared_available']).lower()}`",
+            f"Cloudflared DNS failed before: `{str(decision['cloudflared_dns_failed_before']).lower()}`",
+            f"Ngrok available: `{str(decision['ngrok_available']).lower()}`",
+            f"Ngrok path source: `{decision['ngrok_path_source']}`",
+            f"Selected preferred tool: `{decision['selected_preferred_tool']}`",
             f"Tunnel preflight only: `{str(decision['tunnel_preflight_only']).lower()}`",
             f"Tunnel attempted: `{str(decision['tunnel_attempted']).lower()}`",
             f"Tunnel tool used: `{decision['tunnel_tool_used']}`",
@@ -1152,9 +1259,16 @@ def render_decision_report(decision: dict[str, Any]) -> str:
 def build_diagnostics_result(result: dict[str, Any]) -> dict[str, Any]:
     return {
         "evaluation_id": "ULTRAVOX-TUNNEL-DIAGNOSTICS-001",
-        "phase": "4J3E",
+        "phase": "4J3F",
         "cloudflared_available": result["cloudflared_available"],
         "cloudflared_version": result["cloudflared_version"],
+        "cloudflared_dns_failed_before": result["cloudflared_dns_failed_before"],
+        "ngrok_available": result["ngrok_available"],
+        "ngrok_version": result["ngrok_version"],
+        "ngrok_version_ok": result["ngrok_version_ok"],
+        "ngrok_path_source": result["ngrok_path_source"],
+        "tunnel_tool_used": result["tunnel_tool_used"],
+        "selected_preferred_tool": result["selected_preferred_tool"],
         "explicit_cloudflared_path_used": result["selected_tunnel_tool"] == "cloudflared" and result["explicit_cloudflared_path_present"],
         "explicit_cloudflared_path_present": result["explicit_cloudflared_path_present"],
         "explicit_cloudflared_path_exists": result["explicit_cloudflared_path_exists"],
@@ -1199,6 +1313,12 @@ def render_diagnostics_report(result: dict[str, Any]) -> str:
             "",
             f"Cloudflared available: `{str(result['cloudflared_available']).lower()}`",
             f"Cloudflared version: `{result['cloudflared_version']}`",
+            f"Cloudflared DNS failed before: `{str(result['cloudflared_dns_failed_before']).lower()}`",
+            f"Ngrok available: `{str(result['ngrok_available']).lower()}`",
+            f"Ngrok version: `{result['ngrok_version']}`",
+            f"Ngrok path source: `{result['ngrok_path_source']}`",
+            f"Tunnel tool used: `{result['tunnel_tool_used']}`",
+            f"Selected preferred tool: `{result['selected_preferred_tool']}`",
             f"Explicit cloudflared path used: `{str(result['explicit_cloudflared_path_used']).lower()}`",
             f"Tunnel preflight only: `{str(result['tunnel_preflight_only']).lower()}`",
             f"Tunnel attempted: `{str(result['tunnel_attempted']).lower()}`",

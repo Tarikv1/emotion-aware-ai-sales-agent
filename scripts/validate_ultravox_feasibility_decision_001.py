@@ -61,15 +61,19 @@ def expected_tunnel_recommendation(tunnel: dict[str, Any]) -> str:
     if status == "blocked_explicit_cloudflared_path_missing":
         return "fix ULTRAVOX_TUNNEL_CLOUDFLARED_PATH"
     if status == "blocked_tunnel_url_not_detected":
+        if tunnel.get("tunnel_tool_used") == "ngrok":
+            return "fix ngrok auth/config"
         return "fix tunnel URL parsing"
     if status == "blocked_tunnel_dns_failed":
+        if tunnel.get("tunnel_tool_used") == "ngrok":
+            return "fix tunnel endpoint/auth before provider call"
         return "retry tunnel later, test local DNS/trycloudflare reachability, or use ngrok/cloudflared named tunnel"
     if status == "blocked_tunnel_http_failed":
-        return "fix tunnel target/local server path"
+        return "fix tunnel endpoint/auth before provider call" if tunnel.get("tunnel_tool_used") == "ngrok" else "fix tunnel target/local server path"
     if status == "blocked_tunnel_auth_failed":
-        return "fix token/header handling"
+        return "fix tunnel endpoint/auth before provider call" if tunnel.get("tunnel_tool_used") == "ngrok" else "fix token/header handling"
     if status == "blocked_no_tunnel_tool":
-        return "install cloudflared or ngrok, rerun"
+        return "install/configure ngrok or use Cloudflare named tunnel"
     if status == "blocked_tunnel_test_failed":
         return "fix tunnel/endpoint/auth before provider call"
     if status == "preflight_only_passed":
@@ -151,6 +155,10 @@ def main() -> None:
                 "Explicit cloudflared path present:",
                 "Explicit cloudflared path exists:",
                 "Cloudflared available:",
+                "Cloudflared DNS failed before:",
+                "Ngrok available:",
+                "Ngrok path source:",
+                "Selected preferred tool:",
                 "Tunnel preflight only:",
                 "Tunnel attempted:",
                 "DNS success:",

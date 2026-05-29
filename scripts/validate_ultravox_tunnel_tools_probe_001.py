@@ -59,13 +59,26 @@ def main() -> None:
         "explicit_cloudflared_path_exists",
         "explicit_cloudflared_version_ok",
         "cloudflared_available",
+        "cloudflared_dns_failed_before",
+        "cloudflared_passed_before",
+        "ngrok_available",
+        "ngrok_version_ok",
+        "explicit_ngrok_path_present",
+        "explicit_ngrok_path_exists",
+        "explicit_ngrok_version_ok",
     ):
         if not isinstance(result.get(key), bool):
             fail(f"{key} must be a boolean")
     if result.get("explicit_cloudflared_path_present") and result.get("explicit_cloudflared_executable") in {"", None}:
         fail("explicit cloudflared path evidence must include a safe executable path or redacted marker")
-    if result.get("cloudflared_available") and result.get("selected_tunnel_tool") != "cloudflared":
-        fail("cloudflared must be selected when available")
+    if result.get("cloudflared_dns_failed_before") and result.get("ngrok_available"):
+        if result.get("selected_tunnel_tool") != "ngrok":
+            fail("ngrok must be selected when cloudflared DNS failed before and ngrok is available")
+    elif result.get("cloudflared_available") and result.get("cloudflared_passed_before"):
+        if result.get("selected_tunnel_tool") != "cloudflared":
+            fail("cloudflared must be selected when it is available and previously passed readiness")
+    if result.get("selected_preferred_tool") != result.get("selected_tunnel_tool"):
+        fail("selected_preferred_tool must match selected_tunnel_tool")
     if result.get("selected_tunnel_tool") and not result.get("selected_tunnel_executable"):
         fail("selected tunnel executable must be recorded when a tool is selected")
     for key in (
@@ -87,6 +100,8 @@ def main() -> None:
     for name in ("cloudflared", "ngrok", "localtunnel", "npx"):
         if name not in tools:
             fail(f"missing probe details for {name}")
+    if tools.get("ngrok", {}).get("available") != result.get("ngrok_available"):
+        fail("top-level ngrok_available must match candidate tool details")
     if any("_executable_for_run" in json.dumps(tool) for tool in tools.values()):
         fail("internal executable-for-run fields must not be written to probe evidence")
     if "does not open a tunnel" not in report:

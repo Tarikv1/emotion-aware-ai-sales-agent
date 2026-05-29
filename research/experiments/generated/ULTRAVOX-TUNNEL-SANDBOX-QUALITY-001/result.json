@@ -7,7 +7,12 @@
   "tool_call_attempted": false,
   "tool_call_succeeded": false,
   "hosted_turns_attempted": 0,
-  "hosted_turns_not_run_reason": "blocked_tunnel_dns_failed",
+  "hosted_turns_not_run_reason": "tunnel_url_not_detected",
+  "cloudflared_available": true,
+  "cloudflared_dns_failed_before": true,
+  "ngrok_available": true,
+  "ngrok_version": "ngrok version 3.3.1",
+  "tunnel_tool_used": "ngrok",
   "product_truth_drift_count": 0,
   "unsupported_claim_count": 0,
   "fake_side_effect_count": 0,
@@ -17,7 +22,7 @@
   "memory_conflict_count": 0,
   "tool_response_followed_count": 0,
   "latency_metrics": {
-    "tunnel_start_latency_ms": 4705.024
+    "tunnel_start_latency_ms": 1028.717
   },
   "dns_success": false,
   "http_success": false,

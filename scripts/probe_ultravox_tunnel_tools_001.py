@@ -23,10 +23,20 @@ from scripts.load_local_ultravox_env_001 import (  # noqa: E402
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-TUNNEL-TOOLS-PROBE-001"
 RESULT_PATH = OUT_DIR / "result.json"
 REPORT_PATH = OUT_DIR / "report.md"
+TUNNEL_RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "ULTRAVOX-TUNNEL-SANDBOX-001" / "result.json"
 CLOUDFLARED_PATH_ENV = "ULTRAVOX_TUNNEL_CLOUDFLARED_PATH"
+NGROK_PATH_ENV = "ULTRAVOX_TUNNEL_NGROK_PATH"
+LOCALTUNNEL_GATE = "LOCAL_ULTRAVOX_ALLOW_LOCALTUNNEL"
 KNOWN_CLOUDFLARED_PATHS = [
     Path(r"C:\Program Files (x86)\cloudflared\cloudflared.exe"),
     Path(r"C:\Program Files\cloudflared\cloudflared.exe"),
+]
+KNOWN_NGROK_PATHS = [
+    Path(r"C:\Program Files\ngrok\ngrok.exe"),
+    Path(r"C:\Program Files (x86)\ngrok\ngrok.exe"),
+    Path.home() / "AppData" / "Local" / "ngrok" / "ngrok.exe",
+    Path.home() / "AppData" / "Local" / "Microsoft" / "WinGet" / "Packages" / "Ngrok.Ngrok_Microsoft.Winget.Source_8wekyb3d8bbwe" / "ngrok.exe",
+    Path.home() / "scoop" / "shims" / "ngrok.exe",
 ]
 
 
@@ -121,25 +131,37 @@ def load_env_metadata() -> tuple[dict[str, bool], bool]:
         }, True
 
 
-def discover_cloudflared() -> tuple[dict[str, Any], dict[str, Any]]:
-    explicit_value = os.environ.get(CLOUDFLARED_PATH_ENV, "").strip()
-    explicit = executable_probe("cloudflared", ["--version"], explicit_path=explicit_value or None, source="explicit_env") if explicit_value else {
-        "name": "cloudflared",
+def empty_probe(name: str, source: str = "explicit_env") -> dict[str, Any]:
+    return {
+        "name": name,
         "available": False,
         "path_present": False,
         "path_exists": False,
-        "source": "explicit_env",
+        "source": source,
         "executable": None,
         "version": None,
         "version_ok": False,
         "tunnel_opened": False,
     }
-    path_lookup = executable_probe("cloudflared", ["--version"], source="PATH")
+
+
+def discover_executable(
+    name: str,
+    version_args: list[str],
+    *,
+    env_var: str,
+    known_paths: list[Path],
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    explicit_value = os.environ.get(env_var, "").strip()
+    explicit = (
+        executable_probe(name, version_args, explicit_path=explicit_value or None, source="explicit_env")
+        if explicit_value
+        else empty_probe(name)
+    )
+    path_lookup = executable_probe(name, version_args, source="PATH")
     known_results = []
-    for candidate in KNOWN_CLOUDFLARED_PATHS:
-        known_results.append(
-            executable_probe("cloudflared", ["--version"], explicit_path=str(candidate), source="known_windows_path")
-        )
+    for candidate in known_paths:
+        known_results.append(executable_probe(name, version_args, explicit_path=str(candidate), source="known_windows_path"))
 
     selected = None
     selected_source = None
@@ -153,25 +175,75 @@ def discover_cloudflared() -> tuple[dict[str, Any], dict[str, Any]]:
             selected_source = source_name
             break
 
-    cloudflared = dict(selected or explicit or path_lookup)
+    selected_probe = dict(selected or explicit or path_lookup)
     if selected is None:
-        cloudflared = path_lookup if path_lookup["path_present"] else explicit
-    cloudflared["name"] = "cloudflared"
-    cloudflared["available"] = bool(selected)
-    cloudflared["source"] = selected_source or cloudflared.get("source")
-    return cloudflared, {
-        "explicit_cloudflared_path_present": bool(explicit_value),
-        "explicit_cloudflared_path_exists": bool(explicit.get("path_exists")),
-        "explicit_cloudflared_version_ok": bool(explicit.get("version_ok")),
-        "explicit_cloudflared_executable": evidence_path(explicit_value) if explicit_value else None,
+        selected_probe = path_lookup if path_lookup["path_present"] else explicit
+    selected_probe["name"] = name
+    selected_probe["available"] = bool(selected)
+    selected_probe["source"] = selected_source or selected_probe.get("source")
+    return selected_probe, {
+        f"explicit_{name}_path_present": bool(explicit_value),
+        f"explicit_{name}_path_exists": bool(explicit.get("path_exists")),
+        f"explicit_{name}_version_ok": bool(explicit.get("version_ok")),
+        f"explicit_{name}_executable": evidence_path(explicit_value) if explicit_value else None,
         "path_lookup": path_lookup,
         "known_windows_paths": known_results,
     }
 
 
+def discover_cloudflared() -> tuple[dict[str, Any], dict[str, Any]]:
+    return discover_executable(
+        "cloudflared",
+        ["--version"],
+        env_var=CLOUDFLARED_PATH_ENV,
+        known_paths=KNOWN_CLOUDFLARED_PATHS,
+    )
+
+
+def discover_ngrok() -> tuple[dict[str, Any], dict[str, Any]]:
+    return discover_executable(
+        "ngrok",
+        ["version"],
+        env_var=NGROK_PATH_ENV,
+        known_paths=KNOWN_NGROK_PATHS,
+    )
+
+
+def load_prior_tunnel_state() -> dict[str, Any]:
+    if not TUNNEL_RESULT_PATH.is_file():
+        return {
+            "prior_tunnel_evidence_exists": False,
+            "cloudflared_dns_failed_before": False,
+            "cloudflared_passed_before": False,
+        }
+    try:
+        prior = json.loads(TUNNEL_RESULT_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        prior = {}
+    used_cloudflared = prior.get("tunnel_tool_used") == "cloudflared"
+    return {
+        "prior_tunnel_evidence_exists": True,
+        "cloudflared_dns_failed_before": bool(
+            used_cloudflared
+            and prior.get("tunnel_url_created") is True
+            and prior.get("dns_success") is False
+        ),
+        "cloudflared_passed_before": bool(
+            used_cloudflared
+            and prior.get("dns_success") is True
+            and prior.get("http_success") is True
+            and prior.get("auth_preflight_success") is True
+        ),
+        "prior_tunnel_tool_used": prior.get("tunnel_tool_used"),
+        "prior_dns_success": prior.get("dns_success"),
+        "prior_http_success": prior.get("http_success"),
+        "prior_auth_preflight_success": prior.get("auth_preflight_success"),
+    }
+
+
 def discover_tunnel_tools() -> dict[str, Any]:
     cloudflared, cloudflared_discovery = discover_cloudflared()
-    ngrok = executable_probe("ngrok", ["version"])
+    ngrok, ngrok_discovery = discover_ngrok()
     localtunnel = executable_probe("localtunnel", ["--version"])
     lt = executable_probe("lt", ["--version"])
     npx_path = shutil.which("npx")
@@ -185,14 +257,16 @@ def discover_tunnel_tools() -> dict[str, Any]:
         "reason_runner_uses_npx_false": "npx may install packages or hit the network, so Phase 4J3 only uses already-installed tunnel executables.",
         "tunnel_opened": False,
     }
+    prior_state = load_prior_tunnel_state()
+    localtunnel_explicitly_enabled = os.environ.get(LOCALTUNNEL_GATE) == "1"
     usable = []
-    if cloudflared["available"]:
+    if cloudflared["available"] and prior_state["cloudflared_passed_before"]:
         usable.append("cloudflared")
     if ngrok["available"]:
         usable.append("ngrok")
-    if localtunnel["available"]:
+    if localtunnel_explicitly_enabled and localtunnel["available"]:
         usable.append("localtunnel")
-    elif lt["available"]:
+    elif localtunnel_explicitly_enabled and lt["available"]:
         usable.append("lt")
     selected = next((tool for tool in ("cloudflared", "ngrok", "localtunnel", "lt") if tool in usable), None)
     selected_details = {
@@ -208,8 +282,12 @@ def discover_tunnel_tools() -> dict[str, Any]:
         "lt": lt,
         "npx": npx,
         "cloudflared_discovery": cloudflared_discovery,
+        "ngrok_discovery": ngrok_discovery,
+        **prior_state,
+        "localtunnel_explicitly_enabled": localtunnel_explicitly_enabled,
         "usable_tunnel_tools": usable,
         "selected_tunnel_tool": selected,
+        "selected_preferred_tool": selected,
         "selected_tunnel_executable": selected_details.get("executable"),
         "selected_tunnel_executable_for_run": selected_details.get("_executable_for_run"),
     }
@@ -231,15 +309,30 @@ def build_result() -> dict[str, Any]:
             "path_lookup": {},
             "known_windows_paths": [],
         },
+        "ngrok_discovery": {
+            "explicit_ngrok_path_present": False,
+            "explicit_ngrok_path_exists": False,
+            "explicit_ngrok_version_ok": False,
+            "explicit_ngrok_executable": None,
+            "path_lookup": {},
+            "known_windows_paths": [],
+        },
+        "prior_tunnel_evidence_exists": False,
+        "cloudflared_dns_failed_before": False,
+        "cloudflared_passed_before": False,
+        "localtunnel_explicitly_enabled": False,
         "usable_tunnel_tools": [],
         "selected_tunnel_tool": None,
+        "selected_preferred_tool": None,
         "selected_tunnel_executable": None,
         "selected_tunnel_executable_for_run": None,
     }
     cloudflared_discovery = evidence_cloudflared_discovery(discovery["cloudflared_discovery"])
+    ngrok_discovery = evidence_cloudflared_discovery(discovery["ngrok_discovery"])
     return {
         "evaluation_id": "ULTRAVOX-TUNNEL-TOOLS-PROBE-001",
         "phase": "4J3",
+        "phase_detail": "4J3F",
         "env_file_exists": env_metadata["env_file_exists"],
         "env_file_ignored_by_git": env_metadata["env_file_ignored_by_git"],
         "env_file_loaded": env_metadata["env_file_loaded"],
@@ -257,7 +350,17 @@ def build_result() -> dict[str, Any]:
         "explicit_cloudflared_version_ok": cloudflared_discovery["explicit_cloudflared_version_ok"],
         "explicit_cloudflared_executable": cloudflared_discovery["explicit_cloudflared_executable"],
         "cloudflared_available": discovery["cloudflared"]["available"],
+        "cloudflared_dns_failed_before": discovery["cloudflared_dns_failed_before"],
+        "cloudflared_passed_before": discovery["cloudflared_passed_before"],
+        "ngrok_available": discovery["ngrok"]["available"],
+        "ngrok_version_ok": discovery["ngrok"].get("version_ok", False),
+        "ngrok_version": discovery["ngrok"].get("version"),
+        "ngrok_path_source": discovery["ngrok"].get("source"),
+        "explicit_ngrok_path_present": ngrok_discovery["explicit_ngrok_path_present"],
+        "explicit_ngrok_path_exists": ngrok_discovery["explicit_ngrok_path_exists"],
+        "explicit_ngrok_version_ok": ngrok_discovery["explicit_ngrok_version_ok"],
         "selected_tunnel_tool": discovery["selected_tunnel_tool"],
+        "selected_preferred_tool": discovery["selected_preferred_tool"],
         "selected_tunnel_executable": discovery["selected_tunnel_executable"],
         "candidate_tunnel_tools": {
             "cloudflared": evidence_probe(discovery["cloudflared"]),
@@ -267,6 +370,9 @@ def build_result() -> dict[str, Any]:
             "npx": evidence_probe(discovery["npx"]),
         },
         "cloudflared_discovery": cloudflared_discovery,
+        "ngrok_discovery": ngrok_discovery,
+        "prior_tunnel_evidence_exists": discovery["prior_tunnel_evidence_exists"],
+        "localtunnel_explicitly_enabled": discovery["localtunnel_explicitly_enabled"],
         "usable_tunnel_tools": discovery["usable_tunnel_tools"],
         "preferred_order": ["cloudflared", "ngrok", "localtunnel"],
         "selected_if_gated": discovery["selected_tunnel_tool"],
@@ -288,7 +394,11 @@ def render_report(result: dict[str, Any]) -> str:
         f"Explicit cloudflared path exists: `{str(result['explicit_cloudflared_path_exists']).lower()}`",
         f"Explicit cloudflared version ok: `{str(result['explicit_cloudflared_version_ok']).lower()}`",
         f"Cloudflared available: `{str(result['cloudflared_available']).lower()}`",
+        f"Cloudflared DNS failed before: `{str(result['cloudflared_dns_failed_before']).lower()}`",
+        f"Ngrok available: `{str(result['ngrok_available']).lower()}`",
+        f"Ngrok path source: `{result['ngrok_path_source']}`",
         f"Selected tunnel tool: `{result['selected_tunnel_tool']}`",
+        f"Selected preferred tool: `{result['selected_preferred_tool']}`",
         f"Selected tunnel executable: `{result['selected_tunnel_executable']}`",
         f"Selected if gated: `{result['selected_if_gated']}`",
         f"Tunnel opened: `{str(result['tunnel_opened']).lower()}`",

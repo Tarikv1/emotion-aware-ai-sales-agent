@@ -1,6 +1,7 @@
 {
   "evaluation_id": "ULTRAVOX-TUNNEL-TOOLS-PROBE-001",
   "phase": "4J3",
+  "phase_detail": "4J3F",
   "env_file_exists": true,
   "env_file_ignored_by_git": true,
   "env_file_loaded": true,
@@ -18,8 +19,18 @@
   "explicit_cloudflared_version_ok": true,
   "explicit_cloudflared_executable": "C:\\Program Files (x86)\\cloudflared\\cloudflared.exe",
   "cloudflared_available": true,
-  "selected_tunnel_tool": "cloudflared",
-  "selected_tunnel_executable": "C:\\Program Files (x86)\\cloudflared\\cloudflared.exe",
+  "cloudflared_dns_failed_before": true,
+  "cloudflared_passed_before": false,
+  "ngrok_available": true,
+  "ngrok_version_ok": true,
+  "ngrok_version": "ngrok version 3.3.1",
+  "ngrok_path_source": "known_windows_path",
+  "explicit_ngrok_path_present": false,
+  "explicit_ngrok_path_exists": false,
+  "explicit_ngrok_version_ok": false,
+  "selected_tunnel_tool": "ngrok",
+  "selected_preferred_tool": "ngrok",
+  "selected_tunnel_executable": "C:\\Users\\tarik\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ngrok.Ngrok_Microsoft.Winget.Source_8wekyb3d8bbwe\\ngrok.exe",
   "candidate_tunnel_tools": {
     "cloudflared": {
       "name": "cloudflared",
@@ -34,13 +45,13 @@
     },
     "ngrok": {
       "name": "ngrok",
-      "available": false,
-      "path_present": false,
-      "path_exists": false,
-      "source": "PATH",
-      "executable": null,
-      "version": null,
-      "version_ok": false,
+      "available": true,
+      "path_present": true,
+      "path_exists": true,
+      "source": "known_windows_path",
+      "executable": "C:\\Users\\tarik\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ngrok.Ngrok_Microsoft.Winget.Source_8wekyb3d8bbwe\\ngrok.exe",
+      "version": "ngrok version 3.3.1",
+      "version_ok": true,
       "tunnel_opened": false
     },
     "localtunnel": {
@@ -117,15 +128,91 @@
       }
     ]
   },
+  "ngrok_discovery": {
+    "explicit_ngrok_path_present": false,
+    "explicit_ngrok_path_exists": false,
+    "explicit_ngrok_version_ok": false,
+    "explicit_ngrok_executable": null,
+    "path_lookup": {
+      "name": "ngrok",
+      "available": false,
+      "path_present": false,
+      "path_exists": false,
+      "source": "PATH",
+      "executable": null,
+      "version": null,
+      "version_ok": false,
+      "tunnel_opened": false
+    },
+    "known_windows_paths": [
+      {
+        "name": "ngrok",
+        "available": false,
+        "path_present": true,
+        "path_exists": false,
+        "source": "known_windows_path",
+        "executable": "C:\\Program Files\\ngrok\\ngrok.exe",
+        "version": null,
+        "version_ok": false,
+        "tunnel_opened": false
+      },
+      {
+        "name": "ngrok",
+        "available": false,
+        "path_present": true,
+        "path_exists": false,
+        "source": "known_windows_path",
+        "executable": "C:\\Program Files (x86)\\ngrok\\ngrok.exe",
+        "version": null,
+        "version_ok": false,
+        "tunnel_opened": false
+      },
+      {
+        "name": "ngrok",
+        "available": false,
+        "path_present": true,
+        "path_exists": false,
+        "source": "known_windows_path",
+        "executable": "C:\\Users\\tarik\\AppData\\Local\\ngrok\\ngrok.exe",
+        "version": null,
+        "version_ok": false,
+        "tunnel_opened": false
+      },
+      {
+        "name": "ngrok",
+        "available": true,
+        "path_present": true,
+        "path_exists": true,
+        "source": "known_windows_path",
+        "executable": "C:\\Users\\tarik\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ngrok.Ngrok_Microsoft.Winget.Source_8wekyb3d8bbwe\\ngrok.exe",
+        "version": "ngrok version 3.3.1",
+        "version_ok": true,
+        "tunnel_opened": false
+      },
+      {
+        "name": "ngrok",
+        "available": false,
+        "path_present": true,
+        "path_exists": false,
+        "source": "known_windows_path",
+        "executable": "C:\\Users\\tarik\\scoop\\shims\\ngrok.exe",
+        "version": null,
+        "version_ok": false,
+        "tunnel_opened": false
+      }
+    ]
+  },
+  "prior_tunnel_evidence_exists": true,
+  "localtunnel_explicitly_enabled": false,
   "usable_tunnel_tools": [
-    "cloudflared"
+    "ngrok"
   ],
   "preferred_order": [
     "cloudflared",
     "ngrok",
     "localtunnel"
   ],
-  "selected_if_gated": "cloudflared",
+  "selected_if_gated": "ngrok",
   "live_wiring_allowed": false,
   "production_call_allowed": false,
   "runtime_behavior_changed": false,

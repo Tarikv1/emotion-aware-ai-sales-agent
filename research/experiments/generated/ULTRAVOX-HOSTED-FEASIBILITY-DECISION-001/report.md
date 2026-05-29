@@ -1,14 +1,18 @@
 # ULTRAVOX-HOSTED-FEASIBILITY-DECISION-001 Report
 
-Recommendation: `retry tunnel later, test local DNS/trycloudflare reachability, or use ngrok/cloudflared named tunnel`
-Tunnel sandbox run status: `blocked_tunnel_dns_failed`
-Blocker: `Tunnel URL was created, but DNS readiness did not succeed before provider call.`
+Recommendation: `fix ngrok auth/config`
+Tunnel sandbox run status: `blocked_tunnel_url_not_detected`
+Blocker: `Ngrok did not expose an HTTPS URL within the bounded startup window; fix ngrok auth/config.`
 Explicit cloudflared path present: `true`
 Explicit cloudflared path exists: `true`
 Cloudflared available: `true`
-Tunnel preflight only: `true`
+Cloudflared DNS failed before: `true`
+Ngrok available: `true`
+Ngrok path source: `known_windows_path`
+Selected preferred tool: `ngrok`
+Tunnel preflight only: `false`
 Tunnel attempted: `true`
-Tunnel tool used: `cloudflared`
+Tunnel tool used: `ngrok`
 DNS success: `false`
 HTTP success: `false`
 Auth preflight success: `false`

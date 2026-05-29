@@ -2,16 +2,22 @@
 
 Cloudflared available: `true`
 Cloudflared version: `cloudflared version 2026.5.2 (built 2026-05-27T10:15 UTC)`
-Explicit cloudflared path used: `true`
-Tunnel preflight only: `true`
+Cloudflared DNS failed before: `true`
+Ngrok available: `true`
+Ngrok version: `ngrok version 3.3.1`
+Ngrok path source: `known_windows_path`
+Tunnel tool used: `ngrok`
+Selected preferred tool: `ngrok`
+Explicit cloudflared path used: `false`
+Tunnel preflight only: `false`
 Tunnel attempted: `true`
-Tunnel URL created: `true`
-Tunnel URL domain only: `tears-factory-fresh-roughly.trycloudflare.com`
+Tunnel URL created: `false`
+Tunnel URL domain only: `None`
 Tunnel URL full recorded: `false`
 DNS success: `false`
-DNS attempts: `30`
+DNS attempts: `0`
 DNS first success seconds: `None`
-DNS last error: `[Errno 11001] getaddrinfo failed`
+DNS last error: `None`
 HTTP success: `false`
 HTTP attempts: `0`
 HTTP first success seconds: `None`
@@ -23,7 +29,7 @@ Missing token 401: `false`
 Invalid token 401: `false`
 Provider call attempted: `false`
 Provider call made: `false`
-Blocker: `Tunnel URL was created, but DNS readiness did not succeed before provider call.`
+Blocker: `Ngrok did not expose an HTTPS URL within the bounded startup window; fix ngrok auth/config.`
 Secrets logged: `false`
 Audio committed: `false`
 Live wiring allowed: `false`

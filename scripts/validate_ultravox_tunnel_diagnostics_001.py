@@ -64,10 +64,13 @@ def main() -> None:
 
     if result.get("evaluation_id") != "ULTRAVOX-TUNNEL-DIAGNOSTICS-001":
         fail("unexpected tunnel diagnostics evaluation_id")
-    if result.get("phase") != "4J3E":
-        fail("diagnostics must record phase 4J3E")
+    if result.get("phase") not in {"4J3E", "4J3F"}:
+        fail("diagnostics must record phase 4J3E or 4J3F")
     for key in (
         "cloudflared_available",
+        "cloudflared_dns_failed_before",
+        "ngrok_available",
+        "ngrok_version_ok",
         "explicit_cloudflared_path_used",
         "explicit_cloudflared_path_present",
         "explicit_cloudflared_path_exists",
@@ -100,6 +103,9 @@ def main() -> None:
         if not isinstance(result.get(key), int):
             fail(f"{key} must be an integer")
     for key in ("dns_first_success_seconds", "dns_last_error", "http_first_success_seconds", "http_last_status", "http_last_error", "blocker"):
+        if key not in result:
+            fail(f"{key} must exist")
+    for key in ("ngrok_version", "ngrok_path_source", "tunnel_tool_used", "selected_preferred_tool"):
         if key not in result:
             fail(f"{key} must exist")
     if result.get("tunnel_url_full_recorded") is not False:

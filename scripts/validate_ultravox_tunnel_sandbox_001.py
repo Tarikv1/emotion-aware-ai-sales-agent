@@ -74,6 +74,13 @@ def main() -> None:
         "explicit_cloudflared_path_exists",
         "explicit_cloudflared_version_ok",
         "cloudflared_available",
+        "cloudflared_dns_failed_before",
+        "cloudflared_passed_before",
+        "ngrok_available",
+        "ngrok_version_ok",
+        "explicit_ngrok_path_present",
+        "explicit_ngrok_path_exists",
+        "explicit_ngrok_version_ok",
         "tunnel_preflight_only",
         "dns_success",
         "http_success",
@@ -87,6 +94,9 @@ def main() -> None:
             fail(f"{key} must be a boolean")
     if result.get("explicit_cloudflared_path_present") and result.get("explicit_cloudflared_executable") in {"", None}:
         fail("explicit cloudflared path evidence must include a safe executable path or redacted marker")
+    if result.get("cloudflared_dns_failed_before") and result.get("ngrok_available"):
+        if result.get("selected_preferred_tool") != "ngrok":
+            fail("ngrok must be the selected preferred tool after prior cloudflared DNS failure")
     if result.get("run_status") == "blocked_explicit_cloudflared_path_missing" and result.get("explicit_cloudflared_path_exists") is not False:
         fail("missing explicit cloudflared path blocker must record path_exists false")
     if result.get("run_status") == "blocked_tunnel_url_not_detected" and result.get("tunnel_attempted") is not True:
@@ -131,6 +141,8 @@ def main() -> None:
         fail("provider call must not happen before DNS, HTTP, and auth preflight pass")
     if result.get("tunnel_url_created") and not result.get("tunnel_url_redacted_or_domain_only"):
         fail("tunnel evidence must store redacted/domain-only URL metadata")
+    if result.get("tunnel_domain_only") != result.get("tunnel_url_redacted_or_domain_only"):
+        fail("tunnel_domain_only must match redacted/domain-only tunnel URL evidence")
     if result.get("tunnel_url_redacted_or_domain_only") and str(result["tunnel_url_redacted_or_domain_only"]).startswith("https://"):
         fail("tunnel evidence must not store full public URL")
 

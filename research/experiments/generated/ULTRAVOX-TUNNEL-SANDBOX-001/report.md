@@ -1,7 +1,7 @@
 # ULTRAVOX-TUNNEL-SANDBOX-001 Report
 
-Run status: `blocked_tunnel_dns_failed`
-Blocker: `Tunnel URL was created, but DNS readiness did not succeed before provider call.`
+Run status: `blocked_tunnel_url_not_detected`
+Blocker: `Ngrok did not expose an HTTPS URL within the bounded startup window; fix ngrok auth/config.`
 Env file exists: `true`
 Env file ignored by Git: `true`
 Env file loaded: `true`
@@ -11,15 +11,20 @@ Explicit cloudflared path present: `true`
 Explicit cloudflared path exists: `true`
 Explicit cloudflared version ok: `true`
 Cloudflared available: `true`
-Tunnel preflight only: `true`
+Cloudflared DNS failed before: `true`
+Ngrok available: `true`
+Ngrok version ok: `true`
+Ngrok path source: `known_windows_path`
+Selected preferred tool: `ngrok`
+Tunnel preflight only: `false`
 Local server started: `true`
 Tunnel attempted: `true`
-Tunnel tool used: `cloudflared`
-Tunnel URL created: `true`
-Tunnel URL redacted/domain only: `tears-factory-fresh-roughly.trycloudflare.com`
+Tunnel tool used: `ngrok`
+Tunnel URL created: `false`
+Tunnel URL redacted/domain only: `None`
 DNS success: `false`
-DNS attempts: `30`
-DNS last error: `[Errno 11001] getaddrinfo failed`
+DNS attempts: `0`
+DNS last error: `None`
 HTTP success: `false`
 HTTP attempts: `0`
 HTTP last status: `None`
