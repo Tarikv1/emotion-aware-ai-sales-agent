@@ -3,13 +3,13 @@
 - Status: pass
 - Cases: 21
 - Campaign coverage: b2b_saas, generic_insurance, generic_telecom, home_services, public_openai_plan, routesignal_preservation
-- Selector/runtime disagreements: 17
-- Genuine actionable selector/runtime disagreements: 1
+- Selector/runtime disagreements: 16
+- Genuine actionable selector/runtime disagreements: 0
 - Runtime action unmapped: 20
 - Metadata extraction failures: 0
 - Evidence not actionable yet: 20
 - False ASR repair mappings: 0
-- Selector possible improvements/regressions: 0/1
+- Selector possible improvements/regressions: 0/0
 - Candidate response hashes recorded: 21
 - Raw candidate responses in shadow records: 0
 - Safety blockers: 0
@@ -19,7 +19,7 @@
 
 ## Disagreement By Campaign
 
-- b2b_saas: selector_possible_regression=1, unknown=2
+- b2b_saas: same_action=1, unknown=2
 - generic_insurance: unknown=3
 - generic_telecom: unknown=3
 - home_services: unknown=3
@@ -29,7 +29,7 @@
 ## Disagreement Review Classification
 
 - runtime_action_unmapped: 20
-- selector_possible_regression: 1
+- same_action: 1
 
 ## Manual Review Table
 
@@ -51,7 +51,7 @@
 | phase_4k8_home_services_003 | home_services | Can you quote it without an inspection? | guarded_composer_passthrough |  | ask_use_case_gap | unknown | runtime_action_unmapped | false | runtime metadata was present, but conservative mapping found no controlled runtime action |
 | phase_4k8_b2b_saas_001 | b2b_saas | yeah sure | continue_with_session_policy |  | ask_use_case_gap | unknown | runtime_action_unmapped | false | runtime metadata was present, but conservative mapping found no controlled runtime action |
 | phase_4k8_b2b_saas_002 | b2b_saas | manual work is a problem | continue_with_session_policy |  | ask_use_case_gap | unknown | runtime_action_unmapped | false | runtime metadata was present, but conservative mapping found no controlled runtime action |
-| phase_4k8_b2b_saas_003 | b2b_saas | Does it integrate securely with Salesforce? | answer_campaign_claim_boundary | respect_boundary | ask_use_case_gap | selector_possible_regression | selector_possible_regression | true | runtime mapped to respect_boundary, while selector chose ask_use_case_gap |
+| phase_4k8_b2b_saas_003 | b2b_saas | Does it integrate securely with Salesforce? | answer_campaign_claim_boundary | respect_boundary | respect_boundary | same_action | same_action | true | selector and runtime mapped to the same controlled action |
 | phase_4k8_routesignal_001 | routesignal_preservation | __agent_open__ | open_with_permission |  | ask_use_case_gap | unknown | runtime_action_unmapped | false | runtime metadata was present, but conservative mapping found no controlled runtime action |
 | phase_4k8_routesignal_002 | routesignal_preservation | yeah sure | continue_with_session_policy |  | ask_use_case_gap | unknown | runtime_action_unmapped | false | runtime metadata was present, but conservative mapping found no controlled runtime action |
 | phase_4k8_routesignal_003 | routesignal_preservation | callbacks are fine | continue_with_session_policy |  | ask_use_case_gap | unknown | runtime_action_unmapped | false | runtime metadata was present, but conservative mapping found no controlled runtime action |

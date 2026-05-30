@@ -1,11 +1,11 @@
 {
   "after": {
     "false_asr_mapping_count": 0,
-    "genuine_selector_runtime_disagreement_count": 1,
+    "genuine_selector_runtime_disagreement_count": 0,
     "metadata_extraction_failure_count": 0,
     "naturalness_issue_count": 14,
     "runtime_action_unmapped_count": 20,
-    "selector_runtime_disagreement_count": 17
+    "selector_runtime_disagreement_count": 16
   },
   "answers": {
     "changed_source_allowed_provider_or_local_model_or_tts_calls": false,
@@ -41,7 +41,7 @@
     "tts_calls_made": true,
     "ultravox_calls_made": true
   },
-  "generated_at": "2026-05-30T15:43:43.807572+00:00",
+  "generated_at": "2026-05-30T17:40:37.892993+00:00",
   "highest_priority_spoken_response_repair_targets": [
     {
       "campaign_coverage": "home_services",
@@ -130,8 +130,7 @@
   "no_provider_model_tts_crm_email_calendar_paths_enabled": true,
   "recommendation_id": "limited_offline_sanitized_shadow_logging_evidence_quality_review_next",
   "remaining_disagreement_review_counts": {
-    "runtime_action_unmapped": 20,
-    "selector_possible_regression": 1
+    "runtime_action_unmapped": 20
   },
   "remaining_disagreements": [
     {
@@ -308,17 +307,6 @@
       "review_classification": "runtime_action_unmapped",
       "runtime_action_id": "",
       "runtime_semantic": "continue_with_session_policy",
-      "selector_action_id": "ask_use_case_gap"
-    },
-    {
-      "buyer_utterance_text_sanitized": "Does it integrate securely with Salesforce?",
-      "campaign_coverage": "b2b_saas",
-      "case_id": "phase_4k8_b2b_saas_003",
-      "disagreement_type": "selector_possible_regression",
-      "reason": "runtime mapped to respect_boundary, while selector chose ask_use_case_gap",
-      "review_classification": "selector_possible_regression",
-      "runtime_action_id": "respect_boundary",
-      "runtime_semantic": "answer_campaign_claim_boundary",
       "selector_action_id": "ask_use_case_gap"
     },
     {

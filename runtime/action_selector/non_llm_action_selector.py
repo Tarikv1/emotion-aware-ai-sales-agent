@@ -22,6 +22,40 @@ def _regex(text: str, pattern: str) -> bool:
     return re.search(pattern, text, flags=re.I) is not None
 
 
+def _boundary_sensitive_product_claim_question(text: str) -> bool:
+    question_like = text.startswith(
+        (
+            "can ",
+            "could ",
+            "does ",
+            "do ",
+            "is ",
+            "are ",
+            "will ",
+            "would ",
+            "how ",
+            "what if ",
+            "what about ",
+        )
+    )
+    if not question_like:
+        return False
+    return _contains(
+        text,
+        "integrate",
+        "integration",
+        "salesforce",
+        "hubspot",
+        "crm",
+        "security",
+        "secure",
+        "compliance",
+        "compliant",
+        "guarantee",
+        "guaranteed",
+    )
+
+
 def _context_text(payload: dict[str, Any]) -> str:
     context = payload.get("context") if isinstance(payload.get("context"), dict) else {}
     parts = [
@@ -139,6 +173,15 @@ class RuleBasedActionSelector:
                 0.96,
                 ["unsupported_side_effect_or_boundary_first"],
                 matched + ["safety:side_effect"],
+                safety_block=True,
+            )
+
+        if _boundary_sensitive_product_claim_question(text):
+            return self._output(
+                "respect_boundary",
+                0.9,
+                ["boundary_sensitive_product_claim_question"],
+                matched + ["safety:product_claim_boundary"],
                 safety_block=True,
             )
 

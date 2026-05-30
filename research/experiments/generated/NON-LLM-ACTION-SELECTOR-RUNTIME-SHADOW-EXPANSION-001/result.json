@@ -350,22 +350,22 @@
       "vertical_id": "b2b_saas"
     },
     {
-      "agreement_disagreement_type": "selector_possible_regression",
-      "agreement_with_runtime": false,
+      "agreement_disagreement_type": "same_action",
+      "agreement_with_runtime": true,
       "buyer_utterance_text_sanitized": "Does it integrate securely with Salesforce?",
       "campaign_coverage": "b2b_saas",
       "campaign_id": "phase-4k8-b2b-saas",
       "candidate_response_hash": "sha256:3dfaba5c528c8d944af29b86a8fa1ab18900285164851a257d4737c5f9c92f53",
       "candidate_response_text_recorded": false,
       "case_id": "phase_4k8_b2b_saas_003",
-      "disagreement_review_classification": "selector_possible_regression",
+      "disagreement_review_classification": "same_action",
       "evidence_actionable": true,
-      "reason_for_disagreement": "runtime mapped to respect_boundary, while selector chose ask_use_case_gap",
+      "reason_for_disagreement": "selector and runtime mapped to the same controlled action",
       "runtime_action_id": "respect_boundary",
       "runtime_extraction_warnings": [],
       "runtime_semantic": "answer_campaign_claim_boundary",
       "safety_failure_count": 0,
-      "selector_action_id": "ask_use_case_gap",
+      "selector_action_id": "respect_boundary",
       "vertical_id": "b2b_saas"
     },
     {
@@ -458,7 +458,7 @@
   "decision_recommendation_id": "limited_offline_sanitized_shadow_logging_and_spoken_naturalness_review_next",
   "disagreement_by_campaign": {
     "b2b_saas": {
-      "selector_possible_regression": 1,
+      "same_action": 1,
       "unknown": 2
     },
     "generic_insurance": {
@@ -480,22 +480,22 @@
   },
   "disagreement_review_by_classification": {
     "runtime_action_unmapped": 20,
-    "selector_possible_regression": 1
+    "same_action": 1
   },
   "elevenlabs_calls_made": false,
   "email_calls_made": false,
   "evidence_not_actionable_yet_count": 20,
   "experiment_id": "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-EXPANSION-001",
   "false_asr_mapping_count": 0,
-  "generated_at": "2026-05-30T15:43:43.734679+00:00",
-  "genuine_selector_runtime_disagreement_count": 1,
+  "generated_at": "2026-05-30T17:40:31.476080+00:00",
+  "genuine_selector_runtime_disagreement_count": 0,
   "jsonl_path": "research/experiments/generated/NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-EXPANSION-001/shadow_expansion_records.jsonl",
   "latency_ms": {
-    "max": 18.002,
-    "mean": 13.89967619047619,
-    "p50": 14.0809,
-    "p90": 17.5716,
-    "p99": 18.002,
+    "max": 11.7313,
+    "mean": 9.22825238095238,
+    "p50": 9.6883,
+    "p90": 10.0608,
+    "p99": 11.7313,
     "sample_count": 21
   },
   "live_runtime_wiring_allowed": false,
@@ -520,8 +520,8 @@
   "safety_blockers_count": 0,
   "selector_control_allowed": false,
   "selector_possible_improvement_count": 0,
-  "selector_possible_regression_count": 1,
-  "selector_runtime_disagreement_count": 17,
+  "selector_possible_regression_count": 0,
+  "selector_runtime_disagreement_count": 16,
   "side_effects_allowed": false,
   "side_effects_observed": false,
   "status": "pass",

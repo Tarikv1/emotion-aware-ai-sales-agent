@@ -2,7 +2,7 @@
 
 - Status: pass
 - Recommendation: limited_offline_sanitized_shadow_logging_evidence_quality_review_next
-- Shadow disagreement count before/after: 17/17
+- Shadow disagreement count before/after: 17/16
 - False ASR mapping count before/after: 16/0
 - Naturalness findings: 14
 - Live selector control: false
@@ -24,7 +24,6 @@
 ## Remaining Disagreement Review Counts
 
 - runtime_action_unmapped: 20
-- selector_possible_regression: 1
 
 ## Remaining Disagreements
 
@@ -46,7 +45,6 @@
 | phase_4k8_home_services_003 | home_services | Can you quote it without an inspection? | guarded_composer_passthrough |  | ask_use_case_gap | runtime_action_unmapped | runtime metadata was present, but conservative mapping found no controlled runtime action |
 | phase_4k8_b2b_saas_001 | b2b_saas | yeah sure | continue_with_session_policy |  | ask_use_case_gap | runtime_action_unmapped | runtime metadata was present, but conservative mapping found no controlled runtime action |
 | phase_4k8_b2b_saas_002 | b2b_saas | manual work is a problem | continue_with_session_policy |  | ask_use_case_gap | runtime_action_unmapped | runtime metadata was present, but conservative mapping found no controlled runtime action |
-| phase_4k8_b2b_saas_003 | b2b_saas | Does it integrate securely with Salesforce? | answer_campaign_claim_boundary | respect_boundary | ask_use_case_gap | selector_possible_regression | runtime mapped to respect_boundary, while selector chose ask_use_case_gap |
 | phase_4k8_routesignal_001 | routesignal_preservation | __agent_open__ | open_with_permission |  | ask_use_case_gap | runtime_action_unmapped | runtime metadata was present, but conservative mapping found no controlled runtime action |
 | phase_4k8_routesignal_002 | routesignal_preservation | yeah sure | continue_with_session_policy |  | ask_use_case_gap | runtime_action_unmapped | runtime metadata was present, but conservative mapping found no controlled runtime action |
 | phase_4k8_routesignal_003 | routesignal_preservation | callbacks are fine | continue_with_session_policy |  | ask_use_case_gap | runtime_action_unmapped | runtime metadata was present, but conservative mapping found no controlled runtime action |

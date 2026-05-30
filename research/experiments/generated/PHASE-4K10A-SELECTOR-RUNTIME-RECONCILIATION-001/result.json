@@ -1,45 +1,36 @@
 {
-  "after_naturalness_counts": {
-    "empty_candidate_response": 1,
-    "good_human_spoken_examples": 13,
-    "missing_human_acknowledgment": 3,
-    "missing_sales_progression": 3,
-    "overly_formal_or_policy_like": 0,
-    "premature_scheduling_or_callback_push": 0,
-    "repetitive_review_language": 0,
-    "robotic_internal_wording": 0,
-    "too_long_for_spoken_call": 0,
-    "weak_value_framing": 7
+  "acceptance": {
+    "false_asr_mapping_count_remains_zero": true,
+    "live_selector_control_recommended_remains_false": true,
+    "naturalness_count_at_or_below_4k10": true,
+    "provider_model_tts_crm_email_calendar_flags_remain_false": true,
+    "raw_candidate_responses_absent": true,
+    "response_replacement_performed_remains_false": true,
+    "selector_control_allowed_remains_false": true,
+    "selector_readiness_claim_not_made_without_zero_genuine_disagreements": true,
+    "target_case_explicitly_reconciled": true
   },
-  "after_naturalness_issue_count": 14,
-  "audio_data_used": false,
-  "before_naturalness_counts": {
-    "empty_candidate_response": 4,
-    "good_human_spoken_examples": 6,
-    "missing_human_acknowledgment": 9,
-    "missing_sales_progression": 7,
-    "overly_formal_or_policy_like": 2,
-    "premature_scheduling_or_callback_push": 1,
-    "repetitive_review_language": 0,
-    "robotic_internal_wording": 1,
-    "too_long_for_spoken_call": 0,
-    "weak_value_framing": 13
+  "after": {
+    "false_asr_mapping_count": 0,
+    "genuine_selector_runtime_disagreement_count": 0,
+    "naturalness_issue_count": 14,
+    "review_4k9_status": "pass",
+    "selector_possible_regression_count": 0,
+    "selector_runtime_disagreement_count": 16
   },
-  "before_naturalness_issue_count": 37,
-  "calendar_calls_made": false,
-  "checkpoint_id": "PHASE-4K10-SPOKEN-RESPONSE-REPAIR-001",
-  "confirmations": {
-    "live_selector_control_remains_false": true,
-    "no_private_raw_transcript_or_audio_added_to_public_evidence": true,
-    "no_provider_model_tts_crm_email_calendar_side_effect_path_enabled": true,
-    "selector_response_replacement_remains_false": true,
-    "selector_side_effect_paths_remain_false": true
+  "baseline": {
+    "genuine_selector_runtime_disagreement_count": 1,
+    "selector_possible_regression_count": 1,
+    "selector_runtime_disagreement_count": 17,
+    "source_commit": "0c3f3e5e2a898e8429eee1313916fa123b4eedfa",
+    "target_case_review_classification": "selector_possible_regression"
   },
-  "crm_calls_made": false,
-  "email_calls_made": false,
-  "evidence_false_flags": {
-    "audio_data_used": true,
-    "automatic_runtime_rewrite_performed": true,
+  "checkpoint_id": "PHASE-4K10A-SELECTOR-RUNTIME-RECONCILIATION-001",
+  "disagreement_review_counts": {
+    "runtime_action_unmapped": 20,
+    "same_action": 1
+  },
+  "false_flag_status": {
     "calendar_calls_made": true,
     "crm_calls_made": true,
     "elevenlabs_calls_made": true,
@@ -47,18 +38,21 @@
     "live_selector_control_recommended": true,
     "local_llm_calls_made": true,
     "model_calls_made": true,
+    "ollama_calls_made": true,
     "openai_api_calls_made": true,
-    "private_live_transcripts_inspected": true,
     "provider_calls_made": true,
+    "raw_candidate_response_recorded_count": true,
     "raw_private_data": true,
-    "runtime_response_replacement_performed": true,
+    "response_replacement_performed": true,
+    "response_text_changed": true,
+    "runtime_behavior_changed": true,
+    "selector_control_allowed": true,
+    "side_effects_allowed": true,
     "tts_calls_made": true,
     "ultravox_calls_made": true
   },
-  "failure_count": 0,
-  "failures": [],
-  "generated_at": "2026-05-30T17:42:14.859279+00:00",
-  "live_demo_results": {
+  "generated_at": "2026-05-30T17:41:18.237291+00:00",
+  "live_demo_statuses": {
     "LIVE-DEMO-002": {
       "checkpoint_id": "LIVE-DEMO-002-conversation-stability-callback-disambiguation",
       "failure_count": 13,
@@ -103,72 +97,23 @@
       "status": "deferred_or_fail"
     }
   },
-  "local_llm_calls_made": false,
-  "model_calls_made": false,
-  "private_live_transcripts_inspected": false,
-  "provider_calls_made": false,
-  "raw_private_data": false,
-  "remaining_unrepaired_case_ids": [
-    "phase_4k8_generic_insurance_003",
-    "phase_4k8_generic_telecom_003",
-    "phase_4k8_home_services_001",
-    "phase_4k8_home_services_002",
-    "phase_4k8_home_services_003",
-    "phase_4k8_routesignal_001",
-    "phase_4k8_routesignal_002",
-    "phase_4k8_routesignal_003"
-  ],
-  "remaining_unrepaired_case_issues": {
-    "phase_4k8_generic_insurance_003": [
-      "missing_human_acknowledgment"
-    ],
-    "phase_4k8_generic_telecom_003": [
-      "weak_value_framing"
-    ],
-    "phase_4k8_home_services_001": [
-      "weak_value_framing"
-    ],
-    "phase_4k8_home_services_002": [
-      "weak_value_framing"
-    ],
-    "phase_4k8_home_services_003": [
-      "empty_candidate_response",
-      "missing_human_acknowledgment",
-      "missing_sales_progression",
-      "weak_value_framing"
-    ],
-    "phase_4k8_routesignal_001": [
-      "missing_human_acknowledgment",
-      "missing_sales_progression",
-      "weak_value_framing"
-    ],
-    "phase_4k8_routesignal_002": [
-      "missing_sales_progression",
-      "weak_value_framing"
-    ],
-    "phase_4k8_routesignal_003": [
-      "weak_value_framing"
-    ]
-  },
-  "repaired_case_ids": [
-    "phase_4k8_b2b_saas_003",
-    "phase_4k8_public_openai_001_price",
-    "phase_4k8_public_openai_002_plan_fit",
-    "phase_4k8_public_openai_003_privacy",
-    "phase_4k8_public_openai_004_signup",
-    "phase_4k8_public_openai_005_boundary",
-    "phase_4k8_routesignal_004"
-  ],
+  "live_selector_control_recommended": false,
+  "no_private_raw_transcript_or_audio_added_to_public_evidence": true,
+  "no_provider_model_tts_crm_email_calendar_side_effect_path_enabled": true,
+  "response_replacement_performed": false,
+  "selector_control_allowed": false,
+  "selector_readiness_claimed": false,
   "status": "pass",
-  "target_case_ids": [
-    "phase_4k8_b2b_saas_003",
-    "phase_4k8_public_openai_001_price",
-    "phase_4k8_public_openai_002_plan_fit",
-    "phase_4k8_public_openai_003_privacy",
-    "phase_4k8_public_openai_004_signup",
-    "phase_4k8_public_openai_005_boundary",
-    "phase_4k8_routesignal_004"
-  ],
-  "tts_calls_made": false,
-  "unrepaired_target_case_ids": []
+  "target_case": {
+    "agreement_disagreement_type": "same_action",
+    "case_id": "phase_4k8_b2b_saas_003",
+    "disagreement_review_classification": "same_action",
+    "minimal_fix_decision": "selector_rule_update",
+    "reason_for_disagreement": "selector and runtime mapped to the same controlled action",
+    "resolution_status": "resolved_same_action",
+    "root_cause": "Runtime maps the generic Salesforce/security integration question to a boundary-safe action because the campaign cannot verify integration or security fit from fixture text; the selector must not fall back to a use-case diagnostic when the buyer asks a boundary-sensitive product-claim question.",
+    "runtime_action_id": "respect_boundary",
+    "selector_action_id": "respect_boundary",
+    "utterance": "Does it integrate securely with Salesforce?"
+  }
 }
