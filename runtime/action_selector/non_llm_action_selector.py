@@ -40,20 +40,39 @@ def _boundary_sensitive_product_claim_question(text: str) -> bool:
     )
     if not question_like:
         return False
-    return _contains(
+    claim_pressure = _contains(
         text,
-        "integrate",
-        "integration",
-        "salesforce",
-        "hubspot",
-        "crm",
-        "security",
-        "secure",
-        "compliance",
-        "compliant",
         "guarantee",
         "guaranteed",
+        "prove",
+        "proof",
+        "compliance",
+        "compliant",
+        "certification",
+        "certified",
     )
+    exact_security_verification = _contains(text, "security", "secure") and _contains(
+        text,
+        "exact",
+        "exactly",
+        "verify",
+        "verification",
+        "validate",
+        "validated",
+        "prove",
+        "proof",
+        "guarantee",
+        "certify",
+        "certified",
+        "compliance",
+        "compliant",
+    )
+    secure_integration_claim = (
+        _contains(text, "integrate", "integration", "setup")
+        and _contains(text, "salesforce", "hubspot", "crm")
+        and _contains(text, "security", "secure")
+    )
+    return claim_pressure or exact_security_verification or secure_integration_claim
 
 
 def _context_text(payload: dict[str, Any]) -> str:

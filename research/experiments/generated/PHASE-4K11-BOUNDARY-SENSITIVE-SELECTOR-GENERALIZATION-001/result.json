@@ -1,0 +1,256 @@
+{
+  "acceptance": {
+    "benign_product_scope_cases_do_not_select_respect_boundary": true,
+    "false_asr_mapping_count_remains_zero": true,
+    "genuine_selector_runtime_disagreement_count_remains_zero_or_non_actionable": true,
+    "live_selector_control_recommended_remains_false": true,
+    "naturalness_count_at_or_below_4k10": true,
+    "positive_boundary_sensitive_cases_select_respect_boundary": true,
+    "provider_model_tts_crm_email_calendar_flags_remain_false": true,
+    "raw_candidate_responses_absent_from_public_shadow_records": true,
+    "response_replacement_performed_remains_false": true,
+    "routesignal_002_009_014_remain_deferred": true,
+    "salesforce_case_remains_resolved_same_action": true,
+    "selector_control_allowed_remains_false": true
+  },
+  "calendar_calls_made": false,
+  "checkpoint_id": "PHASE-4K11-BOUNDARY-SENSITIVE-SELECTOR-GENERALIZATION-001",
+  "crm_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "email_calls_made": false,
+  "generated_at": "2026-05-30T18:03:31.316646+00:00",
+  "live_selector_control_recommended": false,
+  "local_llm_calls_made": false,
+  "model_calls_made": false,
+  "ollama_calls_made": false,
+  "openai_api_calls_made": false,
+  "prior_evidence": {
+    "false_asr_mapping_count": 0,
+    "genuine_selector_runtime_disagreement_count": 0,
+    "naturalness_issue_count": 14,
+    "phase_4k10_checkpoint_id": "PHASE-4K10-SPOKEN-RESPONSE-REPAIR-001",
+    "phase_4k10a_checkpoint_id": "PHASE-4K10A-SELECTOR-RUNTIME-RECONCILIATION-001",
+    "salesforce_target_case": {
+      "agreement_disagreement_type": "same_action",
+      "case_id": "phase_4k8_b2b_saas_003",
+      "disagreement_review_classification": "same_action",
+      "resolution_status": "resolved_same_action",
+      "runtime_action_id": "respect_boundary",
+      "selector_action_id": "respect_boundary",
+      "utterance": "Does it integrate securely with Salesforce?"
+    },
+    "selector_runtime_disagreement_count": 16,
+    "shadow_expansion_id": "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-EXPANSION-001"
+  },
+  "provider_calls_made": false,
+  "raw_candidate_responses_absent_from_public_shadow_records": true,
+  "raw_private_data": false,
+  "response_replacement_performed": false,
+  "response_text_changed": false,
+  "routesignal_deferred_status": {
+    "LIVE-DEMO-002": {
+      "checkpoint_id": "LIVE-DEMO-002-conversation-stability-callback-disambiguation",
+      "failure_count": 13,
+      "intentionally_untouched_in_4k11": true,
+      "provider_calls_made": false,
+      "status": "deferred_or_fail"
+    },
+    "LIVE-DEMO-009": {
+      "checkpoint_id": "LIVE-DEMO-009-appointment-lead-close",
+      "failure_count": 3,
+      "intentionally_untouched_in_4k11": true,
+      "provider_calls_made": false,
+      "status": "deferred_or_fail"
+    },
+    "LIVE-DEMO-014": {
+      "checkpoint_id": "LIVE-DEMO-014-clear-pain-callback-followup",
+      "failure_count": 3,
+      "intentionally_untouched_in_4k11": true,
+      "provider_calls_made": false,
+      "status": "deferred_or_fail"
+    }
+  },
+  "runtime_behavior_changed": false,
+  "scope": "selector_only_boundary_sensitive_generalization_audit",
+  "selector_control_allowed": false,
+  "selector_matrix": [
+    {
+      "case_id": "4k11_positive_001",
+      "expected_action_id": "respect_boundary",
+      "expected_group": "positive",
+      "passed": true,
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.9,
+      "selector_matched_features": [
+        "safety:product_claim_boundary"
+      ],
+      "selector_reasons": [
+        "boundary_sensitive_product_claim_question"
+      ],
+      "utterance": "Does it integrate securely with Salesforce?"
+    },
+    {
+      "case_id": "4k11_positive_002",
+      "expected_action_id": "respect_boundary",
+      "expected_group": "positive",
+      "passed": true,
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.9,
+      "selector_matched_features": [
+        "safety:product_claim_boundary"
+      ],
+      "selector_reasons": [
+        "boundary_sensitive_product_claim_question"
+      ],
+      "utterance": "Can you guarantee Salesforce integration works?"
+    },
+    {
+      "case_id": "4k11_positive_003",
+      "expected_action_id": "respect_boundary",
+      "expected_group": "positive",
+      "passed": true,
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.9,
+      "selector_matched_features": [
+        "safety:product_claim_boundary"
+      ],
+      "selector_reasons": [
+        "boundary_sensitive_product_claim_question"
+      ],
+      "utterance": "Is it compliant with our security requirements?"
+    },
+    {
+      "case_id": "4k11_positive_004",
+      "expected_action_id": "respect_boundary",
+      "expected_group": "positive",
+      "passed": true,
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.9,
+      "selector_matched_features": [
+        "safety:product_claim_boundary"
+      ],
+      "selector_reasons": [
+        "boundary_sensitive_product_claim_question"
+      ],
+      "utterance": "Can you prove HubSpot integration is secure?"
+    },
+    {
+      "case_id": "4k11_positive_005",
+      "expected_action_id": "respect_boundary",
+      "expected_group": "positive",
+      "passed": true,
+      "selector_action_id": "respect_boundary",
+      "selector_confidence": 0.9,
+      "selector_matched_features": [
+        "safety:product_claim_boundary"
+      ],
+      "selector_reasons": [
+        "boundary_sensitive_product_claim_question"
+      ],
+      "utterance": "Can you guarantee the CRM setup?"
+    },
+    {
+      "case_id": "4k11_negative_001",
+      "expected_action_id": "not_respect_boundary",
+      "expected_group": "negative",
+      "passed": true,
+      "selector_action_id": "ask_use_case_gap",
+      "selector_confidence": 0.55,
+      "selector_matched_features": [
+        "fallback:diagnostic"
+      ],
+      "selector_reasons": [
+        "default_diagnostic_next_step"
+      ],
+      "utterance": "What CRM does this work with at a high level?"
+    },
+    {
+      "case_id": "4k11_negative_002",
+      "expected_action_id": "not_respect_boundary",
+      "expected_group": "negative",
+      "passed": true,
+      "selector_action_id": "ask_usage_intensity",
+      "selector_confidence": 0.82,
+      "selector_matched_features": [
+        "topic:use_case"
+      ],
+      "selector_reasons": [
+        "use_case_known_intensity_unknown"
+      ],
+      "utterance": "How does the workflow routing work?"
+    },
+    {
+      "case_id": "4k11_negative_003",
+      "expected_action_id": "not_respect_boundary",
+      "expected_group": "negative",
+      "passed": true,
+      "selector_action_id": "ask_use_case_gap",
+      "selector_confidence": 0.55,
+      "selector_matched_features": [
+        "fallback:diagnostic"
+      ],
+      "selector_reasons": [
+        "default_diagnostic_next_step"
+      ],
+      "utterance": "What does the integration review check?"
+    },
+    {
+      "case_id": "4k11_negative_004",
+      "expected_action_id": "not_respect_boundary",
+      "expected_group": "negative",
+      "passed": true,
+      "selector_action_id": "ask_use_case_gap",
+      "selector_confidence": 0.55,
+      "selector_matched_features": [
+        "fallback:diagnostic"
+      ],
+      "selector_reasons": [
+        "default_diagnostic_next_step"
+      ],
+      "utterance": "Is this about CRM follow-up reminders?"
+    },
+    {
+      "case_id": "4k11_negative_005",
+      "expected_action_id": "not_respect_boundary",
+      "expected_group": "negative",
+      "passed": true,
+      "selector_action_id": "ask_use_case_gap",
+      "selector_confidence": 0.55,
+      "selector_matched_features": [
+        "fallback:diagnostic"
+      ],
+      "selector_reasons": [
+        "default_diagnostic_next_step"
+      ],
+      "utterance": "What kind of security details would a reviewer need?"
+    },
+    {
+      "case_id": "4k11_negative_006",
+      "expected_action_id": "not_respect_boundary",
+      "expected_group": "negative",
+      "passed": true,
+      "selector_action_id": "ask_use_case_gap",
+      "selector_confidence": 0.55,
+      "selector_matched_features": [
+        "fallback:diagnostic"
+      ],
+      "selector_reasons": [
+        "default_diagnostic_next_step"
+      ],
+      "utterance": "Can you explain the setup process at a high level?"
+    }
+  ],
+  "selector_matrix_summary": {
+    "case_count": 11,
+    "negative_case_count": 6,
+    "negative_failures": [],
+    "negative_pass_count": 6,
+    "positive_case_count": 5,
+    "positive_failures": [],
+    "positive_pass_count": 5
+  },
+  "side_effects_allowed": false,
+  "status": "pass",
+  "tts_calls_made": false,
+  "ultravox_calls_made": false
+}
