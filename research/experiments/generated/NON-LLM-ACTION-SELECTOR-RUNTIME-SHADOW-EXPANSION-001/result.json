@@ -19,7 +19,7 @@
       "buyer_utterance_text_sanitized": "How much does ChatGPT Plus cost?",
       "campaign_coverage": "public_openai_plan",
       "campaign_id": "public-openai-chatgpt-plans",
-      "candidate_response_hash": "sha256:db69b888c7879cb8e69219179f30f6c2831d89a202d9d3378ad530b4765d837e",
+      "candidate_response_hash": "sha256:ab51d8f58a3d5a2857a8e9b7c2120cd65bede13697977c5edeb966638738b27f",
       "candidate_response_text_recorded": false,
       "case_id": "phase_4k8_public_openai_001_price",
       "disagreement_review_classification": "runtime_action_unmapped",
@@ -40,7 +40,7 @@
       "buyer_utterance_text_sanitized": "I code every day and hit limits, which plan should I pick?",
       "campaign_coverage": "public_openai_plan",
       "campaign_id": "public-openai-chatgpt-plans",
-      "candidate_response_hash": "sha256:a2796b04457e61a3131254696b438240449269358d54e40c7bf4cfa7db17c42c",
+      "candidate_response_hash": "sha256:1ed17a1be5a5c2eaa3e301dc332189a0b5ad7a7d91b89a5a89cb84a319ce61bc",
       "candidate_response_text_recorded": false,
       "case_id": "phase_4k8_public_openai_002_plan_fit",
       "disagreement_review_classification": "runtime_action_unmapped",
@@ -56,22 +56,24 @@
       "vertical_id": "public_openai_plan"
     },
     {
-      "agreement_disagreement_type": "selector_possible_regression",
+      "agreement_disagreement_type": "runtime_more_specific",
       "agreement_with_runtime": false,
       "buyer_utterance_text_sanitized": "Do you store raw call transcripts?",
       "campaign_coverage": "public_openai_plan",
       "campaign_id": "public-openai-chatgpt-plans",
-      "candidate_response_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "candidate_response_hash": "sha256:b835c000a6d1b40bc943e29d4ce3bbb4fc8071a2fab2de2d885d26903dd8c44b",
       "candidate_response_text_recorded": false,
       "case_id": "phase_4k8_public_openai_003_privacy",
-      "disagreement_review_classification": "metadata_extraction_failure",
+      "disagreement_review_classification": "runtime_action_unmapped",
       "evidence_actionable": false,
-      "reason_for_disagreement": "runtime metadata was unavailable or extraction failed",
+      "reason_for_disagreement": "runtime metadata was present, but conservative mapping found no controlled runtime action",
       "runtime_action_id": "",
-      "runtime_extraction_warnings": [],
-      "runtime_semantic": "",
+      "runtime_extraction_warnings": [
+        "runtime_action_id_unmapped"
+      ],
+      "runtime_semantic": "public_plan_privacy_claim_boundary",
       "safety_failure_count": 0,
-      "selector_action_id": "ask_use_case_gap",
+      "selector_action_id": "respect_boundary",
       "vertical_id": "public_openai_plan"
     },
     {
@@ -80,15 +82,17 @@
       "buyer_utterance_text_sanitized": "Where do I sign up if I want to start?",
       "campaign_coverage": "public_openai_plan",
       "campaign_id": "public-openai-chatgpt-plans",
-      "candidate_response_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "candidate_response_hash": "sha256:5c4b08ece16be65abd7fcdeb8a828c0f6e6f715d2a258f6c082af84c83a0295c",
       "candidate_response_text_recorded": false,
       "case_id": "phase_4k8_public_openai_004_signup",
-      "disagreement_review_classification": "metadata_extraction_failure",
+      "disagreement_review_classification": "runtime_action_unmapped",
       "evidence_actionable": false,
-      "reason_for_disagreement": "runtime metadata was unavailable or extraction failed",
+      "reason_for_disagreement": "runtime metadata was present, but conservative mapping found no controlled runtime action",
       "runtime_action_id": "",
-      "runtime_extraction_warnings": [],
-      "runtime_semantic": "",
+      "runtime_extraction_warnings": [
+        "runtime_action_id_unmapped"
+      ],
+      "runtime_semantic": "public_plan_self_serve_next_step_answered",
       "safety_failure_count": 0,
       "selector_action_id": "answer_signup_path",
       "vertical_id": "public_openai_plan"
@@ -99,15 +103,17 @@
       "buyer_utterance_text_sanitized": "Can you buy the plan for me now?",
       "campaign_coverage": "public_openai_plan",
       "campaign_id": "public-openai-chatgpt-plans",
-      "candidate_response_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "candidate_response_hash": "sha256:3f9343efdd403f000355ff1c8473653c944db2597891b74a9b2671c155bdec3f",
       "candidate_response_text_recorded": false,
       "case_id": "phase_4k8_public_openai_005_boundary",
-      "disagreement_review_classification": "metadata_extraction_failure",
+      "disagreement_review_classification": "runtime_action_unmapped",
       "evidence_actionable": false,
-      "reason_for_disagreement": "runtime metadata was unavailable or extraction failed",
+      "reason_for_disagreement": "runtime metadata was present, but conservative mapping found no controlled runtime action",
       "runtime_action_id": "",
-      "runtime_extraction_warnings": [],
-      "runtime_semantic": "",
+      "runtime_extraction_warnings": [
+        "runtime_action_id_unmapped"
+      ],
+      "runtime_semantic": "public_plan_payment_boundary",
       "safety_failure_count": 0,
       "selector_action_id": "respect_boundary",
       "vertical_id": "public_openai_plan"
@@ -344,22 +350,22 @@
       "vertical_id": "b2b_saas"
     },
     {
-      "agreement_disagreement_type": "same_action",
-      "agreement_with_runtime": true,
+      "agreement_disagreement_type": "selector_possible_regression",
+      "agreement_with_runtime": false,
       "buyer_utterance_text_sanitized": "Does it integrate securely with Salesforce?",
       "campaign_coverage": "b2b_saas",
       "campaign_id": "phase-4k8-b2b-saas",
-      "candidate_response_hash": "sha256:e2279f2841339bc0edf5d29ef9d2d0b848a2e3b0c3a2542e8e1f945e91660764",
+      "candidate_response_hash": "sha256:3dfaba5c528c8d944af29b86a8fa1ab18900285164851a257d4737c5f9c92f53",
       "candidate_response_text_recorded": false,
       "case_id": "phase_4k8_b2b_saas_003",
-      "disagreement_review_classification": "same_action",
+      "disagreement_review_classification": "selector_possible_regression",
       "evidence_actionable": true,
-      "reason_for_disagreement": "selector and runtime mapped to the same controlled action",
+      "reason_for_disagreement": "runtime mapped to respect_boundary, while selector chose ask_use_case_gap",
       "runtime_action_id": "respect_boundary",
       "runtime_extraction_warnings": [],
       "runtime_semantic": "answer_campaign_claim_boundary",
       "safety_failure_count": 0,
-      "selector_action_id": "respect_boundary",
+      "selector_action_id": "ask_use_case_gap",
       "vertical_id": "b2b_saas"
     },
     {
@@ -431,7 +437,7 @@
       "buyer_utterance_text_sanitized": "tomorrow at 3 works",
       "campaign_coverage": "routesignal_preservation",
       "campaign_id": "live-demo-001-routesignal",
-      "candidate_response_hash": "sha256:08cf330b13feabf7eb068e50e3d1206a8d7255aa10c7c087c49d6b58e44ee031",
+      "candidate_response_hash": "sha256:d47fc974ac52350ecdd9f4ada4c7f05ed769e11380b4f4bfbca40f95225964de",
       "candidate_response_text_recorded": false,
       "case_id": "phase_4k8_routesignal_004",
       "disagreement_review_classification": "runtime_action_unmapped",
@@ -452,7 +458,7 @@
   "decision_recommendation_id": "limited_offline_sanitized_shadow_logging_and_spoken_naturalness_review_next",
   "disagreement_by_campaign": {
     "b2b_saas": {
-      "same_action": 1,
+      "selector_possible_regression": 1,
       "unknown": 2
     },
     "generic_insurance": {
@@ -465,32 +471,31 @@
       "unknown": 3
     },
     "public_openai_plan": {
-      "same_action": 4,
-      "selector_possible_regression": 1
+      "runtime_more_specific": 1,
+      "same_action": 4
     },
     "routesignal_preservation": {
       "unknown": 4
     }
   },
   "disagreement_review_by_classification": {
-    "metadata_extraction_failure": 3,
-    "runtime_action_unmapped": 17,
-    "same_action": 1
+    "runtime_action_unmapped": 20,
+    "selector_possible_regression": 1
   },
   "elevenlabs_calls_made": false,
   "email_calls_made": false,
   "evidence_not_actionable_yet_count": 20,
   "experiment_id": "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-EXPANSION-001",
   "false_asr_mapping_count": 0,
-  "generated_at": "2026-05-30T14:38:37.660188+00:00",
-  "genuine_selector_runtime_disagreement_count": 0,
+  "generated_at": "2026-05-30T15:43:43.734679+00:00",
+  "genuine_selector_runtime_disagreement_count": 1,
   "jsonl_path": "research/experiments/generated/NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-EXPANSION-001/shadow_expansion_records.jsonl",
   "latency_ms": {
-    "max": 17.8955,
-    "mean": 10.899166666666666,
-    "p50": 11.2006,
-    "p90": 14.4867,
-    "p99": 17.8955,
+    "max": 18.002,
+    "mean": 13.89967619047619,
+    "p50": 14.0809,
+    "p90": 17.5716,
+    "p99": 18.002,
     "sample_count": 21
   },
   "live_runtime_wiring_allowed": false,
@@ -498,7 +503,7 @@
   "local_llm_calls_made": false,
   "memory_mutation_allowed": false,
   "memory_mutation_observed": false,
-  "metadata_extraction_failure_count": 3,
+  "metadata_extraction_failure_count": 0,
   "model_calls_made": false,
   "no_local_llm_calls": true,
   "no_provider_calls": true,
@@ -510,13 +515,13 @@
   "raw_private_data": false,
   "response_replacement_performed": false,
   "response_text_changed": false,
-  "runtime_action_unmapped_count": 17,
+  "runtime_action_unmapped_count": 20,
   "runtime_behavior_changed": false,
   "safety_blockers_count": 0,
   "selector_control_allowed": false,
   "selector_possible_improvement_count": 0,
-  "selector_possible_regression_count": 0,
-  "selector_runtime_disagreement_count": 16,
+  "selector_possible_regression_count": 1,
+  "selector_runtime_disagreement_count": 17,
   "side_effects_allowed": false,
   "side_effects_observed": false,
   "status": "pass",

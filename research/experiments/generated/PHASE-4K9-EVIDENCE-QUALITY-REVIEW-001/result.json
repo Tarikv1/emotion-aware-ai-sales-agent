@@ -1,11 +1,11 @@
 {
   "after": {
     "false_asr_mapping_count": 0,
-    "genuine_selector_runtime_disagreement_count": 0,
-    "metadata_extraction_failure_count": 3,
-    "naturalness_issue_count": 37,
-    "runtime_action_unmapped_count": 17,
-    "selector_runtime_disagreement_count": 16
+    "genuine_selector_runtime_disagreement_count": 1,
+    "metadata_extraction_failure_count": 0,
+    "naturalness_issue_count": 14,
+    "runtime_action_unmapped_count": 20,
+    "selector_runtime_disagreement_count": 17
   },
   "answers": {
     "changed_source_allowed_provider_or_local_model_or_tts_calls": false,
@@ -41,111 +41,97 @@
     "tts_calls_made": true,
     "ultravox_calls_made": true
   },
-  "generated_at": "2026-05-30T14:39:53.813129+00:00",
+  "generated_at": "2026-05-30T15:43:43.807572+00:00",
   "highest_priority_spoken_response_repair_targets": [
     {
-      "campaign_coverage": "public_openai_plan",
-      "case_id": "phase_4k8_public_openai_003_privacy",
+      "campaign_coverage": "home_services",
+      "case_id": "phase_4k8_home_services_003",
       "category": "empty_candidate_response",
       "excerpt": "",
       "reason": "empty candidate response"
     },
     {
-      "campaign_coverage": "public_openai_plan",
-      "case_id": "phase_4k8_public_openai_004_signup",
-      "category": "empty_candidate_response",
-      "excerpt": "",
-      "reason": "empty candidate response"
-    },
-    {
-      "campaign_coverage": "public_openai_plan",
-      "case_id": "phase_4k8_public_openai_005_boundary",
-      "category": "empty_candidate_response",
-      "excerpt": "",
-      "reason": "empty candidate response"
-    },
-    {
-      "campaign_coverage": "public_openai_plan",
-      "case_id": "phase_4k8_public_openai_002_plan_fit",
-      "category": "robotic_internal_wording",
-      "excerpt": "Got it - hitting limits makes Pro relevant, but I should still tie that to the actual work. Is this mainly coding, writing, research, files, or team use?",
-      "reason": "matched \\bi should still tie that\\b"
-    },
-    {
-      "campaign_coverage": "public_openai_plan",
-      "case_id": "phase_4k8_public_openai_001_price",
-      "category": "overly_formal_or_policy_like",
-      "excerpt": "Plus is an individual paid tier. Exact current terms can change, so check the plan page before upgrading.",
-      "reason": "matched \\bcheck the plan page before upgrading\\b"
-    },
-    {
-      "campaign_coverage": "b2b_saas",
-      "case_id": "phase_4k8_b2b_saas_003",
-      "category": "overly_formal_or_policy_like",
-      "excerpt": "I cannot verify that claim here. Exact integration, security, or setup fit needs verified material and review by a technical fit specialist before I claim it. Is that the gap you want reviewed?",
-      "reason": "matched \\bi cannot verify that claim here\\b"
-    },
-    {
-      "campaign_coverage": "routesignal_preservation",
-      "case_id": "phase_4k8_routesignal_004",
-      "category": "premature_scheduling_or_callback_push",
-      "excerpt": "I can note that as a callback preference, but first I need to check relevance: is inbound demo follow-up slipping right now?",
-      "reason": "scheduling or callback language appears before enough value framing"
-    },
-    {
-      "campaign_coverage": "public_openai_plan",
-      "case_id": "phase_4k8_public_openai_001_price",
+      "campaign_coverage": "generic_insurance",
+      "case_id": "phase_4k8_generic_insurance_003",
       "category": "missing_human_acknowledgment",
-      "excerpt": "Plus is an individual paid tier. Exact current terms can change, so check the plan page before upgrading.",
+      "excerpt": "Quick check for a short coverage review: Is coverage fit causing any issue right now?",
       "reason": "response lacks a compact human-style acknowledgment"
     },
     {
-      "campaign_coverage": "public_openai_plan",
-      "case_id": "phase_4k8_public_openai_003_privacy",
+      "campaign_coverage": "home_services",
+      "case_id": "phase_4k8_home_services_003",
       "category": "missing_human_acknowledgment",
       "excerpt": "",
       "reason": "empty candidate response"
     },
     {
-      "campaign_coverage": "public_openai_plan",
-      "case_id": "phase_4k8_public_openai_004_signup",
+      "campaign_coverage": "routesignal_preservation",
+      "case_id": "phase_4k8_routesignal_001",
       "category": "missing_human_acknowledgment",
-      "excerpt": "",
-      "reason": "empty candidate response"
+      "excerpt": "Hi, this is Maya calling from RouteSignal, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
+      "reason": "response lacks a compact human-style acknowledgment"
     },
     {
-      "campaign_coverage": "public_openai_plan",
-      "case_id": "phase_4k8_public_openai_002_plan_fit",
+      "campaign_coverage": "home_services",
+      "case_id": "phase_4k8_home_services_003",
       "category": "missing_sales_progression",
-      "excerpt": "Got it - hitting limits makes Pro relevant, but I should still tie that to the actual work. Is this mainly coding, writing, research, files, or team use?",
+      "excerpt": "",
+      "reason": "empty candidate response"
+    },
+    {
+      "campaign_coverage": "routesignal_preservation",
+      "case_id": "phase_4k8_routesignal_001",
+      "category": "missing_sales_progression",
+      "excerpt": "Hi, this is Maya calling from RouteSignal, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
       "reason": "no clear fit, value, or next-step progression"
     },
     {
-      "campaign_coverage": "public_openai_plan",
-      "case_id": "phase_4k8_public_openai_003_privacy",
+      "campaign_coverage": "routesignal_preservation",
+      "case_id": "phase_4k8_routesignal_002",
       "category": "missing_sales_progression",
-      "excerpt": "",
-      "reason": "empty candidate response"
+      "excerpt": "Thanks. Is inbound demo follow-up slipping right now?",
+      "reason": "no clear fit, value, or next-step progression"
+    },
+    {
+      "campaign_coverage": "generic_telecom",
+      "case_id": "phase_4k8_generic_telecom_003",
+      "category": "weak_value_framing",
+      "excerpt": "No, I cannot guarantee that on this call. That depends on details the telecom account specialist would need to review.",
+      "reason": "no strong buyer-value frame before the response move"
+    },
+    {
+      "campaign_coverage": "home_services",
+      "case_id": "phase_4k8_home_services_001",
+      "category": "weak_value_framing",
+      "excerpt": "Thanks. Is the service need active right now?",
+      "reason": "no strong buyer-value frame before the response move"
+    },
+    {
+      "campaign_coverage": "home_services",
+      "case_id": "phase_4k8_home_services_002",
+      "category": "weak_value_framing",
+      "excerpt": "Understood, estimate or property details is the unclear part. What part is confusing: what it means, what the qualified service coordinator would check, or whether it matters here?",
+      "reason": "no strong buyer-value frame before the response move"
     }
   ],
   "live_selector_control_recommended": false,
   "naturalness_categories": {
-    "empty_candidate_response": 4,
-    "good_human_spoken_examples": 6,
-    "missing_human_acknowledgment": 9,
-    "missing_sales_progression": 7,
-    "overly_formal_or_policy_like": 2,
-    "premature_scheduling_or_callback_push": 1,
+    "empty_candidate_response": 1,
+    "good_human_spoken_examples": 13,
+    "missing_human_acknowledgment": 3,
+    "missing_sales_progression": 3,
+    "overly_formal_or_policy_like": 0,
+    "premature_scheduling_or_callback_push": 0,
     "repetitive_review_language": 0,
-    "robotic_internal_wording": 1,
+    "robotic_internal_wording": 0,
     "too_long_for_spoken_call": 0,
-    "weak_value_framing": 13
+    "weak_value_framing": 7
   },
   "no_provider_model_tts_crm_email_calendar_paths_enabled": true,
   "recommendation_id": "limited_offline_sanitized_shadow_logging_evidence_quality_review_next",
   "remaining_disagreement_review_counts": {
-    "metadata_extraction_failure": 3,
-    "runtime_action_unmapped": 17
+    "runtime_action_unmapped": 20,
+    "selector_possible_regression": 1
   },
   "remaining_disagreements": [
     {
@@ -174,22 +160,22 @@
       "buyer_utterance_text_sanitized": "Do you store raw call transcripts?",
       "campaign_coverage": "public_openai_plan",
       "case_id": "phase_4k8_public_openai_003_privacy",
-      "disagreement_type": "selector_possible_regression",
-      "reason": "runtime metadata was unavailable or extraction failed",
-      "review_classification": "metadata_extraction_failure",
+      "disagreement_type": "runtime_more_specific",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
       "runtime_action_id": "",
-      "runtime_semantic": "",
-      "selector_action_id": "ask_use_case_gap"
+      "runtime_semantic": "public_plan_privacy_claim_boundary",
+      "selector_action_id": "respect_boundary"
     },
     {
       "buyer_utterance_text_sanitized": "Where do I sign up if I want to start?",
       "campaign_coverage": "public_openai_plan",
       "case_id": "phase_4k8_public_openai_004_signup",
       "disagreement_type": "same_action",
-      "reason": "runtime metadata was unavailable or extraction failed",
-      "review_classification": "metadata_extraction_failure",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
       "runtime_action_id": "",
-      "runtime_semantic": "",
+      "runtime_semantic": "public_plan_self_serve_next_step_answered",
       "selector_action_id": "answer_signup_path"
     },
     {
@@ -197,10 +183,10 @@
       "campaign_coverage": "public_openai_plan",
       "case_id": "phase_4k8_public_openai_005_boundary",
       "disagreement_type": "same_action",
-      "reason": "runtime metadata was unavailable or extraction failed",
-      "review_classification": "metadata_extraction_failure",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
       "runtime_action_id": "",
-      "runtime_semantic": "",
+      "runtime_semantic": "public_plan_payment_boundary",
       "selector_action_id": "respect_boundary"
     },
     {
@@ -322,6 +308,17 @@
       "review_classification": "runtime_action_unmapped",
       "runtime_action_id": "",
       "runtime_semantic": "continue_with_session_policy",
+      "selector_action_id": "ask_use_case_gap"
+    },
+    {
+      "buyer_utterance_text_sanitized": "Does it integrate securely with Salesforce?",
+      "campaign_coverage": "b2b_saas",
+      "case_id": "phase_4k8_b2b_saas_003",
+      "disagreement_type": "selector_possible_regression",
+      "reason": "runtime mapped to respect_boundary, while selector chose ask_use_case_gap",
+      "review_classification": "selector_possible_regression",
+      "runtime_action_id": "respect_boundary",
+      "runtime_semantic": "answer_campaign_claim_boundary",
       "selector_action_id": "ask_use_case_gap"
     },
     {

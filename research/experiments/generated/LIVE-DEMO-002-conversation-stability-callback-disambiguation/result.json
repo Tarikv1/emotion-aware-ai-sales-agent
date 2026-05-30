@@ -1,7 +1,7 @@
 {
   "checkpoint_id": "LIVE-DEMO-002-conversation-stability-callback-disambiguation",
   "passed": false,
-  "failure_count": 19,
+  "failure_count": 13,
   "failures": [
     "Workflow callback response did not steer to a sales-progressing next step: Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
     "Workflow callback response did not explain/map callback gap: 'it is probably the callbacks' -> Then RouteSignal helps remind the team before demo leads wait too long. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
@@ -10,17 +10,11 @@
     "Workflow callback response did not steer to a sales-progressing next step: Got it, reminders are the issue. Is that causing missed follow-up, or mostly a general reminder concern?",
     "Workflow callback response did not steer to a sales-progressing next step: Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?",
     "Workflow callback response did not explain/map callback gap: 'our team misses follow-ups' -> Then RouteSignal helps remind the team before demo leads wait too long. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
-    "Scheduling request should ask for a callback time: 'call me back later' -> Sure. I can note a callback preference, but first I should check what this is about: is inbound demo follow-up slipping right now?",
-    "Scheduling request should not be treated as product workflow explanation: 'call me back later' -> Sure. I can note a callback preference, but first I should check what this is about: is inbound demo follow-up slipping right now?",
-    "Scheduling request should ask for a callback time: 'can you call me tomorrow' -> Sure. I can note tomorrow as a callback preference, but first: is inbound demo follow-up slipping right now?",
-    "Scheduling request should not be treated as product workflow explanation: 'can you call me tomorrow' -> Sure. I can note tomorrow as a callback preference, but first: is inbound demo follow-up slipping right now?",
-    "Scheduling request should ask for a callback time: 'not now, call me later' -> Sure. I can note a callback preference, but first I should check what this is about: is inbound demo follow-up slipping right now?",
-    "Scheduling request should not be treated as product workflow explanation: 'not now, call me later' -> Sure. I can note a callback preference, but first I should check what this is about: is inbound demo follow-up slipping right now?",
+    "Scheduling request should ask for a callback time: 'call me back later' -> Sure. What day or time window should I note?",
+    "Scheduling request should ask for a callback time: 'not now, call me later' -> Sure. What day or time window should I note?",
     "Expected callback_time_confirmation for scheduling transcript 'tomorrow at 3 works', got None",
-    "Time confirmation should schedule and end: 'tomorrow at 3 works' -> {'sales_difficulty': 'qualification', 'detected_emotion': 'neutral', 'interest_state': 'unclear', 'selected_strategy': 'consultative-question', 'next_action': 'ask-diagnostic-question', 'call_control': 'continue-call', 'final_response': 'I can note that as a callback preference, but first I need to check relevance: is inbound demo follow-up slipping right now?', 'tts_input_source': 'provider_rendered_text', 'tts_input_text': 'I can note that as a callback preference, <break time=\"0.217s\" /> but first I need to check relevance: is inbound demo follow-up slipping right now?', 'browser_fallback_speech_text': 'I can note that as a callback preference, but first I need to check relevance: is inbound demo follow-up slipping right now?', 'tts_provider_rendering_used': True, 'retrieval_status': 'retrieved_not_used', 'retrieval_used_in_runtime': False, 'retrieved_item_ids': ['rag016a-response-autonomy-reminder', 'rag019-objection-diagnose-before-answering', 'rag010-response-impact-bridge'], 'composer_hooks_status': 'blocked', 'composer_hooks_applied': False, 'tts_provider_calls_made': False, 'tts_audio_file_created': False, 'tts_fallback_reason': 'dry-run-mode', 'tts_voice_id_source': 'local_voice_ids:elevenlabs.en', 'tts_voice_id_present': True, 'tts_voice_id_length': 20, 'tts_voice_id_hash': '433413ba', 'tts_voice_id_raw_value_logged': False, 'time_to_first_audio_ms': None, 'total_provider_latency_ms': 0}",
-    "Scheduling request should not be treated as product workflow explanation: 'tomorrow at 3 works' -> I can note that as a callback preference, but first I need to check relevance: is inbound demo follow-up slipping right now?",
-    "Stress scenario replayed final response: ['Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?', 'Thanks. Is inbound demo follow-up slipping right now?', 'Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?', 'I can answer that directly if you name the point: workflow routing, price, security, or callback timing.', 'In plain terms, it matters only if that gap costs time today: missed callbacks, unclear owners, or lost handoffs. Which one costs time today?', 'RouteSignal CRM routes leads, captures follow-up tasks, and shows handoff status so inbound requests do not sit in a spreadsheet. Where does follow-up break first today: assignment, reminders, or missed replies?', 'Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. Which part is confusing: what callback means here, who owns it, or whether missed follow-ups happen?', 'Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?', 'I can note that as a callback preference, but before I mark it as a review, is the issue causing delays or extra work?', 'No. RouteSignal CRM is not meant to replace a CRM that already works. It is worth reviewing only if demo leads still miss assignment, reminders, or follow-up around the CRM. Is that the gap you are checking?', 'Then RouteSignal helps remind the team before demo leads wait too long. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?', 'No problem. The quick check is simpler: do demo follow-ups ever miss an owner, callback reminder, or handoff?', 'No problem. Do you mean now is not a good time, or that missed callbacks and handoffs are not an issue?', 'Right, callbacks is already noted. Is it creating a real impact now?', 'Correct. I can answer the high-level scope, but detailed advice belongs with the verified implementation reviewer. The verified implementation reviewer would need to review handoffs. Is that what you want them to check?', 'The high-level answer is covered. The useful next step is one concrete workflow gap to check.', 'Start with Starter if missed follow-up is occasional. Use Growth only when routing saves real time. Are missed callbacks occasional, or frequent enough to automate?', \"Understood. Then the useful next step is not to sell you. It is either a short summary for the decision-maker or the right person's contact.\", 'The quick check is one inbound demo follow-up gap. Should I check who gets the lead, the reminder, or the next reply?', 'Short means one inbound demo follow-up gap, not a full demo. Should I check who gets the lead, the reminder, or the next reply?', 'Got it, handoffs are the concern. Is that causing missed ownership, or mostly extra tracking work?', 'For Salesforce, someone from Northstar would need to verify exact setup and permissions before I claim fit. The useful check here is simpler: are demo leads still missing assignment, reminders, or follow-up?', 'I can note that as a callback preference, but before I mark it as a review, is the issue causing delays or extra work?', 'I can answer that directly if you name the point: workflow routing, price, security, or callback timing. The next concrete question is whether that is worth verified review.', 'I can answer that directly if you name the point: workflow routing, price, security, or callback timing. The next concrete question is whether that is worth verified review.', 'Sure. What day or time window should I note?', 'I can note that as a callback preference, but before I mark it as a review, is the issue causing delays or extra work?']",
-    "Stress scenario repeated question type too often: {'sales_progression_question': 13}",
+    "Stress scenario replayed final response: ['Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?', 'Thanks. Is inbound demo follow-up slipping right now?', 'Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?', 'I can answer that directly if you name the point: workflow routing, price, security, or callback timing.', 'In plain terms, it matters only if that gap costs time today: missed callbacks, unclear owners, or lost handoffs. Which one costs time today?', 'RouteSignal CRM routes leads, captures follow-up tasks, and shows handoff status so inbound requests do not sit in a spreadsheet. Where does follow-up break first today: assignment, reminders, or missed replies?', 'Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. Which part is confusing: what callback means here, who owns it, or whether missed follow-ups happen?', 'Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?', 'Got it. Before we talk timing, is the issue causing delays or extra work?', 'No. RouteSignal CRM is not meant to replace a CRM that already works. It is worth reviewing only if demo leads still miss assignment, reminders, or follow-up around the CRM. Is that the gap you are checking?', 'Then RouteSignal helps remind the team before demo leads wait too long. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?', 'No problem. The quick check is simpler: do demo follow-ups ever miss an owner, callback reminder, or handoff?', 'No problem. Do you mean now is not a good time, or that missed callbacks and handoffs are not an issue?', 'Right, callbacks is already noted. Is it creating a real impact now?', 'Correct. I can answer the high-level scope, but detailed advice belongs with the verified implementation reviewer. The verified implementation reviewer would need to review handoffs. Is that what you want them to check?', 'The high-level answer is covered. The useful next step is one concrete workflow gap to check.', 'Start with Starter if missed follow-up is occasional. Use Growth only when routing saves real time. Are missed callbacks occasional, or frequent enough to automate?', \"Understood. Then the useful next step is not to sell you. It is either a short summary for the decision-maker or the right person's contact.\", 'The quick check is one inbound demo follow-up gap. Should I check who gets the lead, the reminder, or the next reply?', 'Short means one inbound demo follow-up gap, not a full demo. Should I check who gets the lead, the reminder, or the next reply?', 'Got it, handoffs are the concern. Is that causing missed ownership, or mostly extra tracking work?', 'For Salesforce, someone from Northstar would need to verify exact setup and permissions before I claim fit. The useful check here is simpler: are demo leads still missing assignment, reminders, or follow-up?', \"Got it. I'll note that time for the verified implementation reviewer to follow up.\", 'Understood. I will stop here. Goodbye.', 'Understood. I will stop here. Goodbye.', 'Understood. I will stop here. Goodbye.', 'Understood. I will stop here. Goodbye.']",
+    "Stress scenario repeated question type too often: {'sales_progression_question': 10}",
     "Echo example did not clarify or progress the sales conversation: Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?"
   ],
   "provider_calls_made": false,
@@ -792,7 +786,7 @@
         "transcript": "call me back later",
         "expected_semantic": "callback_scheduling_request",
         "semantic": "callback_scheduling_request",
-        "response": "Sure. I can note a callback preference, but first I should check what this is about: is inbound demo follow-up slipping right now?",
+        "response": "Sure. What day or time window should I note?",
         "summary": {
           "sales_difficulty": "callback-scheduling",
           "detected_emotion": "neutral",
@@ -800,11 +794,11 @@
           "selected_strategy": "direct-ask-or-commitment",
           "next_action": "request-callback-time",
           "call_control": "continue-call",
-          "final_response": "Sure. I can note a callback preference, but first I should check what this is about: is inbound demo follow-up slipping right now?",
-          "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "Sure. Um, I can note a callback preference, <break time=\"0.203s\" /> but first I should check what this is about: is inbound demo follow-up slipping right now?",
-          "browser_fallback_speech_text": "Sure. Um, I can note a callback preference, but first I should check what this is about: is inbound demo follow-up slipping right now?",
-          "tts_provider_rendering_used": true,
+          "final_response": "Sure. What day or time window should I note?",
+          "tts_input_source": "final_response",
+          "tts_input_text": "Sure. What day or time window should I note?",
+          "browser_fallback_speech_text": "Sure. What day or time window should I note?",
+          "tts_provider_rendering_used": false,
           "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
           "retrieved_item_ids": [
@@ -830,7 +824,7 @@
           "reason": "universal_response_shape_enforced",
           "action_id": "request_callback_time",
           "dialogue_focus": "appointment_callback_send_info",
-          "candidate_response": "Sure. I can note a callback preference, but first I should check what this is about: is inbound demo follow-up slipping right now?",
+          "candidate_response": "Sure. What day or time window should I note?",
           "universal_policy_frame": {
             "schema_version": 1,
             "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -926,7 +920,7 @@
         "transcript": "can you call me tomorrow",
         "expected_semantic": "callback_scheduling_request",
         "semantic": "callback_scheduling_request",
-        "response": "Sure. I can note tomorrow as a callback preference, but first: is inbound demo follow-up slipping right now?",
+        "response": "Sure. Tomorrow can work. What time window should I note?",
         "summary": {
           "sales_difficulty": "callback-scheduling",
           "detected_emotion": "neutral",
@@ -934,10 +928,10 @@
           "selected_strategy": "direct-ask-or-commitment",
           "next_action": "request-callback-time",
           "call_control": "continue-call",
-          "final_response": "Sure. I can note tomorrow as a callback preference, but first: is inbound demo follow-up slipping right now?",
+          "final_response": "Sure. Tomorrow can work. What time window should I note?",
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "Sure, so, I can note tomorrow as a callback preference, <break time=\"0.164s\" /> but first: is inbound demo follow-up slipping right now?",
-          "browser_fallback_speech_text": "Sure, so, I can note tomorrow as a callback preference, but first: is inbound demo follow-up slipping right now?",
+          "tts_input_text": "Sure. Tomorrow can work. <break time=\"0.16s\" /> What time window should I note?",
+          "browser_fallback_speech_text": "Sure. Tomorrow can work. What time window should I note?",
           "tts_provider_rendering_used": true,
           "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
@@ -964,7 +958,7 @@
           "reason": "universal_response_shape_enforced",
           "action_id": "request_callback_time",
           "dialogue_focus": "appointment_callback_send_info",
-          "candidate_response": "Sure. I can note tomorrow as a callback preference, but first: is inbound demo follow-up slipping right now?",
+          "candidate_response": "Sure. Tomorrow can work. What time window should I note?",
           "universal_policy_frame": {
             "schema_version": 1,
             "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -1060,7 +1054,7 @@
         "transcript": "not now, call me later",
         "expected_semantic": "callback_scheduling_request",
         "semantic": "callback_scheduling_request",
-        "response": "Sure. I can note a callback preference, but first I should check what this is about: is inbound demo follow-up slipping right now?",
+        "response": "Sure. What day or time window should I note?",
         "summary": {
           "sales_difficulty": "callback-scheduling",
           "detected_emotion": "neutral",
@@ -1068,11 +1062,11 @@
           "selected_strategy": "direct-ask-or-commitment",
           "next_action": "request-callback-time",
           "call_control": "continue-call",
-          "final_response": "Sure. I can note a callback preference, but first I should check what this is about: is inbound demo follow-up slipping right now?",
-          "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "Sure. Um, I can note a callback preference, <break time=\"0.192s\" /> but first I should check what this is about: is inbound demo follow-up slipping right now?",
-          "browser_fallback_speech_text": "Sure. Um, I can note a callback preference, but first I should check what this is about: is inbound demo follow-up slipping right now?",
-          "tts_provider_rendering_used": true,
+          "final_response": "Sure. What day or time window should I note?",
+          "tts_input_source": "final_response",
+          "tts_input_text": "Sure. What day or time window should I note?",
+          "browser_fallback_speech_text": "Sure. What day or time window should I note?",
+          "tts_provider_rendering_used": false,
           "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
           "retrieved_item_ids": [
@@ -1098,7 +1092,7 @@
           "reason": "universal_response_shape_enforced",
           "action_id": "request_callback_time",
           "dialogue_focus": "appointment_callback_send_info",
-          "candidate_response": "Sure. I can note a callback preference, but first I should check what this is about: is inbound demo follow-up slipping right now?",
+          "candidate_response": "Sure. What day or time window should I note?",
           "universal_policy_frame": {
             "schema_version": 1,
             "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -1149,7 +1143,7 @@
               "applied": false,
               "reason": "not_garbled",
               "normalized_transcript": "not now call me later",
-              "previous_question_type": "sales_progression_question"
+              "previous_question_type": "callback_time"
             },
             "pragmatic_move_id": "no_pragmatic_repair",
             "sales_progression_stage": "next_step_capture",
@@ -1194,19 +1188,19 @@
         "transcript": "tomorrow at 3 works",
         "expected_semantic": "callback_time_confirmation",
         "semantic": null,
-        "response": "I can note that as a callback preference, but first I need to check relevance: is inbound demo follow-up slipping right now?",
+        "response": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
         "summary": {
-          "sales_difficulty": "qualification",
-          "detected_emotion": "neutral",
-          "interest_state": "unclear",
-          "selected_strategy": "consultative-question",
-          "next_action": "ask-diagnostic-question",
-          "call_control": "continue-call",
-          "final_response": "I can note that as a callback preference, but first I need to check relevance: is inbound demo follow-up slipping right now?",
-          "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "I can note that as a callback preference, <break time=\"0.217s\" /> but first I need to check relevance: is inbound demo follow-up slipping right now?",
-          "browser_fallback_speech_text": "I can note that as a callback preference, but first I need to check relevance: is inbound demo follow-up slipping right now?",
-          "tts_provider_rendering_used": true,
+          "sales_difficulty": "scheduling-confirmation",
+          "detected_emotion": "positive",
+          "interest_state": "interested",
+          "selected_strategy": "direct-ask-or-commitment",
+          "next_action": "confirm-scheduling",
+          "call_control": "schedule-and-end",
+          "final_response": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
+          "tts_input_source": "final_response",
+          "tts_input_text": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
+          "browser_fallback_speech_text": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
+          "tts_provider_rendering_used": false,
           "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
           "retrieved_item_ids": [
@@ -1230,9 +1224,9 @@
         "continuity": {
           "applied": true,
           "reason": "universal_response_shape_enforced",
-          "action_id": "continue_with_session_policy",
+          "action_id": "confirm_callback_and_end",
           "dialogue_focus": "appointment_callback_send_info",
-          "candidate_response": "I can note that as a callback preference, but first I need to check relevance: is inbound demo follow-up slipping right now?",
+          "candidate_response": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
           "universal_policy_frame": {
             "schema_version": 1,
             "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -1328,7 +1322,7 @@
     "callback_time_no_context_negative_control": {
       "transcript": "tomorrow at 3 works",
       "semantic": null,
-      "response": "I can note that as a callback preference, but first I need to check relevance: is inbound demo follow-up slipping right now?",
+      "response": "Got it. Before we talk timing, I need to confirm the workflow issue: is inbound demo follow-up slipping right now?",
       "summary": {
         "sales_difficulty": "qualification",
         "detected_emotion": "neutral",
@@ -1336,10 +1330,10 @@
         "selected_strategy": "consultative-question",
         "next_action": "ask-diagnostic-question",
         "call_control": "continue-call",
-        "final_response": "I can note that as a callback preference, but first I need to check relevance: is inbound demo follow-up slipping right now?",
+        "final_response": "Got it. Before we talk timing, I need to confirm the workflow issue: is inbound demo follow-up slipping right now?",
         "tts_input_source": "provider_rendered_text",
-        "tts_input_text": "I can note that as a callback preference, <break time=\"0.217s\" /> but first I need to check relevance: is inbound demo follow-up slipping right now?",
-        "browser_fallback_speech_text": "I can note that as a callback preference, but first I need to check relevance: is inbound demo follow-up slipping right now?",
+        "tts_input_text": "Got it. Um, before we talk timing, <break time=\"0.16s\" /> I need to confirm the workflow issue: is inbound demo follow-up slipping right now?",
+        "browser_fallback_speech_text": "Got it. Um, before we talk timing, I need to confirm the workflow issue: is inbound demo follow-up slipping right now?",
         "tts_provider_rendering_used": true,
         "retrieval_status": "retrieved_not_used",
         "retrieval_used_in_runtime": false,
@@ -2421,13 +2415,13 @@
       {
         "turn": 9,
         "transcript": "I am not sure it fits us",
-        "response": "I can note that as a callback preference, but before I mark it as a review, is the issue causing delays or extra work?",
+        "response": "Got it. Before we talk timing, is the issue causing delays or extra work?",
         "continuity": {
           "applied": true,
           "reason": "universal_response_shape_enforced",
           "action_id": "continue_with_session_policy",
           "dialogue_focus": "appointment_callback_send_info",
-          "candidate_response": "I can note that as a callback preference, but before I mark it as a review, is the issue causing delays or extra work?",
+          "candidate_response": "Got it. Before we talk timing, is the issue causing delays or extra work?",
           "universal_policy_frame": {
             "schema_version": 1,
             "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -2549,7 +2543,7 @@
             "c474528005c884b5",
             "9b6bd2979c4cf2fd",
             "43f3958ff9e71da5",
-            "3f4ce1af2bb2e6d4"
+            "19a62af6002f56d3"
           ],
           "last_response_signatures": [
             "opening_permission:c4f25e2c6ac64318",
@@ -2560,7 +2554,7 @@
             "callback_workflow:c474528005c884b5",
             "callback_workflow:9b6bd2979c4cf2fd",
             "price_plan_summary:43f3958ff9e71da5",
-            "general:90f4f366994d9b79:3f4ce1af2bb2e6d4"
+            "general:a3baf82a77b21021:19a62af6002f56d3"
           ],
           "recent_response_subjects": [
             "opening_permission",
@@ -2571,10 +2565,10 @@
             "callback_workflow",
             "callback_workflow",
             "price_plan_summary",
-            "general:90f4f366994d9b79"
+            "general:a3baf82a77b21021"
           ],
-          "candidate_response_subject": "general:90f4f366994d9b79",
-          "candidate_response_signature": "general:90f4f366994d9b79:3f4ce1af2bb2e6d4",
+          "candidate_response_subject": "general:a3baf82a77b21021",
+          "candidate_response_signature": "general:a3baf82a77b21021:19a62af6002f56d3",
           "last_customer_intent": "topic:appointment_callback_send_info",
           "last_sales_progression_step": "value_mapping",
           "appointment_close_ready": false,
@@ -2655,7 +2649,7 @@
           "callback_semantic": null,
           "last_agent_question_type": "clarification",
           "last_active_agent_question_type": "clarification",
-          "last_agent_question_hash": "3f4ce1af2bb2e6d4",
+          "last_agent_question_hash": "19a62af6002f56d3",
           "asked_question_type_counts": {
             "permission_check": 1,
             "sales_progression_question": 5,
@@ -2682,7 +2676,7 @@
             "c474528005c884b5",
             "9b6bd2979c4cf2fd",
             "43f3958ff9e71da5",
-            "3f4ce1af2bb2e6d4",
+            "19a62af6002f56d3",
             "d4f86ed58fd06eb8"
           ],
           "last_response_signatures": [
@@ -2694,7 +2688,7 @@
             "callback_workflow:c474528005c884b5",
             "callback_workflow:9b6bd2979c4cf2fd",
             "price_plan_summary:43f3958ff9e71da5",
-            "general:90f4f366994d9b79:3f4ce1af2bb2e6d4",
+            "general:a3baf82a77b21021:19a62af6002f56d3",
             "callback_workflow:d4f86ed58fd06eb8"
           ],
           "recent_response_subjects": [
@@ -2706,7 +2700,7 @@
             "callback_workflow",
             "callback_workflow",
             "price_plan_summary",
-            "general:90f4f366994d9b79",
+            "general:a3baf82a77b21021",
             "callback_workflow"
           ],
           "candidate_response_subject": "callback_workflow",
@@ -2903,7 +2897,7 @@
             "c474528005c884b5",
             "9b6bd2979c4cf2fd",
             "43f3958ff9e71da5",
-            "3f4ce1af2bb2e6d4",
+            "19a62af6002f56d3",
             "d4f86ed58fd06eb8",
             "ed9b4d6e3f785484"
           ],
@@ -2916,7 +2910,7 @@
             "callback_workflow:c474528005c884b5",
             "callback_workflow:9b6bd2979c4cf2fd",
             "price_plan_summary:43f3958ff9e71da5",
-            "general:90f4f366994d9b79:3f4ce1af2bb2e6d4",
+            "general:a3baf82a77b21021:19a62af6002f56d3",
             "callback_workflow:d4f86ed58fd06eb8",
             "general:707ae77087248b49:ed9b4d6e3f785484"
           ],
@@ -2929,7 +2923,7 @@
             "callback_workflow",
             "callback_workflow",
             "price_plan_summary",
-            "general:90f4f366994d9b79",
+            "general:a3baf82a77b21021",
             "callback_workflow",
             "general:707ae77087248b49"
           ],
@@ -3056,7 +3050,7 @@
             "c474528005c884b5",
             "9b6bd2979c4cf2fd",
             "43f3958ff9e71da5",
-            "3f4ce1af2bb2e6d4",
+            "19a62af6002f56d3",
             "d4f86ed58fd06eb8",
             "ed9b4d6e3f785484",
             "e03f34d00e6acd8c"
@@ -3070,7 +3064,7 @@
             "callback_workflow:c474528005c884b5",
             "callback_workflow:9b6bd2979c4cf2fd",
             "price_plan_summary:43f3958ff9e71da5",
-            "general:90f4f366994d9b79:3f4ce1af2bb2e6d4",
+            "general:a3baf82a77b21021:19a62af6002f56d3",
             "callback_workflow:d4f86ed58fd06eb8",
             "general:707ae77087248b49:ed9b4d6e3f785484",
             "callback_workflow:e03f34d00e6acd8c"
@@ -3084,7 +3078,7 @@
             "callback_workflow",
             "callback_workflow",
             "price_plan_summary",
-            "general:90f4f366994d9b79",
+            "general:a3baf82a77b21021",
             "callback_workflow",
             "general:707ae77087248b49",
             "callback_workflow"
@@ -3184,8 +3178,8 @@
     "stress_duplicate_response_count": 3,
     "stress_question_type_counts": {
       "permission_check": 1,
-      "sales_progression_question": 13,
-      "none": 5,
+      "sales_progression_question": 10,
+      "none": 8,
       "gap_diagnostic": 2,
       "workflow_breakpoint_question": 1,
       "comparative_gap_diagnostic": 1,
@@ -3651,13 +3645,13 @@
           "Quick check: are demo leads missing an owner or next reply right now?",
           "In plain terms, it matters only if that gap costs time today: missed callbacks, unclear owners, or lost handoffs. Which one costs time today?",
           "Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?",
-          "I can note that as a callback preference, but before I mark it as a review, is the issue causing delays or extra work?",
+          "Got it. Before we talk timing, is the issue causing delays or extra work?",
           "Before a review, I still need the impact from callbacks: delays, extra work, or missed follow-up?"
         ]
       },
       "metrics": {
-        "median_latency_ms": 64.055,
-        "p95_latency_ms": 73.783,
+        "median_latency_ms": 61.18,
+        "p95_latency_ms": 87.072,
         "schema_failure_rate": 0.0,
         "callback_semantic_accuracy": 0.8333333333333334,
         "repetition_rate": 0.0,

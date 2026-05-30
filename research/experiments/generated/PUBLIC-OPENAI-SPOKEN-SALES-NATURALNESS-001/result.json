@@ -41,13 +41,13 @@
         "openai_recommended_path": "unknown",
         "openai_usage_intensity": "unknown"
       },
-      "final_response": "Sure. Free is the no-cost option. Plus is listed at 20 dollars per month, billed monthly. Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Business is for teams, and Enterprise routes to contact sales. Exact current terms can change, so check the plan page before upgrading. The decision frame is Free for no-cost use, Plus as the lower-cost individual start, Pro for heavier individual use, and Business or Enterprise when team controls matter.",
-      "final_response_hash": "a2adfdf3f2b9",
+      "final_response": "Sure. Free is the no-cost option. Plus is listed at 20 dollars per month, billed monthly. Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Business is for teams, and Enterprise routes to contact sales. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide. The decision frame is Free for no-cost use, Plus as the lower-cost individual start, Pro for heavier individual use, and Business or Enterprise when team controls matter.",
+      "final_response_hash": "2f93523366b9",
       "group": "source_note_wording_banned",
       "id": "source-note-banned-001",
       "multi_turn": true,
       "response_hashes": [
-        "a2adfdf3f2b9"
+        "2f93523366b9"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -76,14 +76,14 @@
         "openai_recommended_path": "plus",
         "openai_usage_intensity": "unknown"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8d3dd892b398",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "c8ba3f54ec05",
       "group": "source_note_wording_banned",
       "id": "source-note-banned-002",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
-        "8d3dd892b398"
+        "c8ba3f54ec05"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -112,15 +112,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "source_note_wording_banned",
       "id": "source-note-banned-003",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -394,14 +394,14 @@
         "openai_recommended_path": "plus",
         "openai_usage_intensity": "unknown"
       },
-      "final_response": "Sure. Free is the no-cost option. Plus is listed at 20 dollars per month, billed monthly. Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Exact current terms can change, so check the plan page before upgrading. For coding and writing, Plus is the lower-cost paid starting point; Pro is for heavier usage.",
-      "final_response_hash": "0ff8bc13a8c2",
+      "final_response": "Sure. Free is the no-cost option. Plus is listed at 20 dollars per month, billed monthly. Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide. For coding and writing, Plus is the lower-cost paid starting point; Pro is for heavier usage.",
+      "final_response_hash": "a9ad6c80135c",
       "group": "source_note_wording_banned",
       "id": "source-note-banned-011",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
-        "0ff8bc13a8c2"
+        "a9ad6c80135c"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -466,14 +466,14 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "source_note_wording_banned",
       "id": "source-note-banned-013",
       "multi_turn": true,
       "response_hashes": [
         "cdc5b137b054",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -502,13 +502,13 @@
         "openai_recommended_path": "unknown",
         "openai_usage_intensity": "unknown"
       },
-      "final_response": "For most countries, Business standard ChatGPT seats are listed at 25 dollars monthly or 20 dollars monthly when billed annually, with regional caveats. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "35ad37dd7a54",
+      "final_response": "For most countries, Business standard ChatGPT seats are listed at 25 dollars monthly or 20 dollars monthly when billed annually, with regional caveats. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0787002bbeca",
       "group": "source_note_wording_banned",
       "id": "source-note-banned-014",
       "multi_turn": true,
       "response_hashes": [
-        "35ad37dd7a54"
+        "0787002bbeca"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -537,13 +537,13 @@
         "openai_recommended_path": "enterprise",
         "openai_usage_intensity": "unknown"
       },
-      "final_response": "Enterprise pricing is not a public fixed individual price here; the route is contact sales. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "73d8360a1bb1",
+      "final_response": "Enterprise pricing is not a public fixed individual price here; the route is contact sales. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "c4db58c0cd49",
       "group": "source_note_wording_banned",
       "id": "source-note-banned-015",
       "multi_turn": true,
       "response_hashes": [
-        "73d8360a1bb1"
+        "c4db58c0cd49"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -607,13 +607,13 @@
         "openai_recommended_path": "unknown",
         "openai_usage_intensity": "unknown"
       },
-      "final_response": "Plus is listed at 20 dollars per month, billed monthly. Plus is for more access than Free or Go: higher limits, faster responses, and expanded tools like voice, images, file analysis, deep research where available, and custom GPTs. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "9e0d26a1e099",
+      "final_response": "Plus is listed at 20 dollars per month, billed monthly. Plus is for more access than Free or Go: higher limits, faster responses, and expanded tools like voice, images, file analysis, deep research where available, and custom GPTs. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "a47da9f70954",
       "group": "source_note_wording_banned",
       "id": "source-note-banned-017",
       "multi_turn": true,
       "response_hashes": [
-        "9e0d26a1e099"
+        "a47da9f70954"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -677,13 +677,13 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "medium_heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "source_note_wording_banned",
       "id": "source-note-banned-019",
       "multi_turn": true,
       "response_hashes": [
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -747,15 +747,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-001",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -784,15 +784,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-002",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -821,15 +821,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-003",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -858,15 +858,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-004",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -895,15 +895,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-005",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -932,15 +932,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-006",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -969,15 +969,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-007",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -1006,15 +1006,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-008",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -1043,15 +1043,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-009",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -1080,15 +1080,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-010",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -1117,15 +1117,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-011",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -1154,15 +1154,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-012",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -1191,15 +1191,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-013",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -1228,15 +1228,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-014",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -1265,15 +1265,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-015",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -1302,15 +1302,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "pro_tier_answer_naturalness",
       "id": "pro-tier-natural-016",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -1347,7 +1347,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -1385,7 +1385,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -1423,7 +1423,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -1453,16 +1453,16 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "077aee9aad29",
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "c5c47e4982b3",
       "group": "midcycle_plan_change_followup",
       "id": "midcycle-followup-004",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
-        "077aee9aad29"
+        "0873cf8c9e9a",
+        "c5c47e4982b3"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -1499,7 +1499,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -1537,7 +1537,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -1575,7 +1575,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -1613,7 +1613,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -1651,7 +1651,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -1689,7 +1689,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -1727,7 +1727,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -1765,7 +1765,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -1803,7 +1803,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -1841,7 +1841,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -1879,7 +1879,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -1917,7 +1917,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -1947,16 +1947,16 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "077aee9aad29",
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "c5c47e4982b3",
       "group": "repeated_answer_prevention",
       "id": "repeat-prevention-001",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
-        "077aee9aad29"
+        "0873cf8c9e9a",
+        "c5c47e4982b3"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -1985,16 +1985,16 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "077aee9aad29",
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "c5c47e4982b3",
       "group": "repeated_answer_prevention",
       "id": "repeat-prevention-002",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
-        "077aee9aad29"
+        "0873cf8c9e9a",
+        "c5c47e4982b3"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -2023,16 +2023,16 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "077aee9aad29",
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "c5c47e4982b3",
       "group": "repeated_answer_prevention",
       "id": "repeat-prevention-003",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
-        "077aee9aad29"
+        "0873cf8c9e9a",
+        "c5c47e4982b3"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -2069,7 +2069,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -2107,7 +2107,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -2145,7 +2145,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -2183,7 +2183,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -2213,16 +2213,16 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "077aee9aad29",
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "c5c47e4982b3",
       "group": "repeated_answer_prevention",
       "id": "repeat-prevention-008",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
-        "077aee9aad29"
+        "0873cf8c9e9a",
+        "c5c47e4982b3"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -2260,7 +2260,7 @@
         "02f152435240",
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -2290,8 +2290,8 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "repeated_answer_prevention",
       "id": "repeat-prevention-010",
       "multi_turn": true,
@@ -2300,7 +2300,7 @@
         "2a0399884c1a",
         "dfd4e4ed4934",
         "0da663ce43eb",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -2329,16 +2329,16 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "077aee9aad29",
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "c5c47e4982b3",
       "group": "repeated_answer_prevention",
       "id": "repeat-prevention-011",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "668def6d152c",
-        "077aee9aad29"
+        "0fa605bbd87e",
+        "c5c47e4982b3"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -2375,7 +2375,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "0da663ce43eb"
       ],
       "side_effects": {
@@ -2405,16 +2405,16 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "077aee9aad29",
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "c5c47e4982b3",
       "group": "repeated_answer_prevention",
       "id": "repeat-prevention-013",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
-        "077aee9aad29"
+        "0873cf8c9e9a",
+        "c5c47e4982b3"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -2443,16 +2443,16 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "medium_heavy"
       },
-      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "077aee9aad29",
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "c5c47e4982b3",
       "group": "repeated_answer_prevention",
       "id": "repeat-prevention-014",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "f2fe1b23b364",
-        "8aab91f0b6cb",
-        "077aee9aad29"
+        "0873cf8c9e9a",
+        "c5c47e4982b3"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -2489,7 +2489,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -2527,7 +2527,7 @@
       "response_hashes": [
         "edbc21e28021",
         "defbff9811bb",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -2557,16 +2557,16 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "077aee9aad29",
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "c5c47e4982b3",
       "group": "repeated_answer_prevention",
       "id": "repeat-prevention-017",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
-        "077aee9aad29"
+        "0873cf8c9e9a",
+        "c5c47e4982b3"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -2603,7 +2603,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -2641,7 +2641,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "0da663ce43eb"
       ],
       "side_effects": {
@@ -2679,7 +2679,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "7104eb1d01dc"
       ],
       "side_effects": {
@@ -2744,15 +2744,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Sure. Free is the no-cost option. Plus is listed at 20 dollars per month, billed monthly. Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Exact current terms can change, so check the plan page before upgrading. Given coding and heavy use, I would compare Pro first. The real decision is Plus as the lower-cost start versus Pro as the higher-usage option.",
-      "final_response_hash": "668def6d152c",
+      "final_response": "Sure. Free is the no-cost option. Plus is listed at 20 dollars per month, billed monthly. Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide. Given coding and heavy use, I would compare Pro first. The real decision is Plus as the lower-cost start versus Pro as the higher-usage option.",
+      "final_response_hash": "0fa605bbd87e",
       "group": "internal_process_wording_banned",
       "id": "internal-wording-002",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "668def6d152c"
+        "0fa605bbd87e"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -2781,13 +2781,13 @@
         "openai_recommended_path": "unknown",
         "openai_usage_intensity": "unknown"
       },
-      "final_response": "If you decide to upgrade, individual plans use the official ChatGPT plans page or profile upgrade flow, and Enterprise uses contact sales. Choose the plan only after the use case is clear.",
-      "final_response_hash": "51b79bfbb762",
+      "final_response": "Sure. For individual plans, use the official ChatGPT plans page or profile upgrade flow; Enterprise uses contact sales. For plan fit, are you starting for personal use, team use, or enterprise controls?",
+      "final_response_hash": "5c4b08ece16b",
       "group": "internal_process_wording_banned",
       "id": "internal-wording-003",
       "multi_turn": true,
       "response_hashes": [
-        "51b79bfbb762"
+        "5c4b08ece16b"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -2816,15 +2816,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "internal_process_wording_banned",
       "id": "internal-wording-004",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -3141,13 +3141,13 @@
         "openai_recommended_path": "unknown",
         "openai_usage_intensity": "unknown"
       },
-      "final_response": "If you decide to upgrade, individual plans use the official ChatGPT plans page or profile upgrade flow, and Enterprise uses contact sales. Choose the plan only after the use case is clear. I cannot send a link here.",
-      "final_response_hash": "8ff73225f9a8",
+      "final_response": "Sure. For individual plans, use the official ChatGPT plans page or profile upgrade flow; Enterprise uses contact sales. For plan fit, are you starting for personal use, team use, or enterprise controls? I cannot send a link here.",
+      "final_response_hash": "ae9b55ec5234",
       "group": "internal_process_wording_banned",
       "id": "internal-wording-013",
       "multi_turn": true,
       "response_hashes": [
-        "8ff73225f9a8"
+        "ae9b55ec5234"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -3437,7 +3437,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "4d7510187b80"
       ],
       "side_effects": {
@@ -3475,7 +3475,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "4d7510187b80"
       ],
       "side_effects": {
@@ -3513,7 +3513,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "4d7510187b80"
       ],
       "side_effects": {
@@ -3551,7 +3551,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "4d7510187b80"
       ],
       "side_effects": {
@@ -3589,7 +3589,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "4d7510187b80"
       ],
       "side_effects": {
@@ -3627,7 +3627,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "4d7510187b80"
       ],
       "side_effects": {
@@ -3665,7 +3665,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "4d7510187b80"
       ],
       "side_effects": {
@@ -3703,7 +3703,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "4d7510187b80"
       ],
       "side_effects": {
@@ -3741,7 +3741,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "4d7510187b80"
       ],
       "side_effects": {
@@ -3779,7 +3779,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "4d7510187b80"
       ],
       "side_effects": {
@@ -3817,7 +3817,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "4d7510187b80"
       ],
       "side_effects": {
@@ -3855,7 +3855,7 @@
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb",
+        "0873cf8c9e9a",
         "4d7510187b80"
       ],
       "side_effects": {
@@ -3885,15 +3885,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-001",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -3922,15 +3922,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-002",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -3959,15 +3959,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-003",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -3996,15 +3996,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "medium_heavy"
       },
-      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "077aee9aad29",
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "c5c47e4982b3",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-004",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
-        "8aab91f0b6cb",
-        "077aee9aad29"
+        "0873cf8c9e9a",
+        "c5c47e4982b3"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -4033,15 +4033,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-005",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -4070,15 +4070,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-006",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -4107,15 +4107,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "medium_heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-007",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -4144,15 +4144,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-008",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -4181,15 +4181,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-009",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -4218,15 +4218,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "medium_heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-010",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "f2fe1b23b364",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -4255,15 +4255,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-011",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "edbc21e28021",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -4292,15 +4292,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-012",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "defbff9811bb",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -4329,15 +4329,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-013",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -4366,15 +4366,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-014",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -4403,15 +4403,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "8aab91f0b6cb",
+      "final_response": "Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. If you are unsure, start with the lower Pro tier. Move to the higher Pro tier only if you are regularly maxing out usage or need the most headroom. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "0873cf8c9e9a",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-015",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
         "2a0399884c1a",
-        "8aab91f0b6cb"
+        "0873cf8c9e9a"
       ],
       "side_effects": {
         "audio_file_created": false,
@@ -4440,15 +4440,15 @@
         "openai_recommended_path": "pro",
         "openai_usage_intensity": "heavy"
       },
-      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so check the plan page before upgrading.",
-      "final_response_hash": "077aee9aad29",
+      "final_response": "Simple version: start with 100 unless you already know you need the most headroom. Move to 200 only if 100 becomes limiting. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "final_response_hash": "c5c47e4982b3",
       "group": "heavy_headroom_state_preservation",
       "id": "heavy-headroom-016",
       "multi_turn": true,
       "response_hashes": [
         "edbc21e28021",
-        "8aab91f0b6cb",
-        "077aee9aad29"
+        "0873cf8c9e9a",
+        "c5c47e4982b3"
       ],
       "side_effects": {
         "audio_file_created": false,

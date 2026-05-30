@@ -781,7 +781,7 @@ def _source_speech(campaign: dict | None, fact_id: str, fallback: str) -> str:
 
 
 def _official_price_caveat() -> str:
-    return "Exact current terms can change, so check the plan page before upgrading."
+    return "Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide."
 
 
 def _plan_label_mentions(normalized: str) -> list[str]:
@@ -2464,6 +2464,7 @@ def _signup_question(normalized: str) -> bool:
         normalized,
         {
             "how do i sign up",
+            "where do i sign up",
             "where do i upgrade",
             "show me the official page",
             "where is the plan page",
@@ -2486,6 +2487,37 @@ def _signup_question(normalized: str) -> bool:
             "what page should i use",
             "how do i move forward",
             "where do i buy it",
+        },
+    )
+
+
+def _privacy_or_data_boundary_question(normalized: str) -> bool:
+    return _contains(
+        normalized,
+        {
+            "do you store raw call transcripts",
+            "store raw call transcripts",
+            "store call transcripts",
+            "store raw transcripts",
+            "do you keep transcripts",
+            "do you keep my data",
+            "what happens to my data",
+        },
+    )
+
+
+def _purchase_side_effect_request(normalized: str) -> bool:
+    return _contains(
+        normalized,
+        {
+            "buy the plan for me",
+            "buy it for me",
+            "purchase it for me",
+            "upgrade me now",
+            "sign me up now",
+            "take my payment",
+            "charge my card",
+            "payment",
         },
     )
 
@@ -2556,8 +2588,8 @@ def _limit_pain_recommendation_response(turns: list[dict[str, Any]]) -> str:
             "Do you want the lower-cost starting point, or the plan least likely to hit limits?"
         )
     return (
-        "Got it - hitting limits makes Pro relevant, but I should still tie that to the actual work. "
-        "Is this mainly coding, writing, research, files, or team use?"
+        "Got it - hitting limits makes Pro relevant. To keep the plan fit useful, I need the work type first: "
+        "is this mainly coding, writing, research, files, or team use?"
     )
 
 
@@ -2752,7 +2784,7 @@ def _price_response(campaign: dict | None, normalized: str, turns: list[dict[str
             )
         else:
             suffix = ""
-        return f"{plus_price} {caveat}{suffix}"
+        return f"Fair question. {plus_price} {caveat}{suffix}"
     if _contains(normalized, {"how much is pro", "pro cost", "pay for pro", "pro one hundred"}):
         suffix = (
             " Given you are hitting limits, compare that against Plus at 20 dollars per month: Plus is cheaper; Pro is for higher usage."
@@ -2882,8 +2914,8 @@ def _signup_response(normalized: str, turns: list[dict[str, Any]]) -> str:
         )
     suffix = " I cannot send a link here." if link_requested else ""
     return (
-        "If you decide to upgrade, individual plans use the official ChatGPT plans page or profile upgrade flow, and Enterprise uses contact sales. "
-        f"Choose the plan only after the use case is clear.{suffix}"
+        "Sure. For individual plans, use the official ChatGPT plans page or profile upgrade flow; Enterprise uses contact sales. "
+        f"For plan fit, are you starting for personal use, team use, or enterprise controls?{suffix}"
     )
 
 
@@ -3398,11 +3430,26 @@ def classify_turn(
             polarity="low_pressure",
         )
 
-    if _contains(normalized, {"take my payment", "charge my card", "payment"}):
+    if _privacy_or_data_boundary_question(normalized):
+        return _frame(
+            **base,
+            semantic="public_plan_privacy_claim_boundary",
+            response=(
+                "Fair question. I do not store raw call transcripts here, and I cannot speak for every ChatGPT account setting. "
+                "For ChatGPT privacy controls, use OpenAI's official privacy and plan information. Is privacy the main plan fit issue?"
+            ),
+            dialogue_focus="claim_boundary",
+            polarity="boundary",
+        )
+
+    if _purchase_side_effect_request(normalized):
         return _frame(
             **base,
             semantic="public_plan_payment_boundary",
-            response="I cannot take payment here. For self-serve plans, use the official ChatGPT plans page or the profile upgrade flow.",
+            response=(
+                "No. I cannot buy it or take payment here. If the plan fit is clear, use the official ChatGPT plans page "
+                "or profile upgrade flow. Are you choosing for yourself or a team?"
+            ),
             dialogue_focus="side_effect_boundary",
             polarity="boundary",
         )

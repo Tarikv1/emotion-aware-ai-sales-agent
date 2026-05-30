@@ -2127,8 +2127,8 @@ def _generic_claim_boundary_response(campaign: dict | None, target_gap: str | No
             f"Is {review} what you want reviewed?"
         )
     return (
-        "I cannot verify that claim here. Exact integration, security, or setup fit needs verified material "
-        f"and review by {owner_phrase} before I claim it. Is that the gap you want reviewed?"
+        "Fair question. I do not want to overpromise integration or security fit from a quick call. "
+        "If that issue matters, the next step is a technical fit check. Is integration the gap you want checked?"
     )
 
 

@@ -298,6 +298,12 @@ def _previous_response_asked_next_step_timing(session_state: dict | None) -> boo
     )
 
 
+def _earned_timing_context(frame: dict | None, session_state: dict | None) -> bool:
+    detection = (frame or {}).get("detection")
+    previous_type = str((detection or {}).get("previous_question_type") or "")
+    return previous_type in {"appointment_time", "callback_time"} or _previous_response_asked_next_step_timing(session_state)
+
+
 def _prior_impact_confirmed(session_state: dict | None) -> bool:
     for turn in reversed(_turns(session_state)):
         frame = turn.get("universal_policy_frame") if isinstance(turn, dict) else None
@@ -3003,12 +3009,12 @@ def render_universal_response_outline(
                 return "Sure. Tomorrow can work. What time window should I note?"
             return "Sure. What day or time window should I note?"
         if "tomorrow at" in normalized:
-            return f"Sure. I can note tomorrow as a callback preference, but before I mark it as a review: {_primary_issue_check_question(campaign)}"
+            return "Sure. Tomorrow can work. What time window should I note?"
         if "tomorrow" in normalized:
-            return f"Sure. I can note tomorrow as a callback preference, but first: {_primary_issue_check_question(campaign)}"
+            return "Sure. Tomorrow can work. What time window should I note?"
         if "next week" in normalized:
-            return f"Sure. I can note next week as a callback preference, but first: {_primary_issue_check_question(campaign)}"
-        return f"Sure. I can note a callback preference, but first I should check what this is about: {_primary_issue_check_question(campaign)}"
+            return "Sure. Next week can work. What day or time window should I note?"
+        return "Sure. What day or time window should I note?"
     if buyer_move_id == "buyer_requests_available_times":
         return f"I cannot send a live calendar from this call. I can note a preferred window for {owner_role}. What works?"
     if buyer_move_id == "buyer_wants_email_before_booking":
@@ -3024,15 +3030,15 @@ def render_universal_response_outline(
             return "Good. The next step is a short review. What callback window works?"
         if has_confirmed_gap:
             return f"Good. I have {active_area} noted; before a review, is it causing delays or extra work?"
-        return f"Good. First I need to check relevance: {_primary_issue_check_question(campaign)}"
+        return f"Good. First I need to understand the workflow issue: {_primary_issue_check_question(campaign)}"
     if buyer_move_id == "callback_time_provided":
-        if str((frame or {}).get("appointment_readiness") or "") != "high":
+        if str((frame or {}).get("appointment_readiness") or "") != "high" and not _earned_timing_context(frame, session_state):
             if has_confirmed_gap:
                 return (
-                    "I can note that as a callback preference, but before I mark it as a review, "
+                    "Got it. Before we talk timing, "
                     "is the issue causing delays or extra work?"
                 )
-            return f"I can note that as a callback preference, but first I need to check relevance: {_primary_issue_check_question(campaign)}"
+            return f"Got it. Before we talk timing, I need to confirm the workflow issue: {_primary_issue_check_question(campaign)}"
         return f"Got it. I'll note that time for {owner_role} to follow up."
 
     if buyer_move_id == "product_detail_question":
@@ -3347,7 +3353,9 @@ def universal_response_shape_continuity(
     category = _response_shape_category(buyer_move_id) or "universal_response_shape"
     if buyer_move_id in TERMINAL_RESPONSE_SHAPE_MOVES or buyer_move_id in TERMINAL_RAPPORT_MOVES or (frame or {}).get("safe_to_continue") is False:
         action_id = "end_call_stop_request"
-    elif buyer_move_id == "callback_time_provided" and str((frame or {}).get("appointment_readiness") or "") == "high":
+    elif buyer_move_id == "callback_time_provided" and (
+        str((frame or {}).get("appointment_readiness") or "") == "high" or _earned_timing_context(frame, session_state)
+    ):
         action_id = "confirm_callback_and_end"
     elif buyer_move_id in {"send_info_request", "buyer_wants_email_before_booking"}:
         action_id = "request_send_info_contact"
