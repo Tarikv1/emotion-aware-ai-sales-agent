@@ -18,11 +18,13 @@ from runtime.action_selector.shadow_mode_evaluator import classify_shadow_agreem
 
 ROOT = Path(__file__).resolve().parents[2]
 CONFIG_PATH = Path(__file__).resolve().parent / "shadow_runtime_logging_config.json"
+IMPORT_CONFIG_PATH = Path(__file__).resolve().parent / "shadow_runtime_import_config.json"
 
 FALSE_RUNTIME_FLAGS = {
     "side_effects_allowed": False,
     "buyer_facing_text_generated": False,
     "live_runtime_wiring_allowed": False,
+    "selector_control_allowed": False,
     "response_text_changed": False,
     "runtime_behavior_changed": False,
     "memory_mutation_allowed": False,
@@ -44,6 +46,14 @@ def utc_now() -> str:
 
 def load_shadow_runtime_logging_config() -> dict[str, Any]:
     payload = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+    return payload if isinstance(payload, dict) else {}
+
+
+def load_shadow_runtime_import_config() -> dict[str, Any]:
+    try:
+        payload = json.loads(IMPORT_CONFIG_PATH.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        return {}
     return payload if isinstance(payload, dict) else {}
 
 
@@ -271,7 +281,8 @@ def validate_shadow_runtime_record(record: dict[str, Any]) -> list[str]:
     if missing:
         failures.append(f"missing_required_fields:{missing}")
     config = load_shadow_runtime_logging_config()
-    allowed_modes = set(config.get("allowed_modes") or [])
+    import_config = load_shadow_runtime_import_config()
+    allowed_modes = set(config.get("allowed_modes") or []) | set(import_config.get("allowed_modes") or [])
     if record.get("mode") not in allowed_modes:
         failures.append(f"mode_not_allowed:{record.get('mode')}")
     for key, expected in FALSE_RUNTIME_FLAGS.items():

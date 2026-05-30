@@ -1,7 +1,13 @@
 from __future__ import annotations
 
+import hashlib
 import re
 from typing import Any
+
+try:
+    from runtime.action_selector.shadow_runtime_hook import maybe_log_action_selector_shadow_turn
+except Exception:
+    maybe_log_action_selector_shadow_turn = None
 
 
 CAMPAIGN_ID = "public-openai-chatgpt-plans"
@@ -1308,7 +1314,7 @@ def _frame(
         "buyer_affect_source": buyer_affect_source,
     }
     details.update({key: value for key, value in overrides.items() if value is not None})
-    return {
+    frame = {
         "semantic": semantic,
         "transcript": transcript,
         "normalized": normalized,
@@ -1338,6 +1344,57 @@ def _frame(
         "campaign_response_priority": True,
         "applied": True,
     }
+    _observe_action_selector_shadow_frame(frame)
+    return frame
+
+
+def _observe_action_selector_shadow_frame(frame: dict[str, Any]) -> None:
+    if maybe_log_action_selector_shadow_turn is None:
+        return
+    transcript = str(frame.get("transcript") or "")
+    transcript_hash = hashlib.sha256(transcript.encode("utf-8")).hexdigest()[:16] if transcript else ""
+    runtime_result = {
+        "campaign_id": CAMPAIGN_ID,
+        "turn_id": f"public_openai_runtime_{transcript_hash}" if transcript_hash else "",
+        "semantic": frame.get("semantic"),
+        "action_id": frame.get("action_id"),
+        "dialogue_focus": frame.get("dialogue_focus"),
+        "target_gap": frame.get("target_gap"),
+        "polarity": frame.get("polarity"),
+        "confidence": frame.get("confidence"),
+        "candidate_response": frame.get("candidate_response"),
+        "response_strategy": frame.get("response_strategy"),
+        "response_variation_key": frame.get("response_variation_key"),
+        "next_best_sales_action": frame.get("next_best_sales_action"),
+        "buyer_decision_stage": frame.get("buyer_decision_stage"),
+        "commercial_intent": frame.get("commercial_intent"),
+        "should_answer_directly": frame.get("should_answer_directly"),
+        "should_ask_clarifying_question": frame.get("should_ask_clarifying_question"),
+        "should_recommend": frame.get("should_recommend"),
+        "should_close": frame.get("should_close"),
+        "should_disqualify": frame.get("should_disqualify"),
+    }
+    context = {
+        "campaign_id": CAMPAIGN_ID,
+        "turn_id": runtime_result["turn_id"],
+        "buyer_utterance_text_sanitized": "",
+        "normalized_buyer_text": str(frame.get("normalized") or ""),
+        "context_summary": (
+            "public_openai_dialogue_frame;"
+            f"semantic={frame.get('semantic') or ''};"
+            f"action={frame.get('action_id') or ''};"
+            f"focus={frame.get('dialogue_focus') or ''};"
+            f"transcript_hash={transcript_hash}"
+        ),
+        "runtime_result": runtime_result,
+        "expected_action_id": "",
+        "sanitized": True,
+        "raw_private_data": False,
+    }
+    try:
+        maybe_log_action_selector_shadow_turn(context)
+    except Exception:
+        return
 
 
 def _permission_ack(normalized: str) -> bool:

@@ -1,0 +1,92 @@
+{
+  "experiment_id": "NON-LLM-ACTION-SELECTOR-RUNTIME-HOOK-LOCATION-001",
+  "generated_at": "2026-05-30T00:30:23.308698+00:00",
+  "status": "pass",
+  "failure_count": 0,
+  "failures": [],
+  "selected_file": "runtime/campaigns/public_openai_chatgpt_plans_dialogue.py",
+  "selected_function": "_frame",
+  "selected_call_site": "_observe_action_selector_shadow_frame(frame) inside _frame after final frame construction",
+  "alternatives_considered": [
+    {
+      "file": "runtime/core/contextual_buyer_semantics.py",
+      "function": "classify_contextual_buyer_semantics",
+      "decision": "rejected",
+      "reason": "broader cross-campaign semantic router; higher blast radius than the public OpenAI campaign adapter."
+    },
+    {
+      "file": "runtime/core/realtime_turns.py",
+      "function": "build_runtime_decision",
+      "decision": "rejected",
+      "reason": "runtime harness includes background-module/call-control decisions and side-effect labels; not the narrow campaign post-decision location."
+    },
+    {
+      "file": "runtime/action_selector/shadow_runtime_hook.py",
+      "function": "maybe_log_action_selector_shadow_turn",
+      "decision": "supporting hook only",
+      "reason": "safe import target, but not a runtime observation point by itself."
+    },
+    {
+      "file": "runtime/action_selector/runtime_action_metadata_extractor.py",
+      "function": "extract_runtime_action_metadata",
+      "decision": "supporting extractor only",
+      "reason": "extracts metadata from a supplied runtime result but should not decide where runtime observation occurs."
+    }
+  ],
+  "why_selected": [
+    "The campaign _frame helper is reached only after the campaign response frame has been selected.",
+    "It has buyer utterance metadata, normalized text, semantic family, action_id, candidate_response, dialogue focus, and campaign id.",
+    "The hook result can be ignored without changing response text, memory, call control, TTS, provider calls, or side effects."
+  ],
+  "available_metadata": [
+    "campaign_id",
+    "buyer transcript hash",
+    "normalized buyer text for in-memory selector input",
+    "semantic",
+    "action_id",
+    "dialogue_focus",
+    "target_gap",
+    "polarity",
+    "confidence",
+    "candidate_response hash via extractor",
+    "response_strategy",
+    "next_best_sales_action"
+  ],
+  "unavailable_metadata": [
+    "provider response internals",
+    "TTS/prosody output",
+    "CRM/email/calendar execution state",
+    "raw private audio",
+    "raw private transcript in public evidence",
+    "stable external turn id when caller does not provide one"
+  ],
+  "safety_risks": [
+    "Hook import must remain fail-closed so a selector failure cannot alter runtime output.",
+    "Enabled runtime records must not be used for selector control or response replacement.",
+    "Public evidence must not include raw private transcript or audio."
+  ],
+  "default_behavior_with_env_disabled": "Fast no-op: no selector run, no file write, no record, no runtime output change.",
+  "expected_validators_if_changed": [
+    "python scripts\\validate_non_llm_action_selector_runtime_shadow_import_noop_001.py",
+    "python scripts\\run_non_llm_action_selector_runtime_shadow_import_gated_001.py",
+    "python scripts\\validate_non_llm_action_selector_runtime_shadow_import_gated_001.py",
+    "python scripts\\validate_runtime_manifest.py",
+    "python scripts\\validate_project_drift_guard.py"
+  ],
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "ultravox_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "local_llm_calls_made": false,
+  "ollama_calls_made": false,
+  "tts_calls_made": false,
+  "side_effects_allowed": false,
+  "memory_mutation_allowed": false,
+  "buyer_facing_text_generated": false,
+  "selector_control_allowed": false,
+  "live_runtime_wiring_allowed": false,
+  "raw_private_data": false,
+  "audio_data_used": false
+}

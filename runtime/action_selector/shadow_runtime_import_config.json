@@ -1,0 +1,38 @@
+{
+  "feature_id": "non_llm_action_selector_disabled_runtime_shadow_import",
+  "schema_version": 1,
+  "enabled_by_default": false,
+  "env_gate": "ACTION_SELECTOR_RUNTIME_SHADOW_IMPORT_ENABLED=1",
+  "public_evidence_write_enabled_by_default": false,
+  "public_evidence_env_gate": "ACTION_SELECTOR_PUBLIC_EVIDENCE_WRITE_ENABLED=1",
+  "live_private_log_allowed_by_default": false,
+  "live_private_log_env_gate": "ACTION_SELECTOR_PRIVATE_LOCAL_LOG_ENABLED=1",
+  "runtime_behavior_change_allowed": false,
+  "response_text_change_allowed": false,
+  "memory_mutation_allowed": false,
+  "provider_calls_allowed": false,
+  "local_model_calls_allowed": false,
+  "tts_calls_allowed": false,
+  "side_effects_allowed": false,
+  "buyer_facing_text_generation_allowed": false,
+  "selector_control_allowed": false,
+  "default_mode": "disabled_noop",
+  "allowed_modes": [
+    "disabled_noop",
+    "offline_sanitized_replay",
+    "runtime_shadow_read_only"
+  ],
+  "disallowed_modes": [
+    "selector_control",
+    "response_replacement",
+    "memory_mutation",
+    "side_effect_execution",
+    "provider_calling"
+  ],
+  "logging_policy": {
+    "live_private_runs_write_only_to_ignored_local_private_paths": true,
+    "do_not_write_raw_live_private_transcript_text_to_public_generated_evidence": true,
+    "public_generated_evidence_uses_synthetic_or_sanitized_replay_only": true,
+    "store_hashes_or_truncated_summaries_for_public_evidence": true
+  }
+}
