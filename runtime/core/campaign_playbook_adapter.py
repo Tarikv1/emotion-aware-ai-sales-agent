@@ -63,6 +63,32 @@ ROUTESIGNAL_GAP_MAPPINGS: dict[str, dict[str, list[str]]] = {
 }
 
 
+ROUTESIGNAL_RESPONSE_CAPABILITIES: dict[str, Any] = {
+    "campaign_specific_response_overrides": True,
+    "product_value_question_phrases": ["what is routesignal"],
+    "callback_near_miss_phrases": ["colbert", "call bags", "cold backs"],
+    "callback_near_miss_issue_label": "callbacks",
+    "offer_summary_sentence": (
+        "RouteSignal is a CRM workflow tool for inbound demo follow-up. "
+        "It helps teams assign the next reply, track reminders, and avoid missed handoffs."
+    ),
+    "offer_difference_sentence": (
+        "RouteSignal gives teams clearer ownership of the next reply and a cleaner view of whether follow-up is slipping."
+    ),
+    "offer_problem_sentence": "RouteSignal helps inbound demo requests avoid sitting without an owner.",
+    "value_focus_sentence": "The value is fewer missed replies and less manual follow-up drift.",
+    "worth_time_condition": "inbound demo follow-up is slipping",
+    "useful_condition_sentence": (
+        "Fair question. It is useful when demo requests need clear ownership for the next reply. "
+        "The value is fewer missed replies and less manual follow-up drift."
+    ),
+    "review_process_sentence": (
+        "The review would look at who owns the lead, when follow-up happens, and where reminders or handoffs slip. "
+        "I can only check that at a high level here."
+    ),
+}
+
+
 def _campaign_context() -> dict[str, Any]:
     source_context = dict((routesignal_playbook.PLAYBOOK.get("campaign_context") or {}))
     return {
@@ -232,6 +258,7 @@ def _resolve_routesignal_playbook(campaign: dict[str, Any] | None = None) -> dic
         "core_diagnostic_gaps": routesignal_playbook.core_diagnostic_gaps(),
         "gap_order": routesignal_playbook.gap_ids(),
         "safety": dict(SAFETY_FLAGS),
+        "response_capabilities": dict(ROUTESIGNAL_RESPONSE_CAPABILITIES),
     }
 
 
@@ -323,6 +350,7 @@ def _resolve_generic_campaign_playbook(campaign: dict[str, Any]) -> dict[str, An
         "core_diagnostic_gaps": core_diagnostic_gaps,
         "gap_order": gap_order,
         "safety": dict(SAFETY_FLAGS),
+        "response_capabilities": dict(campaign.get("response_capabilities") or {}),
     }
 
 
@@ -378,6 +406,10 @@ def campaign_review_focus(gap_id: str | None, campaign: dict[str, Any] | None = 
 
 def campaign_next_gap_candidates(gap_id: str | None, campaign: dict[str, Any] | None = None) -> list[str]:
     return list(campaign_gap_definition(gap_id, campaign).get("next_gap_candidates") or [])
+
+
+def campaign_response_capabilities(campaign: dict[str, Any] | None = None) -> dict[str, Any]:
+    return deepcopy(resolve_campaign_playbook(campaign).get("response_capabilities") or {})
 
 
 def validate_campaign_playbook(playbook: dict[str, Any]) -> dict[str, Any]:

@@ -15,11 +15,6 @@ SCHEMA_VERSION = 1
 REPAIR_RESPONSE = "I may have misheard that. Could you repeat it briefly?"
 REPEATED_REPAIR_RESPONSE = "I still may not have caught that. Could you repeat it in a few words?"
 
-ROUTESIGNAL_CAMPAIGN_IDS = {
-    "live-demo-001-routesignal",
-    "campaign-prod-005-b2b-software",
-}
-
 KNOWN_NONSENSE_PHRASES = {
     "play a double be good",
     "yadav would be good",
@@ -36,12 +31,6 @@ UNIVERSAL_ASR_REPAIR_REASONS = {
 NEAR_MISS_PHRASES = {
     "repeal timing",
     "repeal timings",
-}
-
-ROUTESIGNAL_CALLBACK_NEAR_MISS_PHRASES = {
-    "colbert",
-    "call bags",
-    "cold backs",
 }
 
 CLEAN_ACKNOWLEDGEMENTS = {
@@ -339,8 +328,6 @@ def _mismatch_phrase_from_normalized(normalized: str) -> str:
         return "coverage"
     if _contains_any(normalized, {"callbacks", "callback"}):
         return "callbacks"
-    if _contains_any(normalized, {"inbound demo follow up", "inbound demo follow-up", "demo follow up"}):
-        return "inbound demo follow-up"
     if _contains_any(normalized, {"manual work", "manual tracking"}):
         return "manual work"
     return ""
@@ -374,12 +361,7 @@ def _is_next_step_interest_after_context(normalized: str) -> bool:
 
 
 def _is_generic_campaign(campaign: dict | None) -> bool:
-    if not isinstance(campaign, dict):
-        return False
-    campaign_id = str(campaign.get("campaign_id") or "")
-    if campaign_id in ROUTESIGNAL_CAMPAIGN_IDS:
-        return False
-    return bool(campaign.get("vertical_id") and isinstance(campaign.get("diagnostic_gaps"), dict))
+    return session_policy.is_generic_campaign_config(campaign)
 
 
 def _campaign_text(campaign: dict | None, *keys: str, default: str = "") -> str:
@@ -426,11 +408,6 @@ def _campaign_offer_summary(campaign: dict | None) -> str:
     )
     if summary:
         return summary
-    if _is_routesignal_campaign(campaign):
-        return (
-            "RouteSignal is a CRM workflow tool for inbound demo follow-up. "
-            "It helps teams assign the next reply, track reminders, and avoid missed handoffs."
-        )
     product = _campaign_product_name(campaign)
     target = _campaign_appointment_target(campaign)
     return f"{product} is represented here as a high-level offer check before {target}."
@@ -440,8 +417,6 @@ def _campaign_value_proposition(campaign: dict | None) -> str:
     value = _campaign_text(campaign, "customer_facing_value_proposition", "high_level_value_proposition", "value_proposition")
     if value:
         return value
-    if _is_routesignal_campaign(campaign):
-        return "The value is fewer missed replies, clearer ownership, and less manual follow-up drift."
     return "The value is keeping the review focused before a human checks the actual details."
 
 
@@ -449,8 +424,6 @@ def _campaign_human_review_scope(campaign: dict | None) -> str:
     scope = _campaign_text(campaign, "customer_facing_human_review_scope", "human_review_scope", "review_scope")
     if scope:
         return scope
-    if _is_routesignal_campaign(campaign):
-        return "who owns the lead, when follow-up happens, and where reminders or handoffs slip"
     return _primary_gap_review_focus(campaign)
 
 
@@ -471,17 +444,15 @@ def _spoken_review_areas(campaign: dict | None) -> str:
     return parts[0] if parts else _primary_gap_phrase(campaign)
 
 
-def _routesignal_offer_sentence(normalized: str = "", *, value_focus: bool = False) -> str:
+def _campaign_specific_offer_sentence(campaign: dict | None, normalized: str = "", *, value_focus: bool = False) -> str:
+    capabilities = _campaign_response_capabilities(campaign)
     if value_focus:
-        return "The value is fewer missed replies and less manual follow-up drift."
+        return str(capabilities.get("value_focus_sentence") or _campaign_value_proposition(campaign))
     if _contains_any(normalized, {"different", "difference", "current provider"}):
-        return "RouteSignal gives teams clearer ownership of the next reply and a cleaner view of whether follow-up is slipping."
+        return str(capabilities.get("offer_difference_sentence") or _campaign_value_proposition(campaign))
     if _contains_any(normalized, {"what problem", "solve", "what do you do"}):
-        return "RouteSignal helps inbound demo requests avoid sitting without an owner."
-    return (
-        "RouteSignal is a CRM workflow tool for inbound demo follow-up. "
-        "It helps teams assign the next reply, track reminders, and avoid missed handoffs."
-    )
+        return str(capabilities.get("offer_problem_sentence") or _campaign_offer_summary(campaign))
+    return str(capabilities.get("offer_summary_sentence") or _campaign_offer_summary(campaign))
 
 
 def _generic_offer_sentence(campaign: dict | None) -> str:
@@ -560,10 +531,28 @@ def _campaign_caller_name(campaign: dict | None) -> str:
     return "Maya"
 
 
-def _is_routesignal_campaign(campaign: dict | None) -> bool:
-    campaign_id = _campaign_text(campaign, "campaign_id")
-    product = _campaign_product_name(campaign).lower()
-    return campaign_id in ROUTESIGNAL_CAMPAIGN_IDS or product.startswith("routesignal")
+def _campaign_response_capabilities(campaign: dict | None) -> dict[str, Any]:
+    try:
+        return campaign_playbook_adapter.campaign_response_capabilities(campaign)
+    except Exception:
+        return {}
+
+
+def _campaign_capability_items(campaign: dict | None, key: str) -> list[str]:
+    value = _campaign_response_capabilities(campaign).get(key)
+    if isinstance(value, str):
+        return [value] if value else []
+    if isinstance(value, (list, tuple, set)):
+        return [str(item) for item in value if str(item or "")]
+    return []
+
+
+def _uses_campaign_specific_response_overrides(campaign: dict | None) -> bool:
+    return _campaign_response_capabilities(campaign).get("campaign_specific_response_overrides") is True
+
+
+def _campaign_callback_near_miss_issue_label(campaign: dict | None) -> str:
+    return str(_campaign_response_capabilities(campaign).get("callback_near_miss_issue_label") or "that issue")
 
 
 def _resolved_campaign_playbook(campaign: dict | None) -> dict[str, Any]:
@@ -852,7 +841,7 @@ def _primary_gap_label(campaign: dict | None) -> str:
         label = str(records[0].get("label") or records[0].get("campaign_gap_id") or "").strip()
         if label:
             return label
-    if _is_routesignal_campaign(campaign):
+    if _uses_campaign_specific_response_overrides(campaign):
         return "follow-up gap"
     return "the relevant issue"
 
@@ -957,7 +946,11 @@ def _allowed_claim_summary(campaign: dict | None) -> str:
 
 def _approved_scope_response(campaign: dict | None) -> str:
     claim = _allowed_claim_summary(campaign)
-    summary = _routesignal_offer_sentence() if _is_routesignal_campaign(campaign) else _generic_offer_sentence(campaign)
+    summary = (
+        _campaign_specific_offer_sentence(campaign)
+        if _uses_campaign_specific_response_overrides(campaign)
+        else _generic_offer_sentence(campaign)
+    )
     value = _campaign_value_proposition(campaign)
     owner_role = _role_phrase(_campaign_owner(campaign))
     lowered = claim.lower()
@@ -1762,7 +1755,8 @@ def classify_universal_buyer_move_from_transcript(
             category="trust_identity_privacy_consent",
         )
 
-    if _is_routesignal_campaign(campaign) and _contains_any(
+    campaign_value_questions = set(_campaign_capability_items(campaign, "product_value_question_phrases"))
+    if _uses_campaign_specific_response_overrides(campaign) and _contains_any(
         normalized,
         {
             "what are you calling about",
@@ -1771,8 +1765,8 @@ def classify_universal_buyer_move_from_transcript(
             "what are you guys selling",
             "what do you guys sell",
             "what do you sell",
-            "what is routesignal",
-        },
+        }
+        | campaign_value_questions,
     ):
         return _recognition("what_problem_do_you_solve", reason="problem_solved_question_phrase", confidence="high", category="product_value_scope")
 
@@ -2059,7 +2053,6 @@ def classify_universal_buyer_move_from_transcript(
             "what are you guys selling",
             "what do you sell",
             "what do you guys sell",
-            "what is routesignal",
             "what is this",
             "what exactly is it",
             "what exactly do you do",
@@ -2113,13 +2106,14 @@ def classify_universal_buyer_move_from_transcript(
     if _contains_any(normalized, {"too busy", "we are busy", "in a meeting", "not a good time"}):
         return _recognition("too_busy_now", reason="too_busy_objection_phrase", confidence="high", category="objections")
 
-    if _is_routesignal_campaign(campaign) and _contains_any(normalized, ROUTESIGNAL_CALLBACK_NEAR_MISS_PHRASES) and _contains_any(
+    callback_near_miss_phrases = set(_campaign_capability_items(campaign, "callback_near_miss_phrases"))
+    if _uses_campaign_specific_response_overrides(campaign) and _contains_any(normalized, callback_near_miss_phrases) and _contains_any(
         normalized,
         {"problem", "issue", "the problem", "a problem"},
     ):
         return _recognition(
             "confusion_not_clear",
-            reason="routesignal_callback_near_miss_phrase",
+            reason="campaign_callback_near_miss_phrase",
             confidence="high",
             category="confusion_challenge_repair",
         )
@@ -2415,7 +2409,6 @@ def classify_universal_buyer_move_from_transcript(
             "i need coverage",
             "insurance coverage",
             "software callbacks",
-            "inbound demo follow up",
             "repair timing",
             "plan fit",
             "warranty estimate",
@@ -2725,7 +2718,7 @@ def high_confidence_buyer_move_priority_protected(
                 "configured_gap_clarity_request_phrase",
                 "confusion_or_clarification_phrase",
                 "out_of_campaign_pain_phrase",
-                "routesignal_callback_near_miss_phrase",
+                "campaign_callback_near_miss_phrase",
             }
         return True
     semantic = str((contextual_semantics or {}).get("semantic") or "")
@@ -2739,7 +2732,7 @@ def _enforcement_reason(enforcement_enabled: bool, detection: dict, campaign: di
     if not detection.get("applied"):
         return "no_asr_repair_required"
     if not _is_generic_campaign(campaign):
-        return "routesignal_or_non_generic_enforcement_disabled"
+        return "campaign_specific_or_non_generic_enforcement_disabled"
     return "enforcement_disabled"
 
 
@@ -2787,7 +2780,7 @@ def should_enforce_response_shape(
         return False
     if buyer_move_id in RAPPORT_RELEVANCE_BRIDGE_MOVES and confidence not in {"high", "medium"}:
         return False
-    if buyer_move_id == "confusion_not_clear" and _is_routesignal_campaign(campaign):
+    if buyer_move_id == "confusion_not_clear" and _uses_campaign_specific_response_overrides(campaign):
         normalized = str(((frame or {}).get("detection") or {}).get("normalized_transcript") or "")
         if str((frame or {}).get("pragmatic_move_id") or "") == "term_meaning_question" or _contains_any(
             normalized,
@@ -3078,7 +3071,9 @@ def render_universal_response_outline(
             },
         ):
             prior_summary = (
-                _routesignal_offer_sentence(normalized) if _is_routesignal_campaign(campaign) else _generic_offer_sentence(campaign)
+                _campaign_specific_offer_sentence(campaign, normalized)
+                if _uses_campaign_specific_response_overrides(campaign)
+                else _generic_offer_sentence(campaign)
             ).rstrip(".")
             if has_confirmed_gap:
                 return (
@@ -3089,17 +3084,17 @@ def render_universal_response_outline(
                 f"Already answered at a high level: {prior_summary}. "
                 "The next check is whether that is worth a specialist review."
             )
-        if _is_routesignal_campaign(campaign):
-            return f"Sure. {_routesignal_offer_sentence(normalized)}"
+        if _uses_campaign_specific_response_overrides(campaign):
+            return f"Sure. {_campaign_specific_offer_sentence(campaign, normalized)}"
         return f"Sure. {_generic_offer_sentence(campaign)} Should I keep it to that review?"
     if buyer_move_id == "what_problem_do_you_solve":
         if "why are you calling" in normalized:
-            if _is_routesignal_campaign(campaign):
-                return f"The reason for calling is simple: {_routesignal_offer_sentence(normalized)}"
+            if _uses_campaign_specific_response_overrides(campaign):
+                return f"The reason for calling is simple: {_campaign_specific_offer_sentence(campaign, normalized)}"
             return f"The reason for calling is simple: {_generic_offer_sentence(campaign)}"
         if _contains_any(normalized, {"one sentence", "say it in one sentence"}):
-            if _is_routesignal_campaign(campaign):
-                return f"In one sentence: {_routesignal_offer_sentence(normalized)}"
+            if _uses_campaign_specific_response_overrides(campaign):
+                return f"In one sentence: {_campaign_specific_offer_sentence(campaign, normalized)}"
             return f"In one sentence: {_generic_offer_sentence(campaign)}"
         if _contains_any(normalized, {"explain", "plainly", "what are you selling", "what is this"}):
             previous = normalize_transcript(_previous_agent_response(session_state))
@@ -3111,55 +3106,59 @@ def render_universal_response_outline(
                 or ("it is a quick" in previous and "has to be reviewed" in previous)
                 or ("plainly" in previous and _contains_any(previous, {"crm workflow tool", "represented here", "fit check call"}))
             ):
-                if _is_routesignal_campaign(campaign):
-                    return f"Different wording: {_routesignal_offer_sentence(normalized)}"
+                if _uses_campaign_specific_response_overrides(campaign):
+                    return f"Different wording: {_campaign_specific_offer_sentence(campaign, normalized)}"
                 return f"Different wording: {_generic_offer_sentence(campaign)}"
-            if _is_routesignal_campaign(campaign):
-                return f"Plainly, {_routesignal_offer_sentence(normalized)}"
+            if _uses_campaign_specific_response_overrides(campaign):
+                return f"Plainly, {_campaign_specific_offer_sentence(campaign, normalized)}"
             return f"Fair question. {_generic_offer_sentence(campaign)}"
-        if not _is_routesignal_campaign(campaign):
+        if not _uses_campaign_specific_response_overrides(campaign):
             return f"Fair question. {_generic_offer_sentence(campaign)} {_generic_value_sentence(campaign)}"
         return (
-            f"Fair question. {_routesignal_offer_sentence(normalized)} {_routesignal_offer_sentence(normalized, value_focus=True)}"
+            f"Fair question. {_campaign_specific_offer_sentence(campaign, normalized)} "
+            f"{_campaign_specific_offer_sentence(campaign, normalized, value_focus=True)}"
         )
     if buyer_move_id == "why_should_i_care":
-        if not _is_routesignal_campaign(campaign):
+        if not _uses_campaign_specific_response_overrides(campaign):
             if "worth" in normalized:
                 return f"It is worth time only if {_spoken_review_areas(campaign)} need specialist review. {_generic_value_sentence(campaign)}"
             if "useful" in normalized:
                 return f"Fair question. It is useful as a quick filter. {_generic_value_sentence(campaign)}"
             return f"Fair question. {_generic_value_sentence(campaign)}"
+        capabilities = _campaign_response_capabilities(campaign)
         if "worth" in normalized:
+            condition = str(capabilities.get("worth_time_condition") or _spoken_review_areas(campaign))
             return (
-                "It is worth time only if inbound demo follow-up is slipping. "
-                f"{_routesignal_offer_sentence(normalized, value_focus=True)}"
+                f"It is worth time only if {condition}. "
+                f"{_campaign_specific_offer_sentence(campaign, normalized, value_focus=True)}"
             )
         if "useful" in normalized:
-            return (
-                "Fair question. It is useful when demo requests need clear ownership for the next reply. "
-                f"{_routesignal_offer_sentence(normalized, value_focus=True)}"
+            return str(
+                capabilities.get("useful_condition_sentence")
+                or f"Fair question. {_campaign_specific_offer_sentence(campaign, normalized, value_focus=True)}"
             )
-        return f"Fair question. {_routesignal_offer_sentence(normalized, value_focus=True)}"
+        return f"Fair question. {_campaign_specific_offer_sentence(campaign, normalized, value_focus=True)}"
     if buyer_move_id == "what_makes_you_different":
         if _contains_any(normalized, {"current provider", "provider", "how do i know the difference", "difference"}):
             return (
                 f"I cannot compare exact provider terms on this call. "
-                f"{_routesignal_offer_sentence(normalized) if _is_routesignal_campaign(campaign) else _generic_value_sentence(campaign)} "
+                f"{_campaign_specific_offer_sentence(campaign, normalized) if _uses_campaign_specific_response_overrides(campaign) else _generic_value_sentence(campaign)} "
                 f"{session_policy.sentence_start(owner_role)} would compare {_campaign_human_review_scope(campaign)} before any recommendation."
             )
         return _approved_scope_response(campaign)
     if buyer_move_id == "who_is_this_for":
         return f"Fair question. It is for {buyer_role}. If that is not you, I can note the right person or keep this brief."
     if buyer_move_id == "is_this_worth_my_time":
-        if not _is_routesignal_campaign(campaign):
+        if not _uses_campaign_specific_response_overrides(campaign):
             return f"Fair question. It is worth time only if {_spoken_review_areas(campaign)} need specialist review. {_generic_value_sentence(campaign)}"
+        condition = str(_campaign_response_capabilities(campaign).get("worth_time_condition") or _spoken_review_areas(campaign))
         return (
-            "Fair question. It is worth time only if inbound demo follow-up is actually slipping. "
-            f"{_routesignal_offer_sentence(normalized, value_focus=True)}"
+            f"Fair question. It is worth time only if {condition}. "
+            f"{_campaign_specific_offer_sentence(campaign, normalized, value_focus=True)}"
         )
 
     if buyer_move_id == "who_are_you":
-        if not _is_routesignal_campaign(campaign):
+        if not _uses_campaign_specific_response_overrides(campaign):
             return f"Sure, I'm {caller} calling on behalf of {client} about {_campaign_product_name(campaign)}."
         return f"Sure, I'm {caller} calling on behalf of {client} about {_campaign_purpose_phrase(campaign)}."
     if buyer_move_id == "are_you_ai_or_robot":
@@ -3174,8 +3173,9 @@ def render_universal_response_outline(
         return "Understood. I'll stop here. Goodbye."
 
     if buyer_move_id == "confusion_not_clear":
-        if recognition_reason == "routesignal_callback_near_miss_phrase":
-            return "I may have misheard that. Did you mean callbacks are the problem?"
+        if recognition_reason == "campaign_callback_near_miss_phrase":
+            label = _campaign_callback_near_miss_issue_label(campaign)
+            return f"I may have misheard that. Did you mean {label} are the problem?"
         if recognition_reason == "configured_gap_clarity_request_phrase":
             return _gap_clarity_response(_gap_phrase_from_frame_or_text(frame, campaign, session_state), campaign)
         if recognition_reason == "campaign_mismatch_question_phrase":
@@ -3275,9 +3275,10 @@ def render_universal_response_outline(
                 f"would review {scope} before any recommendation. I'm not making the decision here."
             )
         if recognition_reason == "review_process_question_phrase":
-            if _is_routesignal_campaign(campaign):
-                return (
-                    "The review would look at who owns the lead, when follow-up happens, and where reminders or handoffs slip. "
+            if _uses_campaign_specific_response_overrides(campaign):
+                return str(
+                    _campaign_response_capabilities(campaign).get("review_process_sentence")
+                    or f"{session_policy.sentence_start(owner_role)} would review {_campaign_human_review_scope(campaign)}. "
                     "I can only check that at a high level here."
                 )
             return (

@@ -1,0 +1,237 @@
+{
+  "checkpoint_id": "PHASE-4L0-UNIVERSAL-SALES-ARCHITECTURE-RESET-001",
+  "status": "needs_manual_review",
+  "generated_at": "2026-05-31T00:37:29.2327159+02:00",
+  "architecture_direction": {
+    "primary_direction": "universal_sales_adapter_selector_policy_first",
+    "primary_benchmark_campaign": "public_openai_chatgpt_plans",
+    "secondary_regression_fixtures": [
+      "RouteSignal",
+      "generic_insurance",
+      "generic_telecom",
+      "home_services",
+      "b2b_saas"
+    ],
+    "routesignal_role": "regression_fixture_only",
+    "campaign_by_campaign_patching_rejected": true
+  },
+  "modules_inspected": {
+    "current_universal_modules": [
+      "runtime/core/universal_conversation_policy_runtime.py",
+      "runtime/core/contextual_buyer_semantics.py",
+      "runtime/core/live_voice_session_policy.py",
+      "runtime/core/dialogue_manager.py",
+      "runtime/core/dialogue_pragmatics.py",
+      "runtime/core/dialogue_reasoner.py",
+      "runtime/entrypoints/generic_campaign_turn.py",
+      "runtime/entrypoints/generate_guarded_response.py",
+      "runtime/action_selector",
+      "runtime/contracts"
+    ],
+    "campaign_specific_modules": [
+      "runtime/core/campaign_playbook_adapter.py",
+      "runtime/core/sales_diagnostic_playbook.py",
+      "runtime/campaigns/examples",
+      "runtime/campaigns/public_openai_chatgpt_plans_dialogue.py"
+    ],
+    "test_or_validator_modules": [
+      "scripts/validate_live_demo_002_conversation_stability.py",
+      "scripts/validate_live_demo_009_appointment_lead_close.py",
+      "scripts/validate_live_demo_014_clear_pain_callback_followup.py",
+      "scripts/validate_phase_4k12_routesignal_callback_appointment_progression_001.py",
+      "scripts/validate_phase_4k11_boundary_sensitive_selector_generalization_001.py",
+      "scripts/validate_phase_4k10a_selector_runtime_reconciliation_001.py",
+      "scripts/validate_phase_4k10_spoken_response_repair_001.py",
+      "scripts/validate_non_llm_action_selector_runtime_shadow_expansion_001.py",
+      "scripts/validate_public_openai_*",
+      "scripts/validate_universal_*"
+    ],
+    "evidence_modules": [
+      "research/experiments/generated",
+      "research/experiments/cases",
+      "docs/product",
+      "docs/thesis"
+    ]
+  },
+  "routesignal_leak_inventory": {
+    "allowed_campaign_specific": {
+      "count": 138,
+      "items": [
+        {
+          "path": "runtime/core/campaign_playbook_adapter.py",
+          "classification": "allowed_campaign_specific",
+          "reason": "RouteSignal response capabilities and campaign facts are adapter-mediated."
+        },
+        {
+          "path": "runtime/core/sales_diagnostic_playbook.py",
+          "classification": "allowed_campaign_specific",
+          "reason": "Legacy RouteSignal diagnostic playbook fixture."
+        },
+        {
+          "path": "runtime/campaigns/examples/campaign-prod-047-*.json",
+          "classification": "allowed_campaign_specific",
+          "reason": "Campaign profile contract examples, including invalid fixtures."
+        },
+        {
+          "path": "runtime/campaigns/public_openai_chatgpt_plans_dialogue.py",
+          "classification": "allowed_campaign_specific",
+          "reason": "OpenAI campaign contamination guard mentions legacy campaign names as forbidden alternatives."
+        }
+      ]
+    },
+    "allowed_fixture_or_evidence": {
+      "count": 20238,
+      "items": [
+        {
+          "path": "research/experiments/generated",
+          "classification": "allowed_fixture_or_evidence",
+          "reason": "Historical experiment evidence and generated regression outputs."
+        },
+        {
+          "path": "research/experiments/cases",
+          "classification": "allowed_fixture_or_evidence",
+          "reason": "RouteSignal named cases are regression fixtures."
+        },
+        {
+          "path": "docs/product and docs/thesis",
+          "classification": "allowed_fixture_or_evidence",
+          "reason": "Historical product notes, checkpoint docs, and thesis evidence."
+        }
+      ]
+    },
+    "allowed_test_or_validator": {
+      "count": 1640,
+      "items": [
+        {
+          "path": "scripts/validate_live_demo_*",
+          "classification": "allowed_test_or_validator",
+          "reason": "RouteSignal live-demo validators remain regression checks only."
+        },
+        {
+          "path": "scripts/validate_universal_*",
+          "classification": "allowed_test_or_validator",
+          "reason": "Universal validators use RouteSignal as a named cross-campaign fixture."
+        },
+        {
+          "path": "scripts/validate_public_openai_*",
+          "classification": "allowed_test_or_validator",
+          "reason": "OpenAI-primary validators check for RouteSignal contamination."
+        }
+      ]
+    },
+    "universal_adapter_leak": {
+      "count": 57,
+      "items": [
+        {
+          "path": "runtime/core/universal_conversation_policy_runtime.py",
+          "classification": "universal_adapter_leak",
+          "reason": "Direct RouteSignal IDs, branch names, near-miss phrases, and buyer-facing RouteSignal copy were in the strict universal policy module.",
+          "fixed": true,
+          "fix": "Moved campaign-specific phrases and response override sentences behind campaign_playbook_adapter response_capabilities."
+        }
+      ]
+    },
+    "suspicious_needs_manual_review": {
+      "count": 310,
+      "items": [
+        {
+          "path": "runtime/core/live_voice_session_policy.py",
+          "line_hit_count": 159,
+          "classification": "suspicious_needs_manual_review",
+          "reason": "Legacy live-demo policy contains many RouteSignal-specific response paths; broad rewrite would risk breaking regressions."
+        },
+        {
+          "path": "runtime/core/contextual_buyer_semantics.py",
+          "line_hit_count": 115,
+          "classification": "suspicious_needs_manual_review",
+          "reason": "Contextual semantic behavior still contains RouteSignal-specific branches and wording."
+        },
+        {
+          "path": "runtime/core/dialogue_manager.py",
+          "line_hit_count": 18,
+          "classification": "suspicious_needs_manual_review",
+          "reason": "Legacy dialogue manager contains direct RouteSignal campaign checks and Northstar close wording."
+        },
+        {
+          "path": "runtime/core/dialogue_reasoner.py",
+          "line_hit_count": 8,
+          "classification": "suspicious_needs_manual_review",
+          "reason": "Reasoner fixtures still encode RouteSignal/Northstar expectations."
+        },
+        {
+          "path": "runtime/core/dialogue_pragmatics.py",
+          "line_hit_count": 5,
+          "classification": "suspicious_needs_manual_review",
+          "reason": "Pragmatic repair contains RouteSignal-specific term explanation."
+        },
+        {
+          "path": "runtime/entrypoints/generate_guarded_response.py",
+          "line_hit_count": 3,
+          "classification": "suspicious_needs_manual_review",
+          "reason": "Legacy guarded response path has RouteSignal-specific phrase checks."
+        },
+        {
+          "path": "runtime/entrypoints/generic_campaign_turn.py",
+          "line_hit_count": 2,
+          "classification": "suspicious_needs_manual_review",
+          "reason": "Entrypoint explicitly blocks RouteSignal fallback by playbook id; behavior is likely correct but needs manual boundary review."
+        }
+      ]
+    }
+  },
+  "leaks_fixed": [
+    {
+      "path": "runtime/core/universal_conversation_policy_runtime.py",
+      "summary": "Removed direct RouteSignal campaign IDs, RouteSignal-specific near-miss constants, RouteSignal-specific offer renderer, and buyer-facing RouteSignal copy from the strict universal policy module."
+    },
+    {
+      "path": "runtime/core/campaign_playbook_adapter.py",
+      "summary": "Added adapter-mediated response_capabilities for campaign-specific value, problem, review-process, product-question, and callback-near-miss behavior."
+    }
+  ],
+  "openai_primary_universal_evaluation_roadmap": {
+    "source_affiliation_boundary": "Verify the agent clearly distinguishes public OpenAI information, official OpenAI pages, and non-affiliated helper wording.",
+    "plan_category_explanation": "Test plain explanations of Free, Plus, Pro, Business, and Enterprise as plan categories without inventing hidden tiers.",
+    "subscription_vs_model_product_explanation": "Check that plan, model, product, feature, and subscription terms are not conflated.",
+    "plan_fit_free_plus_pro_business_enterprise": "Evaluate fit routing for Free, Plus, Pro, Business, and Enterprise based on buyer need, team size, admin/security needs, and buying route.",
+    "price_terms_caveat": "Require current-price and terms caveats and route buyers to official OpenAI pages for final terms.",
+    "privacy_security_data_boundary": "Test privacy/security/data-use questions with conservative, source-bounded answers and Enterprise/contact-sales escalation where needed.",
+    "competitor_context": "Allow high-level competitor comparison only when source-bounded; block invented superiority claims.",
+    "current_tool_context": "Handle current tool stack questions without assuming integrations, migration guarantees, or private account state.",
+    "and_or_fidelity": "Preserve logical AND/OR buyer constraints when recommending plan categories or next steps.",
+    "no_fit_disqualify": "Disqualify or stop when the buyer need is unsupported, non-commercial, sensitive, or outside plan-selection scope.",
+    "self_serve_close_official_plan_page": "For self-serve fits, close toward the official ChatGPT plan page without claiming account or payment side effects.",
+    "enterprise_contact_sales_route": "Route enterprise/security/admin/procurement needs to contact sales without pretending to schedule or submit forms.",
+    "repeated_question_loop_repair": "Detect repeated questions and repair with shorter, different wording instead of looping.",
+    "spoken_naturalness_active_sales_progression": "Keep responses concise, spoken, and progression-oriented while preserving source and side-effect boundaries."
+  },
+  "acceptance": {
+    "strict_universal_policy_routesignal_literals_removed": true,
+    "routesignal_remaining_fixture_only": true,
+    "openai_primary_roadmap_present": true,
+    "no_live_selector_control_enabled": true,
+    "no_response_replacement_enabled": true,
+    "no_provider_model_tts_crm_email_calendar_payment_account_side_effects_enabled": true,
+    "no_raw_private_transcript_audio_added_to_public_evidence": true
+  },
+  "provider_calls_made": false,
+  "model_calls_made": false,
+  "openai_api_calls_made": false,
+  "ultravox_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "local_llm_calls_made": false,
+  "ollama_calls_made": false,
+  "tts_calls_made": false,
+  "crm_calls_made": false,
+  "email_calls_made": false,
+  "calendar_calls_made": false,
+  "payment_calls_made": false,
+  "account_side_effects_made": false,
+  "selector_control_allowed": false,
+  "live_selector_control_recommended": false,
+  "response_replacement_performed": false,
+  "side_effects_allowed": false,
+  "raw_private_data": false,
+  "raw_private_transcript_or_audio_added_to_public_evidence": false,
+  "raw_transcript_or_audio_public": false
+}
