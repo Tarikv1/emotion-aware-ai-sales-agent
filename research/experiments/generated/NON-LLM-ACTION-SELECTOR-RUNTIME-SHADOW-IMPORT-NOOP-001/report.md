@@ -7,7 +7,7 @@
 - Import config exists: true
 - Runtime hook has new gate: true
 - Shadow output written while disabled: false
-- Disabled overhead p50/p90/p99 ms: 0.7342/0.9617/26.3678
+- Disabled overhead p50/p90/p99 ms: 1.3046/1.8545/48.6309
 - Safety blockers: 0
 - Runtime behavior changed: false
 - Response text changed: false

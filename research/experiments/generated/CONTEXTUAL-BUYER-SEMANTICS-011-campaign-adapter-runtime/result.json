@@ -91,11 +91,21 @@
         "active_gap_scope": "unknown",
         "answered_gaps": [],
         "applied": false,
+        "buyer_affect_source": "none",
+        "buyer_confusion_level": "low",
+        "buyer_engagement_level": "medium",
+        "buyer_facing_summary": "",
+        "buyer_friction_level": "low",
+        "buyer_skepticism_level": "low",
+        "buyer_state": "unknown",
+        "campaign_response_priority": false,
         "candidate_gaps": [],
         "candidate_response": null,
         "cleared_gaps": [],
+        "commercial_intent": "unknown",
         "confidence": 0.0,
         "confirmed_gaps": [],
+        "conjunction_relation": "unknown",
         "creates_calendar_event": false,
         "dialogue_focus": null,
         "evidence": {
@@ -141,11 +151,18 @@
           "previous_agent_question_text": null,
           "previous_agent_question_type": "none"
         },
+        "evidence_terms": [],
+        "forbidden_routes": [],
         "handoff_target_state_update": {},
         "lead_followup_state_update": {},
         "local_llm_calls_made": false,
         "must_not_do": [],
+        "negation_scope": "none",
         "next_action_hint": "continue",
+        "next_best_sales_action": "",
+        "normalized_entities": {},
+        "object_mentions": [],
+        "object_type": "unknown",
         "opens_prod_102": false,
         "outgoing_active_gap_scope": "unknown",
         "outgoing_candidate_gaps": [],
@@ -190,12 +207,26 @@
         "polarity": "neutral",
         "primary_gap": null,
         "provider_calls_made": false,
+        "raw_buyer_meaning_summary": "",
+        "relation_type": "unknown",
+        "response_strategy": "",
+        "response_variation_key": "",
         "schema_version": 1,
         "secondary_confirmed_gaps": [],
         "semantic": "no_contextual_semantic",
+        "semantic_family": "unknown",
         "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
         "send_info_state_update": {},
         "sends_email": false,
+        "should_answer_directly": false,
+        "should_ask_clarifying_question": false,
+        "should_close": false,
+        "should_disqualify": false,
+        "should_not_route_to_stability_guard": false,
+        "should_recommend": false,
+        "speech_act": "unknown",
+        "state_updates": {},
+        "sub_intent": "unknown",
         "target_gap": null,
         "target_topic": null,
         "writes_crm": false
@@ -208,8 +239,9 @@
       "memory": {
         "active_gap_scope": "campaign_relevance",
         "active_stage": "qualification",
-        "active_topic": "qualification",
+        "active_topic": "pain_progression",
         "answered_topics": [
+          "pain_progression",
           "qualification"
         ],
         "appointment_close_gap": null,
@@ -221,31 +253,26 @@
         "callback_semantic": null,
         "candidate_gaps": [
           "callbacks",
-          "manual_tracking",
           "handoffs"
         ],
-        "candidate_response_signature": "callback_workflow:65e3b3575d13c41c",
-        "candidate_response_subject": "callback_workflow",
+        "candidate_response_signature": "general:a31f8e75f16ad928:205f3b9d6454c722",
+        "candidate_response_subject": "general:a31f8e75f16ad928",
         "last_active_agent_question_type": "sales_progression_question",
         "last_agent_question_hash": "c4f25e2c6ac64318",
         "last_agent_question_type": "sales_progression_question",
         "last_customer_intent": "permission_acknowledgement",
         "last_response_hashes": [
           "c4f25e2c6ac64318",
-          "65e3b3575d13c41c"
+          "205f3b9d6454c722"
         ],
         "last_response_signatures": [
           "opening_permission:c4f25e2c6ac64318",
-          "callback_workflow:65e3b3575d13c41c"
+          "general:a31f8e75f16ad928:205f3b9d6454c722"
         ],
         "last_sales_progression_step": "qualification",
-        "outgoing_active_gap_scope": "multi_gap",
-        "outgoing_candidate_gaps": [
-          "callbacks",
-          "manual_tracking",
-          "handoffs"
-        ],
-        "outgoing_question_type": "multi_gap_diagnostic",
+        "outgoing_active_gap_scope": "unknown",
+        "outgoing_candidate_gaps": [],
+        "outgoing_question_type": "sales_progression_question",
         "playbook": {
           "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
           "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
@@ -283,7 +310,7 @@
         ],
         "recent_response_subjects": [
           "opening_permission",
-          "callback_workflow"
+          "general:a31f8e75f16ad928"
         ],
         "rejected_topics": [],
         "schema_version": 1,
@@ -293,20 +320,30 @@
       },
       "opens_prod_102": false,
       "provider_calls_made": false,
-      "response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+      "response": "Thanks. Is inbound demo follow-up slipping right now?",
       "semantic_frame": {
         "action_id": "continue_with_session_policy",
         "active_gap_scope": "campaign_relevance",
         "answered_gaps": [],
         "applied": true,
+        "buyer_affect_source": "none",
+        "buyer_confusion_level": "low",
+        "buyer_engagement_level": "medium",
+        "buyer_facing_summary": "",
+        "buyer_friction_level": "low",
+        "buyer_skepticism_level": "low",
+        "buyer_state": "unknown",
+        "campaign_response_priority": false,
         "candidate_gaps": [
           "callbacks",
           "handoffs"
         ],
-        "candidate_response": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+        "candidate_response": "Thanks. Is inbound demo follow-up slipping right now?",
         "cleared_gaps": [],
+        "commercial_intent": "unknown",
         "confidence": 0.94,
         "confirmed_gaps": [],
+        "conjunction_relation": "unknown",
         "creates_calendar_event": false,
         "dialogue_focus": "qualification",
         "evidence": {
@@ -324,13 +361,9 @@
           "current_cleared_gaps": [],
           "current_confirmed_gaps": [],
           "normalized_buyer_utterance": "yeah sure",
-          "outgoing_active_gap_scope": "multi_gap",
-          "outgoing_candidate_gaps": [
-            "callbacks",
-            "manual_tracking",
-            "handoffs"
-          ],
-          "outgoing_question_type": "multi_gap_diagnostic",
+          "outgoing_active_gap_scope": "unknown",
+          "outgoing_candidate_gaps": [],
+          "outgoing_question_type": "sales_progression_question",
           "pending_appointment": false,
           "pending_callback": false,
           "playbook": {
@@ -359,6 +392,8 @@
           "previous_agent_question_text": "Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
           "previous_agent_question_type": "permission_check"
         },
+        "evidence_terms": [],
+        "forbidden_routes": [],
         "handoff_target_state_update": {},
         "lead_followup_state_update": {},
         "local_llm_calls_made": false,
@@ -366,15 +401,16 @@
           "classify as no pain",
           "ask appointment"
         ],
+        "negation_scope": "none",
         "next_action_hint": "start_diagnostic",
+        "next_best_sales_action": "",
+        "normalized_entities": {},
+        "object_mentions": [],
+        "object_type": "unknown",
         "opens_prod_102": false,
-        "outgoing_active_gap_scope": "multi_gap",
-        "outgoing_candidate_gaps": [
-          "callbacks",
-          "manual_tracking",
-          "handoffs"
-        ],
-        "outgoing_question_type": "multi_gap_diagnostic",
+        "outgoing_active_gap_scope": "unknown",
+        "outgoing_candidate_gaps": [],
+        "outgoing_question_type": "sales_progression_question",
         "playbook": {
           "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
           "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
@@ -415,12 +451,26 @@
         "polarity": "permission_granted",
         "primary_gap": null,
         "provider_calls_made": false,
+        "raw_buyer_meaning_summary": "",
+        "relation_type": "unknown",
+        "response_strategy": "",
+        "response_variation_key": "",
         "schema_version": 1,
         "secondary_confirmed_gaps": [],
         "semantic": "permission_acknowledgement",
+        "semantic_family": "unknown",
         "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
         "send_info_state_update": {},
         "sends_email": false,
+        "should_answer_directly": false,
+        "should_ask_clarifying_question": false,
+        "should_close": false,
+        "should_disqualify": false,
+        "should_not_route_to_stability_guard": false,
+        "should_recommend": false,
+        "speech_act": "unknown",
+        "state_updates": {},
+        "sub_intent": "unknown",
         "target_gap": null,
         "target_topic": null,
         "writes_crm": false
@@ -431,7 +481,7 @@
     {
       "local_llm_calls_made": false,
       "memory": {
-        "active_gap_scope": "multi_gap",
+        "active_gap_scope": "single_gap",
         "active_stage": "value_mapping",
         "active_topic": "callbacks",
         "answered_gaps": [
@@ -449,28 +499,23 @@
           "sales_progression_question": 1
         },
         "callback_semantic": null,
-        "candidate_gaps": [
-          "callbacks",
-          "manual_tracking",
-          "handoffs"
-        ],
         "candidate_response_signature": "handoff_workflow:bccf279fd9c617f3",
         "candidate_response_subject": "handoff_workflow",
         "cleared_gaps": [
           "callbacks"
         ],
         "last_active_agent_question_type": "permission_to_stop",
-        "last_agent_question_hash": "65e3b3575d13c41c",
+        "last_agent_question_hash": "205f3b9d6454c722",
         "last_agent_question_type": "permission_to_stop",
         "last_customer_intent": "current_gap_clear",
         "last_response_hashes": [
           "c4f25e2c6ac64318",
-          "65e3b3575d13c41c",
+          "205f3b9d6454c722",
           "bccf279fd9c617f3"
         ],
         "last_response_signatures": [
           "opening_permission:c4f25e2c6ac64318",
-          "callback_workflow:65e3b3575d13c41c",
+          "general:a31f8e75f16ad928:205f3b9d6454c722",
           "handoff_workflow:bccf279fd9c617f3"
         ],
         "last_sales_progression_step": "value_mapping",
@@ -529,7 +574,7 @@
         "primary_gap": "callbacks",
         "recent_response_subjects": [
           "opening_permission",
-          "callback_workflow",
+          "general:a31f8e75f16ad928",
           "handoff_workflow"
         ],
         "rejected_topics": [],
@@ -543,36 +588,38 @@
       "response": "Got it, callbacks are clear. Should I check manual tracking or handoffs, or stop here?",
       "semantic_frame": {
         "action_id": "continue_with_session_policy",
-        "active_gap_scope": "multi_gap",
+        "active_gap_scope": "single_gap",
         "answered_gaps": [
           "callbacks"
         ],
         "applied": true,
-        "candidate_gaps": [
-          "callbacks",
-          "manual_tracking",
-          "handoffs"
-        ],
+        "buyer_affect_source": "none",
+        "buyer_confusion_level": "low",
+        "buyer_engagement_level": "medium",
+        "buyer_facing_summary": "",
+        "buyer_friction_level": "low",
+        "buyer_skepticism_level": "low",
+        "buyer_state": "unknown",
+        "campaign_response_priority": false,
+        "candidate_gaps": [],
         "candidate_response": "Got it, callbacks are clear. Should I check manual tracking or handoffs, or stop here?",
         "cleared_gaps": [
           "callbacks"
         ],
+        "commercial_intent": "unknown",
         "confidence": 0.92,
         "confirmed_gaps": [],
+        "conjunction_relation": "unknown",
         "creates_calendar_event": false,
         "dialogue_focus": "qualification",
         "evidence": {
           "active_gap": "callbacks",
-          "active_gap_scope": "multi_gap",
+          "active_gap_scope": "single_gap",
           "answered_gaps": [
             "callbacks"
           ],
           "buyer_utterance": "callbacks are fine",
-          "candidate_gaps": [
-            "callbacks",
-            "manual_tracking",
-            "handoffs"
-          ],
+          "candidate_gaps": [],
           "cleared_gaps": [],
           "confirmed_gaps": [],
           "conversation_stage": "qualification",
@@ -618,9 +665,11 @@
             ],
             "vertical_id": "b2b_saas"
           },
-          "previous_agent_question_text": "Thanks. Quick fit check: are missed callbacks, manual tracking, or handoffs creating issues today?",
+          "previous_agent_question_text": "Thanks. Is inbound demo follow-up slipping right now?",
           "previous_agent_question_type": "sales_progression_question"
         },
+        "evidence_terms": [],
+        "forbidden_routes": [],
         "handoff_target_state_update": {},
         "lead_followup_state_update": {},
         "local_llm_calls_made": false,
@@ -628,7 +677,12 @@
           "classify as pain",
           "erase confirmed pain"
         ],
-        "next_action_hint": "ask_remaining_diagnostic",
+        "negation_scope": "none",
+        "next_action_hint": "ask_next_diagnostic",
+        "next_best_sales_action": "",
+        "normalized_entities": {},
+        "object_mentions": [],
+        "object_type": "unknown",
         "opens_prod_102": false,
         "outgoing_active_gap_scope": "unknown",
         "outgoing_candidate_gaps": [],
@@ -682,12 +736,26 @@
         "polarity": "clear_current_gap",
         "primary_gap": "callbacks",
         "provider_calls_made": false,
+        "raw_buyer_meaning_summary": "",
+        "relation_type": "unknown",
+        "response_strategy": "",
+        "response_variation_key": "",
         "schema_version": 1,
         "secondary_confirmed_gaps": [],
         "semantic": "current_gap_clear",
+        "semantic_family": "unknown",
         "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
         "send_info_state_update": {},
         "sends_email": false,
+        "should_answer_directly": false,
+        "should_ask_clarifying_question": false,
+        "should_close": false,
+        "should_disqualify": false,
+        "should_not_route_to_stability_guard": false,
+        "should_recommend": false,
+        "speech_act": "unknown",
+        "state_updates": {},
+        "sub_intent": "unknown",
         "target_gap": "callbacks",
         "target_topic": "callbacks",
         "writes_crm": false
@@ -719,11 +787,21 @@
               "integration_risk"
             ],
             "applied": true,
+            "buyer_affect_source": "none",
+            "buyer_confusion_level": "low",
+            "buyer_engagement_level": "medium",
+            "buyer_facing_summary": "",
+            "buyer_friction_level": "low",
+            "buyer_skepticism_level": "low",
+            "buyer_state": "unknown",
+            "campaign_response_priority": false,
             "candidate_gaps": [],
             "candidate_response": "I cannot verify that claim here. Exact integration, security, or setup fit needs verified material and review by a technical fit specialist before I claim it. Is that the gap you want reviewed?",
             "cleared_gaps": [],
+            "commercial_intent": "unknown",
             "confidence": 0.88,
             "confirmed_gaps": [],
+            "conjunction_relation": "unknown",
             "creates_calendar_event": false,
             "dialogue_focus": "details",
             "evidence": {
@@ -790,6 +868,8 @@
               "previous_agent_question_text": null,
               "previous_agent_question_type": "none"
             },
+            "evidence_terms": [],
+            "forbidden_routes": [],
             "handoff_target_state_update": {},
             "lead_followup_state_update": {},
             "local_llm_calls_made": false,
@@ -798,7 +878,12 @@
               "claim security proof",
               "invent setup details"
             ],
+            "negation_scope": "none",
             "next_action_hint": "answer_cautiously_continue",
+            "next_best_sales_action": "",
+            "normalized_entities": {},
+            "object_mentions": [],
+            "object_type": "unknown",
             "opens_prod_102": false,
             "outgoing_active_gap_scope": "unknown",
             "outgoing_candidate_gaps": [],
@@ -857,12 +942,26 @@
             "polarity": "caution",
             "primary_gap": "integration_risk",
             "provider_calls_made": false,
+            "raw_buyer_meaning_summary": "",
+            "relation_type": "unknown",
+            "response_strategy": "",
+            "response_variation_key": "",
             "schema_version": 1,
             "secondary_confirmed_gaps": [],
             "semantic": "campaign_claim_boundary_caution",
+            "semantic_family": "unknown",
             "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
             "send_info_state_update": {},
             "sends_email": false,
+            "should_answer_directly": false,
+            "should_ask_clarifying_question": false,
+            "should_close": false,
+            "should_disqualify": false,
+            "should_not_route_to_stability_guard": false,
+            "should_recommend": false,
+            "speech_act": "unknown",
+            "state_updates": {},
+            "sub_intent": "unknown",
             "target_gap": "integration_risk",
             "target_topic": "integration_risk",
             "writes_crm": false
@@ -901,17 +1000,27 @@
           }
         },
         "manager_permission_acknowledgement": {
-          "candidate_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+          "candidate_response": "Thanks. Is manual work causing any issue right now?",
           "contextual_buyer_semantics": {
             "action_id": "continue_with_session_policy",
             "active_gap_scope": "campaign_relevance",
             "answered_gaps": [],
             "applied": true,
+            "buyer_affect_source": "none",
+            "buyer_confusion_level": "low",
+            "buyer_engagement_level": "medium",
+            "buyer_facing_summary": "",
+            "buyer_friction_level": "low",
+            "buyer_skepticism_level": "low",
+            "buyer_state": "unknown",
+            "campaign_response_priority": false,
             "candidate_gaps": [],
-            "candidate_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+            "candidate_response": "Thanks. Is manual work causing any issue right now?",
             "cleared_gaps": [],
+            "commercial_intent": "unknown",
             "confidence": 0.94,
             "confirmed_gaps": [],
+            "conjunction_relation": "unknown",
             "creates_calendar_event": false,
             "dialogue_focus": "qualification",
             "evidence": {
@@ -926,13 +1035,13 @@
               "current_cleared_gaps": [],
               "current_confirmed_gaps": [],
               "normalized_buyer_utterance": "yeah sure",
-              "outgoing_active_gap_scope": "multi_gap",
+              "outgoing_active_gap_scope": "campaign_relevance",
               "outgoing_candidate_gaps": [
                 "manual_work",
                 "integration_risk",
                 "visibility_gap"
               ],
-              "outgoing_question_type": "multi_gap_diagnostic",
+              "outgoing_question_type": "sales_progression_question",
               "pending_appointment": false,
               "pending_callback": false,
               "playbook": {
@@ -974,6 +1083,8 @@
               "previous_agent_question_text": "Do you have a minute for one quick question?",
               "previous_agent_question_type": "permission_check"
             },
+            "evidence_terms": [],
+            "forbidden_routes": [],
             "handoff_target_state_update": {},
             "lead_followup_state_update": {},
             "local_llm_calls_made": false,
@@ -981,15 +1092,20 @@
               "classify as no pain",
               "ask appointment"
             ],
+            "negation_scope": "none",
             "next_action_hint": "start_diagnostic",
+            "next_best_sales_action": "",
+            "normalized_entities": {},
+            "object_mentions": [],
+            "object_type": "unknown",
             "opens_prod_102": false,
-            "outgoing_active_gap_scope": "multi_gap",
+            "outgoing_active_gap_scope": "campaign_relevance",
             "outgoing_candidate_gaps": [
               "manual_work",
               "integration_risk",
               "visibility_gap"
             ],
-            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_question_type": "sales_progression_question",
             "playbook": {
               "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
               "campaign_id": "synthetic-b2b-saas-contextual-011",
@@ -1038,12 +1154,26 @@
             "polarity": "permission_granted",
             "primary_gap": null,
             "provider_calls_made": false,
+            "raw_buyer_meaning_summary": "",
+            "relation_type": "unknown",
+            "response_strategy": "",
+            "response_variation_key": "",
             "schema_version": 1,
             "secondary_confirmed_gaps": [],
             "semantic": "permission_acknowledgement",
+            "semantic_family": "unknown",
             "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
             "send_info_state_update": {},
             "sends_email": false,
+            "should_answer_directly": false,
+            "should_ask_clarifying_question": false,
+            "should_close": false,
+            "should_disqualify": false,
+            "should_not_route_to_stability_guard": false,
+            "should_recommend": false,
+            "speech_act": "unknown",
+            "state_updates": {},
+            "sub_intent": "unknown",
             "target_gap": null,
             "target_topic": null,
             "writes_crm": false
@@ -1051,15 +1181,16 @@
           "conversation_memory": {
             "active_gap_scope": "campaign_relevance",
             "active_stage": "qualification",
-            "active_topic": "qualification",
+            "active_topic": "pain_progression",
             "answered_topics": [
+              "pain_progression",
               "qualification"
             ],
             "appointment_close_gap": null,
             "appointment_close_ready": false,
             "asked_question_type_counts": {
-              "gap_diagnostic": 1,
-              "permission_check": 1
+              "permission_check": 1,
+              "sales_progression_question": 1
             },
             "callback_semantic": null,
             "candidate_gaps": [
@@ -1067,28 +1198,28 @@
               "integration_risk",
               "visibility_gap"
             ],
-            "candidate_response_signature": "diagnostic_question:a2542970364118d4",
-            "candidate_response_subject": "diagnostic_question",
-            "last_active_agent_question_type": "gap_diagnostic",
+            "candidate_response_signature": "general:bc686cd8db11a344:f92e7a16e3f65927",
+            "candidate_response_subject": "general:bc686cd8db11a344",
+            "last_active_agent_question_type": "sales_progression_question",
             "last_agent_question_hash": "574e3fdeca5f04a1",
-            "last_agent_question_type": "gap_diagnostic",
+            "last_agent_question_type": "sales_progression_question",
             "last_customer_intent": "permission_acknowledgement",
             "last_response_hashes": [
               "574e3fdeca5f04a1",
-              "a2542970364118d4"
+              "f92e7a16e3f65927"
             ],
             "last_response_signatures": [
               "opening_permission:574e3fdeca5f04a1",
-              "diagnostic_question:a2542970364118d4"
+              "general:bc686cd8db11a344:f92e7a16e3f65927"
             ],
             "last_sales_progression_step": "qualification",
-            "outgoing_active_gap_scope": "multi_gap",
+            "outgoing_active_gap_scope": "campaign_relevance",
             "outgoing_candidate_gaps": [
               "manual_work",
               "integration_risk",
               "visibility_gap"
             ],
-            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_question_type": "sales_progression_question",
             "playbook": {
               "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
               "campaign_id": "synthetic-b2b-saas-contextual-011",
@@ -1134,7 +1265,7 @@
             ],
             "recent_response_subjects": [
               "opening_permission",
-              "diagnostic_question"
+              "general:bc686cd8db11a344"
             ],
             "rejected_topics": [],
             "schema_version": 1,
@@ -1146,8 +1277,8 @@
             "action_id": "continue_with_session_policy",
             "call_control": "continue-call",
             "candidate_response_available": true,
-            "continuity_reason": "contextual_permission_acknowledgement",
-            "dialogue_focus": "qualification",
+            "continuity_reason": "universal_response_shape_enforced",
+            "dialogue_focus": "pain_progression",
             "pragmatic_move": {
               "applied": false,
               "campaign_id": "synthetic-b2b-saas-contextual-011",
@@ -1171,41 +1302,47 @@
               "target_action": null
             },
             "selected_gap": null,
-            "source": "contextual_buyer_semantics",
-            "template_id": "session_policy_contextual_permission_acknowledgement"
+            "source": "universal_response_shape",
+            "template_id": "session_policy_universal_response_shape_enforced"
           }
         },
         "manual work is handled": {
           "action_id": "continue_with_session_policy",
-          "active_gap_scope": "multi_gap",
+          "active_gap_scope": "single_gap",
           "answered_gaps": [
             "manual_work"
           ],
           "applied": true,
+          "buyer_affect_source": "none",
+          "buyer_confusion_level": "low",
+          "buyer_engagement_level": "medium",
+          "buyer_facing_summary": "",
+          "buyer_friction_level": "low",
+          "buyer_skepticism_level": "low",
+          "buyer_state": "unknown",
+          "campaign_response_priority": false,
           "candidate_gaps": [
-            "manual_work",
-            "integration_risk",
-            "visibility_gap"
+            "manual_work"
           ],
           "candidate_response": "Got it, manual work is clear. Should I check integration risk or visibility gap, or stop here?",
           "cleared_gaps": [
             "manual_work"
           ],
+          "commercial_intent": "unknown",
           "confidence": 0.92,
           "confirmed_gaps": [],
+          "conjunction_relation": "unknown",
           "creates_calendar_event": false,
           "dialogue_focus": "qualification",
           "evidence": {
             "active_gap": "manual_work",
-            "active_gap_scope": "multi_gap",
+            "active_gap_scope": "single_gap",
             "answered_gaps": [
               "manual_work"
             ],
             "buyer_utterance": "manual work is handled",
             "candidate_gaps": [
-              "manual_work",
-              "integration_risk",
-              "visibility_gap"
+              "manual_work"
             ],
             "cleared_gaps": [],
             "confirmed_gaps": [],
@@ -1225,13 +1362,11 @@
               "campaign_id": "synthetic-b2b-saas-contextual-011",
               "campaign_playbook_id": "synthetic-b2b-saas-contextual-011-playbook",
               "candidate_gaps": [
-                "manual_work",
-                "integration_risk",
-                "visibility_gap"
+                "manual_work"
               ],
               "playbook_gap": "manual_work",
               "playbook_id": "synthetic-b2b-saas-contextual-011-playbook",
-              "playbook_next_gap": "integration_risk",
+              "playbook_next_gap": null,
               "playbook_review_focus": "manual-work review",
               "playbook_supported_gap_ids": [
                 "manual_work",
@@ -1263,9 +1398,11 @@
               ],
               "vertical_id": "b2b_saas"
             },
-            "previous_agent_question_text": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
-            "previous_agent_question_type": "gap_diagnostic"
+            "previous_agent_question_text": "Thanks. Is manual work causing any issue right now?",
+            "previous_agent_question_type": "sales_progression_question"
           },
+          "evidence_terms": [],
+          "forbidden_routes": [],
           "handoff_target_state_update": {},
           "lead_followup_state_update": {},
           "local_llm_calls_made": false,
@@ -1273,7 +1410,12 @@
             "classify as pain",
             "erase confirmed pain"
           ],
+          "negation_scope": "none",
           "next_action_hint": "ask_remaining_diagnostic",
+          "next_best_sales_action": "",
+          "normalized_entities": {},
+          "object_mentions": [],
+          "object_type": "unknown",
           "opens_prod_102": false,
           "outgoing_active_gap_scope": "unknown",
           "outgoing_candidate_gaps": [],
@@ -1283,13 +1425,11 @@
             "campaign_id": "synthetic-b2b-saas-contextual-011",
             "campaign_playbook_id": "synthetic-b2b-saas-contextual-011-playbook",
             "candidate_gaps": [
-              "manual_work",
-              "integration_risk",
-              "visibility_gap"
+              "manual_work"
             ],
             "playbook_gap": "manual_work",
             "playbook_id": "synthetic-b2b-saas-contextual-011-playbook",
-            "playbook_next_gap": "integration_risk",
+            "playbook_next_gap": null,
             "playbook_review_focus": "manual-work review",
             "playbook_supported_gap_ids": [
               "manual_work",
@@ -1323,7 +1463,7 @@
           },
           "playbook_gap": "manual_work",
           "playbook_id": "synthetic-b2b-saas-contextual-011-playbook",
-          "playbook_next_gap": "integration_risk",
+          "playbook_next_gap": null,
           "playbook_review_focus": "manual-work review",
           "playbook_supported_gap_ids": [
             "manual_work",
@@ -1333,12 +1473,26 @@
           "polarity": "clear_current_gap",
           "primary_gap": "manual_work",
           "provider_calls_made": false,
+          "raw_buyer_meaning_summary": "",
+          "relation_type": "unknown",
+          "response_strategy": "",
+          "response_variation_key": "",
           "schema_version": 1,
           "secondary_confirmed_gaps": [],
           "semantic": "current_gap_clear",
+          "semantic_family": "unknown",
           "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
           "send_info_state_update": {},
           "sends_email": false,
+          "should_answer_directly": false,
+          "should_ask_clarifying_question": false,
+          "should_close": false,
+          "should_disqualify": false,
+          "should_not_route_to_stability_guard": false,
+          "should_recommend": false,
+          "speech_act": "unknown",
+          "state_updates": {},
+          "sub_intent": "unknown",
           "target_gap": "manual_work",
           "target_topic": "manual_work",
           "writes_crm": false
@@ -1348,11 +1502,21 @@
           "active_gap_scope": "campaign_relevance",
           "answered_gaps": [],
           "applied": true,
+          "buyer_affect_source": "none",
+          "buyer_confusion_level": "low",
+          "buyer_engagement_level": "medium",
+          "buyer_facing_summary": "",
+          "buyer_friction_level": "low",
+          "buyer_skepticism_level": "low",
+          "buyer_state": "unknown",
+          "campaign_response_priority": false,
           "candidate_gaps": [],
-          "candidate_response": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
+          "candidate_response": "Thanks. Is manual work causing any issue right now?",
           "cleared_gaps": [],
+          "commercial_intent": "unknown",
           "confidence": 0.94,
           "confirmed_gaps": [],
+          "conjunction_relation": "unknown",
           "creates_calendar_event": false,
           "dialogue_focus": "qualification",
           "evidence": {
@@ -1367,13 +1531,13 @@
             "current_cleared_gaps": [],
             "current_confirmed_gaps": [],
             "normalized_buyer_utterance": "yeah sure",
-            "outgoing_active_gap_scope": "multi_gap",
+            "outgoing_active_gap_scope": "campaign_relevance",
             "outgoing_candidate_gaps": [
               "manual_work",
               "integration_risk",
               "visibility_gap"
             ],
-            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_question_type": "sales_progression_question",
             "pending_appointment": false,
             "pending_callback": false,
             "playbook": {
@@ -1415,6 +1579,8 @@
             "previous_agent_question_text": "Do you have a minute for one quick question?",
             "previous_agent_question_type": "permission_check"
           },
+          "evidence_terms": [],
+          "forbidden_routes": [],
           "handoff_target_state_update": {},
           "lead_followup_state_update": {},
           "local_llm_calls_made": false,
@@ -1422,15 +1588,20 @@
             "classify as no pain",
             "ask appointment"
           ],
+          "negation_scope": "none",
           "next_action_hint": "start_diagnostic",
+          "next_best_sales_action": "",
+          "normalized_entities": {},
+          "object_mentions": [],
+          "object_type": "unknown",
           "opens_prod_102": false,
-          "outgoing_active_gap_scope": "multi_gap",
+          "outgoing_active_gap_scope": "campaign_relevance",
           "outgoing_candidate_gaps": [
             "manual_work",
             "integration_risk",
             "visibility_gap"
           ],
-          "outgoing_question_type": "multi_gap_diagnostic",
+          "outgoing_question_type": "sales_progression_question",
           "playbook": {
             "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
             "campaign_id": "synthetic-b2b-saas-contextual-011",
@@ -1479,47 +1650,67 @@
           "polarity": "permission_granted",
           "primary_gap": null,
           "provider_calls_made": false,
+          "raw_buyer_meaning_summary": "",
+          "relation_type": "unknown",
+          "response_strategy": "",
+          "response_variation_key": "",
           "schema_version": 1,
           "secondary_confirmed_gaps": [],
           "semantic": "permission_acknowledgement",
+          "semantic_family": "unknown",
           "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
           "send_info_state_update": {},
           "sends_email": false,
+          "should_answer_directly": false,
+          "should_ask_clarifying_question": false,
+          "should_close": false,
+          "should_disqualify": false,
+          "should_not_route_to_stability_guard": false,
+          "should_recommend": false,
+          "speech_act": "unknown",
+          "state_updates": {},
+          "sub_intent": "unknown",
           "target_gap": null,
           "target_topic": null,
           "writes_crm": false
         },
         "visibility is the problem": {
           "action_id": "request_appointment_time",
-          "active_gap_scope": "multi_gap",
+          "active_gap_scope": "single_gap",
           "answered_gaps": [
             "visibility_gap"
           ],
           "applied": true,
+          "buyer_affect_source": "none",
+          "buyer_confusion_level": "low",
+          "buyer_engagement_level": "medium",
+          "buyer_facing_summary": "",
+          "buyer_friction_level": "low",
+          "buyer_skepticism_level": "low",
+          "buyer_state": "unknown",
+          "campaign_response_priority": false,
           "candidate_gaps": [
-            "manual_work",
-            "integration_risk",
-            "visibility_gap"
+            "manual_work"
           ],
-          "candidate_response": "Got it, visibility gap sounds like the issue. A technical fit specialist can review visibility-gap review. What time works for a quick human fit and technical review?",
+          "candidate_response": "Got it, visibility gap sounds like the issue; a technical fit specialist can review visibility-gap review. What time works for a quick human fit and technical review?",
           "cleared_gaps": [],
+          "commercial_intent": "unknown",
           "confidence": 0.88,
           "confirmed_gaps": [
             "visibility_gap"
           ],
+          "conjunction_relation": "unknown",
           "creates_calendar_event": false,
           "dialogue_focus": "timing",
           "evidence": {
             "active_gap": "visibility_gap",
-            "active_gap_scope": "multi_gap",
+            "active_gap_scope": "single_gap",
             "answered_gaps": [
               "visibility_gap"
             ],
             "buyer_utterance": "visibility is the problem",
             "candidate_gaps": [
-              "manual_work",
-              "integration_risk",
-              "visibility_gap"
+              "manual_work"
             ],
             "cleared_gaps": [],
             "confirmed_gaps": [],
@@ -1539,9 +1730,7 @@
               "campaign_id": "synthetic-b2b-saas-contextual-011",
               "campaign_playbook_id": "synthetic-b2b-saas-contextual-011-playbook",
               "candidate_gaps": [
-                "manual_work",
-                "integration_risk",
-                "visibility_gap"
+                "manual_work"
               ],
               "playbook_gap": "visibility_gap",
               "playbook_id": "synthetic-b2b-saas-contextual-011-playbook",
@@ -1577,9 +1766,11 @@
               ],
               "vertical_id": "b2b_saas"
             },
-            "previous_agent_question_text": "Thanks, I am checking manual work, integration risk, or visibility gap. Which one is causing trouble, if any?",
-            "previous_agent_question_type": "gap_diagnostic"
+            "previous_agent_question_text": "Thanks. Is manual work causing any issue right now?",
+            "previous_agent_question_type": "sales_progression_question"
           },
+          "evidence_terms": [],
+          "forbidden_routes": [],
           "handoff_target_state_update": {},
           "lead_followup_state_update": {},
           "local_llm_calls_made": false,
@@ -1587,7 +1778,12 @@
             "treat as no pain",
             "erase cleared gaps"
           ],
+          "negation_scope": "none",
           "next_action_hint": "move_toward_workflow_review",
+          "next_best_sales_action": "",
+          "normalized_entities": {},
+          "object_mentions": [],
+          "object_type": "unknown",
           "opens_prod_102": false,
           "outgoing_active_gap_scope": "unknown",
           "outgoing_candidate_gaps": [],
@@ -1597,9 +1793,7 @@
             "campaign_id": "synthetic-b2b-saas-contextual-011",
             "campaign_playbook_id": "synthetic-b2b-saas-contextual-011-playbook",
             "candidate_gaps": [
-              "manual_work",
-              "integration_risk",
-              "visibility_gap"
+              "manual_work"
             ],
             "playbook_gap": "visibility_gap",
             "playbook_id": "synthetic-b2b-saas-contextual-011-playbook",
@@ -1647,12 +1841,26 @@
           "polarity": "pain",
           "primary_gap": "visibility_gap",
           "provider_calls_made": false,
+          "raw_buyer_meaning_summary": "",
+          "relation_type": "unknown",
+          "response_strategy": "",
+          "response_variation_key": "",
           "schema_version": 1,
           "secondary_confirmed_gaps": [],
           "semantic": "pain_confirmed",
+          "semantic_family": "unknown",
           "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
           "send_info_state_update": {},
           "sends_email": false,
+          "should_answer_directly": false,
+          "should_ask_clarifying_question": false,
+          "should_close": false,
+          "should_disqualify": false,
+          "should_not_route_to_stability_guard": false,
+          "should_recommend": false,
+          "speech_act": "unknown",
+          "state_updates": {},
+          "sub_intent": "unknown",
           "target_gap": "visibility_gap",
           "target_topic": "visibility_gap",
           "writes_crm": false
@@ -1674,17 +1882,27 @@
       ],
       "turns": {
         "manager_permission_acknowledgement": {
-          "candidate_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
+          "candidate_response": "Thanks. Is the service need active right now?",
           "contextual_buyer_semantics": {
             "action_id": "continue_with_session_policy",
             "active_gap_scope": "campaign_relevance",
             "answered_gaps": [],
             "applied": true,
+            "buyer_affect_source": "none",
+            "buyer_confusion_level": "low",
+            "buyer_engagement_level": "medium",
+            "buyer_facing_summary": "",
+            "buyer_friction_level": "low",
+            "buyer_skepticism_level": "low",
+            "buyer_state": "unknown",
+            "campaign_response_priority": false,
             "candidate_gaps": [],
-            "candidate_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
+            "candidate_response": "Thanks. Is service need causing any issue right now?",
             "cleared_gaps": [],
+            "commercial_intent": "unknown",
             "confidence": 0.94,
             "confirmed_gaps": [],
+            "conjunction_relation": "unknown",
             "creates_calendar_event": false,
             "dialogue_focus": "qualification",
             "evidence": {
@@ -1699,13 +1917,13 @@
               "current_cleared_gaps": [],
               "current_confirmed_gaps": [],
               "normalized_buyer_utterance": "yeah sure",
-              "outgoing_active_gap_scope": "multi_gap",
+              "outgoing_active_gap_scope": "campaign_relevance",
               "outgoing_candidate_gaps": [
                 "service_need",
                 "scheduling_urgency",
                 "estimate_or_property_details"
               ],
-              "outgoing_question_type": "multi_gap_diagnostic",
+              "outgoing_question_type": "sales_progression_question",
               "pending_appointment": false,
               "pending_callback": false,
               "playbook": {
@@ -1748,6 +1966,8 @@
               "previous_agent_question_text": "Do you have a minute for one quick question?",
               "previous_agent_question_type": "permission_check"
             },
+            "evidence_terms": [],
+            "forbidden_routes": [],
             "handoff_target_state_update": {},
             "lead_followup_state_update": {},
             "local_llm_calls_made": false,
@@ -1755,15 +1975,20 @@
               "classify as no pain",
               "ask appointment"
             ],
+            "negation_scope": "none",
             "next_action_hint": "start_diagnostic",
+            "next_best_sales_action": "",
+            "normalized_entities": {},
+            "object_mentions": [],
+            "object_type": "unknown",
             "opens_prod_102": false,
-            "outgoing_active_gap_scope": "multi_gap",
+            "outgoing_active_gap_scope": "campaign_relevance",
             "outgoing_candidate_gaps": [
               "service_need",
               "scheduling_urgency",
               "estimate_or_property_details"
             ],
-            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_question_type": "sales_progression_question",
             "playbook": {
               "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
               "campaign_id": "synthetic-home-services-contextual-011",
@@ -1813,12 +2038,26 @@
             "polarity": "permission_granted",
             "primary_gap": null,
             "provider_calls_made": false,
+            "raw_buyer_meaning_summary": "",
+            "relation_type": "unknown",
+            "response_strategy": "",
+            "response_variation_key": "",
             "schema_version": 1,
             "secondary_confirmed_gaps": [],
             "semantic": "permission_acknowledgement",
+            "semantic_family": "unknown",
             "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
             "send_info_state_update": {},
             "sends_email": false,
+            "should_answer_directly": false,
+            "should_ask_clarifying_question": false,
+            "should_close": false,
+            "should_disqualify": false,
+            "should_not_route_to_stability_guard": false,
+            "should_recommend": false,
+            "speech_act": "unknown",
+            "state_updates": {},
+            "sub_intent": "unknown",
             "target_gap": null,
             "target_topic": null,
             "writes_crm": false
@@ -1826,15 +2065,16 @@
           "conversation_memory": {
             "active_gap_scope": "campaign_relevance",
             "active_stage": "qualification",
-            "active_topic": "qualification",
+            "active_topic": "pain_progression",
             "answered_topics": [
+              "pain_progression",
               "qualification"
             ],
             "appointment_close_gap": null,
             "appointment_close_ready": false,
             "asked_question_type_counts": {
-              "gap_diagnostic": 1,
-              "permission_check": 1
+              "permission_check": 1,
+              "sales_progression_question": 1
             },
             "callback_semantic": null,
             "candidate_gaps": [
@@ -1842,28 +2082,28 @@
               "scheduling_urgency",
               "estimate_or_property_details"
             ],
-            "candidate_response_signature": "diagnostic_question:57740c856e2e86ee",
-            "candidate_response_subject": "diagnostic_question",
-            "last_active_agent_question_type": "gap_diagnostic",
+            "candidate_response_signature": "general:2f4548259e696c08:44343194e237caf0",
+            "candidate_response_subject": "general:2f4548259e696c08",
+            "last_active_agent_question_type": "sales_progression_question",
             "last_agent_question_hash": "574e3fdeca5f04a1",
-            "last_agent_question_type": "gap_diagnostic",
+            "last_agent_question_type": "sales_progression_question",
             "last_customer_intent": "permission_acknowledgement",
             "last_response_hashes": [
               "574e3fdeca5f04a1",
-              "57740c856e2e86ee"
+              "44343194e237caf0"
             ],
             "last_response_signatures": [
               "opening_permission:574e3fdeca5f04a1",
-              "diagnostic_question:57740c856e2e86ee"
+              "general:2f4548259e696c08:44343194e237caf0"
             ],
             "last_sales_progression_step": "qualification",
-            "outgoing_active_gap_scope": "multi_gap",
+            "outgoing_active_gap_scope": "campaign_relevance",
             "outgoing_candidate_gaps": [
               "service_need",
               "scheduling_urgency",
               "estimate_or_property_details"
             ],
-            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_question_type": "sales_progression_question",
             "playbook": {
               "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
               "campaign_id": "synthetic-home-services-contextual-011",
@@ -1910,7 +2150,7 @@
             ],
             "recent_response_subjects": [
               "opening_permission",
-              "diagnostic_question"
+              "general:2f4548259e696c08"
             ],
             "rejected_topics": [],
             "schema_version": 1,
@@ -1922,8 +2162,8 @@
             "action_id": "continue_with_session_policy",
             "call_control": "continue-call",
             "candidate_response_available": true,
-            "continuity_reason": "contextual_permission_acknowledgement",
-            "dialogue_focus": "qualification",
+            "continuity_reason": "universal_response_shape_enforced",
+            "dialogue_focus": "pain_progression",
             "pragmatic_move": {
               "applied": false,
               "campaign_id": "synthetic-home-services-contextual-011",
@@ -1947,8 +2187,8 @@
               "target_action": null
             },
             "selected_gap": null,
-            "source": "contextual_buyer_semantics",
-            "template_id": "session_policy_contextual_permission_acknowledgement"
+            "source": "universal_response_shape",
+            "template_id": "session_policy_universal_response_shape_enforced"
           }
         },
         "permission_acknowledgement": {
@@ -1956,11 +2196,21 @@
           "active_gap_scope": "campaign_relevance",
           "answered_gaps": [],
           "applied": true,
+          "buyer_affect_source": "none",
+          "buyer_confusion_level": "low",
+          "buyer_engagement_level": "medium",
+          "buyer_facing_summary": "",
+          "buyer_friction_level": "low",
+          "buyer_skepticism_level": "low",
+          "buyer_state": "unknown",
+          "campaign_response_priority": false,
           "candidate_gaps": [],
-          "candidate_response": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
+          "candidate_response": "Thanks. Is service need causing any issue right now?",
           "cleared_gaps": [],
+          "commercial_intent": "unknown",
           "confidence": 0.94,
           "confirmed_gaps": [],
+          "conjunction_relation": "unknown",
           "creates_calendar_event": false,
           "dialogue_focus": "qualification",
           "evidence": {
@@ -1975,13 +2225,13 @@
             "current_cleared_gaps": [],
             "current_confirmed_gaps": [],
             "normalized_buyer_utterance": "yeah sure",
-            "outgoing_active_gap_scope": "multi_gap",
+            "outgoing_active_gap_scope": "campaign_relevance",
             "outgoing_candidate_gaps": [
               "service_need",
               "scheduling_urgency",
               "estimate_or_property_details"
             ],
-            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_question_type": "sales_progression_question",
             "pending_appointment": false,
             "pending_callback": false,
             "playbook": {
@@ -2024,6 +2274,8 @@
             "previous_agent_question_text": "Do you have a minute for one quick question?",
             "previous_agent_question_type": "permission_check"
           },
+          "evidence_terms": [],
+          "forbidden_routes": [],
           "handoff_target_state_update": {},
           "lead_followup_state_update": {},
           "local_llm_calls_made": false,
@@ -2031,15 +2283,20 @@
             "classify as no pain",
             "ask appointment"
           ],
+          "negation_scope": "none",
           "next_action_hint": "start_diagnostic",
+          "next_best_sales_action": "",
+          "normalized_entities": {},
+          "object_mentions": [],
+          "object_type": "unknown",
           "opens_prod_102": false,
-          "outgoing_active_gap_scope": "multi_gap",
+          "outgoing_active_gap_scope": "campaign_relevance",
           "outgoing_candidate_gaps": [
             "service_need",
             "scheduling_urgency",
             "estimate_or_property_details"
           ],
-          "outgoing_question_type": "multi_gap_diagnostic",
+          "outgoing_question_type": "sales_progression_question",
           "playbook": {
             "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
             "campaign_id": "synthetic-home-services-contextual-011",
@@ -2089,47 +2346,67 @@
           "polarity": "permission_granted",
           "primary_gap": null,
           "provider_calls_made": false,
+          "raw_buyer_meaning_summary": "",
+          "relation_type": "unknown",
+          "response_strategy": "",
+          "response_variation_key": "",
           "schema_version": 1,
           "secondary_confirmed_gaps": [],
           "semantic": "permission_acknowledgement",
+          "semantic_family": "unknown",
           "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
           "send_info_state_update": {},
           "sends_email": false,
+          "should_answer_directly": false,
+          "should_ask_clarifying_question": false,
+          "should_close": false,
+          "should_disqualify": false,
+          "should_not_route_to_stability_guard": false,
+          "should_recommend": false,
+          "speech_act": "unknown",
+          "state_updates": {},
+          "sub_intent": "unknown",
           "target_gap": null,
           "target_topic": null,
           "writes_crm": false
         },
         "scheduling is fine": {
           "action_id": "continue_with_session_policy",
-          "active_gap_scope": "multi_gap",
+          "active_gap_scope": "single_gap",
           "answered_gaps": [
             "scheduling_urgency"
           ],
           "applied": true,
+          "buyer_affect_source": "none",
+          "buyer_confusion_level": "low",
+          "buyer_engagement_level": "medium",
+          "buyer_facing_summary": "",
+          "buyer_friction_level": "low",
+          "buyer_skepticism_level": "low",
+          "buyer_state": "unknown",
+          "campaign_response_priority": false,
           "candidate_gaps": [
-            "service_need",
-            "scheduling_urgency",
-            "estimate_or_property_details"
+            "service_need"
           ],
           "candidate_response": "Got it, scheduling urgency is clear. Should I check service need or estimate or property details, or stop here?",
           "cleared_gaps": [
             "scheduling_urgency"
           ],
+          "commercial_intent": "unknown",
           "confidence": 0.92,
           "confirmed_gaps": [],
+          "conjunction_relation": "unknown",
           "creates_calendar_event": false,
           "dialogue_focus": "qualification",
           "evidence": {
             "active_gap": "scheduling_urgency",
-            "active_gap_scope": "multi_gap",
+            "active_gap_scope": "single_gap",
             "answered_gaps": [
               "scheduling_urgency"
             ],
             "buyer_utterance": "scheduling is fine",
             "candidate_gaps": [
-              "service_need",
-              "scheduling_urgency",
-              "estimate_or_property_details"
+              "service_need"
             ],
             "cleared_gaps": [],
             "confirmed_gaps": [],
@@ -2149,13 +2426,11 @@
               "campaign_id": "synthetic-home-services-contextual-011",
               "campaign_playbook_id": "synthetic-home-services-contextual-011-playbook",
               "candidate_gaps": [
-                "service_need",
-                "scheduling_urgency",
-                "estimate_or_property_details"
+                "service_need"
               ],
               "playbook_gap": "scheduling_urgency",
               "playbook_id": "synthetic-home-services-contextual-011-playbook",
-              "playbook_next_gap": "estimate_or_property_details",
+              "playbook_next_gap": "service_need",
               "playbook_review_focus": "scheduling urgency review",
               "playbook_supported_gap_ids": [
                 "service_need",
@@ -2188,9 +2463,11 @@
               ],
               "vertical_id": "home_services"
             },
-            "previous_agent_question_text": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
-            "previous_agent_question_type": "gap_diagnostic"
+            "previous_agent_question_text": "Thanks. Is service need causing any issue right now?",
+            "previous_agent_question_type": "sales_progression_question"
           },
+          "evidence_terms": [],
+          "forbidden_routes": [],
           "handoff_target_state_update": {},
           "lead_followup_state_update": {},
           "local_llm_calls_made": false,
@@ -2198,7 +2475,12 @@
             "classify as pain",
             "erase confirmed pain"
           ],
+          "negation_scope": "none",
           "next_action_hint": "ask_remaining_diagnostic",
+          "next_best_sales_action": "",
+          "normalized_entities": {},
+          "object_mentions": [],
+          "object_type": "unknown",
           "opens_prod_102": false,
           "outgoing_active_gap_scope": "unknown",
           "outgoing_candidate_gaps": [],
@@ -2208,13 +2490,11 @@
             "campaign_id": "synthetic-home-services-contextual-011",
             "campaign_playbook_id": "synthetic-home-services-contextual-011-playbook",
             "candidate_gaps": [
-              "service_need",
-              "scheduling_urgency",
-              "estimate_or_property_details"
+              "service_need"
             ],
             "playbook_gap": "scheduling_urgency",
             "playbook_id": "synthetic-home-services-contextual-011-playbook",
-            "playbook_next_gap": "estimate_or_property_details",
+            "playbook_next_gap": "service_need",
             "playbook_review_focus": "scheduling urgency review",
             "playbook_supported_gap_ids": [
               "service_need",
@@ -2249,7 +2529,7 @@
           },
           "playbook_gap": "scheduling_urgency",
           "playbook_id": "synthetic-home-services-contextual-011-playbook",
-          "playbook_next_gap": "estimate_or_property_details",
+          "playbook_next_gap": "service_need",
           "playbook_review_focus": "scheduling urgency review",
           "playbook_supported_gap_ids": [
             "service_need",
@@ -2259,47 +2539,67 @@
           "polarity": "clear_current_gap",
           "primary_gap": "scheduling_urgency",
           "provider_calls_made": false,
+          "raw_buyer_meaning_summary": "",
+          "relation_type": "unknown",
+          "response_strategy": "",
+          "response_variation_key": "",
           "schema_version": 1,
           "secondary_confirmed_gaps": [],
           "semantic": "current_gap_clear",
+          "semantic_family": "unknown",
           "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
           "send_info_state_update": {},
           "sends_email": false,
+          "should_answer_directly": false,
+          "should_ask_clarifying_question": false,
+          "should_close": false,
+          "should_disqualify": false,
+          "should_not_route_to_stability_guard": false,
+          "should_recommend": false,
+          "speech_act": "unknown",
+          "state_updates": {},
+          "sub_intent": "unknown",
           "target_gap": "scheduling_urgency",
           "target_topic": "scheduling_urgency",
           "writes_crm": false
         },
-        "the estimate is unclear": {
+        "the estimate is a problem": {
           "action_id": "request_appointment_time",
-          "active_gap_scope": "multi_gap",
+          "active_gap_scope": "single_gap",
           "answered_gaps": [
             "estimate_or_property_details"
           ],
           "applied": true,
+          "buyer_affect_source": "none",
+          "buyer_confusion_level": "low",
+          "buyer_engagement_level": "medium",
+          "buyer_facing_summary": "",
+          "buyer_friction_level": "low",
+          "buyer_skepticism_level": "low",
+          "buyer_state": "unknown",
+          "campaign_response_priority": false,
           "candidate_gaps": [
-            "service_need",
-            "scheduling_urgency",
-            "estimate_or_property_details"
+            "service_need"
           ],
-          "candidate_response": "Got it, estimate or property details sounds like the issue. A qualified service coordinator can review estimate and property detail review. What time works for a quick inspection or estimate review?",
+          "candidate_response": "Got it, estimate or property details sounds like the issue; a qualified service coordinator can review estimate and property detail review. What time works for a quick inspection or estimate review?",
           "cleared_gaps": [],
+          "commercial_intent": "unknown",
           "confidence": 0.88,
           "confirmed_gaps": [
             "estimate_or_property_details"
           ],
+          "conjunction_relation": "unknown",
           "creates_calendar_event": false,
           "dialogue_focus": "timing",
           "evidence": {
             "active_gap": "estimate_or_property_details",
-            "active_gap_scope": "multi_gap",
+            "active_gap_scope": "single_gap",
             "answered_gaps": [
               "estimate_or_property_details"
             ],
-            "buyer_utterance": "the estimate is unclear",
+            "buyer_utterance": "the estimate is a problem",
             "candidate_gaps": [
-              "service_need",
-              "scheduling_urgency",
-              "estimate_or_property_details"
+              "service_need"
             ],
             "cleared_gaps": [],
             "confirmed_gaps": [],
@@ -2308,7 +2608,7 @@
             "current_confirmed_gaps": [
               "estimate_or_property_details"
             ],
-            "normalized_buyer_utterance": "the estimate is unclear",
+            "normalized_buyer_utterance": "the estimate is a problem",
             "outgoing_active_gap_scope": "unknown",
             "outgoing_candidate_gaps": [],
             "outgoing_question_type": "appointment_time",
@@ -2319,9 +2619,7 @@
               "campaign_id": "synthetic-home-services-contextual-011",
               "campaign_playbook_id": "synthetic-home-services-contextual-011-playbook",
               "candidate_gaps": [
-                "service_need",
-                "scheduling_urgency",
-                "estimate_or_property_details"
+                "service_need"
               ],
               "playbook_gap": "estimate_or_property_details",
               "playbook_id": "synthetic-home-services-contextual-011-playbook",
@@ -2357,9 +2655,11 @@
               ],
               "vertical_id": "home_services"
             },
-            "previous_agent_question_text": "Thanks, I am checking service need, scheduling urgency, or estimate or property details. Which one is causing trouble, if any?",
-            "previous_agent_question_type": "gap_diagnostic"
+            "previous_agent_question_text": "Thanks. Is service need causing any issue right now?",
+            "previous_agent_question_type": "sales_progression_question"
           },
+          "evidence_terms": [],
+          "forbidden_routes": [],
           "handoff_target_state_update": {},
           "lead_followup_state_update": {},
           "local_llm_calls_made": false,
@@ -2367,7 +2667,12 @@
             "treat as no pain",
             "erase cleared gaps"
           ],
+          "negation_scope": "none",
           "next_action_hint": "move_toward_workflow_review",
+          "next_best_sales_action": "",
+          "normalized_entities": {},
+          "object_mentions": [],
+          "object_type": "unknown",
           "opens_prod_102": false,
           "outgoing_active_gap_scope": "unknown",
           "outgoing_candidate_gaps": [],
@@ -2377,9 +2682,7 @@
             "campaign_id": "synthetic-home-services-contextual-011",
             "campaign_playbook_id": "synthetic-home-services-contextual-011-playbook",
             "candidate_gaps": [
-              "service_need",
-              "scheduling_urgency",
-              "estimate_or_property_details"
+              "service_need"
             ],
             "playbook_gap": "estimate_or_property_details",
             "playbook_id": "synthetic-home-services-contextual-011-playbook",
@@ -2427,12 +2730,214 @@
           "polarity": "pain",
           "primary_gap": "estimate_or_property_details",
           "provider_calls_made": false,
+          "raw_buyer_meaning_summary": "",
+          "relation_type": "unknown",
+          "response_strategy": "",
+          "response_variation_key": "",
           "schema_version": 1,
           "secondary_confirmed_gaps": [],
           "semantic": "pain_confirmed",
+          "semantic_family": "unknown",
           "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
           "send_info_state_update": {},
           "sends_email": false,
+          "should_answer_directly": false,
+          "should_ask_clarifying_question": false,
+          "should_close": false,
+          "should_disqualify": false,
+          "should_not_route_to_stability_guard": false,
+          "should_recommend": false,
+          "speech_act": "unknown",
+          "state_updates": {},
+          "sub_intent": "unknown",
+          "target_gap": "estimate_or_property_details",
+          "target_topic": "estimate_or_property_details",
+          "writes_crm": false
+        },
+        "the estimate is unclear": {
+          "action_id": "clarify_current_gap",
+          "active_gap_scope": "single_gap",
+          "answered_gaps": [
+            "estimate_or_property_details"
+          ],
+          "applied": true,
+          "buyer_affect_source": "none",
+          "buyer_confusion_level": "low",
+          "buyer_engagement_level": "medium",
+          "buyer_facing_summary": "",
+          "buyer_friction_level": "low",
+          "buyer_skepticism_level": "low",
+          "buyer_state": "unknown",
+          "campaign_response_priority": false,
+          "candidate_gaps": [
+            "service_need"
+          ],
+          "candidate_response": "Understood, estimate or property details is the unclear part. What part is confusing: what it means, what a qualified service coordinator would check, or whether it matters here?",
+          "cleared_gaps": [],
+          "commercial_intent": "unknown",
+          "confidence": 0.88,
+          "confirmed_gaps": [],
+          "conjunction_relation": "unknown",
+          "creates_calendar_event": false,
+          "dialogue_focus": "qualification",
+          "evidence": {
+            "active_gap": "estimate_or_property_details",
+            "active_gap_scope": "single_gap",
+            "answered_gaps": [
+              "estimate_or_property_details"
+            ],
+            "buyer_utterance": "the estimate is unclear",
+            "candidate_gaps": [
+              "service_need"
+            ],
+            "cleared_gaps": [],
+            "confirmed_gaps": [],
+            "conversation_stage": "qualification",
+            "current_cleared_gaps": [],
+            "current_confirmed_gaps": [],
+            "normalized_buyer_utterance": "the estimate is unclear",
+            "outgoing_active_gap_scope": "unknown",
+            "outgoing_candidate_gaps": [],
+            "outgoing_question_type": "sales_progression_question",
+            "pending_appointment": false,
+            "pending_callback": false,
+            "playbook": {
+              "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+              "campaign_id": "synthetic-home-services-contextual-011",
+              "campaign_playbook_id": "synthetic-home-services-contextual-011-playbook",
+              "candidate_gaps": [
+                "service_need"
+              ],
+              "playbook_gap": "estimate_or_property_details",
+              "playbook_id": "synthetic-home-services-contextual-011-playbook",
+              "playbook_next_gap": "service_need",
+              "playbook_review_focus": "estimate and property detail review",
+              "playbook_supported_gap_ids": [
+                "service_need",
+                "scheduling_urgency",
+                "estimate_or_property_details"
+              ],
+              "qualification_dimensions": [
+                "fit",
+                "compliance_or_risk_constraints"
+              ],
+              "regulated_cautions": [
+                "home_services_safety_or_estimate",
+                "legal_or_contract_sensitive",
+                "financial_or_payment_sensitive"
+              ],
+              "safety": {
+                "creates_calendar_event": false,
+                "local_llm_calls_made": false,
+                "opens_prod_102": false,
+                "provider_calls_made": false,
+                "sends_email": false,
+                "writes_crm": false
+              },
+              "schema_version": 1,
+              "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+              "universal_pain_dimensions": [
+                "trust_or_risk_concern",
+                "unclear_next_step"
+              ],
+              "vertical_id": "home_services"
+            },
+            "previous_agent_question_text": "Thanks. Is service need causing any issue right now?",
+            "previous_agent_question_type": "sales_progression_question"
+          },
+          "evidence_terms": [],
+          "forbidden_routes": [],
+          "handoff_target_state_update": {},
+          "lead_followup_state_update": {},
+          "local_llm_calls_made": false,
+          "must_not_do": [
+            "repeat full diagnostic menu",
+            "transfer-or-escalate",
+            "claim pain before clarifying"
+          ],
+          "negation_scope": "none",
+          "next_action_hint": "clarify_likely_configured_gap",
+          "next_best_sales_action": "",
+          "normalized_entities": {},
+          "object_mentions": [],
+          "object_type": "unknown",
+          "opens_prod_102": false,
+          "outgoing_active_gap_scope": "unknown",
+          "outgoing_candidate_gaps": [],
+          "outgoing_question_type": "sales_progression_question",
+          "playbook": {
+            "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
+            "campaign_id": "synthetic-home-services-contextual-011",
+            "campaign_playbook_id": "synthetic-home-services-contextual-011-playbook",
+            "candidate_gaps": [
+              "service_need"
+            ],
+            "playbook_gap": "estimate_or_property_details",
+            "playbook_id": "synthetic-home-services-contextual-011-playbook",
+            "playbook_next_gap": "service_need",
+            "playbook_review_focus": "estimate and property detail review",
+            "playbook_supported_gap_ids": [
+              "service_need",
+              "scheduling_urgency",
+              "estimate_or_property_details"
+            ],
+            "qualification_dimensions": [
+              "fit",
+              "compliance_or_risk_constraints"
+            ],
+            "regulated_cautions": [
+              "home_services_safety_or_estimate",
+              "legal_or_contract_sensitive",
+              "financial_or_payment_sensitive"
+            ],
+            "safety": {
+              "creates_calendar_event": false,
+              "local_llm_calls_made": false,
+              "opens_prod_102": false,
+              "provider_calls_made": false,
+              "sends_email": false,
+              "writes_crm": false
+            },
+            "schema_version": 1,
+            "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
+            "universal_pain_dimensions": [
+              "trust_or_risk_concern",
+              "unclear_next_step"
+            ],
+            "vertical_id": "home_services"
+          },
+          "playbook_gap": "estimate_or_property_details",
+          "playbook_id": "synthetic-home-services-contextual-011-playbook",
+          "playbook_next_gap": "service_need",
+          "playbook_review_focus": "estimate and property detail review",
+          "playbook_supported_gap_ids": [
+            "service_need",
+            "scheduling_urgency",
+            "estimate_or_property_details"
+          ],
+          "polarity": "unclear_pain",
+          "primary_gap": "estimate_or_property_details",
+          "provider_calls_made": false,
+          "raw_buyer_meaning_summary": "",
+          "relation_type": "unknown",
+          "response_strategy": "",
+          "response_variation_key": "",
+          "schema_version": 1,
+          "secondary_confirmed_gaps": [],
+          "semantic": "gap_specific_unclear_context",
+          "semantic_family": "unknown",
+          "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
+          "send_info_state_update": {},
+          "sends_email": false,
+          "should_answer_directly": false,
+          "should_ask_clarifying_question": false,
+          "should_close": false,
+          "should_disqualify": false,
+          "should_not_route_to_stability_guard": false,
+          "should_recommend": false,
+          "speech_act": "unknown",
+          "state_updates": {},
+          "sub_intent": "unknown",
           "target_gap": "estimate_or_property_details",
           "target_topic": "estimate_or_property_details",
           "writes_crm": false
@@ -2455,35 +2960,41 @@
       "turns": {
         "coverage fit is handled": {
           "action_id": "continue_with_session_policy",
-          "active_gap_scope": "multi_gap",
+          "active_gap_scope": "single_gap",
           "answered_gaps": [
             "coverage_fit"
           ],
           "applied": true,
+          "buyer_affect_source": "none",
+          "buyer_confusion_level": "low",
+          "buyer_engagement_level": "medium",
+          "buyer_facing_summary": "",
+          "buyer_friction_level": "low",
+          "buyer_skepticism_level": "low",
+          "buyer_state": "unknown",
+          "campaign_response_priority": false,
           "candidate_gaps": [
-            "coverage_fit",
-            "premium_or_budget",
-            "renewal_or_timing"
+            "coverage_fit"
           ],
           "candidate_response": "Got it, coverage fit is clear. Should I check premium or budget or renewal or timing, or stop here?",
           "cleared_gaps": [
             "coverage_fit"
           ],
+          "commercial_intent": "unknown",
           "confidence": 0.92,
           "confirmed_gaps": [],
+          "conjunction_relation": "unknown",
           "creates_calendar_event": false,
           "dialogue_focus": "qualification",
           "evidence": {
             "active_gap": "coverage_fit",
-            "active_gap_scope": "multi_gap",
+            "active_gap_scope": "single_gap",
             "answered_gaps": [
               "coverage_fit"
             ],
             "buyer_utterance": "coverage fit is handled",
             "candidate_gaps": [
-              "coverage_fit",
-              "premium_or_budget",
-              "renewal_or_timing"
+              "coverage_fit"
             ],
             "cleared_gaps": [],
             "confirmed_gaps": [],
@@ -2503,13 +3014,11 @@
               "campaign_id": "synthetic-insurance-contextual-011",
               "campaign_playbook_id": "synthetic-insurance-contextual-011-playbook",
               "candidate_gaps": [
-                "coverage_fit",
-                "premium_or_budget",
-                "renewal_or_timing"
+                "coverage_fit"
               ],
               "playbook_gap": "coverage_fit",
               "playbook_id": "synthetic-insurance-contextual-011-playbook",
-              "playbook_next_gap": "premium_or_budget",
+              "playbook_next_gap": null,
               "playbook_review_focus": "licensed coverage fit review",
               "playbook_supported_gap_ids": [
                 "coverage_fit",
@@ -2542,9 +3051,11 @@
               ],
               "vertical_id": "insurance"
             },
-            "previous_agent_question_text": "Thanks, I am checking coverage fit, premium or budget, or renewal or timing. Which one is causing trouble, if any?",
-            "previous_agent_question_type": "gap_diagnostic"
+            "previous_agent_question_text": "Thanks. Is coverage fit causing any issue right now?",
+            "previous_agent_question_type": "sales_progression_question"
           },
+          "evidence_terms": [],
+          "forbidden_routes": [],
           "handoff_target_state_update": {},
           "lead_followup_state_update": {},
           "local_llm_calls_made": false,
@@ -2552,7 +3063,12 @@
             "classify as pain",
             "erase confirmed pain"
           ],
+          "negation_scope": "none",
           "next_action_hint": "ask_remaining_diagnostic",
+          "next_best_sales_action": "",
+          "normalized_entities": {},
+          "object_mentions": [],
+          "object_type": "unknown",
           "opens_prod_102": false,
           "outgoing_active_gap_scope": "unknown",
           "outgoing_candidate_gaps": [],
@@ -2562,13 +3078,11 @@
             "campaign_id": "synthetic-insurance-contextual-011",
             "campaign_playbook_id": "synthetic-insurance-contextual-011-playbook",
             "candidate_gaps": [
-              "coverage_fit",
-              "premium_or_budget",
-              "renewal_or_timing"
+              "coverage_fit"
             ],
             "playbook_gap": "coverage_fit",
             "playbook_id": "synthetic-insurance-contextual-011-playbook",
-            "playbook_next_gap": "premium_or_budget",
+            "playbook_next_gap": null,
             "playbook_review_focus": "licensed coverage fit review",
             "playbook_supported_gap_ids": [
               "coverage_fit",
@@ -2603,7 +3117,7 @@
           },
           "playbook_gap": "coverage_fit",
           "playbook_id": "synthetic-insurance-contextual-011-playbook",
-          "playbook_next_gap": "premium_or_budget",
+          "playbook_next_gap": null,
           "playbook_review_focus": "licensed coverage fit review",
           "playbook_supported_gap_ids": [
             "coverage_fit",
@@ -2613,28 +3127,52 @@
           "polarity": "clear_current_gap",
           "primary_gap": "coverage_fit",
           "provider_calls_made": false,
+          "raw_buyer_meaning_summary": "",
+          "relation_type": "unknown",
+          "response_strategy": "",
+          "response_variation_key": "",
           "schema_version": 1,
           "secondary_confirmed_gaps": [],
           "semantic": "current_gap_clear",
+          "semantic_family": "unknown",
           "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
           "send_info_state_update": {},
           "sends_email": false,
+          "should_answer_directly": false,
+          "should_ask_clarifying_question": false,
+          "should_close": false,
+          "should_disqualify": false,
+          "should_not_route_to_stability_guard": false,
+          "should_recommend": false,
+          "speech_act": "unknown",
+          "state_updates": {},
+          "sub_intent": "unknown",
           "target_gap": "coverage_fit",
           "target_topic": "coverage_fit",
           "writes_crm": false
         },
         "manager_permission_acknowledgement": {
-          "candidate_response": "Thanks, I am checking coverage fit, premium or budget, or renewal or timing. Which one is causing trouble, if any?",
+          "candidate_response": "Thanks. Is coverage fit causing any issue right now?",
           "contextual_buyer_semantics": {
             "action_id": "continue_with_session_policy",
             "active_gap_scope": "campaign_relevance",
             "answered_gaps": [],
             "applied": true,
+            "buyer_affect_source": "none",
+            "buyer_confusion_level": "low",
+            "buyer_engagement_level": "medium",
+            "buyer_facing_summary": "",
+            "buyer_friction_level": "low",
+            "buyer_skepticism_level": "low",
+            "buyer_state": "unknown",
+            "campaign_response_priority": false,
             "candidate_gaps": [],
-            "candidate_response": "Thanks, I am checking coverage fit, premium or budget, or renewal or timing. Which one is causing trouble, if any?",
+            "candidate_response": "Thanks. Is coverage fit causing any issue right now?",
             "cleared_gaps": [],
+            "commercial_intent": "unknown",
             "confidence": 0.94,
             "confirmed_gaps": [],
+            "conjunction_relation": "unknown",
             "creates_calendar_event": false,
             "dialogue_focus": "qualification",
             "evidence": {
@@ -2649,13 +3187,13 @@
               "current_cleared_gaps": [],
               "current_confirmed_gaps": [],
               "normalized_buyer_utterance": "yeah sure",
-              "outgoing_active_gap_scope": "multi_gap",
+              "outgoing_active_gap_scope": "campaign_relevance",
               "outgoing_candidate_gaps": [
                 "coverage_fit",
                 "premium_or_budget",
                 "renewal_or_timing"
               ],
-              "outgoing_question_type": "multi_gap_diagnostic",
+              "outgoing_question_type": "sales_progression_question",
               "pending_appointment": false,
               "pending_callback": false,
               "playbook": {
@@ -2698,6 +3236,8 @@
               "previous_agent_question_text": "Do you have a minute for one quick question?",
               "previous_agent_question_type": "permission_check"
             },
+            "evidence_terms": [],
+            "forbidden_routes": [],
             "handoff_target_state_update": {},
             "lead_followup_state_update": {},
             "local_llm_calls_made": false,
@@ -2705,15 +3245,20 @@
               "classify as no pain",
               "ask appointment"
             ],
+            "negation_scope": "none",
             "next_action_hint": "start_diagnostic",
+            "next_best_sales_action": "",
+            "normalized_entities": {},
+            "object_mentions": [],
+            "object_type": "unknown",
             "opens_prod_102": false,
-            "outgoing_active_gap_scope": "multi_gap",
+            "outgoing_active_gap_scope": "campaign_relevance",
             "outgoing_candidate_gaps": [
               "coverage_fit",
               "premium_or_budget",
               "renewal_or_timing"
             ],
-            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_question_type": "sales_progression_question",
             "playbook": {
               "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
               "campaign_id": "synthetic-insurance-contextual-011",
@@ -2763,12 +3308,26 @@
             "polarity": "permission_granted",
             "primary_gap": null,
             "provider_calls_made": false,
+            "raw_buyer_meaning_summary": "",
+            "relation_type": "unknown",
+            "response_strategy": "",
+            "response_variation_key": "",
             "schema_version": 1,
             "secondary_confirmed_gaps": [],
             "semantic": "permission_acknowledgement",
+            "semantic_family": "unknown",
             "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
             "send_info_state_update": {},
             "sends_email": false,
+            "should_answer_directly": false,
+            "should_ask_clarifying_question": false,
+            "should_close": false,
+            "should_disqualify": false,
+            "should_not_route_to_stability_guard": false,
+            "should_recommend": false,
+            "speech_act": "unknown",
+            "state_updates": {},
+            "sub_intent": "unknown",
             "target_gap": null,
             "target_topic": null,
             "writes_crm": false
@@ -2776,15 +3335,16 @@
           "conversation_memory": {
             "active_gap_scope": "campaign_relevance",
             "active_stage": "qualification",
-            "active_topic": "qualification",
+            "active_topic": "pain_progression",
             "answered_topics": [
+              "pain_progression",
               "qualification"
             ],
             "appointment_close_gap": null,
             "appointment_close_ready": false,
             "asked_question_type_counts": {
-              "gap_diagnostic": 1,
-              "permission_check": 1
+              "permission_check": 1,
+              "sales_progression_question": 1
             },
             "callback_semantic": null,
             "candidate_gaps": [
@@ -2792,28 +3352,28 @@
               "premium_or_budget",
               "renewal_or_timing"
             ],
-            "candidate_response_signature": "diagnostic_question:9d16bab12972871e",
-            "candidate_response_subject": "diagnostic_question",
-            "last_active_agent_question_type": "gap_diagnostic",
+            "candidate_response_signature": "general:c40e8968168c19c8:e1719b11cabe8700",
+            "candidate_response_subject": "general:c40e8968168c19c8",
+            "last_active_agent_question_type": "sales_progression_question",
             "last_agent_question_hash": "574e3fdeca5f04a1",
-            "last_agent_question_type": "gap_diagnostic",
+            "last_agent_question_type": "sales_progression_question",
             "last_customer_intent": "permission_acknowledgement",
             "last_response_hashes": [
               "574e3fdeca5f04a1",
-              "9d16bab12972871e"
+              "e1719b11cabe8700"
             ],
             "last_response_signatures": [
               "opening_permission:574e3fdeca5f04a1",
-              "diagnostic_question:9d16bab12972871e"
+              "general:c40e8968168c19c8:e1719b11cabe8700"
             ],
             "last_sales_progression_step": "qualification",
-            "outgoing_active_gap_scope": "multi_gap",
+            "outgoing_active_gap_scope": "campaign_relevance",
             "outgoing_candidate_gaps": [
               "coverage_fit",
               "premium_or_budget",
               "renewal_or_timing"
             ],
-            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_question_type": "sales_progression_question",
             "playbook": {
               "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
               "campaign_id": "synthetic-insurance-contextual-011",
@@ -2860,7 +3420,7 @@
             ],
             "recent_response_subjects": [
               "opening_permission",
-              "diagnostic_question"
+              "general:c40e8968168c19c8"
             ],
             "rejected_topics": [],
             "schema_version": 1,
@@ -2872,8 +3432,8 @@
             "action_id": "continue_with_session_policy",
             "call_control": "continue-call",
             "candidate_response_available": true,
-            "continuity_reason": "contextual_permission_acknowledgement",
-            "dialogue_focus": "qualification",
+            "continuity_reason": "universal_response_shape_enforced",
+            "dialogue_focus": "pain_progression",
             "pragmatic_move": {
               "applied": false,
               "campaign_id": "synthetic-insurance-contextual-011",
@@ -2897,8 +3457,8 @@
               "target_action": null
             },
             "selected_gap": null,
-            "source": "contextual_buyer_semantics",
-            "template_id": "session_policy_contextual_permission_acknowledgement"
+            "source": "universal_response_shape",
+            "template_id": "session_policy_universal_response_shape_enforced"
           }
         },
         "permission_acknowledgement": {
@@ -2906,11 +3466,21 @@
           "active_gap_scope": "campaign_relevance",
           "answered_gaps": [],
           "applied": true,
+          "buyer_affect_source": "none",
+          "buyer_confusion_level": "low",
+          "buyer_engagement_level": "medium",
+          "buyer_facing_summary": "",
+          "buyer_friction_level": "low",
+          "buyer_skepticism_level": "low",
+          "buyer_state": "unknown",
+          "campaign_response_priority": false,
           "candidate_gaps": [],
-          "candidate_response": "Thanks, I am checking coverage fit, premium or budget, or renewal or timing. Which one is causing trouble, if any?",
+          "candidate_response": "Thanks. Is coverage fit causing any issue right now?",
           "cleared_gaps": [],
+          "commercial_intent": "unknown",
           "confidence": 0.94,
           "confirmed_gaps": [],
+          "conjunction_relation": "unknown",
           "creates_calendar_event": false,
           "dialogue_focus": "qualification",
           "evidence": {
@@ -2925,13 +3495,13 @@
             "current_cleared_gaps": [],
             "current_confirmed_gaps": [],
             "normalized_buyer_utterance": "yeah sure",
-            "outgoing_active_gap_scope": "multi_gap",
+            "outgoing_active_gap_scope": "campaign_relevance",
             "outgoing_candidate_gaps": [
               "coverage_fit",
               "premium_or_budget",
               "renewal_or_timing"
             ],
-            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_question_type": "sales_progression_question",
             "pending_appointment": false,
             "pending_callback": false,
             "playbook": {
@@ -2974,6 +3544,8 @@
             "previous_agent_question_text": "Do you have a minute for one quick question?",
             "previous_agent_question_type": "permission_check"
           },
+          "evidence_terms": [],
+          "forbidden_routes": [],
           "handoff_target_state_update": {},
           "lead_followup_state_update": {},
           "local_llm_calls_made": false,
@@ -2981,15 +3553,20 @@
             "classify as no pain",
             "ask appointment"
           ],
+          "negation_scope": "none",
           "next_action_hint": "start_diagnostic",
+          "next_best_sales_action": "",
+          "normalized_entities": {},
+          "object_mentions": [],
+          "object_type": "unknown",
           "opens_prod_102": false,
-          "outgoing_active_gap_scope": "multi_gap",
+          "outgoing_active_gap_scope": "campaign_relevance",
           "outgoing_candidate_gaps": [
             "coverage_fit",
             "premium_or_budget",
             "renewal_or_timing"
           ],
-          "outgoing_question_type": "multi_gap_diagnostic",
+          "outgoing_question_type": "sales_progression_question",
           "playbook": {
             "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
             "campaign_id": "synthetic-insurance-contextual-011",
@@ -3039,47 +3616,67 @@
           "polarity": "permission_granted",
           "primary_gap": null,
           "provider_calls_made": false,
+          "raw_buyer_meaning_summary": "",
+          "relation_type": "unknown",
+          "response_strategy": "",
+          "response_variation_key": "",
           "schema_version": 1,
           "secondary_confirmed_gaps": [],
           "semantic": "permission_acknowledgement",
+          "semantic_family": "unknown",
           "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
           "send_info_state_update": {},
           "sends_email": false,
+          "should_answer_directly": false,
+          "should_ask_clarifying_question": false,
+          "should_close": false,
+          "should_disqualify": false,
+          "should_not_route_to_stability_guard": false,
+          "should_recommend": false,
+          "speech_act": "unknown",
+          "state_updates": {},
+          "sub_intent": "unknown",
           "target_gap": null,
           "target_topic": null,
           "writes_crm": false
         },
         "premium is a problem": {
           "action_id": "request_appointment_time",
-          "active_gap_scope": "multi_gap",
+          "active_gap_scope": "single_gap",
           "answered_gaps": [
             "premium_or_budget"
           ],
           "applied": true,
+          "buyer_affect_source": "none",
+          "buyer_confusion_level": "low",
+          "buyer_engagement_level": "medium",
+          "buyer_facing_summary": "",
+          "buyer_friction_level": "low",
+          "buyer_skepticism_level": "low",
+          "buyer_state": "unknown",
+          "campaign_response_priority": false,
           "candidate_gaps": [
-            "coverage_fit",
-            "premium_or_budget",
-            "renewal_or_timing"
+            "coverage_fit"
           ],
-          "candidate_response": "Got it, premium sounds like the issue. A licensed insurance specialist can review premium and budget review. What time works for a quick licensed coverage review?",
+          "candidate_response": "Got it, premium sounds like the issue; a licensed insurance specialist can review premium and budget review. What time works for a quick licensed coverage review?",
           "cleared_gaps": [],
+          "commercial_intent": "unknown",
           "confidence": 0.88,
           "confirmed_gaps": [
             "premium_or_budget"
           ],
+          "conjunction_relation": "unknown",
           "creates_calendar_event": false,
           "dialogue_focus": "timing",
           "evidence": {
             "active_gap": "premium_or_budget",
-            "active_gap_scope": "multi_gap",
+            "active_gap_scope": "single_gap",
             "answered_gaps": [
               "premium_or_budget"
             ],
             "buyer_utterance": "premium is a problem",
             "candidate_gaps": [
-              "coverage_fit",
-              "premium_or_budget",
-              "renewal_or_timing"
+              "coverage_fit"
             ],
             "cleared_gaps": [],
             "confirmed_gaps": [],
@@ -3099,13 +3696,11 @@
               "campaign_id": "synthetic-insurance-contextual-011",
               "campaign_playbook_id": "synthetic-insurance-contextual-011-playbook",
               "candidate_gaps": [
-                "coverage_fit",
-                "premium_or_budget",
-                "renewal_or_timing"
+                "coverage_fit"
               ],
               "playbook_gap": "premium_or_budget",
               "playbook_id": "synthetic-insurance-contextual-011-playbook",
-              "playbook_next_gap": "renewal_or_timing",
+              "playbook_next_gap": "coverage_fit",
               "playbook_review_focus": "premium and budget review",
               "playbook_supported_gap_ids": [
                 "coverage_fit",
@@ -3137,9 +3732,11 @@
               ],
               "vertical_id": "insurance"
             },
-            "previous_agent_question_text": "Thanks, I am checking coverage fit, premium or budget, or renewal or timing. Which one is causing trouble, if any?",
-            "previous_agent_question_type": "gap_diagnostic"
+            "previous_agent_question_text": "Thanks. Is coverage fit causing any issue right now?",
+            "previous_agent_question_type": "sales_progression_question"
           },
+          "evidence_terms": [],
+          "forbidden_routes": [],
           "handoff_target_state_update": {},
           "lead_followup_state_update": {},
           "local_llm_calls_made": false,
@@ -3147,7 +3744,12 @@
             "treat as no pain",
             "erase cleared gaps"
           ],
+          "negation_scope": "none",
           "next_action_hint": "move_toward_workflow_review",
+          "next_best_sales_action": "",
+          "normalized_entities": {},
+          "object_mentions": [],
+          "object_type": "unknown",
           "opens_prod_102": false,
           "outgoing_active_gap_scope": "unknown",
           "outgoing_candidate_gaps": [],
@@ -3157,13 +3759,11 @@
             "campaign_id": "synthetic-insurance-contextual-011",
             "campaign_playbook_id": "synthetic-insurance-contextual-011-playbook",
             "candidate_gaps": [
-              "coverage_fit",
-              "premium_or_budget",
-              "renewal_or_timing"
+              "coverage_fit"
             ],
             "playbook_gap": "premium_or_budget",
             "playbook_id": "synthetic-insurance-contextual-011-playbook",
-            "playbook_next_gap": "renewal_or_timing",
+            "playbook_next_gap": "coverage_fit",
             "playbook_review_focus": "premium and budget review",
             "playbook_supported_gap_ids": [
               "coverage_fit",
@@ -3197,7 +3797,7 @@
           },
           "playbook_gap": "premium_or_budget",
           "playbook_id": "synthetic-insurance-contextual-011-playbook",
-          "playbook_next_gap": "renewal_or_timing",
+          "playbook_next_gap": "coverage_fit",
           "playbook_review_focus": "premium and budget review",
           "playbook_supported_gap_ids": [
             "coverage_fit",
@@ -3207,12 +3807,26 @@
           "polarity": "pain",
           "primary_gap": "premium_or_budget",
           "provider_calls_made": false,
+          "raw_buyer_meaning_summary": "",
+          "relation_type": "unknown",
+          "response_strategy": "",
+          "response_variation_key": "",
           "schema_version": 1,
           "secondary_confirmed_gaps": [],
           "semantic": "pain_confirmed",
+          "semantic_family": "unknown",
           "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
           "send_info_state_update": {},
           "sends_email": false,
+          "should_answer_directly": false,
+          "should_ask_clarifying_question": false,
+          "should_close": false,
+          "should_disqualify": false,
+          "should_not_route_to_stability_guard": false,
+          "should_recommend": false,
+          "speech_act": "unknown",
+          "state_updates": {},
+          "sub_intent": "unknown",
           "target_gap": "premium_or_budget",
           "target_topic": "premium_or_budget",
           "writes_crm": false
@@ -3235,35 +3849,41 @@
       "turns": {
         "coverage is the issue": {
           "action_id": "request_appointment_time",
-          "active_gap_scope": "multi_gap",
+          "active_gap_scope": "single_gap",
           "answered_gaps": [
             "coverage_or_availability"
           ],
           "applied": true,
+          "buyer_affect_source": "none",
+          "buyer_confusion_level": "low",
+          "buyer_engagement_level": "medium",
+          "buyer_facing_summary": "",
+          "buyer_friction_level": "low",
+          "buyer_skepticism_level": "low",
+          "buyer_state": "unknown",
+          "campaign_response_priority": false,
           "candidate_gaps": [
-            "coverage_or_availability",
-            "plan_fit",
-            "contract_or_switching"
+            "coverage_or_availability"
           ],
-          "candidate_response": "Got it, coverage or availability sounds like the issue. A telecom account specialist can review coverage and availability review. What time works for a quick human plan and availability review?",
+          "candidate_response": "Got it, coverage or availability sounds like the issue; a telecom account specialist can review coverage and availability review. What time works for a quick human plan and availability review?",
           "cleared_gaps": [],
+          "commercial_intent": "unknown",
           "confidence": 0.88,
           "confirmed_gaps": [
             "coverage_or_availability"
           ],
+          "conjunction_relation": "unknown",
           "creates_calendar_event": false,
           "dialogue_focus": "timing",
           "evidence": {
             "active_gap": "coverage_or_availability",
-            "active_gap_scope": "multi_gap",
+            "active_gap_scope": "single_gap",
             "answered_gaps": [
               "coverage_or_availability"
             ],
             "buyer_utterance": "coverage is the issue",
             "candidate_gaps": [
-              "coverage_or_availability",
-              "plan_fit",
-              "contract_or_switching"
+              "coverage_or_availability"
             ],
             "cleared_gaps": [],
             "confirmed_gaps": [],
@@ -3283,13 +3903,11 @@
               "campaign_id": "synthetic-telecom-contextual-011",
               "campaign_playbook_id": "synthetic-telecom-contextual-011-playbook",
               "candidate_gaps": [
-                "coverage_or_availability",
-                "plan_fit",
-                "contract_or_switching"
+                "coverage_or_availability"
               ],
               "playbook_gap": "coverage_or_availability",
               "playbook_id": "synthetic-telecom-contextual-011-playbook",
-              "playbook_next_gap": "plan_fit",
+              "playbook_next_gap": null,
               "playbook_review_focus": "coverage and availability review",
               "playbook_supported_gap_ids": [
                 "coverage_or_availability",
@@ -3321,9 +3939,11 @@
               ],
               "vertical_id": "telecom"
             },
-            "previous_agent_question_text": "Thanks, I am checking coverage or availability, plan fit, or contract or switching. Which one is causing trouble, if any?",
-            "previous_agent_question_type": "gap_diagnostic"
+            "previous_agent_question_text": "Thanks. Is coverage or availability causing any issue right now?",
+            "previous_agent_question_type": "sales_progression_question"
           },
+          "evidence_terms": [],
+          "forbidden_routes": [],
           "handoff_target_state_update": {},
           "lead_followup_state_update": {},
           "local_llm_calls_made": false,
@@ -3331,7 +3951,12 @@
             "treat as no pain",
             "erase cleared gaps"
           ],
+          "negation_scope": "none",
           "next_action_hint": "move_toward_workflow_review",
+          "next_best_sales_action": "",
+          "normalized_entities": {},
+          "object_mentions": [],
+          "object_type": "unknown",
           "opens_prod_102": false,
           "outgoing_active_gap_scope": "unknown",
           "outgoing_candidate_gaps": [],
@@ -3341,13 +3966,11 @@
             "campaign_id": "synthetic-telecom-contextual-011",
             "campaign_playbook_id": "synthetic-telecom-contextual-011-playbook",
             "candidate_gaps": [
-              "coverage_or_availability",
-              "plan_fit",
-              "contract_or_switching"
+              "coverage_or_availability"
             ],
             "playbook_gap": "coverage_or_availability",
             "playbook_id": "synthetic-telecom-contextual-011-playbook",
-            "playbook_next_gap": "plan_fit",
+            "playbook_next_gap": null,
             "playbook_review_focus": "coverage and availability review",
             "playbook_supported_gap_ids": [
               "coverage_or_availability",
@@ -3381,7 +4004,7 @@
           },
           "playbook_gap": "coverage_or_availability",
           "playbook_id": "synthetic-telecom-contextual-011-playbook",
-          "playbook_next_gap": "plan_fit",
+          "playbook_next_gap": null,
           "playbook_review_focus": "coverage and availability review",
           "playbook_supported_gap_ids": [
             "coverage_or_availability",
@@ -3391,28 +4014,52 @@
           "polarity": "pain",
           "primary_gap": "coverage_or_availability",
           "provider_calls_made": false,
+          "raw_buyer_meaning_summary": "",
+          "relation_type": "unknown",
+          "response_strategy": "",
+          "response_variation_key": "",
           "schema_version": 1,
           "secondary_confirmed_gaps": [],
           "semantic": "pain_confirmed",
+          "semantic_family": "unknown",
           "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
           "send_info_state_update": {},
           "sends_email": false,
+          "should_answer_directly": false,
+          "should_ask_clarifying_question": false,
+          "should_close": false,
+          "should_disqualify": false,
+          "should_not_route_to_stability_guard": false,
+          "should_recommend": false,
+          "speech_act": "unknown",
+          "state_updates": {},
+          "sub_intent": "unknown",
           "target_gap": "coverage_or_availability",
           "target_topic": "coverage_or_availability",
           "writes_crm": false
         },
         "manager_permission_acknowledgement": {
-          "candidate_response": "Thanks, I am checking coverage or availability, plan fit, or contract or switching. Which one is causing trouble, if any?",
+          "candidate_response": "Thanks. Is coverage or availability causing any issue right now?",
           "contextual_buyer_semantics": {
             "action_id": "continue_with_session_policy",
             "active_gap_scope": "campaign_relevance",
             "answered_gaps": [],
             "applied": true,
+            "buyer_affect_source": "none",
+            "buyer_confusion_level": "low",
+            "buyer_engagement_level": "medium",
+            "buyer_facing_summary": "",
+            "buyer_friction_level": "low",
+            "buyer_skepticism_level": "low",
+            "buyer_state": "unknown",
+            "campaign_response_priority": false,
             "candidate_gaps": [],
-            "candidate_response": "Thanks, I am checking coverage or availability, plan fit, or contract or switching. Which one is causing trouble, if any?",
+            "candidate_response": "Thanks. Is coverage or availability causing any issue right now?",
             "cleared_gaps": [],
+            "commercial_intent": "unknown",
             "confidence": 0.94,
             "confirmed_gaps": [],
+            "conjunction_relation": "unknown",
             "creates_calendar_event": false,
             "dialogue_focus": "qualification",
             "evidence": {
@@ -3427,13 +4074,13 @@
               "current_cleared_gaps": [],
               "current_confirmed_gaps": [],
               "normalized_buyer_utterance": "yeah sure",
-              "outgoing_active_gap_scope": "multi_gap",
+              "outgoing_active_gap_scope": "campaign_relevance",
               "outgoing_candidate_gaps": [
                 "coverage_or_availability",
                 "plan_fit",
                 "contract_or_switching"
               ],
-              "outgoing_question_type": "multi_gap_diagnostic",
+              "outgoing_question_type": "sales_progression_question",
               "pending_appointment": false,
               "pending_callback": false,
               "playbook": {
@@ -3476,6 +4123,8 @@
               "previous_agent_question_text": "Do you have a minute for one quick question?",
               "previous_agent_question_type": "permission_check"
             },
+            "evidence_terms": [],
+            "forbidden_routes": [],
             "handoff_target_state_update": {},
             "lead_followup_state_update": {},
             "local_llm_calls_made": false,
@@ -3483,15 +4132,20 @@
               "classify as no pain",
               "ask appointment"
             ],
+            "negation_scope": "none",
             "next_action_hint": "start_diagnostic",
+            "next_best_sales_action": "",
+            "normalized_entities": {},
+            "object_mentions": [],
+            "object_type": "unknown",
             "opens_prod_102": false,
-            "outgoing_active_gap_scope": "multi_gap",
+            "outgoing_active_gap_scope": "campaign_relevance",
             "outgoing_candidate_gaps": [
               "coverage_or_availability",
               "plan_fit",
               "contract_or_switching"
             ],
-            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_question_type": "sales_progression_question",
             "playbook": {
               "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
               "campaign_id": "synthetic-telecom-contextual-011",
@@ -3541,12 +4195,26 @@
             "polarity": "permission_granted",
             "primary_gap": null,
             "provider_calls_made": false,
+            "raw_buyer_meaning_summary": "",
+            "relation_type": "unknown",
+            "response_strategy": "",
+            "response_variation_key": "",
             "schema_version": 1,
             "secondary_confirmed_gaps": [],
             "semantic": "permission_acknowledgement",
+            "semantic_family": "unknown",
             "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
             "send_info_state_update": {},
             "sends_email": false,
+            "should_answer_directly": false,
+            "should_ask_clarifying_question": false,
+            "should_close": false,
+            "should_disqualify": false,
+            "should_not_route_to_stability_guard": false,
+            "should_recommend": false,
+            "speech_act": "unknown",
+            "state_updates": {},
+            "sub_intent": "unknown",
             "target_gap": null,
             "target_topic": null,
             "writes_crm": false
@@ -3554,15 +4222,16 @@
           "conversation_memory": {
             "active_gap_scope": "campaign_relevance",
             "active_stage": "qualification",
-            "active_topic": "qualification",
+            "active_topic": "pain_progression",
             "answered_topics": [
+              "pain_progression",
               "qualification"
             ],
             "appointment_close_gap": null,
             "appointment_close_ready": false,
             "asked_question_type_counts": {
-              "gap_diagnostic": 1,
-              "permission_check": 1
+              "permission_check": 1,
+              "sales_progression_question": 1
             },
             "callback_semantic": null,
             "candidate_gaps": [
@@ -3570,28 +4239,28 @@
               "plan_fit",
               "contract_or_switching"
             ],
-            "candidate_response_signature": "diagnostic_question:172cd7a53e918f07",
-            "candidate_response_subject": "diagnostic_question",
-            "last_active_agent_question_type": "gap_diagnostic",
+            "candidate_response_signature": "general:2bf6eacd1a85f72c:08591dccd998efe8",
+            "candidate_response_subject": "general:2bf6eacd1a85f72c",
+            "last_active_agent_question_type": "sales_progression_question",
             "last_agent_question_hash": "574e3fdeca5f04a1",
-            "last_agent_question_type": "gap_diagnostic",
+            "last_agent_question_type": "sales_progression_question",
             "last_customer_intent": "permission_acknowledgement",
             "last_response_hashes": [
               "574e3fdeca5f04a1",
-              "172cd7a53e918f07"
+              "08591dccd998efe8"
             ],
             "last_response_signatures": [
               "opening_permission:574e3fdeca5f04a1",
-              "diagnostic_question:172cd7a53e918f07"
+              "general:2bf6eacd1a85f72c:08591dccd998efe8"
             ],
             "last_sales_progression_step": "qualification",
-            "outgoing_active_gap_scope": "multi_gap",
+            "outgoing_active_gap_scope": "campaign_relevance",
             "outgoing_candidate_gaps": [
               "coverage_or_availability",
               "plan_fit",
               "contract_or_switching"
             ],
-            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_question_type": "sales_progression_question",
             "playbook": {
               "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
               "campaign_id": "synthetic-telecom-contextual-011",
@@ -3638,7 +4307,7 @@
             ],
             "recent_response_subjects": [
               "opening_permission",
-              "diagnostic_question"
+              "general:2bf6eacd1a85f72c"
             ],
             "rejected_topics": [],
             "schema_version": 1,
@@ -3650,8 +4319,8 @@
             "action_id": "continue_with_session_policy",
             "call_control": "continue-call",
             "candidate_response_available": true,
-            "continuity_reason": "contextual_permission_acknowledgement",
-            "dialogue_focus": "qualification",
+            "continuity_reason": "universal_response_shape_enforced",
+            "dialogue_focus": "pain_progression",
             "pragmatic_move": {
               "applied": false,
               "campaign_id": "synthetic-telecom-contextual-011",
@@ -3675,8 +4344,8 @@
               "target_action": null
             },
             "selected_gap": null,
-            "source": "contextual_buyer_semantics",
-            "template_id": "session_policy_contextual_permission_acknowledgement"
+            "source": "universal_response_shape",
+            "template_id": "session_policy_universal_response_shape_enforced"
           }
         },
         "permission_acknowledgement": {
@@ -3684,11 +4353,21 @@
           "active_gap_scope": "campaign_relevance",
           "answered_gaps": [],
           "applied": true,
+          "buyer_affect_source": "none",
+          "buyer_confusion_level": "low",
+          "buyer_engagement_level": "medium",
+          "buyer_facing_summary": "",
+          "buyer_friction_level": "low",
+          "buyer_skepticism_level": "low",
+          "buyer_state": "unknown",
+          "campaign_response_priority": false,
           "candidate_gaps": [],
-          "candidate_response": "Thanks, I am checking coverage or availability, plan fit, or contract or switching. Which one is causing trouble, if any?",
+          "candidate_response": "Thanks. Is coverage or availability causing any issue right now?",
           "cleared_gaps": [],
+          "commercial_intent": "unknown",
           "confidence": 0.94,
           "confirmed_gaps": [],
+          "conjunction_relation": "unknown",
           "creates_calendar_event": false,
           "dialogue_focus": "qualification",
           "evidence": {
@@ -3703,13 +4382,13 @@
             "current_cleared_gaps": [],
             "current_confirmed_gaps": [],
             "normalized_buyer_utterance": "yeah sure",
-            "outgoing_active_gap_scope": "multi_gap",
+            "outgoing_active_gap_scope": "campaign_relevance",
             "outgoing_candidate_gaps": [
               "coverage_or_availability",
               "plan_fit",
               "contract_or_switching"
             ],
-            "outgoing_question_type": "multi_gap_diagnostic",
+            "outgoing_question_type": "sales_progression_question",
             "pending_appointment": false,
             "pending_callback": false,
             "playbook": {
@@ -3752,6 +4431,8 @@
             "previous_agent_question_text": "Do you have a minute for one quick question?",
             "previous_agent_question_type": "permission_check"
           },
+          "evidence_terms": [],
+          "forbidden_routes": [],
           "handoff_target_state_update": {},
           "lead_followup_state_update": {},
           "local_llm_calls_made": false,
@@ -3759,15 +4440,20 @@
             "classify as no pain",
             "ask appointment"
           ],
+          "negation_scope": "none",
           "next_action_hint": "start_diagnostic",
+          "next_best_sales_action": "",
+          "normalized_entities": {},
+          "object_mentions": [],
+          "object_type": "unknown",
           "opens_prod_102": false,
-          "outgoing_active_gap_scope": "multi_gap",
+          "outgoing_active_gap_scope": "campaign_relevance",
           "outgoing_candidate_gaps": [
             "coverage_or_availability",
             "plan_fit",
             "contract_or_switching"
           ],
-          "outgoing_question_type": "multi_gap_diagnostic",
+          "outgoing_question_type": "sales_progression_question",
           "playbook": {
             "adapter_id": "CAMPAIGN-PLAYBOOK-ADAPTER-001",
             "campaign_id": "synthetic-telecom-contextual-011",
@@ -3817,47 +4503,67 @@
           "polarity": "permission_granted",
           "primary_gap": null,
           "provider_calls_made": false,
+          "raw_buyer_meaning_summary": "",
+          "relation_type": "unknown",
+          "response_strategy": "",
+          "response_variation_key": "",
           "schema_version": 1,
           "secondary_confirmed_gaps": [],
           "semantic": "permission_acknowledgement",
+          "semantic_family": "unknown",
           "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
           "send_info_state_update": {},
           "sends_email": false,
+          "should_answer_directly": false,
+          "should_ask_clarifying_question": false,
+          "should_close": false,
+          "should_disqualify": false,
+          "should_not_route_to_stability_guard": false,
+          "should_recommend": false,
+          "speech_act": "unknown",
+          "state_updates": {},
+          "sub_intent": "unknown",
           "target_gap": null,
           "target_topic": null,
           "writes_crm": false
         },
         "plan fit is fine": {
           "action_id": "continue_with_session_policy",
-          "active_gap_scope": "multi_gap",
+          "active_gap_scope": "single_gap",
           "answered_gaps": [
             "plan_fit"
           ],
           "applied": true,
+          "buyer_affect_source": "none",
+          "buyer_confusion_level": "low",
+          "buyer_engagement_level": "medium",
+          "buyer_facing_summary": "",
+          "buyer_friction_level": "low",
+          "buyer_skepticism_level": "low",
+          "buyer_state": "unknown",
+          "campaign_response_priority": false,
           "candidate_gaps": [
-            "coverage_or_availability",
-            "plan_fit",
-            "contract_or_switching"
+            "coverage_or_availability"
           ],
           "candidate_response": "Got it, plan fit is clear. Should I check coverage or availability or contract or switching, or stop here?",
           "cleared_gaps": [
             "plan_fit"
           ],
+          "commercial_intent": "unknown",
           "confidence": 0.92,
           "confirmed_gaps": [],
+          "conjunction_relation": "unknown",
           "creates_calendar_event": false,
           "dialogue_focus": "qualification",
           "evidence": {
             "active_gap": "plan_fit",
-            "active_gap_scope": "multi_gap",
+            "active_gap_scope": "single_gap",
             "answered_gaps": [
               "plan_fit"
             ],
             "buyer_utterance": "plan fit is fine",
             "candidate_gaps": [
-              "coverage_or_availability",
-              "plan_fit",
-              "contract_or_switching"
+              "coverage_or_availability"
             ],
             "cleared_gaps": [],
             "confirmed_gaps": [],
@@ -3877,13 +4583,11 @@
               "campaign_id": "synthetic-telecom-contextual-011",
               "campaign_playbook_id": "synthetic-telecom-contextual-011-playbook",
               "candidate_gaps": [
-                "coverage_or_availability",
-                "plan_fit",
-                "contract_or_switching"
+                "coverage_or_availability"
               ],
               "playbook_gap": "plan_fit",
               "playbook_id": "synthetic-telecom-contextual-011-playbook",
-              "playbook_next_gap": "contract_or_switching",
+              "playbook_next_gap": "coverage_or_availability",
               "playbook_review_focus": "plan-fit review",
               "playbook_supported_gap_ids": [
                 "coverage_or_availability",
@@ -3916,9 +4620,11 @@
               ],
               "vertical_id": "telecom"
             },
-            "previous_agent_question_text": "Thanks, I am checking coverage or availability, plan fit, or contract or switching. Which one is causing trouble, if any?",
-            "previous_agent_question_type": "gap_diagnostic"
+            "previous_agent_question_text": "Thanks. Is coverage or availability causing any issue right now?",
+            "previous_agent_question_type": "sales_progression_question"
           },
+          "evidence_terms": [],
+          "forbidden_routes": [],
           "handoff_target_state_update": {},
           "lead_followup_state_update": {},
           "local_llm_calls_made": false,
@@ -3926,7 +4632,12 @@
             "classify as pain",
             "erase confirmed pain"
           ],
+          "negation_scope": "none",
           "next_action_hint": "ask_remaining_diagnostic",
+          "next_best_sales_action": "",
+          "normalized_entities": {},
+          "object_mentions": [],
+          "object_type": "unknown",
           "opens_prod_102": false,
           "outgoing_active_gap_scope": "unknown",
           "outgoing_candidate_gaps": [],
@@ -3936,13 +4647,11 @@
             "campaign_id": "synthetic-telecom-contextual-011",
             "campaign_playbook_id": "synthetic-telecom-contextual-011-playbook",
             "candidate_gaps": [
-              "coverage_or_availability",
-              "plan_fit",
-              "contract_or_switching"
+              "coverage_or_availability"
             ],
             "playbook_gap": "plan_fit",
             "playbook_id": "synthetic-telecom-contextual-011-playbook",
-            "playbook_next_gap": "contract_or_switching",
+            "playbook_next_gap": "coverage_or_availability",
             "playbook_review_focus": "plan-fit review",
             "playbook_supported_gap_ids": [
               "coverage_or_availability",
@@ -3977,7 +4686,7 @@
           },
           "playbook_gap": "plan_fit",
           "playbook_id": "synthetic-telecom-contextual-011-playbook",
-          "playbook_next_gap": "contract_or_switching",
+          "playbook_next_gap": "coverage_or_availability",
           "playbook_review_focus": "plan-fit review",
           "playbook_supported_gap_ids": [
             "coverage_or_availability",
@@ -3987,12 +4696,26 @@
           "polarity": "clear_current_gap",
           "primary_gap": "plan_fit",
           "provider_calls_made": false,
+          "raw_buyer_meaning_summary": "",
+          "relation_type": "unknown",
+          "response_strategy": "",
+          "response_variation_key": "",
           "schema_version": 1,
           "secondary_confirmed_gaps": [],
           "semantic": "current_gap_clear",
+          "semantic_family": "unknown",
           "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
           "send_info_state_update": {},
           "sends_email": false,
+          "should_answer_directly": false,
+          "should_ask_clarifying_question": false,
+          "should_close": false,
+          "should_disqualify": false,
+          "should_not_route_to_stability_guard": false,
+          "should_recommend": false,
+          "speech_act": "unknown",
+          "state_updates": {},
+          "sub_intent": "unknown",
           "target_gap": "plan_fit",
           "target_topic": "plan_fit",
           "writes_crm": false

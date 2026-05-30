@@ -1,6 +1,6 @@
 {
   "experiment_id": "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-PUBLIC-WRITE-001",
-  "generated_at": "2026-05-30T12:51:07.313391+00:00",
+  "generated_at": "2026-05-30T14:07:14.318535+00:00",
   "status": "pass",
   "failure_count": 0,
   "failures": [],
@@ -17,7 +17,7 @@
   "safety_blockers_count": 0,
   "latency_ms": {
     "sample_count": 65,
-    "max": 18.2988
+    "max": 16.4776
   },
   "hook_results": [
     {
