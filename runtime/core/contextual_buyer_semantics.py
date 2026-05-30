@@ -3894,6 +3894,12 @@ def classify_contextual_buyer_semantics(
         selected_gap, secondary_confirmed = _rank_confirmed_gaps(current_confirmed_gaps, normalized, campaign)
         selected_gap = selected_gap or current_confirmed_gaps[0]
         semantic = "mixed_gap_response" if current_clear_gaps else "pain_confirmed"
+        route_callback_priority = (
+            _is_routesignal_playbook(campaign)
+            and selected_gap == "callbacks"
+            and "missed callback" in normalized
+            and ("manual tracking" in normalized or "mostly" in normalized)
+        )
         return _frame(
             semantic=semantic,
             transcript=transcript,
@@ -3923,6 +3929,7 @@ def classify_contextual_buyer_semantics(
             ),
             action_id="request_appointment_time",
             dialogue_focus="timing",
+            campaign_response_priority=route_callback_priority,
         )
 
     if active_gap and _is_unclear_possible_pain(normalized):

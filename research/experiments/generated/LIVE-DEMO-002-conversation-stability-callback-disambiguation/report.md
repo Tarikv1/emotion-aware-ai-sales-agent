@@ -1,26 +1,14 @@
 # LIVE-DEMO-002-conversation-stability-callback-disambiguation
 
-- Passed: `false`
-- Failure count: `13`
+- Passed: `true`
+- Failure count: `0`
 - Provider calls made: `false`
 - Stress turn count: `27`
-- Stress duplicate responses: `3`
+- Stress duplicate responses: `0`
 
 ## Failures
 
-- Workflow callback response did not steer to a sales-progressing next step: Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?
-- Workflow callback response did not explain/map callback gap: 'it is probably the callbacks' -> Then RouteSignal helps remind the team before demo leads wait too long. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?
-- Workflow callback response did not steer to a sales-progressing next step: Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?
-- Workflow callback response did not explain/map callback gap: 'are callbacks appointments or reminders' -> Then RouteSignal helps remind the team before demo leads wait too long. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?
-- Workflow callback response did not steer to a sales-progressing next step: Got it, reminders are the issue. Is that causing missed follow-up, or mostly a general reminder concern?
-- Workflow callback response did not steer to a sales-progressing next step: Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?
-- Workflow callback response did not explain/map callback gap: 'our team misses follow-ups' -> Then RouteSignal helps remind the team before demo leads wait too long. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?
-- Scheduling request should ask for a callback time: 'call me back later' -> Sure. What day or time window should I note?
-- Scheduling request should ask for a callback time: 'not now, call me later' -> Sure. What day or time window should I note?
-- Expected callback_time_confirmation for scheduling transcript 'tomorrow at 3 works', got None
-- Stress scenario replayed final response: ['Hi, this is Maya calling from Northstar Workflow Labs, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?', 'Thanks. Is inbound demo follow-up slipping right now?', 'Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?', 'I can answer that directly if you name the point: workflow routing, price, security, or callback timing.', 'In plain terms, it matters only if that gap costs time today: missed callbacks, unclear owners, or lost handoffs. Which one costs time today?', 'RouteSignal CRM routes leads, captures follow-up tasks, and shows handoff status so inbound requests do not sit in a spreadsheet. Where does follow-up break first today: assignment, reminders, or missed replies?', 'Callbacks here mean follow-up reminders after an inbound demo request, not scheduling this call. Which part is confusing: what callback means here, who owns it, or whether missed follow-ups happen?', 'Starter is $29/month for basic routing. Growth is $59/month with priority routing, reminders, and handoff review. Which gap costs more time today: routing, callbacks, or handoffs?', 'Got it. Before we talk timing, is the issue causing delays or extra work?', 'No. RouteSignal CRM is not meant to replace a CRM that already works. It is worth reviewing only if demo leads still miss assignment, reminders, or follow-up around the CRM. Is that the gap you are checking?', 'Then RouteSignal helps remind the team before demo leads wait too long. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?', 'No problem. The quick check is simpler: do demo follow-ups ever miss an owner, callback reminder, or handoff?', 'No problem. Do you mean now is not a good time, or that missed callbacks and handoffs are not an issue?', 'Right, callbacks is already noted. Is it creating a real impact now?', 'Correct. I can answer the high-level scope, but detailed advice belongs with the verified implementation reviewer. The verified implementation reviewer would need to review handoffs. Is that what you want them to check?', 'The high-level answer is covered. The useful next step is one concrete workflow gap to check.', 'Start with Starter if missed follow-up is occasional. Use Growth only when routing saves real time. Are missed callbacks occasional, or frequent enough to automate?', "Understood. Then the useful next step is not to sell you. It is either a short summary for the decision-maker or the right person's contact.", 'The quick check is one inbound demo follow-up gap. Should I check who gets the lead, the reminder, or the next reply?', 'Short means one inbound demo follow-up gap, not a full demo. Should I check who gets the lead, the reminder, or the next reply?', 'Got it, handoffs are the concern. Is that causing missed ownership, or mostly extra tracking work?', 'For Salesforce, someone from Northstar would need to verify exact setup and permissions before I claim fit. The useful check here is simpler: are demo leads still missing assignment, reminders, or follow-up?', "Got it. I'll note that time for the verified implementation reviewer to follow up.", 'Understood. I will stop here. Goodbye.', 'Understood. I will stop here. Goodbye.', 'Understood. I will stop here. Goodbye.', 'Understood. I will stop here. Goodbye.']
-- Stress scenario repeated question type too often: {'sales_progression_question': 10}
-- Echo example did not clarify or progress the sales conversation: Got it, callbacks are the issue. Is that causing missed follow-up, or mostly extra tracking work?
+- None
 
 ## Boundary
 

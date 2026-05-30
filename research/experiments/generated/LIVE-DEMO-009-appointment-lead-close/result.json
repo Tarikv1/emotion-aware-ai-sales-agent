@@ -1,12 +1,8 @@
 {
   "checkpoint_id": "LIVE-DEMO-009-appointment-lead-close",
-  "passed": false,
-  "failure_count": 3,
-  "failures": [
-    "Repeated yes after value confirmation should stay on appointment next step: Thanks. Is inbound demo follow-up slipping right now?",
-    "Explicit call-back-later request should still ask for time: {'applied': True, 'reason': 'universal_response_shape_enforced', 'action_id': 'request_callback_time', 'dialogue_focus': 'appointment_callback_send_info', 'candidate_response': 'Sure. What day or time window should I note?', 'universal_policy_frame': {'schema_version': 1, 'knowledge_id': 'UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001', 'buyer_move_id': 'callback_request', 'response_shape_id': 'callback_time_capture', 'recognition_reason': 'callback_request_phrase', 'recognition_confidence': 'high', 'buyer_move_category': 'appointment_callback_send_info', 'conversation_stage': 'diagnostic', 'allowed_fact_slots': ['appointment_target', 'human_followup_owner', 'language'], 'forbidden_patterns': ['internal policy wording', 'approved qualified reviewer path', 'repeated full diagnostic menu after direct answer', 'invented guarantee', 'invented coverage promise', 'invented refund promise', 'invented exact price', 'invented security proof', 'invented ROI or revenue claim'], 'allowed_call_controls': ['continue-call', 'schedule-and-end'], 'memory_policy': 'request_or_capture_callback_time', 'appointment_pressure_level': 'direct', 'direct_question_required': False, 'asr_repair_required': False, 'should_preserve_confirmed_gaps': False, 'should_preserve_cleared_gaps': False, 'one_next_action_only': True, 'enforcement_enabled': False, 'enforcement_reason': 'no_asr_repair_required', 'response_shape_enforcement_enabled': True, 'response_shape_enforcement_reason': 'appointment_callback_send_info_high_confidence', 'response_shape_enforced_category': 'appointment_callback_send_info', 'response_shape_candidate_source': 'universal_response_shape', 'provider_calls_made': False, 'local_llm_calls_made': False, 'opens_prod_102': False, 'asr_repair_turn_count': 0, 'detection': {'applied': False, 'reason': 'not_garbled', 'normalized_transcript': 'call me back later', 'previous_question_type': 'sales_progression_question'}, 'pragmatic_move_id': 'no_pragmatic_repair', 'sales_progression_stage': 'next_step_capture', 'appointment_readiness': 'none', 'pain_development_required': False, 'implication_check_required': False, 'next_best_sales_action': 'clarify_callback_window', 'confirmed_gap_id': '', 'selected_gap': '', 'confirmed_gap_phrase': 'inbound demo follow-up slipping', 'impact_signal_detected': False, 'impact_signal_type': 'none', 'social_repair_required': False, 'speech_adjustment_requested': False, 'simplified_language_required': False, 'friction_level': 'none', 'should_preserve_previous_question': False, 'social_repair_type': 'none', 'rapport_repair_required': False, 'human_context_type': 'none', 'emotional_temperature': 'none', 'sensitive_context_detected': False, 'serious_bad_timing_detected': False, 'safe_to_continue': True, 'should_stop_for_hardship': False, 'should_offer_later_or_stop': False, 'relevance_bridge_allowed': False, 'stakeholder_routing_required': False, 'max_rapport_turns': 0, 'rapport_response_shape_id': 'none', 'high_confidence_move_priority_protected': False, 'high_confidence_move_priority_reason': 'not_protected', 'next_step_discipline_required': True, 'callback_capture_required': True, 'contact_capture_required': False, 'should_preserve_appointment_readiness': False, 'timing_specificity': 'vague_or_missing'}}",
-    "Time after appointment ask should confirm appointment context: {'applied': True, 'reason': 'universal_response_shape_enforced', 'action_id': 'confirm_callback_and_end', 'dialogue_focus': 'appointment_callback_send_info', 'candidate_response': \"Got it. I'll note that time for the verified implementation reviewer to follow up.\", 'universal_policy_frame': {'schema_version': 1, 'knowledge_id': 'UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001', 'buyer_move_id': 'callback_time_provided', 'response_shape_id': 'callback_time_capture', 'recognition_reason': 'time_phrase_with_acceptance', 'recognition_confidence': 'high', 'buyer_move_category': 'appointment_callback_send_info', 'conversation_stage': 'diagnostic', 'allowed_fact_slots': ['appointment_target', 'human_followup_owner', 'language'], 'forbidden_patterns': ['internal policy wording', 'approved qualified reviewer path', 'repeated full diagnostic menu after direct answer', 'invented guarantee', 'invented coverage promise', 'invented refund promise', 'invented exact price', 'invented security proof', 'invented ROI or revenue claim'], 'allowed_call_controls': ['continue-call', 'schedule-and-end'], 'memory_policy': 'capture_time_without_calendar_write', 'appointment_pressure_level': 'direct', 'direct_question_required': False, 'asr_repair_required': False, 'should_preserve_confirmed_gaps': False, 'should_preserve_cleared_gaps': False, 'one_next_action_only': True, 'enforcement_enabled': False, 'enforcement_reason': 'no_asr_repair_required', 'response_shape_enforcement_enabled': True, 'response_shape_enforcement_reason': 'appointment_callback_send_info_high_confidence', 'response_shape_enforced_category': 'appointment_callback_send_info', 'response_shape_candidate_source': 'universal_response_shape', 'provider_calls_made': False, 'local_llm_calls_made': False, 'opens_prod_102': False, 'asr_repair_turn_count': 0, 'detection': {'applied': False, 'reason': 'not_garbled', 'normalized_transcript': 'tomorrow at 3 works', 'previous_question_type': 'appointment_time'}, 'pragmatic_move_id': 'no_pragmatic_repair', 'sales_progression_stage': 'next_step_capture', 'appointment_readiness': 'none', 'pain_development_required': False, 'implication_check_required': False, 'next_best_sales_action': 'confirm_callback_time', 'confirmed_gap_id': '', 'selected_gap': '', 'confirmed_gap_phrase': 'inbound demo follow-up slipping', 'impact_signal_detected': False, 'impact_signal_type': 'none', 'social_repair_required': False, 'speech_adjustment_requested': False, 'simplified_language_required': False, 'friction_level': 'none', 'should_preserve_previous_question': False, 'social_repair_type': 'none', 'rapport_repair_required': False, 'human_context_type': 'none', 'emotional_temperature': 'none', 'sensitive_context_detected': False, 'serious_bad_timing_detected': False, 'safe_to_continue': True, 'should_stop_for_hardship': False, 'should_offer_later_or_stop': False, 'relevance_bridge_allowed': False, 'stakeholder_routing_required': False, 'max_rapport_turns': 0, 'rapport_response_shape_id': 'none', 'high_confidence_move_priority_protected': False, 'high_confidence_move_priority_reason': 'not_protected', 'next_step_discipline_required': True, 'callback_capture_required': False, 'contact_capture_required': False, 'should_preserve_appointment_readiness': False, 'timing_specificity': 'concrete'}}"
-  ],
+  "passed": true,
+  "failure_count": 0,
+  "failures": [],
   "provider_calls_made": false,
   "evidence": {
     "single_permission_opening": {
@@ -225,7 +221,7 @@
             "answered_gaps": [],
             "cleared_gaps": [],
             "confirmed_gaps": [],
-            "outgoing_question_type": "sales_progression_question",
+            "outgoing_question_type": "initial_relevance_check",
             "outgoing_candidate_gaps": [],
             "outgoing_active_gap_scope": "unknown",
             "playbook": {
@@ -314,7 +310,7 @@
               "cleared_gaps": [],
               "current_confirmed_gaps": [],
               "current_cleared_gaps": [],
-              "outgoing_question_type": "sales_progression_question",
+              "outgoing_question_type": "initial_relevance_check",
               "outgoing_candidate_gaps": [],
               "outgoing_active_gap_scope": "unknown",
               "playbook": {
@@ -369,12 +365,12 @@
           "active_topic": "qualification",
           "selected_gap": null,
           "callback_semantic": null,
-          "last_agent_question_type": "sales_progression_question",
-          "last_active_agent_question_type": "sales_progression_question",
+          "last_agent_question_type": "initial_relevance_check",
+          "last_active_agent_question_type": "initial_relevance_check",
           "last_agent_question_hash": "c4f25e2c6ac64318",
           "asked_question_type_counts": {
             "permission_check": 1,
-            "sales_progression_question": 1
+            "initial_relevance_check": 1
           },
           "answered_topics": [
             "qualification"
@@ -440,7 +436,7 @@
             "visibility",
             "right_person"
           ],
-          "outgoing_question_type": "sales_progression_question",
+          "outgoing_question_type": "initial_relevance_check",
           "outgoing_candidate_gaps": [],
           "outgoing_active_gap_scope": "unknown"
         }
@@ -467,7 +463,7 @@
           "last_agent_question_hash": "205f3b9d6454c722",
           "asked_question_type_counts": {
             "permission_check": 1,
-            "sales_progression_question": 1,
+            "initial_relevance_check": 1,
             "workflow_review_next_step": 1
           },
           "answered_topics": [
@@ -560,8 +556,9 @@
           "last_agent_question_hash": "975bcb9157a5e4bb",
           "asked_question_type_counts": {
             "permission_check": 1,
-            "sales_progression_question": 2,
-            "workflow_review_next_step": 1
+            "initial_relevance_check": 1,
+            "workflow_review_next_step": 1,
+            "sales_progression_question": 1
           },
           "answered_topics": [
             "qualification",
@@ -638,14 +635,14 @@
       {
         "turn": 5,
         "transcript": "our inbound follow-ups usually land in one inbox and one person tracks it before it goes to other people",
-        "response": "Then RouteSignal helps remind the team before demo leads wait too long. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
+        "response": "Then RouteSignal keeps callback reminders, owners, and the next step visible before inbound demo follow-up waits too long. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
         "continuity": {
           "applied": true,
           "reason": "seller_gap_selected_for_qualification",
           "dialogue_focus": "qualification",
           "selected_gap": "callbacks",
           "callback_semantic": "callback_workflow_gap",
-          "candidate_response": "Then RouteSignal helps remind the team before demo leads wait too long. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?"
+          "candidate_response": "Then RouteSignal keeps callback reminders, owners, and the next step visible before inbound demo follow-up waits too long. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?"
         },
         "memory": {
           "schema_version": 1,
@@ -658,8 +655,9 @@
           "last_agent_question_hash": "2c3adc56ec47f25c",
           "asked_question_type_counts": {
             "permission_check": 1,
-            "sales_progression_question": 2,
-            "workflow_review_next_step": 2
+            "initial_relevance_check": 1,
+            "workflow_review_next_step": 2,
+            "sales_progression_question": 1
           },
           "answered_topics": [
             "callbacks",
@@ -673,24 +671,24 @@
             "205f3b9d6454c722",
             "975bcb9157a5e4bb",
             "2c3adc56ec47f25c",
-            "9d41302f81c18958"
+            "407e3fab54b9b2de"
           ],
           "last_response_signatures": [
             "opening_permission:c4f25e2c6ac64318",
             "general:a31f8e75f16ad928:205f3b9d6454c722",
             "safe_next_step:975bcb9157a5e4bb",
             "general:06cd8310b558a64f:2c3adc56ec47f25c",
-            "safe_next_step:9d41302f81c18958"
+            "callback_workflow:407e3fab54b9b2de"
           ],
           "recent_response_subjects": [
             "opening_permission",
             "general:a31f8e75f16ad928",
             "safe_next_step",
             "general:06cd8310b558a64f",
-            "safe_next_step"
+            "callback_workflow"
           ],
-          "candidate_response_subject": "safe_next_step",
-          "candidate_response_signature": "safe_next_step:9d41302f81c18958",
+          "candidate_response_subject": "callback_workflow",
+          "candidate_response_signature": "callback_workflow:407e3fab54b9b2de",
           "last_customer_intent": "callback_workflow_gap",
           "last_sales_progression_step": "value_mapping",
           "appointment_close_ready": false,
@@ -746,22 +744,23 @@
           "applied": true,
           "reason": "contextual_term_question",
           "action_id": "explain_term",
-          "dialogue_focus": "callbacks",
-          "selected_gap": "callbacks",
+          "dialogue_focus": "qualification",
+          "selected_gap": null,
           "candidate_response": "Sorry, I should have explained that. Growth is the RouteSignal setup for teams that need follow-up reminders and handoff review around inbound demo requests. Would that be worth a short workflow review?",
           "contextual_buyer_semantics": {
             "semantic_id": "CONTEXTUAL-BUYER-SEMANTICS-001",
             "schema_version": 1,
             "semantic": "term_question",
-            "target_gap": "callbacks",
-            "target_topic": "callbacks",
-            "primary_gap": "callbacks",
+            "target_gap": null,
+            "target_topic": null,
+            "primary_gap": null,
             "secondary_confirmed_gaps": [],
-            "active_gap_scope": "single_gap",
-            "candidate_gaps": [],
-            "answered_gaps": [
-              "callbacks"
+            "active_gap_scope": "multi_gap",
+            "candidate_gaps": [
+              "callbacks",
+              "reminders"
             ],
+            "answered_gaps": [],
             "cleared_gaps": [],
             "confirmed_gaps": [],
             "outgoing_question_type": "workflow_review_next_step",
@@ -770,9 +769,9 @@
             "playbook": {
               "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
               "schema_version": 1,
-              "playbook_gap": "callbacks",
+              "playbook_gap": null,
               "playbook_next_gap": "callbacks",
-              "playbook_review_focus": "missed callback reminders",
+              "playbook_review_focus": null,
               "playbook_supported_gap_ids": [
                 "callbacks",
                 "manual_tracking",
@@ -787,22 +786,13 @@
               "vertical_id": "b2b_saas",
               "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
               "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
-              "universal_pain_dimensions": [
-                "missed_follow_up",
-                "delay",
-                "unclear_next_step"
-              ],
-              "qualification_dimensions": [
-                "need_or_pain",
-                "urgency",
-                "fit",
-                "contact_path"
-              ]
+              "universal_pain_dimensions": [],
+              "qualification_dimensions": []
             },
             "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
-            "playbook_gap": "callbacks",
+            "playbook_gap": null,
             "playbook_next_gap": "callbacks",
-            "playbook_review_focus": "missed callback reminders",
+            "playbook_review_focus": null,
             "playbook_supported_gap_ids": [
               "callbacks",
               "manual_tracking",
@@ -849,14 +839,15 @@
               "buyer_utterance": "growth what do you mean by that",
               "normalized_buyer_utterance": "growth what do you mean by that",
               "previous_agent_question_type": "workflow_review_next_step",
-              "previous_agent_question_text": "Then RouteSignal helps remind the team before demo leads wait too long. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
+              "previous_agent_question_text": "Then RouteSignal keeps callback reminders, owners, and the next step visible before inbound demo follow-up waits too long. I would keep the workflow review focused on that one gap. Would a short workflow review be useful for that gap?",
               "conversation_stage": "appointment_scheduling",
-              "active_gap": "callbacks",
-              "active_gap_scope": "single_gap",
-              "candidate_gaps": [],
-              "answered_gaps": [
-                "callbacks"
+              "active_gap": null,
+              "active_gap_scope": "multi_gap",
+              "candidate_gaps": [
+                "callbacks",
+                "reminders"
               ],
+              "answered_gaps": [],
               "confirmed_gaps": [],
               "cleared_gaps": [],
               "current_confirmed_gaps": [],
@@ -867,9 +858,9 @@
               "playbook": {
                 "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
                 "schema_version": 1,
-                "playbook_gap": "callbacks",
+                "playbook_gap": null,
                 "playbook_next_gap": "callbacks",
-                "playbook_review_focus": "missed callback reminders",
+                "playbook_review_focus": null,
                 "playbook_supported_gap_ids": [
                   "callbacks",
                   "manual_tracking",
@@ -884,17 +875,8 @@
                 "vertical_id": "b2b_saas",
                 "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
                 "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
-                "universal_pain_dimensions": [
-                  "missed_follow_up",
-                  "delay",
-                  "unclear_next_step"
-                ],
-                "qualification_dimensions": [
-                  "need_or_pain",
-                  "urgency",
-                  "fit",
-                  "contact_path"
-                ]
+                "universal_pain_dimensions": [],
+                "qualification_dimensions": []
               },
               "pending_callback": false,
               "pending_appointment": true
@@ -904,7 +886,7 @@
               "push appointment before clarifying"
             ],
             "action_id": "explain_term",
-            "dialogue_focus": "callbacks",
+            "dialogue_focus": "qualification",
             "send_info_state_update": {},
             "lead_followup_state_update": {},
             "handoff_target_state_update": {},
@@ -921,16 +903,17 @@
         "memory": {
           "schema_version": 1,
           "active_stage": "value_mapping",
-          "active_topic": "callbacks",
+          "active_topic": "qualification",
           "selected_gap": "callbacks",
           "callback_semantic": null,
           "last_agent_question_type": "workflow_review_next_step",
           "last_active_agent_question_type": "workflow_review_next_step",
-          "last_agent_question_hash": "9d41302f81c18958",
+          "last_agent_question_hash": "407e3fab54b9b2de",
           "asked_question_type_counts": {
             "permission_check": 1,
-            "sales_progression_question": 2,
-            "workflow_review_next_step": 3
+            "initial_relevance_check": 1,
+            "workflow_review_next_step": 3,
+            "sales_progression_question": 1
           },
           "answered_topics": [
             "callbacks",
@@ -944,7 +927,7 @@
             "205f3b9d6454c722",
             "975bcb9157a5e4bb",
             "2c3adc56ec47f25c",
-            "9d41302f81c18958",
+            "407e3fab54b9b2de",
             "f69c090e48293713"
           ],
           "last_response_signatures": [
@@ -952,7 +935,7 @@
             "general:a31f8e75f16ad928:205f3b9d6454c722",
             "safe_next_step:975bcb9157a5e4bb",
             "general:06cd8310b558a64f:2c3adc56ec47f25c",
-            "safe_next_step:9d41302f81c18958",
+            "callback_workflow:407e3fab54b9b2de",
             "plan_boundary:f69c090e48293713"
           ],
           "recent_response_subjects": [
@@ -960,7 +943,7 @@
             "general:a31f8e75f16ad928",
             "safe_next_step",
             "general:06cd8310b558a64f",
-            "safe_next_step",
+            "callback_workflow",
             "plan_boundary"
           ],
           "candidate_response_subject": "plan_boundary",
@@ -971,13 +954,17 @@
           "appointment_close_gap": null,
           "stored_audio_data": false,
           "stores_secrets": false,
-          "active_gap_scope": "single_gap",
+          "active_gap_scope": "multi_gap",
+          "candidate_gaps": [
+            "callbacks",
+            "reminders"
+          ],
           "playbook": {
             "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
             "schema_version": 1,
-            "playbook_gap": "callbacks",
+            "playbook_gap": null,
             "playbook_next_gap": "callbacks",
-            "playbook_review_focus": "missed callback reminders",
+            "playbook_review_focus": null,
             "playbook_supported_gap_ids": [
               "callbacks",
               "manual_tracking",
@@ -992,22 +979,11 @@
             "vertical_id": "b2b_saas",
             "universal_knowledge_id": "UNIVERSAL-SALES-KNOWLEDGE-001",
             "campaign_playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
-            "universal_pain_dimensions": [
-              "missed_follow_up",
-              "delay",
-              "unclear_next_step"
-            ],
-            "qualification_dimensions": [
-              "need_or_pain",
-              "urgency",
-              "fit",
-              "contact_path"
-            ]
+            "universal_pain_dimensions": [],
+            "qualification_dimensions": []
           },
           "playbook_id": "ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001",
-          "playbook_gap": "callbacks",
           "playbook_next_gap": "callbacks",
-          "playbook_review_focus": "missed callback reminders",
           "playbook_supported_gap_ids": [
             "callbacks",
             "manual_tracking",
@@ -1020,11 +996,7 @@
           ],
           "outgoing_question_type": "workflow_review_next_step",
           "outgoing_candidate_gaps": [],
-          "outgoing_active_gap_scope": "unknown",
-          "answered_gaps": [
-            "callbacks"
-          ],
-          "primary_gap": "callbacks"
+          "outgoing_active_gap_scope": "unknown"
         }
       },
       {
@@ -1071,8 +1043,9 @@
           "last_agent_question_hash": "f69c090e48293713",
           "asked_question_type_counts": {
             "permission_check": 1,
-            "sales_progression_question": 2,
+            "initial_relevance_check": 1,
             "workflow_review_next_step": 3,
+            "sales_progression_question": 1,
             "appointment_time": 1
           },
           "answered_topics": [
@@ -1088,7 +1061,7 @@
             "205f3b9d6454c722",
             "975bcb9157a5e4bb",
             "2c3adc56ec47f25c",
-            "9d41302f81c18958",
+            "407e3fab54b9b2de",
             "f69c090e48293713",
             "812aa442854b2f26"
           ],
@@ -1097,7 +1070,7 @@
             "general:a31f8e75f16ad928:205f3b9d6454c722",
             "safe_next_step:975bcb9157a5e4bb",
             "general:06cd8310b558a64f:2c3adc56ec47f25c",
-            "safe_next_step:9d41302f81c18958",
+            "callback_workflow:407e3fab54b9b2de",
             "plan_boundary:f69c090e48293713",
             "callback_workflow:812aa442854b2f26"
           ],
@@ -1106,7 +1079,7 @@
             "general:a31f8e75f16ad928",
             "safe_next_step",
             "general:06cd8310b558a64f",
-            "safe_next_step",
+            "callback_workflow",
             "plan_boundary",
             "callback_workflow"
           ],
@@ -1206,8 +1179,9 @@
           "last_agent_question_hash": "812aa442854b2f26",
           "asked_question_type_counts": {
             "permission_check": 1,
-            "sales_progression_question": 2,
+            "initial_relevance_check": 1,
             "workflow_review_next_step": 3,
+            "sales_progression_question": 1,
             "appointment_time": 2
           },
           "answered_topics": [
@@ -1223,7 +1197,7 @@
             "205f3b9d6454c722",
             "975bcb9157a5e4bb",
             "2c3adc56ec47f25c",
-            "9d41302f81c18958",
+            "407e3fab54b9b2de",
             "f69c090e48293713",
             "812aa442854b2f26",
             "89628c0c18f31f50"
@@ -1233,7 +1207,7 @@
             "general:a31f8e75f16ad928:205f3b9d6454c722",
             "safe_next_step:975bcb9157a5e4bb",
             "general:06cd8310b558a64f:2c3adc56ec47f25c",
-            "safe_next_step:9d41302f81c18958",
+            "callback_workflow:407e3fab54b9b2de",
             "plan_boundary:f69c090e48293713",
             "callback_workflow:812aa442854b2f26",
             "callback_workflow:89628c0c18f31f50"
@@ -1243,7 +1217,7 @@
             "general:a31f8e75f16ad928",
             "safe_next_step",
             "general:06cd8310b558a64f",
-            "safe_next_step",
+            "callback_workflow",
             "plan_boundary",
             "callback_workflow",
             "callback_workflow"
@@ -1341,7 +1315,7 @@
             "answered_gaps": [],
             "cleared_gaps": [],
             "confirmed_gaps": [],
-            "outgoing_question_type": "sales_progression_question",
+            "outgoing_question_type": "initial_relevance_check",
             "outgoing_candidate_gaps": [],
             "outgoing_active_gap_scope": "unknown",
             "playbook": {
@@ -1430,7 +1404,7 @@
               "cleared_gaps": [],
               "current_confirmed_gaps": [],
               "current_cleared_gaps": [],
-              "outgoing_question_type": "sales_progression_question",
+              "outgoing_question_type": "initial_relevance_check",
               "outgoing_candidate_gaps": [],
               "outgoing_active_gap_scope": "unknown",
               "playbook": {
@@ -1563,13 +1537,13 @@
       {
         "turn": 6,
         "transcript": "yes",
-        "response": "Thanks. Is inbound demo follow-up slipping right now?",
+        "response": "Yes. Someone from Northstar would check lead assignment against your follow-up flow in a short workflow review. What time works for a quick call?",
         "continuity": {
           "applied": true,
-          "reason": "universal_response_shape_enforced",
-          "action_id": "continue_with_session_policy",
+          "reason": "appointment_time_requested",
+          "action_id": "request_appointment_time",
           "dialogue_focus": "pain_progression",
-          "candidate_response": "Thanks. Is inbound demo follow-up slipping right now?",
+          "candidate_response": "Yes. Someone from Northstar would check lead assignment against your follow-up flow in a short workflow review. What time works for a quick call?",
           "universal_policy_frame": {
             "schema_version": 1,
             "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -1663,13 +1637,13 @@
       }
     ],
     "scheduling_controls": {
-      "request_response": "Sure. What day or time window should I note?",
+      "request_response": "No problem. What time should I note for the callback?",
       "request_continuity": {
         "applied": true,
-        "reason": "universal_response_shape_enforced",
+        "reason": "callback_request_time_needed",
         "action_id": "request_callback_time",
         "dialogue_focus": "appointment_callback_send_info",
-        "candidate_response": "Sure. What day or time window should I note?",
+        "candidate_response": "No problem. What time should I note for the callback?",
         "universal_policy_frame": {
           "schema_version": 1,
           "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",
@@ -1720,7 +1694,7 @@
             "applied": false,
             "reason": "not_garbled",
             "normalized_transcript": "call me back later",
-            "previous_question_type": "sales_progression_question"
+            "previous_question_type": "initial_relevance_check"
           },
           "pragmatic_move_id": "no_pragmatic_repair",
           "sales_progression_stage": "next_step_capture",
@@ -1764,7 +1738,7 @@
       "time_call_control": "schedule-and-end",
       "time_continuity": {
         "applied": true,
-        "reason": "universal_response_shape_enforced",
+        "reason": "callback_time_confirmed",
         "action_id": "confirm_callback_and_end",
         "dialogue_focus": "appointment_callback_send_info",
         "candidate_response": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
@@ -1818,7 +1792,7 @@
             "applied": false,
             "reason": "not_garbled",
             "normalized_transcript": "tomorrow at 3 works",
-            "previous_question_type": "sales_progression_question"
+            "previous_question_type": "callback_time"
           },
           "pragmatic_move_id": "no_pragmatic_repair",
           "sales_progression_stage": "next_step_capture",
@@ -1861,14 +1835,14 @@
     },
     "appointment_time_confirmation": {
       "appointment_response": "Yes. Someone from Northstar would check missed callback reminders against your follow-up flow in a short workflow review. What time works for a quick call?",
-      "time_response": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
+      "time_response": "Confirmed. I will note that time for the workflow review. Goodbye.",
       "time_call_control": "schedule-and-end",
       "time_continuity": {
         "applied": true,
-        "reason": "universal_response_shape_enforced",
-        "action_id": "confirm_callback_and_end",
+        "reason": "appointment_time_confirmed",
+        "action_id": "confirm_appointment_and_end",
         "dialogue_focus": "appointment_callback_send_info",
-        "candidate_response": "Got it. I'll note that time for the verified implementation reviewer to follow up.",
+        "candidate_response": "Confirmed. I will note that time for the workflow review. Goodbye.",
         "universal_policy_frame": {
           "schema_version": 1,
           "knowledge_id": "UNIVERSAL-SALES-CONVERSATION-KNOWLEDGE-001",

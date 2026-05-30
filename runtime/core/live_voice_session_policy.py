@@ -2194,7 +2194,7 @@ def seller_guided_next_step_text(language: str, gap: str) -> str:
         return "Dann ist das die konkrete Luecke. Der naechste Schritt waere eine kurze Workflow-Pruefung, keine lange Demo. Soll ich es auf genau diese Pruefung begrenzen?"
     gap_claims = {
         "handoffs": "RouteSignal helps keep the next person and next follow-up visible so demo leads do not get lost",
-        "callbacks": "RouteSignal helps remind the team before demo leads wait too long",
+        "callbacks": "RouteSignal keeps callback reminders, owners, and the next step visible before inbound demo follow-up waits too long",
         "reminders": "RouteSignal helps the team stop chasing follow-ups by hand",
         "routing": "RouteSignal helps each demo lead get a clear next owner faster",
         "duplicates": "RouteSignal helps keep duplicate demo leads from splitting ownership",
@@ -2664,9 +2664,9 @@ def gap_progression_text(language: str, gap: str, step: int, seen: set[str] | No
     variants = {
         "callbacks": [
             seller_guided_next_step_text(language, "callbacks"),
-            "For callbacks, the issue is speed to lead: each demo request has an owner and reminder before it waits. Would a short workflow review help check missed reminders?",
+            "For callbacks, the issue is speed to lead: each inbound demo request has an owner and callback reminder before it waits. Would a short workflow review help check missed reminders?",
             "Since missed callbacks are the gap, the useful next step is a short workflow review with someone from Northstar. Would a short workflow review be useful for this gap?",
-            "The useful next step is checking who owns the lead, when the next callback is due, and whether the reply happened. Would a short workflow review help you judge fit?",
+            "The useful next step is checking the owner, callback reminder, and whether inbound demo follow-up has a next reply. Would a short workflow review help you judge fit?",
         ],
         "handoffs": [
             seller_guided_next_step_text(language, "handoffs"),
@@ -3501,6 +3501,14 @@ def question_type_from_response(response: str) -> str:
         return "appointment_time"
     if normalized_contains_any(normalized, {"what time", "when should", "callback time", "note for the callback"}):
         return "callback_time"
+    if normalized_contains_any(normalized, {"is inbound demo follow up slipping right now", "is inbound demo follow-up slipping right now"}):
+        return "initial_relevance_check"
+    if normalized_contains_any(normalized, {"causing delays or extra work", "creating a real impact", "causing a real impact"}):
+        return "impact_check"
+    if normalized_contains_any(normalized, {"is that the gap you are checking", "are demo leads still missing assignment"}):
+        return "boundary_gap_check"
+    if normalized_contains_any(normalized, {"are missed callbacks occasional", "frequent enough to automate"}):
+        return "impact_frequency_check"
     if normalized_contains_any(normalized, {"which part slips", "which part needs"}):
         return "qualification_gap_diagnostic"
     if normalized_contains_any(normalized, {"which of those creates", "which of those"}):

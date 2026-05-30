@@ -25,9 +25,9 @@
 
 ## Live Demo RouteSignal Status
 
-- LIVE-DEMO-002: deferred_or_fail (failure_count=13, provider_calls_made=False)
-- LIVE-DEMO-009: deferred_or_fail (failure_count=3, provider_calls_made=False)
-- LIVE-DEMO-014: deferred_or_fail (failure_count=3, provider_calls_made=False)
+- LIVE-DEMO-002: pass (failure_count=0, provider_calls_made=False)
+- LIVE-DEMO-009: pass (failure_count=0, provider_calls_made=False)
+- LIVE-DEMO-014: pass (failure_count=0, provider_calls_made=False)
 
 ## Remaining Unrepaired Case Details
 

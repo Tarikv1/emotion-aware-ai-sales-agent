@@ -37,7 +37,13 @@ PLAYBOOK: dict[str, Any] = {
     },
     "gaps": {
         "callbacks": {
-            "customer_language": ["missed callbacks", "callbacks slipping", "forgotten follow-up calls", "call bags"],
+            "customer_language": [
+                "missed callbacks",
+                "callbacks slipping",
+                "forgotten follow-up calls",
+                "callback reminders",
+                "call bags",
+            ],
             "label": "callbacks",
             "customer_facing_phrase": "callbacks",
             "definition": "Inbound demo leads need a follow-up callback or reminder and may wait too long.",
@@ -53,6 +59,7 @@ PLAYBOOK: dict[str, Any] = {
                 "forgot to call back",
                 "people wait",
                 "missed follow up call",
+                "callback reminders are where we struggle",
                 "call bags are a problem",
             ],
             "evidence_negative": [
@@ -64,7 +71,7 @@ PLAYBOOK: dict[str, Any] = {
             ],
             "diagnostic_questions": ["Do missed callbacks ever create issues, or are those clean today?"],
             "diagnostic_question_phrase": "Do missed callbacks ever create issues, or are those clean today?",
-            "impact_question_phrase": "Is that causing missed follow-up, or mostly extra tracking work?",
+            "impact_question_phrase": "Are missed callback reminders leaving inbound demo follow-up without a next step, or is it mostly extra tracking work?",
             "pain_acknowledgement_phrase": "Got it, callbacks are the issue.",
             "value_bridge": "RouteSignal helps demo leads stay assigned, reminded, and followed up before callback gaps turn into lost opportunities.",
             "review_focus": "missed callback reminders",
@@ -165,7 +172,7 @@ PLAYBOOK: dict[str, Any] = {
             "evidence_negative": ["reminders are fine", "reminders are handled", "reminders are clean"],
             "diagnostic_questions": ["Do follow-up reminders ever get missed, or is that handled?"],
             "diagnostic_question_phrase": "Do follow-up reminders ever get missed, or is that handled?",
-            "impact_question_phrase": "Is that causing missed follow-up, or mostly a general reminder concern?",
+            "impact_question_phrase": "Are follow-up reminders leaving inbound demo work without a next step, or mostly a general reminder concern?",
             "pain_acknowledgement_phrase": "Got it, reminders are the issue.",
             "value_bridge": "RouteSignal keeps reminder ownership visible around demo follow-up.",
             "review_focus": "follow-up reminder flow",

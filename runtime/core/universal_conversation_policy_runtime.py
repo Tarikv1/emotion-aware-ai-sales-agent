@@ -2829,12 +2829,20 @@ def render_universal_response_outline(
     client = _campaign_client_name(campaign)
     caller = _campaign_caller_name(campaign)
     owner_role = _role_phrase(owner)
+    language = str((campaign or {}).get("language") or "en")
     has_confirmed_gap = _has_confirmed_gap(session_state)
     active_area = _area_phrase(active_gap)
     primary_issue_subject = _primary_issue_subject_phrase(campaign)
     primary_issue_clause = _primary_issue_problem_clause(campaign)
     primary_issue_question = _primary_issue_check_question(campaign)
     recognition_reason = str((frame or {}).get("recognition_reason") or "")
+    previous_question_type = _previous_question_type(session_state)
+    timing_gap_id = str(
+        (frame or {}).get("confirmed_gap_id")
+        or (frame or {}).get("selected_gap")
+        or session_policy.last_selected_gap_from_turns(_turns(session_state))
+        or ""
+    )
 
     if buyer_move_id == "serious_hardship_bad_timing":
         return "I'm sorry to hear that. This is not the right time for this call. I'll stop here."
@@ -2976,6 +2984,10 @@ def render_universal_response_outline(
         return f"Fair. I do not want to waste your time. This is only useful if {primary_issue_clause}. If not, I will not push it."
 
     if buyer_move_id == "permission_acknowledgement":
+        if previous_question_type == "appointment_time":
+            return session_policy.appointment_time_followup_response(language, timing_gap_id or None, 1)
+        if previous_question_type == "callback_time":
+            return "Yes. What time should I note for the callback?"
         return _permission_response(campaign, session_state=session_state)
     if buyer_move_id == "time_constrained_permission":
         return _time_pressure_response(campaign)
@@ -3001,33 +3013,24 @@ def render_universal_response_outline(
             return f"Sure. Since this sounds worth a review, I can note it for {owner_role}. What email or callback window should they use?"
         return f"Sure. I can note a request for details. What email should {owner_role} use?"
     if buyer_move_id == "callback_request":
-        readiness = str((frame or {}).get("appointment_readiness") or "")
-        if readiness in {"medium", "high"} or has_confirmed_gap:
-            if "next week" in normalized:
-                return "Sure. Next week can work. What day or time window should I note?"
-            if "tomorrow" in normalized:
-                return "Sure. Tomorrow can work. What time window should I note?"
-            return "Sure. What day or time window should I note?"
-        if "tomorrow at" in normalized:
-            return "Sure. Tomorrow can work. What time window should I note?"
-        if "tomorrow" in normalized:
-            return "Sure. Tomorrow can work. What time window should I note?"
-        if "next week" in normalized:
-            return "Sure. Next week can work. What day or time window should I note?"
-        return "Sure. What day or time window should I note?"
+        return session_policy.callback_request_time_response_for_transcript(language, normalized)
     if buyer_move_id == "buyer_requests_available_times":
-        return f"I cannot send a live calendar from this call. I can note a preferred window for {owner_role}. What works?"
+        return "I cannot send a live calendar from this call. What time should I note for the callback?"
     if buyer_move_id == "buyer_wants_email_before_booking":
         return f"Sure. I can note that you want email first. What email should {owner_role} use?"
     if buyer_move_id == "buyer_defers_to_later":
         if str((frame or {}).get("appointment_readiness") or "") in {"medium", "high"}:
-            return "Understood. Timing is not right now. What later window should I note?"
+            return "No problem. I can have someone call back later. What time should I note for the callback?"
         return "Understood. I will not push it now."
     if buyer_move_id == "appointment_interest":
+        if previous_question_type == "appointment_time":
+            return session_policy.appointment_time_followup_response(language, timing_gap_id or None, 1)
+        if previous_question_type == "callback_time":
+            return "Yes. What time should I note for the callback?"
         if recognition_reason == "review_scope_accepted":
-            return f"Good. I can note that review focus for {owner_role}. What callback window works?"
+            return "Good. What time should I note for the callback?"
         if str((frame or {}).get("appointment_readiness") or "") == "high" or _prior_impact_confirmed(session_state):
-            return "Good. The next step is a short review. What callback window works?"
+            return "Good. The next step is a short review. What time should I note for the callback?"
         if has_confirmed_gap:
             return f"Good. I have {active_area} noted; before a review, is it causing delays or extra work?"
         return f"Good. First I need to understand the workflow issue: {_primary_issue_check_question(campaign)}"
@@ -3039,6 +3042,8 @@ def render_universal_response_outline(
                     "is the issue causing delays or extra work?"
                 )
             return f"Got it. Before we talk timing, I need to confirm the workflow issue: {_primary_issue_check_question(campaign)}"
+        if previous_question_type == "appointment_time":
+            return session_policy.appointment_time_confirmed_response(language)
         return f"Got it. I'll note that time for {owner_role} to follow up."
 
     if buyer_move_id == "product_detail_question":
@@ -3351,16 +3356,33 @@ def universal_response_shape_continuity(
         return None
     buyer_move_id = str((frame or {}).get("buyer_move_id") or "")
     category = _response_shape_category(buyer_move_id) or "universal_response_shape"
+    previous_question_type = _previous_question_type(session_state)
+    reason = "universal_response_shape_enforced"
     if buyer_move_id in TERMINAL_RESPONSE_SHAPE_MOVES or buyer_move_id in TERMINAL_RAPPORT_MOVES or (frame or {}).get("safe_to_continue") is False:
         action_id = "end_call_stop_request"
     elif buyer_move_id == "callback_time_provided" and (
         str((frame or {}).get("appointment_readiness") or "") == "high" or _earned_timing_context(frame, session_state)
     ):
-        action_id = "confirm_callback_and_end"
+        if previous_question_type == "appointment_time":
+            action_id = "confirm_appointment_and_end"
+            reason = "appointment_time_confirmed"
+        else:
+            action_id = "confirm_callback_and_end"
+            reason = "callback_time_confirmed"
+    elif buyer_move_id == "permission_acknowledgement" and previous_question_type == "appointment_time":
+        action_id = "request_appointment_time"
+        reason = "appointment_time_requested"
+    elif buyer_move_id == "permission_acknowledgement" and previous_question_type == "callback_time":
+        action_id = "request_callback_time"
+        reason = "callback_request_time_needed"
     elif buyer_move_id in {"send_info_request", "buyer_wants_email_before_booking"}:
         action_id = "request_send_info_contact"
+    elif buyer_move_id == "appointment_interest" and previous_question_type == "appointment_time":
+        action_id = "request_appointment_time"
+        reason = "appointment_time_requested"
     elif buyer_move_id in {"callback_request", "buyer_requests_available_times", "buyer_defers_to_later", "appointment_interest"}:
         action_id = "request_callback_time"
+        reason = "callback_request_time_needed"
     else:
         action_id = "continue_with_session_policy"
     enforced_frame = dict(frame)
@@ -3374,7 +3396,7 @@ def universal_response_shape_continuity(
     )
     return {
         "applied": True,
-        "reason": "universal_response_shape_enforced",
+        "reason": reason,
         "action_id": action_id,
         "dialogue_focus": category,
         "candidate_response": render_universal_response_outline(enforced_frame, campaign, session_state),

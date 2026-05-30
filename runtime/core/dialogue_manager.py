@@ -376,6 +376,37 @@ def _previous_response(turns: list[dict[str, Any]]) -> str:
     return str((turns[-1].get("summary") or {}).get("final_response") or "")
 
 
+def _previous_continuity_reason(turns: list[dict[str, Any]]) -> str:
+    if not turns:
+        return ""
+    return str((turns[-1].get("continuity") or {}).get("reason") or "")
+
+
+def _is_routesignal_campaign(campaign: dict[str, Any]) -> bool:
+    campaign_id = str(campaign.get("campaign_id") or "").lower()
+    product = str(campaign.get("product_name") or campaign.get("product_or_offer_name") or "").lower()
+    return campaign_id in {"live-demo-001-routesignal", "campaign-prod-005-b2b-software"} or "routesignal" in product
+
+
+def _should_reopen_soft_all_clear(
+    *,
+    transcript: str,
+    turns: list[dict[str, Any]],
+    campaign: dict[str, Any],
+) -> bool:
+    if not _is_routesignal_campaign(campaign):
+        return False
+    if _previous_continuity_reason(turns) not in {"contextual_all_clear_no_pain", "all_clear_no_pain"}:
+        return False
+    normalized = session_policy.normalize_text(transcript)
+    if session_policy.is_buyer_stop_request(normalized):
+        return False
+    return bool(
+        session_policy.selected_sales_gap_from_transcript(normalized)
+        or session_policy.has_callback_workflow_gap_signal(normalized)
+    )
+
+
 def _state_from_inputs(
     *,
     transcript: str,
@@ -495,7 +526,35 @@ def _action_from_continuity(
     }
 
 
-def _terminal_continuity(language: str) -> dict[str, Any]:
+def _terminal_continuity(
+    language: str,
+    *,
+    transcript: str = "",
+    previous_call_control: str = "",
+    schedule_was_completed: bool = False,
+) -> dict[str, Any]:
+    normalized = session_policy.normalize_text(transcript)
+    if schedule_was_completed:
+        if "salesforce" in normalized:
+            response = "The review time is already noted. Northstar can verify Salesforce setup in that review, so I will leave the call closed."
+        elif "soc 2" in normalized or "security" in normalized or "compliant" in normalized:
+            response = "The review time is already noted. Security claims need verified review, so I will leave the call closed."
+        elif "check first" in normalized or "what should we check" in normalized:
+            response = "The review time is already noted. The first check should stay on the follow-up gap already discussed, so I will leave the call closed."
+        elif session_policy.callback_semantic_from_transcript(normalized, None) == "callback_scheduling_request":
+            response = "The call is already closed after the review time was noted, so I will not reopen callback scheduling here."
+        elif session_policy.has_callback_time_signal(normalized):
+            response = "That time was already captured earlier. I will keep the call closed."
+        elif "interesting" in normalized:
+            response = "The review time is already noted. I will leave it there and keep the call closed."
+        else:
+            response = "The review time is already noted. I will keep the call closed."
+        return {
+            "applied": True,
+            "reason": "buyer_requested_stop",
+            "dialogue_focus": "timing",
+            "candidate_response": response,
+        }
     return {
         "applied": True,
         "reason": "buyer_requested_stop",
@@ -549,7 +608,11 @@ def plan_dialogue_action(
         quality_gate=quality_gate,
     )
     previous_call_control = _previous_call_control(turns)
-    if previous_call_control in TERMINAL_CALL_CONTROLS:
+    if previous_call_control in TERMINAL_CALL_CONTROLS and not _should_reopen_soft_all_clear(
+        transcript=transcript,
+        turns=turns,
+        campaign=campaign,
+    ):
         terminal_policy_frame = dict(initial_policy_frame)
         terminal_policy_frame["enforcement_enabled"] = False
         terminal_policy_frame["enforcement_reason"] = "terminal_call_control_preserved"
@@ -569,7 +632,15 @@ def plan_dialogue_action(
         ):
             continuity = _closed_schedule_summary_continuity(session_state, campaign)
         else:
-            continuity = _terminal_continuity(language)
+            continuity = _terminal_continuity(
+                language,
+                transcript=transcript,
+                previous_call_control=previous_call_control,
+                schedule_was_completed=any(
+                    str((turn.get("summary") or {}).get("call_control") or "") == "schedule-and-end"
+                    for turn in turns
+                ),
+            )
         action = _action_from_continuity(
             state_before=state_before,
             continuity=continuity,
