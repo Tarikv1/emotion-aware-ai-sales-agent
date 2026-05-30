@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "contract_version": "RUNTIME-ACTION-METADATA-CONTRACT-001",
+  "purpose": "Map existing runtime/campaign metadata signals to controlled non-LLM selector action_id labels for read-only shadow comparison.",
+  "live_runtime_wiring_allowed": false,
+  "side_effects_allowed": false,
+  "mappings": [
+    {
+      "mapping_id": "terminal_acceptance",
+      "runtime_signal_fields": ["runtime_terminal_state", "runtime_sales_move", "runtime_decision_stage"],
+      "required_conditions": {"flag_true": ["runtime_terminal_state"], "field_contains_any": {"runtime_sales_move": ["terminal", "end_call_stop_request", "close"]}},
+      "selector_action_id": "terminal_close",
+      "confidence": 0.94,
+      "notes": "Runtime marks terminal acceptance or polite end state.",
+      "forbidden_when": ["buyer asks a new substantive question"]
+    },
+    {
+      "mapping_id": "already_told_you_repair",
+      "runtime_signal_fields": ["runtime_repair_state", "runtime_sales_move"],
+      "required_conditions": {"field_contains_any": {"runtime_repair_state": ["already_told"], "runtime_sales_move": ["already_told"]}},
+      "selector_action_id": "repair_already_told_you",
+      "confidence": 0.93,
+      "notes": "Runtime identifies repeated-question buyer frustration.",
+      "forbidden_when": ["no repeated-question signal"]
+    },
+    {
+      "mapping_id": "asr_uncertainty_repair",
+      "runtime_signal_fields": ["runtime_repair_state", "runtime_sales_move"],
+      "required_conditions": {"field_contains_any": {"runtime_repair_state": ["asr", "uncertain_tool"], "runtime_sales_move": ["asr", "uncertain_tool", "tool_name"]}},
+      "selector_action_id": "repair_asr_uncertainty",
+      "confidence": 0.92,
+      "notes": "Runtime identifies ambiguous or ASR-confused wording.",
+      "forbidden_when": ["tool name is clear"]
+    },
+    {
+      "mapping_id": "buyer_correction_repair",
+      "runtime_signal_fields": ["runtime_repair_state", "runtime_sales_move"],
+      "required_conditions": {"field_contains_any": {"runtime_repair_state": ["correction"], "runtime_sales_move": ["correction"]}},
+      "selector_action_id": "repair_buyer_correction",
+      "confidence": 0.9,
+      "notes": "Runtime identifies buyer correction.",
+      "forbidden_when": ["buyer did not correct prior state"]
+    },
+    {
+      "mapping_id": "avoid_repetition_rephrase",
+      "runtime_signal_fields": ["runtime_repair_state", "runtime_sales_move", "runtime_response_strategy"],
+      "required_conditions": {"field_contains_any": {"runtime_repair_state": ["repeat", "duplicate"], "runtime_sales_move": ["repeat", "duplicate"], "runtime_response_strategy": ["avoid_repetition"]}},
+      "selector_action_id": "avoid_repetition_rephrase",
+      "confidence": 0.88,
+      "notes": "Runtime avoids repeating the same question or answer.",
+      "forbidden_when": ["new buyer information requires a fresh answer"]
+    },
+    {
+      "mapping_id": "privacy_boundary",
+      "runtime_signal_fields": ["runtime_safety_boundary", "runtime_sales_move", "runtime_decision_stage"],
+      "required_conditions": {"field_contains_any": {"runtime_sales_move": ["privacy", "transcript", "retention", "raw_audio"], "runtime_decision_stage": ["privacy"]}},
+      "selector_action_id": "answer_privacy_boundary",
+      "confidence": 0.92,
+      "notes": "Privacy, transcript, or data-retention boundary.",
+      "forbidden_when": ["buyer asks only source or affiliation"]
+    },
+    {
+      "mapping_id": "source_affiliation",
+      "runtime_signal_fields": ["runtime_source_grounding_state", "runtime_sales_move"],
+      "required_conditions": {"field_contains_any": {"runtime_source_grounding_state": ["source", "affiliation", "public"], "runtime_sales_move": ["source", "affiliation"]}},
+      "selector_action_id": "answer_source_or_affiliation",
+      "confidence": 0.88,
+      "notes": "Source, public grounding, or affiliation answer.",
+      "forbidden_when": ["buyer asks privacy or side-effect boundary"]
+    },
+    {
+      "mapping_id": "side_effect_boundary",
+      "runtime_signal_fields": ["runtime_safety_boundary", "runtime_sales_move", "runtime_call_control"],
+      "required_conditions": {"flag_true": ["runtime_safety_boundary"], "field_contains_any": {"runtime_sales_move": ["boundary", "crm", "email", "calendar", "payment", "purchase", "raw_url", "book_meeting"]}},
+      "selector_action_id": "respect_boundary",
+      "confidence": 0.94,
+      "notes": "Unsupported side effect or operational boundary.",
+      "forbidden_when": ["safe factual answer with no boundary request"]
+    },
+    {
+      "mapping_id": "no_fit",
+      "runtime_signal_fields": ["runtime_no_fit_state", "runtime_decision_stage", "runtime_sales_move"],
+      "required_conditions": {"flag_true": ["runtime_no_fit_state"], "field_contains_any": {"runtime_decision_stage": ["no_fit"], "runtime_sales_move": ["no_fit", "wrong_product", "free_enough", "not_interested"]}},
+      "selector_action_id": "disqualify_no_fit",
+      "confidence": 0.91,
+      "notes": "No-fit, wrong-product, or no-interest state.",
+      "forbidden_when": ["buyer is still asking a fit question"]
+    },
+    {
+      "mapping_id": "price_objection",
+      "runtime_signal_fields": ["runtime_decision_stage", "runtime_sales_move", "runtime_response_strategy"],
+      "required_conditions": {"field_contains_any": {"runtime_decision_stage": ["objection"], "runtime_sales_move": ["price_objection", "worth_it", "too_expensive"], "runtime_response_strategy": ["price_objection"]}},
+      "selector_action_id": "handle_price_objection",
+      "confidence": 0.9,
+      "notes": "Value or price objection rather than direct price fact.",
+      "forbidden_when": ["direct price question only"]
+    },
+    {
+      "mapping_id": "direct_price_answer",
+      "runtime_signal_fields": ["runtime_decision_stage", "runtime_sales_move", "runtime_response_strategy"],
+      "required_conditions": {"field_contains_any": {"runtime_decision_stage": ["price"], "runtime_sales_move": ["price_answer", "price_question"], "runtime_response_strategy": ["answer_price"]}},
+      "selector_action_id": "answer_price",
+      "confidence": 0.9,
+      "notes": "Direct price or cost answer.",
+      "forbidden_when": ["price objection or value challenge"]
+    },
+    {
+      "mapping_id": "competitor_context",
+      "runtime_signal_fields": ["runtime_decision_stage", "runtime_sales_move"],
+      "required_conditions": {"field_contains_any": {"runtime_decision_stage": ["competitor", "current_tool"], "runtime_sales_move": ["competitor", "current_tool", "claude", "gemini", "copilot"]}},
+      "selector_action_id": "handle_competitor_context",
+      "confidence": 0.9,
+      "notes": "Competitor or current tool comparison.",
+      "forbidden_when": ["tool name is ambiguous"]
+    },
+    {
+      "mapping_id": "signup_path",
+      "runtime_signal_fields": ["runtime_decision_stage", "runtime_sales_move"],
+      "required_conditions": {"field_contains_any": {"runtime_decision_stage": ["signup", "self_serve_close"], "runtime_sales_move": ["signup", "self_serve", "upgrade_path"]}},
+      "selector_action_id": "answer_signup_path",
+      "confidence": 0.89,
+      "notes": "Signup, get-started, or self-serve path question.",
+      "forbidden_when": ["buyer asks agent to purchase or alter account"]
+    },
+    {
+      "mapping_id": "plan_change",
+      "runtime_signal_fields": ["runtime_decision_stage", "runtime_sales_move"],
+      "required_conditions": {"field_contains_any": {"runtime_decision_stage": ["plan_change"], "runtime_sales_move": ["plan_change", "upgrade_later", "midcycle"]}},
+      "selector_action_id": "answer_plan_change",
+      "confidence": 0.88,
+      "notes": "Plan change or upgrade-later question.",
+      "forbidden_when": ["buyer asks signup path only"]
+    },
+    {
+      "mapping_id": "subscription_vs_model",
+      "runtime_signal_fields": ["runtime_sales_move", "runtime_response_strategy"],
+      "required_conditions": {"field_contains_any": {"runtime_sales_move": ["subscription_vs_model", "model_vs_subscription"], "runtime_response_strategy": ["subscription_vs_model"]}},
+      "selector_action_id": "explain_subscription_vs_model",
+      "confidence": 0.88,
+      "notes": "Buyer confuses plan/subscription and model name.",
+      "forbidden_when": ["buyer asks plan fit or price"]
+    },
+    {
+      "mapping_id": "plan_options",
+      "runtime_signal_fields": ["runtime_sales_move", "runtime_response_strategy"],
+      "required_conditions": {"field_contains_any": {"runtime_sales_move": ["plan_options", "plan_overview", "orient_plan"], "runtime_response_strategy": ["orient_plan_options"]}},
+      "selector_action_id": "orient_plan_options",
+      "confidence": 0.86,
+      "notes": "Plan category overview.",
+      "forbidden_when": ["buyer asks for a recommendation"]
+    },
+    {
+      "mapping_id": "pro_tiers",
+      "runtime_signal_fields": ["runtime_active_decision_frame", "runtime_sales_move"],
+      "required_conditions": {"field_contains_any": {"runtime_active_decision_frame": ["pro_100_vs_200"], "runtime_sales_move": ["which_pro", "pro_tier"]}},
+      "selector_action_id": "compare_pro_tiers",
+      "confidence": 0.88,
+      "notes": "Pro-tier selection frame.",
+      "forbidden_when": ["team or enterprise need dominates"]
+    },
+    {
+      "mapping_id": "plus_vs_pro",
+      "runtime_signal_fields": ["runtime_active_decision_frame", "runtime_sales_move"],
+      "required_conditions": {"field_contains_any": {"runtime_active_decision_frame": ["plus_vs_pro"], "runtime_sales_move": ["plus_enough", "plus_vs_pro"]}},
+      "selector_action_id": "compare_plus_vs_pro",
+      "confidence": 0.87,
+      "notes": "Plus versus Pro comparison or sufficiency.",
+      "forbidden_when": ["direct price question only"]
+    },
+    {
+      "mapping_id": "business_or_enterprise",
+      "runtime_signal_fields": ["runtime_recommended_path", "runtime_sales_move"],
+      "required_conditions": {"field_contains_any": {"runtime_recommended_path": ["business", "enterprise"], "runtime_sales_move": ["team", "enterprise", "business", "sso", "admin_controls"]}, "field_not_contains_any": {"runtime_sales_move": ["not_team", "individual_context", "team_vs_individual"], "runtime_active_decision_frame": ["team_scope"]}},
+      "selector_action_id": "recommend_business_or_enterprise",
+      "confidence": 0.88,
+      "notes": "Team, business, or enterprise context.",
+      "forbidden_when": ["buyer explicitly says not team or personal only"]
+    },
+    {
+      "mapping_id": "recommend_pro",
+      "runtime_signal_fields": ["runtime_recommended_path", "runtime_sales_move"],
+      "required_conditions": {"field_contains_any": {"runtime_recommended_path": ["pro"], "runtime_sales_move": ["recommend_pro", "heavy_use", "limit_pain"]}},
+      "selector_action_id": "recommend_pro",
+      "confidence": 0.86,
+      "notes": "Heavy individual use or limit pressure.",
+      "forbidden_when": ["team or no-fit context"]
+    },
+    {
+      "mapping_id": "recommend_plus",
+      "runtime_signal_fields": ["runtime_recommended_path", "runtime_sales_move"],
+      "required_conditions": {"field_contains_any": {"runtime_recommended_path": ["plus"], "runtime_sales_move": ["recommend_plus", "plus_fit", "light_use"]}},
+      "selector_action_id": "recommend_plus",
+      "confidence": 0.85,
+      "notes": "Plus-level individual fit.",
+      "forbidden_when": ["heavy limit pressure or team need"]
+    },
+    {
+      "mapping_id": "team_vs_individual",
+      "runtime_signal_fields": ["runtime_sales_move", "runtime_active_decision_frame"],
+      "required_conditions": {"field_contains_any": {"runtime_sales_move": ["not_team", "individual_context", "team_vs_individual"], "runtime_active_decision_frame": ["team_scope"]}},
+      "selector_action_id": "clarify_team_vs_individual",
+      "confidence": 0.86,
+      "notes": "Individual versus team correction or clarification.",
+      "forbidden_when": ["explicit enterprise requirement"]
+    },
+    {
+      "mapping_id": "usage_intensity",
+      "runtime_signal_fields": ["runtime_sales_move", "runtime_decision_stage"],
+      "required_conditions": {"field_contains_any": {"runtime_sales_move": ["ask_usage_intensity", "usage_intensity"], "runtime_decision_stage": ["usage_intensity"]}},
+      "selector_action_id": "ask_usage_intensity",
+      "confidence": 0.84,
+      "notes": "Use case known but intensity missing.",
+      "forbidden_when": ["intensity already known"]
+    },
+    {
+      "mapping_id": "use_case_gap",
+      "runtime_signal_fields": ["runtime_sales_move", "runtime_decision_stage"],
+      "required_conditions": {"field_contains_any": {"runtime_sales_move": ["ask_use_case", "use_case_gap"], "runtime_decision_stage": ["use_case"]}},
+      "selector_action_id": "ask_use_case_gap",
+      "confidence": 0.83,
+      "notes": "Current tool or adoption known but use case gap missing.",
+      "forbidden_when": ["buyer already gave use case and objects to repetition"]
+    },
+    {
+      "mapping_id": "question_scope_clarification",
+      "runtime_signal_fields": ["runtime_sales_move", "runtime_decision_stage"],
+      "required_conditions": {"field_contains_any": {"runtime_sales_move": ["clarify_question_scope", "confusion"], "runtime_decision_stage": ["question_scope", "confusion"]}},
+      "selector_action_id": "clarify_question_scope",
+      "confidence": 0.82,
+      "notes": "Buyer question scope is unclear.",
+      "forbidden_when": ["buyer asked a clear direct question"]
+    }
+  ]
+}

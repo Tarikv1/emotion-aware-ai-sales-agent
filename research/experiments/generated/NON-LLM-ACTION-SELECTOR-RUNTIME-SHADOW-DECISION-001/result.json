@@ -1,6 +1,6 @@
 {
   "experiment_id": "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-DECISION-001",
-  "generated_at": "2026-05-29T23:42:00.684076+00:00",
+  "generated_at": "2026-05-30T00:08:07.371592+00:00",
   "status": "pass",
   "recommendation_id": "add_runtime_action_metadata_extraction_before_real_runtime_comparison",
   "recommendation": "Offline replay is safety-clean, but runtime action IDs are still unavailable; add runtime action metadata extraction before claiming real runtime agreement.",
@@ -16,9 +16,9 @@
     "possible_improvement_count": 0,
     "possible_regression_count": 1,
     "safety_blockers_count": 0,
-    "latency_p50_ms": 1.6034,
-    "latency_p90_ms": 2.1653,
-    "latency_p99_ms": 2.8104
+    "latency_p50_ms": 1.848,
+    "latency_p90_ms": 2.0955,
+    "latency_p99_ms": 2.6821
   },
   "claims_live_readiness": false,
   "live_wiring_allowed": false,

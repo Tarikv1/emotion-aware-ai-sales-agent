@@ -1,0 +1,96 @@
+{
+  "experiment_id": "RUNTIME-ACTION-METADATA-DISCOVERY-001",
+  "generated_at": "2026-05-30T00:06:38.405358+00:00",
+  "status": "pass",
+  "missing_source_files": [],
+  "discovered_metadata_sources": [
+    {
+      "path": "runtime/campaigns/public_openai_chatgpt_plans_dialogue.py",
+      "functions": [
+        "_next_best_action_for_state",
+        "_commercial_sales_state",
+        "memory_update_for_turn",
+        "classify_turn"
+      ],
+      "usable_metadata": [
+        "next_commercial_action",
+        "buyer_decision_stage",
+        "active_decision_frame",
+        "current_buyer_question_type",
+        "last_recommendation_given",
+        "recommendation_confidence",
+        "buyer_fit_level",
+        "commercial_stage"
+      ],
+      "notes": "Campaign logic already names commercial stage, next action, fit, recommendation path, and buyer question type."
+    },
+    {
+      "path": "runtime/core/contextual_buyer_semantics.py",
+      "functions": [
+        "_frame",
+        "classify_contextual_buyer_semantics"
+      ],
+      "usable_metadata": [
+        "semantic",
+        "action_id",
+        "dialogue_focus",
+        "response_strategy",
+        "response_variation_key",
+        "next_best_sales_action",
+        "should_recommend",
+        "should_close",
+        "should_disqualify",
+        "evidence"
+      ],
+      "notes": "Semantic frames expose non-generative decision fields and candidate response hashes can be derived without storing raw text."
+    },
+    {
+      "path": "runtime/core/realtime_turns.py",
+      "functions": [
+        "build_runtime_decision",
+        "run_case"
+      ],
+      "usable_metadata": [
+        "runtime_decision",
+        "response_mode",
+        "call_control",
+        "selected_strategy",
+        "next_action",
+        "sales_difficulty",
+        "interest_state"
+      ],
+      "notes": "Replay decisions expose call control and strategy fields suitable for offline comparison."
+    },
+    {
+      "path": "runtime/core/live_voice_session_policy.py",
+      "functions": [
+        "policy helpers only"
+      ],
+      "usable_metadata": [
+        "boundary markers",
+        "terminal markers",
+        "repair markers"
+      ],
+      "notes": "Useful as a secondary signal reference, but not selected as the primary extraction source because it is response-adjacent."
+    }
+  ],
+  "proposed_metadata_extraction_source": "runtime_result passed into shadow_runtime_logger, with fallback discovery across runtime_decision, semantic_frame, and commercial_state dictionaries",
+  "recommended_mapping_approach": "Map extracted runtime metadata to controlled action_selector action_id labels through runtime_to_action_label_map.json, then compare in read-only shadow mode.",
+  "metadata_contract": "runtime/action_selector/runtime_action_metadata_contract.py",
+  "mapping_file": "runtime/action_selector/runtime_to_action_label_map.json",
+  "extractor_file": "runtime/action_selector/runtime_action_metadata_extractor.py",
+  "read_only": true,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "side_effects_allowed": false,
+  "live_runtime_wiring_allowed": false,
+  "memory_mutation_allowed": false,
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "ultravox_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "local_llm_calls_made": false,
+  "ollama_calls_made": false,
+  "tts_calls_made": false,
+  "raw_private_data": false
+}

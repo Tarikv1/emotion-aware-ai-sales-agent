@@ -1,6 +1,6 @@
 {
   "experiment_id": "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-AUDIT-001",
-  "generated_at": "2026-05-29T23:42:00.684057+00:00",
+  "generated_at": "2026-05-30T00:08:07.371574+00:00",
   "status": "pass",
   "input": "research/experiments/generated/NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-REPLAY-001/result.json",
   "case_count": 147,

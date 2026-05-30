@@ -9,7 +9,7 @@
 - Compatible with expected: 144
 - Possible improvement/regression: 0/1
 - Safety blockers: 0
-- Latency ms p50/p90/p99/max: 1.6034/2.1653/2.8104/5.3773
+- Latency ms p50/p90/p99/max: 1.8480/2.0955/2.6821/2.7703
 - Public evidence sanitized: true
 - Raw private data/audio used: false
 - Provider/OpenAI/Ultravox/ElevenLabs/local LLM/Ollama/TTS calls: false

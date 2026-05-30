@@ -8,7 +8,7 @@
 - Agreement/compatible with expected: 141/144
 - Possible improvement/regression: 0/1
 - Safety blockers: 0
-- Latency p50/p90/p99 ms: 1.6034/2.1653/2.8104
+- Latency p50/p90/p99 ms: 1.8480/2.0955/2.6821
 - Live wiring allowed: false
 - Response text changed: false
 - Runtime behavior changed: false

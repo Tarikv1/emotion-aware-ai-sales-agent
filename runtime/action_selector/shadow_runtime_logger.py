@@ -9,6 +9,10 @@ from typing import Any
 
 from runtime.action_selector.action_selector_contract import action_labels, normalize_text, validate_selector_output
 from runtime.action_selector.non_llm_action_selector import RuleBasedActionSelector
+from runtime.action_selector.runtime_action_metadata_extractor import (
+    extract_runtime_action_metadata,
+    validate_runtime_action_metadata,
+)
 from runtime.action_selector.shadow_mode_evaluator import classify_shadow_agreement
 
 
@@ -142,7 +146,22 @@ def build_shadow_runtime_record(
         safety_status = "boundary_safe"
     if action_id not in action_labels():
         safety_status = "unsafe_uncontrolled_action"
-    runtime_action_id = _string(context.get("runtime_action_id_if_available") or context.get("existing_runtime_action_id"))
+    runtime_source = (
+        context.get("runtime_result")
+        if isinstance(context.get("runtime_result"), dict)
+        else context.get("runtime_decision")
+        if isinstance(context.get("runtime_decision"), dict)
+        else context.get("runtime_metadata")
+        if isinstance(context.get("runtime_metadata"), dict)
+        else context
+    )
+    runtime_metadata = extract_runtime_action_metadata(runtime_source, context)
+    explicit_runtime_action_id = _string(
+        context.get("runtime_action_id_if_available") or context.get("existing_runtime_action_id")
+    )
+    extracted_runtime_action_id = _string(runtime_metadata.get("runtime_action_id"))
+    runtime_action_id = extracted_runtime_action_id or explicit_runtime_action_id
+    runtime_metadata_available = runtime_metadata.get("runtime_metadata_available") is True
     classification = classify_shadow_agreement(
         selector_action_id=action_id,
         runtime_action_id=runtime_action_id,
@@ -160,17 +179,26 @@ def build_shadow_runtime_record(
         "buyer_utterance_text_sanitized": _buyer_text(context),
         "context_summary": _context_summary(context),
         "runtime_response_text_available": bool(
-            context.get("runtime_response_text_available")
+            runtime_metadata.get("runtime_response_text_available")
+            or context.get("runtime_response_text_available")
             or context.get("existing_runtime_response_text_available")
             or context.get("existing_runtime_response_text")
         ),
         "runtime_action_id_if_available": runtime_action_id,
+        "runtime_metadata_available": runtime_metadata_available,
+        "runtime_action_id": runtime_action_id,
+        "runtime_action_confidence": round(float(runtime_metadata.get("runtime_action_confidence") or 0.0), 4)
+        if extracted_runtime_action_id
+        else 0.0,
+        "runtime_action_reason": _string(runtime_metadata.get("runtime_action_reason")),
+        "runtime_metadata_source": _string(runtime_metadata.get("extraction_source")),
         "expected_action_id": expected_action_id,
         "selector_action_id": action_id,
         "selector_confidence": round(float(selector_output.get("confidence") or 0.0), 4),
         "selector_reasons": [str(item) for item in selector_output.get("reasons") or []],
         "selector_matched_features": [str(item) for item in selector_output.get("matched_features") or []],
         "agreement_classification": classification["disagreement_type"],
+        "disagreement_type": classification["disagreement_type"],
         "agreement_with_expected": action_id == expected_action_id if expected_action_id else None,
         "agreement_with_runtime": classification["agreement_with_runtime"],
         "safety_status": safety_status,
@@ -183,6 +211,8 @@ def build_shadow_runtime_record(
     }
     record["shadow_record_id"] = _shadow_record_id(context, action_id)
     record["validation_errors"] = validate_shadow_runtime_record(record)
+    if runtime_metadata_available:
+        record["validation_errors"].extend(validate_runtime_action_metadata(runtime_metadata))
     return record
 
 
@@ -217,11 +247,17 @@ def validate_shadow_runtime_record(record: dict[str, Any]) -> list[str]:
         "context_summary",
         "runtime_response_text_available",
         "runtime_action_id_if_available",
+        "runtime_metadata_available",
+        "runtime_action_id",
+        "runtime_action_confidence",
+        "runtime_action_reason",
+        "runtime_metadata_source",
         "selector_action_id",
         "selector_confidence",
         "selector_reasons",
         "selector_matched_features",
         "agreement_classification",
+        "disagreement_type",
         "safety_status",
         "possible_improvement",
         "possible_regression",

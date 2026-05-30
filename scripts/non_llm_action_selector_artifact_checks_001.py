@@ -24,6 +24,11 @@ RUNTIME_SHADOW_LOG_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW
 RUNTIME_SHADOW_REPLAY_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-REPLAY-001"
 RUNTIME_SHADOW_AUDIT_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-AUDIT-001"
 RUNTIME_SHADOW_DECISION_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-DECISION-001"
+RUNTIME_METADATA_DISCOVERY_DIR = GENERATED_DIR / "RUNTIME-ACTION-METADATA-DISCOVERY-001"
+RUNTIME_METADATA_EXTRACTION_DIR = GENERATED_DIR / "RUNTIME-ACTION-METADATA-EXTRACTION-001"
+RUNTIME_METADATA_SHADOW_DIR = GENERATED_DIR / "NON-LLM-ACTION-SELECTOR-RUNTIME-METADATA-SHADOW-001"
+RUNTIME_METADATA_SHADOW_AUDIT_DIR = GENERATED_DIR / "RUNTIME-ACTION-METADATA-SHADOW-SAFETY-AUDIT-001"
+RUNTIME_METADATA_SHADOW_DECISION_DIR = GENERATED_DIR / "RUNTIME-ACTION-METADATA-SHADOW-DECISION-001"
 
 LABELS_PATH = ROOT / "runtime" / "action_selector" / "action_selector_labels.json"
 CONTRACT_PATH = ROOT / "runtime" / "action_selector" / "action_selector_contract.py"
@@ -33,6 +38,9 @@ SHADOW_EVALUATOR_PATH = ROOT / "runtime" / "action_selector" / "shadow_mode_eval
 RUNTIME_SHADOW_CONFIG_PATH = ROOT / "runtime" / "action_selector" / "shadow_runtime_logging_config.json"
 RUNTIME_SHADOW_LOGGER_PATH = ROOT / "runtime" / "action_selector" / "shadow_runtime_logger.py"
 RUNTIME_SHADOW_HOOK_PATH = ROOT / "runtime" / "action_selector" / "shadow_runtime_hook.py"
+RUNTIME_ACTION_METADATA_CONTRACT_PATH = ROOT / "runtime" / "action_selector" / "runtime_action_metadata_contract.py"
+RUNTIME_TO_ACTION_LABEL_MAP_PATH = ROOT / "runtime" / "action_selector" / "runtime_to_action_label_map.json"
+RUNTIME_ACTION_METADATA_EXTRACTOR_PATH = ROOT / "runtime" / "action_selector" / "runtime_action_metadata_extractor.py"
 
 REQUESTED_SOURCE_PATHS = [
     ROOT / "scripts" / "build_non_llm_action_selector_dataset_001.py",
@@ -55,12 +63,23 @@ REQUESTED_SOURCE_PATHS = [
     ROOT / "scripts" / "validate_non_llm_action_selector_runtime_shadow_replay_001.py",
     ROOT / "scripts" / "validate_non_llm_action_selector_runtime_shadow_audit_001.py",
     ROOT / "scripts" / "validate_non_llm_action_selector_runtime_shadow_decision_001.py",
+    ROOT / "scripts" / "discover_runtime_action_metadata_sources_001.py",
+    ROOT / "scripts" / "test_runtime_action_metadata_extraction_001.py",
+    ROOT / "scripts" / "run_non_llm_action_selector_runtime_metadata_shadow_replay_001.py",
+    ROOT / "scripts" / "audit_runtime_action_metadata_shadow_safety_001.py",
+    ROOT / "scripts" / "validate_runtime_action_metadata_discovery_001.py",
+    ROOT / "scripts" / "validate_runtime_action_metadata_extraction_001.py",
+    ROOT / "scripts" / "validate_runtime_action_metadata_shadow_001.py",
+    ROOT / "scripts" / "validate_runtime_action_metadata_shadow_safety_001.py",
+    ROOT / "scripts" / "validate_runtime_action_metadata_shadow_decision_001.py",
     CONTRACT_PATH,
     SELECTOR_PATH,
     SHADOW_CONTRACT_PATH,
     SHADOW_EVALUATOR_PATH,
     RUNTIME_SHADOW_LOGGER_PATH,
     RUNTIME_SHADOW_HOOK_PATH,
+    RUNTIME_ACTION_METADATA_CONTRACT_PATH,
+    RUNTIME_ACTION_METADATA_EXTRACTOR_PATH,
 ]
 
 WEIGHT_SUFFIXES = (
