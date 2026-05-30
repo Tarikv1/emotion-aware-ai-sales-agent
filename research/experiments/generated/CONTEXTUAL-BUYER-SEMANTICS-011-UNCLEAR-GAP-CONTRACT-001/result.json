@@ -1,0 +1,27 @@
+{
+  "checkpoint_id": "CONTEXTUAL-BUYER-SEMANTICS-011-UNCLEAR-GAP-CONTRACT-001",
+  "decision": {
+    "utterance": "the estimate is unclear",
+    "gap_id": "estimate_or_property_details",
+    "semantic": "gap_specific_unclear_context",
+    "confirmed_pain": false,
+    "reason": "The buyer names an unclear gap area but does not clearly confirm current pain, urgency, or a purchase-relevant problem."
+  },
+  "real_pain_control": {
+    "utterance": "the estimate is a problem",
+    "gap_id": "estimate_or_property_details",
+    "semantic": "pain_confirmed",
+    "confirmed_pain": true
+  },
+  "safety": {
+    "provider_calls_made": false,
+    "local_llm_calls_made": false,
+    "sends_email": false,
+    "creates_calendar_event": false,
+    "writes_crm": false,
+    "opens_prod_102": false,
+    "action_selector_shadow_hook_modified": false,
+    "routesignal_behavior_changed": false
+  },
+  "recommendation": "Continue only with limited offline/sanitized shadow logging expansion; do not enable live selector control."
+}

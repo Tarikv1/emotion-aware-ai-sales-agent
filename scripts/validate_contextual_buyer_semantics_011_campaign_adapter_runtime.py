@@ -238,7 +238,7 @@ def synthetic_campaigns() -> dict[str, dict[str, Any]]:
                     [],
                     review_focus="estimate and property detail review",
                     customer_language=["estimate", "property details"],
-                    positive=["the estimate is unclear", "property details are unclear"],
+                    positive=["the estimate is a problem", "property details are the issue"],
                     negative=["the estimate is handled", "property details are fine"],
                 ),
             },
@@ -423,7 +423,8 @@ def validate_synthetic_campaigns(failures: list[str], evidence: dict[str, Any]) 
             ("plan fit is fine", "current_gap_clear", "plan_fit"),
         ],
         "home_services": [
-            ("the estimate is unclear", "pain_confirmed", "estimate_or_property_details"),
+            ("the estimate is unclear", "gap_specific_unclear_context", "estimate_or_property_details"),
+            ("the estimate is a problem", "pain_confirmed", "estimate_or_property_details"),
             ("scheduling is fine", "current_gap_clear", "scheduling_urgency"),
         ],
         "b2b_saas": [
