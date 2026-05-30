@@ -1,9 +1,100 @@
 {
   "audio_data_used": false,
   "automatic_runtime_rewrite_performed": false,
+  "calendar_calls_made": false,
   "case_count": 21,
   "categories": {
-    "missing_human_style_acknowledgment": {
+    "empty_candidate_response": {
+      "count": 4,
+      "examples": [
+        {
+          "campaign_coverage": "public_openai_plan",
+          "campaign_id": "public-openai-chatgpt-plans",
+          "case_id": "phase_4k8_public_openai_003_privacy",
+          "excerpt": "",
+          "reason": "empty candidate response",
+          "vertical_id": "public_openai_plan"
+        },
+        {
+          "campaign_coverage": "public_openai_plan",
+          "campaign_id": "public-openai-chatgpt-plans",
+          "case_id": "phase_4k8_public_openai_004_signup",
+          "excerpt": "",
+          "reason": "empty candidate response",
+          "vertical_id": "public_openai_plan"
+        },
+        {
+          "campaign_coverage": "public_openai_plan",
+          "campaign_id": "public-openai-chatgpt-plans",
+          "case_id": "phase_4k8_public_openai_005_boundary",
+          "excerpt": "",
+          "reason": "empty candidate response",
+          "vertical_id": "public_openai_plan"
+        },
+        {
+          "campaign_coverage": "home_services",
+          "campaign_id": "phase-4k8-home-services",
+          "case_id": "phase_4k8_home_services_003",
+          "excerpt": "",
+          "reason": "empty candidate response",
+          "vertical_id": "home_services"
+        }
+      ]
+    },
+    "good_human_spoken_examples": {
+      "count": 6,
+      "examples": [
+        {
+          "campaign_coverage": "generic_insurance",
+          "campaign_id": "phase-4k8-generic-insurance",
+          "case_id": "phase_4k8_generic_insurance_001",
+          "excerpt": "Thanks. Is coverage fit causing any issue right now?",
+          "reason": "compact acknowledgment plus sales progression",
+          "vertical_id": "insurance"
+        },
+        {
+          "campaign_coverage": "generic_insurance",
+          "campaign_id": "phase-4k8-generic-insurance",
+          "case_id": "phase_4k8_generic_insurance_002",
+          "excerpt": "Got it, premium or budget is the issue. Is it causing a real impact now, or mostly a general concern?",
+          "reason": "compact acknowledgment plus sales progression",
+          "vertical_id": "insurance"
+        },
+        {
+          "campaign_coverage": "generic_telecom",
+          "campaign_id": "phase-4k8-generic-telecom",
+          "case_id": "phase_4k8_generic_telecom_001",
+          "excerpt": "Thanks. Is coverage or availability causing any issue right now?",
+          "reason": "compact acknowledgment plus sales progression",
+          "vertical_id": "telecom"
+        },
+        {
+          "campaign_coverage": "generic_telecom",
+          "campaign_id": "phase-4k8-generic-telecom",
+          "case_id": "phase_4k8_generic_telecom_002",
+          "excerpt": "Got it, coverage or availability is the issue. Is it causing a real impact now, or mostly a general concern?",
+          "reason": "compact acknowledgment plus sales progression",
+          "vertical_id": "telecom"
+        },
+        {
+          "campaign_coverage": "b2b_saas",
+          "campaign_id": "phase-4k8-b2b-saas",
+          "case_id": "phase_4k8_b2b_saas_001",
+          "excerpt": "Thanks. Is manual work causing any issue right now?",
+          "reason": "compact acknowledgment plus sales progression",
+          "vertical_id": "b2b_saas"
+        },
+        {
+          "campaign_coverage": "b2b_saas",
+          "campaign_id": "phase-4k8-b2b-saas",
+          "case_id": "phase_4k8_b2b_saas_002",
+          "excerpt": "Got it, manual work is the issue. Is it causing a real impact now, or mostly a general concern?",
+          "reason": "compact acknowledgment plus sales progression",
+          "vertical_id": "b2b_saas"
+        }
+      ]
+    },
+    "missing_human_acknowledgment": {
       "count": 9,
       "examples": [
         {
@@ -72,7 +163,7 @@
         }
       ]
     },
-    "missing_sales_progression_language": {
+    "missing_sales_progression": {
       "count": 7,
       "examples": [
         {
@@ -80,7 +171,7 @@
           "campaign_id": "public-openai-chatgpt-plans",
           "case_id": "phase_4k8_public_openai_002_plan_fit",
           "excerpt": "Got it - hitting limits makes Pro relevant, but I should still tie that to the actual work. Is this mainly coding, writing, research, files, or team use?",
-          "reason": "no clear fit, value, review, or next-step progression",
+          "reason": "no clear fit, value, or next-step progression",
           "vertical_id": "public_openai_plan"
         },
         {
@@ -120,7 +211,7 @@
           "campaign_id": "live-demo-001-routesignal",
           "case_id": "phase_4k8_routesignal_001",
           "excerpt": "Hi, this is Maya calling from RouteSignal, the team behind RouteSignal CRM. I am looking for the person handling inbound demo follow-up. We help stop missed callbacks and messy handoffs. Do you have a minute?",
-          "reason": "no clear fit, value, review, or next-step progression",
+          "reason": "no clear fit, value, or next-step progression",
           "vertical_id": "b2b_saas"
         },
         {
@@ -128,46 +219,145 @@
           "campaign_id": "live-demo-001-routesignal",
           "case_id": "phase_4k8_routesignal_002",
           "excerpt": "Thanks. Is inbound demo follow-up slipping right now?",
-          "reason": "no clear fit, value, review, or next-step progression",
+          "reason": "no clear fit, value, or next-step progression",
           "vertical_id": "b2b_saas"
         }
       ]
     },
-    "overly_cautious_review_call_phrasing": {
-      "count": 0,
-      "examples": []
+    "overly_formal_or_policy_like": {
+      "count": 2,
+      "examples": [
+        {
+          "campaign_coverage": "public_openai_plan",
+          "campaign_id": "public-openai-chatgpt-plans",
+          "case_id": "phase_4k8_public_openai_001_price",
+          "excerpt": "Plus is an individual paid tier. Exact current terms can change, so check the plan page before upgrading.",
+          "reason": "matched \\bcheck the plan page before upgrading\\b",
+          "vertical_id": "public_openai_plan"
+        },
+        {
+          "campaign_coverage": "b2b_saas",
+          "campaign_id": "phase-4k8-b2b-saas",
+          "case_id": "phase_4k8_b2b_saas_003",
+          "excerpt": "I cannot verify that claim here. Exact integration, security, or setup fit needs verified material and review by a technical fit specialist before I claim it. Is that the gap you want reviewed?",
+          "reason": "matched \\bi cannot verify that claim here\\b",
+          "vertical_id": "b2b_saas"
+        }
+      ]
     },
-    "overly_long_spoken_sentences": {
-      "count": 0,
-      "examples": []
+    "premature_scheduling_or_callback_push": {
+      "count": 1,
+      "examples": [
+        {
+          "campaign_coverage": "routesignal_preservation",
+          "campaign_id": "live-demo-001-routesignal",
+          "case_id": "phase_4k8_routesignal_004",
+          "excerpt": "I can note that as a callback preference, but first I need to check relevance: is inbound demo follow-up slipping right now?",
+          "reason": "scheduling or callback language appears before enough value framing",
+          "vertical_id": "b2b_saas"
+        }
+      ]
     },
-    "policy_compliance_wording_leakage": {
-      "count": 0,
-      "examples": []
-    },
-    "repeated_disclaimers": {
+    "repetitive_review_language": {
       "count": 0,
       "examples": []
     },
     "robotic_internal_wording": {
+      "count": 1,
+      "examples": [
+        {
+          "campaign_coverage": "public_openai_plan",
+          "campaign_id": "public-openai-chatgpt-plans",
+          "case_id": "phase_4k8_public_openai_002_plan_fit",
+          "excerpt": "Got it - hitting limits makes Pro relevant, but I should still tie that to the actual work. Is this mainly coding, writing, research, files, or team use?",
+          "reason": "matched \\bi should still tie that\\b",
+          "vertical_id": "public_openai_plan"
+        }
+      ]
+    },
+    "too_long_for_spoken_call": {
       "count": 0,
       "examples": []
     },
-    "scheduling_bot_drift": {
-      "count": 0,
-      "examples": []
-    },
-    "unnatural_ai_assistant_phrasing": {
-      "count": 0,
-      "examples": []
+    "weak_value_framing": {
+      "count": 13,
+      "examples": [
+        {
+          "campaign_coverage": "public_openai_plan",
+          "campaign_id": "public-openai-chatgpt-plans",
+          "case_id": "phase_4k8_public_openai_001_price",
+          "excerpt": "Plus is an individual paid tier. Exact current terms can change, so check the plan page before upgrading.",
+          "reason": "no strong buyer-value frame before the response move",
+          "vertical_id": "public_openai_plan"
+        },
+        {
+          "campaign_coverage": "public_openai_plan",
+          "campaign_id": "public-openai-chatgpt-plans",
+          "case_id": "phase_4k8_public_openai_002_plan_fit",
+          "excerpt": "Got it - hitting limits makes Pro relevant, but I should still tie that to the actual work. Is this mainly coding, writing, research, files, or team use?",
+          "reason": "no strong buyer-value frame before the response move",
+          "vertical_id": "public_openai_plan"
+        },
+        {
+          "campaign_coverage": "public_openai_plan",
+          "campaign_id": "public-openai-chatgpt-plans",
+          "case_id": "phase_4k8_public_openai_003_privacy",
+          "excerpt": "",
+          "reason": "empty candidate response",
+          "vertical_id": "public_openai_plan"
+        },
+        {
+          "campaign_coverage": "public_openai_plan",
+          "campaign_id": "public-openai-chatgpt-plans",
+          "case_id": "phase_4k8_public_openai_004_signup",
+          "excerpt": "",
+          "reason": "empty candidate response",
+          "vertical_id": "public_openai_plan"
+        },
+        {
+          "campaign_coverage": "public_openai_plan",
+          "campaign_id": "public-openai-chatgpt-plans",
+          "case_id": "phase_4k8_public_openai_005_boundary",
+          "excerpt": "",
+          "reason": "empty candidate response",
+          "vertical_id": "public_openai_plan"
+        },
+        {
+          "campaign_coverage": "generic_telecom",
+          "campaign_id": "phase-4k8-generic-telecom",
+          "case_id": "phase_4k8_generic_telecom_003",
+          "excerpt": "No, I cannot guarantee that on this call. That depends on details the telecom account specialist would need to review.",
+          "reason": "no strong buyer-value frame before the response move",
+          "vertical_id": "telecom"
+        },
+        {
+          "campaign_coverage": "home_services",
+          "campaign_id": "phase-4k8-home-services",
+          "case_id": "phase_4k8_home_services_001",
+          "excerpt": "Thanks. Is the service need active right now?",
+          "reason": "no strong buyer-value frame before the response move",
+          "vertical_id": "home_services"
+        },
+        {
+          "campaign_coverage": "home_services",
+          "campaign_id": "phase-4k8-home-services",
+          "case_id": "phase_4k8_home_services_002",
+          "excerpt": "Understood, estimate or property details is the unclear part. What part is confusing: what it means, what the qualified service coordinator would check, or whether it matters here?",
+          "reason": "no strong buyer-value frame before the response move",
+          "vertical_id": "home_services"
+        }
+      ]
     }
   },
+  "crm_calls_made": false,
   "elevenlabs_calls_made": false,
+  "email_calls_made": false,
   "experiment_id": "SPOKEN-HUMAN-NATURALNESS-AUDIT-001",
-  "generated_at": "2026-05-30T14:15:10.116629+00:00",
+  "generated_at": "2026-05-30T14:38:46.136014+00:00",
   "live_selector_control_recommended": false,
   "local_llm_calls_made": false,
-  "naturalness_issue_count": 16,
+  "model_calls_made": false,
+  "naturalness_issue_count": 37,
   "ollama_calls_made": false,
   "openai_api_calls_made": false,
   "private_live_transcripts_inspected": false,

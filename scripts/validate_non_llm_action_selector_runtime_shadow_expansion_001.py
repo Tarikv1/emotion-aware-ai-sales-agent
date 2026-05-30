@@ -42,6 +42,9 @@ REQUIRED_ROW_KEYS = {
     "runtime_metadata",
     "selector_action_id",
     "agreement_disagreement_type",
+    "reason_for_disagreement",
+    "disagreement_review_classification",
+    "evidence_actionable",
     "safety_flags",
     "candidate_response_hash",
 }
@@ -63,12 +66,16 @@ FALSE_KEYS = {
     "raw_private_data",
     "audio_data_used",
     "provider_calls_made",
+    "model_calls_made",
     "openai_api_calls_made",
     "ultravox_calls_made",
     "elevenlabs_calls_made",
     "local_llm_calls_made",
     "ollama_calls_made",
     "tts_calls_made",
+    "crm_calls_made",
+    "email_calls_made",
+    "calendar_calls_made",
     "buyer_facing_text_generated",
     "selector_control_allowed",
     "live_runtime_wiring_allowed",
@@ -80,14 +87,15 @@ FALSE_KEYS = {
 
 AUDIT_CATEGORIES = {
     "robotic_internal_wording",
-    "repeated_disclaimers",
-    "overly_long_spoken_sentences",
-    "unnatural_ai_assistant_phrasing",
-    "overly_cautious_review_call_phrasing",
-    "policy_compliance_wording_leakage",
-    "scheduling_bot_drift",
-    "missing_sales_progression_language",
-    "missing_human_style_acknowledgment",
+    "overly_formal_or_policy_like",
+    "empty_candidate_response",
+    "missing_human_acknowledgment",
+    "missing_sales_progression",
+    "premature_scheduling_or_callback_push",
+    "weak_value_framing",
+    "repetitive_review_language",
+    "too_long_for_spoken_call",
+    "good_human_spoken_examples",
 }
 
 FORBIDDEN_IMPORT_ROOTS = {"elevenlabs", "httpx", "openai", "requests", "ultravox", "urllib"}
@@ -182,6 +190,21 @@ def validate_expansion_result(failures: list[str], result: dict[str, Any], rows:
         failures.append("raw candidate responses must not be recorded in shadow expansion records")
     if result.get("safety_blockers_count") != 0:
         failures.append(f"safety_blockers_count must be 0: {result.get('safety_blockers_count')}")
+    for key in [
+        "genuine_selector_runtime_disagreement_count",
+        "selector_possible_improvement_count",
+        "selector_possible_regression_count",
+        "runtime_action_unmapped_count",
+        "metadata_extraction_failure_count",
+        "evidence_not_actionable_yet_count",
+        "false_asr_mapping_count",
+    ]:
+        if not isinstance(result.get(key), int):
+            failures.append(f"expansion {key} must be int")
+    if result.get("false_asr_mapping_count") != 0:
+        failures.append(f"false_asr_mapping_count must be 0: {result.get('false_asr_mapping_count')}")
+    if not isinstance(result.get("disagreement_review_by_classification"), dict):
+        failures.append("disagreement_review_by_classification must be object")
     if result.get("decision_recommendation_id") != "limited_offline_sanitized_shadow_logging_and_spoken_naturalness_review_next":
         failures.append(f"unexpected recommendation: {result.get('decision_recommendation_id')}")
     if result.get("live_selector_control_recommended") is not False:
@@ -216,6 +239,14 @@ def validate_expansion_rows(failures: list[str], rows: list[dict[str, Any]]) -> 
         runtime_metadata = row.get("runtime_metadata")
         if not isinstance(runtime_metadata, dict):
             failures.append(f"{label}.runtime_metadata must be an object")
+        elif not isinstance(runtime_metadata.get("runtime_extraction_warnings"), list):
+            failures.append(f"{label}.runtime_metadata.runtime_extraction_warnings must be list")
+        if not str(row.get("disagreement_review_classification") or "").strip():
+            failures.append(f"{label}.disagreement_review_classification missing")
+        if not str(row.get("reason_for_disagreement") or "").strip():
+            failures.append(f"{label}.reason_for_disagreement missing")
+        if not isinstance(row.get("evidence_actionable"), bool):
+            failures.append(f"{label}.evidence_actionable must be bool")
         if contains_private_source(row):
             failures.append(f"{label} references private source")
         safety_flags = row.get("safety_flags")
@@ -239,8 +270,17 @@ def validate_naturalness(failures: list[str], result: dict[str, Any]) -> None:
         failures.append(f"naturalness status must be pass: {result.get('status')}")
     if result.get("private_live_transcripts_inspected") is not False:
         failures.append("naturalness audit must not inspect private live transcripts")
-    if result.get("provider_calls_made") is not False or result.get("local_llm_calls_made") is not False:
-        failures.append("naturalness audit must not call providers or local LLMs")
+    for key in [
+        "provider_calls_made",
+        "model_calls_made",
+        "local_llm_calls_made",
+        "tts_calls_made",
+        "crm_calls_made",
+        "email_calls_made",
+        "calendar_calls_made",
+    ]:
+        if result.get(key) is not False:
+            failures.append(f"naturalness {key} must be false")
     if result.get("automatic_runtime_rewrite_performed") is not False:
         failures.append("naturalness audit must not rewrite runtime responses")
     if result.get("case_count", 0) < 18:

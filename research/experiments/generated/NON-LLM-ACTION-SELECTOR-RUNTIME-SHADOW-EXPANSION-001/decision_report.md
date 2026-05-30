@@ -6,20 +6,22 @@ Yes, within the offline/sanitized boundary: expansion_status=pass, safety_blocke
 
 ## Which campaigns show selector/runtime disagreement?
 
-- b2b_saas: selector_possible_improvement=1, selector_possible_regression=2
-- generic_insurance: selector_possible_regression=3
-- generic_telecom: selector_possible_improvement=1, selector_possible_regression=2
-- home_services: selector_possible_regression=2, unknown=1
+- b2b_saas: unknown=2
+- generic_insurance: unknown=3
+- generic_telecom: unknown=3
+- home_services: unknown=3
 - public_openai_plan: selector_possible_regression=1
-- routesignal_preservation: selector_possible_regression=4
+- routesignal_preservation: unknown=4
 
 ## Which spoken responses sound robotic?
 
-- No robotic/internal wording examples were flagged.
+- phase_4k8_public_openai_002_plan_fit (public_openai_plan): matched \bi should still tie that\b | Got it - hitting limits makes Pro relevant, but I should still tie that to the actual work. Is this mainly coding, writing, research, files, or team use?
+- phase_4k8_public_openai_001_price (public_openai_plan): matched \bcheck the plan page before upgrading\b | Plus is an individual paid tier. Exact current terms can change, so check the plan page before upgrading.
+- phase_4k8_b2b_saas_003 (b2b_saas): matched \bi cannot verify that claim here\b | I cannot verify that claim here. Exact integration, security, or setup fit needs verified material and review by a technical fit specialist before I claim it. Is that the gap you want reviewed?
 
 ## Which responses risk turning the sales agent into a scheduling bot?
 
-- No scheduling-bot drift examples were flagged.
+- phase_4k8_routesignal_004 (routesignal_preservation): scheduling or callback language appears before enough value framing | I can note that as a callback preference, but first I need to check relevance: is inbound demo follow-up slipping right now?
 
 ## What should be fixed before any live selector control?
 

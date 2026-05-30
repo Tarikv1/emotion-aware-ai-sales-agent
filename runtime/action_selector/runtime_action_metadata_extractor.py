@@ -69,6 +69,39 @@ def _contains_any(value: str, needles: list[str]) -> bool:
     return any(_lower(needle) in text for needle in needles)
 
 
+def _contains_positive_asr_ambiguity(value: str) -> bool:
+    text = _lower(value)
+    if not text:
+        return False
+    if _contains_any(
+        text,
+        [
+            "no_asr",
+            "no asr",
+            "not_asr",
+            "not asr",
+            "without_asr",
+            "without asr",
+            "asr_repair_required false",
+            "asr repair required false",
+        ],
+    ):
+        return False
+    return _contains_any(
+        text,
+        [
+            "repair_asr_uncertainty",
+            "asr_uncertainty",
+            "uncertain_tool",
+            "ambiguous_tool",
+            "speech_unclear",
+            "transcription_unclear",
+            "misheard",
+            "did you say",
+        ],
+    )
+
+
 def _response_text(runtime_result: dict[str, Any]) -> str:
     return _first_scalar(
         runtime_result,
@@ -133,12 +166,29 @@ def _build_unmapped_metadata(runtime_result: dict[str, Any], turn_context: dict[
         _first_scalar(source, ("active_decision_frame", "decision_frame")),
         _first_scalar(source, ("target_topic", "target_gap")),
     )
+    repair_signal_text = _combined(
+        sales_move,
+        decision_stage,
+        _first_scalar(
+            source,
+            (
+                "runtime_repair_state",
+                "repair_state",
+                "repair_type",
+                "dialogue_repair_state",
+                "dialogue_repair_type",
+                "repair_reason",
+                "repair_intent",
+            ),
+        ),
+        _first_scalar(source, ("response_strategy", "selected_strategy")),
+    )
     safety_boundary = _contains_any(all_text, ["boundary", "cannot send", "cannot book", "cannot create", "crm", "calendar", "payment", "raw url"])
     terminal_state = _contains_any(all_text, ["terminal", "end_call_stop_request", "stop here", "goodbye"])
     no_fit_state = _contains_any(all_text, ["no_fit", "wrong_product", "free_enough", "not_interested", "low_intent", "buyer_fit_level low"])
     if _contains_any(all_text, ["already_told", "already told"]):
         repair_state = "already_told_you"
-    elif _contains_any(all_text, ["asr", "uncertain_tool", "ambiguous_tool"]):
+    elif _contains_positive_asr_ambiguity(repair_signal_text):
         repair_state = "asr_uncertainty"
     elif _contains_any(all_text, ["correction", "buyer_correction"]):
         repair_state = "buyer_correction"

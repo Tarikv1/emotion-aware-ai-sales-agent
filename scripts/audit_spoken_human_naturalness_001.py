@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from collections import defaultdict
 from datetime import datetime, timezone
 import json
 from pathlib import Path
@@ -27,18 +26,21 @@ RECOMMENDATION_ID = "limited_offline_sanitized_shadow_logging_and_spoken_natural
 
 CATEGORY_IDS = [
     "robotic_internal_wording",
-    "repeated_disclaimers",
-    "overly_long_spoken_sentences",
-    "unnatural_ai_assistant_phrasing",
-    "overly_cautious_review_call_phrasing",
-    "policy_compliance_wording_leakage",
-    "scheduling_bot_drift",
-    "missing_sales_progression_language",
-    "missing_human_style_acknowledgment",
+    "overly_formal_or_policy_like",
+    "empty_candidate_response",
+    "missing_human_acknowledgment",
+    "missing_sales_progression",
+    "premature_scheduling_or_callback_push",
+    "weak_value_framing",
+    "repetitive_review_language",
+    "too_long_for_spoken_call",
+    "good_human_spoken_examples",
 ]
 
 ROBOTIC_PATTERNS = [
+    r"\bi should still tie that\b",
     r"\bi can only check whether\b",
+    r"\bi can only check\b",
     r"\bthe useful next step\b",
     r"\bcampaign relevance\b",
     r"\bscope\b",
@@ -50,28 +52,21 @@ ROBOTIC_PATTERNS = [
     r"\bi should not route\b",
     r"\bruntime\b",
     r"\bselector\b",
+    r"^\s*do you have a minute for one quick question\b",
 ]
 
-AI_ASSISTANT_PATTERNS = [
+FORMAL_POLICY_PATTERNS = [
     r"\bas an ai\b",
     r"\bai assistant\b",
     r"\bi am unable to\b",
     r"\bi cannot assist\b",
     r"\bi do not have the ability\b",
     r"\bi understand your concern\b",
-]
-
-CAUTIOUS_REVIEW_PATTERNS = [
-    r"\bcautious human review\b",
-    r"\bqualified human should review\b",
-    r"\bsafe review\b",
-    r"\bhuman review\b",
-    r"\bbefore any recommendation\b",
-    r"\bi can only check\b",
+    r"\bi cannot verify that claim here\b",
+    r"\bbefore i claim it\b",
+    r"\bexact setup fit needs verified material\b",
+    r"\bcheck the plan page before upgrading\b",
     r"\bcannot give detailed\b",
-]
-
-POLICY_WORDING_PATTERNS = [
     r"\bcompliance\b",
     r"\bregulated\b",
     r"\bpolicy boundary\b",
@@ -81,14 +76,11 @@ POLICY_WORDING_PATTERNS = [
     r"\bverified details\b",
 ]
 
-DISCLAIMER_PATTERNS = [
-    r"\bi can(?:not|'t) give\b",
-    r"\bi can only\b",
-    r"\bi do not have\b",
-    r"\bi don't have\b",
-    r"\bi cannot verify\b",
-    r"\bi can't verify\b",
-    r"\bwould review\b",
+REVIEW_PATTERNS = [
+    r"\bqualified human\b",
+    r"\bhuman review\b",
+    r"\bsafe review\b",
+    r"\breview by a specialist before any recommendation\b",
 ]
 
 ACK_PATTERN = re.compile(
@@ -97,15 +89,19 @@ ACK_PATTERN = re.compile(
 )
 
 PROGRESSION_PATTERN = re.compile(
-    r"\b(next step|worth|useful|review|check|fit|need|issue|problem|causing|helps|specialist|plan|coverage|premium|workflow|manual|integration|what|which|is .+\?)\b",
+    r"\b(next step|worth|useful|fit|need|issue|problem|causing|helps|fix|specialist|plan|coverage|premium|workflow|manual|integration|recommend|what|which|why|how|is .+\?)\b",
     re.I,
 )
 
-SCHEDULING_PATTERN = re.compile(r"\b(callback|call back|email|schedule|appointment|what time|time should|book)\b", re.I)
-VALUE_PATTERN = re.compile(
-    r"\b(issue|problem|review|fit|coverage|premium|plan|workflow|manual|integration|useful|worth|need|value|specialist)\b",
+SCHEDULING_PATTERN = re.compile(
+    r"\b(callback|call back|email|schedule|appointment|what time|time should|when works|book|tomorrow at)\b",
     re.I,
 )
+STRONG_VALUE_PATTERN = re.compile(
+    r"\b(issue|problem|slowing|pain|risk|worth|fix|helps|save|reduce|coverage|premium|plan fit|workflow|manual work|integration|value)\b",
+    re.I,
+)
+SHORT_REVIEW_NEXT_STEP_PATTERN = re.compile(r"\bthe next step is a short workflow review\b", re.I)
 
 
 def utc_now() -> str:
@@ -176,81 +172,80 @@ def match_any(patterns: list[str], text: str) -> str:
     return ""
 
 
-def disclaimer_signature(text: str) -> str:
-    normalized = normalize(text)
-    for pattern in DISCLAIMER_PATTERNS:
-        if re.search(pattern, normalized, flags=re.I):
-            words = normalized.split()
-            return " ".join(words[:12])
-    return ""
-
-
 def audit_cases(cases: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     categories: dict[str, dict[str, Any]] = {category: category_bucket() for category in CATEGORY_IDS}
-    grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for case in cases:
-        grouped[str(case.get("conversation_id") or case.get("campaign_coverage") or "")].append(case)
         response = str(case.get("candidate_response") or "")
+        issue_count_before = total_issue_count(categories)
         if not response.strip():
-            add_issue(categories, "missing_sales_progression_language", case, "empty candidate response")
-            add_issue(categories, "missing_human_style_acknowledgment", case, "empty candidate response")
+            add_issue(categories, "empty_candidate_response", case, "empty candidate response")
+            add_issue(categories, "missing_sales_progression", case, "empty candidate response")
+            add_issue(categories, "missing_human_acknowledgment", case, "empty candidate response")
+            add_issue(categories, "weak_value_framing", case, "empty candidate response")
             continue
 
         robotic = match_any(ROBOTIC_PATTERNS, response)
         if robotic:
             add_issue(categories, "robotic_internal_wording", case, f"matched {robotic}")
 
-        ai_phrase = match_any(AI_ASSISTANT_PATTERNS, response)
-        if ai_phrase:
-            add_issue(categories, "unnatural_ai_assistant_phrasing", case, f"matched {ai_phrase}")
+        formal = match_any(FORMAL_POLICY_PATTERNS, response)
+        if formal:
+            add_issue(categories, "overly_formal_or_policy_like", case, f"matched {formal}")
 
-        cautious = match_any(CAUTIOUS_REVIEW_PATTERNS, response)
-        if cautious:
-            add_issue(categories, "overly_cautious_review_call_phrasing", case, f"matched {cautious}")
-
-        policy = match_any(POLICY_WORDING_PATTERNS, response)
-        if policy:
-            add_issue(categories, "policy_compliance_wording_leakage", case, f"matched {policy}")
+        review_phrase = match_any(REVIEW_PATTERNS, response)
+        review_count = len(re.findall(r"\breview\b", response, flags=re.I))
+        if review_phrase:
+            add_issue(categories, "repetitive_review_language", case, f"matched {review_phrase}")
+        elif review_count > 1:
+            add_issue(categories, "repetitive_review_language", case, f"review repeated {review_count} times")
 
         for sentence in sentence_split(response):
             if word_count(sentence) > 28:
                 add_issue(
                     categories,
-                    "overly_long_spoken_sentences",
+                    "too_long_for_spoken_call",
                     case,
                     f"sentence has {word_count(sentence)} words",
                     sentence,
                 )
 
-        if SCHEDULING_PATTERN.search(response) and not VALUE_PATTERN.search(response):
-            add_issue(categories, "scheduling_bot_drift", case, "scheduling/contact language without sales value context")
+        sequence_index = int(case.get("sequence_index") or 0)
+        weak_value = STRONG_VALUE_PATTERN.search(response) is None
+        if SHORT_REVIEW_NEXT_STEP_PATTERN.search(response) and weak_value:
+            add_issue(
+                categories,
+                "weak_value_framing",
+                case,
+                "short workflow review appears before strong value framing",
+            )
+        if SCHEDULING_PATTERN.search(response) and (sequence_index <= 2 or weak_value):
+            add_issue(
+                categories,
+                "premature_scheduling_or_callback_push",
+                case,
+                "scheduling or callback language appears before enough value framing",
+            )
 
         if not PROGRESSION_PATTERN.search(response):
-            add_issue(categories, "missing_sales_progression_language", case, "no clear fit, value, review, or next-step progression")
+            add_issue(categories, "missing_sales_progression", case, "no clear fit, value, or next-step progression")
 
         if not ACK_PATTERN.search(response):
-            add_issue(categories, "missing_human_style_acknowledgment", case, "response lacks a compact human-style acknowledgment")
+            add_issue(categories, "missing_human_acknowledgment", case, "response lacks a compact human-style acknowledgment")
 
-    for conversation_id, conversation_cases in grouped.items():
-        ordered = sorted(conversation_cases, key=lambda item: int(item.get("sequence_index") or 0))
-        previous_signature = ""
-        previous_case: dict[str, Any] | None = None
-        for case in ordered:
-            signature = disclaimer_signature(str(case.get("candidate_response") or ""))
-            if signature and previous_signature and signature == previous_signature and previous_case:
-                add_issue(
-                    categories,
-                    "repeated_disclaimers",
-                    case,
-                    f"same disclaimer signature as previous turn in {conversation_id}",
-                )
-            previous_signature = signature
-            previous_case = case
+        if weak_value:
+            add_issue(categories, "weak_value_framing", case, "no strong buyer-value frame before the response move")
+
+        if total_issue_count(categories) == issue_count_before:
+            add_issue(categories, "good_human_spoken_examples", case, "compact acknowledgment plus sales progression")
     return categories
 
 
 def total_issue_count(categories: dict[str, dict[str, Any]]) -> int:
-    return sum(int(payload.get("count") or 0) for payload in categories.values())
+    return sum(
+        int(payload.get("count") or 0)
+        for category, payload in categories.items()
+        if category != "good_human_spoken_examples"
+    )
 
 
 def build_report(result: dict[str, Any]) -> str:
@@ -261,7 +256,7 @@ def build_report(result: dict[str, Any]) -> str:
         f"- Cases inspected: {result['case_count']}",
         f"- Naturalness issue count: {result['naturalness_issue_count']}",
         "- Private live transcripts inspected: false",
-        "- Provider/local LLM/TTS/audio calls: false",
+        "- Provider/model/local LLM/TTS/CRM/email/calendar/audio calls: false",
         "- Automatic runtime rewrite performed: false",
         f"- Recommendation: {result['recommendation_id']}",
         "",
@@ -296,10 +291,12 @@ def build_decision_report(expansion: dict[str, Any], naturalness: dict[str, Any]
     if not disagreement_lines:
         disagreement_lines.append("- None recorded.")
 
-    robotic = examples_for(naturalness, "robotic_internal_wording") + examples_for(
-        naturalness, "policy_compliance_wording_leakage"
+    robotic = (
+        examples_for(naturalness, "robotic_internal_wording")
+        + examples_for(naturalness, "overly_formal_or_policy_like")
+        + examples_for(naturalness, "repetitive_review_language")
     )
-    scheduling = examples_for(naturalness, "scheduling_bot_drift")
+    scheduling = examples_for(naturalness, "premature_scheduling_or_callback_push")
 
     lines = [
         f"# {EXPANSION_ID} Decision Report",
@@ -379,12 +376,16 @@ def main() -> int:
         "categories": categories,
         "private_live_transcripts_inspected": False,
         "provider_calls_made": False,
+        "model_calls_made": False,
         "openai_api_calls_made": False,
         "ultravox_calls_made": False,
         "elevenlabs_calls_made": False,
         "local_llm_calls_made": False,
         "ollama_calls_made": False,
         "tts_calls_made": False,
+        "crm_calls_made": False,
+        "email_calls_made": False,
+        "calendar_calls_made": False,
         "audio_data_used": False,
         "automatic_runtime_rewrite_performed": False,
         "runtime_response_replacement_performed": False,

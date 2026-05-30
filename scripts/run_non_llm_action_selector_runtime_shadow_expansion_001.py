@@ -30,12 +30,16 @@ FALSE_FLAGS = {
     "raw_private_data": False,
     "audio_data_used": False,
     "provider_calls_made": False,
+    "model_calls_made": False,
     "openai_api_calls_made": False,
     "ultravox_calls_made": False,
     "elevenlabs_calls_made": False,
     "local_llm_calls_made": False,
     "ollama_calls_made": False,
     "tts_calls_made": False,
+    "crm_calls_made": False,
+    "email_calls_made": False,
+    "calendar_calls_made": False,
     "buyer_facing_text_generated": False,
     "selector_control_allowed": False,
     "live_runtime_wiring_allowed": False,
@@ -609,8 +613,57 @@ def public_runtime_metadata(record: dict[str, Any]) -> dict[str, Any]:
         "runtime_action_id_if_available": str(record.get("runtime_action_id_if_available") or ""),
         "runtime_action_confidence": record.get("runtime_action_confidence", 0.0),
         "runtime_action_reason": str(record.get("runtime_action_reason") or ""),
+        "runtime_extraction_warnings": [str(item) for item in record.get("runtime_extraction_warnings") or []],
         "runtime_metadata_source": str(record.get("runtime_metadata_source") or ""),
         "runtime_response_text_available": record.get("runtime_response_text_available") is True,
+    }
+
+
+def review_classification(record: dict[str, Any], safety_failures: list[str]) -> dict[str, Any]:
+    runtime_action_id = str(record.get("runtime_action_id") or "")
+    selector_action_id = str(record.get("selector_action_id") or "")
+    disagreement_type = str(record.get("disagreement_type") or "")
+    warnings = [str(item) for item in record.get("runtime_extraction_warnings") or []]
+    if safety_failures:
+        return {
+            "disagreement_review_classification": "evidence_not_actionable_yet",
+            "reason_for_disagreement": "row has safety or validation failures",
+            "evidence_actionable": False,
+        }
+    if record.get("runtime_metadata_available") is not True or any("extraction_failed" in item for item in warnings):
+        return {
+            "disagreement_review_classification": "metadata_extraction_failure",
+            "reason_for_disagreement": "runtime metadata was unavailable or extraction failed",
+            "evidence_actionable": False,
+        }
+    if not runtime_action_id:
+        return {
+            "disagreement_review_classification": "runtime_action_unmapped",
+            "reason_for_disagreement": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+            "evidence_actionable": False,
+        }
+    if disagreement_type == "same_action":
+        return {
+            "disagreement_review_classification": "same_action",
+            "reason_for_disagreement": "selector and runtime mapped to the same controlled action",
+            "evidence_actionable": True,
+        }
+    if disagreement_type == "selector_possible_improvement":
+        return {
+            "disagreement_review_classification": "selector_possible_improvement",
+            "reason_for_disagreement": f"selector chose {selector_action_id}, while runtime mapped to {runtime_action_id}",
+            "evidence_actionable": True,
+        }
+    if disagreement_type == "selector_possible_regression":
+        return {
+            "disagreement_review_classification": "selector_possible_regression",
+            "reason_for_disagreement": f"runtime mapped to {runtime_action_id}, while selector chose {selector_action_id}",
+            "evidence_actionable": True,
+        }
+    return {
+        "disagreement_review_classification": "genuine_selector_runtime_disagreement",
+        "reason_for_disagreement": f"selector chose {selector_action_id}, runtime mapped to {runtime_action_id}, classifier returned {disagreement_type}",
+        "evidence_actionable": True,
     }
 
 
@@ -633,6 +686,9 @@ def expansion_row(case: dict[str, Any], record: dict[str, Any]) -> dict[str, Any
         "selector_matched_features": record.get("selector_matched_features") or [],
         "agreement_disagreement_type": record.get("disagreement_type"),
         "agreement_with_runtime": record.get("agreement_with_runtime") is True,
+        "reason_for_disagreement": "",
+        "disagreement_review_classification": "",
+        "evidence_actionable": False,
         "safety_flags": {
             "should_not_change_runtime": True,
             "public_evidence_sanitized": True,
@@ -685,6 +741,12 @@ def build_report(result: dict[str, Any]) -> str:
         f"- Cases: {result['case_count']}",
         f"- Campaign coverage: {', '.join(result['campaign_coverage'])}",
         f"- Selector/runtime disagreements: {result['selector_runtime_disagreement_count']}",
+        f"- Genuine actionable selector/runtime disagreements: {result['genuine_selector_runtime_disagreement_count']}",
+        f"- Runtime action unmapped: {result['runtime_action_unmapped_count']}",
+        f"- Metadata extraction failures: {result['metadata_extraction_failure_count']}",
+        f"- Evidence not actionable yet: {result['evidence_not_actionable_yet_count']}",
+        f"- False ASR repair mappings: {result['false_asr_mapping_count']}",
+        f"- Selector possible improvements/regressions: {result['selector_possible_improvement_count']}/{result['selector_possible_regression_count']}",
         f"- Candidate response hashes recorded: {result['candidate_response_hash_recorded_count']}",
         f"- Raw candidate responses in shadow records: {result['raw_candidate_response_recorded_count']}",
         f"- Safety blockers: {result['safety_blockers_count']}",
@@ -698,6 +760,39 @@ def build_report(result: dict[str, Any]) -> str:
     for campaign, counts in sorted((result.get("disagreement_by_campaign") or {}).items()):
         summary = ", ".join(f"{key}={value}" for key, value in sorted(counts.items()))
         lines.append(f"- {campaign}: {summary}")
+    lines.extend(["", "## Disagreement Review Classification", ""])
+    for classification, count in sorted((result.get("disagreement_review_by_classification") or {}).items()):
+        lines.append(f"- {classification}: {count}")
+    lines.extend(
+        [
+            "",
+            "## Manual Review Table",
+            "",
+            "| case_id | campaign | utterance | runtime_semantic | runtime_action_id | selector_action_id | disagreement_type | review | actionable | reason |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+        ]
+    )
+    for item in result.get("case_results") or []:
+        utterance = str(item.get("buyer_utterance_text_sanitized") or "").replace("|", "/")
+        reason = str(item.get("reason_for_disagreement") or "").replace("|", "/")
+        lines.append(
+            "| "
+            + " | ".join(
+                [
+                    str(item.get("case_id") or ""),
+                    str(item.get("campaign_coverage") or ""),
+                    utterance,
+                    str(item.get("runtime_semantic") or ""),
+                    str(item.get("runtime_action_id") or ""),
+                    str(item.get("selector_action_id") or ""),
+                    str(item.get("agreement_disagreement_type") or ""),
+                    str(item.get("disagreement_review_classification") or ""),
+                    str(item.get("evidence_actionable") is True).lower(),
+                    reason,
+                ]
+            )
+            + " |"
+        )
     return "\n".join(lines)
 
 
@@ -761,6 +856,8 @@ def run_shadow_expansion(cases: list[dict[str, Any]]) -> tuple[list[dict[str, An
         row = expansion_row(case, record)
         safety_failures = row_safety_failures(row) + list(record.get("validation_errors") or [])
         row["row_safety_failures"] = safety_failures
+        review = review_classification(record, safety_failures)
+        row.update(review)
         rows.append(row)
         case_results.append(
             {
@@ -768,11 +865,16 @@ def run_shadow_expansion(cases: list[dict[str, Any]]) -> tuple[list[dict[str, An
                 "campaign_coverage": case["campaign_coverage"],
                 "campaign_id": case["campaign_id"],
                 "vertical_id": case["vertical_id"],
+                "buyer_utterance_text_sanitized": case["buyer_utterance_text_sanitized"],
                 "runtime_semantic": case.get("runtime_semantic") or "",
                 "runtime_action_id": record.get("runtime_action_id") or "",
                 "selector_action_id": record.get("selector_action_id") or "",
                 "agreement_disagreement_type": record.get("disagreement_type") or "",
                 "agreement_with_runtime": record.get("agreement_with_runtime") is True,
+                "disagreement_review_classification": review["disagreement_review_classification"],
+                "reason_for_disagreement": review["reason_for_disagreement"],
+                "evidence_actionable": review["evidence_actionable"],
+                "runtime_extraction_warnings": [str(item) for item in record.get("runtime_extraction_warnings") or []],
                 "candidate_response_hash": case["candidate_response_hash"],
                 "candidate_response_text_recorded": False,
                 "safety_failure_count": len(safety_failures),
@@ -781,11 +883,19 @@ def run_shadow_expansion(cases: list[dict[str, Any]]) -> tuple[list[dict[str, An
     return rows, case_results, latencies
 
 
+def false_asr_mapping(item: dict[str, Any]) -> bool:
+    if item.get("runtime_action_id") != "repair_asr_uncertainty":
+        return False
+    semantic = normalize_words(str(item.get("runtime_semantic") or ""))
+    return not any(token in semantic for token in ("asr", "uncertain tool", "ambiguous tool"))
+
+
 def build_result(cases: list[dict[str, Any]], rows: list[dict[str, Any]], case_results: list[dict[str, Any]], latencies: list[float]) -> dict[str, Any]:
     coverage = sorted({case["campaign_coverage"] for case in cases})
     disagreement_counter: dict[str, Counter[str]] = defaultdict(Counter)
     for item in case_results:
         disagreement_counter[str(item.get("campaign_coverage") or "")][str(item.get("agreement_disagreement_type") or "")] += 1
+    review_counter = Counter(str(item.get("disagreement_review_classification") or "") for item in case_results)
     safety_blockers = sum(len(row.get("row_safety_failures") or []) for row in rows)
     candidate_hash_count = sum(1 for row in rows if str(row.get("candidate_response_hash") or "").startswith("sha256:"))
     raw_response_recorded_count = sum(1 for row in rows if FORBIDDEN_RECORD_KEYS & set(row))
@@ -805,6 +915,19 @@ def build_result(cases: list[dict[str, Any]], rows: list[dict[str, Any]], case_r
         "disagreement_by_campaign": {
             campaign: dict(sorted(counter.items())) for campaign, counter in sorted(disagreement_counter.items())
         },
+        "disagreement_review_by_classification": dict(sorted(review_counter.items())),
+        "genuine_selector_runtime_disagreement_count": sum(
+            1
+            for item in case_results
+            if item.get("evidence_actionable") is True
+            and item.get("agreement_disagreement_type") not in {"same_action", "compatible_action"}
+        ),
+        "selector_possible_improvement_count": review_counter.get("selector_possible_improvement", 0),
+        "selector_possible_regression_count": review_counter.get("selector_possible_regression", 0),
+        "runtime_action_unmapped_count": review_counter.get("runtime_action_unmapped", 0),
+        "metadata_extraction_failure_count": review_counter.get("metadata_extraction_failure", 0),
+        "evidence_not_actionable_yet_count": sum(1 for item in case_results if item.get("evidence_actionable") is not True),
+        "false_asr_mapping_count": sum(1 for item in case_results if false_asr_mapping(item)),
         "safety_blockers_count": safety_blockers,
         "case_results": case_results,
         "latency_ms": {

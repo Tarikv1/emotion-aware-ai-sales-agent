@@ -26,11 +26,11 @@
     {
       "mapping_id": "asr_uncertainty_repair",
       "runtime_signal_fields": ["runtime_repair_state", "runtime_sales_move"],
-      "required_conditions": {"field_contains_any": {"runtime_repair_state": ["asr", "uncertain_tool"], "runtime_sales_move": ["asr", "uncertain_tool", "tool_name"]}},
+      "required_conditions": {"field_contains_any": {"runtime_repair_state": ["asr_uncertainty", "uncertain_tool", "ambiguous_tool"]}},
       "selector_action_id": "repair_asr_uncertainty",
       "confidence": 0.92,
-      "notes": "Runtime identifies ambiguous or ASR-confused wording.",
-      "forbidden_when": ["tool name is clear"]
+      "notes": "Runtime explicitly identifies ASR/tool ambiguity. Negative administrative markers such as no_asr_repair_required are not enough.",
+      "forbidden_when": ["tool name is clear", "ASR appears only in negative or administrative metadata"]
     },
     {
       "mapping_id": "buyer_correction_repair",

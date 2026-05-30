@@ -1,0 +1,444 @@
+{
+  "after": {
+    "false_asr_mapping_count": 0,
+    "genuine_selector_runtime_disagreement_count": 0,
+    "metadata_extraction_failure_count": 3,
+    "naturalness_issue_count": 37,
+    "runtime_action_unmapped_count": 17,
+    "selector_runtime_disagreement_count": 16
+  },
+  "answers": {
+    "changed_source_allowed_provider_or_local_model_or_tts_calls": false,
+    "changed_source_allowed_response_replacement": false,
+    "changed_source_allowed_side_effects": false,
+    "changed_source_enabled_live_selector_control": false,
+    "evidence_clean_enough_for_spoken_response_repair_next": true,
+    "false_asr_mapping_reduced": true,
+    "live_selector_control_should_remain_blocked": true
+  },
+  "baseline": {
+    "false_asr_mapping_count": 16,
+    "selector_runtime_disagreement_count": 17,
+    "source": "pre-4K9 generated NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-EXPANSION-001/result.json inspected before the fix"
+  },
+  "experiment_id": "PHASE-4K9-EVIDENCE-QUALITY-REVIEW-001",
+  "false_evidence_flags": {
+    "calendar_calls_made": true,
+    "crm_calls_made": true,
+    "elevenlabs_calls_made": true,
+    "email_calls_made": true,
+    "local_llm_calls_made": true,
+    "memory_mutation_allowed": true,
+    "memory_mutation_observed": true,
+    "model_calls_made": true,
+    "ollama_calls_made": true,
+    "openai_api_calls_made": true,
+    "provider_calls_made": true,
+    "response_text_changed": true,
+    "runtime_behavior_changed": true,
+    "side_effects_allowed": true,
+    "side_effects_observed": true,
+    "tts_calls_made": true,
+    "ultravox_calls_made": true
+  },
+  "generated_at": "2026-05-30T14:39:53.813129+00:00",
+  "highest_priority_spoken_response_repair_targets": [
+    {
+      "campaign_coverage": "public_openai_plan",
+      "case_id": "phase_4k8_public_openai_003_privacy",
+      "category": "empty_candidate_response",
+      "excerpt": "",
+      "reason": "empty candidate response"
+    },
+    {
+      "campaign_coverage": "public_openai_plan",
+      "case_id": "phase_4k8_public_openai_004_signup",
+      "category": "empty_candidate_response",
+      "excerpt": "",
+      "reason": "empty candidate response"
+    },
+    {
+      "campaign_coverage": "public_openai_plan",
+      "case_id": "phase_4k8_public_openai_005_boundary",
+      "category": "empty_candidate_response",
+      "excerpt": "",
+      "reason": "empty candidate response"
+    },
+    {
+      "campaign_coverage": "public_openai_plan",
+      "case_id": "phase_4k8_public_openai_002_plan_fit",
+      "category": "robotic_internal_wording",
+      "excerpt": "Got it - hitting limits makes Pro relevant, but I should still tie that to the actual work. Is this mainly coding, writing, research, files, or team use?",
+      "reason": "matched \\bi should still tie that\\b"
+    },
+    {
+      "campaign_coverage": "public_openai_plan",
+      "case_id": "phase_4k8_public_openai_001_price",
+      "category": "overly_formal_or_policy_like",
+      "excerpt": "Plus is an individual paid tier. Exact current terms can change, so check the plan page before upgrading.",
+      "reason": "matched \\bcheck the plan page before upgrading\\b"
+    },
+    {
+      "campaign_coverage": "b2b_saas",
+      "case_id": "phase_4k8_b2b_saas_003",
+      "category": "overly_formal_or_policy_like",
+      "excerpt": "I cannot verify that claim here. Exact integration, security, or setup fit needs verified material and review by a technical fit specialist before I claim it. Is that the gap you want reviewed?",
+      "reason": "matched \\bi cannot verify that claim here\\b"
+    },
+    {
+      "campaign_coverage": "routesignal_preservation",
+      "case_id": "phase_4k8_routesignal_004",
+      "category": "premature_scheduling_or_callback_push",
+      "excerpt": "I can note that as a callback preference, but first I need to check relevance: is inbound demo follow-up slipping right now?",
+      "reason": "scheduling or callback language appears before enough value framing"
+    },
+    {
+      "campaign_coverage": "public_openai_plan",
+      "case_id": "phase_4k8_public_openai_001_price",
+      "category": "missing_human_acknowledgment",
+      "excerpt": "Plus is an individual paid tier. Exact current terms can change, so check the plan page before upgrading.",
+      "reason": "response lacks a compact human-style acknowledgment"
+    },
+    {
+      "campaign_coverage": "public_openai_plan",
+      "case_id": "phase_4k8_public_openai_003_privacy",
+      "category": "missing_human_acknowledgment",
+      "excerpt": "",
+      "reason": "empty candidate response"
+    },
+    {
+      "campaign_coverage": "public_openai_plan",
+      "case_id": "phase_4k8_public_openai_004_signup",
+      "category": "missing_human_acknowledgment",
+      "excerpt": "",
+      "reason": "empty candidate response"
+    },
+    {
+      "campaign_coverage": "public_openai_plan",
+      "case_id": "phase_4k8_public_openai_002_plan_fit",
+      "category": "missing_sales_progression",
+      "excerpt": "Got it - hitting limits makes Pro relevant, but I should still tie that to the actual work. Is this mainly coding, writing, research, files, or team use?",
+      "reason": "no clear fit, value, or next-step progression"
+    },
+    {
+      "campaign_coverage": "public_openai_plan",
+      "case_id": "phase_4k8_public_openai_003_privacy",
+      "category": "missing_sales_progression",
+      "excerpt": "",
+      "reason": "empty candidate response"
+    }
+  ],
+  "live_selector_control_recommended": false,
+  "naturalness_categories": {
+    "empty_candidate_response": 4,
+    "good_human_spoken_examples": 6,
+    "missing_human_acknowledgment": 9,
+    "missing_sales_progression": 7,
+    "overly_formal_or_policy_like": 2,
+    "premature_scheduling_or_callback_push": 1,
+    "repetitive_review_language": 0,
+    "robotic_internal_wording": 1,
+    "too_long_for_spoken_call": 0,
+    "weak_value_framing": 13
+  },
+  "no_provider_model_tts_crm_email_calendar_paths_enabled": true,
+  "recommendation_id": "limited_offline_sanitized_shadow_logging_evidence_quality_review_next",
+  "remaining_disagreement_review_counts": {
+    "metadata_extraction_failure": 3,
+    "runtime_action_unmapped": 17
+  },
+  "remaining_disagreements": [
+    {
+      "buyer_utterance_text_sanitized": "How much does ChatGPT Plus cost?",
+      "campaign_coverage": "public_openai_plan",
+      "case_id": "phase_4k8_public_openai_001_price",
+      "disagreement_type": "same_action",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "public_plan_direct_price_answer",
+      "selector_action_id": "answer_price"
+    },
+    {
+      "buyer_utterance_text_sanitized": "I code every day and hit limits, which plan should I pick?",
+      "campaign_coverage": "public_openai_plan",
+      "case_id": "phase_4k8_public_openai_002_plan_fit",
+      "disagreement_type": "same_action",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "public_plan_plus_sufficiency_answered",
+      "selector_action_id": "recommend_pro"
+    },
+    {
+      "buyer_utterance_text_sanitized": "Do you store raw call transcripts?",
+      "campaign_coverage": "public_openai_plan",
+      "case_id": "phase_4k8_public_openai_003_privacy",
+      "disagreement_type": "selector_possible_regression",
+      "reason": "runtime metadata was unavailable or extraction failed",
+      "review_classification": "metadata_extraction_failure",
+      "runtime_action_id": "",
+      "runtime_semantic": "",
+      "selector_action_id": "ask_use_case_gap"
+    },
+    {
+      "buyer_utterance_text_sanitized": "Where do I sign up if I want to start?",
+      "campaign_coverage": "public_openai_plan",
+      "case_id": "phase_4k8_public_openai_004_signup",
+      "disagreement_type": "same_action",
+      "reason": "runtime metadata was unavailable or extraction failed",
+      "review_classification": "metadata_extraction_failure",
+      "runtime_action_id": "",
+      "runtime_semantic": "",
+      "selector_action_id": "answer_signup_path"
+    },
+    {
+      "buyer_utterance_text_sanitized": "Can you buy the plan for me now?",
+      "campaign_coverage": "public_openai_plan",
+      "case_id": "phase_4k8_public_openai_005_boundary",
+      "disagreement_type": "same_action",
+      "reason": "runtime metadata was unavailable or extraction failed",
+      "review_classification": "metadata_extraction_failure",
+      "runtime_action_id": "",
+      "runtime_semantic": "",
+      "selector_action_id": "respect_boundary"
+    },
+    {
+      "buyer_utterance_text_sanitized": "yeah sure",
+      "campaign_coverage": "generic_insurance",
+      "case_id": "phase_4k8_generic_insurance_001",
+      "disagreement_type": "unknown",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "continue_with_session_policy",
+      "selector_action_id": "ask_use_case_gap"
+    },
+    {
+      "buyer_utterance_text_sanitized": "premium is a problem",
+      "campaign_coverage": "generic_insurance",
+      "case_id": "phase_4k8_generic_insurance_002",
+      "disagreement_type": "unknown",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "continue_with_session_policy",
+      "selector_action_id": "ask_use_case_gap"
+    },
+    {
+      "buyer_utterance_text_sanitized": "Can you tell me exactly what the policy covers?",
+      "campaign_coverage": "generic_insurance",
+      "case_id": "phase_4k8_generic_insurance_003",
+      "disagreement_type": "unknown",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "continue_with_session_policy",
+      "selector_action_id": "ask_use_case_gap"
+    },
+    {
+      "buyer_utterance_text_sanitized": "yeah sure",
+      "campaign_coverage": "generic_telecom",
+      "case_id": "phase_4k8_generic_telecom_001",
+      "disagreement_type": "unknown",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "continue_with_session_policy",
+      "selector_action_id": "ask_use_case_gap"
+    },
+    {
+      "buyer_utterance_text_sanitized": "coverage is the issue",
+      "campaign_coverage": "generic_telecom",
+      "case_id": "phase_4k8_generic_telecom_002",
+      "disagreement_type": "unknown",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "continue_with_session_policy",
+      "selector_action_id": "ask_use_case_gap"
+    },
+    {
+      "buyer_utterance_text_sanitized": "Can you guarantee the speed?",
+      "campaign_coverage": "generic_telecom",
+      "case_id": "phase_4k8_generic_telecom_003",
+      "disagreement_type": "unknown",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "continue_with_session_policy",
+      "selector_action_id": "respect_boundary"
+    },
+    {
+      "buyer_utterance_text_sanitized": "yeah sure",
+      "campaign_coverage": "home_services",
+      "case_id": "phase_4k8_home_services_001",
+      "disagreement_type": "unknown",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "continue_with_session_policy",
+      "selector_action_id": "ask_use_case_gap"
+    },
+    {
+      "buyer_utterance_text_sanitized": "the estimate is unclear",
+      "campaign_coverage": "home_services",
+      "case_id": "phase_4k8_home_services_002",
+      "disagreement_type": "unknown",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "continue_with_session_policy",
+      "selector_action_id": "clarify_question_scope"
+    },
+    {
+      "buyer_utterance_text_sanitized": "Can you quote it without an inspection?",
+      "campaign_coverage": "home_services",
+      "case_id": "phase_4k8_home_services_003",
+      "disagreement_type": "unknown",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "guarded_composer_passthrough",
+      "selector_action_id": "ask_use_case_gap"
+    },
+    {
+      "buyer_utterance_text_sanitized": "yeah sure",
+      "campaign_coverage": "b2b_saas",
+      "case_id": "phase_4k8_b2b_saas_001",
+      "disagreement_type": "unknown",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "continue_with_session_policy",
+      "selector_action_id": "ask_use_case_gap"
+    },
+    {
+      "buyer_utterance_text_sanitized": "manual work is a problem",
+      "campaign_coverage": "b2b_saas",
+      "case_id": "phase_4k8_b2b_saas_002",
+      "disagreement_type": "unknown",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "continue_with_session_policy",
+      "selector_action_id": "ask_use_case_gap"
+    },
+    {
+      "buyer_utterance_text_sanitized": "__agent_open__",
+      "campaign_coverage": "routesignal_preservation",
+      "case_id": "phase_4k8_routesignal_001",
+      "disagreement_type": "unknown",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "open_with_permission",
+      "selector_action_id": "ask_use_case_gap"
+    },
+    {
+      "buyer_utterance_text_sanitized": "yeah sure",
+      "campaign_coverage": "routesignal_preservation",
+      "case_id": "phase_4k8_routesignal_002",
+      "disagreement_type": "unknown",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "continue_with_session_policy",
+      "selector_action_id": "ask_use_case_gap"
+    },
+    {
+      "buyer_utterance_text_sanitized": "callbacks are fine",
+      "campaign_coverage": "routesignal_preservation",
+      "case_id": "phase_4k8_routesignal_003",
+      "disagreement_type": "unknown",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "continue_with_session_policy",
+      "selector_action_id": "ask_use_case_gap"
+    },
+    {
+      "buyer_utterance_text_sanitized": "tomorrow at 3 works",
+      "campaign_coverage": "routesignal_preservation",
+      "case_id": "phase_4k8_routesignal_004",
+      "disagreement_type": "unknown",
+      "reason": "runtime metadata was present, but conservative mapping found no controlled runtime action",
+      "review_classification": "runtime_action_unmapped",
+      "runtime_action_id": "",
+      "runtime_semantic": "continue_with_session_policy",
+      "selector_action_id": "ask_use_case_gap"
+    }
+  ],
+  "response_replacement_performed": false,
+  "source_review": {
+    "enabled_control_terms": {},
+    "enabled_side_effect_terms": {},
+    "forbidden_imports": {},
+    "rows": [
+      {
+        "enabled_control_terms": [],
+        "enabled_side_effect_terms": [],
+        "exists": true,
+        "forbidden_imports": [],
+        "path": "runtime/action_selector/runtime_action_metadata_extractor.py"
+      },
+      {
+        "enabled_control_terms": [],
+        "enabled_side_effect_terms": [],
+        "exists": true,
+        "forbidden_imports": [],
+        "path": "runtime/action_selector/runtime_to_action_label_map.json"
+      },
+      {
+        "enabled_control_terms": [],
+        "enabled_side_effect_terms": [],
+        "exists": true,
+        "forbidden_imports": [],
+        "path": "runtime/action_selector/shadow_runtime_logger.py"
+      },
+      {
+        "enabled_control_terms": [],
+        "enabled_side_effect_terms": [],
+        "exists": true,
+        "forbidden_imports": [],
+        "path": "scripts/run_non_llm_action_selector_runtime_shadow_expansion_001.py"
+      },
+      {
+        "enabled_control_terms": [],
+        "enabled_side_effect_terms": [],
+        "exists": true,
+        "forbidden_imports": [],
+        "path": "scripts/validate_non_llm_action_selector_runtime_shadow_expansion_001.py"
+      },
+      {
+        "enabled_control_terms": [],
+        "enabled_side_effect_terms": [],
+        "exists": true,
+        "forbidden_imports": [],
+        "path": "scripts/audit_spoken_human_naturalness_001.py"
+      },
+      {
+        "enabled_control_terms": [],
+        "enabled_side_effect_terms": [],
+        "exists": true,
+        "forbidden_imports": [],
+        "path": "scripts/validate_phase_4k9_runtime_metadata_asr_mapping_001.py"
+      },
+      {
+        "enabled_control_terms": [],
+        "enabled_side_effect_terms": [],
+        "exists": true,
+        "forbidden_imports": [],
+        "path": "scripts/validate_phase_4k9_spoken_naturalness_audit_001.py"
+      },
+      {
+        "enabled_control_terms": [],
+        "enabled_side_effect_terms": [],
+        "exists": true,
+        "forbidden_imports": [],
+        "path": "scripts/review_phase_4k9_evidence_quality_001.py"
+      }
+    ]
+  },
+  "status": "pass"
+}
