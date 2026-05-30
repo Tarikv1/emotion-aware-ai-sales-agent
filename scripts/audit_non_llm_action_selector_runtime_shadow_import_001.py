@@ -14,6 +14,7 @@ GENERATED = ROOT / "research" / "experiments" / "generated"
 LOCATION_ID = "NON-LLM-ACTION-SELECTOR-RUNTIME-HOOK-LOCATION-001"
 NOOP_ID = "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-IMPORT-NOOP-001"
 GATED_ID = "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-IMPORT-GATED-001"
+PUBLIC_WRITE_ID = "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-PUBLIC-WRITE-001"
 AUDIT_ID = "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-IMPORT-AUDIT-001"
 DECISION_ID = "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-IMPORT-DECISION-001"
 METADATA_SHADOW_ID = "NON-LLM-ACTION-SELECTOR-RUNTIME-METADATA-SHADOW-001"
@@ -119,11 +120,17 @@ def audit_case_rows(rows: list[dict[str, Any]]) -> dict[str, int]:
     return counts
 
 
-def build_audit_result(location: dict[str, Any], noop: dict[str, Any], gated: dict[str, Any], metadata_shadow: dict[str, Any]) -> dict[str, Any]:
+def build_audit_result(
+    location: dict[str, Any],
+    noop: dict[str, Any],
+    gated: dict[str, Any],
+    public_write: dict[str, Any],
+    metadata_shadow: dict[str, Any],
+) -> dict[str, Any]:
     rows = gated.get("case_results") if isinstance(gated.get("case_results"), list) else []
     audit_counts = audit_case_rows(rows)
     failures: list[str] = []
-    for label, payload in [("location", location), ("noop", noop), ("gated", gated)]:
+    for label, payload in [("location", location), ("noop", noop), ("gated", gated), ("public_write", public_write)]:
         if payload.get("status") != "pass":
             failures.append(f"{label}_status_not_pass:{payload.get('status')}")
         failures.extend(false_flag_failures(payload, label))
@@ -155,6 +162,7 @@ def build_audit_result(location: dict[str, Any], noop: dict[str, Any], gated: di
             "location": f"research/experiments/generated/{LOCATION_ID}/result.json",
             "noop": f"research/experiments/generated/{NOOP_ID}/result.json",
             "gated": f"research/experiments/generated/{GATED_ID}/result.json",
+            "public_write": f"research/experiments/generated/{PUBLIC_WRITE_ID}/result.json",
             "existing_runtime_metadata": f"research/experiments/generated/{METADATA_SHADOW_ID}/result.json",
         },
         "audit": {
@@ -174,6 +182,9 @@ def build_audit_result(location: dict[str, Any], noop: dict[str, Any], gated: di
             "agreement_classification_quality": gated.get("exact_agreement_count") == gated.get("shadow_record_count"),
             "latency_overhead_disabled_ms": noop.get("latency_ms") or {},
             "latency_overhead_enabled_ms": gated.get("latency_ms") or {},
+            "public_write_verified": public_write.get("status") == "pass",
+            "public_write_jsonl_row_count": public_write.get("jsonl_row_count", 0),
+            "public_write_unsafe_probe_written_count": public_write.get("unsafe_probe_written_count", 0),
             "case_row_audit_counts": audit_counts,
         },
         "case_count": gated.get("shadow_record_count", 0),
@@ -183,6 +194,9 @@ def build_audit_result(location: dict[str, Any], noop: dict[str, Any], gated: di
         "compatible_agreement_count": gated.get("compatible_agreement_count", 0),
         "existing_metadata_shadow_case_count": metadata_shadow_cases,
         "existing_metadata_shadow_runtime_action_id_available_count": metadata_shadow_available,
+        "public_write_status": public_write.get("status") or "not_run",
+        "public_write_jsonl_row_count": public_write.get("jsonl_row_count", 0),
+        "public_write_unsafe_probe_written_count": public_write.get("unsafe_probe_written_count", 0),
         "safety_blockers_count": len(failures),
         "should_not_change_runtime": True,
         "runtime_behavior_changed": False,
@@ -206,10 +220,13 @@ def build_audit_result(location: dict[str, Any], noop: dict[str, Any], gated: di
     }
 
 
-def build_decision_result(audit: dict[str, Any], noop: dict[str, Any], gated: dict[str, Any]) -> dict[str, Any]:
+def build_decision_result(audit: dict[str, Any], noop: dict[str, Any], gated: dict[str, Any], public_write: dict[str, Any]) -> dict[str, Any]:
     if noop.get("status") != "pass" or noop.get("runtime_behavior_changed") is not False or noop.get("response_text_changed") is not False:
         recommendation_id = "rollback_or_fix_before_runtime_import"
         recommendation = "Disabled no-op output changed or failed; rollback/fix before any runtime import."
+    elif public_write.get("status") == "pass" and gated.get("status") == "pass" and audit.get("status") == "pass":
+        recommendation_id = "limited_offline_sanitized_jsonl_shadow_logging_next"
+        recommendation = "Public JSONL shadow logging is hardened for offline sanitized evidence; next step is limited offline/sanitized JSONL shadow logging only."
     elif gated.get("status") == "pass" and audit.get("status") == "pass":
         recommendation_id = "limited_offline_sanitized_runtime_shadow_logging_next"
         recommendation = "Gated shadow import works and env-disabled no-op is clean; next step is limited offline/sanitized runtime shadow logging only."
@@ -233,8 +250,11 @@ def build_decision_result(audit: dict[str, Any], noop: dict[str, Any], gated: di
         "evidence_summary": {
             "disabled_noop_status": noop.get("status"),
             "gated_status": gated.get("status"),
+            "public_write_status": public_write.get("status") or "not_run",
             "audit_status": audit.get("status"),
             "gated_shadow_record_count": gated.get("shadow_record_count"),
+            "public_write_jsonl_row_count": public_write.get("jsonl_row_count", 0),
+            "public_write_unsafe_probe_written_count": public_write.get("unsafe_probe_written_count", 0),
             "runtime_action_id_available_count": gated.get("runtime_action_id_available_count"),
             "selector_action_id_recorded_count": gated.get("selector_action_id_recorded_count"),
             "exact_agreement_count": gated.get("exact_agreement_count"),
@@ -275,6 +295,7 @@ def audit_report(result: dict[str, Any]) -> str:
             f"- Runtime action ID available count: {result['runtime_action_id_available_count']}",
             f"- Exact/compatible agreement: {result['exact_agreement_count']}/{result['compatible_agreement_count']}",
             f"- Safety blockers: {result['safety_blockers_count']}",
+            f"- Public write status/rows: {result['public_write_status']}/{result['public_write_jsonl_row_count']}",
             f"- Disabled overhead p50/p90/p99 ms: {latency_disabled.get('p50', 0.0):.4f}/{latency_disabled.get('p90', 0.0):.4f}/{latency_disabled.get('p99', 0.0):.4f}",
             f"- Enabled overhead p50/p90/p99 ms: {latency_enabled.get('p50', 0.0):.4f}/{latency_enabled.get('p90', 0.0):.4f}/{latency_enabled.get('p99', 0.0):.4f}",
             "- Runtime behavior changed: false",
@@ -295,6 +316,7 @@ def decision_report(result: dict[str, Any]) -> str:
             f"- Recommendation: {result['recommendation_id']}",
             f"- Detail: {result['recommendation']}",
             f"- Gated shadow records: {evidence['gated_shadow_record_count']}",
+            f"- Public JSONL rows: {evidence['public_write_jsonl_row_count']}",
             f"- Runtime action ID available count: {evidence['runtime_action_id_available_count']}",
             f"- Exact/compatible agreement: {evidence['exact_agreement_count']}/{evidence['compatible_agreement_count']}",
             f"- Safety blockers: {evidence['safety_blockers_count']}",
@@ -311,9 +333,10 @@ def main() -> int:
     location = read_json(GENERATED / LOCATION_ID / "result.json")
     noop = read_json(GENERATED / NOOP_ID / "result.json")
     gated = read_json(GENERATED / GATED_ID / "result.json")
+    public_write = read_json(GENERATED / PUBLIC_WRITE_ID / "result.json")
     metadata_shadow = read_json(GENERATED / METADATA_SHADOW_ID / "result.json")
-    audit = build_audit_result(location, noop, gated, metadata_shadow)
-    decision = build_decision_result(audit, noop, gated)
+    audit = build_audit_result(location, noop, gated, public_write, metadata_shadow)
+    decision = build_decision_result(audit, noop, gated, public_write)
     write_json(AUDIT_DIR / "result.json", audit)
     write_text(AUDIT_DIR / "report.md", audit_report(audit))
     write_json(DECISION_DIR / "result.json", decision)

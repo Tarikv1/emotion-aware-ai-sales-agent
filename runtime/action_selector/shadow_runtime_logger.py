@@ -39,6 +39,19 @@ FALSE_RUNTIME_FLAGS = {
     "raw_private_data": False,
 }
 
+PUBLIC_FORBIDDEN_RECORD_KEYS = {
+    "candidate_response",
+    "response_text",
+    "agent_response",
+    "final_response",
+    "audio",
+    "audio_path",
+    "audio_file",
+    "wav_path",
+    "mp3_path",
+    "raw_url",
+}
+
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
@@ -75,6 +88,14 @@ def _buyer_text(turn_context: dict[str, Any]) -> str:
         or turn_context.get("buyer_utterance_text")
         or turn_context.get("transcript")
     )
+
+
+def _normalized_mode(mode: str) -> str:
+    if mode == "offline_replay_shadow":
+        return "offline_sanitized_replay"
+    if mode == "disabled_runtime_hook":
+        return "runtime_shadow_read_only"
+    return mode
 
 
 def _selector_payload(turn_context: dict[str, Any]) -> dict[str, Any]:
@@ -150,6 +171,7 @@ def build_shadow_runtime_record(
     mode: str = "offline_replay_shadow",
 ) -> dict[str, Any]:
     context = deepcopy(turn_context)
+    mode = _normalized_mode(mode)
     action_id = _string(selector_output.get("action_id"))
     safety_status = "safe"
     if selector_output.get("safety_block") is True:
@@ -231,7 +253,7 @@ def run_shadow_selector_read_only(
     *,
     expected_action_id: str = "",
     selector: Any | None = None,
-    mode: str = "offline_replay_shadow",
+    mode: str = "offline_sanitized_replay",
 ) -> dict[str, Any]:
     context = deepcopy(turn_context)
     resolved_selector = selector or RuleBasedActionSelector()
@@ -303,6 +325,9 @@ def validate_shadow_runtime_record(record: dict[str, Any]) -> list[str]:
     extra = sorted(forbidden_text_keys & set(record))
     if extra:
         failures.append(f"record_contains_buyer_facing_text:{extra}")
+    public_forbidden = sorted(PUBLIC_FORBIDDEN_RECORD_KEYS & set(record))
+    if public_forbidden:
+        failures.append(f"record_contains_public_forbidden_keys:{public_forbidden}")
     if _is_private_source(record):
         failures.append("record_references_private_source")
     return failures
@@ -310,7 +335,9 @@ def validate_shadow_runtime_record(record: dict[str, Any]) -> list[str]:
 
 def redact_shadow_record_for_public_evidence(record: dict[str, Any]) -> dict[str, Any]:
     redacted = deepcopy(record)
-    if _is_private_source(redacted) or redacted.get("mode") != "offline_replay_shadow":
+    for key in PUBLIC_FORBIDDEN_RECORD_KEYS:
+        redacted.pop(key, None)
+    if _is_private_source(redacted) or redacted.get("mode") != "offline_sanitized_replay":
         redacted["buyer_utterance_text_sanitized"] = "[REDACTED_PRIVATE_OR_LIVE_TEXT]"
     redacted["public_evidence_sanitized"] = True
     redacted["raw_private_data"] = False
@@ -322,6 +349,5 @@ def append_shadow_record_jsonl(path: str | Path, record: dict[str, Any]) -> None
     if not output_path.is_absolute():
         output_path = ROOT / output_path
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.open("a", encoding="utf-8").write(
-        json.dumps(redact_shadow_record_for_public_evidence(record), ensure_ascii=False, separators=(",", ":")) + "\n"
-    )
+    with output_path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(redact_shadow_record_for_public_evidence(record), ensure_ascii=False, separators=(",", ":")) + "\n")

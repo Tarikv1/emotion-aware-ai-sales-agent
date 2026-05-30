@@ -32,6 +32,19 @@ FALSE_RUNTIME_FLAGS = {
     "raw_private_data": False,
 }
 
+PUBLIC_FORBIDDEN_RECORD_KEYS = {
+    "candidate_response",
+    "response_text",
+    "agent_response",
+    "final_response",
+    "audio",
+    "audio_path",
+    "audio_file",
+    "wav_path",
+    "mp3_path",
+    "raw_url",
+}
+
 
 def _env_enabled(name: str, env: dict | None = None) -> bool:
     source = os.environ if env is None else env
@@ -67,6 +80,8 @@ def _disabled_response(reason: str) -> dict[str, Any]:
 
 def _safe_mode(turn_context: dict[str, Any], config: dict[str, Any]) -> str:
     requested = str(turn_context.get("mode") or "").strip()
+    if requested == "offline_replay_shadow":
+        requested = "offline_sanitized_replay"
     allowed = set(config.get("allowed_modes") or [])
     if requested in allowed and requested != "disabled_noop":
         return requested
@@ -93,12 +108,63 @@ def _is_relative_to(path: Path, parent: Path) -> bool:
         return False
 
 
-def _public_write_allowed(record: dict[str, Any], output_path: Path, env: dict | None = None) -> bool:
-    if not _env_enabled(PUBLIC_EVIDENCE_ENV_GATE, env):
+def _private_source(value: Any) -> bool:
+    source = str(value or "").replace("\\", "/").casefold()
+    return "data/private" in source or "private-restricted" in source
+
+
+def _contains_forbidden_record_key(payload: Any) -> bool:
+    if isinstance(payload, dict):
+        if PUBLIC_FORBIDDEN_RECORD_KEYS & set(payload):
+            return True
+        return any(_contains_forbidden_record_key(value) for value in payload.values())
+    if isinstance(payload, list):
+        return any(_contains_forbidden_record_key(value) for value in payload)
+    return False
+
+
+def _public_context_allowed(turn_context: dict[str, Any]) -> bool:
+    if turn_context.get("sanitized") is not True:
         return False
+    if turn_context.get("raw_private_data") is not False:
+        return False
+    sanitized_text = str(turn_context.get("buyer_utterance_text_sanitized") or "").strip()
+    if not sanitized_text:
+        return False
+    if _private_source(turn_context.get("evidence_source") or turn_context.get("source_file")):
+        return False
+    return True
+
+
+def _public_record_allowed(record: dict[str, Any]) -> bool:
     if record.get("raw_private_data") is not False or record.get("public_evidence_sanitized") is not True:
         return False
     if str(record.get("mode") or "") != "offline_sanitized_replay":
+        return False
+    if record.get("validation_errors"):
+        return False
+    if _private_source(record.get("evidence_source")):
+        return False
+    if _contains_forbidden_record_key(record):
+        return False
+    if not str(record.get("buyer_utterance_text_sanitized") or "").strip():
+        return False
+    return True
+
+
+def _public_write_allowed(
+    record: dict[str, Any],
+    turn_context: dict[str, Any],
+    output_path: Path,
+    env: dict | None = None,
+) -> bool:
+    if not should_run_action_selector_runtime_shadow_import(env):
+        return False
+    if not _env_enabled(PUBLIC_EVIDENCE_ENV_GATE, env):
+        return False
+    if not _public_context_allowed(turn_context):
+        return False
+    if not _public_record_allowed(record):
         return False
     generated_root = ROOT / "research" / "experiments" / "generated"
     return _is_relative_to(output_path, generated_root)
@@ -114,7 +180,7 @@ def _append_if_safe(record: dict[str, Any], turn_context: dict[str, Any], env: d
     output_path = _resolved_output_path(turn_context.get("output_path"))
     if output_path is None:
         return False
-    if not (_public_write_allowed(record, output_path, env) or _private_write_allowed(output_path, env)):
+    if not (_public_write_allowed(record, turn_context, output_path, env) or _private_write_allowed(output_path, env)):
         return False
     from runtime.action_selector.shadow_runtime_logger import append_shadow_record_jsonl
 

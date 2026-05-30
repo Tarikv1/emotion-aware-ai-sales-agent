@@ -1,6 +1,6 @@
 {
   "experiment_id": "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-IMPORT-AUDIT-001",
-  "generated_at": "2026-05-30T00:31:15.776558+00:00",
+  "generated_at": "2026-05-30T12:51:16.143131+00:00",
   "status": "pass",
   "failure_count": 0,
   "failures": [],
@@ -8,6 +8,7 @@
     "location": "research/experiments/generated/NON-LLM-ACTION-SELECTOR-RUNTIME-HOOK-LOCATION-001/result.json",
     "noop": "research/experiments/generated/NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-IMPORT-NOOP-001/result.json",
     "gated": "research/experiments/generated/NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-IMPORT-GATED-001/result.json",
+    "public_write": "research/experiments/generated/NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-PUBLIC-WRITE-001/result.json",
     "existing_runtime_metadata": "research/experiments/generated/NON-LLM-ACTION-SELECTOR-RUNTIME-METADATA-SHADOW-001/result.json"
   },
   "audit": {
@@ -27,19 +28,22 @@
     "agreement_classification_quality": true,
     "latency_overhead_disabled_ms": {
       "sample_count": 11,
-      "p50": 0.8835,
-      "p90": 1.2574,
-      "p99": 32.0219,
-      "max": 32.0219
+      "p50": 0.7342,
+      "p90": 0.9617,
+      "p99": 26.3678,
+      "max": 26.3678
     },
     "latency_overhead_enabled_ms": {
       "sample_count": 65,
-      "p50": 5.4221,
-      "p90": 8.2526,
-      "p99": 9.1506,
-      "max": 9.3191,
-      "mean": 5.4618153846153845
+      "p50": 4.4011,
+      "p90": 6.7206,
+      "p99": 7.7417,
+      "max": 7.9478,
+      "mean": 4.880441538461539
     },
+    "public_write_verified": true,
+    "public_write_jsonl_row_count": 65,
+    "public_write_unsafe_probe_written_count": 0,
     "case_row_audit_counts": {
       "selector_control_leakage_count": 0,
       "buyer_facing_text_generation_count": 0,
@@ -61,6 +65,9 @@
   "compatible_agreement_count": 65,
   "existing_metadata_shadow_case_count": 65,
   "existing_metadata_shadow_runtime_action_id_available_count": 65,
+  "public_write_status": "pass",
+  "public_write_jsonl_row_count": 65,
+  "public_write_unsafe_probe_written_count": 0,
   "safety_blockers_count": 0,
   "should_not_change_runtime": true,
   "runtime_behavior_changed": false,

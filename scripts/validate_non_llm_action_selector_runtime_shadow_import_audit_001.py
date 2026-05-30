@@ -45,6 +45,7 @@ def main() -> int:
             "exception_handling_safety": True,
             "action_metadata_available": True,
             "agreement_classification_quality": True,
+            "public_write_verified": True,
         }
         for key, value in expected.items():
             if audit.get(key) is not value:
@@ -69,6 +70,12 @@ def main() -> int:
         ]:
             if result.get(key) is not False:
                 failures.append(f"audit {key} must be false")
+        if result.get("public_write_status") != "pass":
+            failures.append(f"public_write_status must be pass: {result.get('public_write_status')}")
+        if int(result.get("public_write_jsonl_row_count") or 0) <= 0:
+            failures.append("public_write_jsonl_row_count must be positive")
+        if result.get("public_write_unsafe_probe_written_count") != 0:
+            failures.append("public_write_unsafe_probe_written_count must be 0")
     print(json.dumps({"validator": "validate_non_llm_action_selector_runtime_shadow_import_audit_001", "status": "pass" if not failures else "fail", "failure_count": len(failures), "failures": failures}, indent=2, sort_keys=True))
     return 0 if not failures else 1
 

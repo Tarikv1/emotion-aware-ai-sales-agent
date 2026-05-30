@@ -51,6 +51,7 @@ def main() -> int:
             failures.append("decision must not claim live readiness or selector control")
         if result.get("recommendation_id") not in {
             "rollback_or_fix_before_runtime_import",
+            "limited_offline_sanitized_jsonl_shadow_logging_next",
             "limited_offline_sanitized_runtime_shadow_logging_next",
             "metadata_adapter_fix",
             "selector_runtime_disagreement_review_packet",

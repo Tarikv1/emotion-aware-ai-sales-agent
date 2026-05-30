@@ -1,9 +1,10 @@
 # NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-IMPORT-DECISION-001
 
 - Status: pass
-- Recommendation: limited_offline_sanitized_runtime_shadow_logging_next
-- Detail: Gated shadow import works and env-disabled no-op is clean; next step is limited offline/sanitized runtime shadow logging only.
+- Recommendation: limited_offline_sanitized_jsonl_shadow_logging_next
+- Detail: Public JSONL shadow logging is hardened for offline sanitized evidence; next step is limited offline/sanitized JSONL shadow logging only.
 - Gated shadow records: 65
+- Public JSONL rows: 65
 - Runtime action ID available count: 65
 - Exact/compatible agreement: 65/65
 - Safety blockers: 0

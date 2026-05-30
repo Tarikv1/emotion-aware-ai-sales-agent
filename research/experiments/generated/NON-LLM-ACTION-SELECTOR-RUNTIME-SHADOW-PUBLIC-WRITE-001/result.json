@@ -1,0 +1,771 @@
+{
+  "experiment_id": "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-PUBLIC-WRITE-001",
+  "generated_at": "2026-05-30T12:51:07.313391+00:00",
+  "status": "pass",
+  "failure_count": 0,
+  "failures": [],
+  "case_count": 65,
+  "hook_output_written_count": 65,
+  "jsonl_path": "research/experiments/generated/NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-PUBLIC-WRITE-001/shadow_records.jsonl",
+  "jsonl_exists": true,
+  "jsonl_row_count": 65,
+  "unsafe_probe_count": 6,
+  "unsafe_probe_written_count": 0,
+  "runtime_no_change_case_count": 3,
+  "runtime_no_change_passed_count": 3,
+  "row_validation_failure_count": 0,
+  "safety_blockers_count": 0,
+  "latency_ms": {
+    "sample_count": 65,
+    "max": 18.2988
+  },
+  "hook_results": [
+    {
+      "case_id": "runtime_metadata_case_001",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "answer_price",
+      "runtime_action_id": "answer_price",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_002",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "answer_price",
+      "runtime_action_id": "answer_price",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_003",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "answer_price",
+      "runtime_action_id": "answer_price",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_004",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "handle_price_objection",
+      "runtime_action_id": "handle_price_objection",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_005",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "handle_price_objection",
+      "runtime_action_id": "handle_price_objection",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_006",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "handle_price_objection",
+      "runtime_action_id": "handle_price_objection",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_007",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "handle_competitor_context",
+      "runtime_action_id": "handle_competitor_context",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_008",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "handle_competitor_context",
+      "runtime_action_id": "handle_competitor_context",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_009",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "handle_competitor_context",
+      "runtime_action_id": "handle_competitor_context",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_010",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "ask_use_case_gap",
+      "runtime_action_id": "ask_use_case_gap",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_011",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "ask_use_case_gap",
+      "runtime_action_id": "ask_use_case_gap",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_012",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "ask_use_case_gap",
+      "runtime_action_id": "ask_use_case_gap",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_013",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "ask_usage_intensity",
+      "runtime_action_id": "ask_usage_intensity",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_014",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "ask_usage_intensity",
+      "runtime_action_id": "ask_usage_intensity",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_015",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "ask_usage_intensity",
+      "runtime_action_id": "ask_usage_intensity",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_016",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "clarify_team_vs_individual",
+      "runtime_action_id": "clarify_team_vs_individual",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_017",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "clarify_team_vs_individual",
+      "runtime_action_id": "clarify_team_vs_individual",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_018",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "orient_plan_options",
+      "runtime_action_id": "orient_plan_options",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_019",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "orient_plan_options",
+      "runtime_action_id": "orient_plan_options",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_020",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "explain_subscription_vs_model",
+      "runtime_action_id": "explain_subscription_vs_model",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_021",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "explain_subscription_vs_model",
+      "runtime_action_id": "explain_subscription_vs_model",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_022",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "answer_signup_path",
+      "runtime_action_id": "answer_signup_path",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_023",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "answer_signup_path",
+      "runtime_action_id": "answer_signup_path",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_024",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "answer_signup_path",
+      "runtime_action_id": "answer_signup_path",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_025",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "answer_plan_change",
+      "runtime_action_id": "answer_plan_change",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_026",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "answer_plan_change",
+      "runtime_action_id": "answer_plan_change",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_027",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "answer_privacy_boundary",
+      "runtime_action_id": "answer_privacy_boundary",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_028",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "answer_privacy_boundary",
+      "runtime_action_id": "answer_privacy_boundary",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_029",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "answer_privacy_boundary",
+      "runtime_action_id": "answer_privacy_boundary",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_030",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "answer_source_or_affiliation",
+      "runtime_action_id": "answer_source_or_affiliation",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_031",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "answer_source_or_affiliation",
+      "runtime_action_id": "answer_source_or_affiliation",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_032",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "disqualify_no_fit",
+      "runtime_action_id": "disqualify_no_fit",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_033",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "disqualify_no_fit",
+      "runtime_action_id": "disqualify_no_fit",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_034",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "disqualify_no_fit",
+      "runtime_action_id": "disqualify_no_fit",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_035",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "disqualify_no_fit",
+      "runtime_action_id": "disqualify_no_fit",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_036",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "recommend_plus",
+      "runtime_action_id": "recommend_plus",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_037",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "recommend_plus",
+      "runtime_action_id": "recommend_plus",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_038",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "recommend_pro",
+      "runtime_action_id": "recommend_pro",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_039",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "recommend_pro",
+      "runtime_action_id": "recommend_pro",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_040",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "recommend_pro",
+      "runtime_action_id": "recommend_pro",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_041",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "recommend_business_or_enterprise",
+      "runtime_action_id": "recommend_business_or_enterprise",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_042",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "recommend_business_or_enterprise",
+      "runtime_action_id": "recommend_business_or_enterprise",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_043",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "recommend_business_or_enterprise",
+      "runtime_action_id": "recommend_business_or_enterprise",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_044",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "compare_plus_vs_pro",
+      "runtime_action_id": "compare_plus_vs_pro",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_045",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "compare_plus_vs_pro",
+      "runtime_action_id": "compare_plus_vs_pro",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_046",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "compare_pro_tiers",
+      "runtime_action_id": "compare_pro_tiers",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_047",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "compare_pro_tiers",
+      "runtime_action_id": "compare_pro_tiers",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_048",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "terminal_close",
+      "runtime_action_id": "terminal_close",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_049",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "terminal_close",
+      "runtime_action_id": "terminal_close",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_050",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "terminal_close",
+      "runtime_action_id": "terminal_close",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_051",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "respect_boundary",
+      "runtime_action_id": "respect_boundary",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_052",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "respect_boundary",
+      "runtime_action_id": "respect_boundary",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_053",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "respect_boundary",
+      "runtime_action_id": "respect_boundary",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_054",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "respect_boundary",
+      "runtime_action_id": "respect_boundary",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_055",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "respect_boundary",
+      "runtime_action_id": "respect_boundary",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_056",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "repair_already_told_you",
+      "runtime_action_id": "repair_already_told_you",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_057",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "repair_already_told_you",
+      "runtime_action_id": "repair_already_told_you",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_058",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "repair_buyer_correction",
+      "runtime_action_id": "repair_buyer_correction",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_059",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "repair_buyer_correction",
+      "runtime_action_id": "repair_buyer_correction",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_060",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "repair_asr_uncertainty",
+      "runtime_action_id": "repair_asr_uncertainty",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_061",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "repair_asr_uncertainty",
+      "runtime_action_id": "repair_asr_uncertainty",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_062",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "avoid_repetition_rephrase",
+      "runtime_action_id": "avoid_repetition_rephrase",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_063",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "avoid_repetition_rephrase",
+      "runtime_action_id": "avoid_repetition_rephrase",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_064",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "clarify_question_scope",
+      "runtime_action_id": "clarify_question_scope",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    },
+    {
+      "case_id": "runtime_metadata_case_065",
+      "hook_enabled": true,
+      "hook_output_written": true,
+      "selector_action_id": "clarify_question_scope",
+      "runtime_action_id": "clarify_question_scope",
+      "validation_errors": [],
+      "raw_private_data": false,
+      "sanitized": true
+    }
+  ],
+  "unsafe_probe_results": [
+    {
+      "probe": "research/experiments/generated/RUNTIME-ACTION-METADATA-EXTRACTION-001/synthetic_cases",
+      "hook_enabled": true,
+      "hook_output_written": false,
+      "row_count_before": 65,
+      "row_count_after": 65,
+      "wrote_row": false
+    },
+    {
+      "probe": "research/experiments/generated/RUNTIME-ACTION-METADATA-EXTRACTION-001/synthetic_cases",
+      "hook_enabled": true,
+      "hook_output_written": false,
+      "row_count_before": 65,
+      "row_count_after": 65,
+      "wrote_row": false
+    },
+    {
+      "probe": "data/private/live-call.jsonl",
+      "hook_enabled": true,
+      "hook_output_written": false,
+      "row_count_before": 65,
+      "row_count_after": 65,
+      "wrote_row": false
+    },
+    {
+      "probe": "research/experiments/generated/RUNTIME-ACTION-METADATA-EXTRACTION-001/synthetic_cases",
+      "hook_enabled": true,
+      "hook_output_written": false,
+      "row_count_before": 65,
+      "row_count_after": 65,
+      "wrote_row": false
+    },
+    {
+      "probe": "research/experiments/generated/RUNTIME-ACTION-METADATA-EXTRACTION-001/synthetic_cases",
+      "hook_enabled": true,
+      "hook_output_written": false,
+      "row_count_before": 65,
+      "row_count_after": 65,
+      "wrote_row": false
+    },
+    {
+      "probe": "research/experiments/generated/RUNTIME-ACTION-METADATA-EXTRACTION-001/synthetic_cases",
+      "hook_enabled": true,
+      "hook_output_written": false,
+      "row_count_before": 65,
+      "row_count_after": 65,
+      "wrote_row": false
+    }
+  ],
+  "runtime_no_change_cases": [
+    {
+      "case_id": "price_question",
+      "output_identical": true,
+      "response_text_hash_identical": true,
+      "metadata_identical": true,
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "case_id": "privacy_boundary",
+      "output_identical": true,
+      "response_text_hash_identical": true,
+      "metadata_identical": true,
+      "sanitized": true,
+      "raw_private_data": false
+    },
+    {
+      "case_id": "terminal_close",
+      "output_identical": true,
+      "response_text_hash_identical": true,
+      "metadata_identical": true,
+      "sanitized": true,
+      "raw_private_data": false
+    }
+  ],
+  "should_not_change_runtime": true,
+  "runtime_behavior_changed": false,
+  "response_text_changed": false,
+  "call_control_changed": false,
+  "metadata_changed": false,
+  "side_effects_allowed": false,
+  "side_effects_observed": false,
+  "memory_mutation_allowed": false,
+  "memory_mutation_observed": false,
+  "provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "ultravox_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "local_llm_calls_made": false,
+  "ollama_calls_made": false,
+  "tts_calls_made": false,
+  "buyer_facing_text_generated": false,
+  "selector_control_allowed": false,
+  "live_runtime_wiring_allowed": false,
+  "raw_private_data": false,
+  "audio_data_used": false
+}

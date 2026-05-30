@@ -1,6 +1,6 @@
 {
   "experiment_id": "NON-LLM-ACTION-SELECTOR-RUNTIME-SHADOW-IMPORT-NOOP-001",
-  "generated_at": "2026-05-30T00:30:27.337262+00:00",
+  "generated_at": "2026-05-30T12:50:46.403038+00:00",
   "status": "pass",
   "failure_count": 0,
   "failures": [],
@@ -44,10 +44,10 @@
   "safety_blockers_count": 0,
   "latency_ms": {
     "sample_count": 11,
-    "p50": 0.8835,
-    "p90": 1.2574,
-    "p99": 32.0219,
-    "max": 32.0219
+    "p50": 0.7342,
+    "p90": 0.9617,
+    "p99": 26.3678,
+    "max": 26.3678
   },
   "case_results": [
     {
@@ -61,7 +61,7 @@
       "after_hash": "sha256:a7aa0fb00139c1ffe9eb1c91b1938e0e60d5cd726b7823902901d2c61c37a9ac",
       "runtime_action_id": "continue_with_session_policy",
       "semantic": "public_plan_direct_price_answer",
-      "latency_ms": 32.0219,
+      "latency_ms": 26.3678,
       "sanitized": true,
       "raw_private_data": false
     },
@@ -76,7 +76,7 @@
       "after_hash": "sha256:fbfa6f25a4f318cf4b3fe78af8fc9909154608bba4b2f9d39154508a97e036df",
       "runtime_action_id": "continue_with_session_policy",
       "semantic": "public_plan_commercial_objection_handled",
-      "latency_ms": 0.647,
+      "latency_ms": 0.5302,
       "sanitized": true,
       "raw_private_data": false
     },
@@ -91,7 +91,7 @@
       "after_hash": "sha256:3555ca598fa18995f57229b605bc2ac2bbbd2b5e1fe55acd4bdc806c55d702e0",
       "runtime_action_id": "continue_with_session_policy",
       "semantic": "public_plan_another_ai_user",
-      "latency_ms": 0.8835,
+      "latency_ms": 0.747,
       "sanitized": true,
       "raw_private_data": false
     },
@@ -106,7 +106,7 @@
       "after_hash": "sha256:dcdf535217894ba2adcf70d312d8568819aa613059812a398dc79f99a63ab903",
       "runtime_action_id": "continue_with_session_policy",
       "semantic": "public_plan_orientation_plan_category_explanation",
-      "latency_ms": 0.5309,
+      "latency_ms": 0.3926,
       "sanitized": true,
       "raw_private_data": false
     },
@@ -121,7 +121,7 @@
       "after_hash": "sha256:0782d8c93de64bd9ddfab68b9869324d71a751c435a9bfaaf99eea5d2129db87",
       "runtime_action_id": "continue_with_session_policy",
       "semantic": "public_plan_team_context",
-      "latency_ms": 0.9406,
+      "latency_ms": 0.7342,
       "sanitized": true,
       "raw_private_data": false
     },
@@ -136,7 +136,7 @@
       "after_hash": "sha256:368eae18f6881f773eb497918d8b4e163b29d91e025049285118847a31a98122",
       "runtime_action_id": "continue_with_session_policy",
       "semantic": "public_plan_individual_use_case",
-      "latency_ms": 1.0312,
+      "latency_ms": 0.8585,
       "sanitized": true,
       "raw_private_data": false
     },
@@ -151,7 +151,7 @@
       "after_hash": "sha256:39b666a590bf8316417e55f5c49e84981d825b289ab8a3db7f0dc041146ab5e9",
       "runtime_action_id": "continue_with_session_policy",
       "semantic": "public_plan_affiliation_boundary",
-      "latency_ms": 0.2994,
+      "latency_ms": 0.2858,
       "sanitized": true,
       "raw_private_data": false
     },
@@ -166,7 +166,7 @@
       "after_hash": "sha256:ffa6cf68a1af8eda202eb9d7ee06fb02d900e6ccc4b9f401d20155c141d32636",
       "runtime_action_id": "continue_with_session_policy",
       "semantic": "public_plan_adoption_state_discovery_already_answered",
-      "latency_ms": 1.1073,
+      "latency_ms": 0.9301,
       "sanitized": true,
       "raw_private_data": false
     },
@@ -181,7 +181,7 @@
       "after_hash": "sha256:4609e5826d3c534ecb5ea13ce5e22a00e6148cf2904797682c70aef9f017a29b",
       "runtime_action_id": "continue_with_session_policy",
       "semantic": "public_plan_another_ai_user",
-      "latency_ms": 1.2574,
+      "latency_ms": 0.9617,
       "sanitized": true,
       "raw_private_data": false
     },
@@ -196,7 +196,7 @@
       "after_hash": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
       "runtime_action_id": "",
       "semantic": "",
-      "latency_ms": 0.7623,
+      "latency_ms": 0.5594,
       "sanitized": true,
       "raw_private_data": false
     },
@@ -211,7 +211,7 @@
       "after_hash": "sha256:910cc11c6208ec195124cc420d0c03a03dcc024df4c7e3bd488682b497f68a45",
       "runtime_action_id": "continue_with_session_policy",
       "semantic": "public_plan_email_side_effect_boundary",
-      "latency_ms": 0.4535,
+      "latency_ms": 0.4334,
       "sanitized": true,
       "raw_private_data": false
     }

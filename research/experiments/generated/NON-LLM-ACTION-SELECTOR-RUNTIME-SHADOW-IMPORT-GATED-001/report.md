@@ -7,7 +7,7 @@
 - Selector action ID recorded count: 65
 - Exact/compatible agreement: 65/65
 - Safety blockers: 0
-- Enabled overhead p50/p90/p99 ms: 5.4221/8.2526/9.1506
+- Enabled overhead p50/p90/p99 ms: 4.4011/6.7206/7.7417
 - Runtime behavior changed: false
 - Response text changed: false
 - Selector control allowed: false
