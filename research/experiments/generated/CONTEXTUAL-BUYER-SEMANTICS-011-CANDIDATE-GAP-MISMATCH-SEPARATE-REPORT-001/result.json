@@ -1,0 +1,64 @@
+{
+  "checkpoint_id": "CONTEXTUAL-BUYER-SEMANTICS-011-CANDIDATE-GAP-MISMATCH-SEPARATE-REPORT-001",
+  "source_validator": "scripts/validate_contextual_buyer_semantics_011_campaign_adapter_runtime.py",
+  "source_result": "research/experiments/generated/CONTEXTUAL-BUYER-SEMANTICS-011-campaign-adapter-runtime/result.json",
+  "status": "fail",
+  "caused_by_phase_4k5_shadow_logging": false,
+  "total_failure_count": 13,
+  "insurance_telecom_candidate_gap_mismatches": [
+    {
+      "vertical_id": "insurance",
+      "campaign_core_gaps": [
+        "coverage_fit",
+        "premium_or_budget",
+        "renewal_or_timing"
+      ],
+      "playbook_next_gap": "coverage_fit",
+      "permission_outgoing_candidate_gaps": [],
+      "permission_outgoing_active_gap_scope": "unknown",
+      "manager_outgoing_candidate_gaps": [],
+      "manager_outgoing_active_gap_scope": "unknown",
+      "manager_memory_outgoing_candidate_gaps": [],
+      "manager_memory_outgoing_active_gap_scope": "unknown",
+      "mismatch": "Permission acknowledgement chooses the campaign next-gap response but leaves outgoing candidate gaps empty and outgoing scope unknown."
+    },
+    {
+      "vertical_id": "telecom",
+      "campaign_core_gaps": [
+        "coverage_or_availability",
+        "plan_fit",
+        "contract_or_switching"
+      ],
+      "playbook_next_gap": "coverage_or_availability",
+      "permission_outgoing_candidate_gaps": [],
+      "permission_outgoing_active_gap_scope": "unknown",
+      "manager_outgoing_candidate_gaps": [],
+      "manager_outgoing_active_gap_scope": "unknown",
+      "manager_memory_outgoing_candidate_gaps": [],
+      "manager_memory_outgoing_active_gap_scope": "unknown",
+      "mismatch": "Permission acknowledgement chooses the campaign next-gap response but leaves outgoing candidate gaps empty and outgoing scope unknown."
+    }
+  ],
+  "failed_insurance_telecom_assertions": [
+    "insurance: permission outgoing candidate gaps must be campaign core gaps",
+    "insurance: manager outgoing candidate gaps must be campaign core gaps",
+    "insurance: manager memory outgoing candidate gaps must be campaign core gaps",
+    "telecom: permission outgoing candidate gaps must be campaign core gaps",
+    "telecom: manager outgoing candidate gaps must be campaign core gaps",
+    "telecom: manager memory outgoing candidate gaps must be campaign core gaps"
+  ],
+  "additional_failures_present": [
+    "home_services candidate-gap metadata mismatch",
+    "b2b_saas candidate-gap metadata mismatch",
+    "home_services estimate-unclear semantic mismatch: expected pain_confirmed, got gap_specific_unclear_context"
+  ],
+  "safety": {
+    "provider_calls_made": false,
+    "local_llm_calls_made": false,
+    "sends_email": false,
+    "creates_calendar_event": false,
+    "writes_crm": false,
+    "stores_audio_data": false,
+    "opens_prod_102": false
+  }
+}

@@ -449,6 +449,7 @@ def validate_synthetic_campaigns(failures: list[str], evidence: dict[str, Any]) 
         evidence[label]["turns"]["permission_acknowledgement"] = permission_frame
         assert_synthetic_frame(failures, permission_frame, campaign_config, f"{label}:permission", expected_semantic="permission_acknowledgement")
         assert_condition(failures, permission_frame.get("outgoing_candidate_gaps") == core, f"{label}: permission outgoing candidate gaps must be campaign core gaps: {permission_frame}")
+        assert_condition(failures, permission_frame.get("outgoing_active_gap_scope") == "campaign_relevance", f"{label}: permission outgoing active gap scope must be campaign_relevance: {permission_frame}")
         append_semantic_turn(state, "yeah sure", permission_frame)
 
         manager_action = planned_action("yeah sure", seed_permission_state(), campaign_config)
@@ -468,7 +469,9 @@ def validate_synthetic_campaigns(failures: list[str], evidence: dict[str, Any]) 
         }
         assert_synthetic_frame(failures, manager_frame, campaign_config, f"{label}:manager_permission", expected_semantic="permission_acknowledgement")
         assert_condition(failures, manager_frame.get("outgoing_candidate_gaps") == core, f"{label}: manager outgoing candidate gaps must be campaign core gaps: {manager_frame}")
+        assert_condition(failures, manager_frame.get("outgoing_active_gap_scope") == "campaign_relevance", f"{label}: manager outgoing active gap scope must be campaign_relevance: {manager_frame}")
         assert_condition(failures, manager_memory.get("outgoing_candidate_gaps") == core, f"{label}: manager memory outgoing candidate gaps must be campaign core gaps: {manager_memory}")
+        assert_condition(failures, manager_memory.get("outgoing_active_gap_scope") == "campaign_relevance", f"{label}: manager memory outgoing active gap scope must be campaign_relevance: {manager_memory}")
         assert_no_forbidden_response(failures, manager_action, f"{label}:manager_permission")
 
         for utterance, expected_semantic, expected_gap in tests[label]:

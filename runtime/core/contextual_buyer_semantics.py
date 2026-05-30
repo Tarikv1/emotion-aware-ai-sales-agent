@@ -682,10 +682,43 @@ def _candidate_gaps(previous_question: str | None, campaign: dict | None = None)
     return _ordered_candidate_gaps(gaps, campaign)
 
 
+def _generic_campaign_relevance_outgoing_gaps(
+    response: str,
+    normalized: str,
+    candidate_gaps: list[str],
+    campaign: dict | None,
+) -> list[str]:
+    if _is_routesignal_playbook(campaign) or not session_policy.is_generic_campaign_config(campaign):
+        return []
+    core_gaps = _ordered_candidate_gaps(_core_diagnostic_gaps(campaign), campaign)
+    if not core_gaps:
+        return []
+    primary_questions = [
+        session_policy.generic_campaign_primary_question("en", campaign),
+        session_policy.generic_campaign_primary_question("de", campaign),
+    ]
+    normalized_questions = _unique([session_policy.normalize_text(question) for question in primary_questions])
+    if any(question and question in normalized for question in normalized_questions):
+        return core_gaps
+    if candidate_gaps and set(candidate_gaps).issubset(set(core_gaps)) and _contains(
+        normalized,
+        {"active right now", "causing any issue right now", "gerade relevant"},
+    ):
+        return core_gaps
+    return []
+
+
 def outgoing_question_state_from_response(response: str, campaign: dict | None = None) -> dict[str, Any]:
     question_type = session_policy.question_type_from_response(response)
     candidate_gaps = _candidate_gaps(response, campaign)
     normalized = session_policy.normalize_text(response)
+    campaign_relevance_gaps = _generic_campaign_relevance_outgoing_gaps(response, normalized, candidate_gaps, campaign)
+    if campaign_relevance_gaps:
+        return {
+            "outgoing_question_type": question_type if question_type != "none" else "sales_progression_question",
+            "outgoing_candidate_gaps": campaign_relevance_gaps,
+            "outgoing_active_gap_scope": "campaign_relevance",
+        }
     diagnostic_types = {
         "qualification_gap_diagnostic",
         "call_purpose_gap_diagnostic",
