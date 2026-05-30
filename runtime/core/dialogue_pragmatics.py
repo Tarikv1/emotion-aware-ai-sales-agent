@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from runtime.core import campaign_playbook_adapter
 from runtime.core import live_voice_session_policy as session_policy
 
 
@@ -99,14 +100,18 @@ def _no_match(
     )
 
 
-def _term_explanation(language: str, normalized: str) -> str | None:
+def _term_explanation(language: str, normalized: str, campaign: dict | None) -> str | None:
     if language.startswith("de"):
         return session_policy.plain_qualification_term_clarification_text(language, normalized)
     if _contains(normalized, {"growth"}):
+        configured = campaign_playbook_adapter.campaign_response_capabilities(campaign).get("growth_term_clarification_response")
+        if configured:
+            return str(configured)
+        context = session_policy.generic_campaign_context(campaign)
+        scope = session_policy.generic_campaign_spoken_area_phrase(campaign)
         return (
-            "Sorry, I should have explained that. Growth is the RouteSignal setup for teams that need "
-            "follow-up reminders and handoff review around inbound demo requests. The practical question "
-            "is whether missed callbacks are worth a short workflow review."
+            f"Sorry, I should have explained that. Growth is one campaign option for {context['offer']}. "
+            f"The practical question is whether {scope} should go to a short {context['target']}."
         )
     if _contains(normalized, {"handoff", "handoffs"}):
         return (
@@ -234,12 +239,12 @@ def classify_pragmatic_move(
             campaign=campaign,
             dialogue_reasoning=dialogue_reasoning,
             target_focus="qualification",
-            candidate_response=session_policy.seller_agenda_recovered_response(language),
+            candidate_response=session_policy.seller_agenda_recovered_response(language, campaign),
             legacy_reason="buyer_no_question_recovered",
         )
 
     if _is_term_meaning_question(normalized):
-        explanation = _term_explanation(language, normalized)
+        explanation = _term_explanation(language, normalized, campaign)
         if explanation:
             legacy_reason = "callback_workflow_clarified" if _contains(normalized, {"callback", "callbacks"}) else None
             return _packet(

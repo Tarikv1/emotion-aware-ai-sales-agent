@@ -149,6 +149,11 @@ def _resolved_focus(turns: list[dict[str, Any]]) -> str | None:
     return session_policy.dialogue_focus_from_turns(turns)
 
 
+def _campaign_identity_terms(campaign: dict | None) -> list[str]:
+    context = session_policy.generic_campaign_context(campaign)
+    return [context["client"], context["offer"]]
+
+
 def _packet(
     *,
     dialogue_act: str,
@@ -348,7 +353,7 @@ def deterministic_reason_about_turn(
             resolved_topic="caller_identity",
             sales_stage="repair",
             response_strategy="answer_identity_then_offer_reason",
-            must_include=["Northstar Workflow Labs", "RouteSignal CRM"],
+            must_include=_campaign_identity_terms(campaign),
             confidence=0.95,
         )
 

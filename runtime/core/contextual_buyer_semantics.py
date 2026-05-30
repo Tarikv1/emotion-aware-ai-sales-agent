@@ -1876,7 +1876,7 @@ def _gap_specific_unclear_response(gap_id: str | None, campaign: dict | None) ->
     return f"Understood, {label} is the unclear part. What part is confusing: what it means, what {owner} would check, or whether it matters here?"
 
 
-def _is_routesignal_scope_boundary_question(normalized: str) -> bool:
+def _is_campaign_scope_boundary_question(normalized: str) -> bool:
     if not normalized.startswith(("can ", "could ", "do ", "does ", "is ", "are ", "will ", "what ")):
         return False
     return _contains(
@@ -1895,15 +1895,21 @@ def _is_routesignal_scope_boundary_question(normalized: str) -> bool:
     )
 
 
-def _routesignal_scope_boundary_response(normalized: str) -> str:
+def _campaign_scope_boundary_response(normalized: str, campaign: dict | None) -> str:
+    capabilities = diagnostic_playbook.campaign_response_capabilities(campaign)
     if _contains(normalized, {"coverage", "policy"}):
-        return (
-            "I can't give coverage advice on this call. Coverage sounds like a different issue; "
-            "this call is about inbound demo follow-up. If that is not relevant, I should stop here."
-        )
+        configured = capabilities.get("scope_boundary_coverage_response")
+        if configured:
+            return str(configured)
+        scope = session_policy.generic_campaign_context(campaign)["scope"]
+        return f"I can't give coverage advice on this call. Coverage sounds like a different issue; this call is about {scope}. If that is not relevant, I should stop here."
+    configured = capabilities.get("scope_boundary_specialist_response")
+    if configured:
+        return str(configured)
+    scope = session_policy.generic_campaign_context(campaign)["scope"]
     return (
         "I can't answer that kind of specialist question on this call. "
-        "The scope here is inbound demo follow-up: whether ownership, reminders, or handoffs are slipping."
+        f"The scope here is {scope}."
     )
 
 
@@ -2391,9 +2397,9 @@ def classify_contextual_buyer_semantics(
     if specialized_frame:
         return _frame(**specialized_frame)
 
-    if _is_routesignal_playbook(campaign) and _is_routesignal_scope_boundary_question(normalized):
+    if _is_routesignal_playbook(campaign) and _is_campaign_scope_boundary_question(normalized):
         return _frame(
-            semantic="route_signal_scope_boundary",
+            semantic="campaign_scope_boundary",
             transcript=transcript,
             normalized=normalized,
             previous_question_type=previous_question_type,
@@ -2409,7 +2415,7 @@ def classify_contextual_buyer_semantics(
             confidence=0.9,
             next_action_hint="answer_scope_boundary_continue",
             must_not_do=["transfer-or-escalate", "use internal routing wording", "invent regulated advice"],
-            candidate_response=_routesignal_scope_boundary_response(normalized),
+            candidate_response=_campaign_scope_boundary_response(normalized, campaign),
             action_id="answer_product_detail_scope_limit",
             dialogue_focus="details",
         )

@@ -1,0 +1,126 @@
+{
+  "checkpoint_id": "PHASE-4L1-UNIVERSAL-CAMPAIGN-BOUNDARY-HARDENING-001",
+  "status": "needs_future_migration",
+  "openai_primary_benchmark_campaign": "public OpenAI ChatGPT plans",
+  "routesignal_role": "secondary regression fixture only",
+  "selector_control_allowed": false,
+  "live_selector_control_recommended": false,
+  "response_replacement_performed": false,
+  "provider_calls_made": false,
+  "model_calls_made": false,
+  "openai_api_calls_made": false,
+  "ultravox_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "local_llm_calls_made": false,
+  "ollama_calls_made": false,
+  "tts_calls_made": false,
+  "crm_calls_made": false,
+  "email_calls_made": false,
+  "calendar_calls_made": false,
+  "payment_calls_made": false,
+  "account_side_effects_made": false,
+  "raw_private_transcript_or_audio_added_to_public_evidence": false,
+  "inspected_suspicious_modules": [
+    "runtime/core/live_voice_session_policy.py",
+    "runtime/core/contextual_buyer_semantics.py",
+    "runtime/core/dialogue_manager.py",
+    "runtime/core/dialogue_reasoner.py",
+    "runtime/core/dialogue_pragmatics.py",
+    "runtime/entrypoints/generate_guarded_response.py",
+    "runtime/entrypoints/generic_campaign_turn.py"
+  ],
+  "classification_counts": {
+    "allowed_legacy_regression_fixture": 2,
+    "allowed_campaign_adapter_access": 2,
+    "universal_boundary_leak": 3,
+    "needs_future_migration": 2
+  },
+  "module_classifications": [
+    {
+      "module": "runtime/core/live_voice_session_policy.py",
+      "classification": "allowed_legacy_regression_fixture",
+      "finding": "RouteSignal buyer-facing fallback responses remain for the existing live-demo fixture, while generic campaign config branches already avoid those defaults."
+    },
+    {
+      "module": "runtime/core/live_voice_session_policy.py",
+      "classification": "needs_future_migration",
+      "finding": "The remaining legacy response paths should move behind campaign response capabilities in a dedicated live-demo fixture migration, not in this bounded 4L1 cleanup."
+    },
+    {
+      "module": "runtime/core/contextual_buyer_semantics.py",
+      "classification": "universal_boundary_leak",
+      "finding": "The RouteSignal-named scope semantic was neutralized to campaign_scope_boundary and its response text now comes from campaign response capabilities."
+    },
+    {
+      "module": "runtime/core/contextual_buyer_semantics.py",
+      "classification": "allowed_campaign_adapter_access",
+      "finding": "RouteSignal playbook checks remain only as adapter-mediated legacy fixture branches for gap ordering, confirmed/cleared gaps, and playbook traces."
+    },
+    {
+      "module": "runtime/core/dialogue_manager.py",
+      "classification": "needs_future_migration",
+      "finding": "The RouteSignal-specific soft all-clear reopen gate is behaviorally narrow but should be replaced by a neutral campaign capability in a later migration."
+    },
+    {
+      "module": "runtime/core/dialogue_reasoner.py",
+      "classification": "universal_boundary_leak",
+      "finding": "Direct Northstar/RouteSignal identity requirements were replaced with campaign-derived identity terms."
+    },
+    {
+      "module": "runtime/core/dialogue_pragmatics.py",
+      "classification": "universal_boundary_leak",
+      "finding": "Direct RouteSignal Growth explanation was moved behind campaign response capabilities with a neutral generic fallback, and seller-agenda recovery now passes campaign context."
+    },
+    {
+      "module": "runtime/entrypoints/generate_guarded_response.py",
+      "classification": "allowed_legacy_regression_fixture",
+      "finding": "The remaining RouteSignal phrase is a buyer-input classifier fixture phrase, not buyer-facing response copy or default generic campaign behavior."
+    },
+    {
+      "module": "runtime/entrypoints/generic_campaign_turn.py",
+      "classification": "allowed_campaign_adapter_access",
+      "finding": "The RouteSignal playbook id is used to reject generic campaign configs that accidentally resolve to the legacy default playbook."
+    }
+  ],
+  "fixed_leaks": [
+    "Renamed route_signal_scope_boundary to campaign_scope_boundary in contextual semantics and universal buyer-move mapping.",
+    "Moved RouteSignal scope-boundary response text into campaign_playbook_adapter response_capabilities.",
+    "Removed direct Northstar/RouteSignal copy from dialogue_reasoner.py and moved direct RouteSignal Growth copy from dialogue_pragmatics.py into adapter response capabilities."
+  ],
+  "future_migration_items": [
+    "Move remaining live_voice_session_policy.py legacy RouteSignal fixture responses behind neutral campaign response capability keys.",
+    "Replace dialogue_manager.py _is_routesignal_campaign soft all-clear reopen gate with a neutral campaign capability.",
+    "Split long-term RouteSignal regression fixture behavior from shared live/session policy modules once existing RouteSignal validators have an adapter-backed replacement."
+  ],
+  "route_signal_scope_boundary_decision": {
+    "decision": "renamed_to_campaign_scope_boundary",
+    "compatibility": "Behavior is preserved for current runtime classification and universal buyer-move mapping; historical generated evidence was not rewritten.",
+    "legacy_public_evidence_rewritten": false
+  },
+  "default_campaign_adapter_decision": {
+    "decision": "keep_legacy_routesignal_default",
+    "reason": "Existing RouteSignal and campaign-playbook validators still assert the legacy default; generic campaign entrypoints already reject accidental default-playbook fallback.",
+    "broad_default_change": false
+  },
+  "boundary_contract": {
+    "universal_modules_may_use": [
+      "neutral buyer moves",
+      "neutral sales-stage states",
+      "neutral campaign adapter fields",
+      "neutral response capability keys",
+      "neutral source/claim/side-effect boundaries"
+    ],
+    "campaign_specific_modules_may_define": [
+      "campaign product/company names",
+      "campaign-specific diagnostic gaps",
+      "campaign-specific close route",
+      "campaign-specific human follow-up owner",
+      "campaign-specific response capability text"
+    ]
+  },
+  "openai_primary_roadmap_preserved": true,
+  "no_live_selector_control_enabled": true,
+  "no_response_replacement_enabled": true,
+  "no_provider_model_tts_crm_email_calendar_payment_account_path_enabled": true,
+  "no_raw_private_transcript_audio_added_to_public_evidence": true
+}

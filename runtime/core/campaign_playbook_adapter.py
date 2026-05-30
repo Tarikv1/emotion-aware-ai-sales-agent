@@ -86,6 +86,19 @@ ROUTESIGNAL_RESPONSE_CAPABILITIES: dict[str, Any] = {
         "The review would look at who owns the lead, when follow-up happens, and where reminders or handoffs slip. "
         "I can only check that at a high level here."
     ),
+    "scope_boundary_coverage_response": (
+        "I can't give coverage advice on this call. Coverage sounds like a different issue; "
+        "this call is about inbound demo follow-up. If that is not relevant, I should stop here."
+    ),
+    "scope_boundary_specialist_response": (
+        "I can't answer that kind of specialist question on this call. "
+        "The scope here is inbound demo follow-up: whether ownership, reminders, or handoffs are slipping."
+    ),
+    "growth_term_clarification_response": (
+        "Sorry, I should have explained that. Growth is the RouteSignal setup for teams that need "
+        "follow-up reminders and handoff review around inbound demo requests. The practical question "
+        "is whether missed callbacks are worth a short workflow review."
+    ),
 }
 
 

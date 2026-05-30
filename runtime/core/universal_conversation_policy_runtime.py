@@ -174,7 +174,7 @@ HIGH_CONFIDENCE_CONTEXTUAL_SEMANTICS = {
     "product_detail_limit_question",
     "purpose_clarification_after_confirmed_gap",
     "purpose_explanation_accepted",
-    "route_signal_scope_boundary",
+    "campaign_scope_boundary",
     "vertical_support_boundary",
 }
 
@@ -1662,7 +1662,7 @@ def _buyer_move_from_context(contextual_semantics: dict | None, transcript: str)
         return "tentative_gap_interest"
     if semantic in {"product_detail_limit_question", "cannot_provide_product_details_acknowledged"}:
         return "scope_limit_question"
-    if semantic in {"route_signal_scope_boundary", "campaign_claim_boundary_caution", "vertical_support_boundary"}:
+    if semantic in {"campaign_scope_boundary", "campaign_claim_boundary_caution", "vertical_support_boundary"}:
         return "scope_limit_question"
     if semantic in {"current_gap_clear", "no_pain_for_specific_gap"}:
         return "no_pain_clear"
