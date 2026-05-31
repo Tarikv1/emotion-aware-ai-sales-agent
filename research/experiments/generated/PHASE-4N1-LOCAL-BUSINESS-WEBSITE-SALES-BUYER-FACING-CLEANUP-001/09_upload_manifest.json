@@ -1,0 +1,93 @@
+[
+  {
+    "filename": "result.json",
+    "purpose": "Machine-readable checkpoint result and safety flags.",
+    "upload_mode": "do_not_upload",
+    "safe_for_upload": false,
+    "side_effects_enabled": false
+  },
+  {
+    "filename": "report.md",
+    "purpose": "Human-readable cleanup report.",
+    "upload_mode": "do_not_upload",
+    "safe_for_upload": false,
+    "side_effects_enabled": false
+  },
+  {
+    "filename": "00_dashboard_upload_checklist.md",
+    "purpose": "Manual setup checklist and placeholder replacement warning.",
+    "upload_mode": "reference_only",
+    "safe_for_upload": false,
+    "side_effects_enabled": false
+  },
+  {
+    "filename": "01_agent_system_prompt.md",
+    "purpose": "ElevenLabs agent system prompt.",
+    "upload_mode": "upload_to_system_prompt",
+    "safe_for_upload": true,
+    "side_effects_enabled": false
+  },
+  {
+    "filename": "02_website_offer_and_packages.md",
+    "purpose": "Offer framing and service levels for the knowledge base.",
+    "upload_mode": "upload_to_knowledge_base",
+    "safe_for_upload": true,
+    "side_effects_enabled": false
+  },
+  {
+    "filename": "03_vertical_playbooks.md",
+    "purpose": "Vertical-aware sales angles for the knowledge base.",
+    "upload_mode": "upload_to_knowledge_base",
+    "safe_for_upload": true,
+    "side_effects_enabled": false
+  },
+  {
+    "filename": "04_objection_handling_playbook.md",
+    "purpose": "Objection handling responses for the knowledge base.",
+    "upload_mode": "upload_to_knowledge_base",
+    "safe_for_upload": true,
+    "side_effects_enabled": false
+  },
+  {
+    "filename": "05_discovery_and_qualification.md",
+    "purpose": "Discovery and qualification guidance for the knowledge base.",
+    "upload_mode": "upload_to_knowledge_base",
+    "safe_for_upload": true,
+    "side_effects_enabled": false
+  },
+  {
+    "filename": "06_close_paths.md",
+    "purpose": "Close path guidance for the knowledge base.",
+    "upload_mode": "upload_to_knowledge_base",
+    "safe_for_upload": true,
+    "side_effects_enabled": false
+  },
+  {
+    "filename": "07_compliance_and_calling_boundaries.md",
+    "purpose": "Separated buyer-facing boundaries and internal deployment restrictions.",
+    "upload_mode": "upload_to_knowledge_base",
+    "safe_for_upload": true,
+    "side_effects_enabled": false
+  },
+  {
+    "filename": "08_manual_eval_script.md",
+    "purpose": "Manual evaluation cases.",
+    "upload_mode": "do_not_upload",
+    "safe_for_upload": false,
+    "side_effects_enabled": false
+  },
+  {
+    "filename": "09_upload_manifest.json",
+    "purpose": "Upload mode manifest.",
+    "upload_mode": "do_not_upload",
+    "safe_for_upload": false,
+    "side_effects_enabled": false
+  },
+  {
+    "filename": "10_tests_to_create_in_elevenlabs.md",
+    "purpose": "Manual tests to create after setup.",
+    "upload_mode": "do_not_upload",
+    "safe_for_upload": false,
+    "side_effects_enabled": false
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "account_side_effects_made": false,
+  "buyer_facing_files_created": [
+    "01_agent_system_prompt.md",
+    "02_website_offer_and_packages.md",
+    "03_vertical_playbooks.md",
+    "04_objection_handling_playbook.md",
+    "05_discovery_and_qualification.md",
+    "06_close_paths.md",
+    "07_compliance_and_calling_boundaries.md"
+  ],
+  "buyer_facing_internal_test_phrase_count": 0,
+  "buyer_facing_placeholder_agency_name_count": 13,
+  "calendar_calls_made": false,
+  "checkpoint_id": "PHASE-4N1-LOCAL-BUSINESS-WEBSITE-SALES-BUYER-FACING-CLEANUP-001",
+  "crm_calls_made": false,
+  "email_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "eval_case_count": 20,
+  "kb_upload_file_count": 6,
+  "live_readiness_claimed": false,
+  "model_calls_made": false,
+  "objection_count": 16,
+  "openai_api_calls_made": false,
+  "payment_calls_made": false,
+  "provider_calls_made": false,
+  "real_outbound_calls_enabled": false,
+  "status": "pass",
+  "tts_calls_made": false,
+  "upload_ready_after_agency_name_replacement": true,
+  "vertical_count": 14
+}
