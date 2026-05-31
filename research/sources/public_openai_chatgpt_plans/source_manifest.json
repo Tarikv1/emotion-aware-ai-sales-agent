@@ -2,9 +2,9 @@
   "bundle_id": "PUBLIC-OPENAI-CHATGPT-PLANS-SOURCE-BUNDLE-001",
   "fixture_id": "public-openai-chatgpt-plans",
   "retrieved_at_utc": "2026-05-24T18:18:00Z",
-  "last_verified_at_utc": "2026-05-31T01:56:31Z",
-  "last_verified_checkpoint_id": "PHASE-4L4-OPENAI-SOURCE-REFRESH-PLAN-TAXONOMY-001",
-  "last_verified_summary": "Official ChatGPT pricing and Go help pages still represent Free, Go, Plus, Pro, Business, and Enterprise, with Go as the paid individual step between Free and Plus.",
+  "last_verified_at_utc": "2026-05-31T02:25:00Z",
+  "last_verified_checkpoint_id": "PHASE-4L5-OPENAI-CLAIM-PRECISION-HARDENING-001",
+  "last_verified_summary": "Phase 4L5 classified OpenAI plan claims by precision risk and downgraded exact Go feature claims to conservative official-route wording where official source surfaces can conflict.",
   "source_policy": "official_openai_public_sources_only",
   "allowed_domains": [
     "openai.com",
@@ -168,7 +168,9 @@
       "plan_ids": [],
       "claim_category": "product_intro",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images."
+      "normalized_speech_version": "ChatGPT is an AI assistant for everyday work like writing, studying, planning, coding, and analyzing files or images.",
+      "claim_precision_category": "stable_source_claim",
+      "claim_precision_rationale": "Stable high-level official-source claim."
     },
     {
       "fact_id": "chatgpt_capabilities_core_001",
@@ -183,7 +185,9 @@
       "plan_ids": [],
       "claim_category": "feature",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "At a high level, ChatGPT can answer questions, explain concepts, draft and summarize content, help solve problems, and translate."
+      "normalized_speech_version": "At a high level, ChatGPT can answer questions, explain concepts, draft and summarize content, help solve problems, and translate.",
+      "claim_precision_category": "stable_source_claim",
+      "claim_precision_rationale": "Stable high-level official-source claim."
     },
     {
       "fact_id": "chatgpt_available_web_mobile_001",
@@ -198,7 +202,9 @@
       "plan_ids": [],
       "claim_category": "sign_up",
       "exact_quote_excerpt_optional": "Web: chatgpt.com",
-      "normalized_speech_version": "You can use ChatGPT on the web at chatgpt.com and in the iOS or Android apps."
+      "normalized_speech_version": "You can use ChatGPT on the web at chatgpt.com and in the iOS or Android apps.",
+      "claim_precision_category": "stable_source_claim",
+      "claim_precision_rationale": "Stable high-level official-source claim."
     },
     {
       "fact_id": "pricing_plan_set_001",
@@ -220,7 +226,9 @@
       ],
       "claim_category": "plan_catalog",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "The public pricing page compares Free, Go, Plus, Pro, Business, and Enterprise."
+      "normalized_speech_version": "The public pricing page compares Free, Go, Plus, Pro, Business, and Enterprise.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "free_basic_limits_001",
@@ -237,7 +245,9 @@
       ],
       "claim_category": "plan_catalog",
       "exact_quote_excerpt_optional": "Free: Core ChatGPT with basic limits.",
-      "normalized_speech_version": "Free is the basic ChatGPT option, with limited access compared with paid plans."
+      "normalized_speech_version": "Free is the basic ChatGPT option, with limited access compared with paid plans.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "go_expanded_popular_features_001",
@@ -254,24 +264,34 @@
       ],
       "claim_category": "plan_catalog",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "Go is positioned as a lower-cost paid plan that gives more access to popular ChatGPT features than Free."
+      "normalized_speech_version": "Go is positioned as a lower-cost paid plan that gives more access than Free to common ChatGPT features.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "go_features_001",
-      "claim": "Go adds expanded access to image generation, file uploads, advanced data analysis, longer memory, and projects/tasks/custom GPTs compared with Free.",
+      "claim": "Go gives more access than Free to common ChatGPT features, but exact Go feature availability is conflict-risk because official Go help and pricing-table details may differ.",
       "source_title": "What is ChatGPT Go?",
       "source_url": "https://help.openai.com/en/articles/11989085-what-is-chatgpt-go",
       "retrieved_at_utc": "2026-05-24T18:18:00Z",
       "source_type": "official_help_article",
       "allowed_in_speech": true,
       "requires_caveat": true,
-      "caveat_text": "Usage remains subject to safeguards and system conditions.",
+      "caveat_text": "Use conservative wording and route exact Go feature availability, limits, pricing, and terms to official OpenAI pages.",
       "plan_ids": [
         "go"
       ],
       "claim_category": "feature",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "Go is mainly for more access to common tools such as image generation, file uploads, data analysis, memory, projects, tasks, and custom GPTs."
+      "normalized_speech_version": "Go gives more access than Free to common ChatGPT features, but exact current feature availability and limits should be checked on the official plans page.",
+      "claim_precision_category": "source_conflict_or_ambiguous",
+      "claim_precision_rationale": "Official source surfaces may not align cleanly; speech must use conservative wording and route exact details to official pages.",
+      "conflict_source_urls": [
+        "https://help.openai.com/en/articles/11989085-what-is-chatgpt-go",
+        "https://chatgpt.com/pricing/"
+      ],
+      "conflict_or_ambiguity_note": "The Go help article broadly names projects, tasks, and custom GPTs, while the pricing page feature table marks Tasks as not included for Go. Do not turn that into a confident exact feature list.",
+      "conservative_speech_version": "Go gives more access than Free to common ChatGPT features, but exact current feature availability and limits should be checked on the official plans page."
     },
     {
       "fact_id": "go_signup_profile_upgrade_001",
@@ -288,7 +308,9 @@
       ],
       "claim_category": "sign_up",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "For Go, the help article points to the ChatGPT profile menu, Upgrade Plan, then Try Go."
+      "normalized_speech_version": "For Go, the help article points to the ChatGPT profile menu, Upgrade Plan, then Try Go.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "plus_price_20_001",
@@ -305,7 +327,9 @@
       ],
       "claim_category": "pricing",
       "exact_quote_excerpt_optional": "$20/month",
-      "normalized_speech_version": "Plus is listed at 20 dollars per month, billed monthly."
+      "normalized_speech_version": "Plus is listed at 20 dollars per month, billed monthly.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "plus_features_001",
@@ -322,7 +346,9 @@
       ],
       "claim_category": "feature",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "Plus is for more access than Free or Go: higher limits, faster responses, and expanded tools like voice, images, file analysis, deep research where available, and custom GPTs."
+      "normalized_speech_version": "Plus is for more access than Free or Go: higher limits, faster responses, and expanded tools like voice, images, file analysis, deep research where available, and custom GPTs.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "plus_api_separate_001",
@@ -339,7 +365,9 @@
       ],
       "claim_category": "api_usage_boundary",
       "exact_quote_excerpt_optional": "API usage is separate",
-      "normalized_speech_version": "API usage is separate from Plus and is billed independently."
+      "normalized_speech_version": "API usage is separate from Plus and is billed independently.",
+      "claim_precision_category": "stable_source_claim",
+      "claim_precision_rationale": "Stable high-level official-source claim."
     },
     {
       "fact_id": "plus_signup_profile_upgrade_001",
@@ -356,7 +384,9 @@
       ],
       "claim_category": "sign_up",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "For Plus, the help article points to ChatGPT, the profile icon, Upgrade Plan, then Get Plus."
+      "normalized_speech_version": "For Plus, the help article points to ChatGPT, the profile icon, Upgrade Plan, then Get Plus.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "pro_positioning_001",
@@ -373,7 +403,9 @@
       ],
       "claim_category": "plan_catalog",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "Pro is aimed at people who use AI for more complex, high-usage work."
+      "normalized_speech_version": "Pro is aimed at people who use AI for more complex, high-usage work.",
+      "claim_precision_category": "stable_source_claim",
+      "claim_precision_rationale": "Stable high-level official-source claim."
     },
     {
       "fact_id": "pro_tiers_100_200_001",
@@ -390,7 +422,9 @@
       ],
       "claim_category": "pricing",
       "exact_quote_excerpt_optional": "Pro $100",
-      "normalized_speech_version": "The Pro help article lists 100 dollar and 200 dollar Pro tiers; the main difference is usage allowance."
+      "normalized_speech_version": "The Pro help article lists 100 dollar and 200 dollar Pro tiers; the main difference is usage allowance.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "pro_features_001",
@@ -407,7 +441,9 @@
       ],
       "claim_category": "feature",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "Pro includes the higher-end Pro model access and advanced tools like Codex, deep research, images, memory, and file uploads."
+      "normalized_speech_version": "Pro includes the higher-end Pro model access and advanced tools like Codex, deep research, images, memory, and file uploads.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "pro_unlimited_guardrails_001",
@@ -424,7 +460,9 @@
       ],
       "claim_category": "usage_limits",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "Even when Pro says unlimited, it is still subject to terms and misuse guardrails."
+      "normalized_speech_version": "Even when Pro says unlimited, it is still subject to terms and misuse guardrails.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "pro_upgrade_settings_pricing_001",
@@ -441,7 +479,9 @@
       ],
       "claim_category": "sign_up",
       "exact_quote_excerpt_optional": "Settings -> My Plan",
-      "normalized_speech_version": "For Pro, the help article points to the Pricing page or Settings, then My Plan."
+      "normalized_speech_version": "For Pro, the help article points to the Pricing page or Settings, then My Plan.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "business_overview_001",
@@ -458,7 +498,9 @@
       ],
       "claim_category": "plan_catalog",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "Business is the self-serve team workspace plan."
+      "normalized_speech_version": "Business is the self-serve team workspace plan.",
+      "claim_precision_category": "stable_source_claim",
+      "claim_precision_rationale": "Stable high-level official-source claim."
     },
     {
       "fact_id": "business_standard_seat_price_001",
@@ -475,7 +517,9 @@
       ],
       "claim_category": "pricing",
       "exact_quote_excerpt_optional": "$25 per user per month",
-      "normalized_speech_version": "For most countries, Business standard ChatGPT seats are listed at 25 dollars monthly or 20 dollars monthly when billed annually, with regional caveats."
+      "normalized_speech_version": "For most countries, Business standard ChatGPT seats are listed at 25 dollars monthly or 20 dollars monthly when billed annually, with regional caveats.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "business_standard_seat_includes_codex_001",
@@ -492,7 +536,9 @@
       ],
       "claim_category": "feature",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "A standard Business ChatGPT seat includes both ChatGPT and Codex in the Business workspace."
+      "normalized_speech_version": "A standard Business ChatGPT seat includes both ChatGPT and Codex in the Business workspace.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "business_codex_seat_usage_based_001",
@@ -509,7 +555,9 @@
       ],
       "claim_category": "pricing",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "A Business Codex seat is Codex-only and usage-based; it does not include ChatGPT workspace access."
+      "normalized_speech_version": "A Business Codex seat is Codex-only and usage-based; it does not include ChatGPT workspace access.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "business_minimum_seats_001",
@@ -527,7 +575,9 @@
       ],
       "claim_category": "pricing",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "Standard Business ChatGPT seats start at two users; Codex-only workspaces do not require a minimum starting number of Codex seats."
+      "normalized_speech_version": "Standard Business ChatGPT seats start at two users; Codex-only workspaces do not require a minimum starting number of Codex seats.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "business_no_training_workspace_data_001",
@@ -545,7 +595,9 @@
       ],
       "claim_category": "privacy_training",
       "exact_quote_excerpt_optional": "won't train",
-      "normalized_speech_version": "For Business workspace data, OpenAI says it will not train on that workspace data."
+      "normalized_speech_version": "For Business workspace data, OpenAI says it will not train on that workspace data.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "business_api_separate_001",
@@ -563,7 +615,9 @@
       ],
       "claim_category": "api_usage_boundary",
       "exact_quote_excerpt_optional": "API usage is billed separately",
-      "normalized_speech_version": "Business does not include API usage; API usage is billed separately."
+      "normalized_speech_version": "Business does not include API usage; API usage is billed separately.",
+      "claim_precision_category": "stable_source_claim",
+      "claim_precision_rationale": "Stable high-level official-source claim."
     },
     {
       "fact_id": "enterprise_overview_001",
@@ -580,7 +634,9 @@
       ],
       "claim_category": "plan_catalog",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "Enterprise is the managed organization plan, with centralized admin controls and enterprise privacy and security features."
+      "normalized_speech_version": "Enterprise is the managed organization plan, with centralized admin controls and enterprise privacy and security features.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "enterprise_org_purchase_contact_sales_001",
@@ -597,7 +653,9 @@
       ],
       "claim_category": "enterprise_sales",
       "exact_quote_excerpt_optional": "Contact the OpenAI sales team.",
-      "normalized_speech_version": "Enterprise is not an individual self-serve signup; an organization contacts sales."
+      "normalized_speech_version": "Enterprise is not an individual self-serve signup; an organization contacts sales.",
+      "claim_precision_category": "official_route_only",
+      "claim_precision_rationale": "Buyer-facing response should route to official OpenAI pages, sales, terms, or security review instead of treating the public summary as a guarantee."
     },
     {
       "fact_id": "enterprise_api_membership_separate_001",
@@ -614,7 +672,9 @@
       ],
       "claim_category": "api_usage_boundary",
       "exact_quote_excerpt_optional": "separate membership systems",
-      "normalized_speech_version": "Enterprise workspace access and API Platform organization access are separate."
+      "normalized_speech_version": "Enterprise workspace access and API Platform organization access are separate.",
+      "claim_precision_category": "stable_source_claim",
+      "claim_precision_rationale": "Stable high-level official-source claim."
     },
     {
       "fact_id": "enterprise_security_admin_features_001",
@@ -631,7 +691,10 @@
       ],
       "claim_category": "security_admin",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "Enterprise is where larger organizations look for controls such as SSO, SCIM, domain verification, usage insights, and longer-context work."
+      "normalized_speech_version": "Enterprise is where larger organizations look for controls such as SSO, SCIM, domain verification, usage insights, and longer-context work.",
+      "claim_precision_category": "official_route_only",
+      "claim_precision_rationale": "Buyer-facing response should route to official OpenAI pages, sales, terms, or security review instead of treating the public summary as a guarantee.",
+      "conservative_speech_version": "For Enterprise security and admin specifics, use official OpenAI sales or security-review materials rather than treating public feature summaries as guarantees."
     },
     {
       "fact_id": "consumer_data_controls_opt_out_001",
@@ -651,7 +714,9 @@
       ],
       "claim_category": "privacy_training",
       "exact_quote_excerpt_optional": "won't be used to train ChatGPT",
-      "normalized_speech_version": "For personal plans, users can turn off model training in Data Controls; after that, new conversations are not used to train ChatGPT."
+      "normalized_speech_version": "For personal plans, users can turn off model training in Data Controls; after that, new conversations are not used to train ChatGPT.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "temporary_chat_training_boundary_001",
@@ -671,7 +736,9 @@
       ],
       "claim_category": "privacy_training",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "Temporary Chats are not used to train models and are deleted after 30 days, with abuse-monitoring caveats."
+      "normalized_speech_version": "Temporary Chats are not used to train models and are deleted after 30 days, with abuse-monitoring caveats.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "enterprise_privacy_no_training_default_001",
@@ -690,7 +757,9 @@
       ],
       "claim_category": "privacy_training",
       "exact_quote_excerpt_optional": "isn't used for training",
-      "normalized_speech_version": "For Business, Enterprise, and API Platform data, OpenAI says data is not used for training by default unless the customer opts in."
+      "normalized_speech_version": "For Business, Enterprise, and API Platform data, OpenAI says data is not used for training by default unless the customer opts in.",
+      "claim_precision_category": "current_terms_claim_requires_caveat",
+      "claim_precision_rationale": "Pricing, availability, feature limits, billing, privacy settings, or current terms can change; speech needs an official-page caveat."
     },
     {
       "fact_id": "enterprise_privacy_controls_001",
@@ -709,7 +778,10 @@
       ],
       "claim_category": "security_admin",
       "exact_quote_excerpt_optional": "You own and control your data",
-      "normalized_speech_version": "For business use, OpenAI's privacy page emphasizes customer control over business data plus controls like SAML SSO, access controls, and encryption."
+      "normalized_speech_version": "For business use, OpenAI's privacy page emphasizes customer control over business data plus controls like SAML SSO, access controls, and encryption.",
+      "claim_precision_category": "official_route_only",
+      "claim_precision_rationale": "Buyer-facing response should route to official OpenAI pages, sales, terms, or security review instead of treating the public summary as a guarantee.",
+      "conservative_speech_version": "For business privacy and security specifics, use official OpenAI privacy, terms, Trust Portal, or sales/security-review materials."
     },
     {
       "fact_id": "limits_vary_by_plan_model_001",
@@ -724,7 +796,32 @@
       "plan_ids": [],
       "claim_category": "usage_limits",
       "exact_quote_excerpt_optional": "",
-      "normalized_speech_version": "Usage limits vary by plan and model and can change over time."
+      "normalized_speech_version": "Usage limits vary by plan and model and can change over time.",
+      "claim_precision_category": "stable_source_claim",
+      "claim_precision_rationale": "Stable high-level official-source claim."
     }
-  ]
+  ],
+  "claim_precision_categories": [
+    {
+      "category_id": "stable_source_claim",
+      "buyer_facing_policy": "Can be said plainly when the wording stays high-level and source-grounded."
+    },
+    {
+      "category_id": "current_terms_claim_requires_caveat",
+      "buyer_facing_policy": "Can be said only with an official-page caveat because pricing, availability, limits, or terms can change."
+    },
+    {
+      "category_id": "source_conflict_or_ambiguous",
+      "buyer_facing_policy": "Use conservative wording and route exact details to official OpenAI pages; do not resolve ambiguity by guessing."
+    },
+    {
+      "category_id": "unsupported_do_not_say",
+      "buyer_facing_policy": "Must not appear in buyer-facing speech."
+    },
+    {
+      "category_id": "official_route_only",
+      "buyer_facing_policy": "Route to official OpenAI pages, terms, sales, or security review instead of answering as a final fact."
+    }
+  ],
+  "claim_precision_policy": "Buyer-facing OpenAI plan speech must classify each claim before use. Ambiguous, current-term, or official-route-only claims need conservative wording or an official OpenAI route."
 }

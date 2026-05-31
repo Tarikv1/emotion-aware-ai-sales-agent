@@ -59,10 +59,10 @@
 
 - Buyer utterance: Are ChatGPT plans the same thing as API tokens, model access, or the ChatGPT app?
 - Expected universal sales behavior: Separate ChatGPT subscriptions from API/token usage and ask whether the buyer means ChatGPT, API usage, or both.
-- Actual semantic/action/response summary: semantic=public_plan_api_boundary; action=continue_with_session_policy; focus=api_boundary; summary=API usage is separate from ChatGPT subscriptions
+- Actual semantic/action/response summary: semantic=public_plan_api_boundary; action=continue_with_session_policy; focus=api_boundary; summary=API usage is separate from ChatGPT subscriptions and billed independently; use the official API pricing page for API costs
 - Pass: true
 - Failures: []
-- Actual response: API usage is separate from ChatGPT subscriptions. Are you asking about ChatGPT itself, the API, or both?
+- Actual response: API usage is separate from ChatGPT subscriptions and billed independently; use the official API pricing page for API costs. Are you asking about ChatGPT itself, the API, or both?
 
 ### fit_light_personal_free
 

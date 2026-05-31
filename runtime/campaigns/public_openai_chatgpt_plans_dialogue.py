@@ -782,6 +782,10 @@ def _source_speech(campaign: dict | None, fact_id: str, fallback: str) -> str:
     claim = _source_claim(campaign, fact_id)
     if not claim:
         return fallback
+    if claim.get("claim_precision_category") == "unsupported_do_not_say":
+        return fallback
+    if claim.get("claim_precision_category") == "source_conflict_or_ambiguous":
+        return str(claim.get("conservative_speech_version") or claim.get("normalized_speech_version") or fallback)
     return str(claim.get("normalized_speech_version") or claim.get("claim") or fallback)
 
 
@@ -1822,7 +1826,96 @@ def _contextual_plan_comparison_question(normalized: str) -> bool:
     return _has_plan_label(normalized) and _contains(normalized, {"versus", "vs", "difference between"})
 
 
+def _go_feature_exactness_question(normalized: str) -> bool:
+    if not re.search(r"\bgo\b", normalized):
+        return False
+    if _contains(normalized, {"does go include", "go include", "go includes", "exact go features", "go feature"}):
+        return True
+    asks_exactness = _contains(normalized, {"include", "included", "exact", "exactly", "have", "has"})
+    names_feature = _contains(
+        normalized,
+        {
+            "tasks",
+            "projects",
+            "custom gpts",
+            "custom gpt",
+            "file uploads",
+            "data analysis",
+            "image generation",
+        },
+    )
+    return asks_exactness and names_feature
+
+
+def _go_vs_plus_exact_feature_question(normalized: str) -> bool:
+    return bool(re.search(r"\bgo\b", normalized) and re.search(r"\bplus\b", normalized)) and _contains(
+        normalized,
+        {
+            "exactly what does plus have",
+            "what does plus have that go does not",
+            "what does plus have that go doesn't",
+            "go versus plus feature",
+            "go vs plus feature",
+            "plus have that go",
+            "difference between go and plus",
+            "go and plus difference",
+        },
+    )
+
+
+def _go_availability_question(normalized: str) -> bool:
+    return bool(re.search(r"\bgo\b", normalized)) and _contains(
+        normalized,
+        {
+            "available in my country",
+            "go available",
+            "availability",
+            "supported country",
+            "supported countries",
+            "my country",
+            "in my region",
+        },
+    )
+
+
+def _go_ads_question(normalized: str) -> bool:
+    return bool(re.search(r"\bgo\b", normalized)) and _contains(
+        normalized,
+        {
+            "ads",
+            "advertising",
+            "include ads",
+            "have ads",
+            "show ads",
+        },
+    )
+
+
+def _go_model_exactness_question(normalized: str) -> bool:
+    return bool(re.search(r"\bgo\b", normalized)) and _contains(
+        normalized,
+        {
+            "gpt 5 5",
+            "gpt-5.5",
+            "thinking",
+            "pro models",
+            "model access",
+            "always include",
+            "always includes",
+            "specific model",
+        },
+    )
+
+
 def _go_plan_question(normalized: str) -> bool:
+    if (
+        _go_feature_exactness_question(normalized)
+        or _go_vs_plus_exact_feature_question(normalized)
+        or _go_availability_question(normalized)
+        or _go_ads_question(normalized)
+        or _go_model_exactness_question(normalized)
+    ):
+        return True
     if not re.search(r"\bgo\b", normalized):
         return _contains(
             normalized,
@@ -1877,9 +1970,36 @@ def _go_plan_response(campaign: dict | None, normalized: str, turns: list[dict[s
     go_features = _source_speech(
         campaign,
         "go_features_001",
-        "Go adds more access to common tools like image generation, file uploads, data analysis, memory, projects, tasks, and custom GPTs.",
+        "Go gives more access than Free to common ChatGPT features, but exact current feature availability and limits should be checked on the official plans page.",
     )
     caveat = _official_price_caveat()
+    if _go_ads_question(normalized):
+        return (
+            "OpenAI's Go help note says ads may be tested in ChatGPT Go in the future. I would not turn that into a guarantee "
+            "either way; check the official help FAQ or plans page for the current ads position before deciding."
+        )
+    if _go_model_exactness_question(normalized):
+        return (
+            "I cannot guarantee a specific Go model set. Model access and limits move through the official plan table; "
+            "check the official ChatGPT plans page for current GPT-5.5 Thinking or Pro model availability before deciding."
+        )
+    if _go_feature_exactness_question(normalized):
+        return (
+            "I would not answer that as a guaranteed Go feature list. Official Go help and plan-table details can differ on exact "
+            "feature availability, so check the official ChatGPT plans page for current tasks, projects, and custom GPTs. "
+            "If those exact tools matter every day, compare Plus too."
+        )
+    if _go_vs_plus_exact_feature_question(normalized):
+        return (
+            "High level: Go is the lower-cost paid step with more access than Free; Plus is the stronger individual plan for "
+            "broader advanced access. I would not recite an exact Go-versus-Plus feature table here; use the official "
+            "ChatGPT plans page for current feature availability and limits."
+        )
+    if _go_availability_question(normalized):
+        return (
+            "For Go availability, check the official Go help article or ChatGPT plans page for your country. The current source "
+            "says Go follows ChatGPT-supported countries, but availability and billing details can change before you buy."
+        )
     if _contains(
         normalized,
         {
@@ -3690,6 +3810,12 @@ def classify_turn(
             "security guarantee",
             "guarantee legal",
             "guarantee compliance",
+            "guarantee enterprise",
+            "enterprise is compliant",
+            "compliant with our policy",
+            "compliant with my policy",
+            "satisfy our policy",
+            "satisfy my policy",
             "company compliance",
         },
     ):
@@ -3705,6 +3831,18 @@ def classify_turn(
         )
 
     if _contains(normalized, {"guarantee gpt 5 5 pro", "guarantee", "gpt 5 5"}):
+        if "go" in normalized or "model" in normalized:
+            return _frame(
+                **base,
+                semantic="public_plan_model_access_boundary",
+                response=(
+                    "I cannot guarantee a specific Go model set. Model access and limits move through the "
+                    "official plan table; check the official ChatGPT plans page for current GPT-5.5 Thinking or Pro model "
+                    "availability before deciding."
+                ),
+                dialogue_focus="claim_boundary",
+                polarity="boundary",
+            )
         return _frame(
             **base,
             semantic="public_plan_future_model_boundary",
@@ -3717,7 +3855,10 @@ def classify_turn(
         return _frame(
             **base,
             semantic="public_plan_api_boundary",
-            response="API usage is separate from ChatGPT subscriptions. Are you asking about ChatGPT itself, the API, or both?",
+            response=(
+                "API usage is separate from ChatGPT subscriptions and billed independently; use the official API pricing page "
+                "for API costs. Are you asking about ChatGPT itself, the API, or both?"
+            ),
             dialogue_focus="api_boundary",
             polarity="boundary",
         )
@@ -3931,7 +4072,10 @@ def classify_turn(
         return _frame(
             **base,
             semantic="public_plan_api_boundary",
-            response="API usage is separate from ChatGPT subscriptions. Are you asking about the ChatGPT app, API usage, or both?",
+            response=(
+                "API usage is separate from ChatGPT subscriptions and billed independently; use the official API pricing page "
+                "for API costs. Are you asking about the ChatGPT app, API usage, or both?"
+            ),
             dialogue_focus="api_boundary",
             polarity="boundary",
         )
@@ -3954,11 +4098,27 @@ def classify_turn(
             polarity="boundary",
         )
 
-    if _contains(normalized, {"legally compliant", "company legally compliant", "legal compliant"}):
+    if _contains(
+        normalized,
+        {
+            "legally compliant",
+            "company legally compliant",
+            "legal compliant",
+            "guarantee enterprise",
+            "enterprise is compliant",
+            "compliant with our policy",
+            "compliant with my policy",
+            "satisfy our policy",
+            "satisfy my policy",
+        },
+    ):
         return _frame(
             **base,
             semantic="public_plan_legal_claim_boundary",
-            response="I cannot give a legal compliance answer. For legal, security, or procurement review, use official OpenAI terms or the official contact-sales route.",
+            response=(
+                "I cannot guarantee Enterprise is compliant with your policy. For legal, security, or procurement review, "
+                "use official OpenAI terms or the official contact-sales route."
+            ),
             dialogue_focus="claim_boundary",
             polarity="boundary",
         )

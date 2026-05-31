@@ -1,0 +1,294 @@
+{
+  "account_side_effects_made": false,
+  "ambiguous_conflict_risk_claims_found": [
+    {
+      "claim_id": "go_features_001",
+      "new_category": "source_conflict_or_ambiguous",
+      "reason": "The Go help article broadly names projects, tasks, and custom GPTs while the pricing feature table marks Tasks as not included for Go.",
+      "risk": "Go feature exactness"
+    },
+    {
+      "claim_id": "go_pricing_availability_ads",
+      "new_category": "current_terms_claim_requires_caveat",
+      "reason": "Go pricing, availability, and ads language are current-term surfaces that can change and should route to official pages.",
+      "risk": "Go current terms"
+    },
+    {
+      "claim_id": "model_access_and_usage_limits",
+      "new_category": "official_route_only",
+      "reason": "Plan table model names, model access, context windows, and usage limits are fast-changing and should not be guaranteed in speech.",
+      "risk": "model and limit exactness"
+    },
+    {
+      "claim_id": "enterprise_security_compliance",
+      "new_category": "official_route_only",
+      "reason": "Business and Enterprise admin/security claims are official-source summaries, not guarantees that a buyer's policy is satisfied.",
+      "risk": "security and compliance guarantees"
+    },
+    {
+      "claim_id": "privacy_training_consumer_business",
+      "new_category": "current_terms_claim_requires_caveat",
+      "reason": "Privacy and training claims depend on plan, settings, terms, and exceptions; responses must not turn them into blanket guarantees.",
+      "risk": "privacy/training overclaim"
+    }
+  ],
+  "calendar_calls_made": false,
+  "checkpoint_id": "PHASE-4L5-OPENAI-CLAIM-PRECISION-HARDENING-001",
+  "claim_conflict_case_results": [
+    {
+      "actual_response": "I would not answer that as a guaranteed Go feature list. Official Go help and plan-table details can differ on exact feature availability, so check the official ChatGPT plans page for current tasks, projects, and custom GPTs. If those exact tools matter every day, compare Plus too.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "I would not answer that as a guaranteed Go feature list",
+        "semantic": "public_plan_go_taxonomy_answered"
+      },
+      "buyer_utterance": "Does Go include tasks, projects, and custom GPTs?",
+      "case_id": "go_feature_exactness",
+      "expected_behavior": "Conservative answer, no confident unsupported exact Go feature list if sources are ambiguous.",
+      "failures": [],
+      "pass": true
+    },
+    {
+      "actual_response": "High level: Go is the lower-cost paid step with more access than Free; Plus is the stronger individual plan for broader advanced access. I would not recite an exact Go-versus-Plus feature table here; use the official ChatGPT plans page for current feature availability and limits.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "High level: Go is the lower-cost paid step with more access than Free; Plus is the stronger individual plan for broader advanced access",
+        "semantic": "public_plan_go_taxonomy_answered"
+      },
+      "buyer_utterance": "Exactly what does Plus have that Go does not?",
+      "case_id": "go_vs_plus_feature_detail",
+      "expected_behavior": "High-level distinction, route exact feature table to official page.",
+      "failures": [],
+      "pass": true
+    },
+    {
+      "actual_response": "For Go, I would not quote a fixed price here. The official ChatGPT plans page is the source for exact current pricing, availability, and terms, because they can change. Plan-fit wise, Go sits between Free and Plus.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "For Go, I would not quote a fixed price here",
+        "semantic": "public_plan_go_taxonomy_answered"
+      },
+      "buyer_utterance": "What is the exact current Go price?",
+      "case_id": "go_pricing",
+      "expected_behavior": "Do not invent; route to official pricing page.",
+      "failures": [],
+      "pass": true
+    },
+    {
+      "actual_response": "For Go availability, check the official Go help article or ChatGPT plans page for your country. The current source says Go follows ChatGPT-supported countries, but availability and billing details can change before you buy.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "For Go availability, check the official Go help article or ChatGPT plans page for your country",
+        "semantic": "public_plan_go_taxonomy_answered"
+      },
+      "buyer_utterance": "Is Go available in my country?",
+      "case_id": "go_availability",
+      "expected_behavior": "Source-bounded; route current availability to official help/pricing.",
+      "failures": [],
+      "pass": true
+    },
+    {
+      "actual_response": "OpenAI's Go help note says ads may be tested in ChatGPT Go in the future. I would not turn that into a guarantee either way; check the official help FAQ or plans page for the current ads position before deciding.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "OpenAI's Go help note says ads may be tested in ChatGPT Go in the future",
+        "semantic": "public_plan_go_taxonomy_answered"
+      },
+      "buyer_utterance": "Will Go include ads?",
+      "case_id": "go_ads",
+      "expected_behavior": "Cautious wording based on official note; do not overstate.",
+      "failures": [],
+      "pass": true
+    },
+    {
+      "actual_response": "API usage is separate from ChatGPT subscriptions and billed independently; use the official API pricing page for API costs. Are you asking about ChatGPT itself, the API, or both?",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "api_boundary",
+        "response_summary": "API usage is separate from ChatGPT subscriptions and billed independently; use the official API pricing page for API costs",
+        "semantic": "public_plan_api_boundary"
+      },
+      "buyer_utterance": "Does Go include API usage?",
+      "case_id": "api_boundary",
+      "expected_behavior": "API separate; route API pricing separately.",
+      "failures": [],
+      "pass": true
+    },
+    {
+      "actual_response": "I cannot give a legal or security compliance guarantee. Use official OpenAI terms and, for company security or procurement review, the Enterprise contact-sales route.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "claim_boundary",
+        "response_summary": "I cannot give a legal or security compliance guarantee",
+        "semantic": "public_plan_legal_security_claim_boundary"
+      },
+      "buyer_utterance": "Can you guarantee Enterprise is compliant with our policy?",
+      "case_id": "enterprise_security_exactness",
+      "expected_behavior": "No guarantee; contact-sales/security review route.",
+      "failures": [],
+      "pass": true
+    },
+    {
+      "actual_response": "I cannot guarantee a specific Go model set. Model access and limits move through the official plan table; check the official ChatGPT plans page for current GPT-5.5 Thinking or Pro model availability before deciding.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "I cannot guarantee a specific Go model set",
+        "semantic": "public_plan_go_taxonomy_answered"
+      },
+      "buyer_utterance": "Does Go always include GPT-5.5 Thinking and Pro models?",
+      "case_id": "model_version_exactness",
+      "expected_behavior": "Avoid unsupported exact guarantee; route to official plan table.",
+      "failures": [],
+      "pass": true
+    }
+  ],
+  "claim_conflict_pass_fail_count": {
+    "fail": 0,
+    "pass": 8
+  },
+  "claim_precision_categories": [
+    "stable_source_claim",
+    "current_terms_claim_requires_caveat",
+    "source_conflict_or_ambiguous",
+    "unsupported_do_not_say",
+    "official_route_only"
+  ],
+  "claim_precision_metadata_status": {
+    "fixture_categories_present": [
+      "current_terms_claim_requires_caveat",
+      "official_route_only",
+      "source_conflict_or_ambiguous",
+      "stable_source_claim",
+      "unsupported_do_not_say"
+    ],
+    "fixture_claims_missing_precision_category": [],
+    "manifest_categories_present": [
+      "current_terms_claim_requires_caveat",
+      "official_route_only",
+      "source_conflict_or_ambiguous",
+      "stable_source_claim",
+      "unsupported_do_not_say"
+    ],
+    "manifest_claim_precision_category_counts": {
+      "current_terms_claim_requires_caveat": 20,
+      "official_route_only": 3,
+      "source_conflict_or_ambiguous": 1,
+      "stable_source_claim": 9
+    },
+    "manifest_claims_missing_precision_category": [],
+    "source_conflict_or_ambiguous_claim_ids": [
+      "go_features_001"
+    ]
+  },
+  "claims_changed_or_downgraded": [
+    "go_features_001",
+    "pricing_plan_set_001",
+    "plus_features_001",
+    "pro_features_001",
+    "pro_tiers_100_200_001",
+    "business_standard_seat_price_001",
+    "business_standard_seat_includes_codex_001",
+    "business_no_training_workspace_data_001",
+    "enterprise_overview_001",
+    "enterprise_security_admin_features_001",
+    "consumer_data_controls_opt_out_001",
+    "temporary_chat_training_boundary_001",
+    "enterprise_privacy_no_training_default_001",
+    "enterprise_privacy_controls_001",
+    "limits_vary_by_plan_model_001"
+  ],
+  "crm_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "email_calls_made": false,
+  "live_readiness_claimed": false,
+  "live_selector_control_recommended": false,
+  "local_llm_calls_made": false,
+  "model_calls_made": false,
+  "no_live_readiness_confirmation": true,
+  "no_side_effect_confirmation": {
+    "live_readiness_claimed": false,
+    "live_selector_control_recommended": false,
+    "provider_model_tts_crm_email_calendar_payment_account_side_effect_path_enabled": false,
+    "raw_private_transcript_or_audio_added_to_public_evidence": false,
+    "response_replacement_performed": false,
+    "selector_control_allowed": false
+  },
+  "official_sources_inspected": [
+    {
+      "source_type": "official_pricing_page",
+      "url": "https://chatgpt.com/pricing/",
+      "use": "current plan table, Go feature rows, ads note, model/limit rows, Business/Enterprise grouping"
+    },
+    {
+      "source_type": "official_help_article",
+      "url": "https://help.openai.com/en/articles/11989085-what-is-chatgpt-go",
+      "use": "Go positioning, Go feature wording, availability, ads note, API boundary, pricing caveat"
+    },
+    {
+      "source_type": "official_help_article",
+      "url": "https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus",
+      "use": "Plus price, API boundary, limits caveat, privacy-training caveat"
+    },
+    {
+      "source_type": "official_help_article",
+      "url": "https://help.openai.com/en/articles/9793128-what-is-chatgpt-pro",
+      "use": "Pro tier pricing, usage multipliers, upgrade path, promo caveats"
+    },
+    {
+      "source_type": "official_help_article",
+      "url": "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+      "use": "Business seat types, pricing caveats, API boundary, workspace data caveat"
+    },
+    {
+      "source_type": "official_help_article",
+      "url": "https://help.openai.com/en/articles/8265053-what-is-chatgpt-enterprise",
+      "use": "Enterprise admin/security positioning, seat-type limits, contact-sales/API boundaries"
+    },
+    {
+      "source_type": "official_help_article",
+      "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+      "use": "consumer training opt-out and Temporary Chat caveats"
+    },
+    {
+      "source_type": "official_privacy_page",
+      "url": "https://openai.com/enterprise-privacy/",
+      "use": "business-data ownership/control and security-control wording"
+    }
+  ],
+  "ollama_calls_made": false,
+  "openai_api_calls_made": false,
+  "payment_calls_made": false,
+  "phase4l2_regression_status": "pass",
+  "phase4l2_single_turn_regression_count": 0,
+  "phase4l3_multi_turn_fail_count": 0,
+  "phase4l3_regression_status": "pass",
+  "phase4l3_single_turn_4l2_regression_count": 0,
+  "phase4l4_go_specific_fail_count": 0,
+  "phase4l4_regression_status": "pass",
+  "primary_benchmark_campaign": "public OpenAI ChatGPT plans",
+  "provider_calls_made": false,
+  "raw_private_transcript_or_audio_added_to_public_evidence": false,
+  "response_changes_made": [
+    "Go overview no longer lists tasks, projects, custom GPTs, images, files, data analysis, and memory as a confident combined buyer-facing list.",
+    "Go feature-exact questions use conservative wording and route exact feature availability to the official ChatGPT plans page.",
+    "Go vs Plus feature-difference questions give a high-level distinction and route exact plan-table differences to official sources.",
+    "Exact Go pricing, terms, model access, limits, and regional availability route to official OpenAI pages.",
+    "Go ads answers use cautious future-testing wording and avoid guarantees.",
+    "Enterprise/security answers refuse compliance guarantees and route to official sales/security review."
+  ],
+  "response_replacement_performed": false,
+  "routesignal_contamination_count": 0,
+  "routesignal_contamination_hits": [],
+  "selector_control_allowed": false,
+  "selector_response_replacement_status": "blocked",
+  "status": "pass",
+  "tts_calls_made": false,
+  "ultravox_calls_made": false,
+  "unsupported_exact_response_hits": []
+}

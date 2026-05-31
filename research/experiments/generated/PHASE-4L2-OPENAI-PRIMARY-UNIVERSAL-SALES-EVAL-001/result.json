@@ -48,12 +48,12 @@
       ]
     },
     {
-      "actual_response": "API usage is separate from ChatGPT subscriptions. Are you asking about ChatGPT itself, the API, or both?",
+      "actual_response": "API usage is separate from ChatGPT subscriptions and billed independently; use the official API pricing page for API costs. Are you asking about ChatGPT itself, the API, or both?",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "unknown",
         "dialogue_focus": "api_boundary",
-        "response_summary": "API usage is separate from ChatGPT subscriptions",
+        "response_summary": "API usage is separate from ChatGPT subscriptions and billed independently; use the official API pricing page for API costs",
         "semantic": "public_plan_api_boundary"
       },
       "areas": [
@@ -450,7 +450,7 @@
     "openai_path_source_hits": [
       {
         "classification": "input_boundary_trigger_not_response_copy",
-        "line": 3611,
+        "line": 3731,
         "line_excerpt": "if _contains(normalized, {\"route signal\", \"routesignal\", \"insurance coverage\", \"telecom\", \"home service\"}):",
         "path": "runtime/campaigns/public_openai_chatgpt_plans_dialogue.py",
         "terms": [

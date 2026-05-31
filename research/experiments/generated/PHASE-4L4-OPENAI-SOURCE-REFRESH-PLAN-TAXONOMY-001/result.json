@@ -61,11 +61,11 @@
       ]
     },
     {
-      "actual_response": "Go is positioned as a lower-cost paid plan that gives more access to popular ChatGPT features than Free. Go is mainly for more access to common tools such as image generation, file uploads, data analysis, memory, projects, tasks, and custom GPTs. It is an individual step between Free and Plus; Business and Enterprise are separate team or organization routes. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "actual_response": "Go is positioned as a lower-cost paid plan that gives more access than Free to common ChatGPT features. Go gives more access than Free to common ChatGPT features, but exact current feature availability and limits should be checked on the official plans page. It is an individual step between Free and Plus; Business and Enterprise are separate team or organization routes. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "dialogue_focus": "plan_fit",
-        "response_summary": "Go is positioned as a lower-cost paid plan that gives more access to popular ChatGPT features than Free",
+        "response_summary": "Go is positioned as a lower-cost paid plan that gives more access than Free to common ChatGPT features",
         "semantic": "public_plan_go_taxonomy_answered"
       },
       "buyer_utterance": "What is Go?",

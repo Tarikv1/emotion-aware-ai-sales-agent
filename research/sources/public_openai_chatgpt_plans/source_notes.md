@@ -4,9 +4,9 @@ Checkpoint: `PUBLIC-OPENAI-SOURCE-BUNDLE-001`
 
 Retrieved: `2026-05-24T18:18:00Z`
 
-Last verified: `2026-05-31T01:56:31Z`
+Last verified: `2026-05-31T02:25:00Z`
 
-Last verification checkpoint: `PHASE-4L4-OPENAI-SOURCE-REFRESH-PLAN-TAXONOMY-001`
+Last verification checkpoint: `PHASE-4L5-OPENAI-CLAIM-PRECISION-HARDENING-001`
 
 Scope: official public OpenAI, ChatGPT, and OpenAI Help Center sources only. No non-OpenAI sources were used.
 
@@ -29,5 +29,13 @@ Scope: official public OpenAI, ChatGPT, and OpenAI Help Center sources only. No 
 - Short quote excerpts are included only where useful for traceability.
 - Price fields are conservative. If a visible source page did not expose a price clearly to the parser, the campaign fixture records `source_visible_but_parser_blank` or `requires_manual_review` instead of inventing a price.
 - Phase 4L4 rechecked the official ChatGPT pricing page and ChatGPT Go help article. The captured taxonomy remains individual `Free`, `Go`, `Plus`, `Pro` and business/enterprise `Business`, `Enterprise`, with Go treated as the lower-cost paid individual step between Free and Plus.
+- Phase 4L5 added claim precision categories for buyer-facing speech:
+  - `stable_source_claim`
+  - `current_terms_claim_requires_caveat`
+  - `source_conflict_or_ambiguous`
+  - `unsupported_do_not_say`
+  - `official_route_only`
+- Phase 4L5 downgraded exact Go feature-list speech to `source_conflict_or_ambiguous`. The Go help article broadly names projects, tasks, and custom GPTs, while the pricing-page feature table can show more granular or different feature states such as Tasks availability. The safe spoken wording is: "Go gives more access than Free to common ChatGPT features, but exact current feature availability and limits should be checked on the official plans page."
+- Exact pricing, terms, feature availability, model access, usage limits, regional availability, ads status, privacy/training terms, and Business/Enterprise security or compliance specifics require an official-page or contact-sales route.
 - This is an internal public-data simulation. It is not an official OpenAI sales agent and must not claim OpenAI affiliation or authorization.
 - API usage is treated as separate from ChatGPT subscriptions where the official Plus, Business, or Enterprise sources support that boundary.

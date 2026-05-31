@@ -45,10 +45,10 @@
 
 - Buyer utterance: What is Go?
 - Expected behavior: Answer that Go is a lower-cost paid individual step with expanded access beyond Free.
-- Actual semantic/action/response summary: semantic=public_plan_go_taxonomy_answered; action=continue_with_session_policy; focus=plan_fit; summary=Go is positioned as a lower-cost paid plan that gives more access to popular ChatGPT features than Free
+- Actual semantic/action/response summary: semantic=public_plan_go_taxonomy_answered; action=continue_with_session_policy; focus=plan_fit; summary=Go is positioned as a lower-cost paid plan that gives more access than Free to common ChatGPT features
 - Pass: true
 - Failures: []
-- Actual response: Go is positioned as a lower-cost paid plan that gives more access to popular ChatGPT features than Free. Go is mainly for more access to common tools such as image generation, file uploads, data analysis, memory, projects, tasks, and custom GPTs. It is an individual step between Free and Plus; Business and Enterprise are separate team or organization routes. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.
+- Actual response: Go is positioned as a lower-cost paid plan that gives more access than Free to common ChatGPT features. Go gives more access than Free to common ChatGPT features, but exact current feature availability and limits should be checked on the official plans page. It is an individual step between Free and Plus; Business and Enterprise are separate team or organization routes. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.
 
 ### light_user_free_or_go
 
