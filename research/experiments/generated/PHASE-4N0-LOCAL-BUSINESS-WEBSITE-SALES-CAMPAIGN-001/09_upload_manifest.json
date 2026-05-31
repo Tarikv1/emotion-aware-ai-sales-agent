@@ -1,0 +1,106 @@
+[
+  {
+    "filename": "result.json",
+    "purpose": "Machine-readable checkpoint outcome and safety flags.",
+    "recommended_elevenlabs_usage_mode": "not_uploaded_reference_only",
+    "safe_for_manual_upload": false,
+    "side_effects_enabled": false,
+    "upload_target": "manual_eval_reference"
+  },
+  {
+    "filename": "report.md",
+    "purpose": "Human-readable checkpoint report.",
+    "recommended_elevenlabs_usage_mode": "not_uploaded_reference_only",
+    "safe_for_manual_upload": false,
+    "side_effects_enabled": false,
+    "upload_target": "manual_eval_reference"
+  },
+  {
+    "filename": "00_campaign_summary.md",
+    "purpose": "Campaign summary and first-conversion goal.",
+    "recommended_elevenlabs_usage_mode": "knowledge_base_or_reference",
+    "safe_for_manual_upload": true,
+    "side_effects_enabled": false,
+    "upload_target": "knowledge_base_file"
+  },
+  {
+    "filename": "01_agent_system_prompt.md",
+    "purpose": "System prompt for the ElevenLabs Agent.",
+    "recommended_elevenlabs_usage_mode": "system_prompt",
+    "safe_for_manual_upload": true,
+    "side_effects_enabled": false,
+    "upload_target": "system_prompt"
+  },
+  {
+    "filename": "02_website_offer_and_packages.md",
+    "purpose": "Offer framing, package tiers, and internal test pricing disclaimer.",
+    "recommended_elevenlabs_usage_mode": "knowledge_base_file",
+    "safe_for_manual_upload": true,
+    "side_effects_enabled": false,
+    "upload_target": "knowledge_base_file"
+  },
+  {
+    "filename": "03_vertical_playbooks.md",
+    "purpose": "Vertical-aware pain, value, questions, mockup angles, objections, and closes.",
+    "recommended_elevenlabs_usage_mode": "knowledge_base_file",
+    "safe_for_manual_upload": true,
+    "side_effects_enabled": false,
+    "upload_target": "knowledge_base_file"
+  },
+  {
+    "filename": "04_objection_handling_playbook.md",
+    "purpose": "Objection responses and close lines.",
+    "recommended_elevenlabs_usage_mode": "knowledge_base_file",
+    "safe_for_manual_upload": true,
+    "side_effects_enabled": false,
+    "upload_target": "knowledge_base_file"
+  },
+  {
+    "filename": "05_discovery_and_qualification.md",
+    "purpose": "Discovery questions, pain signals, qualification, and disqualification.",
+    "recommended_elevenlabs_usage_mode": "knowledge_base_file",
+    "safe_for_manual_upload": true,
+    "side_effects_enabled": false,
+    "upload_target": "knowledge_base_file"
+  },
+  {
+    "filename": "06_close_paths.md",
+    "purpose": "Preferred, secondary, tertiary, review/demo, follow-up, and disqualification closes.",
+    "recommended_elevenlabs_usage_mode": "knowledge_base_file",
+    "safe_for_manual_upload": true,
+    "side_effects_enabled": false,
+    "upload_target": "knowledge_base_file"
+  },
+  {
+    "filename": "07_compliance_and_calling_boundaries.md",
+    "purpose": "Internal test, calling, provider, identity, claims, stop request, and side-effect boundaries.",
+    "recommended_elevenlabs_usage_mode": "knowledge_base_file",
+    "safe_for_manual_upload": true,
+    "side_effects_enabled": false,
+    "upload_target": "knowledge_base_file"
+  },
+  {
+    "filename": "08_manual_eval_script.md",
+    "purpose": "Manual evaluation cases for dashboard testing.",
+    "recommended_elevenlabs_usage_mode": "not_uploaded_reference_only",
+    "safe_for_manual_upload": false,
+    "side_effects_enabled": false,
+    "upload_target": "manual_eval_reference"
+  },
+  {
+    "filename": "09_upload_manifest.json",
+    "purpose": "Upload manifest and safety map.",
+    "recommended_elevenlabs_usage_mode": "not_uploaded_reference_only",
+    "safe_for_manual_upload": false,
+    "side_effects_enabled": false,
+    "upload_target": "manual_eval_reference"
+  },
+  {
+    "filename": "10_tests_to_create_in_elevenlabs.md",
+    "purpose": "Manual tests to create in ElevenLabs after upload.",
+    "recommended_elevenlabs_usage_mode": "not_uploaded_reference_only",
+    "safe_for_manual_upload": false,
+    "side_effects_enabled": false,
+    "upload_target": "manual_eval_reference"
+  }
+]
