@@ -927,12 +927,12 @@ def _orientation_response(normalized: str) -> tuple[str, str]:
     if sub_intent == "affiliation_boundary":
         return (
             sub_intent,
-            "I'm not calling from OpenAI. This is a public-data simulation using OpenAI's public plan information. I can summarize the public plan options, but check the official pages before upgrading.",
+            "Good question. I'm not calling from OpenAI; I'm using public OpenAI plan and help information to help you decide the fit. The official pages are the final source. Are you choosing for yourself or a team?",
         )
     if sub_intent == "source_disclosure":
         return (
             sub_intent,
-            "I'm not calling from OpenAI. This is based on public OpenAI plan information. I can summarize the public plan options, but check the official pages before upgrading.",
+            "I'm not calling from OpenAI; the source is public OpenAI plan and help information. Use the official pages for final terms. Are you deciding for yourself, a team, or procurement and security review?",
         )
     if sub_intent == "subscription_model_question":
         return sub_intent, "Yes - this is about ChatGPT subscription plans, not a one-off product purchase."
@@ -960,9 +960,9 @@ def _orientation_response(normalized: str) -> tuple[str, str]:
         if {"Free", "Plus", "Pro", "Business", "Enterprise"}.issubset(mentions):
             return (
                 sub_intent,
-                "They are subscription options: Free is no-cost, Plus and Pro are individual plans, "
-                "Business is for teams, and Enterprise is for larger organizations. "
-                "Are you looking for personal use, team use, or enterprise controls?",
+                "Simple version: Free is the basic option, Plus and Pro are individual upgrades, "
+                "Business is for teams, and Enterprise is for larger organizations with admin or security needs. "
+                "Are you deciding as an individual, a team, or for procurement and security review?",
             )
         return (
             sub_intent,
@@ -1840,10 +1840,9 @@ def _plan_category_explanation_response(
             "Do you want personal use, team use, or just the basic explanation?"
         )
     return (
-        "This is about ChatGPT subscription plans, using OpenAI's public plan information. "
-        "Free is the no-cost option, Plus and Pro are individual paid plans, "
-        "Business is for teams, and Enterprise is for larger organizations. "
-        "Are you looking for personal use, team use, or just trying to understand the options?"
+        "Simple version: Free is the basic option, Plus and Pro are individual upgrades, "
+        "Business is for teams, and Enterprise is for larger organizations with admin or security needs. "
+        "Are you deciding as an individual, a team, or for procurement and security review?"
     )
 
 
@@ -2507,6 +2506,12 @@ def _privacy_or_data_boundary_question(normalized: str) -> bool:
             "do you keep transcripts",
             "do you keep my data",
             "what happens to my data",
+            "data privacy",
+            "privacy and security",
+            "security and compliance",
+            "privacy, security",
+            "data used for training",
+            "used for training",
         },
     )
 
@@ -3322,8 +3327,8 @@ def classify_turn(
             **base,
             semantic="public_plan_affiliation_boundary",
             response=(
-                "I'm not calling from OpenAI. This is a public-data simulation using OpenAI's public pricing and help pages. "
-                "I can summarize those public pages, but check them before upgrading. What are you trying to decide about ChatGPT?"
+                "Good question. I'm not calling from OpenAI; I'm using public OpenAI plan and help information to help you decide the fit. "
+                "The official pages are the final source. Are you choosing for yourself or a team?"
             ),
             dialogue_focus="trust",
             polarity="boundary",
@@ -3441,12 +3446,34 @@ def classify_turn(
         )
 
     if _privacy_or_data_boundary_question(normalized):
+        if _contains(
+            normalized,
+            {
+                "do you store raw call transcripts",
+                "store raw call transcripts",
+                "store call transcripts",
+                "store raw transcripts",
+                "do you keep transcripts",
+            },
+        ):
+            return _frame(
+                **base,
+                semantic="public_plan_privacy_claim_boundary",
+                response=(
+                    "Fair question. I do not store raw call transcripts in this public plan-fit demo. "
+                    "For ChatGPT data settings, use OpenAI's official privacy and plan information. "
+                    "Is your main issue personal privacy or company plan fit?"
+                ),
+                dialogue_focus="claim_boundary",
+                polarity="boundary",
+            )
         return _frame(
             **base,
             semantic="public_plan_privacy_claim_boundary",
             response=(
-                "Fair question. I do not store raw call transcripts here, and I cannot speak for every ChatGPT account setting. "
-                "For ChatGPT privacy controls, use OpenAI's official privacy and plan information. Is privacy the main plan fit issue?"
+                "Fair question. I can only answer from public OpenAI privacy, plan, and terms information; "
+                "I cannot give a legal or security guarantee. If this is a company review, use the Enterprise/contact-sales route. "
+                "Is this an individual privacy question or a company review?"
             ),
             dialogue_focus="claim_boundary",
             polarity="boundary",
@@ -3469,6 +3496,29 @@ def classify_turn(
             **base,
             semantic="public_plan_discount_boundary",
             response="I cannot invent discounts. The safe reference is the official ChatGPT plans page; if Free covers your use, Free may be enough.",
+            dialogue_focus="claim_boundary",
+            polarity="boundary",
+        )
+
+    if _contains(
+        normalized,
+        {
+            "legal compliance",
+            "legally compliant",
+            "compliance guarantee",
+            "security guarantee",
+            "guarantee legal",
+            "guarantee compliance",
+            "company compliance",
+        },
+    ):
+        return _frame(
+            **base,
+            semantic="public_plan_legal_security_claim_boundary",
+            response=(
+                "I cannot give a legal or security compliance guarantee. Use official OpenAI terms and, "
+                "for company security or procurement review, the Enterprise contact-sales route."
+            ),
             dialogue_focus="claim_boundary",
             polarity="boundary",
         )
@@ -3615,6 +3665,19 @@ def classify_turn(
             response=_price_response(campaign, normalized, turns),
             dialogue_focus="price",
             polarity="answer",
+        )
+
+    if _plus_sufficiency_question(normalized) and _team_context(normalized, turns):
+        return _frame(
+            **base,
+            semantic="public_plan_team_individual_plan_boundary",
+            response=(
+                "For that team/admin path, individual Plus or Pro is not the clean answer. Compare Business for a self-serve team workspace "
+                "with Enterprise/contact sales for SSO, SCIM, procurement, or security review. I cannot book or contact sales for you here."
+            ),
+            target_gap="team_use_case",
+            dialogue_focus="team_plan_fit",
+            polarity="recommendation",
         )
 
     if _plus_sufficiency_question(normalized):
@@ -3846,6 +3909,40 @@ def classify_turn(
             buyer_state="current_chatgpt_or_other_ai_unknown",
             conjunction_relation=_conjunction_relation(normalized),
             response_strategy="current_chatgpt_or_other_ai_unknown",
+        )
+
+    prior_relation = _conjunction_relation(_prior_customer_text(turns))
+    if prior_relation in {"and", "both"} and _known_use_case(normalized, turns):
+        return _frame(
+            **base,
+            semantic="public_plan_current_chatgpt_and_other_gap_progressed",
+            response=(
+                "Since you use ChatGPT and another AI tool, sell the comparison only against the gap you named: "
+                "coding workflow and usage limits. Compare Plus as the lower-cost test, and Pro if limits or headroom matter."
+            ),
+            target_gap="alternative_tool_gap",
+            dialogue_focus="competitive_objection",
+            polarity="progress",
+            buyer_state="current_chatgpt_and_other_ai_user",
+            conjunction_relation="and" if prior_relation == "and" else "both",
+        )
+
+    if prior_relation == "either_or" and _contains(
+        normalized,
+        {"how should we decide", "what should we compare", "which one", "how do we decide"},
+    ):
+        return _frame(
+            **base,
+            semantic="public_plan_current_chatgpt_or_other_decision_progressed",
+            response=(
+                "First confirm which one the team uses: ChatGPT or another AI tool. If it is ChatGPT for a team, "
+                "compare Business or Enterprise; if another tool already covers the job, only compare ChatGPT against a real gap."
+            ),
+            target_gap="alternative_tool_gap",
+            dialogue_focus="competitive_objection",
+            polarity="progress",
+            buyer_state="current_chatgpt_or_other_ai_unknown",
+            conjunction_relation="either_or",
         )
 
     if _current_chatgpt_user(normalized) and not _known_use_case(normalized, turns):

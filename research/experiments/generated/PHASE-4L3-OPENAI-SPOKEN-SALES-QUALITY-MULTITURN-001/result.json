@@ -1,0 +1,711 @@
+{
+  "account_side_effects_made": false,
+  "and_or_fidelity_status": "pass",
+  "before_after_weak_example_status": {
+    "plan_category_explanation": {
+      "after_response": "Simple version: Free is the basic option, Plus and Pro are individual upgrades, Business is for teams, and Enterprise is for larger organizations with admin or security needs. Are you deciding as an individual, a team, or for procurement and security review?",
+      "after_status": "pass",
+      "before_response": "They are subscription options: Free is no-cost, Plus and Pro are individual plans, Business is for teams, and Enterprise is for larger organizations. Are you looking for personal use, team use, or enterprise controls?",
+      "before_status": "accurate_but_faq_like",
+      "failures": []
+    },
+    "source_affiliation_boundary": {
+      "after_response": "Good question. I'm not calling from OpenAI; I'm using public OpenAI plan and help information to help you decide the fit. The official pages are the final source. Are you choosing for yourself or a team?",
+      "after_status": "pass",
+      "before_response": "I'm not calling from OpenAI. This is a public-data simulation using OpenAI's public pricing and help pages. I can summarize those public pages, but check them before upgrading. What are you trying to decide about ChatGPT?",
+      "before_status": "safe_but_boundary_heavy",
+      "failures": []
+    }
+  },
+  "calendar_calls_made": false,
+  "changed_source_files": [
+    "runtime/campaigns/public_openai_chatgpt_plans_dialogue.py",
+    "scripts/validate_phase_4l3_openai_spoken_sales_quality_multiturn_001.py"
+  ],
+  "checkpoint_id": "PHASE-4L3-OPENAI-SPOKEN-SALES-QUALITY-MULTITURN-001",
+  "crm_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "email_calls_made": false,
+  "live_readiness_claimed": false,
+  "live_selector_control_recommended": false,
+  "local_llm_calls_made": false,
+  "model_calls_made": false,
+  "multi_turn_4l3_case_count": 10,
+  "multi_turn_4l3_status": "pass",
+  "multi_turn_case_matrix": [
+    {
+      "actual_response": "Yes - for individual plans, use the official ChatGPT plans page or profile upgrade flow. Based on what you said - coding/writing and hitting limits - compare Pro first if you want fewer limits; choose Plus if you want the lower-cost starting point.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "self_serve_close",
+        "response_summary": "Yes - for individual plans, use the official ChatGPT plans page or profile upgrade flow",
+        "semantic": "public_plan_self_serve_next_step_answered"
+      },
+      "case_id": "heavy_individual_close_path",
+      "expected_sales_progression": "Recommend Pro over Plus from the stated limit pain, avoid restarting discovery, and close to the official self-serve plan/profile path without account or payment side effects.",
+      "failures": [],
+      "pass": true,
+      "responses": [
+        "Got it - that usage pain makes Pro the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "Got it - that usage pain makes Pro the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+        "Yes - for individual plans, use the official ChatGPT plans page or profile upgrade flow. Based on what you said - coding/writing and hitting limits - compare Pro first if you want fewer limits; choose Plus if you want the lower-cost starting point."
+      ],
+      "scenario": "heavy_individual_close_path",
+      "turns": [
+        "I code and write heavily every day and keep hitting limits.",
+        "What should I compare?",
+        "Pro sounds right. How do I sign up?"
+      ]
+    },
+    {
+      "actual_response": "No problem. Then I would keep it simple: Free may be enough for light use; paid plans are mainly worth comparing if limits, tools, or team needs matter. I would not push a paid plan; the next action is stay free or stop here.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "low_intent",
+        "response_summary": "No problem",
+        "semantic": "public_plan_low_unclear_intent"
+      },
+      "case_id": "light_no_fit_path",
+      "expected_sales_progression": "Disqualify paid pressure, confirm the Free/stay-free path, and stop with low pressure.",
+      "failures": [],
+      "pass": true,
+      "responses": [
+        "If your use is light or basic, Free may be enough. I would only compare paid plans if limits, tools, or team needs matter. What would you mainly use ChatGPT for?",
+        "",
+        "No problem. Then I would keep it simple: Free may be enough for light use; paid plans are mainly worth comparing if limits, tools, or team needs matter. I would not push a paid plan; the next action is stay free or stop here."
+      ],
+      "scenario": "light_no_fit_path",
+      "turns": [
+        "I only use ChatGPT once in a while for light personal tasks.",
+        "Free seems enough.",
+        "I do not want to pay."
+      ]
+    },
+    {
+      "actual_response": "For that team/admin path, individual Plus or Pro is not the clean answer. Compare Business for a self-serve team workspace with Enterprise/contact sales for SSO, SCIM, procurement, or security review. I cannot book or contact sales for you here.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "team_plan_fit",
+        "response_summary": "For that team/admin path, individual Plus or Pro is not the clean answer",
+        "semantic": "public_plan_team_individual_plan_boundary"
+      },
+      "case_id": "team_admin_enterprise_path",
+      "expected_sales_progression": "Avoid individual Plus/Pro pressure, keep Business/Enterprise as the comparison, and route procurement or security needs to Enterprise/contact sales without fake scheduling.",
+      "failures": [],
+      "pass": true,
+      "responses": [
+        "For team use, Business is the self-serve workspace route and Enterprise is for organization-level controls. Are you looking for basic team workspace controls, or Enterprise requirements like SSO, SCIM, procurement, or security review?",
+        "For team use, Business is the self-serve workspace route and Enterprise is for organization-level controls. Are you looking for basic team workspace controls, or Enterprise requirements like SSO, SCIM, procurement, or security review?",
+        "For that team/admin path, individual Plus or Pro is not the clean answer. Compare Business for a self-serve team workspace with Enterprise/contact sales for SSO, SCIM, procurement, or security review. I cannot book or contact sales for you here."
+      ],
+      "scenario": "team_admin_enterprise_path",
+      "turns": [
+        "This is for a team.",
+        "We need admin controls, security review, procurement, SSO, and SCIM.",
+        "Would Plus or Pro be enough?"
+      ]
+    },
+    {
+      "actual_response": "I cannot give a legal or security compliance guarantee. Use official OpenAI terms and, for company security or procurement review, the Enterprise contact-sales route.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "claim_boundary",
+        "response_summary": "I cannot give a legal or security compliance guarantee",
+        "semantic": "public_plan_legal_security_claim_boundary"
+      },
+      "case_id": "privacy_security_boundary_path",
+      "expected_sales_progression": "Answer from source-bounded official terms only, do not give legal/security guarantees, and route company review to official terms or Enterprise/contact-sales path.",
+      "failures": [],
+      "pass": true,
+      "responses": [
+        "Fair question. I can only answer from public OpenAI privacy, plan, and terms information; I cannot give a legal or security guarantee. If this is a company review, use the Enterprise/contact-sales route. Is this an individual privacy question or a company review?",
+        "I cannot give a legal or security compliance guarantee. Use official OpenAI terms and, for company security or procurement review, the Enterprise contact-sales route."
+      ],
+      "scenario": "privacy_security_boundary_path",
+      "turns": [
+        "What about data privacy, security, and compliance?",
+        "Can you guarantee legal compliance for our company?"
+      ]
+    },
+    {
+      "actual_response": "Since you use ChatGPT and another AI tool, sell the comparison only against the gap you named: coding workflow and usage limits. Compare Plus as the lower-cost test, and Pro if limits or headroom matter.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "and",
+        "dialogue_focus": "competitive_objection",
+        "response_summary": "Since you use ChatGPT and another AI tool, sell the comparison only against the gap you named: coding workflow and usage limits",
+        "semantic": "public_plan_current_chatgpt_and_other_gap_progressed"
+      },
+      "case_id": "competitor_gap_progression_path",
+      "expected_sales_progression": "Avoid invented superiority, sell only against the named gap, then progress to Plus/Pro plan fit.",
+      "failures": [],
+      "pass": true,
+      "responses": [
+        "A switch only makes sense if ChatGPT gives you something your current setup does not: stronger coding workflow, file handling, research, voice/images, or team controls. What is the one area where your current tool feels weakest?",
+        "A switch only makes sense if ChatGPT covers something your current tool does not: coding workflow, files, research, voice/images, team admin, or privacy controls. What is the one area where your current tool feels weakest?",
+        "Since you use ChatGPT and another AI tool, sell the comparison only against the gap you named: coding workflow and usage limits. Compare Plus as the lower-cost test, and Pro if limits or headroom matter."
+      ],
+      "scenario": "competitor_current_tool_path",
+      "turns": [
+        "I already use Claude, Copilot, and Gemini.",
+        "Why add ChatGPT?",
+        "The gap is file analysis and I keep hitting limits when writing and coding."
+      ]
+    },
+    {
+      "actual_response": "No problem. Then I would keep it simple: Free may be enough for light use; paid plans are mainly worth comparing if limits, tools, or team needs matter. I would not push a paid plan; the next action is stay free or stop here.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "low_intent",
+        "response_summary": "No problem",
+        "semantic": "public_plan_low_unclear_intent"
+      },
+      "case_id": "competitor_no_fit_path",
+      "expected_sales_progression": "Disqualify paid pressure when the buyer says the current tool covers the job.",
+      "failures": [],
+      "pass": true,
+      "responses": [
+        "A switch only makes sense if ChatGPT gives you something your current setup does not: stronger coding workflow, file handling, research, voice/images, or team controls. What is the one area where your current tool feels weakest?",
+        "A switch only makes sense if ChatGPT covers something your current tool does not: coding workflow, files, research, voice/images, team admin, or privacy controls. What is the one area where your current tool feels weakest?",
+        "No problem. Then I would keep it simple: Free may be enough for light use; paid plans are mainly worth comparing if limits, tools, or team needs matter. I would not push a paid plan; the next action is stay free or stop here."
+      ],
+      "scenario": "competitor_current_tool_path",
+      "turns": [
+        "I already use Claude and Copilot.",
+        "Why add ChatGPT?",
+        "Actually my current tool covers everything and I do not want to pay."
+      ]
+    },
+    {
+      "actual_response": "Since you use ChatGPT and another AI tool, sell the comparison only against the gap you named: coding workflow and usage limits. Compare Plus as the lower-cost test, and Pro if limits or headroom matter.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "and",
+        "dialogue_focus": "competitive_objection",
+        "response_summary": "Since you use ChatGPT and another AI tool, sell the comparison only against the gap you named: coding workflow and usage limits",
+        "semantic": "public_plan_current_chatgpt_and_other_gap_progressed"
+      },
+      "case_id": "and_fidelity_multiturn_path",
+      "expected_sales_progression": "Preserve that the buyer uses ChatGPT and another tool, then progress from the named gap.",
+      "failures": [],
+      "pass": true,
+      "responses": [
+        "Got it - you're using ChatGPT and other AI tools. The useful comparison is where the current setup still falls short: coding workflow, files, research, writing, voice/images, or team controls.",
+        "Since you use ChatGPT and another AI tool, sell the comparison only against the gap you named: coding workflow and usage limits. Compare Plus as the lower-cost test, and Pro if limits or headroom matter."
+      ],
+      "scenario": "and_or_fidelity_path",
+      "turns": [
+        "I use ChatGPT and Claude already.",
+        "The gap is coding workflow and usage limits."
+      ]
+    },
+    {
+      "actual_response": "First confirm which one the team uses: ChatGPT or another AI tool. If it is ChatGPT for a team, compare Business or Enterprise; if another tool already covers the job, only compare ChatGPT against a real gap.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "either_or",
+        "dialogue_focus": "competitive_objection",
+        "response_summary": "First confirm which one the team uses: ChatGPT or another AI tool",
+        "semantic": "public_plan_current_chatgpt_or_other_decision_progressed"
+      },
+      "case_id": "or_fidelity_multiturn_path",
+      "expected_sales_progression": "Preserve uncertainty between ChatGPT or another tool instead of rewriting it into a both-tools claim.",
+      "failures": [],
+      "pass": true,
+      "responses": [
+        "Got it - sounds like you may be using ChatGPT or maybe Claude. The useful comparison is where your current setup falls short: coding workflow, files, research, writing, voice/images, or limits.",
+        "First confirm which one the team uses: ChatGPT or another AI tool. If it is ChatGPT for a team, compare Business or Enterprise; if another tool already covers the job, only compare ChatGPT against a real gap."
+      ],
+      "scenario": "and_or_fidelity_path",
+      "turns": [
+        "It might be ChatGPT or Claude; I am not sure which one the team uses.",
+        "How should we decide?"
+      ]
+    },
+    {
+      "actual_response": "Since you said heavy coding and writing, Pro is the stronger fit to compare; Plus is the lower-cost starting point. The next step is the official ChatGPT plans page.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "Since you said heavy coding and writing, Pro is the stronger fit to compare; Plus is the lower-cost starting point",
+        "semantic": "public_plan_known_use_and_heavy_repeat_progress_already_answered"
+      },
+      "case_id": "repeated_question_repair_path",
+      "expected_sales_progression": "Acknowledge prior heavy-use context, answer shorter/differently, and move to the plan decision.",
+      "failures": [],
+      "pass": true,
+      "responses": [
+        "Right - coding and writing with heavy use. I would compare Pro first because usage headroom matters here. Plus is the lower-cost starting point; Pro is safer if usage limits matter.",
+        "Since you said heavy coding and writing, Pro is the stronger fit to compare; Plus is the lower-cost starting point. The next step is the official ChatGPT plans page."
+      ],
+      "scenario": "repeated_question_repair_path",
+      "turns": [
+        "I use ChatGPT for coding and writing heavily every day.",
+        "I already told you that. What should I compare?"
+      ]
+    },
+    {
+      "actual_response": "I'm not asking you to do anything yet. I'm helping you decide whether Free, Plus, Pro, Business, or Enterprise fits. The useful next detail is whether this is for personal work, team use, API usage, or enterprise controls.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "plain_ask",
+        "response_summary": "I'm not asking you to do anything yet",
+        "semantic": "public_plan_plain_ask_explained"
+      },
+      "case_id": "source_affiliation_route_path",
+      "expected_sales_progression": "Avoid OpenAI affiliation, explain the public source boundary, and move to plan fit or the official route.",
+      "failures": [],
+      "pass": true,
+      "responses": [
+        "Good question. I'm not calling from OpenAI; I'm using public OpenAI plan and help information to help you decide the fit. The official pages are the final source. Are you choosing for yourself or a team?",
+        "",
+        "I'm not asking you to do anything yet. I'm helping you decide whether Free, Plus, Pro, Business, or Enterprise fits. The useful next detail is whether this is for personal work, team use, API usage, or enterprise controls."
+      ],
+      "scenario": "source_affiliation_route_path",
+      "turns": [
+        "Are you OpenAI?",
+        "Where does this information come from?",
+        "What should I do next?"
+      ]
+    }
+  ],
+  "multi_turn_pass_fail_count": {
+    "fail": 0,
+    "pass": 10
+  },
+  "no_live_readiness_confirmation": true,
+  "no_side_effect_confirmation": {
+    "live_readiness_claimed": false,
+    "provider_model_tts_crm_email_calendar_payment_account_side_effect_path_enabled": false,
+    "raw_private_transcript_or_audio_added_to_public_evidence": false,
+    "response_replacement_performed": false,
+    "selector_control_allowed": false
+  },
+  "ollama_calls_made": false,
+  "openai_api_calls_made": false,
+  "pass_fail_counts_by_scenario": {
+    "and_or_fidelity_path": {
+      "case_count": 2,
+      "fail": 0,
+      "pass": 2
+    },
+    "competitor_current_tool_path": {
+      "case_count": 2,
+      "fail": 0,
+      "pass": 2
+    },
+    "heavy_individual_close_path": {
+      "case_count": 1,
+      "fail": 0,
+      "pass": 1
+    },
+    "light_no_fit_path": {
+      "case_count": 1,
+      "fail": 0,
+      "pass": 1
+    },
+    "privacy_security_boundary_path": {
+      "case_count": 1,
+      "fail": 0,
+      "pass": 1
+    },
+    "repeated_question_repair_path": {
+      "case_count": 1,
+      "fail": 0,
+      "pass": 1
+    },
+    "source_affiliation_route_path": {
+      "case_count": 1,
+      "fail": 0,
+      "pass": 1
+    },
+    "team_admin_enterprise_path": {
+      "case_count": 1,
+      "fail": 0,
+      "pass": 1
+    }
+  },
+  "payment_calls_made": false,
+  "plan_fit_close_status": "pass",
+  "primary_benchmark_campaign": "public OpenAI ChatGPT plans",
+  "provider_calls_made": false,
+  "raw_private_transcript_or_audio_added_to_public_evidence": false,
+  "remaining_weak_examples": [],
+  "repeated_question_repair_status": "pass",
+  "response_replacement_performed": false,
+  "routesignal_contamination_check": {
+    "generic_path_source_hits": [
+      {
+        "classification": "legacy_default_playbook_guard_not_response_copy",
+        "line": 21,
+        "line_excerpt": "ROUTESIGNAL_PLAYBOOK_ID = \"ROUTESIGNAL-DIAGNOSTIC-PLAYBOOK-001\"",
+        "path": "runtime/entrypoints/generic_campaign_turn.py",
+        "terms": [
+          "RouteSignal",
+          "routesignal"
+        ]
+      },
+      {
+        "classification": "legacy_default_playbook_guard_not_response_copy",
+        "line": 93,
+        "line_excerpt": "if playbook.get(\"campaign_playbook_id\") == ROUTESIGNAL_PLAYBOOK_ID:",
+        "path": "runtime/entrypoints/generic_campaign_turn.py",
+        "terms": [
+          "RouteSignal",
+          "routesignal"
+        ]
+      }
+    ],
+    "openai_path_source_hits": [
+      {
+        "classification": "input_boundary_trigger_not_response_copy",
+        "line": 3430,
+        "line_excerpt": "if _contains(normalized, {\"route signal\", \"routesignal\", \"insurance coverage\", \"telecom\", \"home service\"}):",
+        "path": "runtime/campaigns/public_openai_chatgpt_plans_dialogue.py",
+        "terms": [
+          "RouteSignal",
+          "route signal",
+          "routesignal"
+        ]
+      }
+    ],
+    "openai_primary_response_contamination_count": 0,
+    "openai_primary_response_hits": []
+  },
+  "routesignal_role": "secondary regression fixture only",
+  "selector_control_allowed": false,
+  "single_turn_4l2_case_count": 14,
+  "single_turn_4l2_matrix": [
+    {
+      "actual_response": "Good question. I'm not calling from OpenAI; I'm using public OpenAI plan and help information to help you decide the fit. The official pages are the final source. Are you choosing for yourself or a team?",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "trust",
+        "response_summary": "Good question",
+        "semantic": "public_plan_affiliation_boundary"
+      },
+      "areas": [
+        "source_affiliation_boundary",
+        "spoken_naturalness_active_selling"
+      ],
+      "buyer_utterance": "Are you actually OpenAI, and where are you getting these plan prices?",
+      "case_id": "source_affiliation_boundary",
+      "expected_universal_sales_behavior": "Decline official OpenAI affiliation, cite public OpenAI plan/help sources, and keep the buyer moving toward a plan-fit decision without pretending to be OpenAI.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "Are you actually OpenAI, and where are you getting these plan prices?"
+      ]
+    },
+    {
+      "actual_response": "Simple version: Free is the basic option, Plus and Pro are individual upgrades, Business is for teams, and Enterprise is for larger organizations with admin or security needs. Are you deciding as an individual, a team, or for procurement and security review?",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "plan_explanation",
+        "response_summary": "Simple version: Free is the basic option, Plus and Pro are individual upgrades, Business is for teams, and Enterprise is for larger organizations with admin or security needs",
+        "semantic": "public_plan_orientation_plan_category_explanation"
+      },
+      "areas": [
+        "plan_category_explanation",
+        "spoken_naturalness_active_selling"
+      ],
+      "buyer_utterance": "Can you explain Free, Plus, Pro, Business, and Enterprise in plain English?",
+      "case_id": "plan_category_explanation",
+      "expected_universal_sales_behavior": "Explain plan categories conversationally, including individual and organization paths, and ask a useful next question instead of dumping static FAQ text.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "Can you explain Free, Plus, Pro, Business, and Enterprise in plain English?"
+      ]
+    },
+    {
+      "actual_response": "API usage is separate from ChatGPT subscriptions. Are you asking about ChatGPT itself, the API, or both?",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "api_boundary",
+        "response_summary": "API usage is separate from ChatGPT subscriptions",
+        "semantic": "public_plan_api_boundary"
+      },
+      "areas": [
+        "subscription_model_product_distinction"
+      ],
+      "buyer_utterance": "Are ChatGPT plans the same thing as API tokens, model access, or the ChatGPT app?",
+      "case_id": "subscription_model_product_distinction",
+      "expected_universal_sales_behavior": "Separate ChatGPT subscriptions from API/token usage and ask whether the buyer means ChatGPT, API usage, or both.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "Are ChatGPT plans the same thing as API tokens, model access, or the ChatGPT app?"
+      ]
+    },
+    {
+      "actual_response": "If your use is light or basic, Free may be enough. I would only compare paid plans if limits, tools, or team needs matter. What would you mainly use ChatGPT for?",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "no_fit_or_light_use",
+        "response_summary": "If your use is light or basic, Free may be enough",
+        "semantic": "public_plan_light_basic_use"
+      },
+      "areas": [
+        "plan_fit",
+        "close_disqualify"
+      ],
+      "buyer_utterance": "I only use it once in a while for light personal tasks; Free is enough.",
+      "case_id": "fit_light_personal_free",
+      "expected_universal_sales_behavior": "Disqualify paid-plan pressure when light personal usage or Free already fits.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "I only use it once in a while for light personal tasks; Free is enough."
+      ]
+    },
+    {
+      "actual_response": "Got it - that usage pain makes Pro the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "Got it - that usage pain makes Pro the plan to compare seriously",
+        "semantic": "public_plan_limit_pain_answered"
+      },
+      "areas": [
+        "plan_fit",
+        "spoken_naturalness_active_selling"
+      ],
+      "buyer_utterance": "I use ChatGPT for coding and writing heavily every day and I keep hitting limits.",
+      "case_id": "fit_heavy_individual_pro",
+      "expected_universal_sales_behavior": "Move heavy individual coding/writing with limit pain toward Pro while preserving Plus as the lower-cost option.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "I use ChatGPT for coding and writing heavily every day and I keep hitting limits."
+      ]
+    },
+    {
+      "actual_response": "For team use, Business is the self-serve workspace route and Enterprise is for organization-level controls. Are you looking for basic team workspace controls, or Enterprise requirements like SSO, SCIM, procurement, or security review?",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "team_plan_fit",
+        "response_summary": "For team use, Business is the self-serve workspace route and Enterprise is for organization-level controls",
+        "semantic": "public_plan_team_context"
+      },
+      "areas": [
+        "plan_fit",
+        "privacy_security_data_boundary"
+      ],
+      "buyer_utterance": "We have a team and need admin controls, SSO, SCIM, procurement, and security review.",
+      "case_id": "fit_team_admin_enterprise",
+      "expected_universal_sales_behavior": "Route team/admin needs to Business or Enterprise instead of individual Plus/Pro pressure.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "We have a team and need admin controls, SSO, SCIM, procurement, and security review."
+      ]
+    },
+    {
+      "actual_response": "Sure. Plus is listed at 20 dollars per month, billed monthly. Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide. Plus is the lower-cost individual plan; Pro is the heavier-use individual plan.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "price",
+        "response_summary": "Sure",
+        "semantic": "public_plan_direct_price_answer"
+      },
+      "areas": [
+        "price_terms_caveat"
+      ],
+      "buyer_utterance": "What do Plus and Pro cost right now?",
+      "case_id": "price_terms_caveat",
+      "expected_universal_sales_behavior": "Answer with source-grounded fixture pricing only and caveat that exact prices/terms can change.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "What do Plus and Pro cost right now?"
+      ]
+    },
+    {
+      "actual_response": "I cannot give a legal or security compliance guarantee. Use official OpenAI terms and, for company security or procurement review, the Enterprise contact-sales route.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "claim_boundary",
+        "response_summary": "I cannot give a legal or security compliance guarantee",
+        "semantic": "public_plan_legal_security_claim_boundary"
+      },
+      "areas": [
+        "privacy_security_data_boundary"
+      ],
+      "buyer_utterance": "Can you promise my data is never used and tell me we are legally compliant?",
+      "case_id": "privacy_legal_boundary",
+      "expected_universal_sales_behavior": "Avoid over-claiming privacy or legal compliance; route the buyer to official OpenAI terms or plan information.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "Can you promise my data is never used and tell me we are legally compliant?"
+      ]
+    },
+    {
+      "actual_response": "A switch only makes sense if ChatGPT covers something your current tool does not: coding workflow, files, research, voice/images, team admin, or privacy controls. What is the one area where your current tool feels weakest?",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "and",
+        "dialogue_focus": "competitive_objection",
+        "response_summary": "A switch only makes sense if ChatGPT covers something your current tool does not: coding workflow, files, research, voice/images, team admin, or privacy controls",
+        "semantic": "public_plan_competitor_objection"
+      },
+      "areas": [
+        "competitor_current_tool_context"
+      ],
+      "buyer_utterance": "I already use Claude and Copilot, so why would I add ChatGPT?",
+      "case_id": "competitor_current_tool_gap",
+      "expected_universal_sales_behavior": "Do not invent superiority; compare ChatGPT only against a concrete current-tool gap.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "I already use Claude and Copilot, so why would I add ChatGPT?"
+      ]
+    },
+    {
+      "actual_response": "Got it - you're using ChatGPT and other AI tools. The useful comparison is where the current setup still falls short: coding workflow, files, research, writing, voice/images, or team controls.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "and",
+        "dialogue_focus": "competitive_objection",
+        "response_summary": "Got it - you're using ChatGPT and other AI tools",
+        "semantic": "public_plan_current_chatgpt_and_other_ai_user"
+      },
+      "areas": [
+        "and_or_fidelity",
+        "competitor_current_tool_context"
+      ],
+      "buyer_utterance": "I use ChatGPT and Claude for coding already.",
+      "case_id": "and_fidelity_chatgpt_and_other_tools",
+      "expected_universal_sales_behavior": "Preserve that the buyer uses ChatGPT and another tool, then ask for the combined setup's gap.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "I use ChatGPT and Claude for coding already."
+      ]
+    },
+    {
+      "actual_response": "Got it - sounds like you may be using ChatGPT or maybe Claude. The useful comparison is where your current setup falls short: coding workflow, files, research, writing, voice/images, or limits.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "either_or",
+        "dialogue_focus": "competitive_objection",
+        "response_summary": "Got it - sounds like you may be using ChatGPT or maybe Claude",
+        "semantic": "public_plan_current_chatgpt_or_other_ai_unknown"
+      },
+      "areas": [
+        "and_or_fidelity"
+      ],
+      "buyer_utterance": "It might be ChatGPT or Claude; I am not sure which one my team uses.",
+      "case_id": "or_fidelity_chatgpt_or_other_tools",
+      "expected_universal_sales_behavior": "Preserve uncertainty between ChatGPT or another tool instead of converting it into a definite both-tools claim.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "It might be ChatGPT or Claude; I am not sure which one my team uses."
+      ]
+    },
+    {
+      "actual_response": "Since you said heavy coding and writing, Pro is the stronger fit to compare; Plus is the lower-cost starting point. The next step is the official ChatGPT plans page.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "Since you said heavy coding and writing, Pro is the stronger fit to compare; Plus is the lower-cost starting point",
+        "semantic": "public_plan_known_use_and_heavy_repeat_progress_already_answered"
+      },
+      "areas": [
+        "repeated_question_loop_repair",
+        "spoken_naturalness_active_selling"
+      ],
+      "buyer_utterance": "I already told you that - what should I compare?",
+      "case_id": "repeated_question_loop_repair",
+      "expected_universal_sales_behavior": "Repair the loop by acknowledging known context and answering shorter/differently instead of repeating discovery.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "I use ChatGPT for coding and writing heavily every day.",
+        "I already told you that - what should I compare?"
+      ]
+    },
+    {
+      "actual_response": "Yes - for individual plans, use the official ChatGPT plans page or profile upgrade flow. Based on what you said - coding/writing and hitting limits - compare Pro first if you want fewer limits; choose Plus if you want the lower-cost starting point.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "self_serve_close",
+        "response_summary": "Yes - for individual plans, use the official ChatGPT plans page or profile upgrade flow",
+        "semantic": "public_plan_self_serve_next_step_answered"
+      },
+      "areas": [
+        "close_disqualify"
+      ],
+      "buyer_utterance": "Pro sounds right. How do I sign up?",
+      "case_id": "self_serve_close_no_side_effects",
+      "expected_universal_sales_behavior": "Close individual paid interest toward the official ChatGPT plan page/profile flow without sending, booking, or taking payment.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "I use ChatGPT for coding and writing heavily every day and I keep hitting limits.",
+        "Pro sounds right. How do I sign up?"
+      ]
+    },
+    {
+      "actual_response": "No problem. Then I would keep it simple: Free may be enough for light use; paid plans are mainly worth comparing if limits, tools, or team needs matter. I would not push a paid plan; the next action is stay free or stop here.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "low_intent",
+        "response_summary": "No problem",
+        "semantic": "public_plan_low_unclear_intent"
+      },
+      "areas": [
+        "close_disqualify",
+        "competitor_current_tool_context"
+      ],
+      "buyer_utterance": "My current tool covers everything and I do not want to pay.",
+      "case_id": "no_fit_current_tool_enough",
+      "expected_universal_sales_behavior": "Disqualify paid close when the buyer's current tool covers the work and they do not want to pay.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "My current tool covers everything and I do not want to pay."
+      ]
+    }
+  ],
+  "single_turn_4l2_regression_count": 0,
+  "single_turn_4l2_status": "pass",
+  "source_affiliation_safety_status": "pass",
+  "status": "pass",
+  "strong_spoken_examples": [
+    {
+      "case_id": "heavy_individual_close_path",
+      "why_strong": "Uses the prior pain signal to recommend Pro versus Plus and close to the official self-serve route."
+    },
+    {
+      "case_id": "team_admin_enterprise_path",
+      "why_strong": "Keeps admin/security/procurement needs out of individual Plus/Pro pressure."
+    },
+    {
+      "case_id": "source_affiliation_route_path",
+      "why_strong": "Keeps the OpenAI affiliation boundary while still moving toward plan fit."
+    }
+  ],
+  "tts_calls_made": false,
+  "ultravox_calls_made": false
+}

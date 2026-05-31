@@ -4,12 +4,12 @@
   "calendar_calls_made": false,
   "case_matrix": [
     {
-      "actual_response": "I'm not calling from OpenAI. This is a public-data simulation using OpenAI's public pricing and help pages. I can summarize those public pages, but check them before upgrading. What are you trying to decide about ChatGPT?",
+      "actual_response": "Good question. I'm not calling from OpenAI; I'm using public OpenAI plan and help information to help you decide the fit. The official pages are the final source. Are you choosing for yourself or a team?",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "unknown",
         "dialogue_focus": "trust",
-        "response_summary": "I'm not calling from OpenAI",
+        "response_summary": "Good question",
         "semantic": "public_plan_affiliation_boundary"
       },
       "areas": [
@@ -26,12 +26,12 @@
       ]
     },
     {
-      "actual_response": "They are subscription options: Free is no-cost, Plus and Pro are individual plans, Business is for teams, and Enterprise is for larger organizations. Are you looking for personal use, team use, or enterprise controls?",
+      "actual_response": "Simple version: Free is the basic option, Plus and Pro are individual upgrades, Business is for teams, and Enterprise is for larger organizations with admin or security needs. Are you deciding as an individual, a team, or for procurement and security review?",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "unknown",
         "dialogue_focus": "plan_explanation",
-        "response_summary": "They are subscription options: Free is no-cost, Plus and Pro are individual plans, Business is for teams, and Enterprise is for larger organizations",
+        "response_summary": "Simple version: Free is the basic option, Plus and Pro are individual upgrades, Business is for teams, and Enterprise is for larger organizations with admin or security needs",
         "semantic": "public_plan_orientation_plan_category_explanation"
       },
       "areas": [
@@ -156,13 +156,13 @@
       ]
     },
     {
-      "actual_response": "I cannot promise that in every circumstance. Privacy and training settings should be checked in the official OpenAI terms and plan information.",
+      "actual_response": "I cannot give a legal or security compliance guarantee. Use official OpenAI terms and, for company security or procurement review, the Enterprise contact-sales route.",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "unknown",
         "dialogue_focus": "claim_boundary",
-        "response_summary": "I cannot promise that in every circumstance",
-        "semantic": "public_plan_privacy_claim_boundary"
+        "response_summary": "I cannot give a legal or security compliance guarantee",
+        "semantic": "public_plan_legal_security_claim_boundary"
       },
       "areas": [
         "privacy_security_data_boundary"
@@ -428,7 +428,7 @@
     "openai_path_source_hits": [
       {
         "classification": "input_boundary_trigger_not_response_copy",
-        "line": 3425,
+        "line": 3430,
         "line_excerpt": "if _contains(normalized, {\"route signal\", \"routesignal\", \"insurance coverage\", \"telecom\", \"home service\"}):",
         "path": "runtime/campaigns/public_openai_chatgpt_plans_dialogue.py",
         "terms": [
