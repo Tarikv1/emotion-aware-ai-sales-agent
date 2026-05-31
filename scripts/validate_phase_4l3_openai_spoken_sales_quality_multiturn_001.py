@@ -38,7 +38,7 @@ BEFORE_WEAK_EXAMPLES = {
         "I can summarize those public pages, but check them before upgrading. What are you trying to decide about ChatGPT?"
     ),
     "plan_category_explanation": (
-        "They are subscription options: Free is no-cost, Plus and Pro are individual plans, Business is for teams, "
+        "They are subscription options: Free is no-cost, Go is the lower-cost paid step, Plus and Pro are individual plans, Business is for teams, "
         "and Enterprise is for larger organizations. Are you looking for personal use, team use, or enterprise controls?"
     ),
 }
@@ -81,15 +81,15 @@ MULTI_TURN_CASES: list[dict[str, Any]] = [
         "turns": [
             "This is for a team.",
             "We need admin controls, security review, procurement, SSO, and SCIM.",
-            "Would Plus or Pro be enough?",
+            "Would Go, Plus, or Pro be enough?",
         ],
         "expected_sales_progression": (
-            "Avoid individual Plus/Pro pressure, keep Business/Enterprise as the comparison, and route procurement or "
+            "Avoid individual Go/Plus/Pro pressure, keep Business/Enterprise as the comparison, and route procurement or "
             "security needs to Enterprise/contact sales without fake scheduling."
         ),
         "must_include_all": ["business", "enterprise"],
         "must_include_any": [["contact sales", "procurement", "security review", "sso", "scim"]],
-        "must_not_include": ["plus is enough", "pro is enough", "i booked", "scheduled"],
+        "must_not_include": ["go is enough", "plus is enough", "pro is enough", "i booked", "scheduled"],
         "team_or_enterprise_route": True,
     },
     {
@@ -302,7 +302,7 @@ def evaluate_before_after_weak_examples(single_turn_matrix: list[dict[str, Any]]
     plan_failures: list[str] = []
     if normalize(plan_after).startswith("they are subscription options"):
         plan_failures.append("still starts like a static FAQ definition")
-    if not contains_all(plan_after, ["free", "plus", "pro", "business", "enterprise"]):
+    if not contains_all(plan_after, ["free", "go", "plus", "pro", "business", "enterprise"]):
         plan_failures.append("missing required plan categories")
     if not contains_any(plan_after, ["individual", "personal"]):
         plan_failures.append("missing individual/personal route")

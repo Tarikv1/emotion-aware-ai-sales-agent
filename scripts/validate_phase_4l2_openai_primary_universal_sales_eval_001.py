@@ -28,7 +28,7 @@ AREA_LABELS = {
     "source_affiliation_boundary": "source / affiliation boundary",
     "plan_category_explanation": "plan category explanation",
     "subscription_model_product_distinction": "subscription vs model/product distinction",
-    "plan_fit": "Free / Plus / Pro / Business / Enterprise fit",
+    "plan_fit": "Free / Go / Plus / Pro / Business / Enterprise fit",
     "price_terms_caveat": "price / terms caveat",
     "privacy_security_data_boundary": "privacy / security / data boundary",
     "competitor_current_tool_context": "competitor/current-tool context",
@@ -113,12 +113,12 @@ CASES: list[dict[str, Any]] = [
     {
         "case_id": "plan_category_explanation",
         "areas": ["plan_category_explanation", "spoken_naturalness_active_selling"],
-        "turns": ["Can you explain Free, Plus, Pro, Business, and Enterprise in plain English?"],
+        "turns": ["Can you explain Free, Go, Plus, Pro, Business, and Enterprise in plain English?"],
         "expected_universal_sales_behavior": (
             "Explain plan categories conversationally, including individual and organization paths, and ask a useful "
             "next question instead of dumping static FAQ text."
         ),
-        "must_include_all": ["free", "plus", "pro", "business", "enterprise"],
+        "must_include_all": ["free", "go", "plus", "pro", "business", "enterprise"],
         "must_include_any": [["personal", "team", "organization", "larger organizations"]],
         "must_have_question_or_close": True,
     },
@@ -135,19 +135,19 @@ CASES: list[dict[str, Any]] = [
     {
         "case_id": "fit_light_personal_free",
         "areas": ["plan_fit", "close_disqualify"],
-        "turns": ["I only use it once in a while for light personal tasks; Free is enough."],
+        "turns": ["I only use it once in a while for light personal tasks; Free or Go is enough."],
         "expected_universal_sales_behavior": (
-            "Disqualify paid-plan pressure when light personal usage or Free already fits."
+            "Disqualify Plus/Pro pressure when light personal usage or Free/Go already fits."
         ),
-        "must_include_all": ["free", "enough"],
-        "must_include_any": [["not push", "only compare paid", "paid plans"]],
+        "must_include_all": ["free", "go", "enough"],
+        "must_include_any": [["not push", "only compare paid", "skip plus", "skip plus or pro", "not jump"]],
     },
     {
         "case_id": "fit_heavy_individual_pro",
         "areas": ["plan_fit", "spoken_naturalness_active_selling"],
         "turns": ["I use ChatGPT for coding and writing heavily every day and I keep hitting limits."],
         "expected_universal_sales_behavior": (
-            "Move heavy individual coding/writing with limit pain toward Pro while preserving Plus as the lower-cost option."
+            "Move heavy individual coding/writing with limit pain toward Pro while preserving Plus as the lower-cost option versus Pro."
         ),
         "must_include_all": ["pro", "plus"],
         "must_include_any": [["limits", "headroom"], ["lower-cost", "cheaper"]],
@@ -165,12 +165,23 @@ CASES: list[dict[str, Any]] = [
     {
         "case_id": "price_terms_caveat",
         "areas": ["price_terms_caveat"],
-        "turns": ["What do Plus and Pro cost right now?"],
+        "turns": ["What do Go, Plus, and Pro cost right now?"],
         "expected_universal_sales_behavior": (
-            "Answer with source-grounded fixture pricing only and caveat that exact prices/terms can change."
+            "Answer with source-grounded fixture pricing only, avoid inventing a Go price, and caveat that exact prices/terms can change."
         ),
-        "must_include_all": ["plus", "pro"],
+        "must_include_all": ["go", "plus", "pro"],
         "must_include_any": [["20", "dollars"], ["check", "current", "plan page", "exact"]],
+    },
+    {
+        "case_id": "go_is_not_team_plan",
+        "areas": ["plan_fit", "privacy_security_data_boundary"],
+        "turns": ["Is Go for teams?"],
+        "expected_universal_sales_behavior": (
+            "Explain that Go is an individual plan and route team/admin needs to Business or Enterprise."
+        ),
+        "must_include_all": ["go", "business", "enterprise"],
+        "must_include_any": [["individual", "personal"], ["team", "workspace", "organization"]],
+        "must_not_include": ["go is for teams", "go is the team plan"],
     },
     {
         "case_id": "privacy_legal_boundary",

@@ -4,6 +4,10 @@ Checkpoint: `PUBLIC-OPENAI-SOURCE-BUNDLE-001`
 
 Retrieved: `2026-05-24T18:18:00Z`
 
+Last verified: `2026-05-31T01:56:31Z`
+
+Last verification checkpoint: `PHASE-4L4-OPENAI-SOURCE-REFRESH-PLAN-TAXONOMY-001`
+
 Scope: official public OpenAI, ChatGPT, and OpenAI Help Center sources only. No non-OpenAI sources were used.
 
 ## Sources Used
@@ -24,5 +28,6 @@ Scope: official public OpenAI, ChatGPT, and OpenAI Help Center sources only. No 
 - Source claims are paraphrased and represented as claim objects in `source_manifest.json`.
 - Short quote excerpts are included only where useful for traceability.
 - Price fields are conservative. If a visible source page did not expose a price clearly to the parser, the campaign fixture records `source_visible_but_parser_blank` or `requires_manual_review` instead of inventing a price.
+- Phase 4L4 rechecked the official ChatGPT pricing page and ChatGPT Go help article. The captured taxonomy remains individual `Free`, `Go`, `Plus`, `Pro` and business/enterprise `Business`, `Enterprise`, with Go treated as the lower-cost paid individual step between Free and Plus.
 - This is an internal public-data simulation. It is not an official OpenAI sales agent and must not claim OpenAI affiliation or authorization.
 - API usage is treated as separate from ChatGPT subscriptions where the official Plus, Business, or Enterprise sources support that boundary.

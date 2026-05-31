@@ -1,0 +1,238 @@
+{
+  "account_side_effects_made": false,
+  "calendar_calls_made": false,
+  "captured_plan_taxonomy": {
+    "business_enterprise": [
+      "Business",
+      "Enterprise"
+    ],
+    "individual": [
+      "Free",
+      "Go",
+      "Plus",
+      "Pro"
+    ]
+  },
+  "cases_added_or_updated": [
+    "plan_category_includes_go",
+    "what_is_go",
+    "light_user_free_or_go",
+    "lower_cost_paid_before_plus",
+    "go_plus_pro_fit",
+    "go_cost_current_pricing",
+    "business_enterprise_separate_from_individual",
+    "go_is_not_team_plan"
+  ],
+  "changed_source_files": [
+    "runtime/campaigns/public_openai_chatgpt_plans_dialogue.py",
+    "runtime/campaigns/examples/public-openai-chatgpt-plans.json",
+    "research/sources/public_openai_chatgpt_plans/source_manifest.json",
+    "research/sources/public_openai_chatgpt_plans/source_notes.md",
+    "scripts/validate_phase_4l2_openai_primary_universal_sales_eval_001.py",
+    "scripts/validate_phase_4l3_openai_spoken_sales_quality_multiturn_001.py",
+    "scripts/validate_phase_4l4_openai_source_refresh_plan_taxonomy_001.py",
+    "research/experiments/generated/PHASE-4L2-OPENAI-PRIMARY-UNIVERSAL-SALES-EVAL-001/result.json",
+    "research/experiments/generated/PHASE-4L2-OPENAI-PRIMARY-UNIVERSAL-SALES-EVAL-001/report.md",
+    "research/experiments/generated/PHASE-4L3-OPENAI-SPOKEN-SALES-QUALITY-MULTITURN-001/result.json",
+    "research/experiments/generated/PHASE-4L3-OPENAI-SPOKEN-SALES-QUALITY-MULTITURN-001/report.md",
+    "research/experiments/generated/PHASE-4L4-OPENAI-SOURCE-REFRESH-PLAN-TAXONOMY-001/result.json",
+    "research/experiments/generated/PHASE-4L4-OPENAI-SOURCE-REFRESH-PLAN-TAXONOMY-001/report.md"
+  ],
+  "checkpoint_id": "PHASE-4L4-OPENAI-SOURCE-REFRESH-PLAN-TAXONOMY-001",
+  "crm_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "email_calls_made": false,
+  "go_specific_case_results": [
+    {
+      "actual_response": "Simple version: Free is basic, Go is the lower-cost paid individual step, Plus and Pro are stronger individual upgrades, Business is for teams, and Enterprise is for larger organizations with admin, procurement, or security needs. Are you deciding as an individual, a team, or for procurement and security review?",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "plan_explanation",
+        "response_summary": "Simple version: Free is basic, Go is the lower-cost paid individual step, Plus and Pro are stronger individual upgrades, Business is for teams, and Enterprise is for larger organizations with admin, procurement, or security needs",
+        "semantic": "public_plan_orientation_plan_category_explanation"
+      },
+      "buyer_utterance": "Can you explain Free, Go, Plus, Pro, Business, and Enterprise in plain English?",
+      "case_id": "plan_category_includes_go",
+      "expected_behavior": "Explain all current plan names and separate individual from Business/Enterprise routes.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "Can you explain Free, Go, Plus, Pro, Business, and Enterprise in plain English?"
+      ]
+    },
+    {
+      "actual_response": "Go is positioned as a lower-cost paid plan that gives more access to popular ChatGPT features than Free. Go is mainly for more access to common tools such as image generation, file uploads, data analysis, memory, projects, tasks, and custom GPTs. It is an individual step between Free and Plus; Business and Enterprise are separate team or organization routes. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "Go is positioned as a lower-cost paid plan that gives more access to popular ChatGPT features than Free",
+        "semantic": "public_plan_go_taxonomy_answered"
+      },
+      "buyer_utterance": "What is Go?",
+      "case_id": "what_is_go",
+      "expected_behavior": "Answer that Go is a lower-cost paid individual step with expanded access beyond Free.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "What is Go?"
+      ]
+    },
+    {
+      "actual_response": "For light personal use, Free may be enough. Go is the next lower-cost paid step only if Free limits the common tools you need. I would not jump to Plus or Pro unless advanced tools, heavier usage, or limits matter.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "For light personal use, Free may be enough",
+        "semantic": "public_plan_go_taxonomy_answered"
+      },
+      "buyer_utterance": "I use ChatGPT lightly for personal tasks; is Free or Go enough?",
+      "case_id": "light_user_free_or_go",
+      "expected_behavior": "Avoid pushing Plus/Pro and frame Free or Go as enough for light individual use.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "I use ChatGPT lightly for personal tasks; is Free or Go enough?"
+      ]
+    },
+    {
+      "actual_response": "Compare Go first as the lower-cost paid step before Plus and Pro. Plus is the stronger individual paid plan, and Pro is for heavier individual use. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "Compare Go first as the lower-cost paid step before Plus and Pro",
+        "semantic": "public_plan_go_taxonomy_answered"
+      },
+      "buyer_utterance": "I want a lower-cost paid option before Plus or Pro. What should I compare?",
+      "case_id": "lower_cost_paid_before_plus",
+      "expected_behavior": "Name Go as the lower-cost paid step before Plus/Pro, with official-page caveat.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "I want a lower-cost paid option before Plus or Pro. What should I compare?"
+      ]
+    },
+    {
+      "actual_response": "For individual plans: Go is the lower-cost paid step beyond Free, Plus is for broader advanced access, and Pro is for heavier use or more headroom. The deciding factor is how often limits or advanced tools matter.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "For individual plans: Go is the lower-cost paid step beyond Free, Plus is for broader advanced access, and Pro is for heavier use or more headroom",
+        "semantic": "public_plan_go_taxonomy_answered"
+      },
+      "buyer_utterance": "How do I decide between Go, Plus, and Pro?",
+      "case_id": "go_plus_pro_fit",
+      "expected_behavior": "Frame Go/Plus/Pro as individual paid steps with increasing access and usage headroom.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "How do I decide between Go, Plus, and Pro?"
+      ]
+    },
+    {
+      "actual_response": "For Go, I would not quote a fixed price here. The official ChatGPT plans page is the source for exact current pricing, availability, and terms, because they can change. Plan-fit wise, Go sits between Free and Plus.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "For Go, I would not quote a fixed price here",
+        "semantic": "public_plan_go_taxonomy_answered"
+      },
+      "buyer_utterance": "What does Go cost right now, and is that current?",
+      "case_id": "go_cost_current_pricing",
+      "expected_behavior": "Do not invent a Go price; route exact Go price and current terms to the official plan page.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "What does Go cost right now, and is that current?"
+      ]
+    },
+    {
+      "actual_response": "Yes. Go, Plus, and Pro are individual plans. Business is the team workspace route, and Enterprise is for larger organization needs like admin controls, security review, procurement, or contact sales.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "Yes",
+        "semantic": "public_plan_go_taxonomy_answered"
+      },
+      "buyer_utterance": "Are Business and Enterprise separate from Go, Plus, and Pro?",
+      "case_id": "business_enterprise_separate_from_individual",
+      "expected_behavior": "Separate Go/Plus/Pro individual plans from Business/Enterprise organization routes.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "Are Business and Enterprise separate from Go, Plus, and Pro?"
+      ]
+    },
+    {
+      "actual_response": "Go is an individual plan, not the team workspace route. For team workspace/admin needs, compare Business; for organization-level controls like SSO, SCIM, procurement, or security review, use Enterprise/contact sales.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "Go is an individual plan, not the team workspace route",
+        "semantic": "public_plan_go_taxonomy_answered"
+      },
+      "buyer_utterance": "Is Go for teams?",
+      "case_id": "go_is_not_team_plan",
+      "expected_behavior": "Say Go is an individual plan, while Business/Enterprise cover team or organization needs.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "Is Go for teams?"
+      ]
+    }
+  ],
+  "go_specific_pass_fail_count": {
+    "fail": 0,
+    "pass": 8
+  },
+  "live_readiness_claimed": false,
+  "live_selector_control_recommended": false,
+  "local_llm_calls_made": false,
+  "model_calls_made": false,
+  "no_live_readiness_confirmation": true,
+  "no_side_effect_confirmation": {
+    "live_readiness_claimed": false,
+    "provider_model_tts_crm_email_calendar_payment_account_side_effect_path_enabled": false,
+    "raw_private_transcript_or_audio_added_to_public_evidence": false,
+    "response_replacement_performed": false,
+    "selector_control_allowed": false
+  },
+  "official_source_access_status": "succeeded",
+  "official_sources_inspected": [
+    {
+      "source_type": "official_pricing_page",
+      "url": "https://chatgpt.com/pricing/",
+      "use": "current plan names, plan grouping, Go placement, Business/Enterprise route, pricing/terms caveat"
+    },
+    {
+      "source_type": "official_help_article",
+      "url": "https://help.openai.com/en/articles/11989085-what-is-chatgpt-go",
+      "use": "Go positioning, Go features, signup/profile route, pricing-change caveat"
+    }
+  ],
+  "ollama_calls_made": false,
+  "openai_api_calls_made": false,
+  "payment_calls_made": false,
+  "phase4l3_multi_turn_fail_count": 0,
+  "phase4l3_regression_status": "pass",
+  "phase4l3_single_turn_4l2_regression_count": 0,
+  "primary_benchmark_campaign": "public OpenAI ChatGPT plans",
+  "provider_calls_made": false,
+  "raw_private_transcript_or_audio_added_to_public_evidence": false,
+  "response_replacement_performed": false,
+  "routesignal_contamination_count": 0,
+  "routesignal_contamination_hits": [],
+  "selector_control_allowed": false,
+  "selector_response_replacement_status": "blocked",
+  "source_taxonomy_status": "pass",
+  "stale_assumption_hits_remaining": [],
+  "stale_assumptions_found_fixed": [
+    "PLAN_LABELS omitted Go.",
+    "The main individual plan category response skipped Go.",
+    "Several spoken responses treated Plus as the first paid individual step.",
+    "The price/terms response answered Plus/Pro while claiming current paid-plan coverage.",
+    "The 4L2/4L3 matrices did not exercise Go-specific plan-fit, price, or team-boundary cases."
+  ],
+  "status": "pass",
+  "tts_calls_made": false,
+  "ultravox_calls_made": false
+}

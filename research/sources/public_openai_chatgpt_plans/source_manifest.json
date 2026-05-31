@@ -2,6 +2,9 @@
   "bundle_id": "PUBLIC-OPENAI-CHATGPT-PLANS-SOURCE-BUNDLE-001",
   "fixture_id": "public-openai-chatgpt-plans",
   "retrieved_at_utc": "2026-05-24T18:18:00Z",
+  "last_verified_at_utc": "2026-05-31T01:56:31Z",
+  "last_verified_checkpoint_id": "PHASE-4L4-OPENAI-SOURCE-REFRESH-PLAN-TAXONOMY-001",
+  "last_verified_summary": "Official ChatGPT pricing and Go help pages still represent Free, Go, Plus, Pro, Business, and Enterprise, with Go as the paid individual step between Free and Plus.",
   "source_policy": "official_openai_public_sources_only",
   "allowed_domains": [
     "openai.com",

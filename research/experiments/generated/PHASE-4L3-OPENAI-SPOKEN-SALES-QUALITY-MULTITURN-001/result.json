@@ -3,9 +3,9 @@
   "and_or_fidelity_status": "pass",
   "before_after_weak_example_status": {
     "plan_category_explanation": {
-      "after_response": "Simple version: Free is the basic option, Plus and Pro are individual upgrades, Business is for teams, and Enterprise is for larger organizations with admin or security needs. Are you deciding as an individual, a team, or for procurement and security review?",
+      "after_response": "Simple version: Free is basic, Go is the lower-cost paid individual step, Plus and Pro are stronger individual upgrades, Business is for teams, and Enterprise is for larger organizations with admin, procurement, or security needs. Are you deciding as an individual, a team, or for procurement and security review?",
       "after_status": "pass",
-      "before_response": "They are subscription options: Free is no-cost, Plus and Pro are individual plans, Business is for teams, and Enterprise is for larger organizations. Are you looking for personal use, team use, or enterprise controls?",
+      "before_response": "They are subscription options: Free is no-cost, Go is the lower-cost paid step, Plus and Pro are individual plans, Business is for teams, and Enterprise is for larger organizations. Are you looking for personal use, team use, or enterprise controls?",
       "before_status": "accurate_but_faq_like",
       "failures": []
     },
@@ -34,7 +34,7 @@
   "multi_turn_4l3_status": "pass",
   "multi_turn_case_matrix": [
     {
-      "actual_response": "Yes - for individual plans, use the official ChatGPT plans page or profile upgrade flow. Based on what you said - coding/writing and hitting limits - compare Pro first if you want fewer limits; choose Plus if you want the lower-cost starting point.",
+      "actual_response": "Yes - for individual plans, use the official ChatGPT plans page or profile upgrade flow. Based on what you said - coding/writing and hitting limits - compare Pro first if you want fewer limits; choose Plus if you want a lower-cost option than Pro.",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "unknown",
@@ -47,9 +47,9 @@
       "failures": [],
       "pass": true,
       "responses": [
-        "Got it - that usage pain makes Pro the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
-        "Got it - that usage pain makes Pro the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
-        "Yes - for individual plans, use the official ChatGPT plans page or profile upgrade flow. Based on what you said - coding/writing and hitting limits - compare Pro first if you want fewer limits; choose Plus if you want the lower-cost starting point."
+        "Got it - that usage pain makes Pro the plan to compare seriously. Plus is lower-cost than Pro, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost Plus-vs-Pro option, or the plan least likely to hit limits?",
+        "Got it - that usage pain makes Pro the plan to compare seriously. Plus is lower-cost than Pro, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost Plus-vs-Pro option, or the plan least likely to hit limits?",
+        "Yes - for individual plans, use the official ChatGPT plans page or profile upgrade flow. Based on what you said - coding/writing and hitting limits - compare Pro first if you want fewer limits; choose Plus if you want a lower-cost option than Pro."
       ],
       "scenario": "heavy_individual_close_path",
       "turns": [
@@ -72,7 +72,7 @@
       "failures": [],
       "pass": true,
       "responses": [
-        "If your use is light or basic, Free may be enough. I would only compare paid plans if limits, tools, or team needs matter. What would you mainly use ChatGPT for?",
+        "If your use is light or basic, Free may be enough. Go is the next lower-cost paid step only if Free limits matter; skip Plus or Pro unless heavier tools matter. What would you mainly use ChatGPT for?",
         "",
         "No problem. Then I would keep it simple: Free may be enough for light use; paid plans are mainly worth comparing if limits, tools, or team needs matter. I would not push a paid plan; the next action is stay free or stop here."
       ],
@@ -84,28 +84,28 @@
       ]
     },
     {
-      "actual_response": "For that team/admin path, individual Plus or Pro is not the clean answer. Compare Business for a self-serve team workspace with Enterprise/contact sales for SSO, SCIM, procurement, or security review. I cannot book or contact sales for you here.",
+      "actual_response": "For team use, Business is the self-serve workspace route and Enterprise is for organization-level controls. Are you looking for basic team workspace controls, or Enterprise requirements like SSO, SCIM, procurement, or security review?",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "unknown",
         "dialogue_focus": "team_plan_fit",
-        "response_summary": "For that team/admin path, individual Plus or Pro is not the clean answer",
-        "semantic": "public_plan_team_individual_plan_boundary"
+        "response_summary": "For team use, Business is the self-serve workspace route and Enterprise is for organization-level controls",
+        "semantic": "public_plan_team_context"
       },
       "case_id": "team_admin_enterprise_path",
-      "expected_sales_progression": "Avoid individual Plus/Pro pressure, keep Business/Enterprise as the comparison, and route procurement or security needs to Enterprise/contact sales without fake scheduling.",
+      "expected_sales_progression": "Avoid individual Go/Plus/Pro pressure, keep Business/Enterprise as the comparison, and route procurement or security needs to Enterprise/contact sales without fake scheduling.",
       "failures": [],
       "pass": true,
       "responses": [
         "For team use, Business is the self-serve workspace route and Enterprise is for organization-level controls. Are you looking for basic team workspace controls, or Enterprise requirements like SSO, SCIM, procurement, or security review?",
         "For team use, Business is the self-serve workspace route and Enterprise is for organization-level controls. Are you looking for basic team workspace controls, or Enterprise requirements like SSO, SCIM, procurement, or security review?",
-        "For that team/admin path, individual Plus or Pro is not the clean answer. Compare Business for a self-serve team workspace with Enterprise/contact sales for SSO, SCIM, procurement, or security review. I cannot book or contact sales for you here."
+        "For team use, Business is the self-serve workspace route and Enterprise is for organization-level controls. Are you looking for basic team workspace controls, or Enterprise requirements like SSO, SCIM, procurement, or security review?"
       ],
       "scenario": "team_admin_enterprise_path",
       "turns": [
         "This is for a team.",
         "We need admin controls, security review, procurement, SSO, and SCIM.",
-        "Would Plus or Pro be enough?"
+        "Would Go, Plus, or Pro be enough?"
       ]
     },
     {
@@ -132,7 +132,7 @@
       ]
     },
     {
-      "actual_response": "Since you use ChatGPT and another AI tool, sell the comparison only against the gap you named: coding workflow and usage limits. Compare Plus as the lower-cost test, and Pro if limits or headroom matter.",
+      "actual_response": "Since you use ChatGPT and another AI tool, sell the comparison only against the gap you named: coding workflow and usage limits. Compare Go or Plus as lower-cost tests, and Pro if limits or headroom matter.",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "and",
@@ -147,7 +147,7 @@
       "responses": [
         "A switch only makes sense if ChatGPT gives you something your current setup does not: stronger coding workflow, file handling, research, voice/images, or team controls. What is the one area where your current tool feels weakest?",
         "A switch only makes sense if ChatGPT covers something your current tool does not: coding workflow, files, research, voice/images, team admin, or privacy controls. What is the one area where your current tool feels weakest?",
-        "Since you use ChatGPT and another AI tool, sell the comparison only against the gap you named: coding workflow and usage limits. Compare Plus as the lower-cost test, and Pro if limits or headroom matter."
+        "Since you use ChatGPT and another AI tool, sell the comparison only against the gap you named: coding workflow and usage limits. Compare Go or Plus as lower-cost tests, and Pro if limits or headroom matter."
       ],
       "scenario": "competitor_current_tool_path",
       "turns": [
@@ -182,7 +182,7 @@
       ]
     },
     {
-      "actual_response": "Since you use ChatGPT and another AI tool, sell the comparison only against the gap you named: coding workflow and usage limits. Compare Plus as the lower-cost test, and Pro if limits or headroom matter.",
+      "actual_response": "Since you use ChatGPT and another AI tool, sell the comparison only against the gap you named: coding workflow and usage limits. Compare Go or Plus as lower-cost tests, and Pro if limits or headroom matter.",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "and",
@@ -196,7 +196,7 @@
       "pass": true,
       "responses": [
         "Got it - you're using ChatGPT and other AI tools. The useful comparison is where the current setup still falls short: coding workflow, files, research, writing, voice/images, or team controls.",
-        "Since you use ChatGPT and another AI tool, sell the comparison only against the gap you named: coding workflow and usage limits. Compare Plus as the lower-cost test, and Pro if limits or headroom matter."
+        "Since you use ChatGPT and another AI tool, sell the comparison only against the gap you named: coding workflow and usage limits. Compare Go or Plus as lower-cost tests, and Pro if limits or headroom matter."
       ],
       "scenario": "and_or_fidelity_path",
       "turns": [
@@ -228,21 +228,21 @@
       ]
     },
     {
-      "actual_response": "Since you said heavy coding and writing, Pro is the stronger fit to compare; Plus is the lower-cost starting point. The next step is the official ChatGPT plans page.",
+      "actual_response": "Since you said coding and writing with heavy use, Plus is usually enough if use is moderate. Here I would compare Pro seriously. Plus is the lower-cost option versus Pro; Pro is safer if usage limits matter. The next step is the official ChatGPT plans page.",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "unknown",
         "dialogue_focus": "plan_fit",
-        "response_summary": "Since you said heavy coding and writing, Pro is the stronger fit to compare; Plus is the lower-cost starting point",
-        "semantic": "public_plan_known_use_and_heavy_repeat_progress_already_answered"
+        "response_summary": "Since you said coding and writing with heavy use, Plus is usually enough if use is moderate",
+        "semantic": "public_plan_plus_sufficiency_answered"
       },
       "case_id": "repeated_question_repair_path",
       "expected_sales_progression": "Acknowledge prior heavy-use context, answer shorter/differently, and move to the plan decision.",
       "failures": [],
       "pass": true,
       "responses": [
-        "Right - coding and writing with heavy use. I would compare Pro first because usage headroom matters here. Plus is the lower-cost starting point; Pro is safer if usage limits matter.",
-        "Since you said heavy coding and writing, Pro is the stronger fit to compare; Plus is the lower-cost starting point. The next step is the official ChatGPT plans page."
+        "Right - coding and writing with heavy use. I would compare Pro first because usage headroom matters here. Plus is the lower-cost option versus Pro; Pro is safer if usage limits matter.",
+        "Since you said coding and writing with heavy use, Plus is usually enough if use is moderate. Here I would compare Pro seriously. Plus is the lower-cost option versus Pro; Pro is safer if usage limits matter. The next step is the official ChatGPT plans page."
       ],
       "scenario": "repeated_question_repair_path",
       "turns": [
@@ -251,7 +251,7 @@
       ]
     },
     {
-      "actual_response": "I'm not asking you to do anything yet. I'm helping you decide whether Free, Plus, Pro, Business, or Enterprise fits. The useful next detail is whether this is for personal work, team use, API usage, or enterprise controls.",
+      "actual_response": "I'm not asking you to do anything yet. I'm helping you decide whether Free, Go, Plus, Pro, Business, or Enterprise fits. The useful next detail is whether this is for personal work, team use, API usage, or enterprise controls.",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "unknown",
@@ -266,7 +266,7 @@
       "responses": [
         "Good question. I'm not calling from OpenAI; I'm using public OpenAI plan and help information to help you decide the fit. The official pages are the final source. Are you choosing for yourself or a team?",
         "",
-        "I'm not asking you to do anything yet. I'm helping you decide whether Free, Plus, Pro, Business, or Enterprise fits. The useful next detail is whether this is for personal work, team use, API usage, or enterprise controls."
+        "I'm not asking you to do anything yet. I'm helping you decide whether Free, Go, Plus, Pro, Business, or Enterprise fits. The useful next detail is whether this is for personal work, team use, API usage, or enterprise controls."
       ],
       "scenario": "source_affiliation_route_path",
       "turns": [
@@ -366,7 +366,7 @@
     "openai_path_source_hits": [
       {
         "classification": "input_boundary_trigger_not_response_copy",
-        "line": 3430,
+        "line": 3611,
         "line_excerpt": "if _contains(normalized, {\"route signal\", \"routesignal\", \"insurance coverage\", \"telecom\", \"home service\"}):",
         "path": "runtime/campaigns/public_openai_chatgpt_plans_dialogue.py",
         "terms": [
@@ -381,7 +381,7 @@
   },
   "routesignal_role": "secondary regression fixture only",
   "selector_control_allowed": false,
-  "single_turn_4l2_case_count": 14,
+  "single_turn_4l2_case_count": 15,
   "single_turn_4l2_matrix": [
     {
       "actual_response": "Good question. I'm not calling from OpenAI; I'm using public OpenAI plan and help information to help you decide the fit. The official pages are the final source. Are you choosing for yourself or a team?",
@@ -406,25 +406,25 @@
       ]
     },
     {
-      "actual_response": "Simple version: Free is the basic option, Plus and Pro are individual upgrades, Business is for teams, and Enterprise is for larger organizations with admin or security needs. Are you deciding as an individual, a team, or for procurement and security review?",
+      "actual_response": "Simple version: Free is basic, Go is the lower-cost paid individual step, Plus and Pro are stronger individual upgrades, Business is for teams, and Enterprise is for larger organizations with admin, procurement, or security needs. Are you deciding as an individual, a team, or for procurement and security review?",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "unknown",
         "dialogue_focus": "plan_explanation",
-        "response_summary": "Simple version: Free is the basic option, Plus and Pro are individual upgrades, Business is for teams, and Enterprise is for larger organizations with admin or security needs",
+        "response_summary": "Simple version: Free is basic, Go is the lower-cost paid individual step, Plus and Pro are stronger individual upgrades, Business is for teams, and Enterprise is for larger organizations with admin, procurement, or security needs",
         "semantic": "public_plan_orientation_plan_category_explanation"
       },
       "areas": [
         "plan_category_explanation",
         "spoken_naturalness_active_selling"
       ],
-      "buyer_utterance": "Can you explain Free, Plus, Pro, Business, and Enterprise in plain English?",
+      "buyer_utterance": "Can you explain Free, Go, Plus, Pro, Business, and Enterprise in plain English?",
       "case_id": "plan_category_explanation",
       "expected_universal_sales_behavior": "Explain plan categories conversationally, including individual and organization paths, and ask a useful next question instead of dumping static FAQ text.",
       "failures": [],
       "pass": true,
       "turns": [
-        "Can you explain Free, Plus, Pro, Business, and Enterprise in plain English?"
+        "Can you explain Free, Go, Plus, Pro, Business, and Enterprise in plain English?"
       ]
     },
     {
@@ -449,29 +449,29 @@
       ]
     },
     {
-      "actual_response": "If your use is light or basic, Free may be enough. I would only compare paid plans if limits, tools, or team needs matter. What would you mainly use ChatGPT for?",
+      "actual_response": "For light personal use, Free may be enough. Go is the next lower-cost paid step only if Free limits the common tools you need. I would not jump to Plus or Pro unless advanced tools, heavier usage, or limits matter.",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "unknown",
-        "dialogue_focus": "no_fit_or_light_use",
-        "response_summary": "If your use is light or basic, Free may be enough",
-        "semantic": "public_plan_light_basic_use"
+        "dialogue_focus": "plan_fit",
+        "response_summary": "For light personal use, Free may be enough",
+        "semantic": "public_plan_go_taxonomy_answered"
       },
       "areas": [
         "plan_fit",
         "close_disqualify"
       ],
-      "buyer_utterance": "I only use it once in a while for light personal tasks; Free is enough.",
+      "buyer_utterance": "I only use it once in a while for light personal tasks; Free or Go is enough.",
       "case_id": "fit_light_personal_free",
-      "expected_universal_sales_behavior": "Disqualify paid-plan pressure when light personal usage or Free already fits.",
+      "expected_universal_sales_behavior": "Disqualify Plus/Pro pressure when light personal usage or Free/Go already fits.",
       "failures": [],
       "pass": true,
       "turns": [
-        "I only use it once in a while for light personal tasks; Free is enough."
+        "I only use it once in a while for light personal tasks; Free or Go is enough."
       ]
     },
     {
-      "actual_response": "Got it - that usage pain makes Pro the plan to compare seriously. Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost starting point, or the plan least likely to hit limits?",
+      "actual_response": "Got it - that usage pain makes Pro the plan to compare seriously. Plus is lower-cost than Pro, but Pro is the better fit if you are regularly hitting limits. Do you want the lower-cost Plus-vs-Pro option, or the plan least likely to hit limits?",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "unknown",
@@ -485,7 +485,7 @@
       ],
       "buyer_utterance": "I use ChatGPT for coding and writing heavily every day and I keep hitting limits.",
       "case_id": "fit_heavy_individual_pro",
-      "expected_universal_sales_behavior": "Move heavy individual coding/writing with limit pain toward Pro while preserving Plus as the lower-cost option.",
+      "expected_universal_sales_behavior": "Move heavy individual coding/writing with limit pain toward Pro while preserving Plus as the lower-cost option versus Pro.",
       "failures": [],
       "pass": true,
       "turns": [
@@ -515,24 +515,46 @@
       ]
     },
     {
-      "actual_response": "Sure. Plus is listed at 20 dollars per month, billed monthly. Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide. Plus is the lower-cost individual plan; Pro is the heavier-use individual plan.",
+      "actual_response": "Go pricing and availability should be checked on the official ChatGPT plans page. Plus is listed at 20 dollars per month, billed monthly. Pro has 100 dollar and 200 dollar tiers; the main difference is usage allowance. Exact current terms can change, so use the official ChatGPT plans page as the final source for plan fit before you decide. Go is the lower-cost paid step; Plus is stronger individual access, and Pro is for heavier usage.",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "unknown",
-        "dialogue_focus": "price",
-        "response_summary": "Sure",
-        "semantic": "public_plan_direct_price_answer"
+        "dialogue_focus": "plan_fit",
+        "response_summary": "Go pricing and availability should be checked on the official ChatGPT plans page",
+        "semantic": "public_plan_go_taxonomy_answered"
       },
       "areas": [
         "price_terms_caveat"
       ],
-      "buyer_utterance": "What do Plus and Pro cost right now?",
+      "buyer_utterance": "What do Go, Plus, and Pro cost right now?",
       "case_id": "price_terms_caveat",
-      "expected_universal_sales_behavior": "Answer with source-grounded fixture pricing only and caveat that exact prices/terms can change.",
+      "expected_universal_sales_behavior": "Answer with source-grounded fixture pricing only, avoid inventing a Go price, and caveat that exact prices/terms can change.",
       "failures": [],
       "pass": true,
       "turns": [
-        "What do Plus and Pro cost right now?"
+        "What do Go, Plus, and Pro cost right now?"
+      ]
+    },
+    {
+      "actual_response": "Go is an individual plan, not the team workspace route. For team workspace/admin needs, compare Business; for organization-level controls like SSO, SCIM, procurement, or security review, use Enterprise/contact sales.",
+      "actual_semantic_action_response_summary": {
+        "action_id": "continue_with_session_policy",
+        "conjunction_relation": "unknown",
+        "dialogue_focus": "plan_fit",
+        "response_summary": "Go is an individual plan, not the team workspace route",
+        "semantic": "public_plan_go_taxonomy_answered"
+      },
+      "areas": [
+        "plan_fit",
+        "privacy_security_data_boundary"
+      ],
+      "buyer_utterance": "Is Go for teams?",
+      "case_id": "go_is_not_team_plan",
+      "expected_universal_sales_behavior": "Explain that Go is an individual plan and route team/admin needs to Business or Enterprise.",
+      "failures": [],
+      "pass": true,
+      "turns": [
+        "Is Go for teams?"
       ]
     },
     {
@@ -621,13 +643,13 @@
       ]
     },
     {
-      "actual_response": "Since you said heavy coding and writing, Pro is the stronger fit to compare; Plus is the lower-cost starting point. The next step is the official ChatGPT plans page.",
+      "actual_response": "Since you said coding and writing with heavy use, Plus is usually enough if use is moderate. Here I would compare Pro seriously. Plus is the lower-cost option versus Pro; Pro is safer if usage limits matter. The next step is the official ChatGPT plans page.",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "unknown",
         "dialogue_focus": "plan_fit",
-        "response_summary": "Since you said heavy coding and writing, Pro is the stronger fit to compare; Plus is the lower-cost starting point",
-        "semantic": "public_plan_known_use_and_heavy_repeat_progress_already_answered"
+        "response_summary": "Since you said coding and writing with heavy use, Plus is usually enough if use is moderate",
+        "semantic": "public_plan_plus_sufficiency_answered"
       },
       "areas": [
         "repeated_question_loop_repair",
@@ -644,7 +666,7 @@
       ]
     },
     {
-      "actual_response": "Yes - for individual plans, use the official ChatGPT plans page or profile upgrade flow. Based on what you said - coding/writing and hitting limits - compare Pro first if you want fewer limits; choose Plus if you want the lower-cost starting point.",
+      "actual_response": "Yes - for individual plans, use the official ChatGPT plans page or profile upgrade flow. Based on what you said - coding/writing and hitting limits - compare Pro first if you want fewer limits; choose Plus if you want a lower-cost option than Pro.",
       "actual_semantic_action_response_summary": {
         "action_id": "continue_with_session_policy",
         "conjunction_relation": "unknown",

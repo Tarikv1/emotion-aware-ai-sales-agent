@@ -66,13 +66,13 @@
   "focus_progression_options": {
     "default": [
       "If your current tool is enough or you do not want to pay, I would not push a paid ChatGPT plan. Free or staying with your current tool may be enough unless you hit limits, need a missing tool, or need team controls.",
-      "For plan fit, use case matters more than buying intent. If this is coding or writing, Plus versus Pro is usually the comparison; if it is a team, Business or Enterprise is the path."
+      "For plan fit, use case matters more than buying intent. If this is individual use, compare Free, Go, Plus, and Pro by intensity and limits; if it is a team, Business or Enterprise is the path."
     ],
     "adoption_state_discovery": [
       "If your current tool is enough, I would not push a paid ChatGPT plan. The useful comparison is only whether ChatGPT covers a real gap in coding, files, research, writing, team controls, or privacy controls."
     ],
     "use_case_discovery": [
-      "I can keep checking. If it is coding or writing, Plus versus Pro is usually the comparison; if it is a team, Business or Enterprise is the path. What would you mainly use ChatGPT for?"
+      "I can keep checking. If it is coding or writing, compare Go or Plus for paid access and Pro for heavier limits; if it is a team, Business or Enterprise is the path. What would you mainly use ChatGPT for?"
     ],
     "self_serve_close": [
       "If Free is enough, no paid close is needed. If you later compare paid plans, use the official ChatGPT plans page or profile upgrade flow. I cannot send a link, book anything, or take payment here."
@@ -85,7 +85,7 @@
   },
   "language": "en",
   "opening_options": {
-    "preferred": "Hi, this is Maya. I'm calling about ChatGPT subscription plans using OpenAI's public plan information. I'm not calling as OpenAI, but I can help you decide whether Free, Plus, Pro, Business, or Enterprise is worth considering. Do you have a minute?",
+    "preferred": "Hi, this is Maya. I'm calling about ChatGPT subscription plans using OpenAI's public plan information. I'm not calling as OpenAI, but I can help you decide whether Free, Go, Plus, Pro, Business, or Enterprise is worth considering. Do you have a minute?",
     "short": "Hi, this is Maya. I'm calling about ChatGPT subscription plans using OpenAI's public plan information. I'm not calling as OpenAI, but I can help you decide whether any plan is worth considering. Do you have a minute?"
   },
   "agent_can_say": [
