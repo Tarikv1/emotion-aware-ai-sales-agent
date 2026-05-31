@@ -880,6 +880,20 @@ def _orientation_sub_intent(normalized: str) -> str:
         return "subscription_model_question"
     if _contains(normalized, {"model", "models", "product", "products"}):
         return "model_vs_product_question"
+    if len(mentions) >= 4 or _contains(
+        normalized,
+        {
+            "what are these plans",
+            "what are the plans",
+            "what are those plans",
+            "which plans",
+            "plans are available",
+            "explain the plans",
+            "what do you mean by plans",
+            "plan names",
+        },
+    ):
+        return "plan_category_explanation"
     if _contains(
         normalized,
         {
@@ -900,20 +914,6 @@ def _orientation_sub_intent(normalized: str) -> str:
         },
     ):
         return "simpler_explanation_request"
-    if len(mentions) >= 4 or _contains(
-        normalized,
-        {
-            "what are these plans",
-            "what are the plans",
-            "what are those plans",
-            "which plans",
-            "plans are available",
-            "explain the plans",
-            "what do you mean by plans",
-            "plan names",
-        },
-    ):
-        return "plan_category_explanation"
     if mentions:
         return "specific_plan_label_explanation"
     if _contains(normalized, {"do you mean chatgpt", "you mean chatgpt"}):
@@ -960,7 +960,9 @@ def _orientation_response(normalized: str) -> tuple[str, str]:
         if {"Free", "Plus", "Pro", "Business", "Enterprise"}.issubset(mentions):
             return (
                 sub_intent,
-                "They are subscription options: Free is no-cost, Plus and Pro are individual plans, Business is for teams, and Enterprise is for larger organizations.",
+                "They are subscription options: Free is no-cost, Plus and Pro are individual plans, "
+                "Business is for teams, and Enterprise is for larger organizations. "
+                "Are you looking for personal use, team use, or enterprise controls?",
             )
         return (
             sub_intent,
@@ -2270,6 +2272,9 @@ def _price_question(normalized: str) -> bool:
             "what is the price",
             "what does plus cost",
             "what does pro cost",
+            "what do plus and pro cost",
+            "plus and pro cost",
+            "cost right now",
             "what do i pay",
             "what do the paid tiers cost",
             "what are the paid tiers",
@@ -2580,10 +2585,10 @@ def _pro_agreement_signal(normalized: str) -> bool:
     )
 
 
-def _limit_pain_recommendation_response(turns: list[dict[str, Any]]) -> str:
-    if _known_use_case("", turns):
+def _limit_pain_recommendation_response(turns: list[dict[str, Any]], normalized: str = "") -> str:
+    if _known_use_case(normalized, turns):
         return (
-            "Got it - if limits are already frustrating, Pro is the plan to compare seriously. "
+            "Got it - that usage pain makes Pro the plan to compare seriously. "
             "Plus is the lower-cost starting point, but Pro is the better fit if you are regularly hitting limits. "
             "Do you want the lower-cost starting point, or the plan least likely to hit limits?"
         )
@@ -2764,6 +2769,11 @@ def _price_response(campaign: dict | None, normalized: str, turns: list[dict[str
     heavy_context = _known_heavy_use(normalized, turns)
     limit_context = _known_limit_pain(normalized, turns)
 
+    if _contains(normalized, {"what do plus and pro cost", "plus and pro cost", "plus and pro price"}):
+        return (
+            f"Sure. {plus_price} {pro_price} {caveat} "
+            "Plus is the lower-cost individual plan; Pro is the heavier-use individual plan."
+        )
     if _contains(normalized, {"what do i get for 20 dollars", "20 dollars", "twenty dollars"}):
         suffix = (
             " For coding and writing, Plus is the lower-cost starting point; if limits are already frustrating, compare Pro."
@@ -2838,7 +2848,7 @@ def _plus_sufficiency_response(normalized: str, turns: list[dict[str, Any]]) -> 
             "To choose cleanly, the deciding factor is whether your main use is coding, writing, research, files, or something lighter."
         )
     if _known_limit_pain(normalized, turns):
-        return _limit_pain_recommendation_response(turns)
+        return _limit_pain_recommendation_response(turns, normalized)
     if _choosing_before_upgrade(normalized):
         return _choosing_before_upgrade_response(turns)
     heavy = _known_heavy_use(normalized, turns)
@@ -2935,7 +2945,7 @@ def _known_context_repeat_response(normalized: str, turns: list[dict[str, Any]],
         if _known_limit_pain(normalized, turns):
             return (
                 "public_plan_known_use_limit_pain_continue_progress" if continuing else "public_plan_known_use_limit_pain_repeat_progress",
-                _limit_pain_recommendation_response(turns),
+                _limit_pain_recommendation_response(turns, normalized),
                 "plan_fit",
             )
         return (
@@ -3074,7 +3084,7 @@ def _context_progress_response(normalized: str, turns: list[dict[str, Any]]) -> 
         if _known_limit_pain(normalized, turns):
             return (
                 "public_plan_known_use_limit_pain_progress",
-                _limit_pain_recommendation_response(turns),
+                _limit_pain_recommendation_response(turns, normalized),
                 "plan_fit",
             )
         return (
@@ -3206,7 +3216,7 @@ def duplicate_repair_response(
     if _known_limit_pain(normalized, turns) or state.get("openai_limit_pain") is True:
         return _avoid_duplicate_response(
             candidate_response,
-            _limit_pain_recommendation_response(turns),
+            _limit_pain_recommendation_response(turns, normalized),
             (
                 "That new limits signal points more toward Pro than Plus. "
                 "Plus is the lower-cost starting point; Pro is the path if avoiding limits matters most."
@@ -3537,7 +3547,11 @@ def classify_turn(
             response_strategy=sub_intent,
         )
 
-    if _pro_agreement_signal(normalized) and not _pro_tier_question_for_context(normalized, turns):
+    if (
+        _pro_agreement_signal(normalized)
+        and not _signup_question(normalized)
+        and not _pro_tier_question_for_context(normalized, turns)
+    ):
         return _frame(
             **base,
             semantic="public_plan_pro_agreement_closed",
@@ -3817,7 +3831,7 @@ def classify_turn(
             **base,
             semantic="public_plan_current_chatgpt_or_other_ai_unknown",
             response=(
-                "Got it - sounds like you may be using ChatGPT and maybe Claude. "
+                "Got it - sounds like you may be using ChatGPT or maybe Claude. "
                 "The useful comparison is where your current setup falls short: coding workflow, files, research, writing, voice/images, or limits."
                 if "claude" in normalized
                 else (
@@ -3834,7 +3848,7 @@ def classify_turn(
             response_strategy="current_chatgpt_or_other_ai_unknown",
         )
 
-    if _current_chatgpt_user(normalized):
+    if _current_chatgpt_user(normalized) and not _known_use_case(normalized, turns):
         return _frame(
             **base,
             semantic="public_plan_current_chatgpt_user",
@@ -3983,7 +3997,7 @@ def classify_turn(
         return _frame(
             **base,
             semantic="public_plan_limit_pain_answered",
-            response=_limit_pain_recommendation_response(turns),
+            response=_limit_pain_recommendation_response(turns, normalized),
             target_gap="usage_intensity",
             dialogue_focus="plan_fit",
             polarity="recommendation",
