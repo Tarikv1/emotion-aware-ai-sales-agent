@@ -1,0 +1,31 @@
+{
+  "active_atlas_agent_should_use": [
+    {
+      "filename": "04_rendered_atlas_system_prompt_v4.md",
+      "source_checkpoint": "PHASE-4O4-PROSPECT-CONTEXT-DYNAMIC-VARIABLE-CALL-PERSONALIZATION-001",
+      "upload_mode": "system_prompt"
+    },
+    {
+      "filename": "06_rendered_atlas_kb_prospect_context_rules_v4.md",
+      "source_checkpoint": "PHASE-4O4-PROSPECT-CONTEXT-DYNAMIC-VARIABLE-CALL-PERSONALIZATION-001",
+      "upload_mode": "knowledge_base"
+    },
+    {
+      "filename": "02_rendered_atlas_kb_sales_facts_v3.md",
+      "source_checkpoint": "PHASE-4O2A-ATLAS-BUYER-FACING-FULFILLMENT-LANGUAGE-CLEANUP-001",
+      "upload_mode": "knowledge_base"
+    },
+    {
+      "filename": "03_rendered_atlas_kb_capability_boundaries_v3.md",
+      "source_checkpoint": "PHASE-4O2A-ATLAS-BUYER-FACING-FULFILLMENT-LANGUAGE-CLEANUP-001",
+      "upload_mode": "knowledge_base"
+    },
+    {
+      "filename": "01_rendered_atlas_kb_trust_repair_risk_reversal_v3.md",
+      "source_checkpoint": "PHASE-4O3-ATLAS-TRUST-REPAIR-RISK-REVERSAL-001",
+      "upload_mode": "knowledge_base"
+    }
+  ],
+  "do_not_attach_old_non_v3_kb_files": true,
+  "notes": "Use the V4 system prompt and prospect context KB with the existing V3 sales facts, capability boundaries, and trust repair KB. Do not attach old non-v3 KB files."
+}

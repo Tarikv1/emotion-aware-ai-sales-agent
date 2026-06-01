@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "prospect_id": {
+      "type": "string"
+    },
+    "business_name": {
+      "type": "string"
+    },
+    "business_type": {
+      "type": "string"
+    },
+    "vertical": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "service_area": {
+      "type": "string"
+    },
+    "known_website_url": {
+      "type": "string"
+    },
+    "known_website_status": {
+      "enum": [
+        "unknown",
+        "no_website_found",
+        "website_exists",
+        "old_or_unclear",
+        "social_only",
+        "booking_app_only",
+        "broker_or_platform_page"
+      ],
+      "type": "string"
+    },
+    "known_social_presence": {
+      "type": "string"
+    },
+    "known_booking_or_ordering_path": {
+      "type": "string"
+    },
+    "known_phone_or_contact_path": {
+      "type": "string"
+    },
+    "suspected_gap": {
+      "type": "string"
+    },
+    "primary_offer_angle": {
+      "type": "string"
+    },
+    "likely_decision_maker_role": {
+      "type": "string"
+    },
+    "contact_name_if_known": {
+      "type": "string"
+    },
+    "call_reason": {
+      "type": "string"
+    },
+    "proof_or_observation_source": {
+      "type": "string"
+    },
+    "data_confidence": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "type": "string"
+    },
+    "do_not_claim_as_fact_fields": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "allowed_personalization_fields": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "forbidden_personalization_claims": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "followup_preference_if_known": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "inspected_website": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "prospect_id",
+    "business_name",
+    "business_type",
+    "vertical",
+    "city",
+    "service_area",
+    "known_website_url",
+    "known_website_status",
+    "known_social_presence",
+    "known_booking_or_ordering_path",
+    "known_phone_or_contact_path",
+    "suspected_gap",
+    "primary_offer_angle",
+    "likely_decision_maker_role",
+    "contact_name_if_known",
+    "call_reason",
+    "proof_or_observation_source",
+    "data_confidence",
+    "do_not_claim_as_fact_fields",
+    "allowed_personalization_fields",
+    "forbidden_personalization_claims",
+    "followup_preference_if_known",
+    "notes",
+    "inspected_website"
+  ],
+  "title": "Atlas Prospect Context Schema",
+  "type": "object"
+}
