@@ -1,0 +1,22 @@
+{
+  "account_side_effects_made": false,
+  "agent_variant_count": 3,
+  "calendar_calls_made": false,
+  "checkpoint_id": "PHASE-4N3-WEBSITE-SALES-AGENT-EVALUATION-PROTOCOL-001",
+  "crm_calls_made": false,
+  "email_calls_made": false,
+  "elevenlabs_calls_made": false,
+  "eval_case_count": 36,
+  "hard_failure_flag_count": 11,
+  "live_readiness_claimed": false,
+  "model_calls_made": false,
+  "openai_api_calls_made": false,
+  "payment_calls_made": false,
+  "provider_calls_made": false,
+  "real_outbound_calls_enabled": false,
+  "scoring_dimensions_count": 10,
+  "source_checkpoint_id": "PHASE-4N2-FINAL-ATLAS-WEB-STUDIO-ELEVENLABS-UPLOAD-001",
+  "status": "pass",
+  "thesis_ready_protocol": true,
+  "tts_calls_made": false
+}
