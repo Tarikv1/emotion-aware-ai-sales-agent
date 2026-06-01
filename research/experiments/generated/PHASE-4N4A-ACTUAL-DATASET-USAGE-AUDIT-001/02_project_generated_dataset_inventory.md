@@ -1,0 +1,14 @@
+# Project-Generated Dataset Inventory
+
+| Artifact | Classification | Repo evidence | Counts and status | Safe wording |
+| --- | --- | --- | --- | --- |
+| EXP-002 dataset-derived case pack | project_generated_eval_case_pack | `research/experiments/EXP-002-dataset-derived-case-pack.md`, `research/experiments/cases/exp-002-dataset-derived.json` | 6 adapted cases with emotion labels and strategy labels. | Adapts emotional interaction patterns from MELD and persuasion strategy patterns from Persuasion for Good into sales-dialogue cases. Do not call it raw MELD or raw Persuasion-for-Good data. |
+| LOCAL-QWEN-SFT-DATASET-001 | project_generated_synthetic_sanitized_dataset | `research/experiments/generated/LOCAL-QWEN-SFT-DATASET-001/result.json` | 80 rows: train 60, validation 10, test 10. Source composition: live_sanitized 30, negative_control 20, synthetic_paraphrase 30. Privacy level sanitized_only; failed Qwen outputs were not used as targets. | Sanitized/synthetic planner dataset, not public emotion corpus evidence. |
+| LOCAL-QWEN-BALANCED-SFT-DATASET-001 | project_generated_synthetic_sanitized_dataset | `research/experiments/generated/LOCAL-QWEN-BALANCED-SFT-DATASET-001/result.json` | 445 total rows; 435 in-distribution rows; 10 OOD rows; split counts train 304, validation 65, test 66, OOD test 10; 10 semantic groups. Source types include deterministic_paraphrase, live_sanitized, negative_control, OOD control, original_gold, and synthetic_control. | Balanced sanitized/synthetic planner dataset for local action/planner work. |
+| NON-LLM-ACTION-SELECTOR-DATASET-001 | project_generated_synthetic_sanitized_dataset | `research/experiments/generated/NON-LLM-ACTION-SELECTOR-DATASET-001/result.json` | 451 total rows; split counts train 304, validation 65, test 82; 23 labels; sanitized_only true; no audio data used; no generated audio used. | Sanitized/no-audio action-selector dataset, not a sales-call result dataset. |
+| NON-LLM-ACTION-SELECTOR-DATA-SOURCES-001 | provenance_audit_artifact | `research/experiments/generated/NON-LLM-ACTION-SELECTOR-DATA-SOURCES-001/result.json` | 455 usable training/eval rows across committed sanitized/synthetic rows, benchmark/test rows, and reference artifacts. | Provenance and source-role audit for action-selector data, not a separate external dataset. |
+| PHASE-4N3-WEBSITE-SALES-AGENT-EVALUATION-PROTOCOL-001 | project_generated_eval_protocol | `research/experiments/generated/PHASE-4N3-WEBSITE-SALES-AGENT-EVALUATION-PROTOCOL-001/result.json` | 36 eval cases, 3 variants, 10 scoring dimensions, 11 hard failure flags. | Evaluation protocol for future manual runs; not experimental sales-effectiveness results. |
+
+## Privacy Boundary
+
+The inspected generated datasets report sanitized/synthetic status or no-audio/private-data status where relevant. This audit does not copy dataset row bodies or private material.
