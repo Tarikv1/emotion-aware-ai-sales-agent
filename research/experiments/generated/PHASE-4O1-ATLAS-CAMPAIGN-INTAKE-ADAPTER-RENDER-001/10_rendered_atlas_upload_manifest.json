@@ -1,0 +1,65 @@
+[
+  {
+    "buyer_facing": true,
+    "filename": "05_rendered_atlas_system_prompt.md",
+    "purpose": "ElevenLabs system prompt",
+    "required_human_review": true,
+    "side_effects_enabled": false,
+    "source_layer": "universal_sales_os_plus_atlas_adapter",
+    "upload_mode": "system_prompt"
+  },
+  {
+    "buyer_facing": false,
+    "filename": "06_rendered_atlas_kb_sales_facts.md",
+    "purpose": "Atlas sales facts and pricing behavior KB",
+    "required_human_review": true,
+    "side_effects_enabled": false,
+    "source_layer": "atlas_adapter",
+    "upload_mode": "knowledge_base"
+  },
+  {
+    "buyer_facing": false,
+    "filename": "07_rendered_atlas_kb_vertical_playbooks.md",
+    "purpose": "Vertical playbooks KB",
+    "required_human_review": true,
+    "side_effects_enabled": false,
+    "source_layer": "atlas_adapter",
+    "upload_mode": "knowledge_base"
+  },
+  {
+    "buyer_facing": false,
+    "filename": "08_rendered_atlas_kb_objection_handling.md",
+    "purpose": "Objection handling KB",
+    "required_human_review": true,
+    "side_effects_enabled": false,
+    "source_layer": "atlas_adapter",
+    "upload_mode": "knowledge_base"
+  },
+  {
+    "buyer_facing": false,
+    "filename": "09_rendered_atlas_kb_capability_boundaries.md",
+    "purpose": "Capability and side-effect boundary KB",
+    "required_human_review": true,
+    "side_effects_enabled": false,
+    "source_layer": "atlas_adapter",
+    "upload_mode": "knowledge_base"
+  },
+  {
+    "buyer_facing": false,
+    "filename": "11_atlas_regression_tests.md",
+    "purpose": "Do not upload; regression tests only",
+    "required_human_review": false,
+    "side_effects_enabled": false,
+    "source_layer": "test_matrix",
+    "upload_mode": "do_not_upload"
+  },
+  {
+    "buyer_facing": false,
+    "filename": "13_thesis_relevance_note.md",
+    "purpose": "Do not upload; thesis note only",
+    "required_human_review": false,
+    "side_effects_enabled": false,
+    "source_layer": "research_note",
+    "upload_mode": "do_not_upload"
+  }
+]
