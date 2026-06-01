@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "campaign_id": {
+      "type": "string"
+    },
+    "fulfillment_mode": {
+      "enum": [
+        "no_fulfillment",
+        "interest_capture_only",
+        "manual_human_followup_allowed",
+        "simulated_manual_followup_for_internal_tests",
+        "tool_enabled_email",
+        "tool_enabled_calendar",
+        "tool_enabled_crm",
+        "tool_enabled_payment",
+        "live_autonomous_followup"
+      ],
+      "type": "string"
+    },
+    "manual_followup_process": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed": {
+          "type": "boolean"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "required_details_before_commitment": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "approved_timing_language": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "approved_contact_paths": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "allowed",
+        "owner",
+        "required_details_before_commitment",
+        "approved_timing_language",
+        "approved_contact_paths"
+      ],
+      "type": "object"
+    },
+    "tool_states": {
+      "additionalProperties": false,
+      "properties": {
+        "email": {
+          "enum": [
+            "not_available",
+            "planned_future",
+            "manual_human_process",
+            "configured_disabled",
+            "configured_enabled",
+            "tool_called_pending",
+            "tool_success",
+            "tool_failure"
+          ],
+          "type": "string"
+        },
+        "calendar": {
+          "enum": [
+            "not_available",
+            "planned_future",
+            "manual_human_process",
+            "configured_disabled",
+            "configured_enabled",
+            "tool_called_pending",
+            "tool_success",
+            "tool_failure"
+          ],
+          "type": "string"
+        },
+        "crm": {
+          "enum": [
+            "not_available",
+            "planned_future",
+            "manual_human_process",
+            "configured_disabled",
+            "configured_enabled",
+            "tool_called_pending",
+            "tool_success",
+            "tool_failure"
+          ],
+          "type": "string"
+        },
+        "payment": {
+          "enum": [
+            "not_available",
+            "planned_future",
+            "manual_human_process",
+            "configured_disabled",
+            "configured_enabled",
+            "tool_called_pending",
+            "tool_success",
+            "tool_failure"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "email",
+        "calendar",
+        "crm",
+        "payment"
+      ],
+      "type": "object"
+    },
+    "completed_action_claim_policy": {
+      "additionalProperties": false,
+      "properties": {
+        "requires_tool_success": {
+          "type": "boolean"
+        },
+        "allows_confirmed_human_process": {
+          "type": "boolean"
+        },
+        "forbidden_without_evidence": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "requires_tool_success",
+        "allows_confirmed_human_process",
+        "forbidden_without_evidence"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "campaign_id",
+    "fulfillment_mode",
+    "manual_followup_process",
+    "tool_states",
+    "completed_action_claim_policy"
+  ],
+  "title": "Fulfillment Mode Schema",
+  "type": "object"
+}

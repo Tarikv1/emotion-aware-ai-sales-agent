@@ -1,0 +1,63 @@
+[
+  {
+    "buyer_facing": true,
+    "filename": "06_rendered_atlas_system_prompt_v2.md",
+    "fulfillment_mode": "manual_human_followup_allowed",
+    "purpose": "ElevenLabs system prompt text for Atlas manual follow-up testing",
+    "required_human_review": true,
+    "side_effects_enabled": false,
+    "tool_states": {
+      "calendar": "planned_future",
+      "crm": "planned_future",
+      "email": "planned_future",
+      "payment": "planned_future"
+    },
+    "upload_mode": "system_prompt"
+  },
+  {
+    "buyer_facing": false,
+    "filename": "07_rendered_atlas_kb_sales_facts_v2.md",
+    "fulfillment_mode": "manual_human_followup_allowed",
+    "purpose": "Atlas sales facts and pricing KB",
+    "required_human_review": true,
+    "side_effects_enabled": false,
+    "tool_states": {
+      "calendar": "planned_future",
+      "crm": "planned_future",
+      "email": "planned_future",
+      "payment": "planned_future"
+    },
+    "upload_mode": "knowledge_base"
+  },
+  {
+    "buyer_facing": false,
+    "filename": "08_rendered_atlas_kb_capability_and_tools_v2.md",
+    "fulfillment_mode": "manual_human_followup_allowed",
+    "purpose": "Atlas fulfillment mode, tool readiness, and capability boundary KB",
+    "required_human_review": true,
+    "side_effects_enabled": false,
+    "tool_states": {
+      "calendar": "planned_future",
+      "crm": "planned_future",
+      "email": "planned_future",
+      "payment": "planned_future"
+    },
+    "upload_mode": "knowledge_base"
+  },
+  {
+    "buyer_facing": false,
+    "filename": "09_atlas_regression_tests_v2.md",
+    "purpose": "Do not upload; regression tests only",
+    "required_human_review": false,
+    "side_effects_enabled": false,
+    "upload_mode": "do_not_upload"
+  },
+  {
+    "buyer_facing": false,
+    "filename": "11_thesis_relevance_note.md",
+    "purpose": "Do not upload; thesis note only",
+    "required_human_review": false,
+    "side_effects_enabled": false,
+    "upload_mode": "do_not_upload"
+  }
+]
