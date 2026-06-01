@@ -1,0 +1,314 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "adapter_version": {
+      "type": "string"
+    },
+    "approved_claims": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "buyer_personas": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "campaign_id": {
+      "type": "string"
+    },
+    "campaign_specific_test_cases": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_behavior": {
+            "type": "string"
+          },
+          "scenario": {
+            "type": "string"
+          },
+          "test_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "test_id",
+          "scenario",
+          "expected_behavior"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "close_paths": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "disqualification_logic": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "forbidden_claims": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "normalized_product_facts": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "does": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "does_not_do": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "offer_summary": {
+          "type": "string"
+        },
+        "product_or_service_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "product_or_service_name",
+        "category",
+        "offer_summary",
+        "does",
+        "does_not_do"
+      ],
+      "type": "object"
+    },
+    "objection_playbooks": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "approved_response": {
+            "type": "string"
+          },
+          "objection": {
+            "type": "string"
+          },
+          "repair_strategy": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "objection",
+          "approved_response",
+          "repair_strategy"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "pain_to_value_mappings": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "approved_value": {
+            "type": "string"
+          },
+          "buyer_pain": {
+            "type": "string"
+          },
+          "proof_reference": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "buyer_pain",
+          "approved_value",
+          "proof_reference"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "pricing_behavior": {
+      "additionalProperties": false,
+      "properties": {
+        "approved_price_ranges": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "pricing_model": {
+          "type": "string"
+        },
+        "spoken_rule": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "pricing_model",
+        "approved_price_ranges",
+        "spoken_rule"
+      ],
+      "type": "object"
+    },
+    "qualification_logic": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "rendered_system_prompt_fields": {
+      "additionalProperties": false,
+      "properties": {
+        "agent_identity": {
+          "type": "string"
+        },
+        "campaign_goal": {
+          "type": "string"
+        },
+        "capability_summary": {
+          "type": "string"
+        },
+        "forbidden_claim_summary": {
+          "type": "string"
+        },
+        "pricing_summary": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "agent_identity",
+        "campaign_goal",
+        "pricing_summary",
+        "capability_summary",
+        "forbidden_claim_summary"
+      ],
+      "type": "object"
+    },
+    "source_intake_id": {
+      "type": "string"
+    },
+    "tool_capability_boundaries": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled_tools": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "side_effects_allowed": {
+          "type": "boolean"
+        },
+        "unavailable_actions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "enabled_tools",
+        "unavailable_actions",
+        "side_effects_allowed"
+      ],
+      "type": "object"
+    },
+    "uploadable_kb_files": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "content_sections": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "upload_mode": {
+            "enum": [
+              "system_prompt",
+              "knowledge_base",
+              "test_only",
+              "do_not_upload"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "filename",
+          "upload_mode",
+          "content_sections"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "validation_summary": {
+      "additionalProperties": false,
+      "properties": {
+        "blockers": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "optional": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "blockers",
+        "warnings",
+        "optional"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "campaign_id",
+    "adapter_version",
+    "source_intake_id",
+    "validation_summary",
+    "normalized_product_facts",
+    "approved_claims",
+    "forbidden_claims",
+    "buyer_personas",
+    "pain_to_value_mappings",
+    "objection_playbooks",
+    "qualification_logic",
+    "disqualification_logic",
+    "pricing_behavior",
+    "close_paths",
+    "tool_capability_boundaries",
+    "campaign_specific_test_cases",
+    "uploadable_kb_files",
+    "rendered_system_prompt_fields"
+  ],
+  "title": "Campaign Adapter Schema",
+  "type": "object"
+}

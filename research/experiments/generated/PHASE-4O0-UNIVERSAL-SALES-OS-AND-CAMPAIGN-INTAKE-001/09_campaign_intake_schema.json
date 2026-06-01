@@ -1,0 +1,366 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "agent_name": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "allowed_commitments": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "approved_price_ranges": {
+      "description": "Exact prices, ranges, or an explicit statement that exact pricing is unavailable.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "business_outcomes_promised_safely": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "business_pains_solved": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "buyer_personas": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "needs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "objections": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "role": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "role",
+          "needs",
+          "objections"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "campaign_id": {
+      "pattern": "^[a-z0-9][a-z0-9_-]*$",
+      "type": "string"
+    },
+    "case_studies_or_examples": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "close_paths": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "allowed_when": {
+            "type": "string"
+          },
+          "commitment": {
+            "type": "string"
+          },
+          "path_id": {
+            "type": "string"
+          },
+          "spoken_close": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path_id",
+          "allowed_when",
+          "commitment",
+          "spoken_close"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "common_objections": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "company_description": {
+      "minLength": 20,
+      "type": "string"
+    },
+    "company_name": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "comparison_rules": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "competitors_or_alternatives": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "compliance_constraints": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "data_privacy_constraints": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "differentiators": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "disqualification_rules": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "escalation_or_handoff_policy": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "excluded_features_or_services": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "forbidden_claims": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "free_trial_or_demo_policy": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "guarantees_or_refund_policy": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "included_features_or_services": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "objection_responses": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "approved_response": {
+            "type": "string"
+          },
+          "objection": {
+            "type": "string"
+          },
+          "prohibited_response": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "objection",
+          "approved_response",
+          "prohibited_response"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "pricing_model": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "primary_conversion_goal": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "product_category": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "product_or_service_name": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "proof_points": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "qualification_questions": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "secondary_conversion_goals": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "short_offer_summary": {
+      "minLength": 10,
+      "type": "string"
+    },
+    "stop_request_policy": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "target_customer_segments": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "tone_and_style": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "tool_permissions": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "allowed_actions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "tool_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool_name",
+          "enabled",
+          "allowed_actions"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "unavailable_actions": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "what_product_does": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "what_product_does_not_do": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "campaign_id",
+    "company_name",
+    "agent_name",
+    "company_description",
+    "product_or_service_name",
+    "product_category",
+    "short_offer_summary",
+    "target_customer_segments",
+    "buyer_personas",
+    "business_pains_solved",
+    "business_outcomes_promised_safely",
+    "what_product_does",
+    "what_product_does_not_do",
+    "included_features_or_services",
+    "excluded_features_or_services",
+    "pricing_model",
+    "approved_price_ranges",
+    "free_trial_or_demo_policy",
+    "guarantees_or_refund_policy",
+    "proof_points",
+    "case_studies_or_examples",
+    "differentiators",
+    "competitors_or_alternatives",
+    "comparison_rules",
+    "qualification_questions",
+    "disqualification_rules",
+    "common_objections",
+    "objection_responses",
+    "close_paths",
+    "primary_conversion_goal",
+    "secondary_conversion_goals",
+    "allowed_commitments",
+    "forbidden_claims",
+    "compliance_constraints",
+    "data_privacy_constraints",
+    "tool_permissions",
+    "unavailable_actions",
+    "tone_and_style",
+    "escalation_or_handoff_policy",
+    "stop_request_policy"
+  ],
+  "title": "Campaign Intake Schema",
+  "type": "object"
+}
