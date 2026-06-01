@@ -1,0 +1,45 @@
+[
+  {
+    "buyer_facing": true,
+    "filename": "01_rendered_atlas_system_prompt_v3.md",
+    "purpose": "Clean Atlas system prompt for upload",
+    "required_human_review": true,
+    "side_effects_enabled": false,
+    "source_checkpoint": "PHASE-4O2-TOOL-READY-FULFILLMENT-MODE-ARCHITECTURE-001",
+    "upload_mode": "system_prompt"
+  },
+  {
+    "buyer_facing": false,
+    "filename": "02_rendered_atlas_kb_sales_facts_v3.md",
+    "purpose": "Clean Atlas sales facts and pricing KB for upload",
+    "required_human_review": true,
+    "side_effects_enabled": false,
+    "source_checkpoint": "PHASE-4O2-TOOL-READY-FULFILLMENT-MODE-ARCHITECTURE-001",
+    "upload_mode": "knowledge_base"
+  },
+  {
+    "buyer_facing": false,
+    "filename": "03_rendered_atlas_kb_capability_boundaries_v3.md",
+    "purpose": "Clean Atlas conversation boundaries KB for upload",
+    "required_human_review": true,
+    "side_effects_enabled": false,
+    "source_checkpoint": "PHASE-4O2-TOOL-READY-FULFILLMENT-MODE-ARCHITECTURE-001",
+    "upload_mode": "knowledge_base"
+  },
+  {
+    "buyer_facing": false,
+    "filename": "05_regression_tests_v3.md",
+    "purpose": "Do not upload; regression tests only",
+    "required_human_review": false,
+    "side_effects_enabled": false,
+    "upload_mode": "do_not_upload"
+  },
+  {
+    "buyer_facing": false,
+    "filename": "06_internal_architecture_mapping_reference.md",
+    "purpose": "Do not upload; internal mapping reference only",
+    "required_human_review": false,
+    "side_effects_enabled": false,
+    "upload_mode": "do_not_upload"
+  }
+]
