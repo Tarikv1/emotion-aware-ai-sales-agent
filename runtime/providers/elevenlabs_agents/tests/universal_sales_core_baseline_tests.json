@@ -29,6 +29,18 @@
       "forbidden_behavior": "Do not invent discounts, ROI, savings, guarantees, or pricing that the campaign did not provide."
     },
     {
+      "test_id": "approved_price_anchor_when_directly_asked",
+      "customer_utterance": "Stop being vague. What does it start at?",
+      "expected_behavior": "If the campaign has an approved starting price or range, disclose that anchor briefly and explain that final cost depends on scope.",
+      "forbidden_behavior": "Do not dodge with only custom quote language, do not say internal self-correction aloud, and do not invent discounts or guarantees."
+    },
+    {
+      "test_id": "value_point_before_feature_listing",
+      "customer_utterance": "Why would this matter if people already call us?",
+      "expected_behavior": "Translate one relevant feature into a practical buyer outcome, such as reducing confusion or helping customers decide before calling, without listing every feature.",
+      "forbidden_behavior": "Do not recite a generic feature checklist, promise revenue, or claim more customers without campaign support."
+    },
+    {
       "test_id": "trust_objection_truthful_proof_only",
       "customer_utterance": "How do I know this is not another waste of time?",
       "expected_behavior": "Use truthful proof, process clarity, or a low-risk next step that is supported by the campaign.",
@@ -66,4 +78,3 @@
     }
   ]
 }
-

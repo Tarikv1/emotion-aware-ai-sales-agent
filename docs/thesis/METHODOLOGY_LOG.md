@@ -5553,3 +5553,37 @@ Interpretation:
   - it creates a more honest evaluation layer between hard rubric passing and human-perceived naturalness
   - it records the tradeoff between dynamism and constraint reliability
   - it preserves empirical prompt iteration evidence for the ElevenLabs-hosted voice-agent architecture
+
+### 2026-06-04 - ELEVENLABS-008 value/pricing and internal-leak repair
+
+- Objective: repair screenshot-observed failures that survived the `ELEVENLABS-007` naturalness pass.
+- Action taken:
+  - added campaign-approved Atlas pricing variables for a starting website anchor and premium/immersive scope anchor
+  - updated the universal sales core with value and price-objection rules
+  - patched the web design prompt to block internal self-correction leaks and answer direct price questions with approved anchors
+  - repaired misleading prior agent turns inside the `ELEVENLABS-007` naturalness tests
+  - added six new 9-turn value/pricing stress tests for the ElevenLabs dashboard
+- Method:
+  - treated passing dashboard tests as insufficient because the visible transcript still contained bad sales behavior
+  - separated universal sales advice from campaign-specific pricing
+  - used public sales references only for compact principles: consultative listening, objection handling, and value framing
+  - kept unsupported outcome claims blocked
+- Result:
+  - runtime prompt behavior changed: `true`
+  - universal KB source changed: `true`
+  - campaign pricing facts added: `true`
+  - live agent patched: `true`
+  - live KB document: `42SRCbmq10xDhqIIve73`
+  - value/pricing test folder: `tfld_2301kta29zg4edxb33ja2bbqq1p6`
+  - final value/pricing suite: `suite_0401kta2yzeceppb9nebv28ejst3`, `6/6` passed
+  - sanitized result summary: `research/experiments/generated/ELEVENLABS-008-web-design-value-pricing-repair/value_pricing_results_summary.json`
+  - intermediate failures were preserved and fixed before accepting the result: apology/meta-talk on the free/catch correction path, checklist stuffing on the phone-reservation path, and weak evaluator wording around `why should I look`
+- Boundary:
+  - no private customer data
+  - no API key value logged
+  - no real customer call
+  - no universal claim that Atlas pricing applies to future client campaigns
+- Why it matters for the thesis:
+  - it documents a stricter distinction between test pass/fail and human sales quality
+  - it shows how qualitative human critique can become a concrete regression suite
+  - it keeps value selling grounded in approved campaign facts instead of generic persuasion

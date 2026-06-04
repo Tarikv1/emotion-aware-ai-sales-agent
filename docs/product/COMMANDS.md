@@ -2930,6 +2930,12 @@ Validate the web design dynamism/naturalness stress pack without provider calls:
 python scripts\validate_elevenlabs_007_web_design_dynamism.py
 ```
 
+Validate the web design value/pricing repair pack without provider calls:
+
+```powershell
+python scripts\validate_elevenlabs_008_web_design_value_pricing.py
+```
+
 Build the Mike's Kitchen dynamic test API request bundle without provider calls:
 
 ```powershell
@@ -3063,6 +3069,64 @@ python scripts\run_elevenlabs_agent_automation.py `
   --confirm-provider-write `
   --out research\experiments\generated\ELEVENLABS-007-web-design-dynamism-naturalness\naturalness_tests_plan.json `
   --api-requests-out research\experiments\generated\ELEVENLABS-007-web-design-dynamism-naturalness\naturalness_tests_requests.json
+```
+
+Build the ELEVENLABS-008 value/pricing test API request bundle and folder plan without provider calls:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_mikes_kitchen_value_pricing_tests.package.json `
+  --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
+  --test-folder-name "Atlas Web Studio - Value Pricing Stress" `
+  --out research\experiments\generated\ELEVENLABS-008-web-design-value-pricing-repair\value_pricing_tests_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-008-web-design-value-pricing-repair\value_pricing_tests_requests.json
+```
+
+Upload the updated universal sales core KB document for ELEVENLABS-008:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --package-manifest runtime\providers\elevenlabs_agents\manifests\universal_sales_core.package.json `
+  --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
+  --operation upload-kb `
+  --live `
+  --confirm-provider-write `
+  --out research\experiments\generated\ELEVENLABS-008-web-design-value-pricing-repair\kb_upload_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-008-web-design-value-pricing-repair\kb_upload_requests.json
+```
+
+Patch the live `web design` dashboard agent for ELEVENLABS-008 after the KB upload returns a document ID:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --operation patch-agent `
+  --agent-config runtime\providers\elevenlabs_agents\fixtures\web_design_agent_config.sanitized.json `
+  --kb-document-id <returned_knowledge_base_document_id> `
+  --kb-document-name universal_sales_core.md `
+  --agent-prompt-file runtime\providers\elevenlabs_agents\prompts\web_design_atlas_sales_prompt.md `
+  --first-message-file runtime\providers\elevenlabs_agents\prompts\web_design_first_message.txt `
+  --dynamic-variable-defaults runtime\providers\elevenlabs_agents\variables\mikes_kitchen_dynamic_variable_defaults.json `
+  --agent-temperature 0.25 `
+  --agent-patch-version-scope "ELEVENLABS-008 web design value pricing repair" `
+  --agent-patch-out research\experiments\generated\ELEVENLABS-008-web-design-value-pricing-repair\agent_patch_payload.json `
+  --out research\experiments\generated\ELEVENLABS-008-web-design-value-pricing-repair\agent_patch_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-008-web-design-value-pricing-repair\agent_patch_requests.json `
+  --live `
+  --confirm-provider-write
+```
+
+Create the ELEVENLABS-008 Mike's Kitchen value/pricing tests in ElevenLabs and move them into the value/pricing stress folder:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_mikes_kitchen_value_pricing_tests.package.json `
+  --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
+  --test-folder-name "Atlas Web Studio - Value Pricing Stress" `
+  --operation create-tests `
+  --live `
+  --confirm-provider-write `
+  --out research\experiments\generated\ELEVENLABS-008-web-design-value-pricing-repair\value_pricing_tests_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-008-web-design-value-pricing-repair\value_pricing_tests_requests.json
 ```
 
 Live provider writes require `ELEVENLABS_API_KEY`, `--live`, and `--confirm-provider-write`.

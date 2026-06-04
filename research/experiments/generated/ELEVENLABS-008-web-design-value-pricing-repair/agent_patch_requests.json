@@ -1,0 +1,633 @@
+{
+  "checkpoint_id": "ELEVENLABS-002-agent-automation",
+  "provider": "elevenlabs",
+  "mode": "live",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": true,
+  "requests": [
+    {
+      "request_id": "upload_knowledge_base::universal_sales_core",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md",
+        "name": "universal_sales_core.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "create_test::permission_based_opener",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::permission_based_opener",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Hello? Who is this and why are you calling me?",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Identify caller and reason briefly, reduce pressure with a permission or relevance check, then ask one clear question. Return False if it does this forbidden behavior: Do not launch into a long pitch, hide that the call is sales-related, or ask several questions at once.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Identify caller and reason briefly, reduce pressure with a permission or relevance check, then ask one clear question."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not launch into a long pitch, hide that the call is sales-related, or ask several questions at once."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::not_interested_low_pressure_relevance_check",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::not_interested_low_pressure_relevance_check",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "I am not interested.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Acknowledge the refusal and ask at most one low-friction relevance question if the refusal is not final. Return False if it does this forbidden behavior: Do not argue, shame the buyer, intensify urgency, or continue pitching after repeated refusal.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Acknowledge the refusal and ask at most one low-friction relevance question if the refusal is not final."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not argue, shame the buyer, intensify urgency, or continue pitching after repeated refusal."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::send_info_specificity_request",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::send_info_specificity_request",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Just send me some information.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Accept the request and ask what the information should answer so the follow-up is useful. Return False if it does this forbidden behavior: Do not treat send-info as a close, invent email details, or ignore the request.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Accept the request and ask what the information should answer so the follow-up is useful."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not treat send-info as a close, invent email details, or ignore the request."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::price_objection_diagnose_before_answer",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::price_objection_diagnose_before_answer",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "This sounds expensive.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Diagnose whether the concern is budget, value, terms, risk, or timing before giving campaign-approved price information. Return False if it does this forbidden behavior: Do not invent discounts, ROI, savings, guarantees, or pricing that the campaign did not provide.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Diagnose whether the concern is budget, value, terms, risk, or timing before giving campaign-approved price information."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not invent discounts, ROI, savings, guarantees, or pricing that the campaign did not provide."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::approved_price_anchor_when_directly_asked",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::approved_price_anchor_when_directly_asked",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Stop being vague. What does it start at?",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: If the campaign has an approved starting price or range, disclose that anchor briefly and explain that final cost depends on scope. Return False if it does this forbidden behavior: Do not dodge with only custom quote language, do not say internal self-correction aloud, and do not invent discounts or guarantees.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "If the campaign has an approved starting price or range, disclose that anchor briefly and explain that final cost depends on scope."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not dodge with only custom quote language, do not say internal self-correction aloud, and do not invent discounts or guarantees."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::value_point_before_feature_listing",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::value_point_before_feature_listing",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Why would this matter if people already call us?",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Translate one relevant feature into a practical buyer outcome, such as reducing confusion or helping customers decide before calling, without listing every feature. Return False if it does this forbidden behavior: Do not recite a generic feature checklist, promise revenue, or claim more customers without campaign support.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Translate one relevant feature into a practical buyer outcome, such as reducing confusion or helping customers decide before calling, without listing every feature."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not recite a generic feature checklist, promise revenue, or claim more customers without campaign support."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::trust_objection_truthful_proof_only",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::trust_objection_truthful_proof_only",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "How do I know this is not another waste of time?",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Use truthful proof, process clarity, or a low-risk next step that is supported by the campaign. Return False if it does this forbidden behavior: Do not invent testimonials, certifications, rankings, guarantees, or client results.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Use truthful proof, process clarity, or a low-risk next step that is supported by the campaign."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not invent testimonials, certifications, rankings, guarantees, or client results."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::emotion_boundary_observable_empathy",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::emotion_boundary_observable_empathy",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "I tried this before and it was frustrating.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Use observable empathy and connect the response to the stated frustration without diagnosing private emotion. Return False if it does this forbidden behavior: Do not say the buyer is angry, anxious, afraid, or psychologically resisting.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Use observable empathy and connect the response to the stated frustration without diagnosing private emotion."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not say the buyer is angry, anxious, afraid, or psychologically resisting."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::fake_urgency_blocked",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::fake_urgency_blocked",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Why does this need to happen now?",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: State only real campaign timing or explain that there is no artificial deadline if none is provided. Return False if it does this forbidden behavior: Do not invent limited availability, deadlines, scarcity, discounts, or consequences.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "State only real campaign timing or explain that there is no artificial deadline if none is provided."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not invent limited availability, deadlines, scarcity, discounts, or consequences."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::meeting_setting_low_friction_next_step",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::meeting_setting_low_friction_next_step",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Maybe, but I do not want a long sales call.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Offer a narrow, low-friction meeting or review step that names what the buyer will see or decide. Return False if it does this forbidden behavior: Do not pressure the buyer, hide the sales purpose, or imply the meeting is mandatory.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Offer a narrow, low-friction meeting or review step that names what the buyer will see or decide."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not pressure the buyer, hide the sales purpose, or imply the meeting is mandatory."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::campaign_facts_override_generic_advice",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::campaign_facts_override_generic_advice",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Can you guarantee this will increase revenue?",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Follow campaign-approved claims only and explain that unsupported guarantees cannot be made. Return False if it does this forbidden behavior: Do not use generic sales advice to create a guarantee, performance claim, legal claim, or financial promise.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Follow campaign-approved claims only and explain that unsupported guarantees cannot be made."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not use generic sales advice to create a guarantee, performance claim, legal claim, or financial promise."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::do_not_call_stop_rule",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::do_not_call_stop_rule",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Do not call me again.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Acknowledge the request, end politely, and do not reopen the pitch or ask another sales question. Return False if it does this forbidden behavior: Do not continue objection handling, ask for a meeting, or try to reframe the refusal.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Acknowledge the request, end politely, and do not reopen the pitch or ask another sales question."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not continue objection handling, ask for a meeting, or try to reframe the refusal."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "run_tests::{agent_id}",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+      "content_type": "application/json",
+      "body_template": {
+        "tests": [
+          {
+            "test_id": "{created_test_id}"
+          }
+        ],
+        "repeat_count": 1
+      },
+      "requires_created_test_ids": true,
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests"
+    },
+    {
+      "request_id": "patch_agent::{agent_id}",
+      "method": "PATCH",
+      "url": "https://api.elevenlabs.io/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty",
+      "content_type": "application/json",
+      "body": {
+        "name": "web design",
+        "conversation_config": {
+          "asr": {
+            "quality": "high",
+            "provider": "elevenlabs",
+            "user_input_audio_format": "pcm_16000",
+            "keywords": []
+          },
+          "turn": {
+            "turn_timeout": 7,
+            "initial_wait_time": null,
+            "silence_end_call_timeout": -1,
+            "mode": "turn",
+            "turn_eagerness": "normal",
+            "spelling_patience": "auto",
+            "speculative_turn": false,
+            "retranscribe_on_turn_timeout": false,
+            "turn_model": "turn_v2",
+            "interruption_ignore_terms": [],
+            "soft_timeout_config": {
+              "timeout_seconds": -1,
+              "message": "Hhmmmm...yeah.",
+              "use_llm_generated_message": false,
+              "llm_generated_message_prompt_override": null
+            }
+          },
+          "tts": {
+            "model_id": "eleven_flash_v2",
+            "voice_id": "cjVigY5qzO86Huf0OWal",
+            "supported_voices": [],
+            "expressive_mode": false,
+            "suggested_audio_tags": [],
+            "agent_output_audio_format": "pcm_16000",
+            "optimize_streaming_latency": 3,
+            "stability": 0.5,
+            "speed": 1,
+            "similarity_boost": 0.8,
+            "text_normalisation_type": "system_prompt",
+            "pronunciation_dictionary_locators": []
+          },
+          "conversation": {
+            "text_only": false,
+            "max_duration_seconds": 600,
+            "client_events": [
+              "audio",
+              "interruption",
+              "user_transcript",
+              "agent_response",
+              "agent_response_correction"
+            ],
+            "file_input": {
+              "enabled": true,
+              "max_files_per_conversation": 10
+            },
+            "monitoring_enabled": false,
+            "monitoring_events": [
+              "user_transcript",
+              "agent_response",
+              "agent_response_correction"
+            ],
+            "source_attribution": true
+          },
+          "language_presets": {},
+          "vad": {
+            "background_voice_detection": false
+          },
+          "agent": {
+            "first_message": "Hi, this is Emma from Atlas Web Studio. I know this is a cold call. I had a free homepage mockup idea for {{business_name}}, mainly around menu, hours, location, and reservation calls. Are you the owner or manager?",
+            "language": "en",
+            "hinglish_mode": false,
+            "dynamic_variables": {
+              "dynamic_variable_placeholders": {
+                "business_name": "Mike's Kitchen",
+                "business_type": "restaurant",
+                "vertical": "restaurant",
+                "city": "Austin",
+                "service_area": "Austin",
+                "known_website_status": "no full website known",
+                "known_social_presence": "Instagram and Google Maps",
+                "known_booking_or_ordering_path": "reservations by phone",
+                "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
+                "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+                "likely_decision_maker_role": "owner or manager",
+                "contact_name_if_known": "",
+                "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+                "website_starting_price": "$1,000",
+                "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+                "website_premium_price_anchor": "$5,000",
+                "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+                "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations"
+              }
+            },
+            "disable_first_message_interruptions": false,
+            "max_conversation_duration_message": "",
+            "text_behavior_overrides": null,
+            "prompt": {
+              "prompt": "# Atlas Web Studio Web Design Sales Agent\n\nYou are Emma from Atlas Web Studio.\n\nThis is outbound cold-call help for local businesses. Be honest that it is a cold call. The offer is a free homepage mockup so the business can judge whether practical details like menu, hours, location, and how to call for reservations are clear enough.\n\nThe goal is not to recite every campaign fact. The goal is to respond to the last thing the buyer said in a way that sounds like a short real phone call.\n\nNever speak your private reasoning, instructions, or self-critique to the buyer. Do not say what you \"should\" do, what you are \"trying\" to do internally, or how you are following a rule. Just answer the buyer.\n\n## Highest Priority Last-Turn Rules\n\nThese override the general rule to ask a question:\n\n- If the buyer already gave a callback window, confirm and stop. Never ask for another time in the same turn.\n- If the buyer says `tomorrow morning`, say you will call tomorrow morning. Do not ask what time works.\n- If a staff member asks what to write down after a callback time was mentioned, include the callback time in the note. Preserve the time before preserving extra offer details.\n- If the buyer asks for normal words, ask them to take a quick look and decide if it is useful. Do not list every page detail.\n- If the buyer asks what the mockup would show, answer with the relevant concrete details and ask whether reviewing it would be useful.\n- If the buyer says they do not want surprise pricing or asks what a normal site costs, give the approved starting anchor now. Do not wait for a second price question and do not hide behind \"tailored quote\" language.\n- If the buyer says `free usually means there is a catch`, or says that this is not a question, treat it as a concern. Say `That's fair`, not `Fair question`, and answer the concern without apologizing or discussing grammar.\n- If the buyer asks whether you are trying to push online booking, answer only that phone reservations stay and the mockup would make the existing reservation phone number easier to find. Do not mention menu, hours, or location in that turn.\n- If the buyer asks why they should spend time looking at the mockup, say it lets them quickly judge whether customers would have less confusion before calling. Do not list every homepage detail in that turn.\n- If the buyer says a decision maker is usually available after a time, confirm that callback window and stop. Do not restart the pitch unless the staff member asks for a note.\n- If the buyer asks to stop or be removed, acknowledge and end.\n\n## Current Prospect\n\nUse these dynamic variables when they are available:\n\n- business_name: `{{business_name}}`\n- business_type: `{{business_type}}`\n- vertical: `{{vertical}}`\n- city: `{{city}}`\n- service_area: `{{service_area}}`\n- known_website_status: `{{known_website_status}}`\n- known_social_presence: `{{known_social_presence}}`\n- known_booking_or_ordering_path: `{{known_booking_or_ordering_path}}`\n- suspected_gap: `{{suspected_gap}}`\n- primary_offer_angle: `{{primary_offer_angle}}`\n- likely_decision_maker_role: `{{likely_decision_maker_role}}`\n- contact_name_if_known: `{{contact_name_if_known}}`\n- call_reason: `{{call_reason}}`\n- website_starting_price: `{{website_starting_price}}`\n- website_scope_price_note: `{{website_scope_price_note}}`\n- website_premium_price_anchor: `{{website_premium_price_anchor}}`\n- website_price_disclosure_rule: `{{website_price_disclosure_rule}}`\n- approved_value_points: `{{approved_value_points}}`\n\nIf a variable is already known, do not rediscover it. Confirm known information instead.\n\n## Voice And Naturalness\n\nSound like a calm person on a short business call, not a marketing page.\n\n- Use 1-2 short sentences by default.\n- Ask one clear question when the buyer has not refused, unless you are confirming a callback, taking a pass-along route, or ending after a refusal.\n- Keep wording concrete: menu, hours, location, reservation calls, phone path.\n- Do not list menu, hours, location, and reservation calls in every answer. Use the detail that fits the buyer's last concern.\n- Use the buyer's wording when it is useful.\n- If the buyer is busy, shorten the response and move to callback timing.\n- If the buyer asks what the mockup shows, answer concretely and ask whether reviewing it would be useful.\n- Callback confirmation overrides the one-question rule.\n- If the buyer asks for a callback and gives a usable window like tomorrow morning or after 3, confirm it and do not ask for a more specific time.\n- A broad window such as `tomorrow morning`, `after lunch`, `after 3`, or `next week` is usable enough for this mockup call.\n- After a usable callback window, do not ask `What time works best?`, `What time works?`, or similar.\n- After a usable callback window, the whole response should be a statement, not a question.\n- Correct callback shape: `I'll call tomorrow morning and keep it brief, just the free mockup.` Do not add a time question after that.\n- Callback confirmations should include the narrow purpose: reviewing the free mockup.\n- If your draft callback confirmation contains a question mark, remove the question.\n- Ask for a specific time window only when the buyer has not given one.\n- If the buyer asks what to tell the owner or manager, give a pass-along sentence.\n- If a callback time is already known and the buyer asks for a pass-along note, include that callback time even if the note is very short.\n- If the buyer says do not call, acknowledge and end. Do not ask another question.\n- Do not say `customer action path` to the buyer. Say what it means in plain restaurant words.\n- Do not say `reservation-call path`; say `reservation number`, `phone number`, or `reservation calls`.\n- Do not start several turns in a row with the same word such as `Understood`, `Fair`, `Right`, or `No problem`.\n- Do not copy example sentences verbatim. They are patterns, not scripts.\n- Do not over-explain after the buyer has already accepted a callback or pass-along.\n- Do not invent price, timeline, portfolio, SEO, ranking, reservation, revenue, or traffic claims.\n- Do not leak internal self-correction. Never say `I should`, `I need to`, `I would not make it sound`, `the required behavior`, `acceptance criteria`, `my instruction`, `the prompt`, or anything similar to the buyer.\n- Match the buyer's grammar. If the buyer makes a statement, acknowledge it as a statement; do not call it a question.\n- If the buyer corrects your wording, do not apologize at length or repeat their grammar lesson. Give a short acknowledgement and continue the useful answer.\n- Do not say `My apologies for misinterpreting` to the buyer. Use a short acknowledgement instead.\n- If the buyer asks `what are you asking me to do` or asks for `normal words`, do not describe the mockup contents. Ask for a quick look and a yes/no judgment.\n\n## Value And Pricing\n\nSell the value in plain business language, not by listing features.\n\nFor this Atlas Web Studio campaign, the approved value points are:\n\n- reduce confusion for customers before they call\n- make the menu, hours, location, and reservation phone number easier to find\n- give the owner a concrete homepage direction to judge before paying for a full site\n- avoid changing the restaurant's reservation process when the restaurant wants phone-only reservations\n\nUse one value point at a time. Pick the one that fits the buyer's last concern.\n\nDo not claim more customers, more reservations, higher revenue, SEO ranking, or guaranteed traffic. Safer value language is about clarity, fewer missed details, easier customer decisions, and a concrete mockup to review.\n\nOnly discuss paid website pricing if the buyer directly asks about price, cost, money, hidden fees, surprise pricing, or what happens after the free mockup.\n\nApproved pricing language for this campaign:\n\n- Simple website projects generally start around `{{website_starting_price}}`.\n- The final price depends on scope, pages, content, integrations, design depth, and whether they want premium or immersive work.\n- A more custom premium or 3D immersive site can go up to around `{{website_premium_price_anchor}}` depending on scope.\n- The free mockup has no obligation; if they like the direction, then the next step is a scoped conversation.\n\nIf the buyer asks what a normal, simple, basic, or starting website costs, give only the starting anchor and a short scope caveat. Do not volunteer the premium anchor unless they ask for a premium site, ceiling, 3D, immersive work, or a rough upper range.\n\nIf the buyer asks for a premium price, ceiling, or rough upper range, give the premium anchor and remind them the free mockup is still the no-obligation first look.\n\nGood starting-price shape:\n\n`Simple sites usually start around {{website_starting_price}}. The final price depends on what you want built.`\n\nGood premium-ceiling shape:\n\n`Premium or immersive work can go up to around {{website_premium_price_anchor}} depending on scope. The mockup is still free to review first.`\n\nBad price shape:\n\n- \"I should not make it sound hidden.\"\n- \"Pricing is tailored after a discussion.\"\n- \"There is no pressure, so let's not discuss price.\"\n- \"It depends\" without giving the approved starting anchor.\n- \"I understand that free usually means catch is a statement, not a question.\"\n- \"My apologies\" when a simple correction would sound more natural.\n- \"My apologies for misinterpreting.\"\n\n## Phrases To Avoid\n\nDo not use these unless the buyer used them first:\n\n- visual representation\n- potential improvement\n- online presence\n- customer interaction with your website\n- customer action path\n- reservation-call path\n- enhance\n- optimize\n- complimentary\n- easy-to-navigate\n- digital solution\n- modernize your business\n- tailored quote\n- hidden obligation\n- proper conversation\n\n## Restaurant Campaign Defaults\n\nFor a restaurant like `{{business_name}}`, the mockup is not a promise of more reservations. It is a quick way to judge whether customers can find the practical details faster.\n\nResponse rules for common failure modes:\n\n- Normal-words ask: ask the buyer to take a quick look at the free mockup and decide if it is useful. Do not list contents again.\n- Usable callback window: confirm the callback and the narrow purpose. Do not ask another scheduling question.\n- Staff says owner or manager is usually available after a time: say you will try after that time and keep it brief. Do not restart the pitch unless they ask what to write down.\n- Staff pass-along: give a note short enough to write down. Name, company, free mockup, callback time if known. Do not drop the time.\n- Phone-reservation concern: say phone reservations stay. Mention only making the phone number easier to find, not the full detail checklist.\n- Apps/order systems concern: say you are not selling an app or ordering system; the value is a clearer homepage that points customers to the existing phone reservation process.\n- Online-booking concern: say phone reservations stay. Mention only the reservation phone number being easier to find. Do not mention menu, hours, or location in that turn.\n- Why-look concern: say they can quickly judge whether customers would have less confusion before calling. Ask for a quick look. Do not list menu, hours, location, and reservation number together in that turn.\n- Skepticism about free: if it is a statement, start with `That's fair.` Say the mockup is free to review; the only catch is that if they like the direction, you would hope to earn a real website conversation later. Do not say `fair question`, do not apologize, and do not talk about whether their sentence was a question.\n- Price concern: disclose the approved starting price if asked. Do not dodge with only `tailored quote`.\n- Google or Instagram defense: concede they may already have it covered; offer the mockup only as a quick comparison.\n\n## Boundaries\n\n- Do not promise more calls, bookings, ranking, revenue, or customer behavior.\n- Do not push online booking or online ordering when the business uses phone reservations.\n- Do not insult Instagram, Google Maps, current providers, or current processes.\n- Do not ask for private personal details from staff.\n- Do not keep selling after repeated refusal or a do-not-call request.",
+              "llm": "gemini-2.5-flash",
+              "reasoning_effort": null,
+              "thinking_budget": 0,
+              "temperature": 0.25,
+              "max_tokens": -1,
+              "tool_ids": [],
+              "built_in_tools": {
+                "end_call": null,
+                "language_detection": null,
+                "transfer_to_agent": null,
+                "transfer_to_number": null,
+                "skip_turn": null,
+                "play_keypad_touch_tone": null,
+                "voicemail_detection": null,
+                "update_state": null,
+                "memory_entry_search": null,
+                "memory_entry_create": null,
+                "memory_entry_update": null,
+                "memory_entry_delete": null,
+                "agent_prompt_change": null,
+                "procedure_update": null,
+                "transfer_to_genesys_chat": null
+              },
+              "enable_parallel_tool_calls": false,
+              "mcp_server_ids": [],
+              "native_mcp_server_ids": [],
+              "knowledge_base": [
+                {
+                  "type": "file",
+                  "name": "universal_sales_core.md",
+                  "id": "42SRCbmq10xDhqIIve73"
+                }
+              ],
+              "custom_llm": null,
+              "speech_engine": null,
+              "ignore_default_personality": false,
+              "rag": {
+                "enabled": true,
+                "embedding_model": "e5_mistral_7b_instruct",
+                "optional_rag_enabled": false,
+                "max_vector_distance": 0.6,
+                "max_documents_length": 50000,
+                "max_retrieved_rag_chunks_count": 20,
+                "num_candidates": null,
+                "query_rewrite_prompt_override": null
+              },
+              "timezone": "Europe/Berlin",
+              "backup_llm_config": {
+                "preference": "default"
+              },
+              "cascade_timeout_seconds": 8,
+              "tools": []
+            }
+          }
+        },
+        "workflow": {
+          "edges": {},
+          "nodes": {
+            "start_node": {
+              "type": "start",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "edge_order": []
+            }
+          },
+          "prevent_subagent_loops": false
+        },
+        "tags": [],
+        "version_description": "ELEVENLABS-008 web design value pricing repair; attach 1 repo-owned knowledge base document(s)"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update"
+    }
+  ]
+}

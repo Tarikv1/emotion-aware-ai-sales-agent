@@ -336,6 +336,7 @@ def build_agent_patch_payload(
     first_message_override: str | None = None,
     dynamic_variable_placeholders: dict[str, Any] | None = None,
     agent_temperature: float | None = None,
+    patch_version_scope: str | None = None,
 ) -> dict[str, Any]:
     if not kb_documents:
         raise ValueError("At least one KB document ID is required for an agent patch payload.")
@@ -378,7 +379,7 @@ def build_agent_patch_payload(
     if not isinstance(rag, dict):
         raise ValueError("Copied agent config prompt.rag must be an object.")
     rag["enabled"] = True
-    version_scope = (
+    version_scope = patch_version_scope or (
         "ELEVENLABS-007 web design dynamism patch"
         if agent_temperature is not None
         else "ELEVENLABS-006 web design prompt naturalness patch"
@@ -404,6 +405,7 @@ def build_agent_patch_draft(
     first_message_override: str | None = None,
     dynamic_variable_placeholders: dict[str, Any] | None = None,
     agent_temperature: float | None = None,
+    patch_version_scope: str | None = None,
 ) -> dict[str, Any]:
     endpoint_agent = agent_id or "{agent_id}"
     if agent_config_path and kb_documents:
@@ -420,6 +422,7 @@ def build_agent_patch_draft(
             first_message_override=first_message_override,
             dynamic_variable_placeholders=dynamic_variable_placeholders,
             agent_temperature=agent_temperature,
+            patch_version_scope=patch_version_scope,
         )
         patch_out = patch_payload_out or DEFAULT_AGENT_PATCH
         write_json(patch_out, patch_payload)
@@ -464,6 +467,7 @@ def build_plan(
     first_message_override: str | None = None,
     dynamic_variable_placeholders: dict[str, Any] | None = None,
     agent_temperature: float | None = None,
+    patch_version_scope: str | None = None,
 ) -> dict[str, Any]:
     manifest = load_package(package_manifest_path)
     package_id = str(manifest["package_id"])
@@ -501,6 +505,7 @@ def build_plan(
             first_message_override=first_message_override,
             dynamic_variable_placeholders=dynamic_variable_placeholders,
             agent_temperature=agent_temperature,
+            patch_version_scope=patch_version_scope,
         ),
         "test_folder": {
             "folder_name": None,
@@ -907,6 +912,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--first-message-file", default=None)
     parser.add_argument("--dynamic-variable-defaults", default=None)
     parser.add_argument("--agent-temperature", type=float, default=None)
+    parser.add_argument("--agent-patch-version-scope", default=None)
     parser.add_argument("--kb-document-id", action="append", default=[])
     parser.add_argument("--kb-document-name", action="append", default=[])
     parser.add_argument(
@@ -950,6 +956,7 @@ def main(argv: list[str] | None = None) -> None:
         first_message_override=first_message_override,
         dynamic_variable_placeholders=dynamic_variable_placeholders,
         agent_temperature=args.agent_temperature,
+        patch_version_scope=args.agent_patch_version_scope,
     )
     requests_bundle = build_api_requests_bundle(plan)
     plan["test_folder"] = {

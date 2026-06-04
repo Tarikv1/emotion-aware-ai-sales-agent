@@ -11,5 +11,10 @@
   "primary_offer_angle": "menu, hours, location, and reservation phone calls",
   "likely_decision_maker_role": "owner or manager",
   "contact_name_if_known": "",
-  "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place"
+  "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+  "website_starting_price": "$1,000",
+  "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+  "website_premium_price_anchor": "$5,000",
+  "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+  "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations"
 }

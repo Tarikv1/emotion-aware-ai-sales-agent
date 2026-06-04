@@ -17,7 +17,12 @@
     "primary_offer_angle": "menu, hours, location, and reservation phone calls",
     "likely_decision_maker_role": "owner or manager",
     "contact_name_if_known": "",
-    "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place"
+    "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+    "website_starting_price": "$1,000",
+    "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+    "website_premium_price_anchor": "$5,000",
+    "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+    "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations"
   },
   "tests": [
     {
@@ -50,7 +55,7 @@
         },
         {
           "role": "agent",
-          "message": "That makes sense. I would not change phone reservations; I would just show how the phone path could be easier to find.",
+          "message": "That makes sense. I would keep phone reservations; the mockup just shows whether the phone number is easier to find.",
           "time_in_call_secs": 32
         },
         {
@@ -154,7 +159,7 @@
         },
         {
           "role": "agent",
-          "message": "Fair question. The mockup is free so you can see the direction before deciding whether a proper conversation is worth it.",
+          "message": "That's fair. The mockup is free so you can see the direction before deciding whether a real website conversation is worth it.",
           "time_in_call_secs": 18
         },
         {
@@ -183,8 +188,8 @@
           "time_in_call_secs": 53
         }
       ],
-      "expected_behavior": "Answer transparently in natural spoken language that there is no hidden obligation: the free mockup is a way to judge the direction first, and if they like it then a real website conversation can happen. It should sound candid, not evasive or salesy.",
-      "forbidden_behavior": "Do not say there is no sales purpose, do not promise results, do not invent pricing, do not use fake urgency, and do not make the free offer sound like a trick.",
+      "expected_behavior": "Answer transparently in natural spoken language that the only catch is that Atlas hopes to earn a real website conversation if they like the free direction. It should sound candid, not evasive or salesy, and it should treat the earlier catch line as a statement, not a question.",
+      "forbidden_behavior": "Do not say there is no sales purpose, do not say Fair question for a statement, do not promise results, do not invent pricing, do not use fake urgency, and do not make the free offer sound like a trick.",
       "dynamic_variables": {
         "scenario_focus": "free_catch",
         "naturalness_priority": "transparent_skepticism_response",
@@ -221,7 +226,7 @@
         },
         {
           "role": "agent",
-          "message": "Got it. I was calling about a free homepage mockup idea for the restaurant.",
+          "message": "Got it. I'll try after 3 and keep it brief.",
           "time_in_call_secs": 31
         },
         {
@@ -240,8 +245,8 @@
           "time_in_call_secs": 52
         }
       ],
-      "expected_behavior": "Give a very short, natural pass-along note the staff member can write down, with caller name, company, free mockup, and callback after 3. It should not restart the pitch or pressure the staff member.",
-      "forbidden_behavior": "Do not give a long paragraph, do not ask the staff member to decide, do not ask for private owner contact details, and do not repeat the whole restaurant-detail checklist.",
+      "expected_behavior": "Give a very short, natural pass-along note the staff member can write down, with caller name, company, free mockup, and callback after 3. It should not restart the pitch or pressure the staff member, and the earlier after-3 turn should be treated as an accepted callback window.",
+      "forbidden_behavior": "Do not give a long paragraph, do not restart the pitch after the staff member says usually after 3, do not ask the staff member to decide, do not ask for private owner contact details, and do not repeat the whole restaurant-detail checklist.",
       "dynamic_variables": {
         "scenario_focus": "staff_passalong",
         "naturalness_priority": "short_note",
@@ -325,7 +330,7 @@
         },
         {
           "role": "agent",
-          "message": "I am not calling about an app or ordering system.",
+          "message": "No apps or ordering systems. This is just a homepage mockup to make the existing reservation number easier to find.",
           "time_in_call_secs": 17
         },
         {
@@ -355,7 +360,7 @@
         }
       ],
       "expected_behavior": "Clearly confirm no online booking push, keep phone reservations as-is, and explain in one natural sentence that the mockup can make the phone number easier to find. It may ask one low-pressure review question.",
-      "forbidden_behavior": "Do not suggest online booking, ordering, apps, software, modernization, or operational changes. Do not repeat the entire pitch.",
+      "forbidden_behavior": "Do not suggest online booking, ordering, apps, software, modernization, or operational changes. Do not repeat the entire pitch or list menu, hours, and location when the buyer is only asking about phone reservations.",
       "dynamic_variables": {
         "scenario_focus": "phone_reservations_no_booking",
         "naturalness_priority": "direct_boundary_confirmation",
@@ -402,7 +407,7 @@
         },
         {
           "role": "agent",
-          "message": "Fair. I should not make it sound hidden.",
+          "message": "Fair. Simple websites usually start around $1,000, and bigger custom work goes up from there.",
           "time_in_call_secs": 44
         },
         {
@@ -411,8 +416,8 @@
           "time_in_call_secs": 51
         }
       ],
-      "expected_behavior": "Be transparent in natural spoken language that the current call is only about a free mockup and that pricing would need a proper scope conversation if they liked it. It must not invent a price or dodge the money concern.",
-      "forbidden_behavior": "Do not invent a price, discount, guarantee, package, hidden fee, or fake certainty. Do not pretend the business model is not sales-related.",
+      "expected_behavior": "Be transparent in natural spoken language: simple sites generally start around $1,000, and more custom or immersive work can go up toward about $5,000 depending on scope. It should still say the free mockup has no obligation. It must not dodge the money concern.",
+      "forbidden_behavior": "Do not say I should, I need to, I would not make it sound hidden, acceptance criteria, prompt, or other internal reasoning. Do not dodge with only tailored quote language. Do not invent discounts, guarantees, hidden fees, or fake certainty.",
       "dynamic_variables": {
         "scenario_focus": "price_question",
         "naturalness_priority": "transparent_no_price_invention",

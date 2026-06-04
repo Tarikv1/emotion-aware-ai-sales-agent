@@ -41,3 +41,7 @@ Current packages:
 - `ELEVENLABS-007-web-design-dynamism-naturalness`: stricter Mike's Kitchen
   naturalness stress tests plus a controlled prompt/temperature patch so the
   agent is less checklist-driven and less deterministic.
+- `ELEVENLABS-008-web-design-value-pricing-repair`: value/pricing prompt and
+  KB repair plus stress tests for price disclosure, internal-reasoning leaks,
+  statement-vs-question handling, callback brevity, and restaurant-specific
+  value framing.

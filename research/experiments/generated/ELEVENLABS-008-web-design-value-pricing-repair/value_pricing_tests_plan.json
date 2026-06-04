@@ -1,0 +1,707 @@
+{
+  "checkpoint_id": "ELEVENLABS-002-agent-automation",
+  "package_id": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests",
+  "provider": "elevenlabs",
+  "mode": "live",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and manual upload surface",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "Atlas Universal Sales Core",
+  "api_base_url": "https://api.elevenlabs.io",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "provider_writes_require": [
+    "--live",
+    "--confirm-provider-write"
+  ],
+  "knowledge_base_upload_requests": [],
+  "test_create_requests": [
+    {
+      "request_id": "create_test::value_pricing_direct_starting_price",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "value_pricing_direct_starting_price",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests::value_pricing_direct_starting_price",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Mike's Kitchen.",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I know this is a cold call. I had a free homepage mockup idea for Mike's Kitchen.",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "Free mockup, then you charge me later.",
+            "time_in_call_secs": 12
+          },
+          {
+            "role": "agent",
+            "message": "If you like the direction, yes, we could talk about a real site later. The mockup itself is just the first look.",
+            "time_in_call_secs": 19
+          },
+          {
+            "role": "user",
+            "message": "I do not want surprise pricing.",
+            "time_in_call_secs": 27
+          },
+          {
+            "role": "agent",
+            "message": "Fair. Simple websites usually start around $1,000, and the final price depends on what you want built.",
+            "time_in_call_secs": 34
+          },
+          {
+            "role": "user",
+            "message": "What if I just wanted something basic?",
+            "time_in_call_secs": 41
+          },
+          {
+            "role": "agent",
+            "message": "Then I would keep the scope basic and show that direction first.",
+            "time_in_call_secs": 47
+          },
+          {
+            "role": "user",
+            "message": "So what does a normal website start at?",
+            "time_in_call_secs": 54
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Give the approved starting anchor in natural spoken language: simple websites generally start around $1,000. Add a short scope caveat and no pressure around the free mockup. Return False if it does this forbidden behavior: Do not dodge with only tailored quote language, do not say I should or I need to, do not volunteer the premium $5,000 ceiling unless asked, do not invent a discount, and do not promise revenue, rankings, bookings, or traffic.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Give the approved starting anchor in natural spoken language: simple websites generally start around $1,000. Add a short scope caveat and no pressure around the free mockup."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not dodge with only tailored quote language, do not say I should or I need to, do not volunteer the premium $5,000 ceiling unless asked, do not invent a discount, and do not promise revenue, rankings, bookings, or traffic."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-value-pricing-tests",
+          "source_package_id": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
+          "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+          "website_starting_price": "$1,000",
+          "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+          "website_premium_price_anchor": "$5,000",
+          "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+          "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations",
+          "scenario_focus": "direct_price_anchor",
+          "naturalness_priority": "transparent_price_disclosure",
+          "scenario_turn_count": 9
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::value_pricing_higher_scope_range",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "value_pricing_higher_scope_range",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests::value_pricing_higher_scope_range",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "What do you want?",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Emma from Atlas Web Studio. I had a free homepage mockup idea for Mike's Kitchen.",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "I do not want a cheap template.",
+            "time_in_call_secs": 12
+          },
+          {
+            "role": "agent",
+            "message": "That is fair. The point is to show a direction first, not force a template.",
+            "time_in_call_secs": 18
+          },
+          {
+            "role": "user",
+            "message": "And if I wanted something premium?",
+            "time_in_call_secs": 25
+          },
+          {
+            "role": "agent",
+            "message": "Then scope matters: pages, content, design depth, and any custom pieces.",
+            "time_in_call_secs": 32
+          },
+          {
+            "role": "user",
+            "message": "No apps or ordering system though.",
+            "time_in_call_secs": 39
+          },
+          {
+            "role": "agent",
+            "message": "That is fine. I am talking about the website itself, not an ordering system.",
+            "time_in_call_secs": 46
+          },
+          {
+            "role": "user",
+            "message": "Give me a rough ceiling, not a mystery.",
+            "time_in_call_secs": 53
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Answer that premium or immersive custom work can go up toward about $5,000 depending on scope, while keeping the free mockup as the no-obligation first step. Return False if it does this forbidden behavior: Do not refuse to discuss price, do not say $5,000 or more, do not give a fake exact quote, do not invent financing or discounts, and do not claim price certainty without scope.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Answer that premium or immersive custom work can go up toward about $5,000 depending on scope, while keeping the free mockup as the no-obligation first step."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not refuse to discuss price, do not say $5,000 or more, do not give a fake exact quote, do not invent financing or discounts, and do not claim price certainty without scope."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-value-pricing-tests",
+          "source_package_id": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
+          "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+          "website_starting_price": "$1,000",
+          "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+          "website_premium_price_anchor": "$5,000",
+          "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+          "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations",
+          "scenario_focus": "premium_scope_range",
+          "naturalness_priority": "rough_range_without_fake_quote",
+          "scenario_turn_count": 9
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::value_statement_not_fair_question",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "value_statement_not_fair_question",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests::value_statement_not_fair_question",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Mike's Kitchen, go ahead.",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. This is a cold call about a free homepage mockup for Mike's Kitchen.",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "Free usually means there is a catch.",
+            "time_in_call_secs": 12
+          },
+          {
+            "role": "agent",
+            "message": "That's fair. The catch is that if you like the free direction, I would hope to earn a real website conversation later.",
+            "time_in_call_secs": 19
+          },
+          {
+            "role": "user",
+            "message": "So it is a sales call.",
+            "time_in_call_secs": 26
+          },
+          {
+            "role": "agent",
+            "message": "Yes. I do not want to hide that. The free mockup just lets you judge the direction first.",
+            "time_in_call_secs": 33
+          },
+          {
+            "role": "user",
+            "message": "Then do not call it a question.",
+            "time_in_call_secs": 40
+          },
+          {
+            "role": "agent",
+            "message": "Fair. It is a concern, and I get it.",
+            "time_in_call_secs": 46
+          },
+          {
+            "role": "user",
+            "message": "Free usually means catch. That is not a question.",
+            "time_in_call_secs": 53
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Acknowledge the statement naturally with wording like That's fair, then explain there is no obligation from the free mockup and Atlas hopes to earn a website conversation if the direction is useful. Return False if it does this forbidden behavior: Do not say Fair question, do not argue that it was a question, do not apologize at length, do not hide the sales purpose, and do not promise outcomes.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Acknowledge the statement naturally with wording like That's fair, then explain there is no obligation from the free mockup and Atlas hopes to earn a website conversation if the direction is useful."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not say Fair question, do not argue that it was a question, do not apologize at length, do not hide the sales purpose, and do not promise outcomes."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-value-pricing-tests",
+          "source_package_id": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
+          "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+          "website_starting_price": "$1,000",
+          "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+          "website_premium_price_anchor": "$5,000",
+          "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+          "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations",
+          "scenario_focus": "statement_not_question",
+          "naturalness_priority": "grammar_sensitive_acknowledgement",
+          "scenario_turn_count": 9
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::value_staff_after_three_callback_only",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "value_staff_after_three_callback_only",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests::value_staff_after_three_callback_only",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Mike's Kitchen.",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. Is the owner or manager around?",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "No, I just work the counter.",
+            "time_in_call_secs": 12
+          },
+          {
+            "role": "agent",
+            "message": "Thanks. I do not want to put the decision on you. Is there a better time to catch them?",
+            "time_in_call_secs": 19
+          },
+          {
+            "role": "user",
+            "message": "The owner is usually in after 3.",
+            "time_in_call_secs": 26
+          },
+          {
+            "role": "agent",
+            "message": "Got it. I'll try after 3 and keep it brief.",
+            "time_in_call_secs": 32
+          },
+          {
+            "role": "user",
+            "message": "What is this about again?",
+            "time_in_call_secs": 39
+          },
+          {
+            "role": "agent",
+            "message": "A free homepage mockup idea. I will keep it short when I call back after 3.",
+            "time_in_call_secs": 46
+          },
+          {
+            "role": "user",
+            "message": "Usually after 3. Just call back then.",
+            "time_in_call_secs": 53
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Confirm the callback after 3 in one short statement and stop. It should not restart the pitch, ask another scheduling question, or pressure the staff member. Return False if it does this forbidden behavior: Do not explain the mockup details again, do not ask for the owner's private contact details, do not ask what exact time after 3, and do not ask the staff member to decide.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Confirm the callback after 3 in one short statement and stop. It should not restart the pitch, ask another scheduling question, or pressure the staff member."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not explain the mockup details again, do not ask for the owner's private contact details, do not ask what exact time after 3, and do not ask the staff member to decide."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-value-pricing-tests",
+          "source_package_id": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
+          "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+          "website_starting_price": "$1,000",
+          "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+          "website_premium_price_anchor": "$5,000",
+          "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+          "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations",
+          "scenario_focus": "staff_callback_window",
+          "naturalness_priority": "callback_confirmation_only",
+          "scenario_turn_count": 9
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::value_phone_reservation_single_value_point",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "value_phone_reservation_single_value_point",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests::value_phone_reservation_single_value_point",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "This is Mike's.",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had a free homepage mockup idea for Mike's Kitchen.",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "We do not need apps or ordering systems.",
+            "time_in_call_secs": 12
+          },
+          {
+            "role": "agent",
+            "message": "No apps or ordering systems. This is just a homepage mockup to make the existing reservation number easier to find.",
+            "time_in_call_secs": 19
+          },
+          {
+            "role": "user",
+            "message": "Reservations are by phone only.",
+            "time_in_call_secs": 26
+          },
+          {
+            "role": "agent",
+            "message": "That is the path I would keep.",
+            "time_in_call_secs": 32
+          },
+          {
+            "role": "user",
+            "message": "I do not want anything online taking bookings.",
+            "time_in_call_secs": 39
+          },
+          {
+            "role": "agent",
+            "message": "Understood. This would not turn phone reservations into online booking.",
+            "time_in_call_secs": 46
+          },
+          {
+            "role": "user",
+            "message": "So you are not trying to push online booking, right?",
+            "time_in_call_secs": 53
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Confirm no online booking push and use one value point only: the mockup would make the existing reservation phone number easier to find. It should be short and natural. Return False if it does this forbidden behavior: Do not list menu, hours, and location here. Do not suggest apps, ordering systems, software, online booking, modernization, or operational changes.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Confirm no online booking push and use one value point only: the mockup would make the existing reservation phone number easier to find. It should be short and natural."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not list menu, hours, and location here. Do not suggest apps, ordering systems, software, online booking, modernization, or operational changes."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-value-pricing-tests",
+          "source_package_id": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
+          "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+          "website_starting_price": "$1,000",
+          "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+          "website_premium_price_anchor": "$5,000",
+          "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+          "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations",
+          "scenario_focus": "single_value_point_phone_reservation",
+          "naturalness_priority": "no_checklist_stuffing",
+          "scenario_turn_count": 9
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::value_why_look_customer_confusion",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "value_why_look_customer_confusion",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests::value_why_look_customer_confusion",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Mike's Kitchen.",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I know this is a cold call. I had a free homepage mockup idea for Mike's Kitchen.",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "People call us if they need us.",
+            "time_in_call_secs": 12
+          },
+          {
+            "role": "agent",
+            "message": "That makes sense. I would not change phone reservations; I would only show whether the phone number is easier to find.",
+            "time_in_call_secs": 19
+          },
+          {
+            "role": "user",
+            "message": "That still sounds small.",
+            "time_in_call_secs": 26
+          },
+          {
+            "role": "agent",
+            "message": "It is small on purpose: just clarity before someone decides to call.",
+            "time_in_call_secs": 33
+          },
+          {
+            "role": "user",
+            "message": "We already have Google for that.",
+            "time_in_call_secs": 40
+          },
+          {
+            "role": "agent",
+            "message": "If Google already covers it, fair. The mockup is only a quick comparison.",
+            "time_in_call_secs": 47
+          },
+          {
+            "role": "user",
+            "message": "Why should I spend any time looking at it?",
+            "time_in_call_secs": 54
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Give one concrete value point without overclaiming: the buyer can quickly judge whether customers have less confusion before calling. It should ask for a quick look, not promise more customers. Return False if it does this forbidden behavior: Do not promise more calls, more reservations, higher revenue, SEO ranking, traffic, or customer behavior. Do not list every homepage detail. If the response lists menu, hours, location, and reservation phone number together, return False.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Give one concrete value point without overclaiming: the buyer can quickly judge whether customers have less confusion before calling. It should ask for a quick look, not promise more customers."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not promise more calls, more reservations, higher revenue, SEO ranking, traffic, or customer behavior. Do not list every homepage detail. If the response lists menu, hours, location, and reservation phone number together, return False."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-value-pricing-tests",
+          "source_package_id": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
+          "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+          "website_starting_price": "$1,000",
+          "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+          "website_premium_price_anchor": "$5,000",
+          "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+          "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations",
+          "scenario_focus": "why_look_value",
+          "naturalness_priority": "value_without_overclaiming",
+          "scenario_turn_count": 9
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    }
+  ],
+  "run_tests_request": {
+    "request_id": "run_tests::{agent_id}",
+    "method": "POST",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "requires_created_test_ids": true,
+    "body_template": {
+      "tests": [
+        {
+          "test_id": "{created_test_id}"
+        }
+      ],
+      "repeat_count": 1
+    },
+    "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests"
+  },
+  "agent_config_patch": {
+    "request_id": "patch_agent::{agent_id}",
+    "method": "PATCH",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "status": "draft_only",
+    "reason": "Attaching knowledge base documents requires the current dashboard agent JSON shape. Use Copy agent JSON config before enabling this write.",
+    "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update"
+  },
+  "test_folder": {
+    "folder_name": "Atlas Web Studio - Value Pricing Stress",
+    "folder_id": null,
+    "parent_folder_id": null,
+    "applies_to_live_created_tests": true
+  },
+  "dashboard_upload_order": [
+    "Upload knowledge base documents",
+    "Create baseline tests",
+    "Attach returned knowledge base document IDs to the agent",
+    "Run tests against the selected agent or branch",
+    "Copy agent JSON config back into the repo for drift review"
+  ],
+  "live_result": {
+    "operation": "create-tests",
+    "live_provider_calls_made": true,
+    "api_key_env_var": "ELEVENLABS_API_KEY",
+    "results": [
+      {
+        "request_id": "create_test::value_pricing_direct_starting_price",
+        "operation": "create-tests",
+        "status_code": 200,
+        "response_summary": {
+          "id": "test_0601kta2y6j3f9qtax6aqj1msf24"
+        }
+      },
+      {
+        "request_id": "create_test::value_pricing_higher_scope_range",
+        "operation": "create-tests",
+        "status_code": 200,
+        "response_summary": {
+          "id": "test_2201kta2y6v8e30a8vag4a0m4j6n"
+        }
+      },
+      {
+        "request_id": "create_test::value_statement_not_fair_question",
+        "operation": "create-tests",
+        "status_code": 200,
+        "response_summary": {
+          "id": "test_2701kta2y75ae4799g7asqap94h3"
+        }
+      },
+      {
+        "request_id": "create_test::value_staff_after_three_callback_only",
+        "operation": "create-tests",
+        "status_code": 200,
+        "response_summary": {
+          "id": "test_3801kta2y7e2f2qab6a67884pjh1"
+        }
+      },
+      {
+        "request_id": "create_test::value_phone_reservation_single_value_point",
+        "operation": "create-tests",
+        "status_code": 200,
+        "response_summary": {
+          "id": "test_4501kta2y7rgfzxtqb1nyyen8fc1"
+        }
+      },
+      {
+        "request_id": "create_test::value_why_look_customer_confusion",
+        "operation": "create-tests",
+        "status_code": 200,
+        "response_summary": {
+          "id": "test_9901kta2y84jfzhvn2ekp782gb2g"
+        }
+      },
+      {
+        "request_id": "move_created_tests::{test_folder}",
+        "operation": "move-tests-to-folder",
+        "status_code": 200,
+        "response_summary": {
+          "folder_id": "tfld_2301kta29zg4edxb33ja2bbqq1p6",
+          "folder_name": "Atlas Web Studio - Value Pricing Stress",
+          "folder_created": false,
+          "moved_count": 6
+        }
+      }
+    ]
+  }
+}
