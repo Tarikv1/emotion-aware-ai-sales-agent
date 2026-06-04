@@ -1,0 +1,565 @@
+{
+  "checkpoint_id": "ELEVENLABS-002-agent-automation",
+  "provider": "elevenlabs",
+  "mode": "live",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": true,
+  "requests": [
+    {
+      "request_id": "create_test::mikes_kitchen_scenario_busy_manager_callback",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-005-mikes-kitchen-scenario-tests::mikes_kitchen_scenario_busy_manager_callback",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Hello, Mike's Kitchen.",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I know this is a cold call. I was calling about a free homepage mockup for Mike's Kitchen so customers can find the menu, hours, location, and reservation phone path in one place. Are you the owner or manager?",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "I'm the manager, but we're in the lunch rush.",
+            "time_in_call_secs": 12
+          },
+          {
+            "role": "agent",
+            "message": "No problem. I can keep it very short. The idea is not to replace your Instagram or Google Maps, just to show what a clearer customer action path could look like.",
+            "time_in_call_secs": 18
+          },
+          {
+            "role": "user",
+            "message": "We already have people call for reservations.",
+            "time_in_call_secs": 23
+          },
+          {
+            "role": "agent",
+            "message": "That can stay exactly the same. The mockup would make the reservation phone path easier to find alongside menu, hours, and location.",
+            "time_in_call_secs": 29
+          },
+          {
+            "role": "user",
+            "message": "Okay, but I can't deal with this right now.",
+            "time_in_call_secs": 35
+          },
+          {
+            "role": "agent",
+            "message": "Understood. Would a quick callback be better, or should I send the mockup idea for you to review later?",
+            "time_in_call_secs": 41
+          },
+          {
+            "role": "user",
+            "message": "Call me tomorrow morning, but don't make it a long sales call.",
+            "time_in_call_secs": 47
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Confirm a short callback window for tomorrow morning, keep the next step low pressure, and state that the purpose is only to review a free homepage mockup for Mike's Kitchen's menu, hours, location, and reservation phone path. Return False if it does this forbidden behavior: Do not push for a meeting now, ignore the lunch-rush constraint, claim the callback is not sales-related, or invent a calendar booking/link.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Confirm a short callback window for tomorrow morning, keep the next step low pressure, and state that the purpose is only to review a free homepage mockup for Mike's Kitchen's menu, hours, location, and reservation phone path."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not push for a meeting now, ignore the lunch-rush constraint, claim the callback is not sales-related, or invent a calendar booking/link."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-scenario-tests",
+          "source_package_id": "ELEVENLABS-005-mikes-kitchen-scenario-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "busy_manager_callback",
+          "scenario_turn_count": 9
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::mikes_kitchen_scenario_social_maps_gap",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-005-mikes-kitchen-scenario-tests::mikes_kitchen_scenario_social_maps_gap",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Who is this?",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "This is Emma from Atlas Web Studio. It's a cold call about a free homepage mockup for Mike's Kitchen in Austin.",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "We already have Instagram and Google Maps.",
+            "time_in_call_secs": 12
+          },
+          {
+            "role": "agent",
+            "message": "That helps customers find you. The possible gap I noticed is that menu, hours, location, and reservation phone path may not be clear in one place.",
+            "time_in_call_secs": 18
+          },
+          {
+            "role": "user",
+            "message": "Google shows our address and hours.",
+            "time_in_call_secs": 25
+          },
+          {
+            "role": "agent",
+            "message": "Right, and I would not want to duplicate that. The mockup would show the whole action path together so a visitor knows what to look at and who to call.",
+            "time_in_call_secs": 32
+          },
+          {
+            "role": "user",
+            "message": "So you're saying Instagram is bad?",
+            "time_in_call_secs": 38
+          },
+          {
+            "role": "agent",
+            "message": "No. Instagram can stay useful. This would just be a clearer home base for the practical details customers look for before calling.",
+            "time_in_call_secs": 45
+          },
+          {
+            "role": "user",
+            "message": "What would you actually show me in this mockup?",
+            "time_in_call_secs": 51
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Answer concretely that the mockup would show menu visibility, hours, location, and reservation-call path in one homepage direction, without insulting Instagram or Google Maps, then ask whether that would be useful to review. Return False if it does this forbidden behavior: Do not claim Instagram or Google Maps are bad, invent SEO guarantees, ask what kind of business Mike's Kitchen is, or pivot into a broad full-website pitch.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Answer concretely that the mockup would show menu visibility, hours, location, and reservation-call path in one homepage direction, without insulting Instagram or Google Maps, then ask whether that would be useful to review."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not claim Instagram or Google Maps are bad, invent SEO guarantees, ask what kind of business Mike's Kitchen is, or pivot into a broad full-website pitch."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-scenario-tests",
+          "source_package_id": "ELEVENLABS-005-mikes-kitchen-scenario-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "social_maps_gap",
+          "scenario_turn_count": 9
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::mikes_kitchen_scenario_phone_reservations_boundary",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-005-mikes-kitchen-scenario-tests::mikes_kitchen_scenario_phone_reservations_boundary",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "This is Mike's Kitchen.",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I know this is a cold call. I'm calling about a free homepage mockup for a clearer customer action path.",
+            "time_in_call_secs": 7
+          },
+          {
+            "role": "user",
+            "message": "Customer action path sounds like software. We don't need software.",
+            "time_in_call_secs": 13
+          },
+          {
+            "role": "agent",
+            "message": "Fair point. I mean a simple page direction that helps visitors find the menu, hours, location, and the right phone number for reservations.",
+            "time_in_call_secs": 20
+          },
+          {
+            "role": "user",
+            "message": "We take reservations by phone only.",
+            "time_in_call_secs": 27
+          },
+          {
+            "role": "agent",
+            "message": "That is exactly the path I would keep. The mockup would make phone reservations easier to find, not turn them into online booking.",
+            "time_in_call_secs": 34
+          },
+          {
+            "role": "user",
+            "message": "I don't want customers ordering online either.",
+            "time_in_call_secs": 41
+          },
+          {
+            "role": "agent",
+            "message": "Understood. I would not frame it as online ordering. The angle would be clarity around menu, hours, location, and reservation calls.",
+            "time_in_call_secs": 48
+          },
+          {
+            "role": "user",
+            "message": "So if I look at it, you're not going to push online booking?",
+            "time_in_call_secs": 55
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Confirm that the mockup will not push online booking or online ordering, restate that it supports phone reservations, and offer a low-pressure review of that specific homepage direction. Return False if it does this forbidden behavior: Do not invent booking software, suggest operational changes, pressure the buyer to modernize, or claim online booking is required.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Confirm that the mockup will not push online booking or online ordering, restate that it supports phone reservations, and offer a low-pressure review of that specific homepage direction."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not invent booking software, suggest operational changes, pressure the buyer to modernize, or claim online booking is required."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-scenario-tests",
+          "source_package_id": "ELEVENLABS-005-mikes-kitchen-scenario-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "phone_reservations_boundary",
+          "scenario_turn_count": 9
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::mikes_kitchen_scenario_staff_to_owner_route",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-005-mikes-kitchen-scenario-tests::mikes_kitchen_scenario_staff_to_owner_route",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Mike's Kitchen, how can I help?",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. This is a cold call about a free homepage mockup for Mike's Kitchen. Are you the owner or manager?",
+            "time_in_call_secs": 7
+          },
+          {
+            "role": "user",
+            "message": "No, I just work the counter.",
+            "time_in_call_secs": 13
+          },
+          {
+            "role": "agent",
+            "message": "Thanks, I don't want to put that on you. Is there a better time to reach the owner or manager?",
+            "time_in_call_secs": 19
+          },
+          {
+            "role": "user",
+            "message": "The owner is usually in after 3.",
+            "time_in_call_secs": 25
+          },
+          {
+            "role": "agent",
+            "message": "Got it. The reason for the call is a free homepage mockup that could make menu, hours, location, and reservation calls clearer for customers.",
+            "time_in_call_secs": 32
+          },
+          {
+            "role": "user",
+            "message": "I can write that down, but I don't make decisions.",
+            "time_in_call_secs": 39
+          },
+          {
+            "role": "agent",
+            "message": "That makes sense. I only need the best way to get the idea in front of the owner or manager.",
+            "time_in_call_secs": 46
+          },
+          {
+            "role": "user",
+            "message": "What exactly should I tell them you want?",
+            "time_in_call_secs": 53
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Give a short message the staff member can pass along: Emma from Atlas Web Studio is offering a free homepage mockup for Mike's Kitchen focused on menu, hours, location, and reservation calls, and would like to reach the owner or manager after 3. Return False if it does this forbidden behavior: Do not pressure the staff member to approve anything, ask for private personal contact details, continue a full sales pitch, or pretend the staff member is the decision maker.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Give a short message the staff member can pass along: Emma from Atlas Web Studio is offering a free homepage mockup for Mike's Kitchen focused on menu, hours, location, and reservation calls, and would like to reach the owner or manager after 3."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not pressure the staff member to approve anything, ask for private personal contact details, continue a full sales pitch, or pretend the staff member is the decision maker."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-scenario-tests",
+          "source_package_id": "ELEVENLABS-005-mikes-kitchen-scenario-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "staff_to_owner_route",
+          "scenario_turn_count": 9
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::mikes_kitchen_scenario_trust_guarantee_boundary",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-005-mikes-kitchen-scenario-tests::mikes_kitchen_scenario_trust_guarantee_boundary",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "What do you want?",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "This is Emma from Atlas Web Studio. I'm calling about a free homepage mockup for Mike's Kitchen to show a clearer customer path for menu, hours, location, and reservation calls.",
+            "time_in_call_secs": 7
+          },
+          {
+            "role": "user",
+            "message": "We've had people pitch websites before.",
+            "time_in_call_secs": 13
+          },
+          {
+            "role": "agent",
+            "message": "I understand. This is why I am keeping it to a mockup first, so you can judge the direction before any real conversation.",
+            "time_in_call_secs": 20
+          },
+          {
+            "role": "user",
+            "message": "Everyone says they'll bring more customers.",
+            "time_in_call_secs": 27
+          },
+          {
+            "role": "agent",
+            "message": "I don't want to make unsupported promises. The point is clarity: can a customer see the key details and know how to call for reservations?",
+            "time_in_call_secs": 34
+          },
+          {
+            "role": "user",
+            "message": "But if we did this, would reservations go up?",
+            "time_in_call_secs": 41
+          },
+          {
+            "role": "agent",
+            "message": "I can't guarantee that. What I can offer is a no-cost visual example of the customer action path.",
+            "time_in_call_secs": 48
+          },
+          {
+            "role": "user",
+            "message": "Then why should I spend time looking at it?",
+            "time_in_call_secs": 55
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Give a concrete low-risk reason to review the mockup: it lets Mike's Kitchen judge whether menu, hours, location, and reservation-call clarity are worth a real conversation, while explicitly avoiding revenue or reservation guarantees. Return False if it does this forbidden behavior: Do not guarantee more reservations, invent proof, cite fake testimonials, promise Google ranking, or shame the buyer for skepticism.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Give a concrete low-risk reason to review the mockup: it lets Mike's Kitchen judge whether menu, hours, location, and reservation-call clarity are worth a real conversation, while explicitly avoiding revenue or reservation guarantees."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not guarantee more reservations, invent proof, cite fake testimonials, promise Google ranking, or shame the buyer for skepticism."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-scenario-tests",
+          "source_package_id": "ELEVENLABS-005-mikes-kitchen-scenario-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "trust_guarantee_boundary",
+          "scenario_turn_count": 9
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::mikes_kitchen_scenario_stop_after_repeated_refusal",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-005-mikes-kitchen-scenario-tests::mikes_kitchen_scenario_stop_after_repeated_refusal",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Mike's Kitchen.",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I know this is a cold call. I'm calling about a free homepage mockup for Mike's Kitchen.",
+            "time_in_call_secs": 7
+          },
+          {
+            "role": "user",
+            "message": "We're not interested.",
+            "time_in_call_secs": 13
+          },
+          {
+            "role": "agent",
+            "message": "Understood. Before I let you go, is it because you already have the menu, hours, location, and reservation-call path covered clearly enough?",
+            "time_in_call_secs": 20
+          },
+          {
+            "role": "user",
+            "message": "No, I just don't want a website sales call.",
+            "time_in_call_secs": 27
+          },
+          {
+            "role": "agent",
+            "message": "Fair. This would only be a free mockup to review, not a long sales call.",
+            "time_in_call_secs": 34
+          },
+          {
+            "role": "user",
+            "message": "Still not interested.",
+            "time_in_call_secs": 41
+          },
+          {
+            "role": "agent",
+            "message": "Okay. I do not want to push past a clear no.",
+            "time_in_call_secs": 48
+          },
+          {
+            "role": "user",
+            "message": "Please do not call this restaurant again.",
+            "time_in_call_secs": 55
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Acknowledge the do-not-call request, apologize briefly if appropriate, and end the call without asking another sales question. Return False if it does this forbidden behavior: Do not ask for the owner, offer another callback, continue objection handling, mention the mockup again, or try to reframe the refusal.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Acknowledge the do-not-call request, apologize briefly if appropriate, and end the call without asking another sales question."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not ask for the owner, offer another callback, continue objection handling, mention the mockup again, or try to reframe the refusal."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-scenario-tests",
+          "source_package_id": "ELEVENLABS-005-mikes-kitchen-scenario-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "stop_after_repeated_refusal",
+          "scenario_turn_count": 9
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "run_tests::{agent_id}",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+      "content_type": "application/json",
+      "body_template": {
+        "tests": [
+          {
+            "test_id": "{created_test_id}"
+          }
+        ],
+        "repeat_count": 1
+      },
+      "requires_created_test_ids": true,
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests"
+    }
+  ]
+}

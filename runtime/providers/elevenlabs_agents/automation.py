@@ -37,6 +37,7 @@ PRIVATE_PATH_PARTS = (("data", "private"), ("data", "private-restricted"))
 SAFE_LIVE_RESPONSE_KEYS = (
     "id",
     "document_id",
+    "folder_id",
     "test_id",
     "test_run_id",
     "run_id",
@@ -45,6 +46,34 @@ SAFE_LIVE_RESPONSE_KEYS = (
     "status",
     "status_code",
 )
+
+
+def validate_chat_history_entries(payload: Any, *, source_label: str) -> list[dict[str, Any]]:
+    if not isinstance(payload, list) or not payload:
+        raise ValueError(f"{source_label} chat_history must be a non-empty list.")
+    entries: list[dict[str, Any]] = []
+    for index, item in enumerate(payload):
+        if not isinstance(item, dict):
+            raise ValueError(f"{source_label} chat_history item {index} must be an object.")
+        role = str(item.get("role", "")).strip()
+        if role not in {"user", "agent"}:
+            raise ValueError(f"{source_label} chat_history item {index} role must be user or agent.")
+        message = str(item.get("message", "")).strip()
+        if not message:
+            raise ValueError(f"{source_label} chat_history item {index} message is required.")
+        time_in_call_secs = item.get("time_in_call_secs", index + 1)
+        if not isinstance(time_in_call_secs, (int, float)) or time_in_call_secs < 0:
+            raise ValueError(f"{source_label} chat_history item {index} time_in_call_secs must be non-negative.")
+        entries.append(
+            {
+                "role": role,
+                "message": message,
+                "time_in_call_secs": time_in_call_secs,
+            }
+        )
+    if entries[-1]["role"] != "user":
+        raise ValueError(f"{source_label} chat_history must end with a user turn.")
+    return entries
 
 
 def rel_path(path: Path) -> str:
@@ -107,7 +136,7 @@ def kb_upload_request(source_path_text: str) -> dict[str, Any]:
     }
 
 
-def _chat_history(customer_utterance: str) -> list[dict[str, Any]]:
+def _single_turn_chat_history(customer_utterance: str) -> list[dict[str, Any]]:
     return [
         {
             "role": "user",
@@ -115,6 +144,12 @@ def _chat_history(customer_utterance: str) -> list[dict[str, Any]]:
             "time_in_call_secs": 1,
         }
     ]
+
+
+def build_chat_history(item: dict[str, Any], *, test_id: str) -> list[dict[str, Any]]:
+    if "chat_history" in item:
+        return validate_chat_history_entries(item["chat_history"], source_label=test_id)
+    return _single_turn_chat_history(str(item["customer_utterance"]))
 
 
 def _success_condition(item: dict[str, Any]) -> str:
@@ -177,7 +212,7 @@ def test_create_request(
     body = {
         "type": "llm",
         "name": f"{package_id}::{test_id}",
-        "chat_history": _chat_history(str(item["customer_utterance"])),
+        "chat_history": build_chat_history(item, test_id=test_id),
         "success_condition": _success_condition(item),
         "success_examples": [
             {
@@ -405,6 +440,12 @@ def build_plan(
             kb_documents=kb_documents,
             patch_payload_out=agent_patch_out,
         ),
+        "test_folder": {
+            "folder_name": None,
+            "folder_id": None,
+            "parent_folder_id": None,
+            "applies_to_live_created_tests": False,
+        },
         "dashboard_upload_order": [
             "Upload knowledge base documents",
             "Create baseline tests",
@@ -506,6 +547,74 @@ def _json_request(
         raise RuntimeError(f"ElevenLabs API error {exc.code}: {body_text[:800]}") from exc
 
 
+def find_or_create_test_folder(
+    *,
+    api_key: str,
+    folder_name: str,
+    folder_id: str | None = None,
+    parent_folder_id: str | None = None,
+) -> dict[str, Any]:
+    if folder_id:
+        result = _json_request("GET", f"/v1/convai/agent-testing/folders/{urllib.parse.quote(folder_id)}", api_key=api_key)
+        response = result["response"]
+        return {
+            "folder_id": response.get("id") or folder_id,
+            "name": response.get("name"),
+            "created": False,
+        }
+    query = urllib.parse.urlencode(
+        {
+            "types": "folder",
+            "page_size": 100,
+            "search": folder_name,
+        }
+    )
+    result = _json_request("GET", f"/v1/convai/agent-testing?{query}", api_key=api_key)
+    for item in result["response"].get("tests", []):
+        if not isinstance(item, dict):
+            continue
+        if item.get("entity_type") != "folder" and item.get("type") != "folder":
+            continue
+        if item.get("name") != folder_name:
+            continue
+        if parent_folder_id and item.get("folder_parent_id") != parent_folder_id:
+            continue
+        return {
+            "folder_id": item["id"],
+            "name": item.get("name"),
+            "created": False,
+        }
+    body: dict[str, Any] = {"name": folder_name}
+    if parent_folder_id:
+        body["parent_folder_id"] = parent_folder_id
+    created = _json_request("POST", "/v1/convai/agent-testing/folders", api_key=api_key, body=body)
+    response = created["response"]
+    return {
+        "folder_id": response.get("id"),
+        "name": response.get("name"),
+        "created": True,
+    }
+
+
+def move_tests_to_folder(*, api_key: str, test_ids: list[str], folder_id: str) -> dict[str, Any]:
+    if not test_ids:
+        return {"moved_count": 0, "folder_id": folder_id}
+    _json_request(
+        "POST",
+        "/v1/convai/agent-testing/bulk-move",
+        api_key=api_key,
+        body={
+            "entity_ids": test_ids,
+            "move_to": folder_id,
+        },
+    )
+    return {
+        "moved_count": len(test_ids),
+        "folder_id": folder_id,
+        "test_ids": test_ids,
+    }
+
+
 def _multipart_upload(
     source_path: Path,
     *,
@@ -603,6 +712,7 @@ def perform_live_operation(args: argparse.Namespace, plan: dict[str, Any]) -> di
         return {"operation": "plan", "live_provider_calls_made": False, "results": []}
     api_key = require_live_write(args)
     results: list[dict[str, Any]] = []
+    created_test_ids: list[str] = []
     if args.operation in {"upload-kb", "all"}:
         for request in plan["knowledge_base_upload_requests"]:
             source_path = resolve_project_path(request["source_path"])
@@ -624,6 +734,31 @@ def perform_live_operation(args: argparse.Namespace, plan: dict[str, Any]) -> di
                     "operation": "create-tests",
                     "status_code": result["status_code"],
                     "response_summary": summarize_provider_response(result["response"], "create-tests"),
+                }
+            )
+            response_id = result["response"].get("id")
+            if isinstance(response_id, str) and response_id:
+                created_test_ids.append(response_id)
+        if created_test_ids and (args.test_folder_name or args.test_folder_id):
+            folder = find_or_create_test_folder(
+                api_key=api_key,
+                folder_name=args.test_folder_name or args.test_folder_id,
+                folder_id=args.test_folder_id,
+                parent_folder_id=args.test_folder_parent_id,
+            )
+            folder_id = str(folder["folder_id"])
+            moved = move_tests_to_folder(api_key=api_key, test_ids=created_test_ids, folder_id=folder_id)
+            results.append(
+                {
+                    "request_id": "move_created_tests::{test_folder}",
+                    "operation": "move-tests-to-folder",
+                    "status_code": 200,
+                    "response_summary": {
+                        "folder_id": folder_id,
+                        "folder_name": folder.get("name"),
+                        "folder_created": folder.get("created"),
+                        "moved_count": moved["moved_count"],
+                    },
                 }
             )
     if args.operation == "run-tests":
@@ -663,6 +798,32 @@ def perform_live_operation(args: argparse.Namespace, plan: dict[str, Any]) -> di
                 "response_summary": summarize_provider_response(result["response"], "patch-agent"),
             }
         )
+    if args.operation == "move-tests":
+        if not args.created_test_ids:
+            raise SystemExit("--created-test-ids is required for move-tests.")
+        if not args.test_folder_name and not args.test_folder_id:
+            raise SystemExit("--test-folder-name or --test-folder-id is required for move-tests.")
+        folder = find_or_create_test_folder(
+            api_key=api_key,
+            folder_name=args.test_folder_name or args.test_folder_id,
+            folder_id=args.test_folder_id,
+            parent_folder_id=args.test_folder_parent_id,
+        )
+        folder_id = str(folder["folder_id"])
+        moved = move_tests_to_folder(api_key=api_key, test_ids=args.created_test_ids, folder_id=folder_id)
+        results.append(
+            {
+                "request_id": "move_tests::{test_folder}",
+                "operation": "move-tests",
+                "status_code": 200,
+                "response_summary": {
+                    "folder_id": folder_id,
+                    "folder_name": folder.get("name"),
+                    "folder_created": folder.get("created"),
+                    "moved_count": moved["moved_count"],
+                },
+            }
+        )
     return {
         "operation": args.operation,
         "live_provider_calls_made": bool(results),
@@ -684,13 +845,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--kb-document-name", action="append", default=[])
     parser.add_argument(
         "--operation",
-        choices=("plan", "upload-kb", "create-tests", "run-tests", "patch-agent", "all"),
+        choices=("plan", "upload-kb", "create-tests", "run-tests", "patch-agent", "move-tests", "all"),
         default="plan",
     )
     parser.add_argument("--live", action="store_true")
     parser.add_argument("--confirm-provider-write", action="store_true")
     parser.add_argument("--created-test-ids", nargs="*", default=[])
     parser.add_argument("--repeat-count", type=int, default=1)
+    parser.add_argument("--test-folder-name", default=None)
+    parser.add_argument("--test-folder-id", default=None)
+    parser.add_argument("--test-folder-parent-id", default=None)
     return parser.parse_args(argv)
 
 
@@ -712,6 +876,12 @@ def main(argv: list[str] | None = None) -> None:
         agent_patch_out=agent_patch_out,
     )
     requests_bundle = build_api_requests_bundle(plan)
+    plan["test_folder"] = {
+        "folder_name": args.test_folder_name,
+        "folder_id": args.test_folder_id,
+        "parent_folder_id": args.test_folder_parent_id,
+        "applies_to_live_created_tests": bool(args.test_folder_name or args.test_folder_id),
+    }
     live_result = perform_live_operation(args, plan)
     if live_result["live_provider_calls_made"]:
         plan["mode"] = "live"

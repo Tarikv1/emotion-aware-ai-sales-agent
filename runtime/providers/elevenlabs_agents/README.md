@@ -32,3 +32,6 @@ Current packages:
 - `ELEVENLABS-004-mikes-kitchen-dynamic-tests`: campaign-specific response
   tests for the Atlas Web Studio restaurant outreach demo with explicit
   ElevenLabs dynamic variables.
+- `ELEVENLABS-005-mikes-kitchen-scenario-tests`: multi-turn scenario tests with
+  8-10 chat-history messages, dynamic variables, and optional ElevenLabs test
+  folder placement.
