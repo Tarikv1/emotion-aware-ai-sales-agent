@@ -22,4 +22,10 @@ Current packages:
 
 - `ELEVENLABS-001-universal-sales-core`: compact universal sales knowledge base
   and baseline test source for future ElevenLabs dashboard/API automation.
-
+- `ELEVENLABS-002-agent-automation`: dry-run-first automation that converts
+  package manifests into ElevenLabs KB upload requests, response test creation
+  requests, and run-tests request drafts. Live provider writes require explicit
+  `--live --confirm-provider-write`.
+- `ELEVENLABS-003-agent-config-patcher`: copied-config PATCH payload drafting
+  for attaching returned KB document IDs to an existing ElevenLabs dashboard
+  agent while preserving prompt, first message, model, voice, and turn settings.

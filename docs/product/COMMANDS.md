@@ -2886,6 +2886,38 @@ python scripts\run_voice_027_interaction_prosody_live_ab.py --live --language en
 python scripts\run_voice_027_interaction_prosody_live_ab.py --live --language de --limit-scripts 1 --timeout-seconds 8
 ```
 
+## ElevenLabs Agent Automation
+
+Build the ELEVENLABS-002 dry-run automation plan and API request bundle for the current Atlas/Web Design ElevenLabs agent:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty
+```
+
+Validate the automation lane without provider calls:
+
+```powershell
+python scripts\validate_elevenlabs_002_agent_automation.py
+```
+
+Validate the copied-config PATCH payload generator without provider calls:
+
+```powershell
+python scripts\validate_elevenlabs_003_agent_config_patcher.py
+```
+
+Draft an agent PATCH payload after the KB upload returns a document ID:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --agent-config runtime\providers\elevenlabs_agents\fixtures\web_design_agent_config.sanitized.json `
+  --kb-document-id <returned_knowledge_base_document_id> `
+  --kb-document-name universal_sales_core.md `
+  --agent-patch-out research\experiments\generated\ELEVENLABS-002-agent-automation\agent_patch_payload.json
+```
+
+Live provider writes require `ELEVENLABS_API_KEY`, `--live`, and `--confirm-provider-write`.
+
 ## Guarded Local Demo Server
 
 Use the guarded launcher for browser demos so long-lived servers do not hang the terminal:
