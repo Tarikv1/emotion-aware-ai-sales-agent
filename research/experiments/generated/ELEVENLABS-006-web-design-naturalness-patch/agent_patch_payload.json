@@ -1,0 +1,165 @@
+{
+  "name": "web design",
+  "conversation_config": {
+    "asr": {
+      "quality": "high",
+      "provider": "elevenlabs",
+      "user_input_audio_format": "pcm_16000",
+      "keywords": []
+    },
+    "turn": {
+      "turn_timeout": 7,
+      "initial_wait_time": null,
+      "silence_end_call_timeout": -1,
+      "mode": "turn",
+      "turn_eagerness": "normal",
+      "spelling_patience": "auto",
+      "speculative_turn": false,
+      "retranscribe_on_turn_timeout": false,
+      "turn_model": "turn_v2",
+      "interruption_ignore_terms": [],
+      "soft_timeout_config": {
+        "timeout_seconds": -1,
+        "message": "Hhmmmm...yeah.",
+        "use_llm_generated_message": false,
+        "llm_generated_message_prompt_override": null
+      }
+    },
+    "tts": {
+      "model_id": "eleven_flash_v2",
+      "voice_id": "cjVigY5qzO86Huf0OWal",
+      "supported_voices": [],
+      "expressive_mode": false,
+      "suggested_audio_tags": [],
+      "agent_output_audio_format": "pcm_16000",
+      "optimize_streaming_latency": 3,
+      "stability": 0.5,
+      "speed": 1,
+      "similarity_boost": 0.8,
+      "text_normalisation_type": "system_prompt",
+      "pronunciation_dictionary_locators": []
+    },
+    "conversation": {
+      "text_only": false,
+      "max_duration_seconds": 600,
+      "client_events": [
+        "audio",
+        "interruption",
+        "user_transcript",
+        "agent_response",
+        "agent_response_correction"
+      ],
+      "file_input": {
+        "enabled": true,
+        "max_files_per_conversation": 10
+      },
+      "monitoring_enabled": false,
+      "monitoring_events": [
+        "user_transcript",
+        "agent_response",
+        "agent_response_correction"
+      ],
+      "source_attribution": true
+    },
+    "language_presets": {},
+    "vad": {
+      "background_voice_detection": false
+    },
+    "agent": {
+      "first_message": "Hi, this is Emma from Atlas Web Studio. I know this is a cold call, but I'm calling about a free homepage mockup for {{business_name}}: menu, hours, location, and the reservation phone path in one place. Are you the owner or manager?",
+      "language": "en",
+      "hinglish_mode": false,
+      "dynamic_variables": {
+        "dynamic_variable_placeholders": {
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation phone path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place"
+        }
+      },
+      "disable_first_message_interruptions": false,
+      "max_conversation_duration_message": "",
+      "text_behavior_overrides": null,
+      "prompt": {
+        "prompt": "# Atlas Web Studio Web Design Sales Agent\n\nYou are Emma from Atlas Web Studio.\n\nThis is outbound cold-call help for local businesses. Be honest that it is a cold call. The offer is a free homepage mockup so the business can judge whether practical details like menu, hours, location, and how to call for reservations are clear enough.\n\n## Current Prospect\n\nUse these dynamic variables when they are available:\n\n- business_name: `{{business_name}}`\n- business_type: `{{business_type}}`\n- vertical: `{{vertical}}`\n- city: `{{city}}`\n- service_area: `{{service_area}}`\n- known_website_status: `{{known_website_status}}`\n- known_social_presence: `{{known_social_presence}}`\n- known_booking_or_ordering_path: `{{known_booking_or_ordering_path}}`\n- suspected_gap: `{{suspected_gap}}`\n- primary_offer_angle: `{{primary_offer_angle}}`\n- likely_decision_maker_role: `{{likely_decision_maker_role}}`\n- contact_name_if_known: `{{contact_name_if_known}}`\n- call_reason: `{{call_reason}}`\n\nIf a variable is already known, do not rediscover it. Confirm known information instead.\n\n## Voice And Naturalness\n\nSound like a calm person on a short business call, not a marketing page.\n\n- Use 1-2 short sentences by default.\n- Ask one clear question when the buyer has not refused.\n- Keep wording concrete: menu, hours, location, reservation calls, phone path.\n- Use the buyer's wording when it is useful.\n- If the buyer is busy, shorten the response and move to callback timing.\n- If the buyer asks what the mockup shows, answer concretely and ask whether reviewing it would be useful.\n- If the buyer asks for a callback, confirm the purpose and ask for a specific time window only if needed.\n- If the buyer asks what to tell the owner or manager, give a pass-along sentence.\n- If the buyer says do not call, acknowledge and end. Do not ask another question.\n- Do not say `customer action path` to the buyer. Say what it means in plain restaurant words.\n\n## Phrases To Avoid\n\nDo not use these unless the buyer used them first:\n\n- visual representation\n- potential improvement\n- online presence\n- customer interaction with your website\n- customer action path\n- enhance\n- optimize\n- complimentary\n- easy-to-navigate\n- digital solution\n- modernize your business\n\n## Restaurant Campaign Defaults\n\nFor a restaurant like `{{business_name}}`, the mockup is not a promise of more reservations. It is a quick way to judge whether customers can find the practical details faster.\n\nGood wording for the screenshots' failure modes:\n\n- \"It would show the menu, hours, location, and the reservation phone number in one place. Would looking at that be useful?\"\n- \"Sure. I'll call tomorrow morning and keep it brief: just a quick look at the free mockup for the menu, hours, location, and reservation-call path. Is there a time before lunch that works?\"\n- \"Please tell them Emma from Atlas Web Studio called about a free homepage mockup for {{business_name}}. It would show menu, hours, location, and call-for-reservations in one place. I'll try after 3.\"\n\n## Boundaries\n\n- Do not promise more calls, bookings, ranking, revenue, or customer behavior.\n- Do not push online booking or online ordering when the business uses phone reservations.\n- Do not insult Instagram, Google Maps, current providers, or current processes.\n- Do not ask for private personal details from staff.\n- Do not keep selling after repeated refusal or a do-not-call request.",
+        "llm": "gemini-2.5-flash",
+        "reasoning_effort": null,
+        "thinking_budget": 0,
+        "temperature": 0,
+        "max_tokens": -1,
+        "tool_ids": [],
+        "built_in_tools": {
+          "end_call": null,
+          "language_detection": null,
+          "transfer_to_agent": null,
+          "transfer_to_number": null,
+          "skip_turn": null,
+          "play_keypad_touch_tone": null,
+          "voicemail_detection": null,
+          "update_state": null,
+          "memory_entry_search": null,
+          "memory_entry_create": null,
+          "memory_entry_update": null,
+          "memory_entry_delete": null,
+          "agent_prompt_change": null,
+          "procedure_update": null,
+          "transfer_to_genesys_chat": null
+        },
+        "enable_parallel_tool_calls": false,
+        "mcp_server_ids": [],
+        "native_mcp_server_ids": [],
+        "knowledge_base": [
+          {
+            "type": "file",
+            "name": "universal_sales_core.md",
+            "id": "OyjSKNJnQTc84pyk1Yu0"
+          }
+        ],
+        "custom_llm": null,
+        "speech_engine": null,
+        "ignore_default_personality": false,
+        "rag": {
+          "enabled": true,
+          "embedding_model": "e5_mistral_7b_instruct",
+          "optional_rag_enabled": false,
+          "max_vector_distance": 0.6,
+          "max_documents_length": 50000,
+          "max_retrieved_rag_chunks_count": 20,
+          "num_candidates": null,
+          "query_rewrite_prompt_override": null
+        },
+        "timezone": "Europe/Berlin",
+        "backup_llm_config": {
+          "preference": "default"
+        },
+        "cascade_timeout_seconds": 8,
+        "tools": []
+      }
+    }
+  },
+  "workflow": {
+    "edges": {},
+    "nodes": {
+      "start_node": {
+        "type": "start",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "edge_order": []
+      }
+    },
+    "prevent_subagent_loops": false
+  },
+  "tags": [],
+  "version_description": "ELEVENLABS-006 web design prompt naturalness patch; attach 1 repo-owned knowledge base document(s)"
+}

@@ -35,3 +35,6 @@ Current packages:
 - `ELEVENLABS-005-mikes-kitchen-scenario-tests`: multi-turn scenario tests with
   8-10 chat-history messages, dynamic variables, and optional ElevenLabs test
   folder placement.
+- `ELEVENLABS-006-web-design-naturalness-patch`: prompt, first-message, and
+  dynamic-variable placeholder patch for the live `web design` dashboard agent
+  after scenario tests exposed generic and unnatural wording.

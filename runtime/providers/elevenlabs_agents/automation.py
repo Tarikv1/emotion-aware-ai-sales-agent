@@ -109,6 +109,13 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+def read_text(path: Path) -> str:
+    text = path.read_text(encoding="utf-8").strip()
+    if not text:
+        raise ValueError(f"{rel_path(path)} must not be empty.")
+    return text
+
+
 def load_package(manifest_path: Path) -> dict[str, Any]:
     manifest = read_json(manifest_path)
     if manifest.get("provider") != PROVIDER:
@@ -324,6 +331,10 @@ def merge_knowledge_base_entries(
 def build_agent_patch_payload(
     agent_config: dict[str, Any],
     kb_documents: list[dict[str, str]],
+    *,
+    prompt_override: str | None = None,
+    first_message_override: str | None = None,
+    dynamic_variable_placeholders: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     if not kb_documents:
         raise ValueError("At least one KB document ID is required for an agent patch payload.")
@@ -336,6 +347,24 @@ def build_agent_patch_payload(
     prompt = conversation_config.setdefault("agent", {}).setdefault("prompt", {})
     if not isinstance(prompt, dict):
         raise ValueError("Copied agent config prompt must be an object.")
+    if prompt_override:
+        prompt["prompt"] = prompt_override
+    if first_message_override:
+        agent_section = conversation_config.setdefault("agent", {})
+        if not isinstance(agent_section, dict):
+            raise ValueError("Copied agent config agent section must be an object.")
+        agent_section["first_message"] = first_message_override
+    if dynamic_variable_placeholders is not None:
+        agent_section = conversation_config.setdefault("agent", {})
+        if not isinstance(agent_section, dict):
+            raise ValueError("Copied agent config agent section must be an object.")
+        dynamic_variables = agent_section.setdefault("dynamic_variables", {})
+        if not isinstance(dynamic_variables, dict):
+            raise ValueError("Copied agent config dynamic_variables must be an object.")
+        dynamic_variables["dynamic_variable_placeholders"] = _validate_dynamic_variables(
+            dynamic_variable_placeholders,
+            source_label="agent dynamic_variable_placeholders",
+        )
     existing_kb = prompt.get("knowledge_base", [])
     if not isinstance(existing_kb, list):
         raise ValueError("Copied agent config prompt.knowledge_base must be a list.")
@@ -344,14 +373,17 @@ def build_agent_patch_payload(
     if not isinstance(rag, dict):
         raise ValueError("Copied agent config prompt.rag must be an object.")
     rag["enabled"] = True
+    version_scope = (
+        "ELEVENLABS-006 web design prompt naturalness patch"
+        if prompt_override or first_message_override or dynamic_variable_placeholders is not None
+        else "ELEVENLABS-003 knowledge base attachment"
+    )
     return {
         "name": str(agent_config.get("name") or "web design"),
         "conversation_config": conversation_config,
         "workflow": copy.deepcopy(agent_config.get("workflow", {})),
         "tags": copy.deepcopy(agent_config.get("tags", [])),
-        "version_description": (
-            f"ELEVENLABS-003 attach {len(kb_documents)} repo-owned knowledge base document(s)"
-        ),
+        "version_description": f"{version_scope}; attach {len(kb_documents)} repo-owned knowledge base document(s)",
     }
 
 
@@ -361,6 +393,9 @@ def build_agent_patch_draft(
     agent_config_path: Path | None = None,
     kb_documents: list[dict[str, str]] | None = None,
     patch_payload_out: Path | None = None,
+    prompt_override: str | None = None,
+    first_message_override: str | None = None,
+    dynamic_variable_placeholders: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     endpoint_agent = agent_id or "{agent_id}"
     if agent_config_path and kb_documents:
@@ -370,7 +405,13 @@ def build_agent_patch_draft(
             raise ValueError("Copied agent config is missing agent_id.")
         if agent_id and agent_id != copied_agent_id:
             raise ValueError(f"--agent-id {agent_id} does not match copied config agent_id {copied_agent_id}.")
-        patch_payload = build_agent_patch_payload(agent_config, kb_documents)
+        patch_payload = build_agent_patch_payload(
+            agent_config,
+            kb_documents,
+            prompt_override=prompt_override,
+            first_message_override=first_message_override,
+            dynamic_variable_placeholders=dynamic_variable_placeholders,
+        )
         patch_out = patch_payload_out or DEFAULT_AGENT_PATCH
         write_json(patch_out, patch_payload)
         return {
@@ -382,6 +423,9 @@ def build_agent_patch_draft(
             "source_config_path": rel_path(agent_config_path),
             "patch_payload_path": rel_path(patch_out),
             "knowledge_base_documents": kb_documents,
+            "prompt_override_applied": prompt_override is not None,
+            "first_message_override_applied": first_message_override is not None,
+            "dynamic_variable_placeholders_applied": dynamic_variable_placeholders is not None,
             "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update",
         }
     return {
@@ -406,6 +450,9 @@ def build_plan(
     agent_config_path: Path | None = None,
     kb_documents: list[dict[str, str]] | None = None,
     agent_patch_out: Path | None = None,
+    prompt_override: str | None = None,
+    first_message_override: str | None = None,
+    dynamic_variable_placeholders: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     manifest = load_package(package_manifest_path)
     package_id = str(manifest["package_id"])
@@ -439,6 +486,9 @@ def build_plan(
             agent_config_path=agent_config_path,
             kb_documents=kb_documents,
             patch_payload_out=agent_patch_out,
+            prompt_override=prompt_override,
+            first_message_override=first_message_override,
+            dynamic_variable_placeholders=dynamic_variable_placeholders,
         ),
         "test_folder": {
             "folder_name": None,
@@ -841,6 +891,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--api-requests-out", default=str(DEFAULT_API_REQUESTS))
     parser.add_argument("--agent-config", default=None)
     parser.add_argument("--agent-patch-out", default=str(DEFAULT_AGENT_PATCH))
+    parser.add_argument("--agent-prompt-file", default=None)
+    parser.add_argument("--first-message-file", default=None)
+    parser.add_argument("--dynamic-variable-defaults", default=None)
     parser.add_argument("--kb-document-id", action="append", default=[])
     parser.add_argument("--kb-document-name", action="append", default=[])
     parser.add_argument(
@@ -862,10 +915,16 @@ def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     manifest_path = resolve_project_path(args.package_manifest)
     agent_config_path = resolve_project_path(args.agent_config) if args.agent_config else None
+    agent_prompt_path = resolve_project_path(args.agent_prompt_file) if args.agent_prompt_file else None
+    first_message_path = resolve_project_path(args.first_message_file) if args.first_message_file else None
+    dynamic_defaults_path = resolve_project_path(args.dynamic_variable_defaults) if args.dynamic_variable_defaults else None
     if agent_config_path and not args.agent_id:
         copied_config = read_json(agent_config_path)
         args.agent_id = str(copied_config.get("agent_id", "")).strip() or None
     kb_documents = build_kb_documents(args.kb_document_id, args.kb_document_name)
+    prompt_override = read_text(agent_prompt_path) if agent_prompt_path else None
+    first_message_override = read_text(first_message_path) if first_message_path else None
+    dynamic_variable_placeholders = read_json(dynamic_defaults_path) if dynamic_defaults_path else None
     agent_patch_out = resolve_project_path(args.agent_patch_out)
     plan = build_plan(
         package_manifest_path=manifest_path,
@@ -874,6 +933,9 @@ def main(argv: list[str] | None = None) -> None:
         agent_config_path=agent_config_path,
         kb_documents=kb_documents,
         agent_patch_out=agent_patch_out,
+        prompt_override=prompt_override,
+        first_message_override=first_message_override,
+        dynamic_variable_placeholders=dynamic_variable_placeholders,
     )
     requests_bundle = build_api_requests_bundle(plan)
     plan["test_folder"] = {

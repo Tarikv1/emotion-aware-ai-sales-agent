@@ -1,0 +1,53 @@
+{
+  "checkpoint_id": "ELEVENLABS-006-web-design-naturalness-patch",
+  "provider": "elevenlabs",
+  "run_date": "2026-06-04",
+  "operation": "run_existing_scenario_tests_after_prompt_patch",
+  "live_provider_calls_made": true,
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "suite_id": "suite_6901kt9w3km8eera53zy0ykagjee",
+  "repeat_count": 1,
+  "test_run_count": 6,
+  "passed_count": 6,
+  "failed_count": 0,
+  "runs": [
+    {
+      "test_id": "test_8501kt9tw0d2ex5a2n78g1k4j89p",
+      "test_run_id": "trun_7701kt9w3kmefy98qeq0nvkpvjdh",
+      "test_name": "ELEVENLABS-005-mikes-kitchen-scenario-tests::mikes_kitchen_scenario_busy_manager_callback",
+      "status": "passed"
+    },
+    {
+      "test_id": "test_4301kt9tw0xnf89age64bhx5rm8z",
+      "test_run_id": "trun_1801kt9w3kmgf3d9d5f7wzkya79f",
+      "test_name": "ELEVENLABS-005-mikes-kitchen-scenario-tests::mikes_kitchen_scenario_phone_reservations_boundary",
+      "status": "passed"
+    },
+    {
+      "test_id": "test_4901kt9tw1nzfatb8stp7p4kx2j0",
+      "test_run_id": "trun_3901kt9w3kmje9wr83pc34s290x1",
+      "test_name": "ELEVENLABS-005-mikes-kitchen-scenario-tests::mikes_kitchen_scenario_trust_guarantee_boundary",
+      "status": "passed"
+    },
+    {
+      "test_id": "test_6401kt9tw0nreaf8vp2ae2zymxh7",
+      "test_run_id": "trun_8901kt9w3kmffddbdff6znafewt1",
+      "test_name": "ELEVENLABS-005-mikes-kitchen-scenario-tests::mikes_kitchen_scenario_social_maps_gap",
+      "status": "passed"
+    },
+    {
+      "test_id": "test_5301kt9tw243ez388dkas4zhgre9",
+      "test_run_id": "trun_9701kt9w3kmkfcmvd2qxdx17w07s",
+      "test_name": "ELEVENLABS-005-mikes-kitchen-scenario-tests::mikes_kitchen_scenario_stop_after_repeated_refusal",
+      "status": "passed"
+    },
+    {
+      "test_id": "test_2301kt9tw1bgffwadpz4tesd0nw2",
+      "test_run_id": "trun_2801kt9w3kmhexcvz93j49gzj7rr",
+      "test_name": "ELEVENLABS-005-mikes-kitchen-scenario-tests::mikes_kitchen_scenario_staff_to_owner_route",
+      "status": "passed"
+    }
+  ],
+  "secret_values_logged": false,
+  "private_customer_data_used": false
+}

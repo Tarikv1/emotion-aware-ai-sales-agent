@@ -2918,6 +2918,12 @@ Validate the Mike's Kitchen multi-turn scenario test pack without provider calls
 python scripts\validate_elevenlabs_005_mikes_kitchen_scenario_tests.py
 ```
 
+Validate the web design naturalness patch without provider calls:
+
+```powershell
+python scripts\validate_elevenlabs_006_web_design_naturalness_patch.py
+```
+
 Build the Mike's Kitchen dynamic test API request bundle without provider calls:
 
 ```powershell
@@ -2974,6 +2980,39 @@ python scripts\run_elevenlabs_agent_automation.py `
   --kb-document-id <returned_knowledge_base_document_id> `
   --kb-document-name universal_sales_core.md `
   --agent-patch-out research\experiments\generated\ELEVENLABS-002-agent-automation\agent_patch_payload.json
+```
+
+Draft the ELEVENLABS-006 web design naturalness PATCH payload without provider calls:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --agent-config runtime\providers\elevenlabs_agents\fixtures\web_design_agent_config.sanitized.json `
+  --kb-document-id OyjSKNJnQTc84pyk1Yu0 `
+  --kb-document-name universal_sales_core.md `
+  --agent-prompt-file runtime\providers\elevenlabs_agents\prompts\web_design_atlas_sales_prompt.md `
+  --first-message-file runtime\providers\elevenlabs_agents\prompts\web_design_first_message.txt `
+  --dynamic-variable-defaults runtime\providers\elevenlabs_agents\variables\mikes_kitchen_dynamic_variable_defaults.json `
+  --agent-patch-out research\experiments\generated\ELEVENLABS-006-web-design-naturalness-patch\agent_patch_payload.json `
+  --out research\experiments\generated\ELEVENLABS-006-web-design-naturalness-patch\automation_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-006-web-design-naturalness-patch\api_requests.json
+```
+
+Patch the live `web design` dashboard agent after loading `ELEVENLABS_API_KEY` into the current process:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --operation patch-agent `
+  --agent-config runtime\providers\elevenlabs_agents\fixtures\web_design_agent_config.sanitized.json `
+  --kb-document-id OyjSKNJnQTc84pyk1Yu0 `
+  --kb-document-name universal_sales_core.md `
+  --agent-prompt-file runtime\providers\elevenlabs_agents\prompts\web_design_atlas_sales_prompt.md `
+  --first-message-file runtime\providers\elevenlabs_agents\prompts\web_design_first_message.txt `
+  --dynamic-variable-defaults runtime\providers\elevenlabs_agents\variables\mikes_kitchen_dynamic_variable_defaults.json `
+  --agent-patch-out research\experiments\generated\ELEVENLABS-006-web-design-naturalness-patch\agent_patch_payload.json `
+  --out research\experiments\generated\ELEVENLABS-006-web-design-naturalness-patch\automation_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-006-web-design-naturalness-patch\api_requests.json `
+  --live `
+  --confirm-provider-write
 ```
 
 Live provider writes require `ELEVENLABS_API_KEY`, `--live`, and `--confirm-provider-write`.

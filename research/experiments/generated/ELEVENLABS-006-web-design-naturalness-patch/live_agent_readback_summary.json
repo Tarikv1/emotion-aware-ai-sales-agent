@@ -1,0 +1,23 @@
+{
+  "checkpoint_id": "ELEVENLABS-006-web-design-naturalness-patch",
+  "provider": "elevenlabs",
+  "run_date": "2026-06-04",
+  "operation": "read_live_agent_after_patch",
+  "live_provider_reads_made": true,
+  "live_provider_writes_made": false,
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "web design",
+  "prompt_chars": 3412,
+  "prompt_starts": "# Atlas Web Studio Web Design Sales Agent\n\nYou are Emma from Atlas Web Studio.",
+  "first_message": "Hi, this is Emma from Atlas Web Studio. I know this is a cold call, but I'm calling about a free homepage mockup for {{business_name}}: menu, hours, location, and the reservation phone path in one place. Are you the owner or manager?",
+  "dynamic_variable_placeholders": {
+    "business_name": "Mike's Kitchen",
+    "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place"
+  },
+  "knowledge_base_document_ids": [
+    "OyjSKNJnQTc84pyk1Yu0"
+  ],
+  "rag_enabled": true,
+  "secret_values_logged": false,
+  "private_customer_data_used": false
+}

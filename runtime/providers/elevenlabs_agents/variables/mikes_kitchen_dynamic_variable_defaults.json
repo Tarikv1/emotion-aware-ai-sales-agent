@@ -1,0 +1,15 @@
+{
+  "business_name": "Mike's Kitchen",
+  "business_type": "restaurant",
+  "vertical": "restaurant",
+  "city": "Austin",
+  "service_area": "Austin",
+  "known_website_status": "no full website known",
+  "known_social_presence": "Instagram and Google Maps",
+  "known_booking_or_ordering_path": "reservations by phone",
+  "suspected_gap": "no clear menu, hours, location, and reservation phone path in one place",
+  "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+  "likely_decision_maker_role": "owner or manager",
+  "contact_name_if_known": "",
+  "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place"
+}

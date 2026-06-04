@@ -5491,3 +5491,35 @@ Interpretation:
   - it separates deterministic sales-agent quality from transport timing failures
   - it records that browser ASR final events are not enough evidence for production-grade turn-taking
   - it keeps the next provider/streaming decision evidence-based instead of reacting to voice quality alone
+
+### 2026-06-04 - ELEVENLABS-006 dashboard-agent naturalness patch
+
+- Objective: use ElevenLabs scenario-test results to improve the hosted Atlas Web Studio restaurant outreach agent without weakening the tests.
+- Action taken:
+  - added a repo-owned web design sales prompt, first message, and Mike's Kitchen dynamic-variable defaults
+  - extended the ElevenLabs automation runner so a copied dashboard config can be patched with prompt, first-message, and placeholder overrides
+  - documented `ELEVENLABS_006_WEB_DESIGN_NATURALNESS_PATCH.md`
+  - patched the live `web design` ElevenLabs agent and reran the existing six Mike's Kitchen scenario tests
+- Method:
+  - treated two failing scenario tests as valid failures because the agent did not close with the requested review question and did not state callback purpose concretely
+  - treated some passing results as still weak because phrases such as `visual representation`, `potential improvement`, `online presence`, and `customer action path` were unnatural for a short restaurant sales call
+  - fixed the source prompt instead of relaxing acceptance criteria
+  - confirmed the live agent no longer used `You are a helpful assistant.`
+- Result:
+  - live prompt patched: `true`
+  - first message patched: `true`
+  - dynamic placeholders patched: `true`
+  - existing KB preserved: `OyjSKNJnQTc84pyk1Yu0`
+  - RAG enabled: `true`
+  - scenario rerun suite: `suite_6901kt9w3km8eera53zy0ykagjee`
+  - scenario rerun result: `6/6 passed`
+- Boundary:
+  - no new KB upload
+  - no private customer data
+  - no API key value logged
+  - no real customer call
+  - no claim that passing ElevenLabs tests proves production naturalness
+- Why it matters for the thesis:
+  - it records an evidence-driven provider-dashboard prompt iteration loop
+  - it separates test pass/fail correctness from human naturalness critique
+  - it preserves the repo as source of truth while using ElevenLabs as the hosted voice-agent runtime
